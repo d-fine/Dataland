@@ -46,7 +46,7 @@ internal class DataControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk)
+            .andExpectAll(status().isOk, content().contentType("application/json"))
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
     }
