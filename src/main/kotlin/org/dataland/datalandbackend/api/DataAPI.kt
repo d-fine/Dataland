@@ -33,7 +33,7 @@ interface DataAPI {
 
     @Operation(
         summary = "Upload new data set.",
-        description = "The uploaded data set is added to the data store."
+        description = "The uploaded data set is added to the data store, the generated id is returned."
     )
     @ApiResponses(
         value = [
@@ -45,7 +45,7 @@ interface DataAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<String> {
+    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<Identifier> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 

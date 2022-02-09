@@ -16,7 +16,7 @@ class DataController(@Autowired @Qualifier("DefaultStore") var dataStore: DataSt
         return ResponseEntity.ok(this.dataStore.listDataSets())
     }
 
-    override fun postData(dataSet: DataSet): ResponseEntity<String> {
+    override fun postData(dataSet: DataSet): ResponseEntity<Identifier> {
         return ResponseEntity.ok(this.dataStore.addDataSet(dataSet))
     }
 

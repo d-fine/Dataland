@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 interface DataStoreInterface {
-    fun addDataSet(dataSet: DataSet): String {
+    fun addDataSet(dataSet: DataSet): Identifier {
         throw NotImplementedError("Adding of data sets is not implemented.")
     }
 
