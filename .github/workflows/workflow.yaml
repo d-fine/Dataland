@@ -27,6 +27,9 @@ jobs:
         with:
           name: FormattingReport
           path: ./build/reports/ktlint
+      - name: Execute Sonarqube analysis
+        if: always()
+        run: ./gradlew sonarqube
       - name: Execute tests
         if: always()
         run: ./gradlew test
