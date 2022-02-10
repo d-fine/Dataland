@@ -8,6 +8,7 @@ plugins {
     id("org.openapi.generator") version "5.3.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.sonarqube") version "3.3"
+    jacoco
 }
 
 group = "org.dataland"
@@ -42,6 +43,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        destinationFile = file("$buildDir/jacoco/jacoco.exec")
+    }
+
+    finalizedBy("jacocoTestReport")
+}
+
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 sonarqube {
