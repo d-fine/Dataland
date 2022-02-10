@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.6.10"
     id("org.openapi.generator") version "5.3.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    id "org.sonarqube" version "3.3"
+    id("org.sonarqube") version "3.3"
 }
 
 group = "org.dataland"
