@@ -55,6 +55,13 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+}
+
 sonarqube {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
