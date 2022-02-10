@@ -17,13 +17,22 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Execute tests
+      - name: Execute formatting check
         run: |
           chmod +x ./gradlew
-          ./gradlew test
-      - name: Upload log
+          ./gradlew ktlintcheck
+      - name: Upload formatting log
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: FormattingReport
+          path: ./build/reports/ktlint
+      - name: Execute tests
+        if: always()
+        run: ./gradlew test
+      - name: Upload testing log
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: TestReport
-          path: ./build/reports/tests/test
+          path: ./build/reports/tests

@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
     id("org.openapi.generator") version "5.3.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 group = "org.dataland"

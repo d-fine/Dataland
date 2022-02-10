@@ -26,7 +26,6 @@ class InMemoryDataStoreTest {
         assertEquals(identifier.id, (dataSets.size - 1).toString())
     }
 
-
     companion object {
         val dataSets = listOf<DataSet>(
             DataSet(name = "Company A", payload = "Data"),
@@ -34,5 +33,4 @@ class InMemoryDataStoreTest {
             DataSet(name = "Group C", payload = "Inputs")
         )
     }
-
 }

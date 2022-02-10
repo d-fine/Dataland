@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 
-
 @RequestMapping("/")
 interface HealthAPI {
     @Operation(summary = "Check if the API is responsive.", description = "Returns 200 if successful.")
