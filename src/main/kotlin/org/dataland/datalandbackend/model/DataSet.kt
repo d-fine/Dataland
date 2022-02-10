@@ -10,6 +10,6 @@ data class DataSet(
         println("Doing nothing with name $name")
         var a = 5
         a =+ 7
-        prinln("$a")
+        println("$a")
     }
 }
