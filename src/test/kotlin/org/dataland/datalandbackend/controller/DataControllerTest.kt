@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataSet
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -52,6 +54,26 @@ internal class DataControllerTest {
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
     }
+
+    @Test
+    fun list_data() {
+        for (dataset in dataSets)
+            uploadDataSet(mockMvc, dataset)
+        mockMvc.perform(
+            get("/data")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(status().isOk, content().contentType("application/json"))
+    }
+
+    /* val dataStore = DataStoreInterface()
+     val dataController = DataController(dataStore)
+
+     @Test
+     fun check_healthiness(){
+         Assertions.assertEquals("Healthy", dataController.getData().body)
+     }*/
 
     companion object {
         val dataSets = listOf<DataSet>(
