@@ -27,7 +27,6 @@ internal class DataStoreInterfaceTest : DataStoreInterface {
         }
     }
 
-
     companion object {
         val dataSets = listOf<DataSet>(
             DataSet(name = "Company A", payload = "Data"),
@@ -35,5 +34,4 @@ internal class DataStoreInterfaceTest : DataStoreInterface {
             DataSet(name = "Group C", payload = "Inputs")
         )
     }
-
 }

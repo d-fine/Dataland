@@ -1,9 +1,7 @@
 package org.dataland.datalandbackend.service
 
-import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.Identifier
-import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,7 +15,6 @@ class InMemoryDataStoreTest {
     fun check_constructor_data() {
         assertThat(testStore.data, instanceOf(MutableMap::class.java))
     }*/
-
 
     @Test
     fun check_name_after_adding_new_data() {
@@ -33,7 +30,6 @@ class InMemoryDataStoreTest {
         }
         assertEquals(identifier.id, (dataSets.size - 1).toString())
     }
-
 
     @Test
     fun add_and_retrieve_data_as_list_0() {
@@ -62,7 +58,6 @@ class InMemoryDataStoreTest {
         assertEquals(dataSets[1].name, testStore.listDataSets()[0].name)
     }
 
-
     @Test
     fun get_dataset_id_not_existing() {
         assertThrows<IllegalArgumentException> {
@@ -78,17 +73,17 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun get_dataset_message(){
+    fun get_dataset_message() {
         val id = "2"
         val expectedMessage = "The $id does not exist."
-        var exceptionThatWasThrown: Throwable  = assertThrows(IllegalArgumentException::class.java) {
+        val exceptionThatWasThrown: Throwable = assertThrows(IllegalArgumentException::class.java) {
             testStore.getDataSet(id)
         }
         assertEquals(exceptionThatWasThrown.message, expectedMessage)
     }
 
     companion object {
-        val dataSets = listOf<DataSet>(
+        val dataSets = listOf(
             DataSet(name = "Company A", payload = "Data"),
             DataSet(name = "Holding B", payload = "Information"),
             DataSet(name = "Group C", payload = "Inputs")
