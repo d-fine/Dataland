@@ -85,20 +85,20 @@ tasks.withType<OpenApiGeneratorTask> {
 
 data class ClientConfig(val taskName: String, val outputDir: String, val apiSpecLocation: String)
 
-for (
-    client in listOf(
-        ClientConfig(
-            taskName = "generateEdcClient",
-            outputDir = "$buildDir/Clients/EDC",
-            apiSpecLocation = "$projectDir/src/main/resources/EdcOpenApi.yaml"
-        ),
-        ClientConfig(
-            taskName = "generateBackendClient",
-            outputDir = "$buildDir/Clients/Backend",
-            apiSpecLocation = "$buildDir/$backendApiJson"
-        )
+var clientConfigs = listOf(
+    ClientConfig(
+        taskName = "generateEdcClient",
+        outputDir = "$buildDir/Clients/EDC",
+        apiSpecLocation = "$projectDir/src/main/resources/EdcOpenApi.yaml"
+    ),
+    ClientConfig(
+        taskName = "generateBackendClient",
+        outputDir = "$buildDir/Clients/Backend",
+        apiSpecLocation = "$buildDir/$backendApiJson"
     )
-) {
+)
+
+for (client in clientConfigs) {
     tasks.register(client.taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
         input = project.file(client.apiSpecLocation).path
         outputDir.set(client.outputDir)
