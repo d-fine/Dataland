@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.Identifier
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
@@ -76,7 +76,7 @@ class InMemoryDataStoreTest {
     fun get_dataset_message() {
         val id = "2"
         val expectedMessage = "The $id does not exist."
-        val exceptionThatWasThrown: Throwable = assertThrows(IllegalArgumentException::class.java) {
+        val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
             testStore.getDataSet(id)
         }
         assertEquals(exceptionThatWasThrown.message, expectedMessage)

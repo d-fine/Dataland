@@ -9,7 +9,7 @@ class HealthControllerTest {
     val healthController = HealthController()
 
     @Test
-    fun list_parameters(){
+    fun list_parameters() {
         println(healthController.getHealth().body)
         println(healthController.getHealth().statusCode)
         println(healthController.getHealth().statusCodeValue)
@@ -17,7 +17,7 @@ class HealthControllerTest {
     }
 
     @Test
-    fun check_healthiness(){
+    fun check_healthiness() {
         assertEquals("Healthy", healthController.getHealth().body)
     }
 }
