@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataSet
-import org.dataland.datalandbackend.model.Identifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,7 +29,7 @@ interface DataAPI {
         value = ["/data"],
         produces = ["application/json"]
     )
-    fun getData(): ResponseEntity<List<Identifier>> {
+    fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -47,7 +47,7 @@ interface DataAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<Identifier> {
+    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<DataSetMetaInformation> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 

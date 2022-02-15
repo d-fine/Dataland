@@ -23,6 +23,12 @@ internal class DataControllerTest {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
+    val dataSets = listOf<DataSet>(
+        DataSet(name = "Company A", payload = "Data"),
+        DataSet(name = "Holding B", payload = "Information"),
+        DataSet(name = "Group C", payload = "Inputs")
+    )
+
     fun uploadDataSet(mockMvc: MockMvc, dataSet: DataSet) {
         mockMvc.perform(
             post("/data")
@@ -34,12 +40,12 @@ internal class DataControllerTest {
     }
 
     @Test
-    fun data_can_be_added() {
+    fun `Data can be added`() {
         uploadDataSet(mockMvc, dataSets[0])
     }
 
     @Test
-    fun data_can_be_retrieved() {
+    fun `Data can be retrieved`() {
         val testSet = dataSets[0]
         uploadDataSet(mockMvc, testSet)
 
@@ -51,13 +57,5 @@ internal class DataControllerTest {
             .andExpectAll(status().isOk, content().contentType("application/json"))
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
-    }
-
-    companion object {
-        val dataSets = listOf<DataSet>(
-            DataSet(name = "Company A", payload = "Data"),
-            DataSet(name = "Holding B", payload = "Information"),
-            DataSet(name = "Group C", payload = "Inputs")
-        )
     }
 }
