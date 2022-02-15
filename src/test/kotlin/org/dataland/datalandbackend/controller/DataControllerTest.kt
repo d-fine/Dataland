@@ -16,12 +16,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class DataControllerTest {
-    @Autowired
-    lateinit var mockMvc: MockMvc
-
-    @Autowired
-    lateinit var objectMapper: ObjectMapper
+internal class DataControllerTest(
+    @Autowired var mockMvc: MockMvc,
+    @Autowired var objectMapper: ObjectMapper
+) {
 
     val dataSets = listOf<DataSet>(
         DataSet(name = "Company A", payload = "Data"),
