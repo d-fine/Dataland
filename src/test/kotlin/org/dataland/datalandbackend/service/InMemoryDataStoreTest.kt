@@ -91,6 +91,5 @@ class InMemoryDataStoreTest {
             dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)
         }
         assertEquals(dataSetMetaInformation!!.id, (dataSets.size - 1).toString())
-
     }
 }

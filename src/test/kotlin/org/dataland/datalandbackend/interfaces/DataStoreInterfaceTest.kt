@@ -31,5 +31,4 @@ internal class DataStoreInterfaceTest : DataStoreInterface {
             getDataSet(dataSets[0].name)
         }
     }
-
 }

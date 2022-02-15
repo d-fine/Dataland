@@ -76,5 +76,4 @@ internal class DataControllerTest(
      fun check_healthiness(){
          Assertions.assertEquals("Healthy", dataController.getData().body)
      }*/
-
 }
