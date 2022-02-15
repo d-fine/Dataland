@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class InMemoryDataStoreTest {
     val testStore = InMemoryDataStore()
-    val dataSets = listOf<DataSet>(
+    val dataSets = listOf(
         DataSet(name = "Company A", payload = "Data"),
         DataSet(name = "Holding B", payload = "Information"),
         DataSet(name = "Group C", payload = "Inputs")
@@ -24,7 +24,7 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun check_id_after_adding_multiple_new_data() {
+    fun `Check id after adding multiple new data`() {
         var identifier = DataSetMetaInformation(name = "dummy", id = "0")
         for (dataSet in dataSets) {
             identifier = testStore.addDataSet(dataSet = dataSet)
@@ -33,48 +33,48 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun add_and_retrieve_data_as_list_0() {
+    fun `Add and retrieve data as a list and check dataset 0`() {
         for (dataset in dataSets)
             testStore.addDataSet(dataSet = dataset)
         assertEquals(dataSets[0].name, testStore.listDataSets()[0].name)
     }
 
     @Test
-    fun add_and_retrieve_data_as_list_1() {
+    fun `Add and retrieve data as a list and check dataset 1`() {
         for (dataset in dataSets)
             testStore.addDataSet(dataSet = dataset)
         assertEquals(dataSets[1].name, testStore.listDataSets()[1].name)
     }
 
     @Test
-    fun add_and_retrieve_data_as_list_2() {
+    fun `Add and retrieve data as a list and check dataset 2`() {
         for (dataset in dataSets)
             testStore.addDataSet(dataSet = dataset)
         assertEquals(dataSets[2].name, testStore.listDataSets()[2].name)
     }
 
     @Test
-    fun add_and_retrieve_data() {
+    fun `Add and retrieve data`() {
         testStore.addDataSet(dataSet = dataSets[1])
         assertEquals(dataSets[1].name, testStore.listDataSets()[0].name)
     }
 
     @Test
-    fun get_dataset_id_not_existing() {
+    fun `Get dataset with id that does not exist`() {
         assertThrows<IllegalArgumentException> {
             testStore.getDataSet("error")
         }
     }
 
     @Test
-    fun get_dataset_id_exists() {
+    fun `Get the dataset by id`() {
         testStore.addDataSet(dataSet = dataSets[1])
         println(testStore.listDataSets())
         assertEquals(dataSets[1], testStore.getDataSet("0")) // why having starting id == 0 not 1?
     }
 
     @Test
-    fun get_dataset_message() {
+    fun `Get dataset message`() {
         val id = "2"
         val expectedMessage = "The id: $id does not exist."
         val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
@@ -83,7 +83,7 @@ class InMemoryDataStoreTest {
         assertEquals(expectedMessage, exceptionThatWasThrown.message)
     }
 
-
+    @Test
     fun `Check that the id is correct after adding multiple data sets`() {
         val testStore = InMemoryDataStore()
         var dataSetMetaInformation: DataSetMetaInformation? = null

@@ -21,7 +21,7 @@ internal class DataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val dataSets = listOf<DataSet>(
+    val dataSets = listOf(
         DataSet(name = "Company A", payload = "Data"),
         DataSet(name = "Holding B", payload = "Information"),
         DataSet(name = "Group C", payload = "Inputs")
@@ -58,7 +58,7 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun list_data() {
+    fun `List the data`() {
         for (dataset in dataSets)
             uploadDataSet(mockMvc, dataset)
         mockMvc.perform(
@@ -77,11 +77,4 @@ internal class DataControllerTest(
          Assertions.assertEquals("Healthy", dataController.getData().body)
      }*/
 
-    companion object {
-        val dataSets = listOf<DataSet>(
-            DataSet(name = "Company A", payload = "Data"),
-            DataSet(name = "Holding B", payload = "Information"),
-            DataSet(name = "Group C", payload = "Inputs")
-        )
-    }
 }
