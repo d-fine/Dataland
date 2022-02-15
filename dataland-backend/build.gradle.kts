@@ -1,6 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 
-plugins {
+
+
+        plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.10"
@@ -9,6 +12,8 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.sonarqube") version "3.3"
     jacoco
+    id("com.github.johnrengelman.processes") version "0.5.0"
+    id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
 }
 
 group = "org.dataland"
@@ -32,9 +37,15 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+val backendApiJson = "backendOpenApi.json"
+
+tasks.withType<OpenApiGeneratorTask> {
+    this.setProperty("outputFileName", backendApiJson)
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
         jvmTarget = "17"
     }
 }
