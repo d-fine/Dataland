@@ -4,14 +4,13 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataSet
-import org.dataland.datalandbackend.model.Identifier
-import org.springframework.http.HttpStatus
+import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import javax.validation.Valid
 
 @RequestMapping("/")
@@ -25,14 +24,11 @@ interface DataAPI {
             ApiResponse(responseCode = "200", description = "Successfully retrieved list of data.")
         ]
     )
-    @RequestMapping(
-        method = [RequestMethod.GET],
+    @GetMapping(
         value = ["/data"],
         produces = ["application/json"]
     )
-    fun getData(): ResponseEntity<List<Identifier>> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun getData(): ResponseEntity<List<DataSetMetaInformation>>
 
     @Operation(
         summary = "Upload new data set.",
@@ -48,9 +44,7 @@ interface DataAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<Identifier> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<DataSetMetaInformation>
 
     @Operation(
         summary = "Retrieve specific data set from the data store.",
@@ -61,12 +55,9 @@ interface DataAPI {
             ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")
         ]
     )
-    @RequestMapping(
-        method = [RequestMethod.GET],
+    @GetMapping(
         value = ["/data/{id}"],
         produces = ["application/json"]
     )
-    fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet>
 }
