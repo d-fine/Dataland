@@ -10,14 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class InMemoryDataStoreTest {
     val testStore = InMemoryDataStore()
-
-   /* @Test
-    fun check_constructor_data() {
-        assertThat(testStore.data, instanceOf(MutableMap::class.java))
-    }*/
+    val dataSets = listOf<DataSet>(
+        DataSet(name = "Company A", payload = "Data"),
+        DataSet(name = "Holding B", payload = "Information"),
+        DataSet(name = "Group C", payload = "Inputs")
+    )
 
     @Test
-    fun check_name_after_adding_new_data() {
+    fun `Check that the name of the added data is as expected`() {
+        val testStore = InMemoryDataStore()
         val identifier = testStore.addDataSet(dataSet = dataSets[0])
         assertEquals(identifier.name, dataSets[0].name)
     }
@@ -82,11 +83,14 @@ class InMemoryDataStoreTest {
         assertEquals(expectedMessage, exceptionThatWasThrown.message)
     }
 
-    companion object {
-        val dataSets = listOf(
-            DataSet(name = "Company A", payload = "Data"),
-            DataSet(name = "Holding B", payload = "Information"),
-            DataSet(name = "Group C", payload = "Inputs")
-        )
+
+    fun `Check that the id is correct after adding multiple data sets`() {
+        val testStore = InMemoryDataStore()
+        var dataSetMetaInformation: DataSetMetaInformation? = null
+        for (dataSet in dataSets) {
+            dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)
+        }
+        assertEquals(dataSetMetaInformation!!.id, (dataSets.size - 1).toString())
+
     }
 }
