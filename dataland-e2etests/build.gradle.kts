@@ -45,6 +45,14 @@ data class ClientConfig(
     val taskName: String, val outputDir: String, val apiSpecLocation: String
     )
 
+
+
+
+
+
+
+
+
 val backendClientConfig = ClientConfig(
         taskName = "generateBackendClient",
         outputDir = "$buildDir/Clients/backend",
