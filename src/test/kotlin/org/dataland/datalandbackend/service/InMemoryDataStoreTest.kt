@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.model.DataSet
-import org.dataland.datalandbackend.model.Identifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,7 +24,7 @@ class InMemoryDataStoreTest {
 
     @Test
     fun check_id_after_adding_multiple_new_data() {
-        var identifier = Identifier(name = "dummy", id = "0")
+        var identifier = DataSetMetaInformation(name = "dummy", id = "0")
         for (dataSet in dataSets) {
             identifier = testStore.addDataSet(dataSet = dataSet)
         }
@@ -75,11 +75,11 @@ class InMemoryDataStoreTest {
     @Test
     fun get_dataset_message() {
         val id = "2"
-        val expectedMessage = "The $id does not exist."
+        val expectedMessage = "The id: $id does not exist."
         val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
             testStore.getDataSet(id)
         }
-        assertEquals(exceptionThatWasThrown.message, expectedMessage)
+        assertEquals(expectedMessage, exceptionThatWasThrown.message)
     }
 
     companion object {
