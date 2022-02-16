@@ -39,7 +39,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: BootJar
-          path: ./build/libs/
+          path: |
+          ./build/libs/
+          !./build/libs/*plain.jar
       - name: Execute Sonarqube analysis
         if: always()
         run: ./gradlew sonarqube
