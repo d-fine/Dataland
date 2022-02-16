@@ -3,7 +3,7 @@ name: Deploy to preview2
 on:
   #TODO: Remove this trigger!
   workflow_run:
-    workflows: ["test"]
+    workflows: [Test]
     types:
       - completed
 
