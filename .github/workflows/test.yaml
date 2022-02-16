@@ -64,7 +64,6 @@ jobs:
           path: .
       - name: Deploy to Server
         run: |
-          ls -R
           chmod +x ./deployment/deploy_to_preview.sh
           ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
