@@ -50,13 +50,13 @@ tasks.register("generateOpenApiDocsTask", org.springdoc.openapi.gradle.plugin.Op
 val openApiSpec by configurations.creating {
     isCanBeConsumed = true
     isCanBeResolved = false
-}*/
+}
 artifacts {
     add("openApiSpec", generateOpenApiDocsTask.outputFile) {
         builtBy(generateOpenApiDocsTask)
     }
 }
-
+*/
 
 
 

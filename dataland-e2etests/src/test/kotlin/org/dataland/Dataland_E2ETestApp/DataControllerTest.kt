@@ -13,7 +13,7 @@ import org.openapitools.client.models.DataSet
 class DataControllerTest {
 
     @Test
-    fun testPostAndGetData() {
+    fun `post a dummy data set and check if total number of datasets increased`() {
         // Before:
         val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
         val dataSetName = "TestName_007"
