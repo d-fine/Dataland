@@ -10,8 +10,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: BootJar
+          path: .
       - name: Deploy to Server
         run: |
+          ls -R
           chmod +x ./deployment/deploy_to_preview.sh
           ./deployment/deploy_to_preview.sh
         env:
