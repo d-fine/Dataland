@@ -3,11 +3,10 @@ package org.dataland.Dataland_E2ETestApp
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import org.dataland.Dataland_E2ETestApp.clients.backend.apis.HealthControllerApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.openapitools.client.apis.DataControllerApi
-import org.openapitools.client.models.DataSet
+import org.dataland.datalandbackend.client.api.DataControllerApi
+import org.dataland.datalandbackend.client.model.DataSet
 
 
 class DataControllerTest {
