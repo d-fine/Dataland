@@ -18,6 +18,9 @@ repositories {
 }
 
 dependencies {
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
+    testImplementation ("io.kotlintest:kotlintest-runner-junit5:3.4.2")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.springdoc:springdoc-openapi-data-rest:1.6.5")
@@ -25,7 +28,6 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.5")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    //implementation("com.squareup.moshi:moshi:1.13.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
     implementation("com.squareup.moshi:moshi-adapters:1.13.0")
     testImplementation("io.rest-assured:kotlin-extensions:4.3.0")
