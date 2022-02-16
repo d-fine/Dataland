@@ -6,7 +6,6 @@ on:
     workflows: ["Test"]
     types:
       - completed
-  workflow_dispatch:
 
 jobs:
   deploy:
