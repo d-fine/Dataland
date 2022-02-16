@@ -51,7 +51,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' ||  github.ref == 'refs/heads/DALA-1_deploy_to_preview'
+    if: github.event_name == 'workflow_dispatch'
     needs:
       - test-and-build
     steps:
