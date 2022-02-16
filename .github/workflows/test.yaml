@@ -32,6 +32,14 @@ jobs:
         with:
           name: TestReport
           path: ./build/reports/
+      - name: Assemble boot jar
+        run: ./gradlew bootJar
+      - name: Upload Binaries
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: BootJar
+          path: ./build/libs/
       - name: Execute Sonarqube analysis
         if: always()
         run: ./gradlew sonarqube
