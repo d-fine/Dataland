@@ -40,8 +40,8 @@ jobs:
         with:
           name: BootJar
           path: |
-          build/libs/
-          !build/libs/*plain.jar
+            build/libs/
+            !build/libs/*plain.jar
       - name: Execute Sonarqube analysis
         if: always()
         run: ./gradlew sonarqube
