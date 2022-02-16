@@ -1,5 +1,8 @@
 #!/bin/bash
 mkdir -p ~/.ssh/
 echo "3.71.162.94 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k=" >  ~/.ssh/known_hosts
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDzjeDTp7JgHBOBDHmva5Yvv2XJW7Jelu3fWbCTGBmbQAdnc6qmlAN1MFNY1f65S7lZYOAjkyhvb84fPKt66KZFyt+kTluGhaoe+ICn6J5mrKiOa7QNcApw+bmROJyoG3u+QtYXnU9Y1AeWgejVdrm+qu1MKdqdL+ll7B8bT070LEJiL48/rNprZ7WTihiVn54oQFdh+BsWAFNgL5/tLaD3cTioTJbDDTCj+UbIXIxATHCLB/spQtWjL977fH8iVBX/zdNP9FLSPtB6tSMWMbvA84Ql3ShtlCwkLErWeJVkG6Nldl4tJ0Yj04DYKxx1iFWitVJPNOz3Lhut0VQnmc5IB4WJrbaDL22HA/HHVng/GBC1uCB7uYBfsXy2Em1bFk/rlLGS4dT/WYghdvWt25JJGucJd3OO8QkfiQKMXmETnGawgy9araaqltYzaYWHu+h+9iOB6Nz4B5jsqAh/BN1+qInaVAIWQJhUfDzH9f6+/IIw4l6vGLgVUwzZ1FV6pRbOmp8zdJ4uSxYVgxjkNs26QpJMemfRaH+hilRIKtE86J33DoBBN2iBgB7vnmyT5mC5eeeocy2TQ5A4ZMjcGJtShWd2r8C5szFqbElmhOSTVEErweIrpIXJTTLTkzQPiCk9NQ911NP0mRaZ6AInrkGGRQu9K6spEVruPU88VYeeIQ== github-ssh-key" > ~/.ssh/id-rsa.pub
 echo $SSH_PRIVATE_KEY > ~/.ssh/id-rsa
+
 ssh ubuntu@3.71.162.94 ls
+
