@@ -7,9 +7,10 @@ on:
   pull_request:
     branches:
       - 'main'
+  workflow_dispatch:
 
 jobs:
-  test:
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,9 +33,38 @@ jobs:
         with:
           name: TestReport
           path: ./build/reports/
+      - name: Assemble boot jar
+        run: ./gradlew bootJar
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: BootJar
+          path: |
+            build/libs/
+            !build/libs/*plain.jar
       - name: Execute Sonarqube analysis
         if: always()
         run: ./gradlew sonarqube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    needs:
+      - test-and-build
+    steps:
+      - name: Start Preview
+        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: BootJar
+          path: .
+      - name: Deploy to Preview
+        run: |
+          chmod +x ./deployment/deploy_to_preview.sh
+          ./deployment/deploy_to_preview.sh dataland-backend*.jar
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
