@@ -36,7 +36,6 @@ jobs:
       - name: Assemble boot jar
         run: ./gradlew bootJar
       - name: Upload Binaries
-        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: BootJar
@@ -56,8 +55,6 @@ jobs:
       - test-and-build
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
       - uses: actions/download-artifact@v2
         with:
           name: BootJar
