@@ -66,7 +66,7 @@ jobs:
         run: |
           ls -R
           chmod +x ./deployment/deploy_to_preview.sh
-          ./deployment/deploy_to_preview.sh
+          ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
