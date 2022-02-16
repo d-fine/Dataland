@@ -50,16 +50,20 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' ||  github.ref == 'refs/heads/DALA-1_deploy_to_preview'
     needs:
       - test-and-build
     steps:
+      - name: Start Preview
+        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: BootJar
           path: .
-      - name: Deploy to Server
+      - name: Wait for Preview
+        run: timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@3.71.162.94 exit; do echo 'target server not yet there - retrying in 1s'; sleep 1; done"
+      - name: Deploy to Preview
         run: |
           chmod +x ./deployment/deploy_to_preview.sh
           ./deployment/deploy_to_preview.sh dataland-backend*.jar
