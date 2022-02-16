@@ -24,33 +24,10 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun `Check id after adding multiple new data`() {
-        var identifier = DataSetMetaInformation(name = "dummy", id = "0")
-        for (dataSet in dataSets) {
-            identifier = testStore.addDataSet(dataSet = dataSet)
-        }
-        assertEquals(identifier.id, (dataSets.size - 1).toString())
-    }
-
-    @Test
-    fun `Add and retrieve data as a list and check dataset 0`() {
+    fun `Add and retrieve data as a list and check dataset`() {
         for (dataset in dataSets)
             testStore.addDataSet(dataSet = dataset)
         assertEquals(dataSets[0].name, testStore.listDataSets()[0].name)
-    }
-
-    @Test
-    fun `Add and retrieve data as a list and check dataset 1`() {
-        for (dataset in dataSets)
-            testStore.addDataSet(dataSet = dataset)
-        assertEquals(dataSets[1].name, testStore.listDataSets()[1].name)
-    }
-
-    @Test
-    fun `Add and retrieve data as a list and check dataset 2`() {
-        for (dataset in dataSets)
-            testStore.addDataSet(dataSet = dataset)
-        assertEquals(dataSets[2].name, testStore.listDataSets()[2].name)
     }
 
     @Test
@@ -69,7 +46,6 @@ class InMemoryDataStoreTest {
     @Test
     fun `Get the dataset by id`() {
         testStore.addDataSet(dataSet = dataSets[1])
-        println(testStore.listDataSets())
         assertEquals(dataSets[1], testStore.getDataSet("0")) // why having starting id == 0 not 1?
     }
 

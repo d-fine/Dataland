@@ -68,12 +68,4 @@ internal class DataControllerTest(
         )
             .andExpectAll(status().isOk, content().contentType("application/json"))
     }
-
-    /* val dataStore = DataStoreInterface()
-     val dataController = DataController(dataStore)
-
-     @Test
-     fun check_healthiness(){
-         Assertions.assertEquals("Healthy", dataController.getData().body)
-     }*/
 }
