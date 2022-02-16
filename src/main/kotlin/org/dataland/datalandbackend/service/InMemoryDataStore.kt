@@ -13,7 +13,7 @@ class InMemoryDataStore : DataStoreInterface {
     override fun addDataSet(dataSet: DataSet): DataSetMetaInformation {
         data[counter] = dataSet
         counter++
-        return DataSetMetaInformation(name = dataSet.name, id = (counter - 1).toString())
+        return DataSetMetaInformation(name = dataSet.name, id = counter.toString())
     }
 
     override fun listDataSets(): List<DataSetMetaInformation> {
