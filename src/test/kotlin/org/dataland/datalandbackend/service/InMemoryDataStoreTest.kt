@@ -46,7 +46,7 @@ class InMemoryDataStoreTest {
     @Test
     fun `Get the dataset by id`() {
         testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1], testStore.getDataSet("0")) // why having starting id == 0 not 1?
+        assertEquals(dataSets[1], testStore.getDataSet("0"))
     }
 
     @Test
@@ -66,6 +66,6 @@ class InMemoryDataStoreTest {
         for (dataSet in dataSets) {
             dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)
         }
-        assertEquals(dataSetMetaInformation!!.id, (dataSets.size - 1).toString())
+        assertEquals(dataSetMetaInformation!!.id, dataSets.size.toString())
     }
 }
