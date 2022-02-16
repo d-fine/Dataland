@@ -1,4 +1,4 @@
-name: Deploy to preview
+name: Deploy to preview2
 
 on:
   #TODO: Remove this trigger!
