@@ -61,8 +61,6 @@ jobs:
         with:
           name: BootJar
           path: .
-      - name: Wait for Preview
-        run: timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@3.71.162.94 exit; do echo 'target server not yet there - retrying in 1s'; sleep 1; done"
       - name: Deploy to Preview
         run: |
           chmod +x ./deployment/deploy_to_preview.sh
