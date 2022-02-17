@@ -1,0 +1,21 @@
+name: DC
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  test-using-dc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: start dc stack
+        run: docker-compose --project-name dala-test up -d
+      - name: wait for single container to finish
+        run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-test_testcontainer_1`" == "exited" ]; do echo "test not yet finished. Waiting 1s"; sleep 1; done;'
+      - name: get test logs
+        run: docker logs dala-test_testcontainer_1
