@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,9 +28,7 @@ interface DataAPI {
         value = ["/data"],
         produces = ["application/json"]
     )
-    fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun getData(): ResponseEntity<List<DataSetMetaInformation>>
 
     @Operation(
         summary = "Upload new data set.",
@@ -47,9 +44,7 @@ interface DataAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<DataSetMetaInformation> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<DataSetMetaInformation>
 
     @Operation(
         summary = "Retrieve specific data set from the data store.",
@@ -64,7 +59,5 @@ interface DataAPI {
         value = ["/data/{id}"],
         produces = ["application/json"]
     )
-    fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
+    fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet>
 }

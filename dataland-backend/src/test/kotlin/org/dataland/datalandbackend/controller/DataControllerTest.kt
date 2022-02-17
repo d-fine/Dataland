@@ -16,14 +16,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class DataControllerTest {
-    @Autowired
-    lateinit var mockMvc: MockMvc
+internal class DataControllerTest(
+    @Autowired var mockMvc: MockMvc,
+    @Autowired var objectMapper: ObjectMapper
+) {
 
-    @Autowired
-    lateinit var objectMapper: ObjectMapper
-
-    val dataSets = listOf<DataSet>(
+    val dataSets = listOf(
         DataSet(name = "Company A", payload = "Data"),
         DataSet(name = "Holding B", payload = "Information"),
         DataSet(name = "Group C", payload = "Inputs")
@@ -57,5 +55,17 @@ internal class DataControllerTest {
             .andExpectAll(status().isOk, content().contentType("application/json"))
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
+    }
+
+    @Test
+    fun `List the data`() {
+        for (dataset in dataSets)
+            uploadDataSet(mockMvc, dataset)
+        mockMvc.perform(
+            get("/data")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(status().isOk, content().contentType("application/json"))
     }
 }
