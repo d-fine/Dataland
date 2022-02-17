@@ -1,11 +1,13 @@
 services:
   backend:
     build:
+      context: ./
       dockerfile: ./dataland-backend/Dockerfile
     ports:
       - "8080:8080"
   e2etests:
     build:
+      context: ./
       dockerfile: ./dataland-e2etests/Dockerfile
     ports:
       - "8081:8080"
