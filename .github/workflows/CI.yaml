@@ -34,7 +34,7 @@ jobs:
           name: TestReport
           path: ./build/reports/
       - name: Assemble boot jar
-        run: ./gradlew bootJar
+        run: ./gradlew :dataland-backend:bootJar
       - name: Upload Binaries
         uses: actions/upload-artifact@v2
         with:
