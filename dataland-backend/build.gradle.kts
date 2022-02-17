@@ -1,39 +1,24 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
-
 plugins {
-    id("org.springframework.boot") version "2.6.2"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.spring") version "1.6.10"
-    id("org.openapi.generator") version "5.3.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    id("org.sonarqube") version "3.3"
+    kotlin("jvm")// version "1.6.10"
+    kotlin("plugin.spring")// version "1.6.10"
     jacoco
+    id("org.sonarqube") version "3.3"
     id("com.github.johnrengelman.processes") version "0.5.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
 }
 
-group = "org.dataland"
-version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("javax.validation:validation-api:2.0.1.Final")
-    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.5")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.5")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.5")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 
-tasks.withType<OpenApiGeneratorTask> {
+tasks.withType<org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask> {
     this.setProperty("outputFileName", "$backendOpenApiJson")
 }
 
@@ -44,13 +29,6 @@ val openApiSpec by configurations.creating {
 artifacts {
     add("openApiSpec", project.file("$buildDir/$backendOpenApiJson")) {
         builtBy("generateOpenApiDocs")
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-        jvmTarget = "17"
     }
 }
 
