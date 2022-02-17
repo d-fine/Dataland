@@ -16,6 +16,6 @@ jobs:
       - name: Start docker compose stack
         run: docker-compose --project-name dala-e2e-test up -d
       - name: Wait for E2E test container to finish
-        run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-e2e-test_testcontainer_1`" == "exited" ]; do echo "Test not yet finished. Waiting 1s"; sleep 1; done;'
+        run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-e2e-test_e2etests_1`" == "exited" ]; do echo "Test not yet finished. Waiting 1s"; sleep 1; done;'
       - name: Retrieve test logs
-        run: docker logs dala-e2e-test_testcontainer_1
+        run: docker logs dala-e2e-test_e2etests_1
