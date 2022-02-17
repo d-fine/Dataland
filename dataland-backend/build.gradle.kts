@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 
-
 plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -19,10 +18,6 @@ group = "org.dataland"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     //implementation("org.springframework.boot:spring-boot-starter-web")
     //implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -36,10 +31,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-val backendApiJson = "backendOpenApi.json"
+val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 
 tasks.withType<OpenApiGeneratorTask> {
-    this.setProperty("outputFileName", backendApiJson)
+    this.setProperty("outputFileName", "$backendOpenApiJson")
 }
 
 // ADD TASK TO SHARE ARTIFACT WITH E2E TEST PROJECT
@@ -52,8 +47,8 @@ val openApiSpec by configurations.creating {
     isCanBeResolved = false
 }
 artifacts {
-    add("openApiSpec", generateOpenApiDocsTask.outputFile) {
-        builtBy(generateOpenApiDocsTask)
+    add("openApiSpec", project.file("$buildDir/$backendOpenApiJson")) {
+        builtBy("generateOpenApiDocs")
     }
 }
 */
