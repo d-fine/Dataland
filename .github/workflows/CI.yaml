@@ -26,7 +26,7 @@ jobs:
           ./gradlew ktlintcheck
       - name: Execute tests
         if: always()
-        run: ./gradlew test
+        run: ./gradlew :dataland-backend:test
       - name: Upload Build and Test Reports
         if: always()
         uses: actions/upload-artifact@v2
