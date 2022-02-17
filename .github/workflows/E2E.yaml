@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Start docker compose stack
         run: docker-compose --project-name dala-e2e-test up -d
       - name: Wait for E2E test container to finish
