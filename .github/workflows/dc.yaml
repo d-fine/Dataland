@@ -18,4 +18,4 @@ jobs:
       - name: wait for single container to finish
         run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-test_testcontainer_1`" == "exited" ]; do echo "test not yet finished. Waiting 1s"; sleep 1; done;'
       - name: get test logs
-        run: docker logs dala-test-testcontainer-1
+        run: docker logs dala-test_testcontainer_1
