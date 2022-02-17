@@ -1,10 +1,9 @@
 package org.dataland.e2etests
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import org.dataland.datalandbackend.client.api.DataControllerApi
 import org.dataland.datalandbackend.client.model.DataSet
-
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 class DataControllerTest {
 
