@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  app:
+    image: nginx:latest
+    expose:
+      - 80
+  testcontainer:
+    image:  curlimages/curl:latest
+    command: sh -c "curl app && sleep 10"
