@@ -89,10 +89,10 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests
           path: .
-      - uses: actions/download-artifact@v2
-        with:
-          name: JaCoCoResultsE2ETest
-          path: .
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: JaCoCoResultsE2ETest
+#          path: .
       - name: Execute Sonarqube analysis
         if: always()
         run: |
