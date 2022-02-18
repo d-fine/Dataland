@@ -10,6 +10,29 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: compile
+        if: always()
+        run: |
+          chmod +x ./gradlew
+          ./gradlew compielKotlin compileTestKotlin --no-daemon
+      - name: Upload Build binaries
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: buildDirs
+          path: "**/build/"
+
   test-and-build:
     runs-on: ubuntu-latest
     steps:
@@ -20,13 +43,18 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
+      - uses: actions/download-artifact@v2
+        with:
+          name: buildDirs
+          path: .
       - name: Execute formatting check
         run: |
           chmod +x ./gradlew
-          ./gradlew ktlintcheck
+          ./gradlew ktlintcheck --no-daemon
       - name: Execute tests
         if: always()
-        run: ./gradlew :dataland-backend:test
+        run: ./gradlew :dataland-backend:test --no-daemon
       - name: Upload Build and Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -40,7 +68,7 @@ jobs:
           name: JaCoCoResultsUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
       - name: Assemble boot jar
-        run: ./gradlew :dataland-backend:bootJar
+        run: ./gradlew :dataland-backend:bootJar --no-daemon
       - name: Upload Binaries
         uses: actions/upload-artifact@v2
         with:
@@ -56,6 +84,10 @@ jobs:
         run: chmod +x ./gradlew
       - name: Start docker compose stack
         run: docker-compose --project-name dala-e2e-test up -d
+      - uses: actions/download-artifact@v2
+        with:
+          name: buildDirs
+          path: .
       - name: Wait for E2E test container to finish
         run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-e2e-test_e2etests_1`" == "exited" ]; do echo "Test not yet finished. Waiting 1s"; sleep 1; done;'
       - name: Get E2E Test Results
@@ -78,8 +110,17 @@ jobs:
       - test-and-build
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+      - uses: actions/download-artifact@v2
+        with:
+          name: buildDirs
+          path: .
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
@@ -93,8 +134,8 @@ jobs:
         run: |
           echo "TODO: remove the next command"
           rm ./jacoco.exec
-          ./gradlew jacocoTestReport
-          ./gradlew sonarqube
+          ./gradlew jacocoTestReport --no-daemon
+          ./gradlew sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
