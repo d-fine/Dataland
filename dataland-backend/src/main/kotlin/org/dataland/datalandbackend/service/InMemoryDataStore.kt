@@ -11,8 +11,8 @@ class InMemoryDataStore : DataStoreInterface {
     private var counter = 0
 
     override fun addDataSet(dataSet: DataSet): DataSetMetaInformation {
-        data[counter] = dataSet
         counter++
+        data[counter] = dataSet
         return DataSetMetaInformation(name = dataSet.name, id = counter.toString())
     }
 
