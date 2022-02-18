@@ -50,4 +50,3 @@ tasks.jacocoTestReport {
         csv.required.set(false)
     }
 }
-
