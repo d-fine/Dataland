@@ -6,31 +6,38 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class DataControllerTest {
+    val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
 
     @Test
-    fun `post a dummy data set and check if total number of datasets increased`() {
-        // Before:
-        val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
+    fun `Post a dummy data set and check if post was successful`() {
         val dataSetName = "TestName_007"
-        val payload = "testDataSet_007"
+        val dataSetPayload = "testDataSet_007"
+        val dataSet = DataSet(name = dataSetName, payload = dataSetPayload)
 
-        // Get data and count entries:
         var allData = dataControllerApi.getData()
-        val numberOfEntriesBefore = allData.size
+        val numberOfEntriesBeforePost = allData.size
 
-        // Add data:
-        val dataSet = DataSet(name = dataSetName, payload = payload)
         val postResponse = dataControllerApi.postData(dataSet)
 
-        // Get data and count entries again:
         allData = dataControllerApi.getData()
-        val numberOfEntriesAfter = allData.size
+        val numberOfEntriesAfterPost = allData.size
 
-        // Test if number of entries increased by one data set:
-        Assertions.assertEquals(numberOfEntriesAfter, numberOfEntriesBefore + 1)
-        // Test if actual data set was posted:
-        Assertions.assertEquals(dataSetName, postResponse.name)
+        Assertions.assertEquals(numberOfEntriesAfterPost, numberOfEntriesBeforePost + 1, "Number of entries did not increase by exactly one data set.")
+        Assertions.assertEquals(dataSetName, postResponse.name, "The actual data set was not posted.")
+    }
 
-        // To-Do: Clean-up to delete inserted data?
+    @Test
+    fun `Post a dummy data set and check if that specific data set can be queried by its ID`() {
+        val dataSetName = "TestName_008"
+        val dataSetPayload = "testDataSet_008"
+        val dataSet = DataSet(name = dataSetName, payload = dataSetPayload)
+
+        val postResponse = dataControllerApi.postData(dataSet)
+        val dataSetID = postResponse.id
+
+        val response = dataControllerApi.getDataSet(dataSetID)
+
+        Assertions.assertEquals(dataSetName, response.name, "The 'name' value of the data set in the response does not match the 'name' value of the data set that was posted before.")
+        Assertions.assertEquals(dataSetPayload, response.payload, "The 'payload' value of the data set in the response does not match the 'payload' value of the data set that was posted before.")
     }
 }
