@@ -7,4 +7,4 @@ COPY gradlew settings.gradle.kts build.gradle.kts /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD ./gradlew bootRun
+CMD sh -c "./gradlew bootRun || tail -f /dev/null"
