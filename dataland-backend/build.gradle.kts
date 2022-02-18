@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm")// version "1.6.10"
     kotlin("plugin.spring")// version "1.6.10"
     jacoco
-    id("org.sonarqube") version "3.3"
     id("com.github.johnrengelman.processes") version "0.5.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
 }
@@ -53,12 +52,3 @@ tasks.jacocoTestReport {
     }
 }
 
-sonarqube {
-    properties {
-        property("sonar.projectKey", "d-fine_Dataland")
-        property("sonar.organization", "d-fine")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.jacoco.reportPaths", file("$buildDir/jacoco/jacoco.exec"))
-        property("sonar.qualitygate.wait", true)
-    }
-}
