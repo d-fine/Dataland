@@ -99,6 +99,7 @@ jobs:
         run: |
           echo "TODO: remove the next command"
           rm ./jacoco.exec
+          ./gradlew jacocoTestReport --no-daemon
           ./gradlew sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
