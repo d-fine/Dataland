@@ -78,6 +78,7 @@ jobs:
           path: ./*.exec
   sonar:
     runs-on: ubuntu-latest
+    if: always()
     needs:
       - e2e-test
       - test-and-build
