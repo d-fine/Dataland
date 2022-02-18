@@ -18,3 +18,8 @@ jobs:
           cd dataland-frontend
           npm install
           ./node_modules/.bin/vue-cli-service test:unit
+#      - name: Upload Test Reports
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: TestReport
+#          path: reports/
