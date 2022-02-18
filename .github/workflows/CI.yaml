@@ -25,7 +25,7 @@ jobs:
         if: always()
         run: |
           chmod +x ./gradlew
-          ./gradlew compielKotlin compileTestKotlin --no-daemon
+          ./gradlew compileKotlin compileTestKotlin --no-daemon
       - name: Upload Build binaries
         if: always()
         uses: actions/upload-artifact@v2
