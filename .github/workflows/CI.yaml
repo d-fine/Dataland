@@ -85,18 +85,18 @@ jobs:
       - uses: actions/checkout@v2
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-      - uses: actions/download-artifact@v2
-        with:
-          name: JaCoCoResultsUnitTests
-          path: .
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: JaCoCoResultsUnitTests
+#          path: .
 #      - uses: actions/download-artifact@v2
 #        with:
 #          name: JaCoCoResultsE2ETest
 #          path: .
-      - name: Execute Sonarqube analysis
-        if: always()
-        run: |
-#TODO: remove this line
+#      - name: Execute Sonarqube analysis
+#        if: always()
+#        run: |
+# TODO: remove this line
           rm ./jacoco.exec
           ./gradlew jacocoTestReport
           ./gradlew sonarqube
