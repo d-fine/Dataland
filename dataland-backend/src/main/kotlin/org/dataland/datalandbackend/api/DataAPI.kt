@@ -17,7 +17,7 @@ import javax.validation.Valid
 interface DataAPI {
     @Operation(
         summary = "Retrieve list of all existing data.",
-        description = "List is composed of identifiers, which in turn contain the name and the id of the respective data set."
+        description = "List is composed of identifiers, which in turn contain the name id of the respective data set."
     )
     @ApiResponses(
         value = [
