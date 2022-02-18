@@ -33,6 +33,12 @@ jobs:
         with:
           name: TestReport
           path: ./build/reports/
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JaCoCoResultsUnitTests
+          path: ./dataland-backend/build/jacoco/*.exec
       - name: Assemble boot jar
         run: ./gradlew :dataland-backend:bootJar
       - name: Upload Binaries
@@ -45,6 +51,55 @@ jobs:
       - name: Execute Sonarqube analysis
         if: always()
         run: ./gradlew sonarqube
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Start docker compose stack
+        run: docker-compose --project-name dala-e2e-test up -d
+      - name: Wait for E2E test container to finish
+        run: timeout 300 bash -c 'until [ "`docker inspect -f {{.State.Status}} dala-e2e-test_e2etests_1`" == "exited" ]; do echo "Test not yet finished. Waiting 1s"; sleep 1; done;'
+      - name: Get E2E Test Results
+        run: |
+          docker exec dala-e2e-test_backend_1 pkill -f spring
+          docker logs dala-e2e-test_e2etests_1
+          docker cp dala-e2e-test_backend_1:/app/dataland-backend/build/jacoco/bootRun.exec .
+          docker inspect dala-e2e-test_e2etests_1 --format='{{.State.ExitCode}}' -eq 0
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JaCoCoResultsE2ETest
+          path: ./*.exec
+  sonar:
+    runs-on: ubuntu-latest
+    needs:
+      - e2e-test
+      - test-and-build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsUnitTests
+          path: .
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsE2ETest
+          path: .
+      - name: Execute Sonarqube analysis
+        if: always()
+        run: |
+#TODO: remove this line
+          rm ./jacoco.exec
+          ./gradlew jacocoTestReport
+          ./gradlew sonarqube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -67,4 +122,3 @@ jobs:
           ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
