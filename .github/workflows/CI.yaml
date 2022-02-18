@@ -47,7 +47,7 @@ jobs:
           name: BootJar
           path: |
             dataland-backend/build/libs/
-            !build/libs/*plain.jar
+            !dataland-backend/build/libs/*plain.jar
   e2e-test:
     runs-on: ubuntu-latest
     steps:
