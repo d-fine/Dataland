@@ -26,7 +26,6 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10" apply false
     id("org.sonarqube") version "3.3"
-    jacoco
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
@@ -36,19 +35,7 @@ sonarqube {
         property("sonar.projectKey", "d-fine_Dataland")
         property("sonar.organization", "d-fine")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.jacoco.reportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
+        property("sonar.jacoco.reportPaths", file("$projectDir/*.exec"))
         property("sonar.qualitygate.wait", true)
-    }
-}
-
-jacoco {
-    toolVersion = "0.8.7"
-}
-
-tasks.jacocoTestReport {
-    executionData.setFrom(fileTree(projectDir).include("/*.exec"))
-    reports {
-        xml.required.set(true)
-        csv.required.set(false)
     }
 }
