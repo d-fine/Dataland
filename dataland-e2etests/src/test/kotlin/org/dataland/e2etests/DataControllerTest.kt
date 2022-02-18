@@ -30,8 +30,6 @@ class DataControllerTest {
         Assertions.assertEquals(numberOfEntriesAfter, numberOfEntriesBefore + 1)
         // Test if actual data set was posted:
         Assertions.assertEquals(dataSetName, postResponse.name)
-        //Todo: remove this line
-        Assertions.assertTrue(false)
 
         // To-Do: Clean-up to delete inserted data?
     }
