@@ -63,7 +63,7 @@ jobs:
           docker exec dala-e2e-test_backend_1 pkill -f spring
           docker logs dala-e2e-test_e2etests_1
           docker cp dala-e2e-test_backend_1:/app/dataland-backend/build/jacoco/bootRun.exec .
-          docker `inspect dala-e2e-test_e2etests_1 --format='{{.State.ExitCode}}'` -eq 0
+          `docker inspect dala-e2e-test_e2etests_1 --format='{{.State.ExitCode}}'` -eq 0
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
