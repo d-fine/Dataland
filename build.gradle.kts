@@ -23,6 +23,17 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     kotlin("jvm") version "1.6.10" apply false
     kotlin("plugin.spring") version "1.6.10" apply false
+    id("org.sonarqube") version "3.3"
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "d-fine_Dataland")
+        property("sonar.organization", "d-fine")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.jacoco.reportPaths", file("$buildDir/jacoco/jacoco.exec"))
+        property("sonar.qualitygate.wait", true)
+    }
+}
