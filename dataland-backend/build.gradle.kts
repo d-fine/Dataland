@@ -43,12 +43,3 @@ jacoco {
     toolVersion = "0.8.7"
     applyTo(tasks.bootRun.get())
 }
-
-tasks.jacocoTestReport {
-    executionData.setFrom(fileTree(projectDir).include("/*.exec"))
-    reports {
-        xml.required.set(true)
-        csv.required.set(false)
-    }
-}
-
