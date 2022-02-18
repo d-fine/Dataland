@@ -48,12 +48,6 @@ jobs:
           path: |
             build/libs/
             !build/libs/*plain.jar
-      - name: Execute Sonarqube analysis
-        if: always()
-        run: ./gradlew sonarqube
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   e2e-test:
     runs-on: ubuntu-latest
     steps:
@@ -94,6 +88,16 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: .
+      - name: Execute Sonarqube analysis
+        if: always()
+        run: |
+          echo "TODO: remove the next command"
+          rm ./jacoco.exec
+          ./gradlew jacocoTestReport
+          ./gradlew sonarqube
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
