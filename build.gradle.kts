@@ -46,9 +46,14 @@ jacoco {
 }
 
 tasks.jacocoTestReport {
-    executionData.setFrom(fileTree(projectDir).include("/*.exec"))
+    dependsOn(tasks.build)
+    sourceDirectories.setFrom(subprojects.flatMap { project -> project.sourceSets.main.get().allSource })
+    classDirectories.setFrom(
+        subprojects.flatMap { project -> project.sourceSets.main.get().output.classesDirs.flatMap { fileTree(it).files } }
+    )
     reports {
         xml.required.set(true)
         csv.required.set(false)
     }
+    executionData.setFrom(fileTree(projectDir).include("*.exec"))
 }
