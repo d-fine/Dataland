@@ -47,9 +47,13 @@ jacoco {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
-    sourceDirectories.setFrom(subprojects.flatMap { project -> project.sourceSets.main.get().allSource })
+    sourceDirectories.setFrom(
+        subprojects.flatMap { project -> project.sourceSets.asMap.values }
+            .flatMap { sourceSet -> sourceSet.allSource }
+    )
     classDirectories.setFrom(
-        subprojects.flatMap { project -> project.sourceSets.main.get().output.classesDirs.flatMap { fileTree(it).files } }
+        subprojects.flatMap { project -> project.sourceSets.asMap.values }
+            .flatMap { sourceSet -> sourceSet.output.classesDirs.flatMap { fileTree(it).files } }
     )
     reports {
         xml.required.set(true)
