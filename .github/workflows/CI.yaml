@@ -20,9 +20,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute formatting check
-        run: |
-          chmod +x ./gradlew
-          ./gradlew ktlintcheck --no-daemon
+        run: ./gradlew ktlintcheck --no-daemon
       - name: Execute tests
         if: always()
         run: ./gradlew :dataland-backend:test --no-daemon
@@ -51,8 +49,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - name: Start docker compose stack
         run: docker-compose --project-name dala-e2e-test up -d
       - name: Wait for E2E test container to finish
@@ -84,8 +80,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
@@ -144,8 +138,6 @@ jobs:
           name: BootJar
           path: .
       - name: Deploy to Preview
-        run: |
-          chmod +x ./deployment/deploy_to_preview.sh
-          ./deployment/deploy_to_preview.sh dataland-backend*.jar
+        run: ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
