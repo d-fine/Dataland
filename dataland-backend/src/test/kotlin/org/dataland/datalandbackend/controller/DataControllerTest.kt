@@ -48,7 +48,7 @@ internal class DataControllerTest(
         uploadDataSet(mockMvc, testSet)
 
         mockMvc.perform(
-            get("/data/0")
+            get("/data/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )

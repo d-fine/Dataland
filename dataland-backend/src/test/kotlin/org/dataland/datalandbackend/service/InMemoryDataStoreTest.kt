@@ -17,23 +17,22 @@ class InMemoryDataStoreTest {
     )
 
     @Test
-    fun `Check that the name of the added data is as expected`() {
-        val testStore = InMemoryDataStore()
+    fun `Add the first dataset and check if the name is as expected by using the return value of addDataSet`() {
         val identifier = testStore.addDataSet(dataSet = dataSets[0])
         assertEquals(identifier.name, dataSets[0].name)
     }
 
     @Test
-    fun `Add and retrieve data as a list and check dataset`() {
-        for (dataset in dataSets)
+    fun `Add all datasets, retrieve them as a list and check for each dataset if the name is as expected`() {
+        for (dataset in dataSets) {
             testStore.addDataSet(dataSet = dataset)
-        assertEquals(dataSets[0].name, testStore.listDataSets()[0].name)
-    }
+        }
 
-    @Test
-    fun `Add and retrieve data`() {
-        testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1].name, testStore.listDataSets()[0].name)
+        val allDataSetsInStore = testStore.listDataSets()
+
+        for ((counter, storedDataSet) in allDataSetsInStore.withIndex()) {
+            assertEquals(dataSets[counter].name, storedDataSet.name)
+        }
     }
 
     @Test
@@ -44,13 +43,13 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun `Get the dataset by id`() {
-        testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1], testStore.getDataSet("0"))
+    fun `Add and get dataset by id`() {
+        val identifier = testStore.addDataSet(dataSet = dataSets[1])
+        assertEquals(dataSets[1], testStore.getDataSet(identifier.id))
     }
 
     @Test
-    fun `Get dataset message`() {
+    fun `Get dataset error message`() {
         val id = "2"
         val expectedMessage = "The id: $id does not exist."
         val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
@@ -60,8 +59,7 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun `Check that the id is correct after adding multiple data sets`() {
-        val testStore = InMemoryDataStore()
+    fun `Check if the id of the last dataset equals the total number of all datasets after adding them all`() {
         var dataSetMetaInformation: DataSetMetaInformation? = null
         for (dataSet in dataSets) {
             dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)
