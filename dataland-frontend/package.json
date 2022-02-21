@@ -33,7 +33,17 @@
   },
   "nyc": {
     "report-dir": "coverage/e2e",
-    "reporter": ["lcov", "json"]
+    "reporter": ["lcov", "json"],
+    "all":  true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.test.js",
+      "**/test.js",
+      "**/*.stories.js",
+      "**/stories.js"
+    ]
   },
   "eslintConfig": {
     "root": true,
