@@ -41,7 +41,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
-          path: .
       - name: Execute tests
         run: ./gradlew ktlintcheck :dataland-backend:test --no-daemon
       - name: Upload Build and Test Reports
@@ -87,15 +86,12 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
-          path: .
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
-          path: .
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsE2ETest
-          path: .
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
@@ -115,7 +111,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
-          path: .
       - name: Deploy to Preview
         run: |
           rm dataland-backend/build/libs/*-plain.jar
