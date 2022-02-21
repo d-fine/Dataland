@@ -110,6 +110,7 @@ jobs:
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
+          ls -R
           ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
