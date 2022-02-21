@@ -9,23 +9,12 @@ on:
       - 'main'
   workflow_dispatch:
 
-.setup-java: &setup-java
-  uses: actions/setup-java@v2
-    with:
-      distribution: temurin
-      java-version: 17
-      cache: gradle
-
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
+      - uses: ./.github/workflows/setup-java.yaml
       - name: Execute formatting check
         run: ./gradlew ktlintcheck --no-daemon
       - name: Execute tests
@@ -82,14 +71,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - *setup-java
+      - uses: ./.github/workflows/setup-java.yaml
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
           path: .
       - uses: actions/download-artifact@v2
         with:
-          name: JaCoCoResultsE2ETest
+          name: |
+            JaCoCoResultsE2ETest
+            JaCoCoResultsUnitTests
           path: .
       - name: Generate full jacocoTestReport
         if: always()
