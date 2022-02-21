@@ -31,7 +31,7 @@ artifacts {
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
@@ -42,4 +42,5 @@ tasks.withType<Test> {
 jacoco {
     toolVersion = "0.8.7"
     applyTo(tasks.bootRun.get())
+    applyTo(tasks.test.get())
 }
