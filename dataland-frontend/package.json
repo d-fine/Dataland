@@ -30,6 +30,10 @@
     "eslint-plugin-vue": "^8.0.3",
     "jest": "^27.0.5"
   },
+  "nyc": {
+    "report-dir": "coverage/e2e",
+    "reporter": ["lcov", "json"]
+  },
   "eslintConfig": {
     "root": true,
     "env": {
