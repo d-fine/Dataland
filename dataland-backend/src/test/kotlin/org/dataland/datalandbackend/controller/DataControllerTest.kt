@@ -34,7 +34,7 @@ internal class DataControllerTest(
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(dataSet))
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class DataControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
     }
@@ -66,6 +66,6 @@ internal class DataControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 }

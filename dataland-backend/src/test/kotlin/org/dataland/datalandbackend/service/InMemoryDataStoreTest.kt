@@ -23,7 +23,7 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun `add all datasets, retrieve them as a list and check for each dataset if the name is as expected`() {
+    fun `add all datasets and retrieve them as a list and check for each dataset if the name is as expected`() {
         for (dataset in dataSets) {
             testStore.addDataSet(dataSet = dataset)
         }
