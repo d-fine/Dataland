@@ -66,6 +66,10 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: buildDirectories
+          path: .
       - name: Start docker compose stack
         run: docker-compose --project-name dala-e2e-test up -d
       - name: Wait for E2E test container to finish
