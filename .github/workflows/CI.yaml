@@ -26,14 +26,14 @@ jobs:
         with:
           name: TestReport
           path: ./build/reports/
+      - name: Assemble boot jar
+        run: ./gradlew :dataland-backend:bootJar --no-daemon
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
-      - name: Assemble boot jar
-        run: ./gradlew :dataland-backend:bootJar --no-daemon
       - name: Upload Binaries
         uses: actions/upload-artifact@v2
         with:
@@ -85,35 +85,7 @@ jobs:
       - name: Generate full jacocoTestReport
         if: always()
         run: |
-          echo "TODO: refactor the next jobs"
-          ls *.exec
-          echo "ls -R"
-          ls -R
           ./gradlew clean jacocoTestReport --no-daemon
-          ls -R
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: Upload JaCoCo Report
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: FullJacocoReport
-          path: ./build/reports
-      - name: Generate IT jacocoTestReport
-        if: always()
-        run: |
-          rm ./jacoco.exec
-          ./gradlew clean jacocoTestReport --no-daemon
-      - name: Upload JaCoCo Report
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ITJacocoReport
-          path: ./build/reports
-      - name: Sonarqube
-        if: always()
-        run: |
           ./gradlew sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -124,7 +96,7 @@ jobs:
     needs:
       - sonar
     steps:
-      - name: Start Preview
+      - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
