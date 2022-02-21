@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm")// version "1.6.10"
-    kotlin("plugin.spring")// version "1.6.10"
+    kotlin("jvm")
+    kotlin("plugin.spring")
     jacoco
     id("com.github.johnrengelman.processes") version "0.5.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.3"

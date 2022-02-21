@@ -24,18 +24,17 @@ class InMemoryDataStoreTest {
 
     @Test
     fun `Add all datasets, retrieve them as a list and check for each dataset if the name is as expected`() {
-        var counter = 0
         for (dataset in dataSets) {
             testStore.addDataSet(dataSet = dataset)
-            assertEquals(dataset.name, testStore.listDataSets()[counter].name)
+        }
+
+        var counter = 0
+        val allDataSetsInStore = testStore.listDataSets()
+
+        for (storedDataSet in allDataSetsInStore) {
+            assertEquals(dataSets[counter].name, storedDataSet.name)
             counter ++
         }
-    }
-
-    @Test
-    fun `Add the second dataset and check if the name is as expected by retrieving the list of all data`() {
-        val identifier = testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(identifier.name, testStore.listDataSets()[0].name)
     }
 
     @Test
