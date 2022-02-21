@@ -112,8 +112,7 @@ jobs:
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
-          ./gradlew clean jacocoTestReport --no-daemon
-          ./gradlew sonarqube --no-daemon
+          ./gradlew clean jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
