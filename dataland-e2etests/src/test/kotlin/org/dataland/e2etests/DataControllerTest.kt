@@ -22,7 +22,11 @@ class DataControllerTest {
         allData = dataControllerApi.getData()
         val numberOfEntriesAfterPost = allData.size
 
-        Assertions.assertEquals(numberOfEntriesAfterPost, numberOfEntriesBeforePost + 1, "Number of entries did not increase by exactly one data set.")
+        Assertions.assertEquals(
+            numberOfEntriesAfterPost,
+            numberOfEntriesBeforePost + 1,
+            "Number of entries did not increase by exactly one data set."
+        )
         Assertions.assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
     }
 
@@ -37,7 +41,17 @@ class DataControllerTest {
 
         val getResponse = dataControllerApi.getDataSet(testDataSetID)
 
-        Assertions.assertEquals(testDataSetName, getResponse.name, "The 'name' value of the data set in the getResponse does not match the 'name' value of the test data set that was posted before.")
-        Assertions.assertEquals(testDataSetPayload, getResponse.payload, "The 'payload' value of the data set in the getResponse does not match the 'payload' value of the test data set that was posted before.")
+        Assertions.assertEquals(
+            testDataSetName,
+            getResponse.name,
+            "The 'name' value of the data set in the getResponse does not match the " +
+                    "'name' value of the test data set that was posted before."
+        )
+        Assertions.assertEquals(
+            testDataSetPayload,
+            getResponse.payload,
+            "The 'payload' value of the data set in the getResponse does not match the " +
+                    "'payload' value of the test data set that was posted before."
+        )
     }
 }
