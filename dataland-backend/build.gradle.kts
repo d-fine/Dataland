@@ -42,5 +42,4 @@ tasks.test {
 jacoco {
     toolVersion = "0.8.7"
     applyTo(tasks.bootRun.get())
-    applyTo(tasks.test.get())
 }
