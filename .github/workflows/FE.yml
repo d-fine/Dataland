@@ -31,4 +31,4 @@ jobs:
         run: |
           cd dataland-frontend
           npm install
-          ./node_modules/.bin/vue-cli-service test:E2E --headless
+          ./node_modules/.bin/vue-cli-service test:e2e --headless
