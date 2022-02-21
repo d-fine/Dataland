@@ -4,4 +4,4 @@ COPY . /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD sh -c "./gradlew bootRun --no-daemon || tail -f /dev/null"
+CMD ./gradlew bootRun --no-daemon
