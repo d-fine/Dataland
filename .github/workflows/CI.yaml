@@ -42,11 +42,9 @@ jobs:
         with:
           name: buildDirectories
           path: .
-      - name: Execute formatting check
-        run: ./gradlew ktlintcheck --no-daemon
       - name: Execute tests
         if: always()
-        run: ./gradlew :dataland-backend:test --no-daemon
+        run: ./gradlew ktlintcheck :dataland-backend:test --no-daemon
       - name: Upload Build and Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -112,7 +110,7 @@ jobs:
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
-          ./gradlew clean jacocoTestReport sonarqube --no-daemon
+          ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
