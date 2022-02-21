@@ -40,7 +40,7 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
-        property("sonar.coverage.exclusions","**/test/**")
+        property("sonar.coverage.exclusions", "**/test/**")
         property(
             "sonar.sources",
             subprojects.flatMap { project -> project.sourceSets.asMap.values }
