@@ -17,42 +17,39 @@ class InMemoryDataStoreTest {
     )
 
     @Test
-    fun `Add the first dataset and check if the name is as expected by using the return value of addDataSet`() {
+    fun `add the first dataset and check if the name is as expected by using the return value of addDataSet`() {
         val identifier = testStore.addDataSet(dataSet = dataSets[0])
         assertEquals(identifier.name, dataSets[0].name)
     }
 
     @Test
-    fun `Add all datasets, retrieve them as a list and check for each dataset if the name is as expected`() {
-        var counter = 0
+    fun `add all datasets and retrieve them as a list and check for each dataset if the name is as expected`() {
         for (dataset in dataSets) {
             testStore.addDataSet(dataSet = dataset)
-            assertEquals(dataset.name, testStore.listDataSets()[counter].name)
-            counter ++
+        }
+
+        val allDataSetsInStore = testStore.listDataSets()
+
+        for ((counter, storedDataSet) in allDataSetsInStore.withIndex()) {
+            assertEquals(dataSets[counter].name, storedDataSet.name)
         }
     }
 
     @Test
-    fun `Add the second dataset and check if the name is as expected by retrieving the list of all data`() {
-        val identifier = testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(identifier.name, testStore.listDataSets()[0].name)
-    }
-
-    @Test
-    fun `Get dataset with id that does not exist`() {
+    fun `get dataset with id that does not exist`() {
         assertThrows<IllegalArgumentException> {
             testStore.getDataSet("error")
         }
     }
 
     @Test
-    fun `Add and get dataset by id`() {
-        testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1], testStore.getDataSet("1"))
+    fun `add and get dataset by id`() {
+        val identifier = testStore.addDataSet(dataSet = dataSets[1])
+        assertEquals(dataSets[1], testStore.getDataSet(identifier.id))
     }
 
     @Test
-    fun `Get dataset error message`() {
+    fun `get dataset error message`() {
         val id = "2"
         val expectedMessage = "The id: $id does not exist."
         val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
@@ -62,7 +59,7 @@ class InMemoryDataStoreTest {
     }
 
     @Test
-    fun `Check if the id of the last dataset equals the total number of all datasets after adding them all`() {
+    fun `check if the id of the last dataset equals the total number of all datasets after adding them all`() {
         var dataSetMetaInformation: DataSetMetaInformation? = null
         for (dataSet in dataSets) {
             dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)

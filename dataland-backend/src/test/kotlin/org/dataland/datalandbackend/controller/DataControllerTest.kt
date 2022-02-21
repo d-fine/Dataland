@@ -34,16 +34,16 @@ internal class DataControllerTest(
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(dataSet))
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 
     @Test
-    fun `Data can be added`() {
+    fun `data can be added`() {
         uploadDataSet(mockMvc, dataSets[0])
     }
 
     @Test
-    fun `Data can be retrieved`() {
+    fun `data can be retrieved`() {
         val testSet = dataSets[0]
         uploadDataSet(mockMvc, testSet)
 
@@ -52,13 +52,13 @@ internal class DataControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("\$.name").value(testSet.name))
             .andExpect(jsonPath("\$.payload").value(testSet.payload))
     }
 
     @Test
-    fun `List the data`() {
+    fun `list the data`() {
         for (dataset in dataSets)
             uploadDataSet(mockMvc, dataset)
         mockMvc.perform(
@@ -66,6 +66,6 @@ internal class DataControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpectAll(status().isOk, content().contentType("application/json"))
+            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 }

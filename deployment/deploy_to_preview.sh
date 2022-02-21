@@ -8,4 +8,4 @@ timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@3.71.162.94 exit; do
 
 scp ./deployment/start_app_on_server.sh ubuntu@3.71.162.94:/home/ubuntu/start_app_on_server.sh
 scp "$1" ubuntu@3.71.162.94:/home/ubuntu/jar/dala-backend.jar
-ssh ubuntu@3.71.162.94 "chmod +x /home/ubuntu/start_app_on_server.sh && sudo /home/ubuntu/start_app_on_server.sh"
+ssh ubuntu@3.71.162.94 "sudo /home/ubuntu/start_app_on_server.sh"

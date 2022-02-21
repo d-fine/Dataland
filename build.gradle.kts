@@ -5,7 +5,6 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
@@ -14,6 +13,9 @@ subprojects {
             freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
             jvmTarget = "17"
         }
+    }
+    sonarqube {
+        isSkipProject = true
     }
 }
 
@@ -26,6 +28,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10" apply false
     id("org.sonarqube") version "3.3"
+    jacoco
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
@@ -35,7 +38,34 @@ sonarqube {
         property("sonar.projectKey", "d-fine_Dataland")
         property("sonar.organization", "d-fine")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.jacoco.reportPaths", file("$projectDir/*.exec"))
+        property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
+        property("sonar.coverage.exclusions", "**/test/**")
+        property(
+            "sonar.sources",
+            subprojects.flatMap { project -> project.sourceSets.asMap.values }
+                .flatMap { sourceSet -> sourceSet.allSource }
+        )
     }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.build)
+    sourceDirectories.setFrom(
+        subprojects.flatMap { project -> project.sourceSets.asMap.values }
+            .flatMap { sourceSet -> sourceSet.allSource }
+    )
+    classDirectories.setFrom(
+        subprojects.flatMap { project -> project.sourceSets.asMap.values }
+            .flatMap { sourceSet -> sourceSet.output.classesDirs.flatMap { fileTree(it).files } }
+    )
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+    executionData.setFrom(fileTree(projectDir).include("*.exec"))
 }

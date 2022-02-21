@@ -1,9 +1,11 @@
 plugins {
-    kotlin("jvm")// version "1.6.10"
-    kotlin("plugin.spring")// version "1.6.10"
+    kotlin("jvm")
+    kotlin("plugin.spring")
     jacoco
     id("com.github.johnrengelman.processes") version "0.5.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
+    id("com.gorylenko.gradle-git-properties") version "2.4.0"
+    id("org.springframework.boot")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -31,7 +33,7 @@ artifacts {
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
