@@ -77,8 +77,8 @@ jobs:
       - name: Get E2E Test Results
         run: |
           set -x
+          docker ps -a
           docker exec dala-e2e-test_backend_1 pkill -f spring
-          docker logs dala-e2e-test_e2etests_1
           docker cp dala-e2e-test_backend_1:/app/dataland-backend/build/jacoco/bootRun.exec .
           TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test_e2etests_1`
           echo $TEST_EXIT_CODE
