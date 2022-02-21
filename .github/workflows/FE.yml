@@ -23,3 +23,11 @@ jobs:
 #        with:
 #          name: TestReport
 #          path: reports/
+  frontend-e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run E2E tests
+        run: |
+          cd dataland-frontend
+          npm install
+          ./node_modules/.bin/vue-cli-service test:E2E --headless
