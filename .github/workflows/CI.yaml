@@ -61,18 +61,8 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
-      - name: Start docker compose stack
-        run: docker-compose --project-name dala-e2e-test up -d
-      - name: Wait for E2E test container to finish
-        run: timeout 300 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
-      - name: Get E2E Coverage and check E2E Result
-        run: |
-          set -x
-          docker exec dala-e2e-test_backend_1 pkill -f spring
-          docker cp dala-e2e-test_backend_1:/app/dataland-backend/build/jacoco/bootRun.exec .
-          TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test_e2etests_1`
-          echo $TEST_EXIT_CODE
-          [ "$TEST_EXIT_CODE" == "0" ]
+      - name: Execute E2E Tests
+        run: ./testing-shell-scripts/execute_e2e_tests.sh
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
