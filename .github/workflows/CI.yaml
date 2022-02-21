@@ -111,7 +111,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: FullJacocoReport
-          path: ./build/report
+          path: ./build/reports
       - name: Generate IT jacocoTestReport
         if: always()
         run: |
@@ -122,7 +122,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ITJacocoReport
-          path: ./build/report
+          path: ./build/reports
       - name: Sonarqube
         if: always()
         run: |
