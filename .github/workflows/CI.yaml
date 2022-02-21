@@ -94,12 +94,35 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: .
-      - name: Execute Sonarqube analysis
+      - name: Generate full jacocoTestReport
         if: always()
         run: |
-          echo "TODO: remove the next command"
+          echo "TODO: refactor the next jobs"
+          ls *.exec
+          ./gradlew clean jacocoTestReport --no-daemon
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Upload JaCoCo Report
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: FullJacocoReport
+          path: ./build/report
+      - name: Generate IT jacocoTestReport
+        if: always()
+        run: |
           rm ./jacoco.exec
-          ./gradlew jacocoTestReport --no-daemon
+          ./gradlew clean jacocoTestReport --no-daemon
+      - name: Upload JaCoCo Report
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ITJacocoReport
+          path: ./build/report
+      - name: Sonarqube
+        if: always()
+        run: |
           ./gradlew sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
