@@ -99,6 +99,8 @@ jobs:
         run: |
           echo "TODO: refactor the next jobs"
           ls *.exec
+          echo "ls -R"
+          ls -R
           ./gradlew clean jacocoTestReport --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
