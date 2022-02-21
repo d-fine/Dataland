@@ -5,7 +5,6 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
@@ -14,6 +13,9 @@ subprojects {
             freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
             jvmTarget = "17"
         }
+    }
+    sonarqube {
+        isSkipProject = true
     }
 }
 
@@ -30,12 +32,6 @@ plugins {
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
-
-subprojects {
-    sonarqube {
-        isSkipProject = true
-    }
-}
 
 sonarqube {
     properties {

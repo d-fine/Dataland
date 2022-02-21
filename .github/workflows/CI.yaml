@@ -19,8 +19,8 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Assemble boot jar
-        run: ./gradlew build :dataland-backend:bootJar --no-daemon
+      - name: Build all and Assemble boot jar
+        run: ./gradlew assemble --no-daemon
       - name: Upload Build and Test Reports
         uses: actions/upload-artifact@v2
         with:
