@@ -9,8 +9,6 @@ on:
       - 'main'
   workflow_dispatch:
 
-.anchor: &anchor actions/setup-java@v2
-
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -77,7 +75,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: *anchor
+      - uses: actions/setup-java@v2
         with:
           distribution: temurin
           java-version: 17
