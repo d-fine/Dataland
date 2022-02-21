@@ -102,6 +102,7 @@ jobs:
           echo "ls -R"
           ls -R
           ./gradlew clean jacocoTestReport --no-daemon
+          ls -R
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
