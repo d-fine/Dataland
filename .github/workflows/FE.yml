@@ -26,6 +26,7 @@ jobs:
   frontend-e2e-tests:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Run E2E tests
         run: |
           cd dataland-frontend
