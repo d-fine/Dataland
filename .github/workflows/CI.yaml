@@ -9,6 +9,13 @@ on:
       - 'main'
   workflow_dispatch:
 
+.setup-java: &setup-java
+  uses: actions/setup-java@v2
+    with:
+      distribution: temurin
+      java-version: 17
+      cache: gradle
+
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -75,11 +82,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
+      - *setup-java
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
