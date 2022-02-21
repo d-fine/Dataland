@@ -28,12 +28,10 @@ class InMemoryDataStoreTest {
             testStore.addDataSet(dataSet = dataset)
         }
 
-        var counter = 0
         val allDataSetsInStore = testStore.listDataSets()
 
-        for (storedDataSet in allDataSetsInStore) {
+        for ((counter, storedDataSet) in allDataSetsInStore.withIndex()) {
             assertEquals(dataSets[counter].name, storedDataSet.name)
-            counter ++
         }
     }
 
@@ -46,8 +44,8 @@ class InMemoryDataStoreTest {
 
     @Test
     fun `Add and get dataset by id`() {
-        testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1], testStore.getDataSet("1"))
+        val identifier = testStore.addDataSet(dataSet = dataSets[1])
+        assertEquals(dataSets[1], testStore.getDataSet(identifier.id))
     }
 
     @Test
