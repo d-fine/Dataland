@@ -4,4 +4,4 @@ COPY . /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD "./wait_for_backend_and_run_e2etests.sh"
+CMD "./testing-shell-scripts/wait_for_backend_and_run_e2etests.sh"
