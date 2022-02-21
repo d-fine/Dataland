@@ -86,11 +86,9 @@ jobs:
           path: .
       - uses: actions/download-artifact@v2
         with:
-          name: |
-            JaCoCoResultsE2ETest
-            JaCoCoResultsUnitTests
+          name: JaCoCoResultsE2ETest
           path: .
-      - name: Generate full jacocoTestReport
+      - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
           ./gradlew clean jacocoTestReport --no-daemon
