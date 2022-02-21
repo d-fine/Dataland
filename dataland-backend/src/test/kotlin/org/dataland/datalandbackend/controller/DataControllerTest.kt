@@ -38,12 +38,12 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `Data can be added`() {
+    fun `data can be added`() {
         uploadDataSet(mockMvc, dataSets[0])
     }
 
     @Test
-    fun `Data can be retrieved`() {
+    fun `data can be retrieved`() {
         val testSet = dataSets[0]
         uploadDataSet(mockMvc, testSet)
 
@@ -58,7 +58,7 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `List the data`() {
+    fun `list the data`() {
         for (dataset in dataSets)
             uploadDataSet(mockMvc, dataset)
         mockMvc.perform(

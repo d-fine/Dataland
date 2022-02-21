@@ -9,7 +9,7 @@ class DataControllerTest {
     val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
 
     @Test
-    fun `Post a dummy data set and check if post was successful`() {
+    fun `post a dummy data set and check if post was successful`() {
         val testDataSetName = "TestName_007"
         val testDataSetPayload = "testDataSet_007"
         val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
@@ -31,7 +31,7 @@ class DataControllerTest {
     }
 
     @Test
-    fun `Post a dummy data set and check if that specific data set can be queried by its ID`() {
+    fun `post a dummy data set and check if that specific data set can be queried by its ID`() {
         val testDataSetName = "TestName_008"
         val testDataSetPayload = "testDataSet_008"
         val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
