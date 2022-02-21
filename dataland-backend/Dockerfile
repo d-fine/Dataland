@@ -7,4 +7,4 @@ COPY gradlew settings.gradle.kts build.gradle.kts /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD sh -c "./gradlew bootRun --no-daemon || tail -f /dev/null"
+CMD sh -c "./gradlew bootRun -x generateGitProperties  --no-daemon || tail -f /dev/null"
