@@ -10,7 +10,5 @@ services:
     build:
       context: ./
       dockerfile: ./dataland-e2etests/Dockerfile
-    volumes:
-      - ~/.gradle/caches:/root/.gradle/caches
     ports:
       - "8081:8080"
