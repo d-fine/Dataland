@@ -5,9 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e --mode e2e",
-    "test:headless": "vue-cli-service test:e2e --mode e2e --headless",
+    "testunit": "vue-cli-service test:unit",
+    "teste2e": "vue-cli-service test:e2e --mode e2e",
+    "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

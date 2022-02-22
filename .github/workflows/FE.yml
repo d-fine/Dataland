@@ -17,7 +17,8 @@ jobs:
         run: |
           cd dataland-frontend
           npm install
-          ./node_modules/.bin/vue-cli-service test:unit
+          npm testunit
+#          ./node_modules/.bin/vue-cli-service test:unit
 #      - name: Upload Test Reports
 #        uses: actions/upload-artifact@v2
 #        with:
@@ -31,4 +32,5 @@ jobs:
         run: |
           cd dataland-frontend
           npm install
-          ./node_modules/.bin/vue-cli-service test:e2e --headless
+          npm testheadless
+#          ./node_modules/.bin/vue-cli-service test:e2e --headless
