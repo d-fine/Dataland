@@ -43,8 +43,7 @@ sonarqube {
         property("sonar.coverage.exclusions", "**/test/**")
         property(
             "sonar.sources",
-            subprojects.flatMap { project -> project.sourceSets.asMap.values }
-                .flatMap { sourceSet -> sourceSet.allSource }
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> }
         )
     }
 }

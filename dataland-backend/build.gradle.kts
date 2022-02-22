@@ -1,3 +1,5 @@
+val sonarSources = sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource}
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")

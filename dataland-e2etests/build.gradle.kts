@@ -68,3 +68,5 @@ sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/Clients/backend/src/main/kotlin")
 }
+
+val sonarSources = sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource}
