@@ -9,7 +9,7 @@ class DataControllerTest {
     val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
 
     @Test
-    fun `Post a dummy data set and check if post was successful`() {
+    fun `post a dummy data set and check if post was successful`() {
         val testDataSetName = "TestName_007"
         val testDataSetPayload = "testDataSet_007"
         val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
@@ -22,12 +22,16 @@ class DataControllerTest {
         allData = dataControllerApi.getData()
         val numberOfEntriesAfterPost = allData.size
 
-        Assertions.assertEquals(numberOfEntriesAfterPost, numberOfEntriesBeforePost + 1, "Number of entries did not increase by exactly one data set.")
+        Assertions.assertEquals(
+            numberOfEntriesAfterPost,
+            numberOfEntriesBeforePost + 1,
+            "Number of entries did not increase by exactly one data set."
+        )
         Assertions.assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
     }
 
     @Test
-    fun `Post a dummy data set and check if that specific data set can be queried by its ID`() {
+    fun `post a dummy data set and check if that specific data set can be queried by its ID`() {
         val testDataSetName = "TestName_008"
         val testDataSetPayload = "testDataSet_008"
         val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
@@ -37,7 +41,17 @@ class DataControllerTest {
 
         val getResponse = dataControllerApi.getDataSet(testDataSetID)
 
-        Assertions.assertEquals(testDataSetName, getResponse.name, "The 'name' value of the data set in the getResponse does not match the 'name' value of the test data set that was posted before.")
-        Assertions.assertEquals(testDataSetPayload, getResponse.payload, "The 'payload' value of the data set in the getResponse does not match the 'payload' value of the test data set that was posted before.")
+        Assertions.assertEquals(
+            testDataSetName,
+            getResponse.name,
+            "The 'name' value of the data set in the getResponse does not match the " +
+                    "'name' value of the test data set that was posted before."
+        )
+        Assertions.assertEquals(
+            testDataSetPayload,
+            getResponse.payload,
+            "The 'payload' value of the data set in the getResponse does not match the " +
+                    "'payload' value of the test data set that was posted before."
+        )
     }
 }

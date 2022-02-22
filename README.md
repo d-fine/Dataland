@@ -12,3 +12,10 @@ In case this does not work for you, please contact dataland@d-fine.de for indivi
 # Contributions
 Contributions are highly welcome. Please refer to our [contribution guideline](contribution.md).
 To allow for individual licenses and eventual future license changes, we require a contributor license agreement from any contributor that allows us to re-license the software including the contribution.
+
+# Developer Remarks
+In this section, you find information that might be useful for you as a developer.
+## add scripts executable
+Especially under Windows, it's unclear which file permissions a script will get. 
+To explicitly mark a script executable, do:
+`git update-index --chmod=+x script.sh`
