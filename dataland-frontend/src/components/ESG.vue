@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <span>
-      <input v-model="input_message"/>
-      <button>Search</button>
+      <input :placeholder="placeholder_message" />
+      <button class="waves-effect waves-light btn" type="submit" name="action">Search</button>
     </span>
   </div>
 
@@ -13,7 +13,7 @@ export default {
   name: "ESG",
   data() {
     return {
-      input_message: 'Search for ESG data'
+      placeholder_message: 'Search for ESG data'
     }
   }
 }
