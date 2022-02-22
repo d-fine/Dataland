@@ -55,12 +55,10 @@ jacoco {
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
     sourceDirectories.setFrom(
-        subprojects.flatMap { project -> project.sourceSets.asMap.values }
-            .flatMap { sourceSet -> sourceSet.allSource }
+        subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
     classDirectories.setFrom(
-        subprojects.flatMap { project -> project.sourceSets.asMap.values }
-            .flatMap { sourceSet -> sourceSet.output.classesDirs.flatMap { fileTree(it).files } }
+        subprojects.flatMap { project -> project.properties["jacocoClasses"] as Iterable<*> }
     )
     reports {
         xml.required.set(true)

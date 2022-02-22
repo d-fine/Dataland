@@ -9,4 +9,6 @@ node {
 
 val sources = fileTree(projectDir)
 sources.include("src", "public", "tests")
-val sonarSources = sources.files.map { it }
+val sonarSources by extra(sources.files.map { it })
+val jacocoSources by extra(emptyList<File>())
+val jacocoClasses by extra(emptyList<File>())
