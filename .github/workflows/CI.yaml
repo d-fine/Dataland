@@ -21,7 +21,7 @@ jobs:
           cache: gradle
       - name: Build all and Assemble boot jar
         run: ./gradlew assemble --no-daemon
-      - name: Upload Build and Test Reports
+      - name: Upload Build Directories
         uses: actions/upload-artifact@v2
         with:
           name: buildDirectories
@@ -43,7 +43,7 @@ jobs:
           name: buildDirectories
       - name: Execute tests
         run: ./gradlew ktlintcheck :dataland-backend:test --no-daemon
-      - name: Upload Build and Test Reports
+      - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
         with:

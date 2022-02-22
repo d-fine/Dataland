@@ -16,6 +16,6 @@ To allow for individual licenses and eventual future license changes, we require
 # Developer Remarks
 In this section, you find information that might be useful for you as a developer.
 ## add scripts executable
-Especially under windows, it's unclear which file permissions a script will get. 
-To explicitly mark a scrip executable, do:
+Especially under Windows, it's unclear which file permissions a script will get. 
+To explicitly mark a script executable, do:
 `git update-index --chmod=+x script.sh`
