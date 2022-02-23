@@ -13,13 +13,13 @@ export class DataStore {
     async getAll() {
         try {
             const res = await this.axios.get("/data");
-            const result = {
+            return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
                 data: res.data,
             };
-            return result;
         } catch (err) {
+            console.error(err)
             return [];
         }
     }
