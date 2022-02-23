@@ -44,10 +44,7 @@ jobs:
       - name: Execute tests
         run: ./gradlew ktlintcheck :dataland-backend:test --no-daemon
       - name: Execute Frontend Unit Tests
-        run: | 
-          ./gradlew :dataland-frontend:npm_run_testunit
-          mkdir -p dataland-frontend/coverage/e2e
-          cp dataland-frontend/coverage/unit/lcov.info dataland-frontend/coverage/e2e/
+        run: ./gradlew :dataland-frontend:npm_run_testunit
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -106,11 +103,10 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: lcovResults
+          path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: |
-          ls -R
-          ./gradlew jacocoTestReport sonarqube --no-daemon
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
