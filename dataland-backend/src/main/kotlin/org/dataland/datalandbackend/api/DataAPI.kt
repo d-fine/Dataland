@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.model.ContactInformation
 import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.springframework.http.ResponseEntity
@@ -60,4 +61,10 @@ interface DataAPI {
         produces = ["application/json"]
     )
     fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet>
+
+    @GetMapping(
+        value = ["/data/skyminder/{code}/{name}"],
+        produces = ["application/json"]
+    )
+    fun getDataSkyminderRequest(@PathVariable("code") countryCode: String, @PathVariable("name") name: String): ResponseEntity<List<ContactInformation>>
 }
