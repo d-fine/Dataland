@@ -40,7 +40,8 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
-        property("sonar.coverage.exclusions", "**/test/**")
+        property("sonar.javascript.lcov.reportPaths", "$projectDir/lcov.info")
+        property("sonar.coverage.exclusions", "**/test/**,**/tests/**")
         property(
             "sonar.sources",
             subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> }
