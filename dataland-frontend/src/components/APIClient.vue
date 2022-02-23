@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import http from "./http-common";
+import {DataStore} from "../service/DataStore";
 export default {
   name: "APIClient",
   data() {
@@ -33,19 +33,10 @@ export default {
     }
   },
   methods: {
-
     async getAllData() {
-      try {
-        const res = await http.get("/data");
-        const result = {
-          status: res.status + "-" + res.statusText,
-          headers: res.headers,
-          data: res.data,
-        };
-        this.getResult = result;
-      } catch (err) {
-        this.getResult = this.fortmatResponse(err.response?.data) || err;
-      }
+      const dataStore = new DataStore("http://localhost:8080")
+      const allData = await dataStore.getAll()
+      this.getResult = allData
     },
     clearGetOutput() {
       this.getResult = null;

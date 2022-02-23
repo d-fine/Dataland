@@ -14,7 +14,8 @@
     "axios": "^0.26.0",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
-    "vue-axios": "^3.4.1"
+    "vue-axios": "^3.4.1",
+    "axios-mock-adapter": "^1.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
