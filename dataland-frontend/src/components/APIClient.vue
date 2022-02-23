@@ -6,18 +6,16 @@
         <div class="card">
           <div class="card-title">ESG Data Search</div>
           <div class="card-content ">
-
             <div class="row">
               <div class="col m6">
-                <button class="btn btn-sm btn-warning ml-2" @click="clearGetOutput">Clear</button>
+                <button class="btn btn-sm " @click="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
-                <button class="btn btn-sm btn-primary" @click="getAllData">Get All Data</button>
+                <button class="btn btn-sm " @click="clearGetOutput">Clear</button>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m6">
-
                 <input type="text" v-model="get_id" class="autocomplete" placeholder="Search by ID"/>
                 <button class="btn btn-sm btn-primary" @click="getDataById">Get by Id</button>
               </div>
@@ -26,8 +24,6 @@
                 <button class="btn btn-sm btn-primary pulse" @click="getDataById">Get by Name</button>
               </div>
             </div>
-
-
             <div v-if="getResult" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ getResult }}</pre>
               <p> {{ getResult.data }} </p>
@@ -39,13 +35,46 @@
             <div v-if="getResultByID || getResultByName" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ getResultByID }}</pre>
               <p> Status: {{ getResultByID.status }} </p>
-              <p> Data: {{ getResultByID.status }} </p>
-              <p> Name: {{ getResultByID.status }} </p>
-              <p> Payload: {{ getResultByID.status }} </p>
-
+              <p> Data: {{ getResultByID.data }} </p>
+              <p> Name: {{ getResultByID.data.name }} </p>
+              <p> Payload: {{ getResultByID.data.payload }} </p>
             </div>
           </div>
         </div>
+      </div>
+      <div v-if="getResult" class="col m12">
+        <table id="getResultTable">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="dataset in getResult.data" :key="dataset.id">
+            <td>{{dataset.id}}</td>
+            <td>{{dataset.name}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-if="getResultByID" class="col m12">
+        <table id="getResultByIDTable">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Payload</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{get_id}}</td>
+            <td>{{getResultByID.data.name}}</td>
+            <td>{{getResultByID.data.payload}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -58,6 +87,8 @@ export default {
   name: "APIClient",
   data() {
     return {
+      get_id: null,
+      get_name: null,
       getResult: null,
       getResultByID: null,
       getResultByName: null
@@ -104,6 +135,11 @@ export default {
     },
     clearGetOutput() {
       this.getResult = null;
+      this.getResultByID = null;
+      this.getResultByName = null;
+      this.get_id = null;
+      this.get_name = null;
+
     },
   }
 }
