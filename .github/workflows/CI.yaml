@@ -42,7 +42,7 @@ jobs:
         with:
           name: buildDirectories
       - name: Execute tests
-        run: ./gradlew ktlintcheck :dataland-backend:test --no-daemon
+        run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2

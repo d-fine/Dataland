@@ -1,3 +1,5 @@
+//dataland-e2etest
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")

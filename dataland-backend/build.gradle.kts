@@ -1,3 +1,5 @@
+//dataland-backend
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
