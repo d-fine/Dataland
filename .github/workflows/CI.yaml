@@ -119,3 +119,11 @@ jobs:
           ./deployment/deploy_to_preview.sh dataland-backend/build/libs/dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  summary:
+    runs-on: ubuntu-latest
+    if: success()
+    needs:
+      - sonar
+    steps:
+      - name: Summary of this workflow's overall outcome
+        run: exit 0
