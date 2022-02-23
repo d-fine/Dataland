@@ -3,5 +3,5 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [`src/**/*.{js,vue}`],
   coverageDirectory: "coverage/unit",
-  coverageReporters: ["clover", "json", "lcov", ["text", {"skipFull": true}]]
+  coverageReporters: ["lcov", ["text", {"skipFull": true}]]
 }
