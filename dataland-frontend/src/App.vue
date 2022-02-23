@@ -23,18 +23,8 @@ export default {
 </script>
 
 <style>
-/*@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css';*/
-/*@import 'https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css';*/
-/*@import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css';*/
 @import 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css';
 @import './assets/css/main.css';
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 
 </style>
