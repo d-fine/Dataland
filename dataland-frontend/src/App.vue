@@ -5,17 +5,22 @@
   </section>
   <HelloWorld msg="Welcome to DataLand"/>
   <ESG />
+  <APIClient/>
+
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import ESG from './components/ESG.vue'
+import APIClient from "@/components/APIClient";
+
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    ESG
+    ESG,
+    APIClient
   }
 }
 </script>
