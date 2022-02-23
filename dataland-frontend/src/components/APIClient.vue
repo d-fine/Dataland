@@ -81,12 +81,13 @@
 </template>
 <script>
 
-import http from "./http-common";
-
+import {DataStore} from "@/service/DataStore";
 export default {
+
   name: "APIClient",
   data() {
     return {
+      dataStore: new DataStore("http://localhost:8080"),
       get_id: null,
       get_name: null,
       getResult: null,
@@ -95,43 +96,13 @@ export default {
     }
   },
   methods: {
-
     async getAllData() {
       this.getResultByID = null
-      try {
-        const res = await http.get("/data");
-        this.getResult = {
-          status: res.status + "-" + res.statusText,
-          headers: res.headers,
-          data: res.data,
-        };
-      } catch (err) {
-        this.getResult = err.response?.data || err;
-      }
+      this.getResult = await this.dataStore.getAll()
     },
     async getDataById() {
       this.getResult = null
-
-      let id = this.get_id;
-      if (id) {
-        try {
-          const res = await http.get(`/data/${id}`);
-          // const result = {
-          //   data: res.data,
-          //   status: res.status,
-          //   statusText: res.statusText,
-          //   headers: res.headers,
-          //   config: res.config,
-          // };
-          this.getResultByID = {
-            status: res.status + "-" + res.statusText,
-            headers: res.headers,
-            data: res.data,
-          };
-        } catch (err) {
-          this.getResultByID = err.response?.data || err;
-        }
-      }
+      this.getResultByID = await this.dataStore.getById(this.get_id)
     },
     clearGetOutput() {
       this.getResult = null;

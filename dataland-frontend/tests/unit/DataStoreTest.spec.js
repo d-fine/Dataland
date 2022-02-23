@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import {DataStore} from "@/service/DataStore.js";
 
-const BASE_URL = "https://dummy.com";
+const BASE_URL = "http://localhost:8080";
 
 describe("DataStoreTest", () => {
   let mock;
