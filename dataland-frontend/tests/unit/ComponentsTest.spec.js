@@ -3,7 +3,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 import APIClient from '@/components/APIClient.vue'
 import ESG from '@/components/ESG.vue'
 
-describe('HelloWorld.vue', () => {
+describe('All Components', () => {
   const components = [HelloWorld, APIClient, ESG]
   for (let idx = 0; idx < components.length; idx++) {
     it('renders props.msg when passed', () => {
