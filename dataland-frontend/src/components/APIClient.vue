@@ -4,7 +4,7 @@
       <div class="card-header">Vue Axios GET - BezKoder.com</div>
       <div class="card-body">
         <div class="input-group input-group-sm">
-          <button class="btn btn-sm btn-primary" @click="getAllData">Get All</button>
+          <button class="btn btn-sm btn-primary" @click="getAllData">Get All Data</button>
           <input type="text" ref="get_id" class="form-control ml-2" placeholder="Id" />
           <div class="input-group-append">
             <button class="btn btn-sm btn-primary" @click="getDataById">Get by Id</button>
