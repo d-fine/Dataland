@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.DataAPI
-import org.dataland.datalandbackend.interfaces.DataConnectorInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.ContactInformation
 import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.skyminderClient.interfaces.DataConnectorInterface
+import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
