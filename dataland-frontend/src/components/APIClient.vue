@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import {DataStore} from "../service/DataStore";
+import {DataStore} from "@/service/DataStore";
 export default {
   name: "APIClient",
   data() {
@@ -35,8 +35,7 @@ export default {
   methods: {
     async getAllData() {
       const dataStore = new DataStore("http://localhost:8080")
-      const allData = await dataStore.getAll()
-      this.getResult = allData
+      this.getResult = await dataStore.getAll()
     },
     clearGetOutput() {
       this.getResult = null;
