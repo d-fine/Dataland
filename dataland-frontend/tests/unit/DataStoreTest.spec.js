@@ -64,7 +64,6 @@ describe("DataStoreTest", () => {
 
     for (const d of data) {
       mock.onGet(`${BASE_URL}/data/${d.id}`).reply(200, d);
-
     }
 
     const receivedData = await dataStore.getById(0)
@@ -74,8 +73,9 @@ describe("DataStoreTest", () => {
 
   it("should return an empty list if the id does not exist", async () => {
 
-    mock.onGet(`${BASE_URL}/data`).reply(200, data);
-
+    for (const d of data) {
+      mock.onGet(`${BASE_URL}/data/${d.id}`).reply(200, d);
+    }
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getById(-1)
 
