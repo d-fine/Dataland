@@ -4,7 +4,8 @@
       <div class="col s12 m12">
 
         <div class="card">
-          <div class="card-title"><h3>ESG Data Search</h3></div>
+          <div class="card-title"><h3>ESG Data Search</h3>
+          </div>
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
