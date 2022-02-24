@@ -45,23 +45,10 @@
         </div>
       </div>
       <div v-if="getResult" class="col m12">
-        <table id="getResultTable">
-          <caption>Table of Results</caption>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="dataset in getResult.data" :key="dataset.id">
-            <td>{{dataset.id}}</td>
-            <td>{{dataset.name}}</td>
-          </tr>
-          </tbody>
-        </table>
+          <ResultTable :headers="getResultTableHeaders" :data="getResult.data"/>
       </div>
       <div v-if="getResultByID" class="col m12">
+
         <table id="getResultByIDTable">
           <caption>Table of Results by ID</caption>
           <thead>
@@ -80,17 +67,25 @@
           </tbody>
         </table>
       </div>
+<!--      <ResultTable :headers="getResultByIDTableHeaders"/>-->
+
     </div>
   </div>
 </template>
 <script>
 
 import {DataStore} from "@/service/DataStore";
+import ResultTable from "@/components/ui/ResultTable";
 export default {
 
   name: "APIClient",
+  components: {
+    ResultTable
+  },
   data() {
     return {
+      getResultByIDTableHeaders: ["ID", "Name", "Payload"],
+      getResultTableHeaders: ["ID", "Name"],
       dataStore: new DataStore("http://localhost:8080"),
       get_id: null,
       get_name: null,
