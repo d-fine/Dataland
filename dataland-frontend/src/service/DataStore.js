@@ -25,25 +25,23 @@ export class DataStore {
     }
 
     async getById(id) {
-        if (id) {
-            try {
-                const res = await this.axios.get(`/data/${id}`);
-                // const result = {
-                //   data: res.data,
-                //   status: res.status,
-                //   statusText: res.statusText,
-                //   headers: res.headers,
-                //   config: res.config,
-                // };
-                return {
-                    status: res.status + "-" + res.statusText,
-                    headers: res.headers,
-                    data: res.data,
-                };
-            } catch (err) {
-                console.error(err)
-                return [];
-            }
+        try {
+            const res = await this.axios.get(`/data/${id}`);
+            // const result = {
+            //   data: res.data,
+            //   status: res.status,
+            //   statusText: res.statusText,
+            //   headers: res.headers,
+            //   config: res.config,
+            // };
+            return {
+                status: res.status + "-" + res.statusText,
+                headers: res.headers,
+                data: res.data,
+            };
+        } catch (err) {
+            console.error(err)
+            return [];
         }
     }
 }
