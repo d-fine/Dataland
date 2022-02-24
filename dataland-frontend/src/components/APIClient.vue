@@ -8,20 +8,22 @@
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
-                <button test-label="getAllDataLabel" class="btn btn-sm " @click="getAllData">Get All Data</button>
+                <button class="btn btn-sm " @click="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
-                <button test-label="clearGetOutputLabel" class="btn btn-sm " @click="clearGetOutput">Clear</button>
+                <button class="btn btn-sm " @click="clearGetOutput">Clear</button>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m6">
-                <input type="text" v-model="get_id" class="autocomplete" placeholder="Search by ID"/>
-                <button class="btn btn-sm btn-primary" @click="getDataById">Get by Id</button>
+                <input type="text" v-model="get_id" class="autocomplete" id="searchByIdInput"/>
+                <label for="searchByIdInput">Search by ID</label>
+                <button class="btn btn-sm" @click="getDataById">Get by Id</button>
               </div>
               <div class="input-field col s12 m6 ">
-                <input type="text" v-model="get_name" class="autocomplete" placeholder="Search by Name"/>
-                <button class="btn btn-sm btn-primary pulse" @click="getDataById">Get by Name</button>
+                <input type="text" v-model="get_name" class="autocomplete" id="searchByNameInput"/>
+                <label for="searchByNameInput">Search by Name</label>
+                <button class="btn btn-sm" @click="getDataById">Get by Name</button>
               </div>
             </div>
             <div v-if="getResult" class="alert alert-secondary mt-2" role="alert">
