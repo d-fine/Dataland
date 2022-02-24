@@ -27,7 +27,7 @@ describe('APIClient.vue', () => {
         expect(typeof APIClient.data()).toBeDefined()
     })
 
-    it('checks fields', () => {
+    it('checks code in the script', () => {
         const wrapper = mount(APIClient, {
             data() {
                 return {
