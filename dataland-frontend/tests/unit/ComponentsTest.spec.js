@@ -13,8 +13,15 @@ describe('HelloWorld.vue', () => {
     })
 })
 describe('ESG.vue', () => {
-    it('renders props.msg when passed', () => {
+    it('checks if there exist button in the component', () => {
         const wrapper = shallowMount(ESG)
         expect(wrapper.find('button').exists()).toBe(true)
+    })
+})
+
+describe('APIClient.vue', () => {
+
+    it('checks if APIClient.data() and all its dataStore not undefined', () => {
+        expect(typeof APIClient.data()).toBeDefined()
     })
 })
