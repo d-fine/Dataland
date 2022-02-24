@@ -1,3 +1,5 @@
+// main
+
 allprojects {
     repositories {
         mavenCentral()
@@ -19,9 +21,15 @@ subprojects {
     }
 }
 
+dependencies {
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.19.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10")
+}
+
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.19.0")
     id("org.springframework.boot") version "2.6.2" apply false
     id("io.spring.dependency-management") version "1.0.11.RELEASE" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
@@ -68,4 +76,27 @@ tasks.jacocoTestReport {
         csv.required.set(false)
     }
     executionData.setFrom(fileTree(projectDir).include("*.exec"))
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config = files("$projectDir/config/detekt.yml")
+    baseline = file("$projectDir/config/baseline.xml")
+    val detektFileTree = fileTree("$projectDir")
+    detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
+    source = files(detektFileTree)
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(true)
+    }
+    jvmTarget = java.sourceCompatibility.toString()
+}
+tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+    jvmTarget = java.sourceCompatibility.toString()
 }
