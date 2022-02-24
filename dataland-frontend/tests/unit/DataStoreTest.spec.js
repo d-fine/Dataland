@@ -48,16 +48,6 @@ describe("DataStoreTest", () => {
     expect(receivedData).toEqual([]);
   });
 
-  it("should return data if everything is fine", async () => {
-
-    mock.onGet(`${BASE_URL}/data`).reply(200, data);
-
-    const dataStore = new DataStore(BASE_URL)
-    const receivedData = await dataStore.getAll()
-
-    expect(receivedData.data).toEqual(data);
-  });
-
   it("should return data for the given id", async () => {
 
     const dataStore = new DataStore(BASE_URL)
