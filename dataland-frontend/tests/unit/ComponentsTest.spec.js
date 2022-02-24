@@ -1,4 +1,4 @@
-import {shallowMount} from '@vue/test-utils'
+import {mount, shallowMount} from '@vue/test-utils'
 import HelloWorld from '@/components/HelloWorld.vue'
 import APIClient from '@/components/APIClient.vue'
 import ESG from '@/components/ESG.vue'
@@ -28,7 +28,7 @@ describe('APIClient.vue', () => {
     })
 
     it('checks fields', () => {
-        const wrapper = shallowMount(APIClient, {
+        const wrapper = mount(APIClient, {
             data() {
                 return {
                     dataStore: new DataStore("http://localhost:8080"),
@@ -40,8 +40,14 @@ describe('APIClient.vue', () => {
                 }
             }
         })
+
         expect(wrapper.vm.get_id).toMatch("dummy_id")
         expect(wrapper.vm.get_name).toMatch("dummy_name")
+
+        wrapper.vm.clearGetOutput()
+
+        expect(wrapper.vm.get_id).toBeNull()
+        expect(wrapper.vm.get_name).toBeNull()
 
     })
 })
