@@ -8,10 +8,10 @@
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
-                <button class="btn btn-sm " @click="getAllData">Get All Data</button>
+                <button test-label="getAllDataLabel" class="btn btn-sm " @click="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
-                <button class="btn btn-sm " @click="clearGetOutput">Clear</button>
+                <button test-label="clearGetOutputLabel" class="btn btn-sm " @click="clearGetOutput">Clear</button>
               </div>
             </div>
             <div class="row">

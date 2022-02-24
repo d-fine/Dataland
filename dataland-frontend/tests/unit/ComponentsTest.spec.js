@@ -50,4 +50,29 @@ describe('APIClient.vue', () => {
         expect(wrapper.vm.get_name).toBeNull()
 
     })
+
+    it('tests click', () => {
+        const wrapper = mount(APIClient)
+
+        wrapper.setData({
+            get_id: "dummy",
+            get_name: "dummy",
+            getResult: "dummy",
+            getResultByID: "dummy",
+            getResultByName: "dummy",
+        })
+
+        expect(wrapper.vm.get_id).toMatch("dummy")
+        expect(wrapper.vm.get_name).toMatch("dummy")
+        expect(wrapper.vm.getResult).toMatch("dummy")
+
+        wrapper.get('[test-label="getAllDataLabel"]').trigger('click')
+        expect(wrapper.vm.getResultByID).toBeNull()
+
+        wrapper.get('[test-label="clearGetOutputLabel"]').trigger('click')
+        expect(wrapper.vm.get_id).toBeNull()
+        expect(wrapper.vm.get_name).toBeNull()
+        expect(wrapper.vm.getResult).toBeNull()
+
+    })
 })
