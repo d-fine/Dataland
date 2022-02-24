@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import {DataStore} from "@/service/DataStore.js";
 
-const BASE_URL = "http://dummyhost:dummyport";
+const BASE_URL = "https://dummyhost:dummyport";
 
 describe("DataStoreTest", () => {
   let mock;
@@ -40,7 +40,7 @@ describe("DataStoreTest", () => {
   });
 
   it("should return an empty list with a wrong address", async () => {
-    mock.onGet("http://newdummyhost:newdummyport/data");
+    mock.onGet("https://newdummyhost:newdummyport/data");
 
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getAll()
