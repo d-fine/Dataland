@@ -8,43 +8,41 @@
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
-                <button class="btn btn-sm " @click="getAllData">Get All Data</button>
+                <button test-label="getAllDataLabel" class="btn btn-sm " @click="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
-                <button class="btn btn-sm " @click="clearGetOutput">Clear</button>
+                <button test-label="clearGetOutputLabel" class="btn btn-sm " @click="clearGetOutput">Clear</button>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m6">
-                <input type="text" v-model="get_id" class="autocomplete" id="searchByIdInput"/>
-                <label for="searchByIdInput">Search by ID</label>
-                <button class="btn btn-sm" @click="getDataById">Get by Id</button>
+                <input type="text" v-model="this.data.id" class="autocomplete" placeholder="Search by ID"/>
+                <button class="btn btn-sm btn-primary" @click="getDataById">Get by Id</button>
               </div>
               <div class="input-field col s12 m6 ">
-                <input type="text" v-model="get_name" class="autocomplete" id="searchByNameInput"/>
-                <label for="searchByNameInput">Search by Name</label>
-                <button class="btn btn-sm" @click="getDataById">Get by Name</button>
+                <input type="text" v-model="this.data.name" class="autocomplete" placeholder="Search by Name"/>
+                <button class="btn btn-sm btn-primary pulse" @click="getDataById">Get by Name</button>
               </div>
             </div>
-            <div v-if="getResult" class="alert alert-secondary mt-2" role="alert">
-              <pre>{{ getResult }}</pre>
-              <p> {{ getResult.data }} </p>
-              <p> Name: {{ getResult.data[0].name }} </p>
-              <p> ID: {{ getResult.data[0].id }} </p>
-              <p> {{ getResult["data"] }} </p>
-              <p> {{ getResult.status }} </p>
+            <div v-if="this.data.allResult" class="alert alert-secondary mt-2" role="alert">
+              <pre>{{ this.data.allResult }}</pre>
+              <p> {{ this.data.allResult.data }} </p>
+              <p> Name: {{ this.data.allResult.data[0].name }} </p>
+              <p> ID: {{ this.data.allResult.data[0].id }} </p>
+              <p> {{ this.data.allResult["data"] }} </p>
+              <p> {{ this.data.allResult.status }} </p>
             </div>
-            <div v-if="getResultByID || getResultByName" class="alert alert-secondary mt-2" role="alert">
-              <pre>{{ getResultByID }}</pre>
-              <p> Status: {{ getResultByID.status }} </p>
-              <p> Data: {{ getResultByID.data }} </p>
-              <p> Name: {{ getResultByID.data.name }} </p>
-              <p> Payload: {{ getResultByID.data.payload }} </p>
+            <div v-if="this.data.filteredResult" class="alert alert-secondary mt-2" role="alert">
+              <pre>{{ this.data.filteredResult }}</pre>
+              <p> Status: {{ this.data.filteredResult.status }} </p>
+              <p> Data: {{ this.data.filteredResult.data }} </p>
+              <p> Name: {{ this.data.filteredResult.data.name }} </p>
+              <p> Payload: {{ this.data.filteredResult.data.payload }} </p>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="getResult" class="col m12">
+      <div v-if="this.data.allResult" class="col m12">
         <table id="getResultTable">
           <caption>Table of Results</caption>
           <thead>
@@ -54,14 +52,14 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="dataset in getResult.data" :key="dataset.id">
+          <tr v-for="dataset in this.data.allResult.data" :key="dataset.id">
             <td>{{dataset.id}}</td>
             <td>{{dataset.name}}</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <div v-if="getResultByID" class="col m12">
+      <div v-if="this.data.filteredResult" class="col m12">
         <table id="getResultByIDTable">
           <caption>Table of Results by ID</caption>
           <thead>
@@ -73,9 +71,9 @@
           </thead>
           <tbody>
           <tr>
-            <td>{{get_id}}</td>
-            <td>{{getResultByID.data.name}}</td>
-            <td>{{getResultByID.data.payload}}</td>
+            <td>{{ this.data.id }}</td>
+            <td>{{ this.data.filteredResult.data.name }}</td>
+            <td>{{ this.data.filteredResult.data.payload }}</td>
           </tr>
           </tbody>
         </table>
@@ -86,35 +84,25 @@
 <script>
 
 import {DataStore} from "@/service/DataStore";
+import {Data} from "@/model/Data"
 export default {
 
   name: "APIClient",
   data() {
     return {
       dataStore: new DataStore("http://localhost:8080"),
-      get_id: null,
-      get_name: null,
-      getResult: null,
-      getResultByID: null,
-      getResultByName: null
+      data: new Data()
     }
   },
   methods: {
     async getAllData() {
-      this.getResultByID = null
-      this.getResult = await this.dataStore.getAll()
+      this.data.getAllResult(await this.dataStore.getAll())
     },
     async getDataById() {
-      this.getResult = null
-      this.getResultByID = await this.dataStore.getById(this.get_id)
+      this.data.getFilteredResult(await this.dataStore.getById(this.data.id))
     },
     clearGetOutput() {
-      this.getResult = null;
-      this.getResultByID = null;
-      this.getResultByName = null;
-      this.get_id = null;
-      this.get_name = null;
-
+      this.data.clearAll()
     },
   }
 }
