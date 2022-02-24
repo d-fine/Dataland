@@ -44,6 +44,7 @@
       </div>
       <div v-if="getResult" class="col m12">
         <table id="getResultTable">
+          <caption>Table of Results</caption>
           <thead>
           <tr>
             <th>ID</th>
@@ -60,6 +61,7 @@
       </div>
       <div v-if="getResultByID" class="col m12">
         <table id="getResultByIDTable">
+          <caption>Table of Results by ID</caption>
           <thead>
           <tr>
             <th>ID</th>
