@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import {DataStore} from "@/service/DataStore.js";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://dummyhost:dummyport";
 
 describe("DataStoreTest", () => {
   let mock;
@@ -30,7 +30,7 @@ describe("DataStoreTest", () => {
     expect(allData.data).toEqual(data);
   });
 
-  it("should return an empty list in case of any error", async () => {
+  it("should return an empty list in case of a network error", async () => {
     mock.onGet(`${BASE_URL}/data`).networkErrorOnce();
 
     const dataStore = new DataStore(BASE_URL)
@@ -38,4 +38,14 @@ describe("DataStoreTest", () => {
 
     expect(allData).toEqual([]);
   });
+
+  it("should return an empty list with a wrong address", async () => {
+    mock.onGet("http://newdummyhost:newdummyport/data");
+
+    const dataStore = new DataStore(BASE_URL)
+    const allData = await dataStore.getAll()
+
+    expect(allData).toEqual([]);
+  });
+
 });
