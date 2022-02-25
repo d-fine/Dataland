@@ -16,11 +16,17 @@ export class DataStore {
             return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
-                data: res.data,
+                id: res.data[0].id,
+                name: res.data[0].name,
+                payload: res.data[0].payload,
             };
         } catch (err) {
             console.error(err)
-            return [];
+            return {
+                id: null,
+                name: null,
+                payload: null,
+            };
         }
     }
 
@@ -30,11 +36,17 @@ export class DataStore {
             return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
-                data: res.data,
+                id: res.data.id,
+                name: res.data.name,
+                payload: res.data.payload,
             };
         } catch (err) {
             console.error(err)
-            return [];
+            return {
+                id: null,
+                name: null,
+                payload: null,
+            };
         }
     }
 }
