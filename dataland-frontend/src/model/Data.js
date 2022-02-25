@@ -1,22 +1,23 @@
 export class Data {
+    /* ToDo: The fields of this class and APIClient.vue will be changed */
     constructor() {
         this.clearAll()
-        this.id = null;
-        this.name = null;
     }
 
     clearAll() {
+        this.id = null;
+        this.name = null;
         this.allResult = null
         this.filteredResult = null
     }
 
     getAllResult(results) {
-        this.clearAll()
+        this.filteredResult = null
         this.allResult = results
     }
 
     getFilteredResult(results) {
-        this.clearAll()
+        this.allResult = null
         this.filteredResult = results
     }
 
