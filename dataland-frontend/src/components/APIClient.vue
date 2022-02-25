@@ -28,14 +28,17 @@
             </div>
             <div v-if="data.allResult" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ data.allResult }}</pre>
-              <p> Name: {{ data.allResult.name }} </p>
-              <p id="resultsID"> ID: {{ data.allResult.id }} </p>
+              <p > {{ data.allResult.data }} </p>
+              <p> Name: {{ data.allResult.data[0].name }} </p>
+              <p id="resultsID"> ID: {{ data.allResult.data[0].id }} </p>
+              <p> {{ data.allResult["data"] }} </p>
             </div>
             <div v-if="data.filteredResult" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ data.filteredResult }}</pre>
               <p> Status: {{ data.filteredResult.status }} </p>
-              <p> Name: {{ data.filteredResult.name }} </p>
-              <p> Payload: {{ data.filteredResult.payload }} </p>
+              <p> Data: {{ data.filteredResult.data }} </p>
+              <p> Name: {{ data.filteredResult.data.name }} </p>
+              <p> Payload: {{ data.filteredResult.data.payload }} </p>
             </div>
           </div>
         </div>
@@ -54,14 +57,14 @@
           <tbody>
           <tr>
             <td>{{ data.id }}</td>
-            <td>{{ data.filteredResult.name }}</td>
-            <td>{{ data.filteredResult.payload }}</td>
+            <td>{{ data.filteredResult.data.name }}</td>
+            <td>{{ data.filteredResult.data.payload }}</td>
           </tr>
           </tbody>
         </table>
       </div>
       <div v-if="data.allResult" class="col m12">
-        <ResultTable :headers="['ID', 'Name']" :data="data.allResult"/>
+        <ResultTable :headers="['ID', 'Name']" :data="data.allResult.data"/>
       </div>
     </div>
   </div>
