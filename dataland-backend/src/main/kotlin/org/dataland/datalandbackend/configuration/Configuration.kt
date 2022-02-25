@@ -12,7 +12,11 @@ class Configuration {
     @Bean
     @Qualifier("DefaultConnector")
     fun getSkyminderConnector(): DataConnectorInterface {
-        return SkyminderConnector()
+        return SkyminderConnector(
+            basePath=System.getenv("SKYMINDER_URL"),
+            skyminderUser=System.getenv("SKYMINDER_USER"),
+            skyminderPassword=System.getenv("SKYMINDER_PW")
+        )
     }
 }
 
