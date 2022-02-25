@@ -18,14 +18,14 @@ describe("DataTest", () => {
 
     it("checks getFilteredResult", () => {
         data.getFilteredResult("dummyResults")
-        expect(data.filteredResult).not.toBeNull();
+        expect(data.filteredResult).toMatch("dummyResults");
         expect(data.allResult).toBeNull();
     })
 
     it("checks getAllResult", () => {
         data.getAllResult("dummyResults")
         expect(data.filteredResult).toBeNull();
-        expect(data.allResult).not.toBeNull();
+        expect(data.allResult).toMatch("dummyResults");
     })
 
 })
