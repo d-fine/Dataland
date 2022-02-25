@@ -21,7 +21,3 @@ export default {
   props: ["headers", "data"]
 }
 </script>
-
-<style scoped>
-
-</style>
