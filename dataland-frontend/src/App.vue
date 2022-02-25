@@ -12,18 +12,16 @@
 import HelloWorld from './components/HelloWorld.vue'
 import APIClient from "@/components/APIClient";
 
-
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    APIClient
+    APIClient,
   }
 }
 </script>
 
 <style>
-@import 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css';
 @import './assets/css/main.css';
 
 
