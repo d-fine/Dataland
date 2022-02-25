@@ -27,3 +27,4 @@ reports
 /.nyc_output/
 **/coverage/
 **/.gradle/
+/tests/*/screenshots/
