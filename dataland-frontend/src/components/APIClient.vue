@@ -7,7 +7,7 @@
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
-                <button class="btn btn-sm " @click="getAllData">Get All Data</button>
+                <button class="btn btn-sm " @click="getAllData" id="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
                 <button class="btn btn-sm " @click="clearGetOutput">Clear</button>
@@ -25,11 +25,10 @@
             </div>
             <div v-if="data.allResult" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ data.allResult }}</pre>
-              <p> {{ data.allResult.data }} </p>
+              <p > {{ data.allResult.data }} </p>
               <p> Name: {{ data.allResult.data[0].name }} </p>
-              <p> ID: {{ data.allResult.data[0].id }} </p>
+              <p id="resultsID"> ID: {{ data.allResult.data[0].id }} </p>
               <p> {{ data.allResult["data"] }} </p>
-              <p> {{ data.allResult.status }} </p>
             </div>
             <div v-if="data.filteredResult" class="alert alert-secondary mt-2" role="alert">
               <pre>{{ data.filteredResult }}</pre>

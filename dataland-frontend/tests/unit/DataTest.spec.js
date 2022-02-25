@@ -12,24 +12,18 @@ describe("DataTest", () => {
 
     it("checks clearAll", () => {
         data.clearAll()
-        expect(data.id).toBeNull();
-        expect(data.name).toBeNull();
         expect(data.filteredResult).toBeNull();
         expect(data.allResult).toBeNull();
     })
 
     it("checks getFilteredResult", () => {
         data.getFilteredResult("dummyResults")
-        expect(data.id).toBeNull();
-        expect(data.name).toBeNull();
         expect(data.filteredResult).not.toBeNull();
         expect(data.allResult).toBeNull();
     })
 
     it("checks getAllResult", () => {
         data.getAllResult("dummyResults")
-        expect(data.id).toBeNull();
-        expect(data.name).toBeNull();
         expect(data.filteredResult).toBeNull();
         expect(data.allResult).not.toBeNull();
     })

@@ -1,11 +1,11 @@
 export class Data {
     constructor() {
         this.clearAll()
+        this.id = null;
+        this.name = null;
     }
 
     clearAll() {
-        this.id = null
-        this.name = null
         this.allResult = null
         this.filteredResult = null
     }
