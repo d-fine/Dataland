@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class DataController(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
-    @Autowired @Qualifier("DefaultConnector") var dataConnector: DataConnectorInterface
+    @Autowired var dataConnector: DataConnectorInterface
 ) : DataAPI {
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
