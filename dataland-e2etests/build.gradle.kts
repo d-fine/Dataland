@@ -13,9 +13,9 @@ val backendOpenApiSpecConfig by configurations.creating {
 
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
-    implementation ("com.squareup.moshi:moshi-adapters:1.12.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.13.0")
+    implementation ("com.squareup.moshi:moshi-adapters:1.13.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 
