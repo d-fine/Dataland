@@ -15,6 +15,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
     implementation("org.dataland:skyminder-client:0.0.1-SNAPSHOT")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
