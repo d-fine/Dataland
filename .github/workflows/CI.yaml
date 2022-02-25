@@ -46,6 +46,10 @@ jobs:
           name: buildDirectories
       - name: Execute tests
         run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
+      - name: Execute Frontend Unit Tests
+        run: ./gradlew :dataland-frontend:npm_run_testunit
+      - name: Execute Frontend Cypress Tests
+        run: ./gradlew :dataland-frontend:npm_run_testheadless
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -58,6 +62,12 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
+      - name: Upload FE lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcovResults
+          path: ./dataland-frontend/coverage/**/lcov.info
   e2e-test:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -95,10 +105,13 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsE2ETest
+      - uses: actions/download-artifact@v2
+        with:
+          name: lcovResults
+          path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: |
-          ./gradlew jacocoTestReport sonarqube --no-daemon
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -1,0 +1,86 @@
+{
+  "name": "dataland-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8090",
+    "build": "vue-cli-service build",
+    "testunit": "vue-cli-service test:unit",
+    "teste2e": "vue-cli-service test:e2e --mode e2e",
+    "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "axios-mock-adapter": "^1.20.0",
+    "core-js": "^3.8.3",
+    "materialize-css": "^1.0.0-rc.2",
+    "vue": "^3.2.13",
+    "vue-axios": "^3.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@cypress/code-coverage": "^3.9.12",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-e2e-cypress": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/test-utils": "^2.0.0-0",
+    "@vue/vue3-jest": "^27.0.0-alpha.1",
+    "babel-jest": "^27.0.6",
+    "cypress": "^8.3.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.0.5"
+  },
+  "nyc": {
+    "report-dir": "coverage/e2e",
+    "reporter": [
+      "lcov",
+      "json"
+    ],
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.test.js",
+      "**/test.js",
+      "**/*.stories.js",
+      "**/stories.js"
+    ]
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

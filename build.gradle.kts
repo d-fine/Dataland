@@ -55,11 +55,11 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
-        property("sonar.coverage.exclusions", "**/test/**")
+        property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
+        property("sonar.coverage.exclusions", "**/test/**,**/tests/**")
         property(
             "sonar.sources",
-            subprojects.flatMap { project -> project.sourceSets.asMap.values }
-                .flatMap { sourceSet -> sourceSet.allSource }
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> }
         )
     }
 }
@@ -71,12 +71,10 @@ jacoco {
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
     sourceDirectories.setFrom(
-        subprojects.flatMap { project -> project.sourceSets.asMap.values }
-            .flatMap { sourceSet -> sourceSet.allSource }
+        subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
     classDirectories.setFrom(
-        subprojects.flatMap { project -> project.sourceSets.asMap.values }
-            .flatMap { sourceSet -> sourceSet.output.classesDirs.flatMap { fileTree(it).files } }
+        subprojects.flatMap { project -> project.properties["jacocoClasses"] as Iterable<*> }
     )
     reports {
         xml.required.set(true)

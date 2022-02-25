@@ -24,3 +24,8 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+  frontend:
+    build:
+      context: ./dataland-frontend
+    ports:
+        - "8082:80"
