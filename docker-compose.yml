@@ -12,7 +12,8 @@ services:
       dockerfile: ./dataland-e2etests/Dockerfile
     ports:
       - "8081:8080"
-  frontende2etests:
+  frontend:
     build:
-      context: ./
-      dockerfile: ./dataland-frontend/Dockerfile
+      context: ./dataland-frontend
+    ports:
+        - "8082:80"
