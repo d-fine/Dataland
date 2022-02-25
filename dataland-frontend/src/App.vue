@@ -1,7 +1,7 @@
 <template>
   <section class="hero container max-w-screen-lg mx-auto pb-10 flex">
 
-    <img alt="Vue logo" src="./assets/dataland-logo-lr.png" class="mx-auto" >
+    <img alt="Vue logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
   </section>
   <HelloWorld msg="Welcome to DataLand"/>
   <APIClient/>
