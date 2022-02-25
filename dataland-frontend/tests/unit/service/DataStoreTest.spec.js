@@ -27,7 +27,7 @@ describe("DataStoreTest", () => {
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getAll()
 
-    expect(receivedData.data).toEqual(data);
+    expect(receivedData.data).toEqual(data[0]);
   });
 
   it("should return an empty list in case of a network error", async () => {
@@ -36,7 +36,7 @@ describe("DataStoreTest", () => {
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getAll()
 
-    expect(receivedData).toEqual([]);
+    expect(receivedData.data.id).toBeNull();
   });
 
   it("should return an empty list with a wrong address", async () => {
@@ -45,7 +45,7 @@ describe("DataStoreTest", () => {
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getAll()
 
-    expect(receivedData).toEqual([]);
+    expect(receivedData.data.id).toBeNull();
   });
 
   it("should return data for the given id", async () => {
@@ -69,6 +69,6 @@ describe("DataStoreTest", () => {
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getById(-1)
 
-    expect(receivedData).toEqual([]);
+    expect(receivedData.data.id).toBeNull();
   });
 });

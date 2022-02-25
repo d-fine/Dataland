@@ -1,5 +1,5 @@
 export class Data {
-    /* ToDo: The fields of this class and APIClient.vue will be changed */
+    /* The fields of this class and APIClient.vue will be changed */
     constructor() {
         this.clearAll()
     }

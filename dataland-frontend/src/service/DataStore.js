@@ -13,28 +13,54 @@ export class DataStore {
     async getAll() {
         try {
             const res = await this.axios.get("/data");
+            const data = {id:res.data[0].id,
+                name:res.data[0].name,
+                payload:res.data[0].payload}
             return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
-                data: res.data,
+                data: data,
             };
         } catch (err) {
-            console.error(err)
-            return [];
+            const data = {
+                id: null,
+                name: null,
+                payload: null
+            }
+            return {
+                status: "500-Internal Server Error",
+                headers: "",
+                data: data,
+            };
         }
     }
 
-    async getById(id) {
+    async getById(id)
+    {
         try {
             const res = await this.axios.get(`/data/${id}`);
+            const data = {
+                id: res.data.id,
+                name: res.data.name,
+                payload: res.data.payload
+            }
             return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
-                data: res.data,
+                data: data,
             };
         } catch (err) {
             console.error(err)
-            return [];
+            const data = {
+                id: null,
+                name: null,
+                payload: null
+            }
+            return {
+                status: "500-Internal Server Error",
+                headers: "",
+                data: data,
+            };
         }
     }
 }
