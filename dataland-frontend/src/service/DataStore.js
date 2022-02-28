@@ -15,15 +15,13 @@ export class DataStore {
             const results = await this.axios.get("/data");
             const data = results.data
             console.log(results.status + "-" + results.statusText)
+            if (data.length == 0){
+                return null
+            }
             return data;
         } catch (err) {
-            const data = {
-                id: null,
-                name: null,
-                payload: null
-            }
             console.error(err)
-            return [data];
+            return null;
         }
     }
 
@@ -39,13 +37,8 @@ export class DataStore {
             console.log(results.status + "-" + results.statusText)
             return data;
         } catch (err) {
-            const data = {
-                id: null,
-                name: null,
-                payload: null
-            }
             console.error(err)
-            return data;
+            return null;
         }
     }
 }
