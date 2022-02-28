@@ -13,9 +13,7 @@ export class DataStore {
     async getAll() {
         try {
             const res = await this.axios.get("/data");
-            const data = {id:res.data[0].id,
-                name:res.data[0].name,
-                payload:res.data[0].payload}
+            const data = res.data
             return {
                 status: res.status + "-" + res.statusText,
                 headers: res.headers,
