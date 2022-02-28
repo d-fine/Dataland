@@ -12,53 +12,41 @@ export class DataStore {
 
     async getAll() {
         try {
-            const res = await this.axios.get("/data");
-            const data = res.data
-            return {
-                status: res.status + "-" + res.statusText,
-                headers: res.headers,
-                data: data,
-            };
+            const results = await this.axios.get("/data");
+            const data = results.data
+            console.log(results.status + "-" + results.statusText)
+            // ToDo: return directly the data
+            return data;
         } catch (err) {
             const data = {
                 id: null,
                 name: null,
                 payload: null
             }
-            return {
-                status: "500-Internal Server Error",
-                headers: "",
-                data: data,
-            };
+            console.error(err)
+            return [data];
         }
     }
 
     async getById(id)
     {
         try {
-            const res = await this.axios.get(`/data/${id}`);
+            const results = await this.axios.get(`/data/${id}`);
             const data = {
-                id: res.data.id,
-                name: res.data.name,
-                payload: res.data.payload
+                id: results.data.id,
+                name: results.data.name,
+                payload: results.data.payload
             }
-            return {
-                status: res.status + "-" + res.statusText,
-                headers: res.headers,
-                data: data,
-            };
+            console.log(results.status + "-" + results.statusText)
+            return data;
         } catch (err) {
-            console.error(err)
             const data = {
                 id: null,
                 name: null,
                 payload: null
             }
-            return {
-                status: "500-Internal Server Error",
-                headers: "",
-                data: data,
-            };
+            console.error(err)
+            return data;
         }
     }
 }
