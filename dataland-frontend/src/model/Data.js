@@ -7,18 +7,13 @@ export class Data {
     clearAll() {
         this.id = null;
         this.name = null;
-        this.allResult = null
-        this.filteredResult = null
+        this.code = null;
+        this.result = null
     }
 
-    getAllResult(results) {
-        this.filteredResult = null
-        this.allResult = results
-    }
 
-    getFilteredResult(results) {
-        this.allResult = null
-        this.filteredResult = results
+    getResult(results) {
+        this.result = results
     }
 
 }

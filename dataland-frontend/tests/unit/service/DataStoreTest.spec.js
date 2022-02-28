@@ -11,6 +11,8 @@ describe("DataStoreTest", () => {
     {id: 0, name: "John"},
     {id: 1, name: "Andrew"},
   ];
+  const code = "DEU";
+  const name = "BMW";
 
   beforeAll(() => {
     mock = new MockAdapter(axios);
@@ -22,19 +24,19 @@ describe("DataStoreTest", () => {
 
   it("should return data if everything is fine", async () => {
 
-    mock.onGet(`${BASE_URL}/data`).reply(200, data);
+    mock.onGet(`${BASE_URL}/data/skyminder/${code}/${name}`).reply(200, data);
 
     const dataStore = new DataStore(BASE_URL)
-    const receivedData = await dataStore.getAll()
+    const receivedData = await dataStore.getByName(code, name)
 
     expect(receivedData).toEqual(data);
   });
 
   it("should return an empty list in case of a network error", async () => {
-    mock.onGet(`${BASE_URL}/data`).networkErrorOnce();
+    mock.onGet(`${BASE_URL}/data/skyminder/${code}/${name}`).networkErrorOnce();
 
     const dataStore = new DataStore(BASE_URL)
-    const receivedData = await dataStore.getAll()
+    const receivedData = await dataStore.getByName(code, name)
 
     expect(receivedData).toBeNull();
   });
@@ -43,32 +45,10 @@ describe("DataStoreTest", () => {
     mock.onGet("https://newdummyhost:newdummyport/data");
 
     const dataStore = new DataStore(BASE_URL)
-    const receivedData = await dataStore.getAll()
+    const receivedData = await dataStore.getByName(code, name)
 
     expect(receivedData).toBeNull();
   });
 
-  it("should return data for the given id", async () => {
 
-    const dataStore = new DataStore(BASE_URL)
-
-    for (const d of data) {
-      mock.onGet(`${BASE_URL}/data/${d.id}`).reply(200, d);
-    }
-
-    const receivedData = await dataStore.getById(0)
-    expect(receivedData).toEqual(data[0]);
-
-  });
-
-  it("should return an empty list if the id does not exist", async () => {
-
-    for (const d of data) {
-      mock.onGet(`${BASE_URL}/data/${d.id}`).reply(200, d);
-    }
-    const dataStore = new DataStore(BASE_URL)
-    const receivedData = await dataStore.getById(-1)
-
-    expect(receivedData).toBeNull();
-  });
 });

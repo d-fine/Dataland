@@ -8,7 +8,6 @@
           <div class="card-content ">
             <div class="row">
               <div class="col m6">
-                <button class="btn btn-sm" @click="getAllData" id="getAllData">Get All Data</button>
               </div>
               <div class="col m6">
                 <button class="btn btn-sm" @click="clearGetOutput">Clear</button>
@@ -26,45 +25,11 @@
                 <button class="btn btn-sm" @click="getSkyminderByName">Get Skyminder by Name</button>
               </div>
             </div>
-            <div v-if="!!data.allResult" class="alert alert-secondary mt-2" role="alert">
-
-              <pre>{{ data.allResult }}</pre>
-              <p > {{ data.allResult }} </p>
-              <p> Name: {{ data.allResult[0].name }} </p>
-              <p id="resultsID"> ID: {{ data.allResult[0].id }} </p>
-              <p> {{ data.allResult }} </p>
-            </div>
-            <div v-if="data.filteredResult" class="alert alert-secondary mt-2" role="alert">
-              <pre>{{ data.filteredResult }}</pre>
-              <p> Data: {{ data.filteredResult }} </p>
-              <p> Name: {{ data.filteredResult.name }} </p>
-              <p> Payload: {{ data.filteredResult.payload }} </p>
-            </div>
           </div>
         </div>
       </div>
-
-      <div v-if="data.filteredResult" class="col m12">
-        <table id="getResultByIDTable">
-          <caption>Table of Results by ID</caption>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Payload</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>{{ data.id }}</td>
-            <td>{{ data.filteredResult.name }}</td>
-            <td>{{ data.filteredResult.payload }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div v-if="!!data.allResult" class="col m12">
-        <ResultTable :headers="['ID', 'Name']" :data="data.allResult"/>
+      <div v-if="data.allResult" class="col m12">
+        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone']" :data="data.allResult"/>
       </div>
     </div>
   </div>
@@ -86,14 +51,9 @@ export default {
     }
   },
   methods: {
-    async getAllData() {
-      this.data.getAllResult(await this.dataStore.getAll())
-    },
-    async getDataById() {
-      this.data.getFilteredResult(await this.dataStore.getById(this.data.id))
-    },
+
     async getSkyminderByName() {
-      this.data.getAllResult(await this.dataStore.getByName(this.data.code, this.data.name))
+      this.data.getResult(await this.dataStore.getByName(this.data.code, this.data.name))
     },
 
     clearGetOutput() {
