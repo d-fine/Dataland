@@ -1,5 +1,15 @@
 // dataland-skyminder-server
 
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
+val jacocoSources by extra(sonarSources)
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it).files
+        }
+    }
+)
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
