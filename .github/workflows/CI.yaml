@@ -55,7 +55,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: TestReport
-          path: ./build/reports/
+          path:
+            ./build/reports/
+            ./**/build/reports
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2

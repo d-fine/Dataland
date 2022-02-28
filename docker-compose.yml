@@ -21,14 +21,11 @@ services:
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
-      SKYMINDER_URL: ${SKYMINDER_URL}
-      SKYMINDER_USER: ${SKYMINDER_USER}
-      SKYMINDER_PW: ${SKYMINDER_PW}
   frontend:
     build:
       context: ./dataland-frontend
     ports:
-        - "8082:80"
+      - "8082:80"
   skyminder-server:
     build:
       context: ./

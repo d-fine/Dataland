@@ -55,8 +55,13 @@ class DataControllerTest {
         )
     }
 
+
     @Test
     fun `get dummy company data by sending a request to dummy skyminder server`() {
-        // ...
+
+        val testSearchPropertyCode = "Has_to_be_non_null"
+        val testSearchPropertyName = "String"
+        val response = dataControllerApi.getDataSkyminderRequest(code = testSearchPropertyCode, name = testSearchPropertyName)
+        println(response)
     }
 }
