@@ -27,7 +27,7 @@ describe("DataStoreTest", () => {
     const dataStore = new DataStore(BASE_URL)
     const receivedData = await dataStore.getAll()
 
-    expect(receivedData.data).toEqual(data[0]);
+    expect(receivedData.data).toEqual(data);
   });
 
   it("should return an empty list in case of a network error", async () => {
