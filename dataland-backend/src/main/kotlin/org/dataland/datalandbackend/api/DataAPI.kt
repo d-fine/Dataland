@@ -68,6 +68,8 @@ interface DataAPI {
         value = ["/data/skyminder/{code}/{name}"],
         produces = ["application/json"]
     )
-    fun getDataSkyminderRequest(@PathVariable("code") countryCode: String,
-                                @PathVariable("name") name: String): ResponseEntity<List<ContactInformation>>
+    fun getDataSkyminderRequest(
+        @PathVariable("code") countryCode: String,
+        @PathVariable("name") name: String
+    ): ResponseEntity<List<ContactInformation>>
 }

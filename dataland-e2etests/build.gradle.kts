@@ -1,18 +1,20 @@
-//dataland-e2etest
+// dataland-e2etest
 
-val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource})
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
-val jacocoClasses by extra(sourceSets.asMap.values.flatMap { sourceSet ->
-    sourceSet.output.classesDirs.flatMap {
-        fileTree(it).files
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it).files
+        }
     }
-})
-
+)
 
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.openapi.generator") version "5.4.0"
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -24,9 +26,9 @@ val backendOpenApiSpecConfig by configurations.creating {
 
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation ("com.squareup.moshi:moshi-kotlin:1.13.0")
-    implementation ("com.squareup.moshi:moshi-adapters:1.13.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+    implementation("com.squareup.moshi:moshi-adapters:1.13.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 

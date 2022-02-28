@@ -1,12 +1,14 @@
-//dataland-backend
+// dataland-backend
 
-val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource})
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
-val jacocoClasses by extra(sourceSets.asMap.values.flatMap { sourceSet ->
-    sourceSet.output.classesDirs.flatMap {
-        fileTree(it).files
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it).files
+        }
     }
-})
+)
 
 plugins {
     kotlin("jvm")
@@ -17,6 +19,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version "2.4.0"
     id("org.springframework.boot")
     kotlin("kapt")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17

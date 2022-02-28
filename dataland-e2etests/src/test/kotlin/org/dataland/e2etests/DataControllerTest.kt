@@ -45,13 +45,13 @@ class DataControllerTest {
             testDataSetName,
             getResponse.name,
             "The 'name' value of the data set in the getResponse does not match the " +
-                    "'name' value of the test data set that was posted before."
+                "'name' value of the test data set that was posted before."
         )
         Assertions.assertEquals(
             testDataSetPayload,
             getResponse.payload,
             "The 'payload' value of the data set in the getResponse does not match the " +
-                    "'payload' value of the test data set that was posted before."
+                "'payload' value of the test data set that was posted before."
         )
     }
 
