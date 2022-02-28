@@ -26,7 +26,8 @@
                 <button class="btn btn-sm" @click="getDataById">Get by Name</button>
               </div>
             </div>
-            <div v-if="data.allResult" class="alert alert-secondary mt-2" role="alert">
+            <div v-if="!!data.allResult" class="alert alert-secondary mt-2" role="alert">
+
               <pre>{{ data.allResult }}</pre>
               <p > {{ data.allResult }} </p>
               <p> Name: {{ data.allResult[0].name }} </p>
@@ -62,7 +63,7 @@
           </tbody>
         </table>
       </div>
-      <div v-if="data.allResult" class="col m12">
+      <div v-if="!!data.allResult" class="col m12">
         <ResultTable :headers="['ID', 'Name']" :data="data.allResult"/>
       </div>
     </div>
