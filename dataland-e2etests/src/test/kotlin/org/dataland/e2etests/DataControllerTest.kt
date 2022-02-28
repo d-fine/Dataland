@@ -1,7 +1,7 @@
 package org.dataland.e2etests
 
-import org.dataland.datalandbackend.client.api.DataControllerApi
-import org.dataland.datalandbackend.client.model.DataSet
+import org.dataland.datalandbackend.openApiClient.api.DataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

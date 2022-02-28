@@ -53,7 +53,7 @@ val clientConfig = ClientConfig(
     taskName = "generateBackendClient",
     outputDir = "$buildDir/Clients/backend",
     apiSpecLocation = "$buildDir/$backendOpenApiJson",
-    destinationPackage = "org.dataland.datalandbackend"
+    destinationPackage = "org.dataland.datalandbackend.openApiClient"
 )
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
@@ -64,8 +64,8 @@ tasks.register<Copy>("getBackendOpenApiSpec") {
 tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file(clientConfig.apiSpecLocation).path
     outputDir.set(clientConfig.outputDir)
-    modelPackage.set("${clientConfig.destinationPackage}.client.model")
-    apiPackage.set("${clientConfig.destinationPackage}.client.api")
+    modelPackage.set("${clientConfig.destinationPackage}.model")
+    apiPackage.set("${clientConfig.destinationPackage}.api")
     packageName.set(clientConfig.destinationPackage)
     generatorName.set("kotlin")
     configOptions.set(
@@ -80,4 +80,10 @@ tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.t
 sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/Clients/backend/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
 }
