@@ -54,4 +54,9 @@ class DataControllerTest {
                     "'payload' value of the test data set that was posted before."
         )
     }
+
+    @Test
+    fun `get dummy company data by sending a request to dummy skyminder server`() {
+        // ...
+    }
 }
