@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
-      <div v-if="data.allResult" class="col m12">
-        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone']" :data="data.allResult"/>
+      <div v-if="data.result" class="col m12">
+        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone']" :data="data.result"/>
       </div>
     </div>
   </div>
