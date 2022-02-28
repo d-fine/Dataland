@@ -15,7 +15,6 @@ export class DataStore {
             const results = await this.axios.get("/data");
             const data = results.data
             console.log(results.status + "-" + results.statusText)
-            // ToDo: return directly the data
             return data;
         } catch (err) {
             const data = {
