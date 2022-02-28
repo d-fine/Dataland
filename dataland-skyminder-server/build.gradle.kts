@@ -25,4 +25,5 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
     implementation("org.dataland:skyminder-server:0.0.1-SNAPSHOT")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl")
+    implementation("org.apache.logging.log4j:log4j:2.17.2")
 }
