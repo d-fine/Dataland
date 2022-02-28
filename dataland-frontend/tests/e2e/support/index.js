@@ -15,6 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-import '@cypress/code-coverage/support'
+
+if (process.env.NODE_ENV === 'e2e') { import('@cypress/code-coverage/support')}
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
