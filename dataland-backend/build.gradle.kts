@@ -29,8 +29,9 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
     implementation("org.dataland:skyminder-client:0.0.1-SNAPSHOT")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl")
     implementation("org.apache.logging.log4j:log4j:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
