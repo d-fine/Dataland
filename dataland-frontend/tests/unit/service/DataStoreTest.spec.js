@@ -30,7 +30,7 @@ describe("DataStoreTest", () => {
     expect(receivedData).toEqual(data);
   });
 
-  it("should return an empty list in case of a network error", async () => {
+  it("should return null in case of a network error", async () => {
     mock.onGet(`${BASE_URL}/data`).networkErrorOnce();
 
     const dataStore = new DataStore(BASE_URL)
@@ -39,7 +39,7 @@ describe("DataStoreTest", () => {
     expect(receivedData).toBeNull();
   });
 
-  it("should return an empty list with a wrong address", async () => {
+  it("should return null in case of a wrong address", async () => {
     mock.onGet("https://newdummyhost:newdummyport/data");
 
     const dataStore = new DataStore(BASE_URL)
@@ -61,7 +61,7 @@ describe("DataStoreTest", () => {
 
   });
 
-  it("should return an empty list if the id does not exist", async () => {
+  it("should return null if the id does not exist", async () => {
 
     for (const d of data) {
       mock.onGet(`${BASE_URL}/data/${d.id}`).reply(200, d);
