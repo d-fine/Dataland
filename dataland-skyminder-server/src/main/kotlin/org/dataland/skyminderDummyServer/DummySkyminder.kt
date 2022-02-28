@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class DummySkyminder
 
 fun main(args: Array<String>) {
+    @Suppress("SpreadOperator")
     runApplication<DummySkyminder>(*args)
 }
