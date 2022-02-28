@@ -19,7 +19,6 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version "2.4.0"
     id("org.springframework.boot")
     kotlin("kapt")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17

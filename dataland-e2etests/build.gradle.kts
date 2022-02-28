@@ -14,7 +14,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.openapi.generator") version "5.4.0"
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17

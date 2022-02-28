@@ -1,4 +1,4 @@
-//dataland-skyminder-server
+// dataland-skyminder-server
 
 plugins {
     kotlin("jvm")
