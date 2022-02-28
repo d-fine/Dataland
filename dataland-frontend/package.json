@@ -8,13 +8,15 @@
     "testunit": "vue-cli-service test:unit",
     "teste2e": "vue-cli-service test:e2e --mode e2e",
     "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
-    "testproductive": "vue-cli-service test:e2e --url http://localhost:8090 --headless",
+    "testproductive": "dotenv -e .env.production.local -- cross-var vue-cli-service test:e2e --url %VUE_APP_URL% --headless",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.26.0",
     "axios-mock-adapter": "^1.20.0",
     "core-js": "^3.8.3",
+    "cross-var": "^1.1.0",
+    "dotenv-cli": "^5.0.0",
     "materialize-css": "^1.0.0-rc.2",
     "vue": "^3.2.13",
     "vue-axios": "^3.4.1"
