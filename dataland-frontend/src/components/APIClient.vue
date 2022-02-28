@@ -14,16 +14,16 @@
                 <button class="btn btn-sm" @click="clearGetOutput">Clear</button>
               </div>
             </div>
+
             <div class="row">
               <div class="input-field col s12 m6">
-                <input type="text" v-model="data.id" class="autocomplete" id="searchByIdInput"/>
-                <label for="searchByIdInput">Search by ID</label>
-                <button class="btn btn-sm" @click="getDataById">Get by Id</button>
+                <input type="text" v-model="data.code" class="autocomplete" id="searchByIdCode"/>
+                <label for="searchByIdCode">Please insert a 3 Letter country code</label>
               </div>
-              <div class="input-field col s12 m6 ">
+              <div class="input-field col s12 m6">
                 <input type="text" v-model="data.name" class="autocomplete" id="searchByNameInput"/>
-                <label for="searchByNameInput">Search by Name</label>
-                <button class="btn btn-sm" @click="getDataById">Get by Name</button>
+                <label for="searchByNameInput">Please insert the name of the company</label>
+                <button class="btn btn-sm" @click="getSkyminderByName">Get Skyminder by Name</button>
               </div>
             </div>
             <div v-if="!!data.allResult" class="alert alert-secondary mt-2" role="alert">
@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      dataStore: new DataStore("http://localhost:8080"),
+      dataStore: new DataStore("http://localhost:8080/"),
       data: new Data()
     }
   },
@@ -92,6 +92,10 @@ export default {
     async getDataById() {
       this.data.getFilteredResult(await this.dataStore.getById(this.data.id))
     },
+    async getSkyminderByName() {
+      this.data.getAllResult(await this.dataStore.getByName(this.data.code, this.data.name))
+    },
+
     clearGetOutput() {
       this.data.clearAll()
     },

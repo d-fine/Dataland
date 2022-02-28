@@ -15,7 +15,22 @@ export class DataStore {
             const results = await this.axios.get("/data");
             const data = results.data
             console.log(results.status + "-" + results.statusText)
-            if (data.length == 0){
+            if (!data.length){
+                return null
+            }
+            return data;
+        } catch (err) {
+            console.error(err)
+            return null;
+        }
+    }
+
+    async getByName(code, name) {
+        try {
+            const results = await this.axios.get(`/data/skyminder/${code}/${name}`);
+            const data = results.data
+            console.log(results.status + "-" + results.statusText)
+            if (!data.length){
                 return null
             }
             return data;
