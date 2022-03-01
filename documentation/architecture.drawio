@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-03-01T07:20:57.105Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36" etag="jAD9t9tkgD9HyI0TcHL4" version="16.6.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-01T07:59:37.290Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36" etag="VxgMQagv7liqVzxVnkOc" version="16.6.4" type="github">
   <diagram id="EgJ7EEfOsz50NrqOtSAN" name="Page-1">
-    <mxGraphModel dx="1303" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1564" dy="948" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -182,7 +182,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="qYgubVpo4Vi_oRc76slj-45" value="Dataland UI&lt;br&gt;Server (nginx)" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="qYgubVpo4Vi_oRc76slj-45" value="Dataland UI&lt;br&gt;Server (nginx)" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=13;fillColor=#BECADB;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="300" y="500" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="qYgubVpo4Vi_oRc76slj-48" value="Connection to Dataland UI Server not shown" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
@@ -245,7 +245,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="mH02m_fli5AvtXu53zwJ-12" value="User Management (KeyCloak)" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="mH02m_fli5AvtXu53zwJ-12" value="User Management (KeyCloak)" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=13;fillColor=#BECADB;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="210" y="500" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="mH02m_fli5AvtXu53zwJ-16" value="Identitiy Provider (LinkedIn, Xing, Google, ...)" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=13;fillColor=#DEDEDE;" parent="1" vertex="1">
