@@ -2,9 +2,9 @@ name: CI/CD
 env:
   DATALAND_SKYMINDERCLIENT_TOKEN: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
   DATALAND_SKYMINDERCLIENT_USER: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-  SKYMINDER_URL: "https://testa2a.skyminder.com/sky-rest-service" #${{ secrets.SKYMINDER_URL }}
-  SKYMINDER_PW: "Dpsj#1639" #${{ secrets.SKYMINDER_PW }}
-  SKYMINDER_USER: "ITTEST_A2A" #${ secrets.SKYMINDER_USER }}
+  SKYMINDER_URL: ${{ secrets.SKYMINDER_URL }}
+  SKYMINDER_PW: ${{ secrets.SKYMINDER_PW }}
+  SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
   push:
