@@ -2,6 +2,9 @@ name: CI/CD
 env:
   DATALAND_SKYMINDERCLIENT_TOKEN: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
   DATALAND_SKYMINDERCLIENT_USER: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
+  SKYMINDER_URL: ${{ secrets.SKYMINDER_URL}}
+  SKYMINDER_PW: ${{ secrets.SKYMINDER_PW}}
+  SKYMINDER_USER: ${ secrets.SKYMINDER_USER}}
 
 on:
   push:
@@ -56,7 +59,7 @@ jobs:
         with:
           name: TestReport
           path:
-            ./build/reports/
+            #./build/reports/            Comment: "./**/build/reports"  also covers "./build/reports/"
             ./**/build/reports
       - name: Upload JaCoCo Exec Results
         if: always()
@@ -77,6 +80,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Execute E2E Tests
         run: ./testing-shell-scripts/execute_e2e_tests.sh
+        env:
+          SKYMINDER_URL: "http://skyminder-server:8080"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -115,7 +120,7 @@ jobs:
         if: always()
         run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #Why not take DATALAND_SKYMINDERCLIENT_TOKEN here too?
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
