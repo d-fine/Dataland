@@ -11,6 +11,13 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Implementation of the API for data exchange
+ * @param dataStore implementation of the DataStoreInterface that defines how uploaded data is to be stored
+ * @param dataConnector implementation of the DataConnectorInterface that defines how to connect to the data
+ * source (e.g. skyminder)
+ */
+
 @RestController
 class DataController(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
