@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class DataControllerTest {
-    val dataControllerApi = DataControllerApi(basePath = "http://backend:8080/api")
+    val dataControllerApi = DataControllerApi(basePath = "http://proxy:80/api")
 
     @Test
     fun `post a dummy data set and check if post was successful`() {

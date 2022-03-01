@@ -43,32 +43,22 @@ tasks.withType<Test> {
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-
-data class ClientConfig(
-    val taskName: String,
-    val outputDir: String,
-    val apiSpecLocation: String,
-    val destinationPackage: String
-)
-
-val clientConfig = ClientConfig(
-    taskName = "generateBackendClient",
-    outputDir = "$buildDir/Clients/backend",
-    apiSpecLocation = "$buildDir/$backendOpenApiJson",
-    destinationPackage = "org.dataland.datalandbackend.openApiClient"
-)
+val taskName = "generateBackendClient"
+val clientOutputDir = "$buildDir/Clients/backend"
+val apiSpecLocation = "$buildDir/$backendOpenApiJson"
+val destinationPackage = "org.dataland.datalandbackend.openApiClient"
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
     into("$buildDir")
 }
 
-tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(clientConfig.apiSpecLocation).path
-    outputDir.set(clientConfig.outputDir)
-    modelPackage.set("${clientConfig.destinationPackage}.model")
-    apiPackage.set("${clientConfig.destinationPackage}.api")
-    packageName.set(clientConfig.destinationPackage)
+tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    input = project.file(apiSpecLocation).path
+    outputDir.set(clientOutputDir)
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
     generatorName.set("kotlin")
     configOptions.set(
         mapOf(
@@ -81,7 +71,7 @@ tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.t
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$buildDir/Clients/backend/src/main/kotlin")
+    main.java.srcDir("$clientOutputDir/src/main/kotlin")
 }
 
 ktlint {

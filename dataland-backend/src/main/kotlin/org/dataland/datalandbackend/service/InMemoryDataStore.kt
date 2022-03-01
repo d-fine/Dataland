@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.springframework.stereotype.Component
 
+/**
+ * Simple implementation of a data store using in memory storage
+ */
 @Component("DefaultStore")
 class InMemoryDataStore : DataStoreInterface {
     var data = mutableMapOf<Int, DataSet>()
