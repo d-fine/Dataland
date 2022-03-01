@@ -59,7 +59,7 @@ jobs:
         with:
           name: TestReport
           path:
-            #./build/reports/            Comment: "./**/build/reports"  also covers "./build/reports/"
+            #./build/reports/            Comment: "./**/build/reports"  should also cover "./build/reports/"
             ./**/build/reports
       - name: Upload JaCoCo Exec Results
         if: always()
