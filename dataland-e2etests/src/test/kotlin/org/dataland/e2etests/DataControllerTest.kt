@@ -1,7 +1,7 @@
 package org.dataland.e2etests
 
-import org.dataland.datalandbackend.client.api.DataControllerApi
-import org.dataland.datalandbackend.client.model.DataSet
+import org.dataland.datalandbackend.openApiClient.api.DataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -55,13 +55,11 @@ class DataControllerTest {
         )
     }
 
-
     @Test
-    fun `get dummy company data by sending a request to dummy skyminder server`() {
+    fun `get dummy company data by sending a request to dummy skyminder server and don't expect exception`() {
 
         val testSearchPropertyCode = "Has_to_be_non_null"
         val testSearchPropertyName = "String"
-        val response = dataControllerApi.getDataSkyminderRequest(code = testSearchPropertyCode, name = testSearchPropertyName)
-        println(response)
+        dataControllerApi.getDataSkyminderRequest(code = testSearchPropertyCode, name = testSearchPropertyName)
     }
 }

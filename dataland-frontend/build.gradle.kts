@@ -17,7 +17,7 @@ val jacocoClasses by extra(emptyList<File>())
 tasks.register<NpmTask>("testNpm") {
     dependsOn(tasks.npmInstall)
     npmCommand.set(listOf("run", "testunit"))
-    args.set(listOf("--", "--out-dir", "${buildDir}/npm-output"))
+    args.set(listOf("--", "--out-dir", "$buildDir/npm-output"))
     inputs.dir("src")
-    outputs.dir("${buildDir}/npm-output")
+    outputs.dir("$buildDir/npm-output")
 }

@@ -16,6 +16,7 @@ allprojects {
 
 subprojects {
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

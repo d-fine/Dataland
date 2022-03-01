@@ -14,7 +14,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.openapi.generator") version "5.4.0"
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -29,6 +28,9 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
     implementation("com.squareup.moshi:moshi-adapters:1.13.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.apache.logging.log4j:log4j:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 
@@ -53,7 +55,7 @@ val clientConfig = ClientConfig(
     taskName = "generateBackendClient",
     outputDir = "$buildDir/Clients/backend",
     apiSpecLocation = "$buildDir/$backendOpenApiJson",
-    destinationPackage = "org.dataland.datalandbackend"
+    destinationPackage = "org.dataland.datalandbackend.openApiClient"
 )
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
@@ -64,8 +66,8 @@ tasks.register<Copy>("getBackendOpenApiSpec") {
 tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file(clientConfig.apiSpecLocation).path
     outputDir.set(clientConfig.outputDir)
-    modelPackage.set("${clientConfig.destinationPackage}.client.model")
-    apiPackage.set("${clientConfig.destinationPackage}.client.api")
+    modelPackage.set("${clientConfig.destinationPackage}.model")
+    apiPackage.set("${clientConfig.destinationPackage}.api")
     packageName.set(clientConfig.destinationPackage)
     generatorName.set("kotlin")
     configOptions.set(
@@ -80,4 +82,10 @@ tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.t
 sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/Clients/backend/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
 }
