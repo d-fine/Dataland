@@ -52,7 +52,7 @@ jobs:
       - name: Execute Frontend Unit Tests
         run: ./gradlew :dataland-frontend:npm_run_testunit
       - name: Execute Frontend Cypress Tests
-        run: ./gradlew :dataland-frontend:npm_run_testheadless
+        run: ./gradlew :dataland-frontend:npm_run_testproductive
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
