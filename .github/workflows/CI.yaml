@@ -116,7 +116,7 @@ jobs:
         if: always()
         run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #Why not take DATALAND_SKYMINDERCLIENT_TOKEN here too?
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
