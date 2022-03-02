@@ -32,7 +32,7 @@ jobs:
         with:
           name: buildDirectories
           path: "**/build/"
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
     needs:
       - build
@@ -47,12 +47,10 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
-      - name: Execute tests
+      - name: Execute Backend tests
         run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
       - name: Execute Frontend Unit Tests
         run: ./gradlew :dataland-frontend:npm_run_testunit
-      - name: Execute Frontend Cypress Tests
-        run: ./gradlew :dataland-frontend:npm_run_testproductive
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -71,7 +69,7 @@ jobs:
         with:
           name: lcovResults
           path: ./dataland-frontend/coverage/**/lcov.info
-  e2e-test:
+  e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
@@ -90,8 +88,8 @@ jobs:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
     needs:
-      - e2e-test
-      - test
+      - e2e-tests
+      - unit-tests
     steps:
       - uses: actions/checkout@v2
         with:
