@@ -3,6 +3,7 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.DataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataSet
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class DataControllerTest {
@@ -55,6 +56,6 @@ class DataControllerTest {
 
     @Test
     fun `get dummy company data by sending a request to dummy skyminder server`() {
-        assert(dataControllerApi.getDataSkyminderRequest(code = "dummy", name = "dummy").isNotEmpty())
+        assertTrue(dataControllerApi.getDataSkyminderRequest(code = "dummy", name = "dummy").isNotEmpty(), "The dummy skyminder server is returning an empty respond.")
     }
 }
