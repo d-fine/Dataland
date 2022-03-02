@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.2_8-jdk-alpine
+FROM eclipse-temurin:17.0.14.1_1-jdk-focal
 RUN apk add --update nodejs npm
 
 COPY . /app/
