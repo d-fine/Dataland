@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17.0.2_8-jdk-alpine
-CMD apk add --update nodejs npm
+RUN apk add --update nodejs npm
 
 COPY . /app/
 EXPOSE 8080
