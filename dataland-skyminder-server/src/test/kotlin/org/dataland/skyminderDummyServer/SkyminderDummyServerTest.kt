@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SkyminderDummyServerTest (@Autowired var mockMvc: MockMvc) {
+class SkyminderDummyServerTest(@Autowired var mockMvc: MockMvc) {
     @Test
     fun `check that the dummy server is available`() {
         mockMvc.perform(MockMvcRequestBuilders.get("/actuator/health"))
