@@ -1,8 +1,10 @@
 describe('User interactive tests', () => {
-    const frontendUrl = "http://localhost"
+
+    beforeEach(() => {
+        cy.visit("/")
+    })
 
     it('BMW address should be available upon request by clicking', () => {
-        cy.visit(frontendUrl)
         cy.get('input[id="countryCode"]').type("DEU", {force: true})
         cy.get('input[id="companyName"]').type("BMW", {force: true})
         cy.get('button').contains('Get Skyminder by Name').click()
@@ -11,7 +13,6 @@ describe('User interactive tests', () => {
     })
 
     it('BMW address should be available upon request by pressing enter for countryCode input', () => {
-        cy.visit(frontendUrl)
         cy.get('input[id="companyName"]').type("BMW", {force: true})
         cy.get('input[id="countryCode"]').type("DEU{enter}", {force: true})
         cy.get('table').should('exist')
@@ -19,7 +20,6 @@ describe('User interactive tests', () => {
     })
 
     it('BMW address should be available upon request by pressing enter for companyName input', () => {
-        cy.visit(frontendUrl)
         cy.get('input[id="countryCode"]').type("DEU", {force: true})
         cy.get('input[id="companyName"]').type("BMW{enter}", {force: true})
         cy.get('table').should('exist')
@@ -27,7 +27,6 @@ describe('User interactive tests', () => {
     })
 
     it('table should not exist in case of invalid input data', () => {
-        cy.visit(frontendUrl)
         cy.get('input[id="countryCode"]').type("DUMMY", {force: true})
         cy.get('input[id="companyName"]').type("DUMMY", {force: true})
         cy.get('button').contains('Get Skyminder by Name').click()
@@ -35,7 +34,6 @@ describe('User interactive tests', () => {
     })
 
     it('checks Clear button', () => {
-        cy.visit(frontendUrl)
         cy.get('input[id="countryCode"]').type("DEU", {force: true})
         cy.get('input[id="companyName"]').type("BMW", {force: true})
         cy.get('button').contains('Get Skyminder by Name').click()
