@@ -9,11 +9,11 @@
     <tbody>
       <tr v-for="(dataset, i) in data" :key="i">
         <td>{{dataset.name}}</td>
-        <td>{{dataset.address[0]}}</td>
-        <td>{{dataset.website[0]}}</td>
-        <td>{{dataset.email[0]}}</td>
-        <td>{{dataset.phone[0]}}</td>
-        <td>Type: {{dataset.identifier[0].type}}, Name: {{dataset.identifier[0].name}} Number: {{dataset.identifier[0].number}}</td>
+        <td>{{dataset.addresses[0]}}</td>
+        <td>{{dataset.websites[0]}}</td>
+        <td>{{dataset.emails[0]}}</td>
+        <td>{{dataset.phones[0]}}</td>
+        <td>Type: {{dataset.identifiers[0].type}}, Name: {{dataset.identifiers[0].name}} Number: {{dataset.identifiers[0].number}}</td>
       </tr>
     </tbody>
   </table>
