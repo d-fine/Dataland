@@ -4,7 +4,6 @@
 # whether the backend-container is running. Only then it executes the end-to-end tests.
 
 set -ex
-
 ls -R
 ./gradlew compileKotlin
 # proxy durch localhost ersetzen?
