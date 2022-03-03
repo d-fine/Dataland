@@ -13,6 +13,7 @@
         <td>{{dataset.website[0]}}</td>
         <td>{{dataset.email[0]}}</td>
         <td>{{dataset.phone[0]}}</td>
+        <td>Type: {{dataset.identifier[0].type}}, Name: {{dataset.identifier[0].name}} Number: {{dataset.identifier[0].number}}</td>
       </tr>
     </tbody>
   </table>
