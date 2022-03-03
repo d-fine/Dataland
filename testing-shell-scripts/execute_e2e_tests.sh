@@ -1,6 +1,6 @@
 #!/bin/sh
 set -ex
-
+echo $SKYMINDER_URL $SKYMINDER_USER $SKYMINDER_PW | md5sum
 #Start E2E Test and wait for E2E Test completion
 docker-compose --project-name dala-e2e-test up -d
 # is 15 min long enough for all tests?
