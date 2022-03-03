@@ -20,7 +20,6 @@ import javax.validation.Valid
  */
 
 @RequestMapping("/")
-@CrossOrigin("http://localhost:8090")
 interface DataAPI {
     @Operation(
         summary = "Retrieve list of all existing data.",
