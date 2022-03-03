@@ -4,10 +4,8 @@
 # whether the backend-container is running. Only then it executes the end-to-end tests.
 
 set -ex
-
-ls -R
 ./gradlew compileKotlin
 # proxy durch localhost ersetzen?
 timeout 240 sh -c "while ! wget http://proxy:80/api/actuator/health; do echo 'backend server not yet there - retrying in 1s'; sleep 1; done; rm health; echo 'backend server responded'"
-#./gradlew :dataland-e2etests:test --no-daemon
-./gradlew :dataland-frontend:npm_run_testproductive --no-daemon --debug --stacktrace --rerun-tasks
+./gradlew :dataland-e2etests:test --no-daemon
+./gradlew :dataland-frontend:npm_run_testproductive --no-daemon
