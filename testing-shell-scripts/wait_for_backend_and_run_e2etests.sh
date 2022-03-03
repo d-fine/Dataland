@@ -5,12 +5,9 @@
 
 set -ex
 
+ls -R
 ./gradlew compileKotlin
 # proxy durch localhost ersetzen?
-timeout 240 sh -c "while ! curl http://proxy:80/api/actuator/health; do echo 'backend server not yet there - retrying in 1s'; sleep 1; done; rm health; echo 'backend server responded'"
-./gradlew :dataland-e2etests:test --no-daemon
-
-dpkg --add-architecture i386
-apt-get update
-apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-./gradlew :dataland-frontend:npm_run_testproductive --no-daemon
+timeout 240 sh -c "while ! wget http://proxy:80/api/actuator/health; do echo 'backend server not yet there - retrying in 1s'; sleep 1; done; rm health; echo 'backend server responded'"
+#./gradlew :dataland-e2etests:test --no-daemon
+./gradlew :dataland-frontend:npm_run_testproductive --no-daemon --debug --stacktrace --rerun-tasks
