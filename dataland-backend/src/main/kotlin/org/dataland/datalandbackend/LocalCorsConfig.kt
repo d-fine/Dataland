@@ -8,8 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @Profile("dev")
+
+
+/**
+ * Class is for local api route configuration
+ */
 class LocalCorsConfig {
     @Bean
+    /**
+     * Function for configure the MVC
+     * @return cross origin configuration, here dedicated to allowance of client requests
+     */
     fun corsConfigurer(): WebMvcConfigurer? {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
