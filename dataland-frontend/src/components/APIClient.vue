@@ -29,7 +29,7 @@
         </div>
       </div>
       <div v-if="data.result" class="col m12">
-        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone']" :data="data.result"/>
+        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="data.result"/>
       </div>
     </div>
   </div>
