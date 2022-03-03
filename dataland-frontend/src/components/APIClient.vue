@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       // TODO: FIX this URL here!
-      dataStore: new DataStore("http://localhost:8080/api"),
+      dataStore: new DataStore("http://localhost/api"),
       data: new Data()
     }
   },
