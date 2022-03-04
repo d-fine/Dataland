@@ -1,5 +1,5 @@
 const plugins = []
-if (process.env.NODE_ENV === 'e2e') {
+if (process.env.NODE_ENV === 'production') {
   plugins.push([
     "babel-plugin-istanbul", {
       // specify some options for NYC instrumentation here

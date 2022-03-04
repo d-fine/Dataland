@@ -8,9 +8,9 @@
     "testunit": "vue-cli-service test:unit",
     "teste2e": "vue-cli-service test:e2e --mode e2e",
     "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
-    "testproductive": "vue-cli-service test:e2e --mode e2e --url http://localhost --headless",
+    "testproductive": "vue-cli-service test:e2e --url http://localhost --headless",
     "testremote": "vue-cli-service test:e2e --url http://localhost",
-    "testpipeline": "vue-cli-service test:e2e --mode e2e --url http://proxy --headless",
+    "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
