@@ -24,6 +24,7 @@ pnpm-debug.log*
 
 reports
 /tests/e2e/videos/
+/.nyc_output/
 **/coverage/
 **/.gradle/
 /tests/*/screenshots/
