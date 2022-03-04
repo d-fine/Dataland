@@ -1,7 +1,7 @@
 describe('User interactive tests', () => {
 
     beforeEach(() => {
-        cy.visit("/")
+        cy.visit("http://proxy")
         cy.get('input[id="countryCode"]').type("DEU", {force: true})
         cy.get('input[id="companyName"]').type("BMW", {force: true})
     })

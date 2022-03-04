@@ -1,6 +1,6 @@
 describe('Index testsuite', () => {
     it('Check App is present', () => {
-        cy.visit("/")
+        cy.visit("http://proxy")
         cy.get('#app').should('exist')
     })
     it('Logo and welcome message are present', () => {
