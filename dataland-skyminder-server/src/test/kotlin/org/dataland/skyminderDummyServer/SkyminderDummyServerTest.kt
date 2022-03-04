@@ -18,11 +18,4 @@ class SkyminderDummyServerTest(@Autowired var mockMvc: MockMvc) {
         mockMvc.perform(MockMvcRequestBuilders.get("/actuator/health"))
             .andExpect(MockMvcResultMatchers.status().isOk)
     }
-
-    @Test
-    fun `check runApplication top level function`() {
-        val context = runApplication<DummySkyminder>()
-        assertNotNull(context)
-    }
-
 }
