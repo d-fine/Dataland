@@ -67,7 +67,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: lcovResults
+          name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
   e2e-tests:
     runs-on: ubuntu-latest
@@ -84,6 +84,12 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
+      - name: Upload FE E2E lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcovResultsE2E
+          path: ./dataland-frontend/coverage/**/lcov.info
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -110,7 +116,11 @@ jobs:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v2
         with:
-          name: lcovResults
+          name: lcovResultsUnit
+          path: fe-coverage
+      - uses: actions/download-artifact@v2
+        with:
+          name: lcovResultsE2E
           path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
