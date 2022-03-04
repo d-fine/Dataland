@@ -1,5 +1,6 @@
 package org.dataland.skyminderDummyServer
 
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -15,5 +16,11 @@ class SkyminderDummyServerTest(@Autowired var mockMvc: MockMvc) {
     fun `check that the dummy server is available`() {
         mockMvc.perform(MockMvcRequestBuilders.get("/actuator/health"))
             .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun `check top level main function`() {
+        val context = main(emptyArray())
+        assertNotNull(context)
     }
 }
