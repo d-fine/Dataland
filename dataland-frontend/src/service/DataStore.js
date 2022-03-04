@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"
 
 export class DataStore {
     constructor(baseUrl) {
@@ -13,17 +13,16 @@ export class DataStore {
 
     async getByName(code, name) {
         try {
-            const results = await this.axios.get(`/data/skyminder/${code}/${name}`);
+            const results = await this.axios.get(`/data/skyminder/${code}/${name}`)
             const data = results.data
             console.log(results.status + "-" + results.statusText)
-            if (!data.length){
-                return null
+            if (data.length){
+                return data
             }
-            return data;
         } catch (err) {
             console.error(err)
-            return null;
         }
+        return null
     }
 
 
