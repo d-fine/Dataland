@@ -4,6 +4,7 @@
     <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
   </section>
   <HelloWorld msg="Welcome to DataLand"/>
+
   <APIClient/>
 
 </template>
@@ -17,6 +18,11 @@ export default {
   components: {
     HelloWorld,
     APIClient,
+  },
+  created(){
+    console.log("Node Env:" + process.env.NODE_ENV)
+    console.log("base URL:" + process.env.VUE_APP_URL)
+    console.log("api URL is: " + `${process.env.VUE_APP_URL}/api`)
   }
 }
 </script>

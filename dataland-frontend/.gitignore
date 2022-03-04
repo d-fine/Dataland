@@ -28,4 +28,3 @@ reports
 **/coverage/
 **/.gradle/
 /tests/*/screenshots/
-/.env.production
