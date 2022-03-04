@@ -10,7 +10,7 @@
     "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
     "testproductive": "vue-cli-service test:e2e --mode e2e --url http://localhost --headless",
     "testremote": "vue-cli-service test:e2e --url http://localhost",
-    "testpipeline": "vue-cli-service test:e2e --mode e2e --url http://proxy:80 --headless",
+    "testpipeline": "nyc vue-cli-service test:e2e --mode e2e --url http://proxy:80 --headless",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -38,7 +38,8 @@
     "cypress": "^9.5.1",
     "eslint": "^8.10.0",
     "eslint-plugin-vue": "^8.5.0",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "nyc": "^15.1.0"
   },
   "nyc": {
     "report-dir": "coverage/e2e",
