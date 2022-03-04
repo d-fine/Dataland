@@ -1,7 +1,7 @@
 describe('Index testsuite', () => {
     it('Check App is present', () => {
         cy.visit("/")
-        cy.get('#app')
+        cy.get('#app').should('exist')
     })
     it('Logo and welcome message are present', () => {
         cy.get('h1').should("have.text","Welcome to DataLand")
@@ -42,7 +42,6 @@ describe('Index testsuite', () => {
         cy.get('#companyName').should("have.value",'')
         })
     it('Skyminder button is present', () => {
-        expect(true).equal(true)
         cy.get('button.btn.btn-sm').contains('Get Skyminder by Name')
             .should('not.be.disabled')
     })
