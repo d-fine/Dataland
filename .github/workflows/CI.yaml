@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: lcovResultsE2E
-          path: ./dataland-frontend/coverage/**/lcov.info
+          path: ./lcov.info
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
