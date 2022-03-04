@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       // TODO: FIX this URL here!
-      dataStore: new DataStore(`/api`),
+      dataStore: new DataStore(process.env.VUE_APP_API_URL),
       data: new Data()
     }
   },
