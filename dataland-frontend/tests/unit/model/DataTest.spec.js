@@ -4,7 +4,7 @@ describe("DataTest", () => {
     let data = new Data();
 
     beforeAll(() => {
-        data.id = "dummy"
+        data.code = "dummy"
         data.name = "dummy"
         data.result = "dummy"
     });
@@ -12,7 +12,7 @@ describe("DataTest", () => {
     it("checks clearAll", () => {
         data.clearAll()
         expect(data.result).toBeNull();
-        expect(data.id).toBeNull();
+        expect(data.code).toBeNull();
         expect(data.name).toBeNull();
     })
 

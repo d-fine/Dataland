@@ -117,11 +117,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: lcovResultsUnit
-          path: fe-coverage
+          path: fe-coverage/unit
       - uses: actions/download-artifact@v2
         with:
           name: lcovResultsE2E
-          path: fe-coverage
+          path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: ./gradlew jacocoTestReport sonarqube --no-daemon
