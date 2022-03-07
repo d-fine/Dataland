@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/WelcomeDataland.vue'
 import APIClient from "@/components/APIClient";
 
 export default {

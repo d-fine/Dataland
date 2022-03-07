@@ -25,6 +25,11 @@
                   <button class="btn btn-sm" @click="getSkyminderByName">Get Skyminder by Name</button>
               </div>
             </div>
+
+            <div class="progress" v-if="loading">
+              <div class="indeterminate" ></div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -47,13 +52,16 @@ export default {
   data() {
     return {
       dataStore: new DataStore(process.env.VUE_APP_API_URL),
-      data: new Data()
+      data: new Data(),
+      loading: false
     }
   },
   methods: {
 
     async getSkyminderByName() {
+      this.loading = true
       this.data.getResult(await this.dataStore.getByName(this.data.code, this.data.name))
+      this.loading = false
     },
 
     clearGetOutput() {
