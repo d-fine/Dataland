@@ -2,7 +2,7 @@
 set -ex
 #Start E2E Test and wait for E2E Test completion
 docker-compose --project-name dala-e2e-test up -d
-timeout 900 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
+timeout 1200 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info .
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
