@@ -11,3 +11,6 @@ timeout 240 sh -c "while ! wget http://proxy:80/api/actuator/health; do echo 'ba
 timeout 120 sh -c "while ! wget http://proxy:80/skyminder-dummy-server-actuator-health; do echo 'skyminder dummy server not yet there - retrying in 1s'; sleep 1; done; rm skyminder-dummy-server-actuator-health; echo 'skyminder dummy server responded'"
 ./gradlew :dataland-e2etests:test --no-daemon
 ./gradlew :dataland-frontend:npm_run_testpipeline --no-daemon
+ls -R
+echo "find file"
+find . -name lcov.info
