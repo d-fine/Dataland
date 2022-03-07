@@ -57,7 +57,7 @@ sonarqube {
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
-        property("sonar.coverage.exclusions", "**/test/**,**/tests/**")
+        property("sonar.coverage.exclusions", "**/test/**,**/tests/**,LocalCorsConfig.kt")
         property(
             "sonar.sources",
             subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> }
