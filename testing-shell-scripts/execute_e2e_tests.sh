@@ -4,7 +4,7 @@ set -ex
 docker-compose --project-name dala-e2e-test up -d
 # is 15 min long enough for all tests?
 timeout 900 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
-docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/**/lcov.info .
+docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info .
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker stop dala-e2e-test_backend_1
 timeout 90 sh -c "docker logs dala-e2e-test_backend_1 --follow"
