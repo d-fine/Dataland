@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component
             var request : Request =
 
                 Request.Builder()
-                    .url("http://localhost/skyminder-dummy-server-actuator-health"/*"http://skyminder-server:8080/actuator/health"*/)
+                    .url("http://skyminder-server:8080/actuator/health")
                     .build();
 
 
