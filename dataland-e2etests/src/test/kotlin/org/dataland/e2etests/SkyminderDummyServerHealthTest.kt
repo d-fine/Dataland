@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class SkyminderDummyServerHealthTest {
 
     @Test
-    fun `test if Skyminder Dummy Server is running by using the backend actuator health endpoint`() {
+    fun `test if Skyminder Dummy Server is up by using the backend actuator health endpoint`() {
         val client = OkHttpClient()
         var responseString = "INITIALIZE"
 
