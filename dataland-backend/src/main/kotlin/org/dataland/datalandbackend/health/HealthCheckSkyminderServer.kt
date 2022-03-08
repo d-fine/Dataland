@@ -27,6 +27,11 @@ class HealthCheckSkyminderServer : HealthIndicator {
         } else Health.up().withDetail(messageKey, "Available").build()
     }
 
+    /**
+     * A method to check the health status of the Skyminder-Server by sending a request to its health endpoint.
+     * @return a Boolean that declares if Skyminder-Server runs
+     */
+
     fun isRunningSkyminderServer(): Boolean {
 
         val client = OkHttpClient()
