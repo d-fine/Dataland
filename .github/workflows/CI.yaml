@@ -155,6 +155,7 @@ jobs:
         run: |
           ls
           find . -name *-plain.jar
+          find . -name *.jar
           find . -name index.html
           rm ./dataland-backend/build/libs/*-plain.jar
           ./deployment/deploy_to_preview.sh "./dataland-backend/build/libs/dataland-backend*.jar" "./dist"
