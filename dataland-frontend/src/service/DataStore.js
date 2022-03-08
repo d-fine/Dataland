@@ -11,6 +11,7 @@ export class DataStore {
     constructor(baseUrl) {
         this.axios = axios.create({
             baseURL: baseUrl,
+            timeout: 9000, /* timeout in milliseconds*/
             headers: {
                 "Content-type": "application/json"
             }
