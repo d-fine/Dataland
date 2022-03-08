@@ -19,12 +19,12 @@ class SkyminderDummyServerHealthTest {
             val response: Response = client.newCall(request).execute()
             responseString = response.body?.string().toString()
             println(responseString)
-
         } catch (_: Exception) {
             println("The Skyminder Dummy Server could not be checked via the backend health endpoint.")
         }
         println(responseString)
-        assertEquals("{\"status\":\"UP\"}",
+        assertEquals(
+            "{\"status\":\"UP\"}",
             responseString,
             "The Skyminder Dummy Server does not have the status \"UP\" when checking it via " +
                 "the backend actuator health point. It responds \"$responseString.\""
