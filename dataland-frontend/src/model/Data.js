@@ -1,17 +1,27 @@
+/**
+ * Implementation of the data class
+ */
 export class Data {
-    /* The fields of this class and APIClient.vue will be changed */
+    /**
+     * initializes the field properties
+     */
     constructor() {
         this.clearAll()
     }
 
+    /**
+     * Sets all field properties to null
+     */
     clearAll() {
-        this.id = null;
-        this.name = null;
-        this.code = null;
+        this.id = null
+        this.name = null
+        this.code = null
         this.result = null
     }
 
-
+    /**
+     * Gets the results and sets them
+     */
     getResult(results) {
         this.result = results
     }

@@ -1,5 +1,5 @@
 import APIClient from '@/components/APIClient.vue'
-import {mount} from "@vue/test-utils";
+import {mount} from "@vue/test-utils"
 
 describe('APIClientTest', () => {
 
@@ -15,7 +15,7 @@ describe('APIClientTest', () => {
         expect(wrapper.vm.loading).toBe(false)
         expect(wrapper.vm.getSkyminderByName()).toBeDefined()
         expect(wrapper.vm.loading).toBe(true)
-        await new Promise(timerHandler => setTimeout(timerHandler, 4000)); /* sleep for 4s*/
+        await new Promise(timerHandler => setTimeout(timerHandler, 4000)) /* sleep for 4s*/
         expect(wrapper.vm.loading).toBe(false)
     })
 
