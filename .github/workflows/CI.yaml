@@ -152,6 +152,8 @@ jobs:
           name: distDirectories
       - name: Deploy to Preview
         run: |
+          ls
+          find . -name *-plain.jar
           rm dataland-backend/build/libs/*-plain.jar
           ./deployment/deploy_to_preview.sh "dataland-backend/build/libs/dataland-backend*.jar" "dataland-frontend/dist"
         env:
