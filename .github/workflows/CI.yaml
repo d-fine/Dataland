@@ -159,7 +159,7 @@ jobs:
           find . -name index.html
           rm ./dataland-backend/build/libs/*-plain.jar
           ls ./dataland-backend/build/libs/dataland-backend*.jar
-          ./deployment/deploy_to_preview.sh ./dataland-backend/build/libs/dataland-backend*.jar
+          ./deployment/deploy_to_preview.sh dataland-backend/build/libs/dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   summary:
