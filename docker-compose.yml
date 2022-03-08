@@ -51,6 +51,16 @@ services:
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
+  develop:
+    build:
+      context: ./
+      dockerfile: ./devcontainer/Dockerfile
+    volumes:
+      - "./:/code:rw"
+    expose:
+      - "8080"
+    networks:
+      - external
 
 networks:
   internal:
