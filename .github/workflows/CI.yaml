@@ -35,11 +35,6 @@ jobs:
         with:
           name: buildDirectories
           path: "**/build/"
-      - name: Upload Dist Directory
-        uses: actions/upload-artifact@v2
-        with:
-          name: distDirectories
-          path: "./dataland-frontend/dist/"
   build-prod:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
@@ -178,10 +173,6 @@ jobs:
           path: dist
       - name: Deploy to Preview
         run: |
-          ls
-          find . -name *-plain.jar
-          find . -name *.jar
-          find . -name index.html
           rm ./dataland-backend/build/libs/*-plain.jar
           ls ./dataland-backend/build/libs/dataland-backend*.jar
           ./deployment/deploy_to_preview.sh dataland-backend/build/libs/dataland-backend*.jar
