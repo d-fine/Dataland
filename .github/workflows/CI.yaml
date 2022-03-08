@@ -34,8 +34,8 @@ jobs:
         with:
           name: buildDirectories
           path: |
-            "dataland-backend/build/"
-            "dataland-frontend/dist/"
+            "**/build/"
+            "**/dist/"
   unit-tests:
     runs-on: ubuntu-latest
     needs:
