@@ -33,9 +33,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: buildDirectories
-          path: |
-            "**/build/"
-            "**/dist/"
+          path: "**/build/"
+      - name: Upload Dist Directory
+        uses: actions/upload-artifact@v2
+        with:
+          name: distDirectories
+          path: "**/dist/"
   unit-tests:
     runs-on: ubuntu-latest
     needs:
@@ -144,6 +147,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
+      - uses: actions/download-artifact@v2
+        with:
+          name: distDirectories
       - name: Deploy to Preview
         run: |
           rm dataland-backend/build/libs/*-plain.jar
