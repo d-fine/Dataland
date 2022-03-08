@@ -30,6 +30,7 @@ describe("DataStoreTest", () => {
     const receivedData = await dataStore.getByName(code, name)
 
     expect(receivedData).toEqual(data);
+    expect(receivedData.length).toEqual(data.length);
   });
 
   it("should return an empty list in case of a network error", async () => {
