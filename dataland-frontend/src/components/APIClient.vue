@@ -44,7 +44,8 @@
 import {DataStore} from "@/service/DataStore";
 import {Data} from "@/model/Data"
 import ResultTable from "@/components/ui/ResultTable"
-export default {
+
+const apiClient = {
   name: "APIClient",
   components: {
     ResultTable
@@ -57,17 +58,18 @@ export default {
     }
   },
   methods: {
-
     async getSkyminderByName() {
       this.loading = true
       this.data.getResult(await this.dataStore.getByName(this.data.code, this.data.name))
       this.loading = false
     },
 
-    clearGetOutput() {
+    async clearGetOutput() {
       this.data.clearAll()
     },
   }
 }
+
+export default apiClient
 
 </script>
