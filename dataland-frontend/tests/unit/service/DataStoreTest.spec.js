@@ -32,7 +32,16 @@ describe("DataStoreTest", () => {
     expect(receivedData).toEqual(data)
   })
 
-  it("should return an empty list in case of a network error", async () => {
+  it("should return null when no data is available", async () => {
+    mock.onGet(`${BASE_URL}/data/skyminder/${code}/${name}`).reply(200, [])
+
+    const dataStore = new DataStore(BASE_URL)
+    const receivedData = await dataStore.getByName(code, name)
+
+    expect(receivedData).toBeNull()
+  })
+
+  it("should return null in case of a network error", async () => {
     mock.onGet(`${BASE_URL}/data/skyminder/${code}/${name}`).networkErrorOnce()
 
     const dataStore = new DataStore(BASE_URL)
@@ -41,7 +50,7 @@ describe("DataStoreTest", () => {
     expect(receivedData).toBeNull()
   })
 
-  it("should return an empty list with a wrong address", async () => {
+  it("should return null in case of a wrong address", async () => {
     mock.onGet("https://newdummyhost:newdummyport/data")
 
     const dataStore = new DataStore(BASE_URL)
