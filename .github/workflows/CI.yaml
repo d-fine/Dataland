@@ -150,12 +150,13 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: distDirectories
+          path: dist
       - name: Deploy to Preview
         run: |
           ls
           find . -name *-plain.jar
-          rm dataland-backend/build/libs/*-plain.jar
-          ./deployment/deploy_to_preview.sh "dataland-backend/build/libs/dataland-backend*.jar" "dataland-frontend/dist"
+          rm ./dataland-backend/build/libs/*-plain.jar
+          ./deployment/deploy_to_preview.sh "./dataland-backend/build/libs/dataland-backend*.jar" "./dist"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   summary:
