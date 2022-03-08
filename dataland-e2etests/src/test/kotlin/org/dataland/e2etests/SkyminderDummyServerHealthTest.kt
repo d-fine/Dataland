@@ -23,9 +23,7 @@ class SkyminderDummyServerHealthTest {
                     " HTTP Request failed."
             )
         }
-        assertEquals(
-            "{\"status\":\"UP\"}",
-            responseString,
+        assertEquals("{\"status\":\"UP\"}", responseString,
             "The Skyminder Dummy Server does not have the status \"UP\" when checking it via " +
                 "the backend actuator health point. It responds \"$responseString.\""
         )
