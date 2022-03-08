@@ -20,7 +20,10 @@ class SkyminderDummyServerHealthTest {
             responseString = response.body?.string().toString()
             println(responseString)
         } catch (_: Exception) {
-            println("The Skyminder Dummy Server could not be checked via the backend health endpoint.")
+            println(
+                "The Skyminder Dummy Server could not be checked via the backend health endpoint." +
+                    " HTTP Request failed."
+            )
         }
         println(responseString)
         assertEquals(
