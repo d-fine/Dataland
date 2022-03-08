@@ -10,5 +10,5 @@ scp ./deployment/start_app_on_server.sh ubuntu@3.71.162.94:/home/ubuntu/start_ap
 scp ./deployment/docker-compose.yml ubuntu@3.71.162.94:/home/ubuntu/docker-compose.yml
 scp ./nginx.conf ubuntu@3.71.162.94:/home/ubuntu/nginx.conf
 scp "$1" ubuntu@3.71.162.94:/home/ubuntu/jar/dala-backend.jar
-scp -r "$2" ubuntu@3.71.162.94:/home/ubuntu/dist
-ssh ubuntu@3.71.162.94 "export SKYMINDER_URL=$SKYMINDER_URL; export SKYMINDER_PW=$SKYMINDER_PW; export SKYMINDER_USER=$SKYMINDER_USER; sudo /home/ubuntu/start_app_on_server.sh"
+scp -r ./dist ubuntu@3.71.162.94:/home/ubuntu
+ssh ubuntu@3.71.162.94 "export SKYMINDER_URL=$SKYMINDER_URL; export SKYMINDER_PW=$SKYMINDER_PW; export SKYMINDER_USER=$SKYMINDER_USER; sudo -E /home/ubuntu/start_app_on_server.sh"
