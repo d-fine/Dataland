@@ -8,9 +8,18 @@ import org.springframework.boot.actuate.health.Health
 import org.springframework.boot.actuate.health.HealthIndicator
 import org.springframework.stereotype.Component
 
+/**
+ * This class customizes the actuator/health endpoint of the backend to display if the Skyminder-Server is available.
+ */
+
 @Component("HealthCheckerSkyminder")
 class HealthCheckSkyminderServer : HealthIndicator {
     private val messageKey = "Skyminder-Server"
+
+    /**
+     * A method to build the health status of the Skyminder-Server.
+     * @return a Health object
+     */
 
     override fun health(): Health {
         return if (!isRunningSkyminderServer()) {
