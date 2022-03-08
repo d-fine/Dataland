@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: distDirectories
-          path: "**/dist/"
+          path: "./dataland-frontend/dist/"
   unit-tests:
     runs-on: ubuntu-latest
     needs:
