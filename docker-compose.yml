@@ -61,7 +61,12 @@ services:
       - "8080"
     networks:
       - external
-
+    environment:
+      DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
+      DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
+      SKYMINDER_URL: ${SKYMINDER_URL}
+      SKYMINDER_USER: ${SKYMINDER_USER}
+      SKYMINDER_PW: ${SKYMINDER_PW}
 networks:
   internal:
   external:
