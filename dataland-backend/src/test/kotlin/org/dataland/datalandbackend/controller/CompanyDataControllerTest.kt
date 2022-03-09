@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.DataSet
+import org.dataland.datalandbackend.model.StoredDataSet
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -16,35 +16,35 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class DataControllerTest(
+internal class CompanyDataControllerTest(
     @Autowired var mockMvc: MockMvc,
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val dataSets = listOf(
-        DataSet(name = "Company A", payload = "Data"),
-        DataSet(name = "Holding B", payload = "Information"),
-        DataSet(name = "Group C", payload = "Inputs")
+    val storedDataSets = listOf(
+        StoredDataSet(name = "Company A", payload = "Data"),
+        StoredDataSet(name = "Holding B", payload = "Information"),
+        StoredDataSet(name = "Group C", payload = "Inputs")
     )
 
-    fun uploadDataSet(mockMvc: MockMvc, dataSet: DataSet) {
+    fun uploadDataSet(mockMvc: MockMvc, storedDataSet: StoredDataSet) {
         mockMvc.perform(
             post("/data")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(dataSet))
+                .content(objectMapper.writeValueAsBytes(storedDataSet))
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 
     @Test
     fun `data can be added`() {
-        uploadDataSet(mockMvc, dataSets[0])
+        uploadDataSet(mockMvc, storedDataSets[0])
     }
 
     @Test
     fun `data can be retrieved`() {
-        val testSet = dataSets[0]
+        val testSet = storedDataSets[0]
         uploadDataSet(mockMvc, testSet)
 
         mockMvc.perform(
@@ -59,7 +59,7 @@ internal class DataControllerTest(
 
     @Test
     fun `list the data`() {
-        for (dataset in dataSets)
+        for (dataset in storedDataSets)
             uploadDataSet(mockMvc, dataset)
         mockMvc.perform(
             get("/data")
