@@ -18,7 +18,7 @@ class InMemoryDataStore : DataStoreInterface {
         if (companyData.containsKey(companyId)) {
             dataCounter++
             this.data["$dataCounter"] =
-                StoredDataSet(dataId = "$dataCounter", companyId = companyId, dataType = dataType, data = data)
+                StoredDataSet(companyId = companyId, dataIdentifier = DataIdentifier(dataId = "$dataCounter", dataType = dataType), data = data)
             this.companyData[companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = dataType))
             return "$dataCounter"
         }
@@ -28,7 +28,7 @@ class InMemoryDataStore : DataStoreInterface {
     override fun listDataSets(): List<DataSetMetaInformation> {
         return data.map {
             DataSetMetaInformation(
-                DataIdentifier(dataId = it.key, dataType = it.value.dataType),
+                DataIdentifier(dataId = it.key, dataType = it.value.dataIdentifier.dataType),
                 companyId = it.value.companyId
             )
         }
@@ -36,7 +36,7 @@ class InMemoryDataStore : DataStoreInterface {
 
     override fun getDataSet(dataId: String, dataType: String): String {
         if (! data.containsKey(dataId)) {throw IllegalArgumentException("The id: $dataId does not exist.")}
-        if (data[dataId]?.dataType != dataType) {throw IllegalArgumentException("The data with id: $dataId is of type ${data[dataId]?.dataType} instead of the expected $dataType.")}
+        if (data[dataId]?.dataIdentifier?.dataType != dataType) {throw IllegalArgumentException("The data with id: $dataId is of type ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType.")}
         return data[dataId]?.data ?: ""
     }
 
