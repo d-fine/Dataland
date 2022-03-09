@@ -3,19 +3,19 @@
 
     <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
   </section>
-  <HelloWorld msg="Welcome to DataLand"/>
+  <WelcomeDataland msg="Welcome to DataLand"/>
   <APIClient/>
 
 </template>
 
 <script>
-import HelloWorld from './components/WelcomeDataland.vue'
+import WelcomeDataland from './components/WelcomeDataland.vue'
 import APIClient from "@/components/APIClient";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    WelcomeDataland,
     APIClient,
   }
 }
