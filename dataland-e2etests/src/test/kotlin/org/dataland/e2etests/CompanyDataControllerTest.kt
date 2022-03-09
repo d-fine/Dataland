@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerAp
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
-
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -16,7 +15,6 @@ import java.math.BigDecimal
 class CompanyDataControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
-
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -43,7 +41,7 @@ class CompanyDataControllerTest {
             companyDataControllerApi.postCompany(i)
         }
         val allCompaniesListSizeAfter = companyDataControllerApi.getAllCompanies().size
-        assertEquals(testCompanyNames.size, allCompaniesListSizeAfter-allCompaniesListSizeBefore)
+        assertEquals(testCompanyNames.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore)
     }
 
     @Test

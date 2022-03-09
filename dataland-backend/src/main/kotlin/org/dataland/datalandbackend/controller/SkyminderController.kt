@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-
 import org.dataland.datalandbackend.api.SkyminderAPI
 import org.dataland.skyminderClient.interfaces.DataConnectorInterface
 import org.dataland.skyminderClient.model.ContactInformation

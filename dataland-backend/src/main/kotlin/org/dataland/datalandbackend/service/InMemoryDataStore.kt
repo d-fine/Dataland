@@ -1,7 +1,11 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.*
+import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 
 /**
@@ -18,7 +22,11 @@ class InMemoryDataStore : DataStoreInterface {
         if (companyData.containsKey(companyId)) {
             dataCounter++
             this.data["$dataCounter"] =
-                StoredDataSet(companyId = companyId, dataIdentifier = DataIdentifier(dataId = "$dataCounter", dataType = dataType), data = data)
+                StoredDataSet(
+                    companyId = companyId,
+                    dataIdentifier = DataIdentifier(dataId = "$dataCounter", dataType = dataType),
+                    data = data
+                )
             this.companyData[companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = dataType))
             return "$dataCounter"
         }
@@ -35,8 +43,13 @@ class InMemoryDataStore : DataStoreInterface {
     }
 
     override fun getDataSet(dataId: String, dataType: String): String {
-        if (! data.containsKey(dataId)) {throw IllegalArgumentException("The id: $dataId does not exist.")}
-        if (data[dataId]?.dataIdentifier?.dataType != dataType) {throw IllegalArgumentException("The data with id: $dataId is of type ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType.")}
+        if (!data.containsKey(dataId)) {
+            throw IllegalArgumentException("The id: $dataId does not exist.")
+        }
+        if (data[dataId]?.dataIdentifier?.dataType != dataType) {
+            throw IllegalArgumentException("The data with id: $dataId is of type" +
+                    " ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType.")
+        }
         return data[dataId]?.data ?: ""
     }
 
@@ -47,17 +60,21 @@ class InMemoryDataStore : DataStoreInterface {
     }
 
     override fun listAllCompanies(): List<CompanyMetaInformation> {
-        return companyData.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key)}
+        return companyData.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
     }
 
     override fun listCompaniesByName(name: String): List<CompanyMetaInformation> {
         val matches = companyData.filter { it.value.companyName.contains(name, true) }
-        if (matches.isEmpty()) {throw IllegalArgumentException("No matches for company with name '$name'.")}
-        return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key)}
+        if (matches.isEmpty()) {
+            throw IllegalArgumentException("No matches for company with name '$name'.")
+        }
+        return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
     }
 
     override fun listDataSetsByCompany(companyId: String): List<DataIdentifier> {
-        if (! data.containsKey(companyId)) {throw IllegalArgumentException("The id: $companyId does not exist.")}
+        if (!data.containsKey(companyId)) {
+            throw IllegalArgumentException("The id: $companyId does not exist.")
+        }
         return companyData[companyId]?.dataSets ?: emptyList()
     }
 }

@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.http.ResponseEntity
@@ -15,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping
 import javax.validation.Valid
 
 /**
- * Defines the restful dataland-backend API regarding data exchange of company data.
+ * Defines the restful dataland-backend API regarding company data.
  */
 
 @RequestMapping("/")
 interface CompanyAPI {
     @Operation(
-        summary = "Show all stored companies.",
-        description = "Retrieves a map of all existing companies with their company IDs as keys."
+        summary = "Show all available companies.",
+        description = "Retrieves a list of all existing companies containing the ID and name respectively."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved map of companies.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of companies.")
         ]
     )
     @GetMapping(
@@ -34,17 +33,17 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * Returns info (companyId and companyInfo) of all currently available companies in the data store.
+     * Returns info (companyId and companyName) of all currently available companies.
      */
     fun getAllCompanies(): ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Add a new company.",
-        description = "The uploaded company info is added to the data store, the generated company id is returned."
+        description = "A new company is added using the provided information, the generated company ID is returned."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added company to the data store.")
+            ApiResponse(responseCode = "200", description = "Successfully added company.")
         ]
     )
     @PostMapping(
@@ -53,8 +52,8 @@ interface CompanyAPI {
         consumes = ["application/json"]
     )
     /**
-     * A method to store company info via dataland into the data store
-     * @param companyName info about the company to be stored
+     * A method to create a new company entry in dataland
+     * @param companyName name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
     fun postCompany(@Valid @RequestBody companyName: String): ResponseEntity<CompanyMetaInformation>
@@ -81,7 +80,7 @@ interface CompanyAPI {
 
     @Operation(
         summary = "Retrieve list of existing data sets for given company.",
-        description = "Todo"
+        description = "A List of data ID and data type of all data sets of the given company is retrieved."
     )
     @ApiResponses(
         value = [
@@ -93,10 +92,9 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * Todo
-     * A method to retrieve specific companies identified by their company names
-     * @param companyId identifier used to search for companies in the data store
-     * @return all companies whose names match with the companyName provided as search input
+     * A method to retrieve all existing data sets of a specific company identified by the company ID
+     * @param companyId identifier of the company in dataland
+     * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
      */
     fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
 }

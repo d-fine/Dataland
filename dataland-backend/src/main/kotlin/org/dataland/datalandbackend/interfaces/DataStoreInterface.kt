@@ -41,17 +41,21 @@ interface DataStoreInterface {
 
     /**
      * Method to list all companies in the data store
-     * @return list of all companies in the data store
+     * @return list of all company names along with their respective IDs in the data store
      */
     fun listAllCompanies(): List<CompanyMetaInformation>
 
     /**
      * Method to list matching companies in the data store by searching for a name
      * @param name string used for substring matching against the companyName of all entries
-     * @return map of all matching companies in the data store
+     * @return list of all matching companies in the data store
      */
     fun listCompaniesByName(name: String): List<CompanyMetaInformation>
 
+    /**
+     * Method to list all existing data sets of a given company
+     * @param companyId
+     * @return list of all data set IDs along with their data type
+     */
     fun listDataSetsByCompany(companyId: String): List<DataIdentifier>
-
 }

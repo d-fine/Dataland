@@ -5,13 +5,11 @@ val sonarSources by extra(sources.files.map { it })
 val jacocoSources by extra(emptyList<File>())
 val jacocoClasses by extra(emptyList<File>())
 
-
 plugins {
     kotlin("jvm")
     id("com.github.node-gradle.node") version "3.2.1"
     id("org.openapi.generator") version "5.4.0"
 }
-
 
 node {
     download.set(true)
@@ -29,12 +27,11 @@ dependencies {
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 val taskName = "generateBackendClient"
-//val clientOutputDir = "src/clients/backend"
+// val clientOutputDir = "src/clients/backend"
 val clientOutputDir = "$projectDir/src/clients/backend"
-//val clientOutputDir = "$buildDir/Clients/backend"
+// val clientOutputDir = "$buildDir/Clients/backend"
 val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
 val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
-
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(taskName)
@@ -44,7 +41,6 @@ tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
     into(clientOutputDir)
 }
-
 
 tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file(apiSpecLocation).path
