@@ -2,10 +2,15 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+enum class
+
 data class EuTaxonomyDataSet (
-    @field:JsonProperty("capex") val capex: EuTaxonomyData? = null,
-    @field:JsonProperty("opex") val opex: EuTaxonomyData? = null,
-    @field:JsonProperty("revenues") val revenues: EuTaxonomyData? = null,
-    @field:JsonProperty("reportingObligation") val reportObligation: String? = null,
-    @field:JsonProperty("attestation") val attestation: String? = null
-)
+    @field:JsonProperty("Capex") val capex: EuTaxonomyData? = null,
+    @field:JsonProperty("Opex") val opex: EuTaxonomyData? = null,
+    @field:JsonProperty("Revenues") val revenues: EuTaxonomyData? = null,
+    @field:JsonProperty("Reporting Obligation", required = true) val reportObligation: YesNo,
+    @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions
+) {
+    enum class YesNo {Yes, No}
+    enum class AttestationOptions { None, Some, Full}
+}

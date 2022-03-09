@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param dataSets content of the stored data
  */
 data class StoredCompany(
-    @field:JsonProperty("companyName", required = true) val companyName: String,
-    @field:JsonProperty("dataSets", required = true) val dataSets: MutableList<DataIdentifier>
+    @field:JsonProperty(required = true) val companyName: String,
+    @field:JsonProperty(required = true) val dataSets: MutableList<DataIdentifier>
 )
