@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.Company
-import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.StoredDataSet
-import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.*
 import org.springframework.stereotype.Component
 
 /**
@@ -12,20 +9,19 @@ import org.springframework.stereotype.Component
  */
 @Component("DefaultStore")
 class InMemoryDataStore : DataStoreInterface {
-    var data = mutableMapOf<Int, StoredDataSet>()
+    var data = mutableMapOf<String, StoredDataSet>()
     private var dataCounter = 0
     var companyData = mutableMapOf<String, Company>()
     private var companyCounter = 0
 
     override fun addDataSet(companyId: String, dataType: String, data: String): String {
-        dataCounter++
         if (companyData.containsKey(companyId)) {
-            this.data[dataCounter] =
-                StoredDataSet(dataId = dataCounter.toString(), companyId = companyId, dataType = dataType, data = data)
-            this.companyData[companyId]?.eutaxonomy?.add("dataId")
-            return dataCounter.toString()
+            dataCounter++
+            this.data["$dataCounter"] =
+                StoredDataSet(dataId = "$dataCounter", companyId = companyId, dataType = dataType, data = data)
+            this.companyData[companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = dataType))
+            return "$dataCounter"
         }
-        dataCounter--
         throw IllegalArgumentException("No company with the companyId $companyId exists.")
     }
 
@@ -40,34 +36,29 @@ class InMemoryDataStore : DataStoreInterface {
     }
 
     override fun getDataSet(dataId: String, dataType: String): String {
-        if (! data.containsKey(dataId.toInt())) {throw IllegalArgumentException("The id: $dataId does not exist.")}
-        if (data[dataId.toInt()]?.dataType != dataType) {throw IllegalArgumentException("The data with id: $dataId is of type ${data[dataId.toInt()]?.dataType} instead of the expected $dataType.")}
-        return data[dataId.toInt()]?.data ?: ""
+        if (! data.containsKey(dataId)) {throw IllegalArgumentException("The id: $dataId does not exist.")}
+        if (data[dataId]?.dataType != dataType) {throw IllegalArgumentException("The data with id: $dataId is of type ${data[dataId]?.dataType} instead of the expected $dataType.")}
+        return data[dataId]?.data ?: ""
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData[companyCounter.toString()] = Company(companyName, mutableListOf())
-        return CompanyMetaInformation(companyName = companyName, companyId = companyCounter.toString())
+        companyData["$companyCounter"] = Company(companyName = companyName, dataSets = mutableListOf())
+        return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
     }
 
-    override fun listAllCompanies(): Map<String, Company> {
-        return companyData
+    override fun listAllCompanies(): List<CompanyMetaInformation> {
+        return companyData.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key)}
     }
 
-    override fun listCompaniesByName(name: String): Map<String, Company> {
+    override fun listCompaniesByName(name: String): List<CompanyMetaInformation> {
+        val matches = companyData.filter { it.value.companyName.contains(name, true) }
+        if (matches.isEmpty()) {throw IllegalArgumentException("No matches for company with name '$name'.")}
+        return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key)}
+    }
 
-        val resultList = companyData.filter { it.value.companyName.contains(name, true) }
-
-        /*val resultList = mutableMapOf<String, Company>()
-
-        for ((k, v) in companyData) {
-            if (v.companyName.contains(name, true)) {
-                resultList[k] = v
-            }
-        }*/
-
-        if (resultList.isEmpty()) {throw IllegalArgumentException("No matches for company with name '$name'.")}
-        return resultList
+    override fun listDataSetsByCompany(companyId: String): List<DataIdentifier> {
+        if (! data.containsKey(companyId)) {throw IllegalArgumentException("The id: $companyId does not exist.")}
+        return companyData[companyId]?.dataSets ?: emptyList()
     }
 }

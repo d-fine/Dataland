@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.Company
 import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.springframework.stereotype.Component
 
@@ -43,12 +44,15 @@ interface DataStoreInterface {
      * Method to list all companies in the data store
      * @return list of all companies in the data store
      */
-    fun listAllCompanies(): Map<String, Company>
+    fun listAllCompanies(): List<CompanyMetaInformation>
 
     /**
      * Method to list matching companies in the data store by searching for a name
      * @param name string used for substring matching against the companyName of all entries
      * @return map of all matching companies in the data store
      */
-    fun listCompaniesByName(name: String): Map<String, Company>
+    fun listCompaniesByName(name: String): List<CompanyMetaInformation>
+
+    fun listDataSetsByCompany(companyId: String): List<DataIdentifier>
+
 }

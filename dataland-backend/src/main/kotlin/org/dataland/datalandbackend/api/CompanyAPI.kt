@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.Company
 import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -35,7 +36,7 @@ interface CompanyAPI {
     /**
      * Returns info (companyId and companyInfo) of all currently available companies in the data store.
      */
-    fun getAllCompanies(): ResponseEntity<Map<String, Company>>
+    fun getAllCompanies(): ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Add a new company.",
@@ -76,5 +77,26 @@ interface CompanyAPI {
      * @param companyName identifier used to search for companies in the data store
      * @return all companies whose names match with the companyName provided as search input
      */
-    fun getCompanyByName(@PathVariable("companyName") companyName: String): ResponseEntity<Map<String, Company>>
+    fun getCompanyByName(@PathVariable("companyName") companyName: String): ResponseEntity<List<CompanyMetaInformation>>
+
+    @Operation(
+        summary = "Retrieve list of existing data sets for given company.",
+        description = "Todo"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data sets.")
+        ]
+    )
+    @GetMapping(
+        value = ["/company/{companyId}/data"],
+        produces = ["application/json"]
+    )
+    /**
+     * Todo
+     * A method to retrieve specific companies identified by their company names
+     * @param companyId identifier used to search for companies in the data store
+     * @return all companies whose names match with the companyName provided as search input
+     */
+    fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
 }
