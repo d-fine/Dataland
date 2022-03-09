@@ -36,7 +36,13 @@ class DataController(
         return ResponseEntity.ok(this.dataStore.getDataSet(id))
     }
 
-    override fun getDataSkyminderRequest(countryCode: String, name: String): ResponseEntity<List<ContactInformation>> {
-        return ResponseEntity.ok(this.dataConnector.getContactInformation(countryCode = countryCode, name = name))
+    override fun getDataSkyminderRequest(countryCode: String, companyName: String):
+        ResponseEntity<List<ContactInformation>> {
+        return ResponseEntity.ok(
+            this.dataConnector.getContactInformation(
+                countryCode = countryCode,
+                name = companyName
+            )
+        )
     }
 }

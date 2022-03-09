@@ -5,12 +5,13 @@ import okhttp3.Request
 import okhttp3.Response
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.concurrent.TimeUnit
 
 class SkyminderDummyServerHealthTest {
 
     @Test
     fun `test if Skyminder Dummy Server is up by using the backend actuator health endpoint`() {
-        val client = OkHttpClient()
+        val client = OkHttpClient.Builder().readTimeout(10, TimeUnit.SECONDS).build()
         var responseString = "INITIALIZE"
         try {
             val request: Request = Request.Builder()

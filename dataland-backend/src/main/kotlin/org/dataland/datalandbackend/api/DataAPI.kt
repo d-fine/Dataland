@@ -80,17 +80,17 @@ interface DataAPI {
     fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet>
 
     @GetMapping(
-        value = ["/data/skyminder/{code}/{name}"],
+        value = ["/data/skyminder/{code}/{companyName}"],
         produces = ["application/json"]
     )
     /**
      * A method to search for data using the skyminder API using the "/companies" endpoint
      * @param countryCode three-letter ISO country code (e.g. DEU for Germany)
-     * @param name string to be used for searching the skyminder
+     * @param companyName string to be used for searching the skyminder
      * @return the list of ContactInformation generated from all responses returned by skyminder API
      */
     fun getDataSkyminderRequest(
         @PathVariable("code") countryCode: String,
-        @PathVariable("name") name: String
+        @PathVariable("companyName") companyName: String
     ): ResponseEntity<List<ContactInformation>>
 }
