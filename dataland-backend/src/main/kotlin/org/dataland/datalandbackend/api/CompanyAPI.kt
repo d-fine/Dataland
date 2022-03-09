@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.Company
+import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.http.ResponseEntity

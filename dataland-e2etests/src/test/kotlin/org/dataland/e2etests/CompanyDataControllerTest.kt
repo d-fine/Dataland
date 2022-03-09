@@ -5,11 +5,18 @@ import org.dataland.datalandbackend.openApiClient.model.DataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class DataControllerTest {
+class CompanyDataControllerTest {
     val dataControllerApi = DataControllerApi(basePath = "http://proxy:80/api")
 
     @Test
-    fun `post a dummy data set and check if post was successful`() {
+    fun `TO-DO TO-DO TO-Do`() {     // TODO
+        assertEquals(1, 1)
+    }
+}
+
+
+/*  TEMPLATE
+        fun `post a dummy data set and check if post was successful`() {
         val testDataSetName = "TestName_007"
         val testDataSetPayload = "testDataSet_007"
         val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
@@ -28,28 +35,5 @@ class DataControllerTest {
             "Number of entries did not increase by exactly one data set."
         )
         assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
-    }
 
-    @Test
-    fun `post a dummy data set and check if that specific data set can be queried by its ID`() {
-        val testDataSetName = "TestName_008"
-        val testDataSetPayload = "testDataSet_008"
-        val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
-
-        val postResponse = dataControllerApi.postData(testDataSet)
-        val testDataSetID = postResponse.id
-
-        val getResponse = dataControllerApi.getDataSet(testDataSetID)
-
-        assertEquals(
-            testDataSetName,
-            getResponse.name,
-            "Response had name: ${getResponse.name} which does not match the posted name: $testDataSetName."
-        )
-        assertEquals(
-            testDataSetPayload,
-            getResponse.payload,
-            "Response had payload: ${getResponse.payload} which does not match the posted name: $testDataSetPayload."
-        )
-    }
-}
+ */

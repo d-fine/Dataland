@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 class InMemoryDataStoreTest {
     val testStore = InMemoryDataStore()
     val dataSets = listOf(
-        DataSet(name = "Company A", payload = "Data"),
+        DataSet(name = "StoredCompany A", payload = "Data"),
         DataSet(name = "Holding B", payload = "Information"),
         DataSet(name = "Group C", payload = "Inputs")
     )

@@ -22,7 +22,7 @@ internal class CompanyDataControllerTest(
 ) {
 
     val storedDataSets = listOf(
-        StoredDataSet(name = "Company A", payload = "Data"),
+        StoredDataSet(name = "StoredCompany A", payload = "Data"),
         StoredDataSet(name = "Holding B", payload = "Information"),
         StoredDataSet(name = "Group C", payload = "Inputs")
     )

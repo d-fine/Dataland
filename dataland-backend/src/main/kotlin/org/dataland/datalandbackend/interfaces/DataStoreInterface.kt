@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.interfaces
 
-import org.dataland.datalandbackend.model.Company
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation

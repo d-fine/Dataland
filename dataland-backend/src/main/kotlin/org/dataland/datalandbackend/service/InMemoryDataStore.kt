@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 class InMemoryDataStore : DataStoreInterface {
     var data = mutableMapOf<String, StoredDataSet>()
     private var dataCounter = 0
-    var companyData = mutableMapOf<String, Company>()
+    var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
 
     override fun addDataSet(companyId: String, dataType: String, data: String): String {
@@ -28,9 +28,8 @@ class InMemoryDataStore : DataStoreInterface {
     override fun listDataSets(): List<DataSetMetaInformation> {
         return data.map {
             DataSetMetaInformation(
-                dataId = it.key.toString(),
-                companyId = it.value.companyId,
-                dataType = it.value.dataType
+                DataIdentifier(dataId = it.key, dataType = it.value.dataType),
+                companyId = it.value.companyId
             )
         }
     }
@@ -43,7 +42,7 @@ class InMemoryDataStore : DataStoreInterface {
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = Company(companyName = companyName, dataSets = mutableListOf())
+        companyData["$companyCounter"] = StoredCompany(companyName = companyName, dataSets = mutableListOf())
         return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
     }
 
