@@ -27,7 +27,6 @@ class SkyminderDummyServerHealthIndicator : HealthIndicator {
      * @return a Boolean that declares if Skyminder-Dummy-Server runs
      */
     fun isRunningSkyminderServer(): Boolean {
-        var running = false
         val client = OkHttpClient()
 
         try {
@@ -35,10 +34,10 @@ class SkyminderDummyServerHealthIndicator : HealthIndicator {
                 .url("http://skyminder-server:8080/actuator/health").build()
             val response: Response = client.newCall(request).execute()
 
-            if (response.body?.string().toString().contains("UP")) {
-                running = true
-            }
-        } catch (_: Exception) { Unit }
-        return running
+            return response.body?.string().toString().contains("UP")
+        } catch (_: Exception) {
+            Unit
+        }
+        return false
     }
 }
