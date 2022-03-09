@@ -30,9 +30,9 @@ dependencies {
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 val taskName = "generateBackendClient"
 //val clientOutputDir = "src/clients/backend"
-//val clientOutputDir = "$projectDir/src/clients/backend"
-val clientOutputDir = "$buildDir/Clients/backend"
-val apiSpecLocation = "$buildDir/$backendOpenApiJson"
+val clientOutputDir = "$projectDir/src/clients/backend"
+//val clientOutputDir = "$buildDir/Clients/backend"
+val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
 val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
 
 
@@ -42,7 +42,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
-    into("$buildDir")
+    into(clientOutputDir)
 }
 
 
