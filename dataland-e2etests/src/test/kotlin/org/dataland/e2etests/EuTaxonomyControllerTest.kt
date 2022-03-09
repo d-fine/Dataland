@@ -5,7 +5,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class DataControllerTest {
+// TODO anpassen bzw. wie macht man das???  Denn der EuTaxonomyController kann nicht alles was der DataController kann
+
+class EuTaxonomyControllerTest {
     val dataControllerApi = DataControllerApi(basePath = "http://proxy:80/api")
 
     @Test
