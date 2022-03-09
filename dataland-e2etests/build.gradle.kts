@@ -1,9 +1,19 @@
-//dataland-e2etest
+// dataland-e2etest
+
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
+val jacocoSources by extra(sonarSources)
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it).files
+        }
+    }
+)
 
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
-    id("org.openapi.generator") version "5.3.0"
+    id("org.openapi.generator") version "5.4.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -18,6 +28,9 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
     implementation("com.squareup.moshi:moshi-adapters:1.13.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.apache.logging.log4j:log4j:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 
@@ -30,32 +43,22 @@ tasks.withType<Test> {
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-
-data class ClientConfig(
-    val taskName: String,
-    val outputDir: String,
-    val apiSpecLocation: String,
-    val destinationPackage: String
-)
-
-val clientConfig = ClientConfig(
-    taskName = "generateBackendClient",
-    outputDir = "$buildDir/Clients/backend",
-    apiSpecLocation = "$buildDir/$backendOpenApiJson",
-    destinationPackage = "org.dataland.datalandbackend"
-)
+val taskName = "generateBackendClient"
+val clientOutputDir = "$buildDir/Clients/backend"
+val apiSpecLocation = "$buildDir/$backendOpenApiJson"
+val destinationPackage = "org.dataland.datalandbackend.openApiClient"
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
     into("$buildDir")
 }
 
-tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(clientConfig.apiSpecLocation).path
-    outputDir.set(clientConfig.outputDir)
-    modelPackage.set("${clientConfig.destinationPackage}.client.model")
-    apiPackage.set("${clientConfig.destinationPackage}.client.api")
-    packageName.set(clientConfig.destinationPackage)
+tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    input = project.file(apiSpecLocation).path
+    outputDir.set(clientOutputDir)
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
     generatorName.set("kotlin")
     configOptions.set(
         mapOf(
@@ -68,5 +71,11 @@ tasks.register(clientConfig.taskName, org.openapitools.generator.gradle.plugin.t
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$buildDir/Clients/backend/src/main/kotlin")
+    main.java.srcDir("$clientOutputDir/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
 }

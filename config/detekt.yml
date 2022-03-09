@@ -67,14 +67,14 @@ comments:
     matchTypeParameters: true
     matchDeclarationsOrder: true
   UndocumentedPublicClass:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
     searchInInnerInterface: true
   UndocumentedPublicFunction:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   UndocumentedPublicProperty:
     active: false
@@ -126,7 +126,7 @@ complexity:
     active: false
     threshold: 6
   NamedArguments:
-    active: false
+    active: true
     threshold: 3
   NestedBlockDepth:
     active: true

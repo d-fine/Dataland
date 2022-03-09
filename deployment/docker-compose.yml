@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  proxy:
+    networks:
+      - external
+      - internal
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  backend:
+    image: eclipse-temurin:17.0.2_8-jre-alpine
+    volumes:
+      - ./jar:/jar
+    command: ["java","-jar","/jar/dala-backend.jar"]
+    networks:
+      - internal
+    expose:
+      - "8080"
+    environment:
+      SKYMINDER_URL: ${SKYMINDER_URL}
+      SKYMINDER_USER: ${SKYMINDER_USER}
+      SKYMINDER_PW: ${SKYMINDER_PW}
+  frontend:
+    image: nginx:stable-alpine
+    volumes:
+      - ./dist:/usr/share/nginx/html
+    command: ["nginx", "-g", "daemon off;"]
+    expose:
+      - "80"
+    networks:
+      - internal
+
+networks:
+  internal:
+  external:

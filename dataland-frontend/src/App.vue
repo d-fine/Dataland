@@ -1,0 +1,28 @@
+<template>
+  <section class="hero container max-w-screen-lg mx-auto pb-10 flex">
+
+    <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
+  </section>
+  <WelcomeDataland msg="Welcome to DataLand"/>
+  <APIClient/>
+
+</template>
+
+<script>
+import WelcomeDataland from './components/WelcomeDataland.vue'
+import APIClient from "@/components/APIClient";
+
+export default {
+  name: 'App',
+  components: {
+    WelcomeDataland,
+    APIClient,
+  }
+}
+</script>
+
+<style>
+@import './assets/css/main.css';
+
+
+</style>

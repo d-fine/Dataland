@@ -1,12 +1,13 @@
 package org.dataland.e2etests
 
-import org.dataland.datalandbackend.client.api.DataControllerApi
-import org.dataland.datalandbackend.client.model.DataSet
-import org.junit.jupiter.api.Assertions
+import org.dataland.datalandbackend.openApiClient.api.DataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataSet
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class DataControllerTest {
-    val dataControllerApi = DataControllerApi(basePath = "http://backend:8080")
+    val dataControllerApi = DataControllerApi(basePath = "http://proxy:80/api")
 
     @Test
     fun `post a dummy data set and check if post was successful`() {
@@ -22,12 +23,12 @@ class DataControllerTest {
         allData = dataControllerApi.getData()
         val numberOfEntriesAfterPost = allData.size
 
-        Assertions.assertEquals(
+        assertEquals(
             numberOfEntriesAfterPost,
             numberOfEntriesBeforePost + 1,
             "Number of entries did not increase by exactly one data set."
         )
-        Assertions.assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
+        assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
     }
 
     @Test
@@ -41,17 +42,23 @@ class DataControllerTest {
 
         val getResponse = dataControllerApi.getDataSet(testDataSetID)
 
-        Assertions.assertEquals(
+        assertEquals(
             testDataSetName,
             getResponse.name,
-            "The 'name' value of the data set in the getResponse does not match the " +
-                    "'name' value of the test data set that was posted before."
+            "Response had name: ${getResponse.name} which does not match the posted name: $testDataSetName."
         )
-        Assertions.assertEquals(
+        assertEquals(
             testDataSetPayload,
             getResponse.payload,
-            "The 'payload' value of the data set in the getResponse does not match the " +
-                    "'payload' value of the test data set that was posted before."
+            "Response had payload: ${getResponse.payload} which does not match the posted name: $testDataSetPayload."
+        )
+    }
+
+    @Test
+    fun `get dummy company data by sending a request to dummy skyminder server`() {
+        assertTrue(
+            dataControllerApi.getDataSkyminderRequest(code = "dummy", companyName = "dummy").isNotEmpty(),
+            "The dummy skyminder server is returning an empty response."
         )
     }
 }
