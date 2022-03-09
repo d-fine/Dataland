@@ -59,5 +59,21 @@ describe("DataStoreTest", () => {
     expect(receivedData).toBeNull()
   })
 
+  it("should post successfully if everything is fine", async () => {
+    mock.onPost(`${BASE_URL}/path/`).reply(200)
 
+    const dataStore = new DataStore(BASE_URL)
+    const success = await dataStore.postJson(data)
+
+    expect(success).toBeTruthy()
+  })
+
+  it("should not be able to post successfully in case of a network error", async () => {
+    mock.onPost(`${BASE_URL}/path/`).networkErrorOnce()
+
+    const dataStore = new DataStore(BASE_URL)
+    const success = await dataStore.postJson(data)
+
+    expect(success).toBeFalsy()
+  })
 })
