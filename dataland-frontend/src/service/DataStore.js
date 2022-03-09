@@ -38,5 +38,15 @@ export class DataStore {
         return null
     }
 
-}
+    async postJson(data) {
+        /* ToDo: get the path automatically from open api json file */
+        try {
+            await this.axios.post(`/path/`, data)
+            return true
+        } catch (err) {
+            console.error(err)
+        }
+        return false
+    }
 
+}
