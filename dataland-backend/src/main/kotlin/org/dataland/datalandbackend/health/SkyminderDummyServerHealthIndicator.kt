@@ -38,10 +38,7 @@ class SkyminderDummyServerHealthIndicator : HealthIndicator {
             if (response.body?.string().toString().contains("UP")) {
                 running = true
             }
-        } catch (_: Exception) {
-            Unit
-        }
-
+        } catch (_: Exception) { Unit }
         return running
     }
 }
