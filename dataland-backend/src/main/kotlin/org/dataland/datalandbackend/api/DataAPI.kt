@@ -3,9 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.DataSet
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,14 +17,14 @@ import javax.validation.Valid
  */
 
 @RequestMapping("/")
-interface DataAPI {
+interface DataAPI<T> {
     @Operation(
-        summary = "Retrieve list of all existing data.",
-        description = "List is composed of identifiers, which in turn contain the name id of the respective data set."
+        summary = "Retrieve list of existing data for this data type.",
+        description = "List is composed of meta information containing the data ID, the company ID and the data type."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of entries.")
         ]
     )
     @GetMapping(
@@ -34,13 +32,13 @@ interface DataAPI {
         produces = ["application/json"]
     )
     /**
-     * Returns the meta information (id and name) of all currently available data sets
+     * Returns the meta information (dataId, companyId and dataType) of available data sets
      */
     fun getData(): ResponseEntity<List<DataSetMetaInformation>>
 
     @Operation(
         summary = "Upload new data set.",
-        description = "The uploaded data set is added to the data store, the generated id is returned."
+        description = "The uploaded data is added to the data store, the generated data id is returned."
     )
     @ApiResponses(
         value = [
@@ -48,20 +46,21 @@ interface DataAPI {
         ]
     )
     @PostMapping(
-        value = ["/data"],
+        value = ["/{companyId}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
     /**
      * A method to store a provided data set via dataland into the data store
+     * @param companyId the ID of the company the data belongs to
      * @param dataSet a set of data to be stored
-     * @return meta information of the stored data (id and name)
+     * @return the ID of the created entry in the data store
      */
-    fun postData(@Valid @RequestBody dataSet: DataSet): ResponseEntity<DataSetMetaInformation>
+    fun postData(@PathVariable("companyId") companyId: String, @Valid @RequestBody dataSet: T): ResponseEntity<String>
 
     @Operation(
         summary = "Retrieve specific data set from the data store.",
-        description = "The data set identified via the provided id is retrieved."
+        description = "The data set identified via the provided data ID is retrieved."
     )
     @ApiResponses(
         value = [
@@ -69,28 +68,13 @@ interface DataAPI {
         ]
     )
     @GetMapping(
-        value = ["/data/{id}"],
+        value = ["/{dataId}"],
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve a specific data set identified by its id
-     * @param id identifier used to uniquely determine the data set in the data store
-     * @return the complete data stored under the provided id
+     * A method to retrieve a specific data set identified by its ID
+     * @param dataId identifier used to uniquely determine the data set in the data store
+     * @return the complete data stored under the provided ID
      */
-    fun getDataSet(@PathVariable("id") id: String): ResponseEntity<DataSet>
-
-    @GetMapping(
-        value = ["/data/skyminder/{code}/{companyName}"],
-        produces = ["application/json"]
-    )
-    /**
-     * A method to search for data using the skyminder API using the "/companies" endpoint
-     * @param countryCode three-letter ISO country code (e.g. DEU for Germany)
-     * @param companyName string to be used for searching the skyminder
-     * @return the list of ContactInformation generated from all responses returned by skyminder API
-     */
-    fun getDataSkyminderRequest(
-        @PathVariable("code") countryCode: String,
-        @PathVariable("companyName") companyName: String
-    ): ResponseEntity<List<ContactInformation>>
+    fun getDataSet(@PathVariable("dataId") dataId: String): ResponseEntity<T>
 }

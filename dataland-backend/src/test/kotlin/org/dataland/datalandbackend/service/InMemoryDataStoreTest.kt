@@ -18,17 +18,17 @@ class InMemoryDataStoreTest {
 
     @Test
     fun `add the first dataset and check if the name is as expected by using the return value of addDataSet`() {
-        val identifier = testStore.addDataSet(dataSet = dataSets[0])
+        val identifier = testStore.addCompany(company = dataSets[0])
         assertEquals(identifier.name, dataSets[0].name)
     }
 
     @Test
     fun `add all datasets and retrieve them as a list and check for each dataset if the name is as expected`() {
         for (dataset in dataSets) {
-            testStore.addDataSet(dataSet = dataset)
+            testStore.addCompany(company = dataset)
         }
 
-        val allDataSetsInStore = testStore.listDataSets()
+        val allDataSetsInStore = testStore.listAllCompanies()
 
         for ((counter, storedDataSet) in allDataSetsInStore.withIndex()) {
             assertEquals(dataSets[counter].name, storedDataSet.name)
@@ -38,14 +38,14 @@ class InMemoryDataStoreTest {
     @Test
     fun `get dataset with id that does not exist`() {
         assertThrows<IllegalArgumentException> {
-            testStore.getDataSet("error")
+            testStore.listCompaniesByName("error")
         }
     }
 
     @Test
     fun `add and get dataset by id`() {
-        val identifier = testStore.addDataSet(dataSet = dataSets[1])
-        assertEquals(dataSets[1], testStore.getDataSet(identifier.id))
+        val identifier = testStore.addCompany(company = dataSets[1])
+        assertEquals(dataSets[1], testStore.listCompaniesByName(identifier.id))
     }
 
     @Test
@@ -53,7 +53,7 @@ class InMemoryDataStoreTest {
         val id = "2"
         val expectedMessage = "The id: $id does not exist."
         val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
-            testStore.getDataSet(id)
+            testStore.listCompaniesByName(id)
         }
         assertEquals(expectedMessage, exceptionThatWasThrown.message)
     }
@@ -62,7 +62,7 @@ class InMemoryDataStoreTest {
     fun `check if the id of the last dataset equals the total number of all datasets after adding them all`() {
         var dataSetMetaInformation: DataSetMetaInformation? = null
         for (dataSet in dataSets) {
-            dataSetMetaInformation = testStore.addDataSet(dataSet = dataSet)
+            dataSetMetaInformation = testStore.addCompany(company = dataSet)
         }
         assertEquals(dataSetMetaInformation!!.id, dataSets.size.toString())
     }
