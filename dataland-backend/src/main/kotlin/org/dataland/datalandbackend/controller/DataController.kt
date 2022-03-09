@@ -39,10 +39,7 @@ class DataController(
     override fun getDataSkyminderRequest(countryCode: String, companyName: String):
         ResponseEntity<List<ContactInformation>> {
         return ResponseEntity.ok(
-            this.dataConnector.getContactInformation(
-                countryCode = countryCode,
-                name = companyName
-            )
+            this.dataConnector.getContactInformation(countryCode = countryCode, name = companyName)
         )
     }
 }
