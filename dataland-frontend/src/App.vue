@@ -1,28 +1,27 @@
 <template>
-  <section class="hero container max-w-screen-lg mx-auto pb-10 flex">
-
-    <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
-  </section>
-  <WelcomeDataland msg="Welcome to DataLand"/>
-  <APIClient/>
-
+  <img alt="Vue logo" src="@/assets/images/logos/dataland-logo-lr.png">
+  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
 </template>
 
-<script>
-import WelcomeDataland from './components/WelcomeDataland.vue'
-import APIClient from "@/components/APIClient";
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+import HelloWorld from './components/HelloWorld.vue';
 
-export default {
-  name: 'App',
+@Options({
   components: {
-    WelcomeDataland,
-    APIClient,
-  }
-}
+    HelloWorld,
+  },
+})
+export default class App extends Vue {}
 </script>
 
 <style>
-@import './assets/css/main.css';
-
-
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

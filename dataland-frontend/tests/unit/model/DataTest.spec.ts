@@ -1,7 +1,7 @@
 import {Data} from "@/model/Data.js"
 
 describe("DataTest", () => {
-    let data = new Data()
+    const data = new Data()
 
     beforeAll(() => {
         data.code = "dummy"
