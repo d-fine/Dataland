@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
+// TODO All Assertions need error messages!
+// TODO Cleanup the println()s from debugging
+
+
 class CompanyDataControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://localhost:8080/api")  // TODO change to proxy:80
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://localhost:8080/api") // TODO change to proxy:80
