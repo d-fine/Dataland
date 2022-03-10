@@ -63,7 +63,7 @@ export default {
     async getSkyminderByName() {
       this.loading = true
       try {
-        this.response = await this.dataStore.getDataSkyminderRequest(this.countryCode, this.companyName)
+        this.response = await this.dataStore.getDataSkyminderRequest(this.countryCode, this.companyName, {baseURL:process.env.VUE_APP_API_URL})
       } catch (error) {
         console.error(error)
       }
