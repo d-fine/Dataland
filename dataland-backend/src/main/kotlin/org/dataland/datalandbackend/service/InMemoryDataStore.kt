@@ -24,7 +24,7 @@ class InMemoryDataStore : DataStoreInterface {
             this.data["$dataCounter"] =
                 StoredDataSet(
                     companyId = companyId,
-                    dataIdentifier = DataIdentifier(dataId = "$dataCounter", dataType = dataType),
+                    dataType = dataType,
                     data = data
                 )
             this.companyData[companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = dataType))
@@ -36,7 +36,7 @@ class InMemoryDataStore : DataStoreInterface {
     override fun listDataSets(): List<DataSetMetaInformation> {
         return data.map {
             DataSetMetaInformation(
-                DataIdentifier(dataId = it.key, dataType = it.value.dataIdentifier.dataType),
+                DataIdentifier(dataId = it.key, dataType = it.value.dataType),
                 companyId = it.value.companyId
             )
         }
@@ -46,10 +46,10 @@ class InMemoryDataStore : DataStoreInterface {
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
         }
-        if (data[dataIdentifier.dataId]?.dataIdentifier?.dataType != dataIdentifier.dataType) {
+        if (data[dataIdentifier.dataId]?.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                    " ${data[dataIdentifier.dataId]?.dataIdentifier?.dataType} instead of the expected ${dataIdentifier.dataType}."
+                    " ${data[dataIdentifier.dataId]?.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
         return data[dataIdentifier.dataId]?.data ?: ""
