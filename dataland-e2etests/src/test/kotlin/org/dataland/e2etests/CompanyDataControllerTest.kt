@@ -12,14 +12,25 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class CompanyDataControllerTest {
-    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
-    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
+    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://localhost:8080/api")  // TODO change to proxy:80
+    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://localhost:8080/api") // TODO change to proxy:80
 
     @Test
     fun `post a dummy company and check if post was successful`() {
         val testCompanyName = "Test-Company_01"
+
+        println(testCompanyName)
+
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
-        assertEquals(postCompanyResponse.companyName, testCompanyName)
+
+        println(postCompanyResponse)
+        println(postCompanyResponse.companyName)
+
+        val modified = postCompanyResponse.companyName.replace(regex = "^\"|\"$".toRegex(), replacement = "")
+
+
+        assertEquals(testCompanyName, modified)
+
         assertTrue(postCompanyResponse.companyId.toInt() > 0)
     }
 
@@ -28,12 +39,19 @@ class CompanyDataControllerTest {
         val testCompanyName = "Dummy-Company_02"
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
+
+        // DEBUGGING STUFF:
+        println(getCompaniesByNameResponse)
+        val shouldContain = CompanyMetaInformation(
+            companyName = "\"$testCompanyName\"",
+            companyId = postCompanyResponse.companyId
+        )
+        println(shouldContain)
+        // DEBUGGING STUFF END
+
         assertTrue(
             getCompaniesByNameResponse.contains(
-                CompanyMetaInformation(
-                    companyName = testCompanyName,
-                    companyId = postCompanyResponse.companyId
-                )
+                shouldContain
             )
         )
     }
@@ -46,11 +64,12 @@ class CompanyDataControllerTest {
             companyDataControllerApi.postCompany(i)
         }
         val allCompaniesListSizeAfter = companyDataControllerApi.getAllCompanies().size
+
         assertEquals(testCompanyNames.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore)
     }
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID `() {
+    fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyName = "Possible-Company_06"
         val testEuTaxonomyDataSet = EuTaxonomyDataSet(
             reportingObligation = EuTaxonomyDataSet.ReportingObligation.yes,
@@ -68,11 +87,15 @@ class CompanyDataControllerTest {
                 taxonomyAlignedProportionOfTurnoverPercent = BigDecimal(5)
             )
         )
+        println(testEuTaxonomyDataSet)
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
+        println(postCompanyResponse)
         val testCompanyId = postCompanyResponse.companyId
+        println(testCompanyId)
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
-
+        println(testEuTaxonomyDataSetId)
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
+        println(getCompanyDataSetsResponse)
         assertTrue(
             getCompanyDataSetsResponse.contains(
                 DataIdentifier(
