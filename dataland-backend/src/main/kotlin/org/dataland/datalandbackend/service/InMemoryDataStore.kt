@@ -42,17 +42,17 @@ class InMemoryDataStore : DataStoreInterface {
         }
     }
 
-    override fun getDataSet(dataId: String, dataType: String): String {
-        if (!data.containsKey(dataId)) {
-            throw IllegalArgumentException("The id: $dataId does not exist.")
+    override fun getDataSet(dataIdentifier: DataIdentifier): String {
+        if (!data.containsKey(dataIdentifier.dataId)) {
+            throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
         }
-        if (data[dataId]?.dataIdentifier?.dataType != dataType) {
+        if (data[dataIdentifier.dataId]?.dataIdentifier?.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
-                "The data with id: $dataId is of type" +
-                    " ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType."
+                "The data with id: ${dataIdentifier.dataId} is of type" +
+                    " ${data[dataIdentifier.dataId]?.dataIdentifier?.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-        return data[dataId]?.data ?: ""
+        return data[dataIdentifier.dataId]?.data ?: ""
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {

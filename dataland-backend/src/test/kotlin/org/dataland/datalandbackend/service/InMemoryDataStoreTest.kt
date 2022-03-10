@@ -44,9 +44,24 @@ class InMemoryDataStoreTest {
     }
 
 
-    //Company-Methods: listCompaniesByName, listDataSetsByCompany
+
     @Test
     fun `add all companies and search for them one by one by using their names`() {
+        for (companyName in companyNamesToStore) {
+            testStore.addCompany(companyName)
+        }
+
+        for (companyName in companyNamesToStore) {
+            val searchResponse = testStore.listCompaniesByName(companyName)
+            assertEquals(companyName, searchResponse.first().companyName)
+        }
+    }
+
+
+    //Company-Methods: listDataSetsByCompany
+
+    @Test
+    fun `post the first company and all dummy data sets for it and check if all data sets of it can be retrieved`() {
         for (companyName in companyNamesToStore) {
             testStore.addCompany(companyName)
         }
