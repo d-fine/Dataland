@@ -27,7 +27,7 @@ class CompanyDataController(
         return ResponseEntity.ok(this.dataStore.addCompany(companyName))
     }
 
-    override fun getCompanyByName(companyName: String): ResponseEntity<List<CompanyMetaInformation>> {
+    override fun getCompaniesByName(companyName: String): ResponseEntity<List<CompanyMetaInformation>> {
         return ResponseEntity.ok(this.dataStore.listCompaniesByName(companyName))
     }
 

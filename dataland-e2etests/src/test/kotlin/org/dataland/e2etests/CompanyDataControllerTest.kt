@@ -27,9 +27,9 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyName = "Dummy-Company_02"
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
-        val getCompanyByNameResponse = companyDataControllerApi.getCompanyByName(testCompanyName)
+        val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
         assertTrue(
-            getCompanyByNameResponse.contains(
+            getCompaniesByNameResponse.contains(
                 CompanyMetaInformation(
                     companyName = testCompanyName,
                     companyId = postCompanyResponse.companyId

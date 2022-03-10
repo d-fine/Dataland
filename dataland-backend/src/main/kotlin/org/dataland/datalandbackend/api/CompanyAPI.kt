@@ -76,7 +76,7 @@ interface CompanyAPI {
      * @param companyName identifier used to search for companies in the data store
      * @return all companies whose names match with the companyName provided as search input
      */
-    fun getCompanyByName(@PathVariable("companyName") companyName: String): ResponseEntity<List<CompanyMetaInformation>>
+    fun getCompaniesByName(@PathVariable("companyName") companyName: String): ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Retrieve list of existing data sets for given company.",
