@@ -42,7 +42,7 @@
 </template>
 <script>
 
-import {DataControllerApi} from "@/clients/backend";
+import {SkyminderControllerApi} from "@/clients/backend";
 import ResultTable from "@/components/ui/ResultTable";
 
 export default {
@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      dataStore: new DataControllerApi(),
+      dataStore: new SkyminderControllerApi(),
       loading: false,
       response: null,
       countryCode: null,
