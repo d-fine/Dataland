@@ -20,6 +20,7 @@ abstract class DataController<T>(
     var objectMapper: ObjectMapper
 ) : DataAPI<T> {
     private val dataType = getClazz().toString().substringAfterLast(".")
+
     abstract fun getClazz(): Class<T>
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {

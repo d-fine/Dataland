@@ -2,6 +2,7 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
@@ -9,8 +10,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-
-// TODO Durchlesen und durchdenken
 
 class CompanyDataControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
@@ -29,8 +28,14 @@ class CompanyDataControllerTest {
         val testCompanyName = "Dummy-Company_02"
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
         val getCompanyByNameResponse = companyDataControllerApi.getCompanyByName(testCompanyName)
-        val indexOfCompany = postCompanyResponse.companyId.toInt() - 1
-        assertEquals(getCompanyByNameResponse[indexOfCompany], testCompanyName)
+        assertTrue(
+            getCompanyByNameResponse.contains(
+                CompanyMetaInformation(
+                    companyName = testCompanyName,
+                    companyId = postCompanyResponse.companyId
+                )
+            )
+        )
     }
 
     @Test
@@ -45,7 +50,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and dummy data set and check if the company contains that data set ID `() {
+    fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID `() {
         val testCompanyName = "Possible-Company_06"
         val testEuTaxonomyDataSet = EuTaxonomyDataSet(
             reportingObligation = EuTaxonomyDataSet.ReportingObligation.yes,
@@ -65,15 +70,14 @@ class CompanyDataControllerTest {
         )
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
         val testCompanyId = postCompanyResponse.companyId
-        val postDataSetResponse = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
-        val testEuTaxonomyDataSetId = postDataSetResponse
+        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
 
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
         assertTrue(
             getCompanyDataSetsResponse.contains(
                 DataIdentifier(
                     dataID = testEuTaxonomyDataSetId,
-                    dataType = "EuTaxonomyDataSet"
+                    dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
                 )
             )
         )
