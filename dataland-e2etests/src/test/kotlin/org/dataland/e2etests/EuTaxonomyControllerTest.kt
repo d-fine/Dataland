@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.math.BigDecimal
 
-// TODO All Assertions need error messages.
 // TODO Cleanup the println()s
 
 class EuTaxonomyControllerTest {
@@ -34,7 +33,6 @@ class EuTaxonomyControllerTest {
         )
     )
 
-
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyName = "Test-Company_A"
@@ -48,7 +46,8 @@ class EuTaxonomyControllerTest {
 
         assertEquals(
             testEuTaxonomyDataSet,
-            getDataSetResponse
+            getDataSetResponse,
+            "The posted and the received eu taxonomy data sets are not equal."
         )
     }
 
@@ -72,53 +71,8 @@ class EuTaxonomyControllerTest {
                         dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
                     ), companyId = testCompanyId
                 )
-            )
+            ),
+            "The list of all existing eu taxonomy data does not contain the posted data set."
         )
     }
-
-
-/*      TEMPLATES:
-        val testDataSetName = "TestName_007"
-        val testDataSetPayload = "testDataSet_007"
-        val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
-
-        var allData = dataControllerApi.getData()
-        val numberOfEntriesBeforePost = allData.size
-
-        val postResponse = dataControllerApi.postData(testDataSet)
-
-        allData = dataControllerApi.getData()
-        val numberOfEntriesAfterPost = allData.size
-
-        assertEquals(
-            numberOfEntriesAfterPost,
-            numberOfEntriesBeforePost + 1,
-            "Number of entries did not increase by exactly one data set."
-        )
-        assertEquals(testDataSetName, postResponse.name, "The actual test data set was not posted.")
-    }
-
-    @Test
-    fun `post a dummy data set and check if that specific data set can be queried by its ID`() {
-        val testDataSetName = "TestName_008"
-        val testDataSetPayload = "testDataSet_008"
-        val testDataSet = DataSet(name = testDataSetName, payload = testDataSetPayload)
-
-        val postResponse = dataControllerApi.postData(testDataSet)
-        val testDataSetID = postResponse.id
-
-        val getResponse = dataControllerApi.getDataSet(testDataSetID)
-
-        assertEquals(
-            testDataSetName,
-            getResponse.name,
-            "Response had name: ${getResponse.name} which does not match the posted name: $testDataSetName."
-        )
-        assertEquals(
-            testDataSetPayload,
-            getResponse.payload,
-            "Response had payload: ${getResponse.payload} which does not match the posted name: $testDataSetPayload."
-        )
-    }
-    */
 }
