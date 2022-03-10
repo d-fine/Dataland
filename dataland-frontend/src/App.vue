@@ -1,17 +1,17 @@
 <template>
   <img alt="Vue logo" src="@/assets/images/logos/dataland-logo-lr.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <WelcomeDataland msg="Welcome to Dataland"/>
   <ApiClient/>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import HelloWorld from './components/HelloWorld.vue';
+import WelcomeDataland from './components/WelcomeDataland.vue';
 import ApiClient from './components/APIClient.vue';
 
 @Options({
   components: {
-    HelloWorld,
+    WelcomeDataland,
     ApiClient
   },
 })
