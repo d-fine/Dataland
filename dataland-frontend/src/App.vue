@@ -1,6 +1,6 @@
 <template>
   <img alt="Vue logo" src="@/assets/images/logos/dataland-logo-lr.png">
-  <WelcomeDataland msg="Welcome to Dataland"/>
+  <WelcomeDataland msg="Welcome to DataLand"/>
   <ApiClient/>
 </template>
 
