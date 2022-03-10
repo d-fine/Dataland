@@ -47,8 +47,10 @@ class InMemoryDataStore : DataStoreInterface {
             throw IllegalArgumentException("The id: $dataId does not exist.")
         }
         if (data[dataId]?.dataIdentifier?.dataType != dataType) {
-            throw IllegalArgumentException("The data with id: $dataId is of type" +
-                    " ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType.")
+            throw IllegalArgumentException(
+                "The data with id: $dataId is of type" +
+                    " ${data[dataId]?.dataIdentifier?.dataType} instead of the expected $dataType."
+            )
         }
         return data[dataId]?.data ?: ""
     }
@@ -72,8 +74,8 @@ class InMemoryDataStore : DataStoreInterface {
     }
 
     override fun listDataSetsByCompany(companyId: String): List<DataIdentifier> {
-        if (!data.containsKey(companyId)) {
-            throw IllegalArgumentException("The id: $companyId does not exist.")
+        if (!companyData.containsKey(companyId)) {
+            throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
         return companyData[companyId]?.dataSets ?: emptyList()
     }
