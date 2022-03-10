@@ -1,26 +1,23 @@
 <template>
-  <img alt="Vue logo" src="@/assets/images/logos/dataland-logo-lr.png">
-  <WelcomeDataland msg="Welcome to DataLand"/>
-  <ApiClient/>
+  <div id="app">
+    <SubscriptionForm/>
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import WelcomeDataland from './components/WelcomeDataland.vue';
-import ApiClient from './components/APIClient.vue';
+<script>
+import SubscriptionForm from "@/components/SubscriptionForm";
 
-@Options({
+export default {
+  name: 'app',
   components: {
-    WelcomeDataland,
-    ApiClient
-  },
-})
-export default class App extends Vue {}
+    SubscriptionForm,
+  }
+}
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
