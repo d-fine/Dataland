@@ -36,15 +36,19 @@
       <div v-if="response" class="col m12">
         <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="response.data"/>
       </div>
+
     </div>
   </div>
 </template>
 <script>
 
 import {DataControllerApi} from "@/clients/backend";
+import ResultTable from "@/components/ui/ResultTable";
+
 export default {
   name: "APIClient",
   components: {
+    ResultTable
   },
   data() {
     return {
@@ -59,12 +63,12 @@ export default {
     async getSkyminderByName() {
       this.loading = true
       this.response = await this.dataStore.getDataSkyminderRequest(this.countryCode, this.companyName)
-      console.warn(this.response.status)
       this.loading = false
     },
 
     async clearGetOutput() {
-      this.data = null
+      this.countryCode = null
+      this.companyName = null
     },
   }
 }
