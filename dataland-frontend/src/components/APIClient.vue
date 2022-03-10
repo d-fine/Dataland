@@ -62,7 +62,11 @@ export default {
   methods: {
     async getSkyminderByName() {
       this.loading = true
-      this.response = await this.dataStore.getDataSkyminderRequest(this.countryCode, this.companyName)
+      try {
+        this.response = await this.dataStore.getDataSkyminderRequest(this.countryCode, this.companyName)
+      } catch (error) {
+        console.error(error)
+      }
       this.loading = false
     },
 
