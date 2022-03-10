@@ -51,9 +51,7 @@ jobs:
           name: distProdDirectories
           path: dist
       - name: Deploy to Preview
-        run: |
-          ls
-          ./deployment/deploy_to_preview.sh dataland-backend*.jar
+        run: ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
