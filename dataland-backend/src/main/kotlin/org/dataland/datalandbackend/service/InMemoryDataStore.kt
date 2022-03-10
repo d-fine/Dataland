@@ -73,7 +73,7 @@ class InMemoryDataStore : DataStoreInterface {
         return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
     }
 
-    override fun listDataSetsByCompany(companyId: String): List<DataIdentifier> {
+    override fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier> {
         if (!companyData.containsKey(companyId)) {
             throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }

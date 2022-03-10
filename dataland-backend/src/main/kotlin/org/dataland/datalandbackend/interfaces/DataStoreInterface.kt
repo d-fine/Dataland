@@ -57,5 +57,5 @@ interface DataStoreInterface {
      * @param companyId
      * @return list of all data set IDs along with their data type
      */
-    fun listDataSetsByCompany(companyId: String): List<DataIdentifier>
+    fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
 }
