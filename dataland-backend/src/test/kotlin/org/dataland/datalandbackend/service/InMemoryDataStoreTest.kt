@@ -1,77 +1,76 @@
 package org.dataland.datalandbackend.service
 
-import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.StoredDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 
-// TODO Adadpt to new functions
-// TODO Add error messages??
+// TODO Add error messages to Assertions?
+
 @SpringBootTest
 class InMemoryDataStoreTest {
+
     val testStore = InMemoryDataStore()
-    val companyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
-    /*val dataSetsToStore = listOf(
-        StoredDataSet(companyId = "1", )
-        StoredDataSet(name = "StoredCompany A", payload = "Data"),
-        StoredDataSet(name = "Holding B", payload = "Information"),
-        StoredDataSet(name = "Group C", payload = "Inputs")
-    )*/
+    val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
-
-
+    val testDataSetsToStore = listOf(
+        StoredDataSet(companyId = "1", dataType = "SomeDataType", data = "some_data_in_specific_structure_yyy"),
+        StoredDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
+        StoredDataSet(companyId = "1", dataType = "AgainAnotherDataType", data = "some_data_in_specific_structure_aaa")
+    )
 
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val companyMetaInformation = testStore.addCompany(companyNamesToStore[0])
-        assertEquals(companyMetaInformation.companyName, companyNamesToStore[0])
+        val companyMetaInformation = testStore.addCompany(testCompanyNamesToStore[0])
+        assertEquals(companyMetaInformation.companyName, testCompanyNamesToStore[0])
     }
 
     @Test
     fun `add all companies, retrieve them as a list and check for each company if its name is as expected`() {
-        for (companyName in companyNamesToStore) {
+        for (companyName in testCompanyNamesToStore) {
             testStore.addCompany(companyName)
         }
 
         val allCompaniesInStore = testStore.listAllCompanies()
         for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
-            assertEquals(companyNamesToStore[counter], storedCompany.companyName)
+            assertEquals(testCompanyNamesToStore[counter], storedCompany.companyName)
         }
     }
-
-
 
     @Test
     fun `add all companies and search for them one by one by using their names`() {
-        for (companyName in companyNamesToStore) {
+        for (companyName in testCompanyNamesToStore) {
             testStore.addCompany(companyName)
         }
 
-        for (companyName in companyNamesToStore) {
+        for (companyName in testCompanyNamesToStore) {
             val searchResponse = testStore.listCompaniesByName(companyName)
             assertEquals(companyName, searchResponse.first().companyName)
         }
     }
 
-
-    //Company-Methods: listDataSetsByCompany
+    // Company-Methods: listDataSetsByCompanyId
 
     @Test
-    fun `post the first company and all dummy data sets for it and check if all data sets of it can be retrieved`() {
-        for (companyName in companyNamesToStore) {
-            testStore.addCompany(companyName)
+    fun `post the first company and all dummy data sets for it and check if all data sets of it are listed`() {
+        val testCompanyId = testStore.addCompany(testCompanyNamesToStore[0]).companyId
+
+        val listOfDataIds = mutableListOf<String>()
+        for (dataSet in testDataSetsToStore) {
+            listOfDataIds.add(testStore.addDataSet(dataSet))
         }
 
-        for (companyName in companyNamesToStore) {
-            val searchResponse = testStore.listCompaniesByName(companyName)
-            assertEquals(companyName, searchResponse.first().companyName)
+        val dataSetsOfTestCompany = testStore.listDataSetsByCompanyId(testCompanyId)
+
+        for (dataId in listOfDataIds) {
+            assertEquals(
+                testDataSetsToStore[dataId.toInt() - 1].dataType,
+                dataSetsOfTestCompany.filter { it.dataId == dataId }.first().dataType
+            )
         }
     }
-
 
     @Test
     fun `get companies with a name that does not exist yet in the store`() {
@@ -87,38 +86,65 @@ class InMemoryDataStoreTest {
         }
     }
 
-
-    /*
-remaining methods to test:
-Data-Methods: addDataSet, listDataSets, getDataSet
- */
-
-/*
     @Test
-    fun `add and get dataset by id`() {
-        val identifier = testStore.addCompany(company = dataSets[1])
-        assertEquals(dataSets[1], testStore.listCompaniesByName(identifier.id))
+    fun `add and get data set by identifier`() {
+        testStore.addCompany(testCompanyNamesToStore[0]).companyId
+
+        val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
+        assertEquals(testDataSetsToStore[0].data, testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)))
     }
 
-
-
     @Test
-    fun `get dataset error message`() {
-        val id = "2"
-        val expectedMessage = "The id: $id does not exist."
-        val exceptionThatWasThrown: Throwable = assertThrows<IllegalArgumentException> {
-            testStore.listCompaniesByName(id)
+    fun `add all test data sets and check if they appear in the list of all data sets`() {
+        testStore.addCompany(testCompanyNamesToStore[0]).companyId
+
+        val listOfDataIds = mutableListOf<String>()
+
+        for (dataSet in testDataSetsToStore) {
+            listOfDataIds.add(testStore.addDataSet(dataSet))
         }
-        assertEquals(expectedMessage, exceptionThatWasThrown.message)
+
+        val listOfAllDataSets = testStore.listDataSets()
+
+        for (dataId in listOfDataIds) {
+            assertEquals(
+                testDataSetsToStore[dataId.toInt() - 1].dataType,
+                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().dataIdentifier.dataType
+            )
+            assertEquals(
+                testDataSetsToStore[dataId.toInt() - 1].companyId,
+                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().companyId
+            )
+        }
     }
 
     @Test
-    fun `check if the id of the last dataset equals the total number of all datasets after adding them all`() {
-        var dataSetMetaInformation: DataSetMetaInformation? = null
-        for (dataSet in dataSets) {
-            dataSetMetaInformation = testStore.addCompany(company = dataSet)
+    fun `get add data set error`() {
+        val invalidDataSetToStore = StoredDataSet(companyId = "error", dataType = "someDataType", data = "random_data")
+        assertThrows<IllegalArgumentException> {
+            testStore.addDataSet(invalidDataSetToStore)
         }
-        assertEquals(dataSetMetaInformation!!.id, dataSets.size.toString())
     }
- */
+
+    @Test
+    fun `produce get data set error for invalid data id`() {
+        testStore.addCompany(testCompanyNamesToStore[0]).companyId
+
+        testStore.addDataSet(testDataSetsToStore[0])
+
+        assertThrows<IllegalArgumentException> {
+            testStore.getDataSet(DataIdentifier(dataId = "error", dataType = testDataSetsToStore[0].dataType))
+        }
+    }
+
+    @Test
+    fun `produce get data set error for invalid data type`() {
+        testStore.addCompany(testCompanyNamesToStore[0]).companyId
+
+        val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
+
+        assertThrows<IllegalArgumentException> {
+            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
+        }
+    }
 }

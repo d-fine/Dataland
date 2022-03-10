@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 internal class CompanyDataControllerTest(
     @Autowired var mockMvc: MockMvc,
     @Autowired var objectMapper: ObjectMapper
-) {/*
+) { /*
 
     val storedDataSets = listOf(
         StoredDataSet(name = "StoredCompany A", payload = "Data"),

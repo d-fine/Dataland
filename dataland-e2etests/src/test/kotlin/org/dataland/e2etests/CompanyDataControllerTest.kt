@@ -14,10 +14,9 @@ import java.math.BigDecimal
 // TODO All Assertions need error messages!
 // TODO Cleanup the println()s from debugging
 
-
 class CompanyDataControllerTest {
-    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://localhost:8080/api")  // TODO change to proxy:80
-    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://localhost:8080/api") // TODO change to proxy:80
+    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
+    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -31,7 +30,6 @@ class CompanyDataControllerTest {
         println(postCompanyResponse.companyName)
 
         val modified = postCompanyResponse.companyName.replace(regex = "^\"|\"$".toRegex(), replacement = "")
-
 
         assertEquals(testCompanyName, modified)
 
