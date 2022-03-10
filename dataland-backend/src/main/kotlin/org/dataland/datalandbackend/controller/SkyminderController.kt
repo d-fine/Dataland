@@ -15,7 +15,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class SkyminderController(@Autowired var dataConnector: DataConnectorInterface) : SkyminderAPI {
-    override fun getDataSkyminderRequest(countryCode: String, name: String): ResponseEntity<List<ContactInformation>> {
-        return ResponseEntity.ok(this.dataConnector.getContactInformation(countryCode = countryCode, name = name))
+    override fun getDataSkyminderRequest(countryCode: String, companyName: String):
+            ResponseEntity<List<ContactInformation>> {
+        return ResponseEntity.ok(this.dataConnector.getContactInformation(
+                countryCode = countryCode,
+                name = companyName
+            )
+        )
     }
 }

@@ -31,11 +31,11 @@ interface SkyminderAPI {
     /**
      * A method to search for company data using the Skyminder API.
      * @param countryCode three-letter ISO country code (e.g. DEU for Germany)
-     * @param name string to be used for searching in Skyminder
+     * @param companyName string to be used for searching in Skyminder
      * @return the list of ContactInformation generated from all responses returned by Skyminder
      */
     fun getDataSkyminderRequest(
         @PathVariable("code") countryCode: String,
-        @PathVariable("name") name: String
+        @PathVariable("name") companyName: String
     ): ResponseEntity<List<ContactInformation>>
 }
