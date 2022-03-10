@@ -18,19 +18,19 @@ class InMemoryDataStore : DataStoreInterface {
     var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
 
-    override fun addDataSet(companyId: String, dataType: String, data: String): String {
-        if (companyData.containsKey(companyId)) {
+    override fun addDataSet(storedDataSet: StoredDataSet): String {
+        if (companyData.containsKey(storedDataSet.companyId)) {
             dataCounter++
             this.data["$dataCounter"] =
                 StoredDataSet(
-                    companyId = companyId,
-                    dataType = dataType,
-                    data = data
+                    companyId = storedDataSet.companyId,
+                    dataType = storedDataSet.dataType,
+                    data = storedDataSet.data
                 )
-            this.companyData[companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = dataType))
+            this.companyData[storedDataSet.companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = storedDataSet.dataType))
             return "$dataCounter"
         }
-        throw IllegalArgumentException("No company with the companyId $companyId exists.")
+        throw IllegalArgumentException("No company with the companyId $storedDataSet.companyId exists.")
     }
 
     override fun listDataSets(): List<DataSetMetaInformation> {
