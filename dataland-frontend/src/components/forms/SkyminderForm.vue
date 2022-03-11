@@ -2,13 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="col m6 s12">
-        <FormKit v-model="data" type="form">
+        <FormKit v-model="data" type="form" @submit="getSkyminderByName">
           <FormKitSchema
               :data="data"
               :schema="schema"
           />
         </FormKit>
-
       </div>
     </div>
   </div>
@@ -29,6 +28,7 @@ export default {
 
   data: () => ({
     data: {},
+    // ToDo: get scheme using classes
     schema: [
       {
         $formkit: 'text',
@@ -41,6 +41,20 @@ export default {
     ,
     model: {}
   }),
+  methods: {
+    async getSkyminderByName() {
+      this.loading = true
+      try {
+        // ToDo: auto data.*
+        this.response = await dataStore.getDataSkyminderRequest(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL})
+        // ToDO: Results Table
+        console.log(this.response.data)
+      } catch (error) {
+        console.error(error)
+      }
+      this.loading = false
+    }
+  }
 }
 
 </script>
