@@ -23,23 +23,13 @@ export default {
   data: () => ({
     // schema: require('../clients/backend/backendOpenApi.json'),
     // schema: require('../schema/sample'),
-    data: {location: "Berlin"},
+    data: {locations: ["Berlin", "Dresden", "Leipzig"]},
     schema: [{
-      $cmp: 'FormKit',
-      for: ['item', 'key', ]
-      props: {
-        type: 'email',
-        label: 'Email address',
-      }},
-      {
-        $cmp: 'FormKit',
-        children: [
-            "Hello ",
-            "$location"
-        ]
-
-        },
-
+      $formkit: 'text',
+      for: ['item', 'key', "$locations"],
+      label: "$item",
+      placeholder: "$key"
+      },
     ],
     model: {}
   }),
