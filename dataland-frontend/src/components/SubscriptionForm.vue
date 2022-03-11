@@ -17,15 +17,11 @@
 <script>
 
 import {FormKitSchema, FormKit} from "@formkit/vue";
-import backend from "../schema/backendOpenApi.json"
-const properties = backend.components.schemas.CompanyMetaInformation.properties
-const processed_schema = {
-  $formkit: 'text',
-  for: ['item', 'key', properties],
-  label: "$key",
-  placeholder: "$key",
-  name: "$key"
-}
+// import backend from "../schema/backendOpenApi.json"
+import SchemaProcessor from "../services/SchemaProcessor"
+
+// const properties = backend.components.schemas.CompanyMetaInformation.properties
+const schemaProcessor = new SchemaProcessor()
 
 const conditional_schema = {
   $formkit: 'text',
@@ -43,7 +39,7 @@ export default {
       companyName: ""
     },
     schema: [
-        processed_schema,
+        schemaProcessor.process(),
       conditional_schema
     ]
     ,
