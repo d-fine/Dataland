@@ -91,15 +91,15 @@ jobs:
       - build
     steps:
       - uses: actions/checkout@v2
-      - name: Execute E2E Tests
-        run: ./testing-shell-scripts/execute_e2e_tests.sh
-        env:
-          SKYMINDER_URL: "http://skyminder-server:8080"
       - name: Download gradle_cache
         uses: actions/download-artifact@v2
         with:
           name: gradle_cache
           path: /home/runner/.gradle
+      - name: Execute E2E Tests
+        run: ./testing-shell-scripts/execute_e2e_tests.sh
+        env:
+          SKYMINDER_URL: "http://skyminder-server:8080"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
