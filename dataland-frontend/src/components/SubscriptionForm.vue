@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col m6 s12">
-        <FormKit type="form" v-model="model" @submit="handleSubmit">
+        <FormKit type="form" v-model="data" @submit="handleSubmit">
           <FormKitSchema
               :schema="schema"
               :data="data"
@@ -27,16 +27,24 @@ const processed_schema = {
   name: "$key"
 }
 
+const conditional_schema = {
+  $formkit: 'text',
+  if: '$companyId == "trigger"',
+  label: "$companyId",
+  placeholder: "$companyName",
+  name: "hallo"
+}
 
 
 export default {
   data: () => ({
     data: {
-      companyId: null,
-      companyName: null
+      companyId: "",
+      companyName: ""
     },
     schema: [
         processed_schema,
+      conditional_schema
     ]
     ,
     model: {
@@ -45,7 +53,7 @@ export default {
   }),
   methods: {
     handleSubmit() {
-      console.log(JSON.stringify(this.model, null, 2))
+      console.log(JSON.stringify(this.data, null, 2))
      }
   },
   components: {FormKitSchema, FormKit}
