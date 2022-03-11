@@ -30,6 +30,8 @@ jobs:
         run: ./gradlew assemble
       - name: Where is $HOME in the pipeline?
         run: echo $HOME
+      - name: Where is the code checked out to?
+        run: echo $GITHUB_WORKSPACE
       - name: Upload everything in .gradle from $HOME as artifact.
         uses: actions/upload-artifact@v2
         with:
