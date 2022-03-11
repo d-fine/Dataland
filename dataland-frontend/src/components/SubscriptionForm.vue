@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col m6 s12">
-        <FormKit type="form" v-model="data" @submit="handleSubmit">
+        <FormKit type="form" v-model="data" @submit="handleSubmit" class="form">
           <FormKitSchema
               :schema="schema"
               :data="data"
@@ -17,10 +17,10 @@
 <script>
 
 import {FormKitSchema, FormKit} from "@formkit/vue";
-// import backend from "../schema/backendOpenApi.json"
+import backend from "../schema/backendOpenApi.json"
 import SchemaProcessor from "../services/SchemaProcessor"
 
-// const properties = backend.components.schemas.CompanyMetaInformation.properties
+const cmiSchema = backend.components.schemas.CompanyMetaInformation
 const schemaProcessor = new SchemaProcessor()
 
 const conditional_schema = {
@@ -39,7 +39,7 @@ export default {
       companyName: ""
     },
     schema: [
-        schemaProcessor.process(),
+        schemaProcessor.process(cmiSchema),
       conditional_schema
     ]
     ,

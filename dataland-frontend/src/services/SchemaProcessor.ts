@@ -1,11 +1,11 @@
-import backend from "../schema/backendOpenApi.json"
-
-const rawSchema = backend.components.schemas.CompanyMetaInformation
+interface SchemaObject {
+    [key: string]: any
+}
 
 export default class SchemaProcessor {
     constructor() {
     }
-    process(): Object {
+    process(rawSchema: SchemaObject): Object {
         return {
             $formkit: 'text',
             for: ['item', 'key', rawSchema.properties],
