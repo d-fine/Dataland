@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Controller for the EU Taxonomy endpoints
+ * @param myDataStore implementation of the data store to be used
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ */
 @RequestMapping("/EU-Taxonomy")
 @RestController
 class EuTaxonomyDataController(

@@ -91,7 +91,10 @@ class InMemoryDataStoreTest {
         testStore.addCompany(testCompanyNamesToStore[0]).companyId
 
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
-        assertEquals(testDataSetsToStore[0].data, testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)))
+        assertEquals(
+            testDataSetsToStore[0].data,
+            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType))
+        )
     }
 
     @Test

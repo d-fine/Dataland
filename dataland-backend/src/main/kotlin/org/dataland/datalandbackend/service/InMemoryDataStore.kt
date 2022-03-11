@@ -27,7 +27,9 @@ class InMemoryDataStore : DataStoreInterface {
                     dataType = storedDataSet.dataType,
                     data = storedDataSet.data
                 )
-            this.companyData[storedDataSet.companyId]?.dataSets?.add(DataIdentifier(dataId = "$dataCounter", dataType = storedDataSet.dataType))
+            this.companyData[storedDataSet.companyId]?.dataSets?.add(
+                DataIdentifier(dataId = "$dataCounter", dataType = storedDataSet.dataType)
+            )
             return "$dataCounter"
         }
         throw IllegalArgumentException("No company with the companyId $storedDataSet.companyId exists.")

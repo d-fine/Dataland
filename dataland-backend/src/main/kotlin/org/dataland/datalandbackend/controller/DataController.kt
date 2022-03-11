@@ -23,6 +23,9 @@ abstract class DataController<T>(
 ) : DataAPI<T> {
     private val dataType = getClazz().toString().substringAfterLast(".")
 
+    /**
+     * Method to get the class of the abstract T
+     */
     abstract fun getClazz(): Class<T>
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
@@ -42,6 +45,12 @@ abstract class DataController<T>(
     }
 
     override fun getDataSet(dataId: String): ResponseEntity<T> {
-        return ResponseEntity.ok(objectMapper.readValue(this.dataStore.getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)), getClazz()))
+        return ResponseEntity.ok(
+            objectMapper.readValue(
+                this.dataStore
+                    .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
+                getClazz()
+            )
+        )
     }
 }

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.StoredDataSet
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -11,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 // TODO Completely new unit tests needed here for ne CompanyAPI
@@ -31,7 +29,7 @@ internal class CompanyDataControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(companyName))
-            )
+        )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
 
