@@ -43,13 +43,11 @@ internal class CompanyDataControllerTest(
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/company/${testCompanyName}")
+            get("/company/$testCompanyName")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
-
-
     }
 
     @Test
@@ -77,10 +75,8 @@ internal class CompanyDataControllerTest(
             .andExpectAll(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
-                //jsonPath("$s").value("")
+                // jsonPath("$s").value("")
                 content().string("[]")
             )
-
     }
-
 }
