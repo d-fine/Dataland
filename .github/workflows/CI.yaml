@@ -30,6 +30,11 @@ jobs:
         run: ./gradlew assemble
       - name: Where is home in the pipeline?
         run: echo $HOME
+      - name: Upload the .gradle in home as artifact.
+        uses: actions/upload-artifact@v2
+        with:
+          name: gradle_cache
+          path: "/home/runner/.gradle"
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
