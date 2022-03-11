@@ -2,12 +2,13 @@
   <div class="container">
     <div class="row">
       <div class="col m6 s12">
-        <card class="form">
+        <FormKit type="form" v-model="model" @submit="handleSubmit">
           <FormKitSchema
               :schema="schema"
               :data="data"
           />
-        </card>
+        </FormKit>
+
       </div>
     </div>
   </div>
@@ -15,31 +16,39 @@
 
 <script>
 
-import {FormKitSchema} from "@formkit/vue";
+import {FormKitSchema, FormKit} from "@formkit/vue";
 import backend from "../schema/backendOpenApi.json"
+const properties = backend.components.schemas.CompanyMetaInformation.properties
+const processed_schema = {
+  $formkit: 'text',
+  for: ['item', 'key', properties],
+  label: "$key",
+  placeholder: "$key",
+  name: "$key"
+}
+
 
 
 export default {
   data: () => ({
-    data: {properties: backend.components.schemas.CompanyMetaInformation.properties},
-    schema: [{
-      $formkit: 'text',
-      for: ['item', 'key', "$properties"],
-      label: "$key",
-      placeholder: "$key"
+    data: {
+      companyId: null,
+      companyName: null
     },
-    ],
-    model: {}
+    schema: [
+        processed_schema,
+    ]
+    ,
+    model: {
+
+    }
   }),
   methods: {
-    submit() {
+    handleSubmit() {
       console.log(JSON.stringify(this.model, null, 2))
-    },
-    reset() {
-      this.$refs.formSchema.reset()
-    }
+     }
   },
-  components: {FormKitSchema}
+  components: {FormKitSchema, FormKit}
 }
 </script>
 <style>
