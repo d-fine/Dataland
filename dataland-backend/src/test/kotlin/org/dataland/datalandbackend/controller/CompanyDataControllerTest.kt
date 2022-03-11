@@ -21,7 +21,7 @@ internal class CompanyDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
+    val testCompanyName = "Imaginary-Company_I"
 
     fun uploadCompany(mockMvc: MockMvc, companyName: String) {
         mockMvc.perform(
@@ -35,23 +35,25 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `company can be posted`() {
-        uploadCompany(mockMvc, testCompanyNamesToStore[0])
+        uploadCompany(mockMvc, testCompanyName)
     }
 
     @Test
     fun `company can be retrieved by name`() {
-        uploadCompany(mockMvc, testCompanyNamesToStore[0])
+        uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/company/${testCompanyNamesToStore[0]}")
+            get("/company/${testCompanyName}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
+
+
     }
 
     @Test
-    fun `all-company-list can be retrieved and is empty because no company was posted`() {
+    fun `all-company-list can be retrieved`() {
         mockMvc.perform(
             get("/company")
                 .accept(MediaType.APPLICATION_JSON)
@@ -60,14 +62,12 @@ internal class CompanyDataControllerTest(
             .andExpectAll(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
-                //jsonPath("$s").value("")
-            content().string("[]")
             )
     }
 
     @Test
     fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {
-        uploadCompany(mockMvc, testCompanyNamesToStore[0])
+        uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
             get("/company/1/data")
