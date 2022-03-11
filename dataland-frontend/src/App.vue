@@ -7,6 +7,7 @@
 <script>
 import SubscriptionForm from "@/components/SubscriptionForm";
 
+
 export default {
   name: 'app',
   components: {

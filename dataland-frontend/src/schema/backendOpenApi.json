@@ -1,0 +1,444 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/company": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Show all available companies.",
+        "description": "Retrieves a list of all existing companies containing the ID and name respectively.",
+        "operationId": "getAllCompanies",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyMetaInformation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Add a new company.",
+        "description": "A new company is added using the provided information, the generated company ID is returned.",
+        "operationId": "postCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyMetaInformation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EU-Taxonomy/{companyId}": {
+      "post": {
+        "tags": [
+          "eu-taxonomy-data-controller"
+        ],
+        "summary": "Upload new data set.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned.",
+        "operationId": "postData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EuTaxonomyDataSet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data set to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/skyminder/{code}/{name}": {
+      "get": {
+        "tags": [
+          "skyminder-controller"
+        ],
+        "summary": "Retrieve company data from Skyminder server.",
+        "description": "Gets company data from Skyminder using a country ISO code and company name.",
+        "operationId": "getDataSkyminderRequest",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company data from Skyminder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContactInformation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/{companyName}": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve specific companies from the data store.",
+        "description": "Companies identified via the provided company name are retrieved.",
+        "operationId": "getCompaniesByName",
+        "parameters": [
+          {
+            "name": "companyName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a map of companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyMetaInformation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/{companyId}/data": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve list of existing data sets for given company.",
+        "description": "A List of data ID and data type of all data sets of the given company is retrieved.",
+        "operationId": "getCompanyDataSets",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of data sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataIdentifier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EU-Taxonomy/{dataId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-data-controller"
+        ],
+        "summary": "Retrieve specific data set from the data store.",
+        "description": "The data set identified via the provided data ID is retrieved.",
+        "operationId": "getDataSet",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EuTaxonomyDataSet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EU-Taxonomy/data": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-data-controller"
+        ],
+        "summary": "Retrieve list of existing data for this data type.",
+        "description": "List is composed of meta information containing the data ID, the company ID and the data type.",
+        "operationId": "getData",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of entries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataSetMetaInformation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompanyMetaInformation": {
+        "required": [
+          "companyId",
+          "companyName"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          }
+        }
+      },
+      "EuTaxonomyData": {
+        "type": "object",
+        "properties": {
+          "Amount €": {
+            "type": "number"
+          },
+          "Taxonomy-aligned proportion of turnover %": {
+            "type": "number"
+          }
+        }
+      },
+      "EuTaxonomyDataSet": {
+        "required": [
+          "Attestation",
+          "Reporting Obligation"
+        ],
+        "type": "object",
+        "properties": {
+          "Capex": {
+            "$ref": "#/components/schemas/EuTaxonomyData"
+          },
+          "Opex": {
+            "$ref": "#/components/schemas/EuTaxonomyData"
+          },
+          "Revenues": {
+            "$ref": "#/components/schemas/EuTaxonomyData"
+          },
+          "Reporting Obligation": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "Attestation": {
+            "type": "string",
+            "enum": [
+              "None",
+              "Some",
+              "Full"
+            ]
+          }
+        }
+      },
+      "ContactInformation": {
+        "required": [
+          "addresses",
+          "emails",
+          "identifiers",
+          "name",
+          "phones",
+          "websites"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "websites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Identifier"
+            }
+          }
+        }
+      },
+      "Identifier": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "issuingAuthority": {
+            "type": "string"
+          },
+          "issuingAuthorityCity": {
+            "type": "string"
+          },
+          "issuingAt": {
+            "type": "string"
+          }
+        }
+      },
+      "DataIdentifier": {
+        "required": [
+          "Data ID",
+          "Data Type"
+        ],
+        "type": "object",
+        "properties": {
+          "Data ID": {
+            "type": "string"
+          },
+          "Data Type": {
+            "type": "string"
+          }
+        }
+      },
+      "DataSetMetaInformation": {
+        "required": [
+          "companyId",
+          "dataIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "dataIdentifier": {
+            "$ref": "#/components/schemas/DataIdentifier"
+          },
+          "companyId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

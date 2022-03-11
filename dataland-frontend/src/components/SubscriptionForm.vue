@@ -1,33 +1,57 @@
 <template>
-  <card class="form">
-    <FormSchema ref="formSchema" v-model="model" @submit.prevent
-                :schema="schema.components.schemas.CompanyMetaInformation">
-      <div>
-        <button @click="submit">Subscribe</button>
-        <button @click="reset">Reset</button>
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <card class="form">
+          <FormKitSchema
+              :schema="schema"
+              :data="data"
+          />
+        </card>
       </div>
-    </FormSchema>
-  </card>
+    </div>
+  </div>
 </template>
 
 <script>
-import { Vue3LiveForm } from  'vue3-live-form';
+
+import {FormKitSchema} from "@formkit/vue";
+// import backend from "../schema/backendOpenApi.json"
+
 
 export default {
   data: () => ({
-    schema: require('../clients/backend/backendOpenApi.json'),
+    // schema: require('../clients/backend/backendOpenApi.json'),
     // schema: require('../schema/sample'),
+    data: {location: "Berlin"},
+    schema: [{
+      $cmp: 'FormKit',
+      for: ['item', 'key', ]
+      props: {
+        type: 'email',
+        label: 'Email address',
+      }},
+      {
+        $cmp: 'FormKit',
+        children: [
+            "Hello ",
+            "$location"
+        ]
+
+        },
+
+    ],
     model: {}
   }),
   methods: {
-    submit () {
+    submit() {
       console.log(JSON.stringify(this.model, null, 2))
     },
-    reset () {
+    reset() {
       this.$refs.formSchema.reset()
     }
   },
-  components: { Vue3LiveForm }
+  components: {FormKitSchema}
 }
 </script>
 <style>
