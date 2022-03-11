@@ -1,11 +1,8 @@
-interface SchemaObject {
-    [key: string]: any
-}
-
 export default class SchemaProcessor {
     constructor() {
     }
-    process(rawSchema: SchemaObject): Object {
+
+    process(rawSchema: any): Object {
         return {
             $formkit: 'text',
             for: ['item', 'key', rawSchema.properties],
@@ -13,6 +10,5 @@ export default class SchemaProcessor {
             placeholder: "$key",
             name: "$key"
         };
-
     }
 }

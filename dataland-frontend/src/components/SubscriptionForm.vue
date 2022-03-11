@@ -23,24 +23,22 @@ import SchemaProcessor from "../services/SchemaProcessor"
 const contactSchema = backend.components.schemas.ContactInformation
 const schemaProcessor = new SchemaProcessor()
 
-const conditional_schema = {
+/*const conditional_schema = {
   $formkit: 'text',
-  if: '$companyId == "trigger"',
+  if: '$companyId"',
   label: "$companyId",
   placeholder: "$companyName",
   name: "hallo"
-}
+}*/
 
 
 export default {
   data: () => ({
     data: {
-      companyId: "",
-      companyName: ""
     },
     schema: [
         schemaProcessor.process(contactSchema),
-      conditional_schema
+      //conditional_schema
     ]
     ,
     model: {

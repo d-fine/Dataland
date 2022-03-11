@@ -1,43 +1,46 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col s12 m12">
-        <div class="card">
-          <div class="card-title"><h2>Contact Data Search</h2>
-          </div>
-          <div class="card-content ">
+      <div class="col m6 s12">
+        <FormKit v-model="data" type="form">
+          <FormKitSchema
+              :data="data"
+              :schema="schema"
+          />
+        </FormKit>
 
-            <FormKit type="form" v-model="data" @submit="handleSubmit" class="form">
-              <FormKitSchema
-                  :schema="schema"
-                  :data="data"
-              />
-            </FormKit>
-
-          </div>
-        </div>
       </div>
-      <div v-if="response" class="col m12">
-        <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="response.data"/>
-      </div>
-
     </div>
   </div>
 </template>
 
 <script>
-import {FormKitSchema, FormKit} from "@formkit/vue";
-import backend from "schema/backendOpenApi.json"
-import SchemaProcessor from "../services/SchemaProcessor"
-const skyminderSchema = backend.components.schemas.ContactInformation
-const schemaProcessor = new SchemaProcessor()
+import {FormKit, FormKitSchema} from "@formkit/vue";
+import {SkyminderControllerApi} from "@/clients/backend";
+
+import {getParams} from "@/utils/GetParameterNames"
+
+const dataStore = new SkyminderControllerApi()
+const contactSchema = getParams(dataStore.getDataSkyminderRequest)
 
 export default {
-  name: "SkyminderForm",
-  components: {Formkit, FormKitSchema}
+  name: "APIClient",
+  components: {FormKitSchema, FormKit},
+
+  data: () => ({
+    data: {},
+    schema: [
+      {
+        $formkit: 'text',
+        for: ['item', 'key', contactSchema],
+        label: "$item",
+        placeholder: "$item",
+        name: "$item"
+      }
+    ]
+    ,
+    model: {}
+  }),
 }
+
 </script>
-
-<style scoped>
-
-</style>
