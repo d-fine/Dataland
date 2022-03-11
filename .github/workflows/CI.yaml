@@ -32,6 +32,11 @@ jobs:
         run: echo $HOME
       - name: Where is the code checked out to?
         run: echo $GITHUB_WORKSPACE
+      - name: Show all the stuff in $HOME.
+        run: |
+          cd ../../..
+          pwd
+          ls
       - name: Upload everything in .gradle from $HOME as artifact.
         uses: actions/upload-artifact@v2
         with:
