@@ -29,13 +29,7 @@ jobs:
       - name: Build all and Assemble boot jar
         run: ./gradlew assemble
       - name: Where is home in the pipeline?
-        run: |
-        echo ls
-        ls 
-        echo homeis
-        echo $HOME
-        echo pwdis
-        pwd
+        run: echo $HOME
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
