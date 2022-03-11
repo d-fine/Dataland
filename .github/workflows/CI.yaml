@@ -58,7 +58,7 @@ jobs:
         with:
           name: buildDirectories
       - name: Execute Backend tests
-        run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
+        run: ./gradlew ktlintcheck detekt :dataland-backend:test
       - name: Execute Frontend Unit Tests
         run: ./gradlew :dataland-frontend:npm_run_testunit
       - name: Upload Test Reports
@@ -134,7 +134,7 @@ jobs:
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube --no-daemon
+        run: ./gradlew jacocoTestReport sonarqube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
