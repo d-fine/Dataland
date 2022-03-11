@@ -16,20 +16,18 @@
 <script>
 
 import {FormKitSchema} from "@formkit/vue";
-// import backend from "../schema/backendOpenApi.json"
+import backend from "../schema/backendOpenApi.json"
 
 
 export default {
   data: () => ({
-    // schema: require('../clients/backend/backendOpenApi.json'),
-    // schema: require('../schema/sample'),
-    data: {locations: ["Berlin", "Dresden", "Leipzig"]},
+    data: {properties: backend.components.schemas.CompanyMetaInformation.properties},
     schema: [{
       $formkit: 'text',
-      for: ['item', 'key', "$locations"],
-      label: "$item",
+      for: ['item', 'key', "$properties"],
+      label: "$key",
       placeholder: "$key"
-      },
+    },
     ],
     model: {}
   }),
