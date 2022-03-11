@@ -17,10 +17,10 @@
 <script>
 
 import {FormKitSchema, FormKit} from "@formkit/vue";
-import backend from "../schema/backendOpenApi.json"
+import backend from "@/clients/backend/backendOpenApi.json"
 import SchemaProcessor from "../services/SchemaProcessor"
 
-const cmiSchema = backend.components.schemas.CompanyMetaInformation
+const contactSchema = backend.components.schemas.ContactInformation
 const schemaProcessor = new SchemaProcessor()
 
 const conditional_schema = {
@@ -39,7 +39,7 @@ export default {
       companyName: ""
     },
     schema: [
-        schemaProcessor.process(cmiSchema),
+        schemaProcessor.process(contactSchema),
       conditional_schema
     ]
     ,
