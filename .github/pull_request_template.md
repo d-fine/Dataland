@@ -11,4 +11,3 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] The new version is deployed to preview using this branch
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
   - [ ] The new feature is manually used/tested/observed on preview
-- [ ] All Classes and Interfaces contain JavaDoc
