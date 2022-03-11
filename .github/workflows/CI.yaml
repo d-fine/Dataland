@@ -28,13 +28,13 @@ jobs:
           cache: gradle
       - name: Build all and Assemble boot jar
         run: ./gradlew assemble
-      - name: Where is home in the pipeline?
+      - name: Where is $HOME in the pipeline?
         run: echo $HOME
-      - name: Upload the .gradle in home as artifact.
+      - name: Upload everything in .gradle from $HOME as artifact.
         uses: actions/upload-artifact@v2
         with:
           name: gradle_cache
-          path: "/home/runner/.gradle"
+          path: /home/runner/.gradle/**
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
@@ -57,6 +57,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
+      - name: Download gradle_cache
+        uses: actions/download-artifact@2
+        with:
+          name: gradle_cache
+          path: /home/runner/.gradle
       - name: Execute Backend tests
         run: ./gradlew ktlintcheck detekt :dataland-backend:test
       - name: Execute Frontend Unit Tests
@@ -90,6 +95,11 @@ jobs:
         run: ./testing-shell-scripts/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-server:8080"
+      - name: Download gradle_cache
+        uses: actions/download-artifact@v2
+        with:
+          name: gradle_cache
+          path: /home/runner/.gradle
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
