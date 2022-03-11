@@ -23,7 +23,7 @@ internal class CompanyDataControllerTest(
 
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
-    fun postCompany(mockMvc: MockMvc, companyName: String) {
+    fun uploadCompany(mockMvc: MockMvc, companyName: String) {
         mockMvc.perform(
             post("/company")
                 .accept(MediaType.APPLICATION_JSON)
@@ -35,34 +35,52 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `company can be posted`() {
-        postCompany(mockMvc, testCompanyNamesToStore[0])
+        uploadCompany(mockMvc, testCompanyNamesToStore[0])
     }
-/*
+
     @Test
     fun `company can be retrieved by name`() {
-        postResponse = postCompany(mockMvc, testCompanyNamesToStore[0])
+        uploadCompany(mockMvc, testCompanyNamesToStore[0])
 
         mockMvc.perform(
-            get("/company/{"$testCompanyNamesToStore[0]"})
+            get("/company/${testCompanyNamesToStore[0]}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("\$.companyName").value(testCompanyNamesToStore[0]))
-            .andExpect(jsonPath("\$.companyId").value(postReponse.companyId))
     }
-    */
-/*
-    TEMPLATE:
+
     @Test
-    fun `list the data`() {
-        for (dataset in storedDataSets)
-            uploadDataSet(mockMvc, dataset)
+    fun `all-company-list can be retrieved and is empty because no company was posted`() {
         mockMvc.perform(
-            get("/data")
+            get("/company")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
-    }*/
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                //jsonPath("$s").value("")
+            content().string("[]")
+            )
+    }
+
+    @Test
+    fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {
+        uploadCompany(mockMvc, testCompanyNamesToStore[0])
+
+        mockMvc.perform(
+            get("/company/1/data")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                //jsonPath("$s").value("")
+                content().string("[]")
+            )
+
+    }
+
 }
