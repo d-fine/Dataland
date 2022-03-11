@@ -23,7 +23,7 @@ const dataStore = new SkyminderControllerApi()
 const contactSchema = getParams(dataStore.getDataSkyminderRequest)
 
 export default {
-  name: "APIClient",
+  name: "GetSkyminder",
   components: {FormKitSchema, FormKit},
 
   data: () => ({
@@ -43,7 +43,6 @@ export default {
   }),
   methods: {
     async getSkyminderByName() {
-      this.loading = true
       try {
         // ToDo: auto data.*
         this.response = await dataStore.getDataSkyminderRequest(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL})
@@ -52,7 +51,6 @@ export default {
       } catch (error) {
         console.error(error)
       }
-      this.loading = false
     }
   }
 }
