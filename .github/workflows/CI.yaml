@@ -36,7 +36,7 @@ jobs:
         run: |
           cd ../../..
           pwd
-          ls -force
+          ls -a
       - name: Upload everything in .gradle from $HOME as artifact.
         uses: actions/upload-artifact@v2
         with:
