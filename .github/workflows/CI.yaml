@@ -30,12 +30,12 @@ jobs:
         run: ./gradlew assemble
       - name: Where is home in the pipeline?
         run: |
-        echo lslisa
-        ls -lisa
-        echo homeis
-        echo $HOME
-        echo pwdis
-        pwd
+        sh -c "echo ls -lisa"
+        sh -c "ls -lisa"
+        sh -c "echo homeis"
+        sh -c "echo $HOME"
+        sh -c "echo pwdis"
+        sh -c "pwd"
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
