@@ -27,7 +27,15 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build all and Assemble boot jar
-        run: ./gradlew assemble --no-daemon
+        run: ./gradlew assemble
+      - name: Where is home in the pipeline?
+        run: |
+        echo lslisa
+        ls -lisa
+        echo homeis
+        echo $HOME
+        echo pwdis
+        pwd
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
