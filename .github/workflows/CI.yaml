@@ -82,6 +82,8 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build
     steps:
       - uses: actions/checkout@v2
       - name: Execute E2E Tests
