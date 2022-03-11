@@ -15,7 +15,7 @@ class SkyminderDummyServerHealthIndicatorTest {
         assertEquals(
             status, "DOWN",
             "The Skyminder Dummy Server Health Indicator is not returning the status \"DOWN\"." +
-                    " It should return \"DOWN\", since this is a unit test and no services should be reachable."
+                " It should return \"DOWN\", since this is a unit test and no services should be reachable."
         )
     }
 
@@ -25,7 +25,7 @@ class SkyminderDummyServerHealthIndicatorTest {
         assertFalse(
             isRunningSkyminderServer,
             "The Skyminder Dummy Server Health Indicator is not returning the status \"DOWN\"." +
-                    " It should return \"DOWN\", since this is a unit test and no services should be reachable."
+                " It should return \"DOWN\", since this is a unit test and no services should be reachable."
         )
     }
 }
