@@ -16,6 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build-and-push-docker-image:
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +83,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Execute Frontend and Backend tests
+      - name: Execute Frontend and Backend unit tests by using base image from GitHub Registry
         run: |
           docker build ./testcontainer -t unittests
           docker run -v $(pwd)/:/app:rw unittests
@@ -105,8 +106,6 @@ jobs:
           name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
 
-
-
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -128,6 +127,7 @@ jobs:
         with:
           name: lcovResultsE2E
           path: ./lcov.info
+
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'

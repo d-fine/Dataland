@@ -1,6 +1,6 @@
-FROM eclipse-temurin:17.0.2_8-jdk-focal
+FROM ghcr.io/d-fine/dataland/temurinbase:latest
 COPY . /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD ./gradlew :dataland-backend:bootRun --no-daemon
+CMD ./gradlew :dataland-backend:bootRun
