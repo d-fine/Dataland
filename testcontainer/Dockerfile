@@ -1,4 +1,4 @@
-FROM ghrc.io/d-fine/dataland/backendbase:latest
+FROM backendbase
 
 WORKDIR /app
 
