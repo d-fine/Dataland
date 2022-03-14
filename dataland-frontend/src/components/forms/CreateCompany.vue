@@ -59,7 +59,8 @@ export default {
 
 </script>
 
-<style>
-@import "../../assets/css/buttons.css";
+<style lang="scss">
 @import "../../assets/css/forms.css";
+@import "../../assets/css/variables";
+@import "../../assets/css/button-and-submit";
 </style>
