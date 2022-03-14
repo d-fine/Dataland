@@ -48,17 +48,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build an eclipse temurin base image and push to GitHub Container Registry
+      - name: Build an eclipse temurin base image and push it to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
           # relative path to the source code
           context: .
-          file: ./deployment/Dockerfile
+          file: ./baseDockerfiles/temurinBaseImageDockerfile
           tags: ghcr.io/d-fine/dataland/temurinbase:latest
+          push: true
+      - name: Build an ubuntu base image and push it to GitHub Container Registry
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./baseDockerfiles/ubuntuBaseImageDockerfile
+          tags: ghcr.io/d-fine/dataland/ubuntubase:latest
           push: true
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-      # We shuld also build base images for cypress (needed by e2e-test-app)
+      # We should also build base images for cypress (needed by e2e-test-app)
 
 
   unit-tests:
@@ -85,7 +92,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute Frontend and Backend unit tests by using base image from GitHub Registry
         run: |
-          docker build . -t unittests -f ./testcontainer/UnitTestsDockerfile
+          docker build . -t unittests -f ./testcontainerDockefiles/unitTestsDockerfile
           docker run -v $(pwd)/:/app:rw unittests
       - name: Upload Test Reports
         if: always()

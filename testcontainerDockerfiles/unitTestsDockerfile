@@ -1,4 +1,4 @@
-FROM ghcr.io/d-fine/dataland/temurinbase:latest
+FROM ghcr.io/d-fine/dataland/ubuntubase:latest
 
 WORKDIR /app
 
