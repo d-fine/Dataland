@@ -69,6 +69,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute Backend tests
         run: |
+          docker images
+          echo ______
+          docker pull ghcr.io/d-fine/dataland/backendbase:latest
+          echo ______
+          docker images
+          echo _______
           docker build ./testcontainer -t backendtest
           docker run -v $(pwd)/:/app:rw backendtest
       - name: Upload Test Reports
