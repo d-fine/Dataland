@@ -60,7 +60,7 @@ jobs:
       - build-and-push-docker-image
     steps:
       - name: Check if PWD ist GITHUB_WORKSPACE
-        - run: |
+        run: |
           echo $(pwd)
           echo _____
           echo $GITHUB_WORKSPACE
