@@ -1,8 +1,8 @@
-import {humanizeString} from "@/utils/stringHumanizer";
+import {humanizeString} from "@/utils/stringHumanizer"
 
 export default class DataStore {
-    axiosFunction: any;
-    rawSchema: any;
+    axiosFunction: any
+    rawSchema: any
 
     constructor(axiosFunction: any, rawSchema?: any) {
         this.axiosFunction = axiosFunction
@@ -23,31 +23,28 @@ export default class DataStore {
         const scheme = []
 
         for (const index in params) {
-            const value = params[index];
-            if ("options" == value) {
-                params.splice(index, 1)
+            const value = params[index]
+            if (value != "options") {
+                scheme.push({
+                        $formkit: 'text',
+                        label: humanizeString(value),
+                        placeholder: humanizeString(value),
+                        name: value
+                    }
+                )
             }
-        }
-        for (const k in params) {
-            scheme.push({
-                    $formkit: 'text',
-                    label: humanizeString(params[k]),
-                    placeholder: humanizeString(params[k]),
-                    name: params[k]
-                }
-            )
         }
         return scheme
     }
 
     private _getSchemaFromJson(): Object {
         const scheme = []
-        for (const k in this.rawSchema.properties) {
+        for (const index in this.rawSchema.properties) {
             scheme.push({
                     $formkit: 'text',
-                    label: humanizeString(k),
-                    placeholder: humanizeString(k),
-                    name: k
+                    label: humanizeString(index),
+                    placeholder: humanizeString(index),
+                    name: index
                 }
             )
         }
