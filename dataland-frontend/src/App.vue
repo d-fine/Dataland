@@ -1,19 +1,28 @@
 <template>
   <div id="app">
-    <SubscriptionForm/>
-    <SkyminderForm/>
+    <section class="hero container max-w-screen-lg mx-auto pb-10 flex">
+      <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
+    </section>
+    <WelcomeDataland msg="Welcome to DataLand"/>
+    <RetrieveSkyminder/>
+    <APIClient/>
   </div>
 </template>
 
 <script>
-import SubscriptionForm from "@/components/SubscriptionForm";
-import SkyminderForm from "@/components/forms/SkyminderForm";
+import WelcomeDataland from "@/components/WelcomeDataland";
+import APIClient from "@/components/APIClient";
+import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder";
+
+
+
 
 export default {
   name: 'app',
   components: {
-    SubscriptionForm,
-    SkyminderForm
+    RetrieveSkyminder,
+    WelcomeDataland,
+    APIClient
   }
 }
 </script>

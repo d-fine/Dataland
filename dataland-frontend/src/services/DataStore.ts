@@ -29,7 +29,8 @@ export default class DataStore {
                         $formkit: 'text',
                         label: humanizeString(value),
                         placeholder: humanizeString(value),
-                        name: value
+                        name: value,
+                        validation: "required"
                     }
                 )
             }
@@ -52,6 +53,6 @@ export default class DataStore {
     }
 
     perform(...args: any[]): any {
-        this.axiosFunction(...args)
+        return this.axiosFunction(...args)
     }
 }
