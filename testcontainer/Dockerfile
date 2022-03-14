@@ -1,4 +1,4 @@
-FROM freierfunden
+FROM ghrc.io/d-fine/dataland/backendbase:latest
 
 WORKDIR /app
 
