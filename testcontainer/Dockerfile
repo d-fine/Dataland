@@ -1,4 +1,4 @@
-FROM backendbase
+FROM freierfunden
 
 WORKDIR /app
 
