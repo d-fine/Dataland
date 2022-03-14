@@ -42,8 +42,8 @@ export default {
     data: {},
     schema: dataStore.getSchema(),
     model: {},
-    loading: false,
     response: null,
+    loading: false
   }),
   methods: {
     async getSkyminderByName() {
@@ -51,9 +51,10 @@ export default {
         // ToDo: auto data.*
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
+        this.loading = true
         this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.loading = false
         // ToDO: Results Table
-        console.warn(await dataStore.perform(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL}))
       } catch (error) {
         console.error(error)
       }

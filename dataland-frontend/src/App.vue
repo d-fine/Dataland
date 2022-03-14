@@ -4,7 +4,10 @@
       <img alt="Dataland logo" src="./assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
     </section>
     <WelcomeDataland msg="Welcome to DataLand"/>
+    <hr>
     <RetrieveSkyminder/>
+    <hr>
+    <CreateCompany/>
     <APIClient/>
   </div>
 </template>
@@ -13,6 +16,7 @@
 import WelcomeDataland from "@/components/WelcomeDataland";
 import APIClient from "@/components/APIClient";
 import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder";
+import CreateCompany from "@/components/forms/CreateCompany";
 
 
 
@@ -22,7 +26,8 @@ export default {
   components: {
     RetrieveSkyminder,
     WelcomeDataland,
-    APIClient
+    APIClient,
+    CreateCompany
   }
 }
 </script>
