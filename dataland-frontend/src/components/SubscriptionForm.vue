@@ -20,8 +20,12 @@ import {FormKitSchema, FormKit} from "@formkit/vue";
 import backend from "@/clients/backend/backendOpenApi.json"
 import SchemaProcessor from "../services/SchemaProcessor"
 
+
+import {CompanyDataControllerApi} from "@/clients/backend";
+
+const dataStore = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.ContactInformation
-const schemaProcessor = new SchemaProcessor()
+const schemaProcessor = new SchemaProcessor(dataStore.postCompany, contactSchema)
 
 /*const conditional_schema = {
   $formkit: 'text',
@@ -37,12 +41,11 @@ export default {
     data: {
     },
     schema: [
-        schemaProcessor.process(contactSchema),
+      schemaProcessor.getSchema(),
       //conditional_schema
     ]
     ,
     model: {
-
     }
   }),
   methods: {
