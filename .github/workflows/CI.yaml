@@ -82,17 +82,28 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Execute Backend tests
+      - name: Execute Frontend and Backend tests
         run: |
-          docker build ./testcontainer -t backendtest
-          docker run -v $(pwd)/:/app:rw backendtest
+          docker build ./testcontainer -t unittests
+          docker run -v $(pwd)/:/app:rw unittests
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: TestReportPreBuild
           path: ./**/build/reports
-
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JaCoCoResultsUnitTests
+          path: ./dataland-backend/build/jacoco/*.exec
+      - name: Uoload FE lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcovResultsUnit
+          path: ./dataland-frontend/coverage/**/lcov.info
 
 
   unit-tests:
