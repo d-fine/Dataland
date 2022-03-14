@@ -1,5 +1,4 @@
-#FROM ghrc.io/d-fine/dataland/backendbase:latest
-FROM dummy.non.existentblablabla
+FROM ghrc.io/d-fine/dataland/backendbase:latest
 
 WORKDIR /app
 
