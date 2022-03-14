@@ -52,6 +52,22 @@ jobs:
           push: true
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+  unit-tests-prebuild:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-docker-image
+    steps:
+      - uses: actions/checkout@v2
+      - name: Execute Backend tests
+        run: |
+          docker build ./testcontainer/Dockerfile -t backendtest
+          docker run -v $(pwd)/:/app:rw backendtest
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestReportPreBuild
+          path: ./**/build/reports
   build:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
