@@ -60,7 +60,7 @@ jobs:
       # We shuld also build base images for cypress (needed by e2e-test-app)
 
 
-  unit-tests-prebuild:
+  unit-tests:
     runs-on: ubuntu-latest
     needs:
       - build-and-push-docker-image
@@ -106,43 +106,7 @@ jobs:
           path: ./dataland-frontend/coverage/**/lcov.info
 
 
-  unit-tests:
-    runs-on: ubuntu-latest
-    needs:
-      - build-and-push-docker-image
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-      - uses: actions/download-artifact@v2
-        with:
-          name: buildDirectories
-      - name: Execute Backend tests
-        run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
-      - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:npm_run_testunit
-      - name: Upload Test Reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: TestReport
-          path: ./**/build/reports
-      - name: Upload JaCoCo Exec Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: JaCoCoResultsUnitTests
-          path: ./dataland-backend/build/jacoco/*.exec
-      - name: Upload FE lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: lcovResultsUnit
-          path: ./dataland-frontend/coverage/**/lcov.info
+
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
