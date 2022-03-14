@@ -106,7 +106,7 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
-      - name: Uoload FE lcov Exec Results
+      - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
@@ -118,6 +118,12 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute E2E Tests
         run: ./testing-shell-scripts/execute_e2e_tests.sh
         env:
