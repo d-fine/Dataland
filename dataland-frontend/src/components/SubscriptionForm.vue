@@ -18,7 +18,7 @@
 
 import {FormKitSchema, FormKit} from "@formkit/vue";
 import backend from "@/clients/backend/backendOpenApi.json"
-import DataStore from "../services/DataStore"
+import {DataStore} from "@/services/DataStore"
 
 
 import {CompanyDataControllerApi} from "@/clients/backend";
@@ -48,6 +48,7 @@ export default {
   methods: {
     handleSubmit() {
       console.log(JSON.stringify(this.data, null, 2))
+      dataStore.perform(this.data)
      }
   },
   components: {FormKitSchema, FormKit}

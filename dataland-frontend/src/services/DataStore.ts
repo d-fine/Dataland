@@ -1,6 +1,6 @@
 import {humanizeString} from "@/utils/stringHumanizer"
 
-export default class DataStore {
+export class DataStore {
     axiosFunction: any
     rawSchema: any
 
@@ -20,12 +20,12 @@ export default class DataStore {
     private _getSchemaFromFunction(): Object {
         const getAllParams = require('get-parameter-names')
         const params = getAllParams(this.axiosFunction)
-        const scheme = []
+        const schema = []
 
         for (const index in params) {
             const value = params[index]
             if (value != "options") {
-                scheme.push({
+                schema.push({
                         $formkit: 'text',
                         label: humanizeString(value),
                         placeholder: humanizeString(value),
@@ -35,13 +35,13 @@ export default class DataStore {
                 )
             }
         }
-        return scheme
+        return schema
     }
 
     private _getSchemaFromJson(): Object {
-        const scheme = []
+        const schema = []
         for (const index in this.rawSchema.properties) {
-            scheme.push({
+            schema.push({
                     $formkit: 'text',
                     label: humanizeString(index),
                     placeholder: humanizeString(index),
@@ -49,7 +49,7 @@ export default class DataStore {
                 }
             )
         }
-        return scheme
+        return schema
     }
 
     perform(...args: any[]): any {

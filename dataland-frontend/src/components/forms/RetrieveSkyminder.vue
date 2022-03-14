@@ -29,7 +29,7 @@
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/clients/backend";
 
-import DataStore from "@/services/DataStore";
+import {DataStore} from "@/services/DataStore";
 
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
@@ -48,13 +48,11 @@ export default {
   methods: {
     async getSkyminderByName() {
       try {
-        // ToDo: auto data.*
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
         this.loading = true
         this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
         this.loading = false
-        // ToDO: Results Table
       } catch (error) {
         console.error(error)
       }

@@ -26,7 +26,7 @@
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/clients/backend";
 
-import DataStore from "@/services/DataStore";
+import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
 
 const api = new CompanyDataControllerApi()
@@ -47,12 +47,8 @@ export default {
   methods: {
     async postCompanyData() {
       try {
-        // ToDo: auto data.*
-        const inputArgs = Object.values(this.data)
-        inputArgs.splice(0, 1)
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.data, {baseURL: process.env.VUE_APP_API_URL})
         console.log(this.response)
-        // ToDO: Results Table
       } catch (error) {
         console.error(error)
       }
