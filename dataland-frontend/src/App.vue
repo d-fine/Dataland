@@ -8,6 +8,7 @@
     <RetrieveSkyminder/>
     <hr>
     <CreateCompany/>
+    <CreateEUTaxonomy/>
     <APIClient/>
   </div>
 </template>
@@ -17,6 +18,7 @@ import WelcomeDataland from "@/components/WelcomeDataland";
 import APIClient from "@/components/APIClient";
 import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder";
 import CreateCompany from "@/components/forms/CreateCompany";
+import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy";
 
 
 
@@ -24,6 +26,7 @@ import CreateCompany from "@/components/forms/CreateCompany";
 export default {
   name: 'app',
   components: {
+    CreateEUTaxonomy,
     RetrieveSkyminder,
     WelcomeDataland,
     APIClient,
