@@ -64,6 +64,5 @@ export default {
 
 <style lang="scss">
 @import "../../assets/css/forms.css";
-@import "../../assets/css/variables";
-@import "../../assets/css/button-and-submit";
+@import "../../assets/css/genesis/genesis";
 </style>
