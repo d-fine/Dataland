@@ -35,8 +35,9 @@ export default {
   methods: {
     async getSkyminderByName() {
       try {
-        // ToDo: auto data.*
-        this.response = await dataStore.perform(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL})
+        const inputArgs = Object.values(this.data)
+        inputArgs.splice(0, 1)
+        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
         // ToDO: Results Table
         console.log(this.response.data)
       } catch (error) {
@@ -47,7 +48,3 @@ export default {
 }
 
 </script>
-
-<style>
-@import "../../assets/css/buttons.css";
-</style>
