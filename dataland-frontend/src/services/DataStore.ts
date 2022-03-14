@@ -1,3 +1,5 @@
+import {humanizeString} from "@/utils/stringHumanizer";
+
 export default class DataStore {
     axiosFunction: any;
     rawSchema: any;
@@ -18,29 +20,38 @@ export default class DataStore {
     private _getSchemaFromFunction(): Object {
         const getAllParams = require('get-parameter-names')
         const params = getAllParams(this.axiosFunction)
+        const scheme = []
+
         for (const index in params) {
             const value = params[index];
             if ("options" == value) {
                 params.splice(index, 1)
             }
         }
-        return {
-            $formkit: 'text',
-            for: ['item', 'key', params],
-            label: "$item",
-            placeholder: "$item",
-            name: "$item"
+        for (const k in params) {
+            scheme.push({
+                    $formkit: 'text',
+                    label: humanizeString(params[k]),
+                    placeholder: humanizeString(params[k]),
+                    name: params[k]
+                }
+            )
         }
+        return scheme
     }
 
     private _getSchemaFromJson(): Object {
-        return {
-            $formkit: 'text',
-            for: ['item', 'key', this.rawSchema.properties],
-            label: "$key",
-            placeholder: "$key",
-            name: "$key"
-        };
+        const scheme = []
+        for (const k in this.rawSchema.properties) {
+            scheme.push({
+                    $formkit: 'text',
+                    label: humanizeString(k),
+                    placeholder: humanizeString(k),
+                    name: k
+                }
+            )
+        }
+        return scheme
     }
 
     perform(...args: any[]): any {

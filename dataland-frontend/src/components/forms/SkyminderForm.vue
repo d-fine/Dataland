@@ -28,7 +28,7 @@ export default {
 
   data: () => ({
     data: {},
-    schema: [dataStore.getSchema()]
+    schema: dataStore.getSchema()
     ,
     model: {}
   }),

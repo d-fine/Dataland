@@ -38,15 +38,12 @@ const dataStore = new DataStore(api.postCompany, contactSchema)
 
 export default {
   data: () => ({
-    data: {
-    },
-    schema: [
-      dataStore.getSchema(),
-      //conditional_schema
-    ]
+    data: {},
+    schema:
+        dataStore.getSchema()
+    //conditional_schema
     ,
-    model: {
-    }
+    model: {}
   }),
   methods: {
     handleSubmit() {
