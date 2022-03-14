@@ -75,7 +75,7 @@ jobs:
           echo ______
           docker images
           echo _______
-          docker build -f ./testcontainer/Dockerfile -t backendtest
+          docker build ./testcontainer -t backendtest
           docker run -v $(pwd)/:/app:rw backendtest
       - name: Upload Test Reports
         if: always()
