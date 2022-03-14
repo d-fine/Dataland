@@ -3,7 +3,9 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
+import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
@@ -21,6 +23,9 @@ abstract class DataController<T>(
 ) : DataAPI<T> {
     private val dataType = getClazz().toString().substringAfterLast(".")
 
+    /**
+     * Method to get the class of the abstract T
+     */
     abstract fun getClazz(): Class<T>
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
@@ -30,14 +35,22 @@ abstract class DataController<T>(
     override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
-                companyId = companyId,
-                dataType = dataType,
-                data = objectMapper.writeValueAsString(dataSet)
+                StoredDataSet(
+                    companyId = companyId,
+                    dataType = dataType,
+                    data = objectMapper.writeValueAsString(dataSet)
+                )
             )
         )
     }
 
     override fun getDataSet(dataId: String): ResponseEntity<T> {
-        return ResponseEntity.ok(objectMapper.readValue(this.dataStore.getDataSet(dataId, dataType), getClazz()))
+        return ResponseEntity.ok(
+            objectMapper.readValue(
+                this.dataStore
+                    .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
+                getClazz()
+            )
+        )
     }
 }

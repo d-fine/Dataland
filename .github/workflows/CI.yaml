@@ -27,7 +27,21 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build all and Assemble boot jar
-        run: ./gradlew assemble --no-daemon
+        run: ./gradlew assemble
+      - name: Where is $HOME in the pipeline?
+        run: echo $HOME
+      - name: Where is the code checked out to?
+        run: echo $GITHUB_WORKSPACE
+      - name: Show all the stuff in $HOME.
+        run: |
+          cd ../../..
+          pwd
+          ls -a
+      - name: Upload everything in .gradle from $HOME as artifact.
+        uses: actions/upload-artifact@v2
+        with:
+          name: gradle_cache
+          path: /home/runner/.gradle/**
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Build Directories
@@ -50,8 +64,13 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: buildDirectories
+      - name: Download gradle_cache
+        uses: actions/download-artifact@v2
+        with:
+          name: gradle_cache
+          path: /home/runner/.gradle
       - name: Execute Backend tests
-        run: ./gradlew ktlintcheck detekt :dataland-backend:test --no-daemon
+        run: ./gradlew ktlintcheck detekt :dataland-backend:test
       - name: Execute Frontend Unit Tests
         run: ./gradlew :dataland-frontend:npm_run_testunit
       - name: Upload Test Reports
@@ -75,8 +94,15 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build
     steps:
       - uses: actions/checkout@v2
+      - name: Download gradle_cache
+        uses: actions/download-artifact@v2
+        with:
+          name: gradle_cache
+          path: /home/runner/.gradle
       - name: Execute E2E Tests
         run: ./testing-shell-scripts/execute_e2e_tests.sh
         env:
@@ -127,7 +153,7 @@ jobs:
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube --no-daemon
+        run: ./gradlew jacocoTestReport sonarqube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
