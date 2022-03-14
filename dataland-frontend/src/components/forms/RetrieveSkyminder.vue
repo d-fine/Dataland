@@ -67,4 +67,5 @@ export default {
 
 <style>
 @import "../../assets/css/buttons.css";
+@import "../../assets/css/forms.css";
 </style>
