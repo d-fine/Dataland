@@ -30,6 +30,8 @@ jobs:
         run: ./gradlew assemble
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
+      - name: Copy the files in .gradle into a new folder in the workspace
+        run: cp -r /home/runner/.gradle ./gradlecache
       - name: Upload Build Directories
         uses: actions/upload-artifact@v2
         with:
