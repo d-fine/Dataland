@@ -51,7 +51,7 @@ jobs:
       - name: Build an eclipse temurin base image and push it to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
-          # relative path to the source code
+          # relative path to the sourcecode
           context: .
           file: ./baseDockerfiles/temurinBaseImageDockerfile
           tags: ghcr.io/d-fine/dataland/temurinbase:latest
