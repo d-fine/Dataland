@@ -1,4 +1,4 @@
-export default class SchemaProcessor {
+export default class DataStore {
     axiosFunction: any;
     rawSchema: any;
 
@@ -7,7 +7,15 @@ export default class SchemaProcessor {
         this.rawSchema = rawSchema
     }
 
-    getSchemaFromFunction(): Object {
+    getSchema(): Object {
+        if (this.rawSchema) {
+            return this._getSchemaFromJson()
+        } else {
+            return this._getSchemaFromFunction()
+        }
+    }
+
+    private _getSchemaFromFunction(): Object {
         const getAllParams = require('get-parameter-names')
         const params = getAllParams(this.axiosFunction)
         for (const index in params) {
@@ -25,7 +33,7 @@ export default class SchemaProcessor {
         }
     }
 
-    getSchemaFromJson(): Object {
+    private _getSchemaFromJson(): Object {
         return {
             $formkit: 'text',
             for: ['item', 'key', this.rawSchema.properties],
@@ -33,14 +41,6 @@ export default class SchemaProcessor {
             placeholder: "$key",
             name: "$key"
         };
-    }
-
-    getSchema(): Object {
-        if (this.rawSchema) {
-            return this.getSchemaFromJson()
-        } else {
-            return this.getSchemaFromFunction()
-        }
     }
 
     perform(...args: any[]): any {

@@ -17,10 +17,10 @@
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/clients/backend";
 
-import SchemaProcessor from "@/services/SchemaProcessor";
+import DataStore from "@/services/DataStore";
 
-const dataStore = new SkyminderControllerApi()
-const schemaProcessor = new SchemaProcessor(dataStore.getDataSkyminderRequest)
+const api = new SkyminderControllerApi()
+const dataStore = new DataStore(api.getDataSkyminderRequest)
 
 export default {
   name: "GetSkyminder",
@@ -28,8 +28,7 @@ export default {
 
   data: () => ({
     data: {},
-    // ToDo: get scheme using classes
-    schema: [schemaProcessor.getSchema()]
+    schema: [dataStore.getSchema()]
     ,
     model: {}
   }),
@@ -37,7 +36,7 @@ export default {
     async getSkyminderByName() {
       try {
         // ToDo: auto data.*
-        this.response = await schemaProcessor.perform(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.data.name, this.data.code, {baseURL: process.env.VUE_APP_API_URL})
         // ToDO: Results Table
         console.log(this.response.data)
       } catch (error) {
