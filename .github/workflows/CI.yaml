@@ -85,7 +85,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute Frontend and Backend unit tests by using base image from GitHub Registry
         run: |
-          docker build ./testcontainer -t unittests
+          docker build . -t unittests -f ./testcontainer/UnitTestsDockerfile
           docker run -v $(pwd)/:/app:rw unittests
       - name: Upload Test Reports
         if: always()

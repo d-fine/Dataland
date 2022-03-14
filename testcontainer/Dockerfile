@@ -1,5 +1,0 @@
-FROM ghcr.io/d-fine/dataland/temurinbase:latest
-
-WORKDIR /app
-
-CMD ["./gradlew","ktlintcheck","detekt",":dataland-backend:test",":dataland-frontend:npm_run_testunit"]
