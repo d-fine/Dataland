@@ -45,7 +45,8 @@ export class DataStore {
                     $formkit: 'text',
                     label: humanizeString(index),
                     placeholder: humanizeString(index),
-                    name: index
+                    name: index,
+                    validation: this.rawSchema.required.includes(index) ? "required" : ""
                 }
             )
         }

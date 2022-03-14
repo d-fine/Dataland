@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col m12 s12">
         <div class="card">
-          <div class="card-title"><h2>Create A Company</h2>
+          <div class="card-title"><h2>Create a Company</h2>
           </div>
           <div class="card-content ">
             <FormKit v-model="data" type="form" @submit="postCompanyData">
@@ -15,6 +15,9 @@
             <div class="progress" v-if="loading">
               <div class="indeterminate" ></div>
             </div>
+            <div v-if="response" class="col m12">
+              <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
+            </div>
           </div>
         </div>
       </div>
@@ -25,7 +28,7 @@
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/clients/backend";
-
+import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
 
@@ -35,7 +38,7 @@ const dataStore = new DataStore(api.postCompany, contactSchema)
 
 export default {
   name: "CreateCompany",
-  components: {FormKitSchema, FormKit},
+  components: {FormKitSchema, FormKit, SuccessUpload},
 
   data: () => ({
     data: {},
@@ -48,7 +51,7 @@ export default {
     async postCompanyData() {
       try {
         this.response = await dataStore.perform(this.data, {baseURL: process.env.VUE_APP_API_URL})
-        console.log(this.response)
+        console.log(this.response.status)
       } catch (error) {
         console.error(error)
       }
