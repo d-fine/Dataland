@@ -25,6 +25,7 @@
     "vue": "^3.2.31",
     "vue-axios": "^3.4.1",
     "vue-class-component": "^8.0.0-0",
+    "vue-router": "^4.0.14",
     "vue3-live-form": "^0.1.3"
   },
   "devDependencies": {
