@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.interfaces
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 
 /**
@@ -12,12 +13,13 @@ import org.springframework.stereotype.Component
 interface DataStoreInterface {
     /**
      * Method to add a data set to the data store
-     * @param companyId ID of the company the data belongs to
-     * @param dataType type of data (e.g. EU Taxonomy)
-     * @param data data to be stored in the data store
+     * @param storedDataSet contains
+     * companyId ID of the company the data belongs to
+     * dataType as the type of data (e.g. EU Taxonomy)
+     * data as data to be stored in the data store
      * @return ID of the newly created data store entry
      */
-    fun addDataSet(companyId: String, dataType: String, data: String): String
+    fun addDataSet(storedDataSet: StoredDataSet): String
 
     /**
      * Method to list the meta information of all data sets in the data store
@@ -27,10 +29,10 @@ interface DataStoreInterface {
 
     /**
      * Method to get the data of a single entry in the data store
-     * @param dataId identifier of the stored data
+     * @param dataIdentifier identifier of the stored data (consists of data id and data type)
      * @return all data associated to the identifier provided
      */
-    fun getDataSet(dataId: String, dataType: String): String
+    fun getDataSet(dataIdentifier: DataIdentifier): String
 
     /**
      * Method to add a company to the data store
@@ -57,5 +59,5 @@ interface DataStoreInterface {
      * @param companyId
      * @return list of all data set IDs along with their data type
      */
-    fun listDataSetsByCompany(companyId: String): List<DataIdentifier>
+    fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
 }

@@ -21,14 +21,14 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build backend and Assemble boot jar
-        run: ./gradlew dataland-backend:assemble --no-daemon
+        run: ./gradlew dataland-backend:bootJar --no-daemon
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
-      - name: Upload Build Directories
+      - name: Upload Backend Jar
         uses: actions/upload-artifact@v2
         with:
-          name: buildProdDirectories
-          path: "**/build/"
+          name: backendJar
+          path: "./dataland-backend/build/libs/dataland-backend*.jar"
       - name: Upload Dist Directory
         uses: actions/upload-artifact@v2
         with:
@@ -45,16 +45,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: buildProdDirectories
+          name: backendJar
       - uses: actions/download-artifact@v2
         with:
           name: distProdDirectories
           path: dist
       - name: Deploy to Preview
-        run: |
-          rm ./dataland-backend/build/libs/*-plain.jar
-          ls ./dataland-backend/build/libs/dataland-backend*.jar
-          ./deployment/deploy_to_preview.sh dataland-backend/build/libs/dataland-backend*.jar
+        run: ./deployment/deploy_to_preview.sh dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 

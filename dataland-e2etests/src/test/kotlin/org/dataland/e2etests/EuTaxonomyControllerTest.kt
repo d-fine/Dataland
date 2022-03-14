@@ -6,16 +6,16 @@ import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataSetMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 // TODO Cleanup the println()s
 
 class EuTaxonomyControllerTest {
-    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://localhost:8080/api") // TODO change localhost:8080 to proxy:80
-    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://localhost:8080/api") // TODO change localhost:8080 to proxy:80
+    val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
+    val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
     val testEuTaxonomyDataSet = EuTaxonomyDataSet(
         reportingObligation = EuTaxonomyDataSet.ReportingObligation.no,
         attestation = EuTaxonomyDataSet.Attestation.some,
@@ -41,7 +41,6 @@ class EuTaxonomyControllerTest {
 
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
 
-
         val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataSetId)
 
         assertEquals(
@@ -62,14 +61,15 @@ class EuTaxonomyControllerTest {
 
         val getDataResponse = euTaxonomyDataControllerApi.getData()
 
-            println(getDataResponse)
+        println(getDataResponse)
         assertTrue(
             getDataResponse.contains(
                 DataSetMetaInformation(
                     dataIdentifier = DataIdentifier(
                         dataID = testEuTaxonomyDataSetId,
                         dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
-                    ), companyId = testCompanyId
+                    ),
+                    companyId = testCompanyId
                 )
             ),
             "The list of all existing eu taxonomy data does not contain the posted data set."

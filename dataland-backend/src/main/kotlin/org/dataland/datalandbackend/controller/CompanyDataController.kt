@@ -32,6 +32,6 @@ class CompanyDataController(
     }
 
     override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataIdentifier>> {
-        return ResponseEntity.ok(this.dataStore.listDataSetsByCompany(companyId))
+        return ResponseEntity.ok(this.dataStore.listDataSetsByCompanyId(companyId))
     }
 }
