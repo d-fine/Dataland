@@ -27,7 +27,11 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Create boot jar to fill gradle cache
-        run: ./gradlew assemble
+        run: |
+          ./gradlew assemble
+          ls -lisa /home/runner
+          cp -r /home/runner/.gradle ./gradlecache
+          ls ./gradlecache
       # setup Docker build action
       - name: Set up Docker Buildx
         id: buildx
