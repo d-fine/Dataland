@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.2_8-jdk-focal
+FROM ghcr.io/d-fine/dataland/temurinbase:latest
 COPY . /app/
 # COPY <path to .gradle on host system, which is $HOME/.gradle> /root/
 EXPOSE 8080
