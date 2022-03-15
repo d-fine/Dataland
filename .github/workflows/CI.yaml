@@ -149,16 +149,20 @@ jobs:
       - name: Build project
         run: ./gradlew assemble
       - uses: actions/download-artifact@v2
+        if: always()
         with:
           name: JaCoCoResultsUnitTests
       - uses: actions/download-artifact@v2
+        if: always()
         with:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v2
+        if: always()
         with:
           name: lcovResultsUnit
           path: fe-coverage/unit
       - uses: actions/download-artifact@v2
+        if: always()
         with:
           name: lcovResultsE2E
           path: fe-coverage/e2e
