@@ -43,7 +43,7 @@
 <script>
 
 import {SkyminderControllerApi} from "@/clients/backend";
-import ResultTable from "@/components/ui/ResultTable";
+import SkyminderTable from "@/components/ui/ResultTable";
 
 export default {
   name: "APIClient",

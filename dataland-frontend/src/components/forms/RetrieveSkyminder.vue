@@ -12,11 +12,9 @@
                   :schema="schema"
               />
             </FormKit>
-            <div class="progress" v-if="loading">
-              <div class="indeterminate" ></div>
-            </div>
+            <br>
             <div v-if="response" class="col m12">
-              <ResultTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="response.data"/>
+              <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="response.data"/>
             </div>
           </div>
         </div>
@@ -33,26 +31,23 @@ import {DataStore} from "@/services/DataStore";
 
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
-import ResultTable from "@/components/ui/ResultTable";
+import SkyminderTable from "@/components/ui/SkyminderTable";
 export default {
   name: "RetrieveSkyminder",
-  components: {FormKitSchema, FormKit, ResultTable},
+  components: {FormKitSchema, FormKit, SkyminderTable},
 
   data: () => ({
     data: {},
     schema: dataStore.getSchema(),
     model: {},
-    response: null,
-    loading: false
+    response: null
   }),
   methods: {
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
-        this.loading = true
         this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
-        this.loading = false
       } catch (error) {
         console.error(error)
       }
