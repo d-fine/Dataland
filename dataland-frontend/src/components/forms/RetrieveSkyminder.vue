@@ -26,9 +26,7 @@
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/clients/backend";
-
 import {DataStore} from "@/services/DataStore";
-
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
 import SkyminderTable from "@/components/ui/SkyminderTable";
