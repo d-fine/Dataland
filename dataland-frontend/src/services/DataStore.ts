@@ -44,11 +44,11 @@ export class DataStore {
             if ("enum" in this.rawSchema.properties[index]) {
                 if (this.rawSchema.properties[index].enum.length > 2) {
                     schema.push({
-                        $formkit: 'select',
-                        label: humanizeString(index),
-                        placeholder: humanizeString(index),
-                        name: index,
-                        validation: this.rawSchema.required.includes(index) ? "required" : "",
+                            $formkit: 'select',
+                            label: humanizeString(index),
+                            placeholder: "Please Choose",
+                            name: index,
+                            validation: this.rawSchema.required.includes(index) ? "required" : "",
                             options: this.rawSchema.properties[index].enum
                         }
                     )
@@ -56,10 +56,14 @@ export class DataStore {
                     schema.push({
                             $formkit: 'radio',
                             label: humanizeString(index),
-                            placeholder: humanizeString(index),
                             name: index,
                             validation: this.rawSchema.required.includes(index) ? "required" : "",
-                            options: Object.values(this.rawSchema.properties[index].enum)
+                            classes: {
+                                outer: {'formkit-outer': false},
+                                inner: {'formkit-inner': false},
+                                input: {'formkit-input': false}
+                            },
+                            options: this.rawSchema.properties[index].enum
                         }
                     )
                 }
