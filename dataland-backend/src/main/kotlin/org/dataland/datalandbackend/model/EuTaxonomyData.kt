@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Figures to be filled out for the EU-Taxonomy questionnaire
  */
 data class EuTaxonomyData(
-    @field:JsonProperty("Amount €") val amount: java.math.BigDecimal? = null,
-    @field:JsonProperty("Taxonomy-aligned proportion of turnover %") val proportion: java.math.BigDecimal? = null
+    @field:JsonProperty("total") val total: java.math.BigDecimal? = null,
+    @field:JsonProperty("aligned_turnover") val aligned: java.math.BigDecimal? = null,
+    @field:JsonProperty("eligible_turnover") val eligible: java.math.BigDecimal? = null
 )
