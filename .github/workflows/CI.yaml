@@ -29,7 +29,7 @@ jobs:
           cache: gradle
       - name: Build all and Assemble boot jar
         run: ./gradlew assemble
-      - name: Copy the files in .gradle into a new folder in the workspace
+      - name: Copy the files in ".gradle" folder into a new folder in the workspace
         run: cp -r /home/runner/.gradle ./gradlecache
       # setup Docker build action
       - name: Set up Docker Buildx
@@ -71,7 +71,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Execute Frontend and Backend unit tests by using base image from GitHub Registry
+      - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker build . -t unittests -f ./testcontainerDockerfiles/unitTestsBackendDockerfile
           docker run -v $(pwd)/:/app:rw unittests
@@ -79,7 +79,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: TestReportPreBuild
+          name: TestReport
           path: ./**/build/reports
       - name: Upload JaCoCo Exec Results
         if: always()
