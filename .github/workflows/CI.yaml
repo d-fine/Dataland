@@ -29,15 +29,8 @@ jobs:
           cache: gradle
       - name: Build all and Assemble boot jar
         run: ./gradlew assemble
-      - name: Build frontend
-        run: ./gradlew dataland-frontend:npm_run_build
       - name: Copy the files in .gradle into a new folder in the workspace
         run: cp -r /home/runner/.gradle ./gradlecache
-      - name: Upload Build Directories
-        uses: actions/upload-artifact@v2
-        with:
-          name: buildDirectories
-          path: "**/build/"
       # setup Docker build action
       - name: Set up Docker Buildx
         id: buildx
@@ -55,13 +48,6 @@ jobs:
           context: .
           file: ./baseDockerfiles/temurinBaseImageDockerfile
           tags: ghcr.io/d-fine/dataland/temurinbase:latest
-          push: true
-      - name: Build an ubuntu base image and push it to GitHub Container Registry
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./baseDockerfiles/ubuntuBaseImageDockerfile
-          tags: ghcr.io/d-fine/dataland/ubuntubase:latest
           push: true
       - name: Build a cypress base image and push it to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -170,9 +156,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - uses: actions/download-artifact@v2
-        with:
-          name: buildDirectories
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
