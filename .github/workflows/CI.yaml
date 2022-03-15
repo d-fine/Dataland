@@ -159,7 +159,8 @@ jobs:
     if: always() && github.event_name != 'workflow_dispatch'
     needs:
       - e2e-tests
-      - unit-tests
+      - unit-tests-backend
+      - unit-tests-frontend
     steps:
       - uses: actions/checkout@v2
         with:
