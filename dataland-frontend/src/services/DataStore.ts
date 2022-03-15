@@ -41,14 +41,38 @@ export class DataStore {
     private _getSchemaFromJson(): Object {
         const schema = []
         for (const index in this.rawSchema.properties) {
-            schema.push({
-                    $formkit: 'text',
-                    label: humanizeString(index),
-                    placeholder: humanizeString(index),
-                    name: index,
-                    validation: this.rawSchema.required.includes(index) ? "required" : ""
+            if ("enum" in this.rawSchema.properties[index]) {
+                if (this.rawSchema.properties[index].enum.length > 2) {
+                    schema.push({
+                            $formkit: 'select',
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: this.rawSchema.required.includes(index) ? "required" : "",
+                            options: this.rawSchema.properties[index].enum
+                        }
+                    )
+                } else {
+                    schema.push({
+                            $formkit: 'radio',
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: this.rawSchema.required.includes(index) ? "required" : "",
+                            options: Object.values(this.rawSchema.properties[index].enum)
+                        }
+                    )
                 }
-            )
+            } else {
+                schema.push({
+                        $formkit: 'text',
+                        label: humanizeString(index),
+                        placeholder: humanizeString(index),
+                        name: index,
+                        validation: this.rawSchema.required.includes(index) ? "required" : ""
+                    }
+                )
+            }
         }
         return schema
     }
