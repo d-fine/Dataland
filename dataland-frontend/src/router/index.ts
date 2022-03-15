@@ -3,6 +3,7 @@ import CreateData from "@/components/forms/CreateData.vue";
 import SearchData from "@/components/forms/SearchData.vue";
 import WelcomeDataland from "@/components/WelcomeDataland.vue";
 import CompanyEU from "@/components/CompanyEU.vue";
+import CompanyInformation from "@/components/CompanyInformation.vue";
 
 const routes = [
     {
@@ -21,10 +22,16 @@ const routes = [
         component: SearchData,
     },
     {
-        path: "/companyinfo/:companyID",
+        path: "/company/:companyID",
+        props: true,
+        name: "Company",
+        component: CompanyEU,
+    },
+    {
+        path: "/companyinfo",
         props: true,
         name: "Company Info",
-        component: CompanyEU,
+        component: CompanyInformation,
     },
 ];
 
