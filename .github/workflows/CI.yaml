@@ -118,7 +118,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute E2E Tests
-        run: ./testing-shell-scripts/execute_e2e_tests.sh
+        run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-server:8080"
       - name: Upload JaCoCo Exec Results
