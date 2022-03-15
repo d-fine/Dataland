@@ -11,13 +11,13 @@ export class DataStore {
 
     getSchema(): Object {
         if (this.rawSchema) {
-            return this._getSchemaFromJson()
+            return this.getSchemaFromJson()
         } else {
-            return this._getSchemaFromFunction()
+            return this.getSchemaFromFunction()
         }
     }
 
-    private _getSchemaFromFunction(): Object {
+    private getSchemaFromFunction(): Object {
         const getAllParams = require('get-parameter-names')
         const params = getAllParams(this.axiosFunction)
         const schema = []
@@ -26,8 +26,8 @@ export class DataStore {
             const value = params[index]
             if (value != "options") {
                 schema.push({
-                        $formkit: 'text',
-                        label: humanizeString(value),
+                    $formkit: 'text',
+                    label: humanizeString(value),
                         placeholder: humanizeString(value),
                         name: value,
                         validation: "required"
@@ -38,17 +38,17 @@ export class DataStore {
         return schema
     }
 
-    private _getSchemaFromJson(): Object {
+    private getSchemaFromJson(): Object {
         const schema = []
         for (const index in this.rawSchema.properties) {
             if ("enum" in this.rawSchema.properties[index]) {
                 if (this.rawSchema.properties[index].enum.length > 2) {
                     schema.push({
-                            $formkit: 'select',
-                            label: humanizeString(index),
-                            placeholder: humanizeString(index),
-                            name: index,
-                            validation: this.rawSchema.required.includes(index) ? "required" : "",
+                        $formkit: 'select',
+                        label: humanizeString(index),
+                        placeholder: humanizeString(index),
+                        name: index,
+                        validation: this.rawSchema.required.includes(index) ? "required" : "",
                             options: this.rawSchema.properties[index].enum
                         }
                     )
