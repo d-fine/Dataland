@@ -21,7 +21,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build backend and Assemble boot jar
-        run: ./gradlew dataland-backend:bootJar --no-daemon
+        run: ./gradlew dataland-backend:bootJar
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
       - name: Upload Backend Jar

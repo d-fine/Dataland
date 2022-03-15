@@ -5,6 +5,8 @@
         <li><router-link to="/">Home</router-link> </li>
         <li><router-link to="/upload">Data Upload</router-link></li>
         <li><router-link to="/search">Data Search</router-link></li>
+        <li><router-link to="/company/1">Company Information</router-link></li>
+        <li><router-link to="/eutaxonomy/1">Company Data</router-link></li>
       </ul>
     </div>
   </nav>

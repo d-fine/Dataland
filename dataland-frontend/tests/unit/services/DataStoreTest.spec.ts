@@ -14,21 +14,39 @@ describe("DataStore", () => {
     it("gets schema using json", () => {
         const contactSchema = {
             "required": [
-                "companyId",
-                "companyName"
+                "Attestation",
+                "Reporting Obligation"
             ],
             "type": "object",
             "properties": {
-                "companyName": {
-                    "type": "string"
+                "Capex": {
+                    "$ref": "#/components/schemas/EuTaxonomyData"
                 },
-                "companyId": {
-                    "type": "string"
+                "Opex": {
+                    "$ref": "#/components/schemas/EuTaxonomyData"
+                },
+                "Revenue": {
+                    "$ref": "#/components/schemas/EuTaxonomyData"
+                },
+                "Reporting Obligation": {
+                    "type": "string",
+                    "enum": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                "Attestation": {
+                    "type": "string",
+                    "enum": [
+                        "None",
+                        "Some",
+                        "Full"
+                    ]
                 }
             }
         }
         const dataStore = new DataStore(dummyFunction, contactSchema)
-        expect(Object.keys(dataStore.getSchema()).length).toEqual(2)
+        expect(Object.keys(dataStore.getSchema()).length).toEqual(5)
     })
 
     it("checks if the function is called properly", () => {
