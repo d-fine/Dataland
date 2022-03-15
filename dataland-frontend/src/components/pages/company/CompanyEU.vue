@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <h1>The user is {{ $route.params.companyID }}</h1>
+      <h1>The user is {{ $route.params.dataID }}</h1>
       <div v-if="response" class="col m9">
         <div class="card">
           <div class="card-title left-align">
@@ -53,7 +53,7 @@ export default {
     }
   },
   props: {
-    companyID: {
+    dataID: {
       type: Number
     }
   },
@@ -63,7 +63,7 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        this.response = await dataStore.perform(this.companyID, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.dataID, {baseURL: process.env.VUE_APP_API_URL})
         console.log(this.response)
       } catch (error) {
         console.error(error)

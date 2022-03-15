@@ -2,8 +2,8 @@ import { createWebHistory, createRouter } from "vue-router";
 import CreateData from "@/components/forms/CreateData.vue";
 import SearchData from "@/components/forms/SearchData.vue";
 import WelcomeDataland from "@/components/WelcomeDataland.vue";
-import CompanyEU from "@/components/CompanyEU.vue";
-import CompanyInformation from "@/components/CompanyInformation.vue";
+import CompanyEU from "@/components/pages/company/CompanyEU.vue";
+import CompanyInformation from "@/components/pages/company/CompanyInformation.vue";
 
 const routes = [
     {
@@ -22,13 +22,13 @@ const routes = [
         component: SearchData,
     },
     {
-        path: "/company/:companyID",
+        path: "/eutaxonomy/:dataID",
         props: true,
-        name: "Company",
+        name: "Eu Taxonomy",
         component: CompanyEU,
     },
     {
-        path: "/companyinfo",
+        path: "/company/:companyID",
         props: true,
         name: "Company Info",
         component: CompanyInformation,

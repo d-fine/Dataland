@@ -20,7 +20,7 @@
         <td v-for="(item, i) in dataset" :key="i">
           {{item}}
         </td>
-        <td> <router-link to="/">Company Information</router-link> {{}}</td>
+        <td> <router-link :to='"/eutaxonomy/" + dataset["Data ID"]'>Data Information</router-link> </td>
       </tr>
 
       </tbody>
