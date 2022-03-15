@@ -156,6 +156,8 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - name: Build frontend
+        run: ./gradlew dataland-frontend:npm_run_build
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
