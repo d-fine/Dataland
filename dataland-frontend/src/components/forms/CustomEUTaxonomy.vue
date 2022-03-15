@@ -20,9 +20,9 @@
                   label="Attestation"
                   placeholder = "Please choose"
                   :options="[
-                  'Eligible',
-                  'Super Mega',
-                  'Not checked'
+                  'None',
+                  'Some',
+                  'Full'
                 ]"
               />
               <FormKit

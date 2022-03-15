@@ -21,7 +21,8 @@ const routes = [
         component: SearchData,
     },
     {
-        path: "/companyinfo",
+        path: "/companyinfo/:companyID",
+        props: true,
         name: "Company Info",
         component: CompanyEU,
     },
