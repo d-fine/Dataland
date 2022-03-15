@@ -60,4 +60,6 @@ interface DataStoreInterface {
      * @return list of all data set IDs along with their data type
      */
     fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
+
+    fun getCompanyNameById(companyId: String): String
 }

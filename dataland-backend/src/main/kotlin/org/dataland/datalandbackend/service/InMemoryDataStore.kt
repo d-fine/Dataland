@@ -81,4 +81,8 @@ class InMemoryDataStore : DataStoreInterface {
         }
         return companyData[companyId]?.dataSets ?: emptyList()
     }
+
+    override fun getCompanyNameById(companyId: String): String {
+        return companyData[companyId]?.companyName ?: ""
+    }
 }

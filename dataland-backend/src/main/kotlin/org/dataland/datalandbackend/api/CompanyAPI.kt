@@ -98,4 +98,20 @@ interface CompanyAPI {
      * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
      */
     fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
+
+    @Operation(
+        summary = "Retrieve company name.",
+        description = "The company name behind the given company Id is retrieved."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company name.")
+        ]
+    )
+    @GetMapping(
+        value = ["/company/{companyId}/companyName"],
+        produces = ["application/json"]
+    )
+
+    fun getCompanyNameById(@PathVariable("companyId") companyId: String): ResponseEntity<String>
 }
