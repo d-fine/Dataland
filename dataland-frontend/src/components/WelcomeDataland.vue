@@ -9,10 +9,7 @@
 
 <script>
 export default {
-  name: 'WelcomeDataland',
-  props: {
-    msg: String
-  }
+  name: 'WelcomeDataland'
 }
 </script>
 

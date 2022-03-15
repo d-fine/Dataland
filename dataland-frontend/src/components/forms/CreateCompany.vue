@@ -36,7 +36,7 @@ const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.ContactInformation
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
-export default {
+const createCompany = {
   name: "CreateCompany",
   components: {FormKitSchema, FormKit, SuccessUpload},
 
@@ -59,6 +59,8 @@ export default {
   },
 
 }
+
+export default createCompany
 
 </script>
 
