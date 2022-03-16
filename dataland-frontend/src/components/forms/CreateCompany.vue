@@ -72,5 +72,4 @@ export default createCompany
 
 <style lang="scss">
 @import "../../assets/css/forms.css";
-@import "../../assets/css/genesis/genesis";
 </style>

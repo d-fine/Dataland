@@ -20,8 +20,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import "./assets/css/main.css";
 @import "./assets/css/forms.css";
+@import "./assets/css/variables";
 
 </style>

@@ -172,5 +172,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "src/assets/css/genesis/genesis";
 </style>
