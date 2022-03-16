@@ -33,7 +33,7 @@ class DataManager (
         }
         throw IllegalArgumentException("No company with the companyId $storedDataSet.companyId exists.")
     }
-
+/*
     override fun listDataSets(): List<DataSetMetaInformation> {
         return data.map {
             DataSetMetaInformation(
@@ -42,7 +42,7 @@ class DataManager (
             )
         }
     }
-
+*/
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")

@@ -13,18 +13,15 @@ import org.springframework.stereotype.Component
 interface DataStoreInterface {
     /**
      * Method to add a data set to the data store
-     * @param storedDataSet contains
-     * companyId ID of the company the data belongs to
-     * dataType as the type of data (e.g. EU Taxonomy)
-     * data as data to be stored in the data store
+     * @param data contains the data to be stored in the data store
      * @return ID of the newly created data store entry
      */
     fun insertDataSet(data: String): String
 
     /**
      * Method to get the data of a single entry in the data store
-     * @param dataIdentifier identifier of the stored data (consists of data id and data type)
-     * @return all data associated to the identifier provided
+     * @param dataId identifier of the stored data
+     * @return all data associated to the dataId provided
      */
     fun selectDataSet(dataId: String): String
 }

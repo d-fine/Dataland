@@ -27,19 +27,16 @@ abstract class DataController<T>(
      * Method to get the class of the abstract T
      */
     abstract fun getClazz(): Class<T>
-
+/*
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
         return ResponseEntity.ok(this.dataStore.listDataSets())
     }
-
+*/
     override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
         return ResponseEntity.ok(
-            this.dataStore.addDataSet(
-                StoredDataSet(
-                    companyId = companyId,
-                    dataType = dataType,
+            this.dataStore.insertDataSet(
                     data = objectMapper.writeValueAsString(dataSet)
-                )
+
             )
         )
     }
@@ -48,7 +45,7 @@ abstract class DataController<T>(
         return ResponseEntity.ok(
             objectMapper.readValue(
                 this.dataStore
-                    .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
+                    .selectDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
                 getClazz()
             )
         )

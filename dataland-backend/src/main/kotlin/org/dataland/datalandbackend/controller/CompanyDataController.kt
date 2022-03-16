@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyAPI
+import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
@@ -16,22 +17,22 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CompanyDataController(
-    @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
+    @Autowired @Qualifier("DefaultManager") var dataManager: DataManagerInterface,
 ) : CompanyAPI {
 
     override fun getAllCompanies(): ResponseEntity<List<CompanyMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listAllCompanies())
+        return ResponseEntity.ok(this.dataManager.listAllCompanies())
     }
 
     override fun postCompany(companyName: String): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(this.dataStore.addCompany(companyName))
+        return ResponseEntity.ok(this.dataManager.addCompany(companyName))
     }
 
     override fun getCompaniesByName(companyName: String): ResponseEntity<List<CompanyMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listCompaniesByName(companyName))
+        return ResponseEntity.ok(this.dataManager.listCompaniesByName(companyName))
     }
 
     override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataIdentifier>> {
-        return ResponseEntity.ok(this.dataStore.listDataSetsByCompanyId(companyId))
+        return ResponseEntity.ok(this.dataManager.listDataSetsByCompanyId(companyId))
     }
 }
