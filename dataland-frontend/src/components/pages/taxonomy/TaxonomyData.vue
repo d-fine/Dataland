@@ -11,19 +11,19 @@
           <div class="card-content">
             <div class="row">
               <div class="col m6">
-                <TaxoCard title="Eligble Revenue" :amount='response.data.Revenue.eligible_turnover'
+                <TaxoCard title="Eligible Revenue" :amount='response.data.Revenue.eligible_turnover'
                           :total='response.data.Revenue.total'></TaxoCard>
-                <TaxoCard title="Eligble CapEx" :amount='response.data.Capex.eligible_turnover'
+                <TaxoCard title="Eligible CapEx" :amount='response.data.Capex.eligible_turnover'
                           :total='response.data.Capex.total'></TaxoCard>
-                <TaxoCard title="Eligble OpEx" :amount='response.data.Opex.eligible_turnover'
+                <TaxoCard title="Eligible OpEx" :amount='response.data.Opex.eligible_turnover'
                           :total='response.data.Opex.total'></TaxoCard>
               </div>
               <div class="col m6">
-                <TaxoCard title="Eligble Revenue" :amount='response.data.Revenue.aligned_turnover'
+                <TaxoCard title="Aligned Revenue" :amount='response.data.Revenue.aligned_turnover'
                           :total='response.data.Revenue.total'></TaxoCard>
-                <TaxoCard title="Eligble CapEx" :amount='response.data.Capex.aligned_turnover'
+                <TaxoCard title="Aligned CapEx" :amount='response.data.Capex.aligned_turnover'
                           :total='response.data.Capex.total'></TaxoCard>
-                <TaxoCard title="Eligble OpEx" :amount='response.data.Opex.aligned_turnover'
+                <TaxoCard title="Aligned OpEx" :amount='response.data.Opex.aligned_turnover'
                           :total='response.data.Opex.total'></TaxoCard>
               </div>
             </div>
