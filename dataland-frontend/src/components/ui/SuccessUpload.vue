@@ -4,7 +4,7 @@
       <div class="card-title green-text"><h4>You successfully uploaded the {{msg}}</h4>
       </div>
       <div class="card-content left-align">
-          <p v-for="(value, key) in data" :key="key">{{ humanizeString(key) }}: {{ value }}</p>
+          <p v-for="(value, key) in data" :key="key">{{ humanize(key) }}: {{ value }}</p>
       </div>
     </div>
     <div class="card" v-else>
@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import {humanizeString} from "@/utils/stringHumanizer"
 export default {
   name: "SuccessUpload",
   props: {
@@ -25,9 +24,11 @@ export default {
     status: Number
   },
   methods: {
-    humanizeString
-  }
-}
+    humanize(text) {
+      const processedText = text.replace(/([A-Z])/g, " $1");
+      return processedText.charAt(0).toUpperCase() + processedText.slice(1);
+    }
+}}
 </script>
 
 <style scoped>
