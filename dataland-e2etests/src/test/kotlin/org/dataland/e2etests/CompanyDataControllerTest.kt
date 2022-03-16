@@ -2,10 +2,7 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
+import org.dataland.datalandbackend.openApiClient.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -24,28 +21,25 @@ class CompanyDataControllerTest {
 
         println(testCompanyName)
 
-        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
+        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
 
         println(postCompanyResponse)
         println(postCompanyResponse.companyName)
 
-        val modified = postCompanyResponse.companyName.replace(regex = "^\"|\"$".toRegex(), replacement = "")
-
-        assertEquals(testCompanyName, modified)
-
+        assertEquals(testCompanyName, postCompanyResponse.companyName)
         assertTrue(postCompanyResponse.companyId.toInt() > 0)
     }
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyName = "Dummy-Company_02"
-        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
+        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
 
         // DEBUGGING STUFF:
         println(getCompaniesByNameResponse)
         val shouldContain = CompanyMetaInformation(
-            companyName = "\"$testCompanyName\"",
+            companyName = testCompanyName,
             companyId = postCompanyResponse.companyId
         )
         println(shouldContain)
@@ -59,14 +53,13 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post some dummy companies and check if the all-companies-list size increased accordingly`() {
+    fun `post some dummy companies and check if the number of companies increased accordingly`() {
         val testCompanyNames = listOf("Imaginary-Company_03", "Company_04", "Some-Company_05")
-        val allCompaniesListSizeBefore = companyDataControllerApi.getAllCompanies().size
+        val allCompaniesListSizeBefore = companyDataControllerApi.getCompaniesByName("").size
         for (i in testCompanyNames) {
-            companyDataControllerApi.postCompany(i)
+            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = i))
         }
-        val allCompaniesListSizeAfter = companyDataControllerApi.getAllCompanies().size
-
+        val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
         assertEquals(testCompanyNames.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore)
     }
 
@@ -77,20 +70,23 @@ class CompanyDataControllerTest {
             reportingObligation = EuTaxonomyDataSet.ReportingObligation.yes,
             attestation = EuTaxonomyDataSet.Attestation.full,
             capex = EuTaxonomyData(
-                amount = BigDecimal(52705000),
-                taxonomyAlignedProportionOfTurnoverPercent = BigDecimal(20)
+                total = BigDecimal(52705000),
+                alignedTurnover = BigDecimal(20),
+                eligibleTurnover = BigDecimal(10)
             ),
             opex = EuTaxonomyData(
-                amount = BigDecimal(80490000),
-                taxonomyAlignedProportionOfTurnoverPercent = BigDecimal(15)
+                total = BigDecimal(80490000),
+                alignedTurnover = BigDecimal(15),
+                eligibleTurnover = BigDecimal(5)
             ),
-            revenues = EuTaxonomyData(
-                amount = BigDecimal(432590000),
-                taxonomyAlignedProportionOfTurnoverPercent = BigDecimal(5)
+            revenue = EuTaxonomyData(
+                total = BigDecimal(432590000),
+                alignedTurnover = BigDecimal(5),
+                eligibleTurnover = BigDecimal(3)
             )
         )
         println(testEuTaxonomyDataSet)
-        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyName)
+        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(testCompanyName))
         println(postCompanyResponse)
         val testCompanyId = postCompanyResponse.companyId
         println(testCompanyId)

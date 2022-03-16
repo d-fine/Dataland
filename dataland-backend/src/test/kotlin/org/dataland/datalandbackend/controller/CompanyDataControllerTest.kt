@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,11 +25,12 @@ internal class CompanyDataControllerTest(
     val testCompanyName = "Imaginary-Company_I"
 
     fun uploadCompany(mockMvc: MockMvc, companyName: String) {
+        val companiesRequestBody = CompaniesRequestBody(companyName = companyName)
         mockMvc.perform(
-            post("/company")
+            post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(companyName))
+                .content(objectMapper.writeValueAsBytes(companiesRequestBody))
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
@@ -43,13 +45,13 @@ internal class CompanyDataControllerTest(
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/company/$testCompanyName")
+            get("/companies?companyName=$testCompanyName")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
-
+/*
     @Test
     fun `all-company-list can be retrieved`() {
         mockMvc.perform(
@@ -62,21 +64,36 @@ internal class CompanyDataControllerTest(
                 content().contentType(MediaType.APPLICATION_JSON),
             )
     }
+ */
 
     @Test
     fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/company/1/data")
+            get("/companies/1/data")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
-                // jsonPath("$s").value("")
                 content().string("[]")
+            )
+    }
+
+    @Test
+    fun `meta info about a specific company can be retrieved by its company Id`() {
+        uploadCompany(mockMvc, testCompanyName)
+
+        mockMvc.perform(
+            get("/companies/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON)
             )
     }
 }

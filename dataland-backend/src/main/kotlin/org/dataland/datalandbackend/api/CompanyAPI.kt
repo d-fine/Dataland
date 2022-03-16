@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.http.ResponseEntity
@@ -40,9 +41,7 @@ interface CompanyAPI {
      * @param companyName name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
-
-
-    fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody ): ResponseEntity<CompanyMetaInformation>
+    fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
 
     @Operation(
         summary = "Retrieve specific companies from the data store.",

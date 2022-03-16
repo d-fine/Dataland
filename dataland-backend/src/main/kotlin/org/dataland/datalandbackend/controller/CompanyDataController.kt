@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.CompaniesRequestBody
 import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
+import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.beans.factory.annotation.Autowired
