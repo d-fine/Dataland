@@ -1,7 +1,7 @@
 <template>
 
   <table>
-    <caption><h4>Results for {{entity}} {{status}}</h4></caption>
+    <caption><h4>{{entity}}</h4></caption>
 
     <thead>
       <tr>
@@ -12,8 +12,8 @@
       <tr v-for="(dataset, index) in data" :key="index">
         <td v-for="(item, i) in dataset" :key="i">
           {{item}}
-
         </td>
+        <td> <router-link :to="route + dataset[linkkey]">Link</router-link> </td>
       </tr>
 
     </tbody>
@@ -24,6 +24,6 @@
 <script>
 export default {
   name: "ResultTable",
-  props: ["headers", "data", "entity", "status"]
+  props: ["headers", "data", "entity","route", "linkkey"]
 }
 </script>

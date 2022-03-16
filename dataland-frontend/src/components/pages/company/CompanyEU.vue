@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="row">
-      <h1>The user is {{ $route.params.dataID }}</h1>
-      <div v-if="response" class="col m9">
+      <h1>EU Taxonomy Data</h1>
+      <h2>Dataset: {{ $route.params.dataID }}</h2>
+      <div v-if="response" class="col m12 s12">
         <div class="card">
           <div class="card-title left-align">
             <h4>Revenue</h4>
@@ -26,11 +27,8 @@
                           :total='response.data.Opex.total'></TaxoCard>
               </div>
             </div>
-
           </div>
-
         </div>
-        <p>{{ response.data }}</p>
       </div>
 
     </div>

@@ -15,7 +15,7 @@
             <button class="btn btn-md orange" @click="getCompanyByName(true)">Show all companies</button>
             <br>
             <div class="col m12">
-              <ResultTable v-if="response" :headers="['Name', 'ID']" :data="response.data" entity="Company Search"/>
+              <ResultTable v-if="response" :headers="['Name', 'ID', 'Link']" :data="response.data" entity="Company Search" route="/companies/" linkkey="companyId"/>
               <p v-else-if="response_error">The resource you requested does not exist yet. You can create it: <router-link to="/upload">Create Data</router-link></p>
             <div>
             </div>
