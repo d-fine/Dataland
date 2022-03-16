@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-prod:
+  build-prod-and-deploy:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     steps:
@@ -24,34 +24,10 @@ jobs:
         run: ./gradlew dataland-backend:bootJar
       - name: Build frontend
         run: ./gradlew dataland-frontend:npm_run_build
-      - name: Upload Backend Jar
-        uses: actions/upload-artifact@v2
-        with:
-          name: backendJar
-          path: "./dataland-backend/build/libs/dataland-backend*.jar"
-      - name: Upload Dist Directory
-        uses: actions/upload-artifact@v2
-        with:
-          name: distProdDirectories
-          path: "./dataland-frontend/dist/"
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-    needs:
-      - build-prod
-    steps:
       - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: backendJar
-      - uses: actions/download-artifact@v2
-        with:
-          name: distProdDirectories
-          path: dist
       - name: Deploy to Preview
-        run: ./deployment/deploy_to_preview.sh dataland-backend*.jar
+        run: ./deployment/deploy_to_preview.sh ./dataland-backend/build/libs/dataland-backend*.jar
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
