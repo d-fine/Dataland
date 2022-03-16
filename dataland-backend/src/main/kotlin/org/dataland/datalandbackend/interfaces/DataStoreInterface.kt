@@ -61,5 +61,5 @@ interface DataStoreInterface {
      */
     fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
 
-    fun getCompanyNameById(companyId: String): String
+    fun getCompanyById(companyId: String): CompanyMetaInformation
 }

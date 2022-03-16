@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import org.dataland.datalandbackend.api.CompaniesRequestBody
 import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
@@ -19,23 +20,19 @@ class CompanyDataController(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
 ) : CompanyAPI {
 
-    override fun getAllCompanies(): ResponseEntity<List<CompanyMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listAllCompanies())
+    override fun postCompany(companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation> {
+        return ResponseEntity.ok(this.dataStore.addCompany(companyName.companyName))
     }
 
-    override fun postCompany(companyName: String): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(this.dataStore.addCompany(companyName))
-    }
-
-    override fun getCompaniesByName(companyName: String): ResponseEntity<List<CompanyMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listCompaniesByName(companyName))
+    override fun getCompaniesByName(companyName: String?): ResponseEntity<List<CompanyMetaInformation>> {
+        return ResponseEntity.ok(this.dataStore.listCompaniesByName(companyName ?: ""))
     }
 
     override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataIdentifier>> {
         return ResponseEntity.ok(this.dataStore.listDataSetsByCompanyId(companyId))
     }
 
-    override fun getCompanyNameById(companyId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(this.dataStore.getCompanyNameById(companyId))
+    override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
+        return ResponseEntity.ok(this.dataStore.getCompanyById(companyId))
     }
 }

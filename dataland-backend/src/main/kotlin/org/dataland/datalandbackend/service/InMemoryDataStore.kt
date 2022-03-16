@@ -82,7 +82,7 @@ class InMemoryDataStore : DataStoreInterface {
         return companyData[companyId]?.dataSets ?: emptyList()
     }
 
-    override fun getCompanyNameById(companyId: String): String {
-        return companyData[companyId]?.companyName ?: ""
+    override fun getCompanyById(companyId: String): CompanyMetaInformation {
+        return CompanyMetaInformation(companyData[companyId]?.companyName ?: "", companyId)
     }
 }
