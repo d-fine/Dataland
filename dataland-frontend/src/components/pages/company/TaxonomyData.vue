@@ -20,8 +20,6 @@
 
             </tbody>
           </table>
-          <ResultTable v-if="response" :headers="['Name', 'ID', 'Link']" :data="response.data" entity="Company Search" route="/companies/"/>
-          {{response}}
         </div>
       </div>
     </div>
@@ -30,13 +28,12 @@
 
 <script>
 import {EuTaxonomyDataControllerApi} from "@/clients/backend";
-import ResultTable from "@/components/ui/ResultTable";
 import {DataStore} from "@/services/DataStore";
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.getData)
 export default {
   name: "TaxonomyData",
-  components: {ResultTable},
+  components: {},
 
   data() {
     return {
