@@ -2,7 +2,6 @@
 
   <table>
     <caption><h4>{{entity}}</h4></caption>
-
     <thead>
       <tr>
         <th  v-for="(header, i) in headers" :key="i">{{ header }}</th>

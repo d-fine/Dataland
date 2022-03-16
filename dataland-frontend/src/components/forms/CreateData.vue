@@ -1,15 +1,15 @@
 <template>
   <CreateCompany/>
-  <CustomEUTaxonomy/>
+  <CreateEUTaxonomy/>
 </template>
 
 <script>
 import CreateCompany from "@/components/forms/CreateCompany"
-import CustomEUTaxonomy from "@/components/forms/CustomEUTaxonomy";
+import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy";
 export default {
   name: "CreateData",
   components: {
-    CustomEUTaxonomy,
+    CreateEUTaxonomy,
     CreateCompany
   }
 }

@@ -1,4 +1,4 @@
-import CustomEUTaxonomy from '@/components/forms/CustomEUTaxonomy.vue'
+import CustomEUTaxonomy from '@/components/forms/CreateEUTaxonomy.vue'
 import {shallowMount} from "@vue/test-utils"
 
 describe('CreateCompanyTest', () => {
