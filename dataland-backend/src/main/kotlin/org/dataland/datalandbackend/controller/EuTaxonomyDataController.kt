@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param myDataStore implementation of the data store to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/EU-Taxonomy")
+@RequestMapping("/eutaxonomies")
 @RestController
 class EuTaxonomyDataController(
     @Autowired @Qualifier("DefaultStore") var myDataStore: DataStoreInterface,

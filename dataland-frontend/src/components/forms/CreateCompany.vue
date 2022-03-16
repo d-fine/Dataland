@@ -56,8 +56,8 @@ const createCompany = {
         // this.response = await dataStore.perform(this.data.companyName, {baseURL: process.env.VUE_APP_API_URL})
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
-        // this.response = await dataStore.perform(this.data.companyName, {baseURL: process.env.VUE_APP_API_URL})
-        this.response = await api.postCompany(this.data.companyName, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+
         console.log(this.response.status)
       } catch (error) {
         console.error(error)
