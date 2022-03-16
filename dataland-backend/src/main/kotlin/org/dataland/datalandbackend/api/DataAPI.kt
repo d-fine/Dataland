@@ -18,6 +18,7 @@ import javax.validation.Valid
 
 @RequestMapping("/")
 interface DataAPI<T> {
+    /*
     @Operation(
         summary = "Retrieve list of existing data for this data type.",
         description = "List is composed of meta information containing the data ID, the company ID and the data type."
@@ -34,7 +35,9 @@ interface DataAPI<T> {
     /**
      * Returns the meta information (dataId, companyId and dataType) of available data sets
      */
+
     fun getData(): ResponseEntity<List<DataSetMetaInformation>>
+     */
 
     @Operation(
         summary = "Upload new data set.",

@@ -18,14 +18,20 @@ import org.springframework.stereotype.Component
 class DataManager (
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface
         ) : DataManagerInterface  {
-    var data = mutableMapOf<String, StoredDataSet>()
-    private var dataCounter = 0
+    var dataMetaData = mutableMapOf<String, String>()
     var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
+
+    /*
+    ________________________________
+    Methods to route data inserts and queries to the data store and save meta data in the Dataland-Meta-Data-Storage:
+    ________________________________
+     */
 
     override fun addDataSet(storedDataSet: StoredDataSet): String {
         if (companyData.containsKey(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
+            this.dataMetaData[dataId] = storedDataSet.dataType
             this.companyData[storedDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
             )
@@ -44,17 +50,28 @@ class DataManager (
     }
 */
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
-        if (!data.containsKey(dataIdentifier.dataId)) {
-            throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
+        if(!dataMetaData.containsKey(dataIdentifier.dataId)) {
+            throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
         }
-        if (data[dataIdentifier.dataId]?.dataType != dataIdentifier.dataType) {
+
+        if (dataStore.selectDataSet(dataIdentifier.dataId)=="") {
+            throw IllegalArgumentException("No data set with the id: ${dataIdentifier.dataId} " +
+                    "could be found in the data store.")
+        }
+        if (dataMetaData[dataIdentifier.dataId] != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                        " ${data[dataIdentifier.dataId]?.dataType} instead of the expected ${dataIdentifier.dataType}."
+                        " ${dataMetaData[dataIdentifier.dataId]} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-        return data[dataIdentifier.dataId]?.data ?: ""
+    return dataStore.selectDataSet(dataIdentifier.dataId)
     }
+
+    /*
+    ________________________________
+    Methods to add and retrieve company info and save meta data in the Dataland-Company-Meta-Data-Storage:
+    ________________________________
+     */
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
@@ -66,10 +83,10 @@ class DataManager (
         return companyData.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
     }
 
-    override fun listCompaniesByName(name: String): List<CompanyMetaInformation> {
-        val matches = companyData.filter { it.value.companyName.contains(name, true) }
+    override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
+        val matches = companyData.filter { it.value.companyName.contains(companyName, true) }
         if (matches.isEmpty()) {
-            throw IllegalArgumentException("No matches for company with name '$name'.")
+            throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }
         return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
     }
