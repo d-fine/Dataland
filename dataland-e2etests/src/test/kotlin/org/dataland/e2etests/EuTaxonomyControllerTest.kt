@@ -40,7 +40,8 @@ class EuTaxonomyControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyName = "Test-Company_A"
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+        val postCompanyResponse =
+            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
@@ -57,7 +58,8 @@ class EuTaxonomyControllerTest {
     @Test
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
         val testCompanyName = "Fictitious-Company_B"
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+        val postCompanyResponse =
+            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)

@@ -98,5 +98,8 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
 
+    /**
+     * dummy
+     */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyMetaInformation>
 }

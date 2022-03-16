@@ -25,7 +25,8 @@ class CompanyDataControllerTest {
 
         println(testCompanyName)
 
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+        val postCompanyResponse =
+            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
 
         println(postCompanyResponse)
         println(postCompanyResponse.companyName)
@@ -37,7 +38,8 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyName = "Dummy-Company_02"
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+        val postCompanyResponse =
+            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
 
         // DEBUGGING STUFF:
