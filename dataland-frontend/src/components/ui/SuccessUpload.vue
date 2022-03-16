@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import {humanizeString} from "@/utils/stringHumanizer"
 export default {
   name: "SuccessUpload",
   props: {
@@ -25,8 +26,7 @@ export default {
   },
   methods: {
     humanize(text) {
-      const processedText = text.replace(/([A-Z])/g, " $1");
-      return processedText.charAt(0).toUpperCase() + processedText.slice(1);
+      return humanizeString(text)
     }
 }}
 </script>
