@@ -2,7 +2,11 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.*
+import org.dataland.datalandbackend.openApiClient.model.CompaniesRequestBody
+import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
