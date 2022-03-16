@@ -128,7 +128,7 @@
               <div class="indeterminate"></div>
             </div>
             <div v-if="response" class="col m12">
-              <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
+              <SuccessUpload msg="EU Taxonomy Data" :data="{'dataId': response.data}" :status="response.status"/>
             </div>
           </div>
         </div>
