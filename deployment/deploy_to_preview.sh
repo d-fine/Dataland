@@ -12,5 +12,5 @@ location=/home/ubuntu/dataland
 ssh ubuntu@3.71.162.94 "cd $location && sudo docker-compose down; rm -rf $location; mkdir -p $location/jar"
 
 scp -r ./dist ./deployment/docker-compose.yml ./nginx.conf ubuntu@3.71.162.94:$location
-scp "$1" ubuntu@3.71.162.94:$location/jar/dala-backend.jar
+scp ./dataland-backend*.jar ubuntu@3.71.162.94:$location/jar/dataland-backend.jar
 ssh ubuntu@3.71.162.94 "export SKYMINDER_URL=$SKYMINDER_URL; export SKYMINDER_PW=$SKYMINDER_PW; export SKYMINDER_USER=$SKYMINDER_USER; cd $location; sudo -E docker-compose up -d"
