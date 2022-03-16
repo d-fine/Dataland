@@ -7,13 +7,10 @@
           </div>
           <div class="card-content ">
             <FormKit v-model="data" type="form" @submit="postCompanyData">
-              <FormKit
-                  type="text"
-                  name="companyName"
-                  validation="required"
-                  label="Company Name"
+              <FormKitSchema
+                  :data="data"
+                  :schema="schema"
               />
-
             </FormKit>
             <div class="progress" v-if="loading">
               <div class="indeterminate" ></div>
@@ -36,7 +33,7 @@ import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.ContactInformation
+const contactSchema = backend.components.schemas.CompaniesRequestBody
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
