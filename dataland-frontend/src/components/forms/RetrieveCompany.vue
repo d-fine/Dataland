@@ -6,15 +6,17 @@
           <div class="card-title"><h2>Company Search</h2>
           </div>
           <div class="card-content ">
-            <FormKit v-model="data" type="form" @submit="getCompanyByName">
+            <FormKit v-model="data" type="form" @submit="getCompanyByName()">
               <FormKitSchema
                   :data="data"
                   :schema="schema"
               />
             </FormKit>
+            <button class="btn btn-md orange" @click="getCompanyByName(true)">Show all companies</button>
             <br>
-            <div v-if="response" class="col m12">
-              <ResultTable :headers="['Name', 'ID']" :data="response.data" entity="Company Search"/>
+            <div class="col m12">
+              <ResultTable v-if="response" :headers="['Name', 'ID']" :data="response.data" entity="Company Search"/>
+              <p v-else-if="response_error">The resource you requested does not exist yet. You can create it: <router-link to="/upload">Create Data</router-link></p>
             <div>
             </div>
             </div>
@@ -41,15 +43,22 @@ export default {
     schema: dataStore.getSchema(),
     model: {},
     response: null,
+    response_error: false
   }),
   methods: {
-    async getCompanyByName() {
+    async getCompanyByName(all=false) {
       try {
-        const inputArgs = Object.values(this.data)
+        let inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
+        if (all) {
+          inputArgs = [undefined]
+        }
         this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+
       } catch (error) {
         console.error(error)
+        this.response = null
+        this.response_error = true
       }
     }
   },

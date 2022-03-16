@@ -6,6 +6,14 @@
           <div class="card-title"><h2>Create EU Taxonomy Dataset</h2>
           </div>
           <div class="card-content ">
+            <FormKit
+                type="text"
+                name="companyID"
+                validation="required|number"
+                label="Company ID"
+                placeholder="Company ID"
+                v-model="companyID"
+            />
             <FormKit v-model="data" type="form" @submit="postEUData">
               <FormKitSchema
                   :data="data"
@@ -46,11 +54,12 @@ export default {
     model: {},
     loading: false,
     response: null,
+    companyID: null
   }),
   methods: {
     async postEUData() {
       try {
-        this.response = await dataStore.perform(this.data, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.companyID, this.data, {baseURL: process.env.VUE_APP_API_URL})
         console.log(this.response.status)
       } catch (error) {
         console.error(error)

@@ -1,6 +1,8 @@
 <template>
+
   <table>
-    <caption><h4>Results for {{entity}}</h4></caption>
+    <caption><h4>Results for {{entity}} {{status}}</h4></caption>
+
     <thead>
       <tr>
         <th  v-for="(header, i) in headers" :key="i">{{ header }}</th>
@@ -16,11 +18,12 @@
 
     </tbody>
   </table>
+
 </template>
 
 <script>
 export default {
   name: "ResultTable",
-  props: ["headers", "data", "entity"]
+  props: ["headers", "data", "entity", "status"]
 }
 </script>

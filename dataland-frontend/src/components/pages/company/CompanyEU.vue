@@ -10,20 +10,20 @@
           <div class="card-content">
             <div class="row">
               <div class="col m6">
-                <TaxoCard title="Eligble Revenue" :amount='response.data["Revenues"]["Amount €"]'
-                          :percent='response.data["Revenues"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
-                <TaxoCard title="Eligble CapEx" :amount='response.data["Capex"]["Amount €"]'
-                          :percent='response.data["Capex"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
-                <TaxoCard title="Eligble OpEx" :amount='response.data["Opex"]["Amount €"]'
-                          :percent='response.data["Opex"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
+                <TaxoCard title="Eligble Revenue" :amount='response.data.Revenue.eligible_turnover'
+                          :total='response.data.Revenue.total'></TaxoCard>
+                <TaxoCard title="Eligble CapEx" :amount='response.data.Capex.eligible_turnover'
+                          :total='response.data.Capex.total'></TaxoCard>
+                <TaxoCard title="Eligble OpEx" :amount='response.data.Opex.eligible_turnover'
+                          :total='response.data.Opex.total'></TaxoCard>
               </div>
               <div class="col m6">
-                <TaxoCard title="Aligned Revenue" :amount='response.data["Revenues"]["Amount €"]'
-                          :percent='response.data["Revenues"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
-                <TaxoCard title="Aligned CapEx" :amount='response.data["Capex"]["Amount €"]'
-                          :percent='response.data["Capex"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
-                <TaxoCard title="Aligned OpEx" :amount='response.data["Opex"]["Amount €"]'
-                          :percent='response.data["Opex"]["Taxonomy-aligned proportion of turnover %"]'></TaxoCard>
+                <TaxoCard title="Eligble Revenue" :amount='response.data.Revenue.aligned_turnover'
+                          :total='response.data.Revenue.total'></TaxoCard>
+                <TaxoCard title="Eligble CapEx" :amount='response.data.Capex.aligned_turnover'
+                          :total='response.data.Capex.total'></TaxoCard>
+                <TaxoCard title="Eligble OpEx" :amount='response.data.Opex.aligned_turnover'
+                          :total='response.data.Opex.total'></TaxoCard>
               </div>
             </div>
 

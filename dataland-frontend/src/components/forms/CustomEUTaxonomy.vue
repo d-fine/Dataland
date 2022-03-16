@@ -6,19 +6,22 @@
           <div class="card-title"><h2>Create EU Taxonomy Dataset</h2>
           </div>
           <div class="card-content ">
-            <FormKit v-model="data" type="form" @submit="postEUData">
-              <FormKit
-                  type="text"
-                  name="companyID"
-                  validation="required|number"
-                  label="Company ID"
-              />
+            <FormKit
+                type="text"
+                name="companyID"
+                validation="required|number"
+                label="Company ID"
+                v-model="companyID"
+
+            />
+
+            <FormKit v-model="data" type="form" @submit="postEUData" >
               <FormKit
                   type="select"
                   name="Attestation"
                   validation="required"
                   label="Attestation"
-                  placeholder = "Please choose"
+                  placeholder="Please choose"
                   :options="[
                   'None',
                   'Some',
@@ -40,29 +43,84 @@
                     'formkit-input':false
                     }"
 
-                  :options="{
-                    true: 'yes',
-                    false: 'no'
-                  }"
+                  :options="['Yes', 'No']"
               />
+              <h3>CapEx</h3>
               <FormKit
-                  type="text"
+                  type="group"
                   name="Capex"
-                  validation="number"
-                  label="Capex / €"
-              />
+                  label="CapEx"
+              >
+                <FormKit
+                    type="text"
+                    name="aligned_turnover"
+                    validation="number"
+                    label="Aligned Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="eligible_turnover"
+                    validation="number"
+                    label="Eligible Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="total"
+                    validation="number"
+                    label="Total / €"
+                />
+
+              </FormKit>
+              <h3>OpEx</h3>
               <FormKit
-                  type="text"
+                  type="group"
                   name="Opex"
-                  validation="number"
-                  label="Opex / €"
-              />
+                  label="OpEx"
+              >
+                <FormKit
+                    type="text"
+                    name="aligned_turnover"
+                    validation="number"
+                    label="Aligned Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="eligible_turnover"
+                    validation="number"
+                    label="Eligible Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="total"
+                    validation="number"
+                    label="Total / €"
+                />
+              </FormKit>
+              <h3>Revenue</h3>
               <FormKit
-                  type="text"
+                  type="group"
                   name="Revenue"
-                  validation="number"
-                  label="Revenue / €"
-              />
+                  label="Revenue"
+              >
+                <FormKit
+                    type="text"
+                    name="aligned_turnover"
+                    validation="number"
+                    label="Aligned Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="eligible_turnover"
+                    validation="number"
+                    label="Eligible Turnover / €"
+                />
+                <FormKit
+                    type="text"
+                    name="total"
+                    validation="number"
+                    label="Total / €"
+                />
+              </FormKit>
 
 
             </FormKit>
@@ -76,6 +134,7 @@
         </div>
       </div>
     </div>
+    {{ data }}
   </div>
 </template>
 <script>
@@ -94,6 +153,7 @@ export default {
     model: {},
     loading: false,
     response: null,
+    companyID: null
   }),
   mounted() {
     console.warn(this.data)
@@ -101,7 +161,7 @@ export default {
   methods: {
     async postEUData() {
       try {
-        this.response = await api.postData(this.data.companyID, this.data,{baseURL: process.env.VUE_APP_API_URL})
+        this.response = await api.postData(this.companyID, this.data, {baseURL: process.env.VUE_APP_API_URL})
         console.log(this.response.status)
       } catch (error) {
         console.error(error)
