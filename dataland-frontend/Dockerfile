@@ -2,7 +2,7 @@
 FROM ghcr.io/d-fine/dataland/temurinbase:latest as prepare-stage
 WORKDIR /app
 COPY . .
-RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-deamon
+RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
 # build stage
 FROM node:lts-alpine as build-stage
 
