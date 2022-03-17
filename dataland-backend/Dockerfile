@@ -3,4 +3,4 @@ COPY . /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD ./gradlew :dataland-backend:bootRun
+CMD ./gradlew :dataland-backend:bootRun --no-daemon

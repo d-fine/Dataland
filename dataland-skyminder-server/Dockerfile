@@ -4,4 +4,4 @@ COPY . /app/
 EXPOSE 8080
 WORKDIR /app
 
-CMD ./gradlew :dataland-skyminder-server:bootRun
+CMD ./gradlew :dataland-skyminder-server:bootRun --no-daemon

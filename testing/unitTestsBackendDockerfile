@@ -2,4 +2,4 @@ FROM ghcr.io/d-fine/dataland/temurinbase:latest
 
 WORKDIR /app
 
-CMD ["./gradlew","ktlintcheck","detekt",":dataland-backend:test"]
+CMD ./gradlew ktlintcheck detekt dataland-backend:test --no-daemon

@@ -28,7 +28,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build all project outputs
-        run: ./gradlew assemble
+        run: ./gradlew assemble --no-daemon
       - name: Copy the gradle cache into the workspace
         run: cp -r /home/runner/.gradle ./gradlecache
       - name: Login to Github Packages
@@ -88,7 +88,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:npm_run_testunit
+        run: ./gradlew :dataland-frontend:npm_run_testunit --no-daemon
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -135,7 +135,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build project
-        run: ./gradlew assemble
+        run: ./gradlew assemble --no-daemon
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
@@ -152,7 +152,7 @@ jobs:
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
