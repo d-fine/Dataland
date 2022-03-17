@@ -1,0 +1,40 @@
+[
+  {
+    "Capex": {
+      "total": 50,
+      "aligned_turnover": 10,
+      "eligible_turnover": 25
+    },
+    "Opex": {
+      "total": 100,
+      "aligned_turnover": 10,
+      "eligible_turnover": 25
+    },
+    "Revenue": {
+      "total": 200,
+      "aligned_turnover": 15,
+      "eligible_turnover": 35
+    },
+    "Reporting Obligation": "Yes",
+    "Attestation": "None"
+  },
+  {
+    "Capex": {
+      "total": 38,
+      "aligned_turnover": 10,
+      "eligible_turnover": 15
+    },
+    "Opex": {
+      "total": 78,
+      "aligned_turnover": 36,
+      "eligible_turnover": 50
+    },
+    "Revenue": {
+      "total": 100,
+      "aligned_turnover": 50,
+      "eligible_turnover": 60
+    },
+    "Reporting Obligation": "Yes",
+    "Attestation": "None"
+  }
+]

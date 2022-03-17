@@ -18,6 +18,9 @@ describe('User interactive tests for Data Upload', () => {
 
     it('Create EU Taxonomy Dataset when everything is fine', () => {
         cy.get('input[name="companyID"]').type("1", {force: true})
+        cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
+        cy.get('select[name="Attestation"]').select('None')
         cy.get('button[name="postEUData"]').click()
+        cy.get('body').should("contain", "success")
     })
 })

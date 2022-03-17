@@ -34,3 +34,20 @@ describe('Data Search Page', function () {
             .should('not.be.disabled')
     })
 });
+
+
+describe.only('Tutorialspoint Test', function () {
+    let companiesData:any
+    before(function(){
+        cy.fixture('companies').then(function(companies){
+            companiesData=companies
+        });
+    });
+
+    it('Test Case1', function (){
+        cy.visit("/upload")
+        cy.get('input[name=companyName]')
+            .type(companiesData[0].companyName)
+        console.log(companiesData)
+    });
+});
