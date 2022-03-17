@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 class DataManager(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface
 ) : DataManagerInterface {
-    var dataMetaData = mutableMapOf<String, String>() // maybe add companyId to values, instead of only keeping dataType?
+    var dataMetaData = mutableMapOf<String, String>() // maybe also add companyId to values, instead of only dataType?
     var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
 
@@ -27,7 +27,7 @@ class DataManager(
     ________________________________
      */
 
-    fun companyIdExists(companyId: String): Boolean {
+    private fun companyIdExists(companyId: String): Boolean {
         if (companyData.containsKey(companyId)) {
             return true
         }
@@ -43,7 +43,8 @@ class DataManager(
     override fun addDataSet(storedDataSet: StoredDataSet): String {
         if (companyIdExists(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
-            this.dataMetaData[dataId] = storedDataSet.dataType // maybe add companyId to values, instead of only keeping dataType?
+            this.dataMetaData[dataId] = storedDataSet.dataType /* maybe also add companyId to values,
+             instead of only  dataType?*/
             this.companyData[storedDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
             )
