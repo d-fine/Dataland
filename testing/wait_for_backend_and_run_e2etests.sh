@@ -8,4 +8,4 @@
 set -ex
 timeout 240 sh -c "while ! curl http://proxy:80/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'backend server not yet there - retrying in 1s'; sleep 1; done; echo 'backend server responded'"
 timeout 1500 sh -c "while ! curl http://proxy:80/api/actuator/health/skyminderDummyServer 2>/dev/null | grep -q UP; do echo 'skyminder dummy server not yet there - retrying in 1s'; sleep 1; done; echo 'skyminder dummy server responded'"
-./gradlew :dataland-e2etests:test :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon
+./gradlew :dataland-e2etests:test :dataland-frontend:npm_run_testpipeline --no-daemon

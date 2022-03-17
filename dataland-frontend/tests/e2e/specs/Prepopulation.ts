@@ -1,4 +1,5 @@
-describe.only('Tutorialspoint Test', function () {
+
+describe('Population Test', function () {
     let eutaxonomiesData:any
     let companiesData:any
     before(function(){
@@ -23,5 +24,38 @@ describe.only('Tutorialspoint Test', function () {
             cy.request('POST', `http://localhost:8080/api/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index])
         }
         console.log(eutaxonomiesData)
+    });
+});
+
+describe('EU Taxonomy Data', () => {
+    it('Check Data Presence and Link route', () => {
+        cy.visit("/eutaxonomies")
+        cy.get('td').contains("1")
+        cy.get('td').contains("EuTaxonomyDataSet")
+        cy.get('td').contains("Data Information").click().url().should('include', '/eutaxonomies/1')
+    });
+});
+
+describe('Company Data', () => {
+    let companiesData:any
+    before(function(){
+        cy.fixture('companies').then(function(companies){
+            companiesData=companies
+        });
+
+    });
+    it('Company Name Input field exists and works', () => {
+        const inputValue = companiesData[0].companyName
+        cy.visit("/search")
+        cy.get('input[name=companyName]')
+            .should('not.be.disabled')
+            .click({force: true})
+            .type(inputValue)
+            .should('have.value', inputValue)
+        cy.get('button[name=getCompanies]').click()
+        cy.get('table').contains('Company Search')
+        cy.get('td').contains("1")
+        cy.get('td').contains("d-fine")
+        cy.get('td').contains("Link").click().url().should('include', '/companies/1')
     });
 });

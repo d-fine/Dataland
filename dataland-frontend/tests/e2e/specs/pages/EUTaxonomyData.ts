@@ -1,3 +1,4 @@
+
 describe('EU Taxo Data testsuite', () => {
     it('Check if App is present', () => {
         cy.visit("/eutaxonomies")
@@ -16,20 +17,4 @@ describe('EU Taxo Data testsuite', () => {
 
 
 
-describe.only('Tutorialspoint Test', function () {
-    let eutaxonomiesData:any
-    before(function(){
-        cy.fixture('eutaxonomies').then(function(eutaxonomies){
-            eutaxonomiesData=eutaxonomies
-        });
-    });
 
-    it('Test Case1', function (){
-        cy.visit("/upload")
-        cy.get('input[name=companyID]')
-            .type("1")
-        cy.get('div[title=capex] input[name=aligned_turnover]').type(eutaxonomiesData[0].Capex.aligned_turnover)
-        cy.request('POST', 'http://localhost:8080/api/eutaxonomies/1', eutaxonomiesData[0])
-        console.log(eutaxonomiesData)
-    });
-});
