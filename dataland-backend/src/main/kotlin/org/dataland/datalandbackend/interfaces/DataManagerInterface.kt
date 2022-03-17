@@ -41,12 +41,6 @@ interface DataManagerInterface {
     fun addCompany(companyName: String): CompanyMetaInformation
 
     /**
-     * Method to list all companies in the meta data store
-     * @return list of all company names along with their respective IDs in the meta data store
-     */
-    fun listAllCompanies(): List<CompanyMetaInformation>
-
-    /**
      * Method to list matching companies in the meta data store by searching for a company name
      * @param companyName string used for substring matching against the companyNames of all entries
      * @return list of all matching companies in the meta data store
