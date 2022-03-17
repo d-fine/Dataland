@@ -1,5 +1,4 @@
 /*TODO
-CHeck presence each route e.g. /search, /upload ... TODO @Stephan
 Skyminder E2E anpassen TODO @Hamid
 Create Company: string eingabe -> rückgabe checken auf presence und content TODO @Hamid
 Create EU Taxonomy: string eingabe -> rückgabe checken auf presence und content TODO @Hamid
