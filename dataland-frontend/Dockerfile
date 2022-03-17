@@ -2,17 +2,16 @@
 FROM ghcr.io/d-fine/dataland/temurinbase:latest as prepare-stage
 WORKDIR /app
 COPY . .
-RUN ./gradlew dataland-frontend:generateAPIClientFrontend
+RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-deamon
 # build stage
 FROM node:lts-alpine as build-stage
-WORKDIR /app/dataland-frontend
-COPY dataland-frontend/package*.json .
-RUN ls -hartl
+
+
+WORKDIR /app
+COPY dataland-frontend/package*.json /app
 RUN npm install
-COPY dataland-frontend dataland-frontend
-RUN ls -hartl
-COPY --from=prepare-stage /app/dataland-frontend/src/clients ./src
-RUN ls -hartl
+COPY dataland-frontend /app
+COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src
 RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage

@@ -11,7 +11,7 @@ describe('User interactive tests for Data Upload', () => {
     })
 
     it('Create a Company when everything is fine', () => {
-        cy.get('input[placeholder="Company Name"]').type("BMW", {force: true})
+        cy.get('input[name=companyName]').type("BMW", {force: true})
         cy.get('button[name="postCompanyData"]').click()
         cy.get('body').should("contain", "success")
     })

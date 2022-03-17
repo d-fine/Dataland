@@ -52,10 +52,5 @@ describe('Data Search Page Company', function () {
             .should('have.value', inputValue)
     });
 
-    it('Show all companies button exists', () => {
-        cy.get('button.btn').contains('Show all companies')
-            .should('not.be.disabled')
-            .click()
-        cy.get('table').contains('Company Search')
-    });
+
 });

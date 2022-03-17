@@ -58,4 +58,12 @@ describe('Company Data', () => {
         cy.get('td').contains("d-fine")
         cy.get('td').contains("Link").click().url().should('include', '/companies/1')
     });
+
+    it('Show all companies button exists', () => {
+        cy.visit("/search")
+        cy.get('button.btn').contains('Show all companies')
+            .should('not.be.disabled')
+            .click()
+        cy.get('table').contains('Company Search')
+    });
 });

@@ -14,10 +14,13 @@
                 submit-label="Search Company"
                 type="form"
                 @submit="getCompanyByName()">
-              <FormKitSchema
-                  :data="data"
-                  :schema="schema"
+              <FormKit
+                  type="text"
+                  name="companyName"
+                  validation="required"
+                  label="Company Name"
               />
+
             </FormKit>
             <button class="btn btn-md orange darken-2" @click="getCompanyByName(true)">Show all companies</button>
             <br>
@@ -38,17 +41,16 @@
 </template>
 
 <script>
-import {FormKit, FormKitSchema} from "@formkit/vue";
+import {FormKit} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
-
 const api = new CompanyDataControllerApi()
 const dataStore = new DataStore(api.getCompaniesByName)
 import ResultTable from "@/components/ui/ResultTable";
 
 export default {
   name: "RetrieveCompany",
-  components: {FormKitSchema, FormKit, ResultTable},
+  components: {FormKit, ResultTable},
 
   data: () => ({
     data: {},
@@ -60,12 +62,10 @@ export default {
   methods: {
     async getCompanyByName(all = false) {
       try {
-        let inputArgs = Object.values(this.data)
-        inputArgs.splice(0, 1)
         if (all) {
-          inputArgs = [undefined]
+          this.data.companyName = ""
         }
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.data.companyName, {baseURL: process.env.VUE_APP_API_URL})
 
       } catch (error) {
         console.error(error)

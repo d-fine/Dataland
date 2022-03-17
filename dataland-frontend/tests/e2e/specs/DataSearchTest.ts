@@ -10,8 +10,8 @@ describe('User interactive tests for Data Search', () => {
     })
 
     it('Skyminder Data Search when everything is fine', () => {
-        cy.get('input[placeholder="Code"]').type("DEU", {force: true})
-        cy.get('input[placeholder="Name"]').type("BMW", {force: true})
+        cy.get('input[name=code]').type("DEU", {force: true})
+        cy.get('input[name=name]').type("BMW", {force: true})
         cy.get('button[name="getSkyminderData"]').click()
         cy.get('table').should('exist')
     })

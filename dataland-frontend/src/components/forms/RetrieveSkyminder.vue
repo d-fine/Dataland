@@ -14,9 +14,17 @@
                   'name': 'getSkyminderData'
                 }"
                 @submit="getSkyminderByName">
-              <FormKitSchema
-                  :data="data"
-                  :schema="schema"
+              <FormKit
+                  type="text"
+                  name="code"
+                  validation="required"
+                  label="Country Code"
+              />
+              <FormKit
+                  type="text"
+                  name="name"
+                  validation="required"
+                  label="Company Name"
               />
             </FormKit>
             <br>
@@ -33,7 +41,7 @@
 </template>
 
 <script>
-import {FormKit, FormKitSchema} from "@formkit/vue";
+import {FormKit} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
 
@@ -43,7 +51,7 @@ import SkyminderTable from "@/components/ui/SkyminderTable";
 
 export default {
   name: "RetrieveSkyminder",
-  components: {FormKitSchema, FormKit, SkyminderTable},
+  components: {FormKit, SkyminderTable},
 
   data: () => ({
     data: {},
@@ -58,9 +66,7 @@ export default {
 
     async getSkyminderByName() {
       try {
-        const inputArgs = Object.values(this.data)
-        inputArgs.splice(0, 1)
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(this.data, {baseURL: process.env.VUE_APP_API_URL})
       } catch (error) {
         console.error(error)
       }
