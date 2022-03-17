@@ -40,7 +40,7 @@ interface DataAPI<T> {
 
     @Operation(
         summary = "Upload new data set.",
-        description = "The uploaded data is added to the data store, the generated data id is returned."
+        description = "The uploaded data is sent to the data store, the generated data id is returned."
     )
     @ApiResponses(
         value = [
@@ -53,7 +53,7 @@ interface DataAPI<T> {
         consumes = ["application/json"]
     )
     /**
-     * A method to store a provided data set via dataland into the data store
+     * A method to store a provided data set via dataland into a data store
      * @param companyId the ID of the company the data belongs to
      * @param dataSet a set of data to be stored
      * @return the ID of the created entry in the data store
@@ -76,7 +76,7 @@ interface DataAPI<T> {
     /**
      * A method to retrieve a specific data set identified by its ID
      * @param dataId identifier used to uniquely determine the data set in the data store
-     * @return the complete data stored under the provided ID
+     * @return the complete data stored under the provided data ID
      */
     fun getDataSet(@PathVariable("dataId") dataId: String): ResponseEntity<T>
 }

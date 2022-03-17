@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of the API for company data exchange
- * @param dataManager implementation of the DataStoreInterface that defines how uploaded company data is to be stored
+ * @param dataManager implementation of the DataManagerInterface that defines how
+ * Dataland handles data
  */
 
 @RestController

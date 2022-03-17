@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- * Figures to be filled out for the EU-Taxonomy questionnaire
+ * Figures to be filled out for some of the EU-Taxonomy questionnaire fields
  */
 data class EuTaxonomyData(
     @field:JsonProperty("total") val total: java.math.BigDecimal? = null,

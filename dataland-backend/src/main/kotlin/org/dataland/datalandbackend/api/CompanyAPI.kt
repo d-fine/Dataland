@@ -24,7 +24,7 @@ interface CompanyAPI {
 
     @Operation(
         summary = "Add a new company.",
-        description = "A new company is added using the provided information, the generated company ID is returned."
+        description = "A new company is added using the provided information and the generated company ID is returned."
     )
     @ApiResponses(
         value = [
@@ -44,12 +44,12 @@ interface CompanyAPI {
     fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
 
     @Operation(
-        summary = "Retrieve specific companies from the data store.",
+        summary = "Retrieve specific companies by name.",
         description = "Companies identified via the provided company name are retrieved."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved a map of companies.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved companies.")
         ]
     )
     @GetMapping(
@@ -58,15 +58,15 @@ interface CompanyAPI {
     )
     /**
      * A method to retrieve specific companies identified by their company names
-     * @param companyName identifier used to search for companies in the data store
-     * @return all companies whose names match with the companyName provided as search input
+     * @param companyName identifier used to search for companies
+     * @return all companies whose names match with the companyName provided by the search input
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Retrieve list of existing data sets for given company.",
-        description = "A List of data ID and data type of all data sets of the given company is retrieved."
+        description = "A List of data ID and data type for all data sets of the given company is retrieved."
     )
     @ApiResponses(
         value = [
@@ -78,19 +78,19 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve all existing data sets of a specific company identified by the company ID
+     * A method to retrieve all existing data sets of a specific company identified by the company Id
      * @param companyId identifier of the company in dataland
      * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
      */
     fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
 
     @Operation(
-        summary = "Retrieve company name.",
-        description = "The company name behind the given company Id is retrieved."
+        summary = "Retrieve company meta information.",
+        description = "The company meta information behind the given company Id is retrieved."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company name.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company meta information.")
         ]
     )
     @GetMapping(
@@ -99,7 +99,9 @@ interface CompanyAPI {
     )
 
     /**
-     * dummy
+     * A method to retrieve company meta information for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @return meta information (company Id and name)
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyMetaInformation>
 }

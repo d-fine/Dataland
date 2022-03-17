@@ -6,12 +6,12 @@ import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 // TODO Rewrite/Adjust docs
 /**
- * Defines the required functionalities for a data store
+ * Defines the required functionalities for the Dataland data manager
  */
 @Component
 interface DataManagerInterface {
     /**
-     * Method to add a data set to the data store
+     * Method to add a data set to a data store
      * @param storedDataSet contains
      * companyId ID of the company the data belongs to
      * dataType as the type of data (e.g. EU Taxonomy)
@@ -27,7 +27,7 @@ interface DataManagerInterface {
     fun listDataSets(): List<DataSetMetaInformation>
 */
     /**
-     * Method to get the data of a single entry in the data store
+     * Method to get the data of a single entry from the data store
      * @param dataIdentifier identifier of the stored data (consists of data id and data type)
      * @return all data associated to the identifier provided
      */
@@ -54,5 +54,10 @@ interface DataManagerInterface {
      */
     fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
 
+    /**
+     * Method to retrieve meta information about a specific company
+     * @param companyId
+     * @return meta information consisting of company Id and company name
+     */
     fun getCompanyById(companyId: String): CompanyMetaInformation
 }
