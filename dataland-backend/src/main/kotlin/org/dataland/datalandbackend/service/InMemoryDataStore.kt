@@ -26,4 +26,11 @@ class InMemoryDataStore : DataStoreInterface {
     override fun selectDataSet(dataId: String): String {
         return data[dataId] ?: ""
     }
+
+    override fun getCompanyById(companyId: String): CompanyMetaInformation {
+        if (!companyData.containsKey(companyId)) {
+            throw IllegalArgumentException("The companyId: $companyId does not exist.")
+        }
+        return CompanyMetaInformation(companyData[companyId]?.companyName ?: "", companyId)
+    }
 }

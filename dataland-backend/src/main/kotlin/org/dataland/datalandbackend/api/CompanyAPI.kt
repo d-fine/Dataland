@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import javax.validation.Valid
 
 /**
@@ -19,23 +21,6 @@ import javax.validation.Valid
 
 @RequestMapping("/")
 interface CompanyAPI {
-    @Operation(
-        summary = "Show all available companies.",
-        description = "Retrieves a list of all existing companies containing the ID and name respectively."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved list of companies.")
-        ]
-    )
-    @GetMapping(
-        value = ["/company"],
-        produces = ["application/json"]
-    )
-    /**
-     * Returns info (companyId and companyName) of all currently available companies.
-     */
-    fun getAllCompanies(): ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Add a new company.",
@@ -47,7 +32,7 @@ interface CompanyAPI {
         ]
     )
     @PostMapping(
-        value = ["/company"],
+        value = ["/companies"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
@@ -56,7 +41,7 @@ interface CompanyAPI {
      * @param companyName name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
-    fun postCompany(@Valid @RequestBody companyName: String): ResponseEntity<CompanyMetaInformation>
+    fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
 
     @Operation(
         summary = "Retrieve specific companies from the data store.",
@@ -68,7 +53,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/company/{companyName}"],
+        value = ["/companies"],
         produces = ["application/json"]
     )
     /**
@@ -76,7 +61,7 @@ interface CompanyAPI {
      * @param companyName identifier used to search for companies in the data store
      * @return all companies whose names match with the companyName provided as search input
      */
-    fun getCompaniesByName(@PathVariable("companyName") companyName: String):
+    fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
@@ -89,7 +74,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/company/{companyId}/data"],
+        value = ["/companies/{companyId}/data"],
         produces = ["application/json"]
     )
     /**
@@ -98,4 +83,23 @@ interface CompanyAPI {
      * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
      */
     fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
+
+    @Operation(
+        summary = "Retrieve company name.",
+        description = "The company name behind the given company Id is retrieved."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company name.")
+        ]
+    )
+    @GetMapping(
+        value = ["/companies/{companyId}"],
+        produces = ["application/json"]
+    )
+
+    /**
+     * dummy
+     */
+    fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyMetaInformation>
 }

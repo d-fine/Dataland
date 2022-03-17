@@ -26,7 +26,7 @@ dependencies {
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val taskName = "generateBackendClient"
+val taskName = "generateAPIClientFrontend"
 // val clientOutputDir = "src/clients/backend"
 val clientOutputDir = "$projectDir/src/clients/backend"
 // val clientOutputDir = "$buildDir/Clients/backend"

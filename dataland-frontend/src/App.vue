@@ -1,30 +1,28 @@
 <template>
-  <img alt="Vue logo" src="@/assets/images/logos/dataland-logo-lr.png">
-  <WelcomeDataland msg="Welcome to DataLand"/>
-  <ApiClient/>
+  <div>
+    <NavbarTop />
+    <router-view />
+
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import WelcomeDataland from './components/WelcomeDataland.vue';
-import ApiClient from './components/APIClient.vue';
+<script>
+import NavbarTop from "@/components/menus/NavbarTop";
 
-@Options({
+
+
+
+export default {
+  name: 'app',
   components: {
-    WelcomeDataland,
-    ApiClient
-  },
-})
-export default class App extends Vue {}
+    NavbarTop
+  }
+}
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import "./assets/css/main.css";
+@import "./assets/css/forms.css";
+@import "./assets/css/variables";
+
 </style>
