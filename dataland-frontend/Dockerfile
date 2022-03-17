@@ -5,13 +5,11 @@ COPY . .
 RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
 # build stage
 FROM node:lts-alpine as build-stage
-
-
 WORKDIR /app
 COPY dataland-frontend/package*.json /app/
 RUN npm install
 COPY dataland-frontend /app
-COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src
+COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src/
 RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
