@@ -15,7 +15,13 @@
 
             />
 
-            <FormKit v-model="data" type="form" @submit="postEUData">
+            <FormKit
+                v-model="data"
+                :submit-attrs="{
+                  'name': 'postEUData'
+                }"
+                type="form"
+                @submit="postEUData">
               <FormKit
                   type="select"
                   name="Attestation"

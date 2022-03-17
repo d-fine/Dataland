@@ -7,13 +7,13 @@ describe('User interactive tests for Data Upload', () => {
 
     it('Create a Company with no input', () => {
         cy.get('button[name="submit_2"]').click()
-        cy.get('body').contains('Sorry').should('exist')
+        cy.get('body').should("contain", "Sorry")
     })
 
     it('Create a Company when everything is fine', () => {
         cy.get('input[placeholder="Company Name"]').type("BMW", {force: true})
         cy.get('button[name="submit_2"]').click()
-        cy.get('body').contains('success').should('exist')
+        cy.get('body').should("contain", "success")
     })
 
     it('Create EU Taxonomy Dataset when everything is fine', () => {

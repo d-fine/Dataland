@@ -30,7 +30,7 @@ describe('Data Search Page', function () {
         cy.get('input[name=name]').should("have.value", '')
     })
     it('Skyminder button is present', () => {
-        cy.get('button[name="skyminder"]').contains('Get Skyminder Data')
+        cy.get('button[name="getSkyminderData"]').contains('Get Skyminder Data')
             .should('not.be.disabled')
     })
 });

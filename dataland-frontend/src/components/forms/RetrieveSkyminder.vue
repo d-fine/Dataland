@@ -11,7 +11,7 @@
                 type="form"
                 submit-label="Get Skyminder Data"
                 :submit-attrs="{
-                  'name': 'skyminder'
+                  'name': 'getSkyminderData'
                 }"
                 @submit="getSkyminderByName">
               <FormKitSchema
