@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Simple implementation of a data store using in memory storage
  */
 @Component("DefaultManager")
-class DataManager (
+class DataManager(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface
-        ) : DataManagerInterface  {
-    var dataMetaData = mutableMapOf<String, String>() //maybe add companyId to values, instead of only keeping dataType?
+) : DataManagerInterface {
+    var dataMetaData = mutableMapOf<String, String>() // maybe add companyId to values, instead of only keeping dataType?
     var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
 
@@ -27,7 +27,7 @@ class DataManager (
     ________________________________
      */
 
-    fun companyIdExists(companyId: String) : Boolean {
+    fun companyIdExists(companyId: String): Boolean {
         if (companyData.containsKey(companyId)) {
             return true
         }
@@ -43,7 +43,7 @@ class DataManager (
     override fun addDataSet(storedDataSet: StoredDataSet): String {
         if (companyIdExists(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
-            this.dataMetaData[dataId] = storedDataSet.dataType //maybe add companyId to values, instead of only keeping dataType?
+            this.dataMetaData[dataId] = storedDataSet.dataType // maybe add companyId to values, instead of only keeping dataType?
             this.companyData[storedDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
             )
@@ -62,21 +62,23 @@ class DataManager (
     }
 */
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
-        if(!dataMetaData.containsKey(dataIdentifier.dataId)) {
+        if (!dataMetaData.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
         }
 
-        if (dataStore.selectDataSet(dataIdentifier.dataId)=="") {
-            throw IllegalArgumentException("No data set with the id: ${dataIdentifier.dataId} " +
-                    "could be found in the data store.")
+        if (dataStore.selectDataSet(dataIdentifier.dataId) == "") {
+            throw IllegalArgumentException(
+                "No data set with the id: ${dataIdentifier.dataId} " +
+                    "could be found in the data store."
+            )
         }
         if (dataMetaData[dataIdentifier.dataId] != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                        " ${dataMetaData[dataIdentifier.dataId]} instead of the expected ${dataIdentifier.dataType}."
+                    " ${dataMetaData[dataIdentifier.dataId]} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-    return dataStore.selectDataSet(dataIdentifier.dataId)
+        return dataStore.selectDataSet(dataIdentifier.dataId)
     }
 
     /*

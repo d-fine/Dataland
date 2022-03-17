@@ -1,9 +1,5 @@
 package org.dataland.datalandbackend.interfaces
 
-import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 
 /**

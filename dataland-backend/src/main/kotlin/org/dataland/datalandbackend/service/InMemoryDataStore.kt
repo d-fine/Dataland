@@ -17,7 +17,6 @@ class InMemoryDataStore : DataStoreInterface {
         return "$dataCounter"
     }
 
-
     override fun selectDataSet(dataId: String): String {
         return data[dataId] ?: ""
     }
