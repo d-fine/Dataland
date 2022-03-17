@@ -5,14 +5,14 @@ describe('User interactive tests for Data Search', () => {
     })
 
     it('Skyminder Data Search with no input', () => {
-        cy.get('button[name="submit_2"]').click()
+        cy.get('button[name="skyminder"]').click()
         cy.get('body').contains('Sorry').should('exist')
     })
 
     it('Skyminder Data Search when everything is fine', () => {
         cy.get('input[placeholder="Code"]').type("DEU", {force: true})
         cy.get('input[placeholder="Name"]').type("BMW", {force: true})
-        cy.get('button[name="submit_2"]').click()
+        cy.get('button[name="skyminder"]').click()
         cy.get('table').should('exist')
     })
 

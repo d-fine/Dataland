@@ -10,12 +10,8 @@
                 v-model="data"
                 type="form"
                 submit-label="Get Skyminder Data"
-                :outer-class="{
-                    'formkit-wrapper':false
-                }"
                 :submit-attrs="{
-                  'name': 'skyminder',
-                  'classes': 'btn'
+                  'name': 'skyminder'
                 }"
                 @submit="getSkyminderByName">
               <FormKitSchema

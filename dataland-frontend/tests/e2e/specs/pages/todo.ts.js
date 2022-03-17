@@ -1,5 +1,4 @@
 /*TODO
-HOME screen anpassen -> index.js (vieles rauskicken) TODO @Stephan
 CHeck presence each route e.g. /search, /upload ... TODO @Stephan
 Skyminder E2E anpassen TODO @Hamid
 Create Company: string eingabe -> rückgabe checken auf presence und content TODO @Hamid

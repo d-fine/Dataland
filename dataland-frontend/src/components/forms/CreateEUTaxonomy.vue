@@ -15,7 +15,7 @@
 
             />
 
-            <FormKit v-model="data" type="form" @submit="postEUData" >
+            <FormKit v-model="data" type="form" @submit="postEUData">
               <FormKit
                   type="select"
                   name="Attestation"
@@ -45,83 +45,88 @@
 
                   :options="['Yes', 'No']"
               />
-              <h3>CapEx</h3>
-              <FormKit
-                  type="group"
-                  name="Capex"
-                  label="CapEx"
-              >
+              <div title="capex">
+                <h3>CapEx</h3>
                 <FormKit
-                    type="text"
-                    name="aligned_turnover"
-                    validation="number"
-                    label="Aligned Turnover / €"
-                />
-                <FormKit
-                    type="text"
-                    name="eligible_turnover"
-                    validation="number"
-                    label="Eligible Turnover / €"
-                />
-                <FormKit
-                    type="text"
-                    name="total"
-                    validation="number"
-                    label="Total / €"
-                />
+                    type="group"
+                    name="Capex"
+                    label="CapEx"
+                >
+                  <FormKit
+                      type="text"
+                      name="aligned_turnover"
+                      validation="number"
+                      label="Aligned Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="eligible_turnover"
+                      validation="number"
+                      label="Eligible Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="total"
+                      validation="number"
+                      label="Total / €"
+                  />
 
-              </FormKit>
-              <h3>OpEx</h3>
-              <FormKit
-                  type="group"
-                  name="Opex"
-                  label="OpEx"
-              >
+                </FormKit>
+              </div>
+              <div title="opex">
+                <h3>OpEx</h3>
                 <FormKit
-                    type="text"
-                    name="aligned_turnover"
-                    validation="number"
-                    label="Aligned Turnover / €"
-                />
+                    type="group"
+                    name="opex"
+                    label="OpEx"
+                >
+                  <FormKit
+                      type="text"
+                      name="aligned_turnover"
+                      validation="number"
+                      label="Aligned Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="eligible_turnover"
+                      validation="number"
+                      label="Eligible Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="total"
+                      validation="number"
+                      label="Total / €"
+                  />
+                </FormKit>
+              </div>
+              <div title="revenue">
+                <h3>Revenue</h3>
                 <FormKit
-                    type="text"
-                    name="eligible_turnover"
-                    validation="number"
-                    label="Eligible Turnover / €"
-                />
-                <FormKit
-                    type="text"
-                    name="total"
-                    validation="number"
-                    label="Total / €"
-                />
-              </FormKit>
-              <h3>Revenue</h3>
-              <FormKit
-                  type="group"
-                  name="Revenue"
-                  label="Revenue"
-              >
-                <FormKit
-                    type="text"
-                    name="aligned_turnover"
-                    validation="number"
-                    label="Aligned Turnover / €"
-                />
-                <FormKit
-                    type="text"
-                    name="eligible_turnover"
-                    validation="number"
-                    label="Eligible Turnover / €"
-                />
-                <FormKit
-                    type="text"
-                    name="total"
-                    validation="number"
-                    label="Total / €"
-                />
-              </FormKit>
-
+                    type="group"
+                    name="revenue"
+                    label="Revenue"
+                >
+                  <FormKit
+                      type="text"
+                      name="aligned_turnover"
+                      validation="number"
+                      label="Aligned Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="eligible_turnover"
+                      validation="number"
+                      label="Eligible Turnover / €"
+                  />
+                  <FormKit
+                      type="text"
+                      name="total"
+                      validation="number"
+                      label="Total / €"
+                  />
+                </FormKit>
+              </div>
 
             </FormKit>
             <div class="progress" v-if="loading">
