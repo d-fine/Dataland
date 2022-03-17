@@ -11,7 +11,7 @@ export class DataStore {
 
     getSchema(): Object {
         if (this.rawSchema) {
-            return this.getSchemaFromJson()
+            return this.getSchemaFromJSON()
         } else {
             return this.getSchemaFromFunction()
         }
@@ -39,17 +39,17 @@ export class DataStore {
         return schema
     }
 
-    private getSchemaFromJson(): Object {
+    private getSchemaFromJSON(): Object {
         const schema = []
         for (const index in this.rawSchema.properties) {
             if ("enum" in this.rawSchema.properties[index]) {
                 if (this.rawSchema.properties[index].enum.length > 2) {
                     schema.push({
-                            $formkit: 'select',
-                            label: humanizeString(index),
-                            placeholder: "Please Choose",
-                            name: index,
-                            validation: this.rawSchema.required.includes(index) ? "required" : "",
+                        $formkit: 'select',
+                        label: humanizeString(index),
+                        placeholder: "Please Choose",
+                        name: index,
+                        validation: this.rawSchema.required.includes(index) ? "required" : "",
                             options: this.rawSchema.properties[index].enum
                         }
                     )

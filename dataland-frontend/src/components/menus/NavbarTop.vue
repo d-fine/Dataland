@@ -16,7 +16,3 @@ export default {
   name: "NavbarTop"
 }
 </script>
-
-<style scoped>
-
-</style>

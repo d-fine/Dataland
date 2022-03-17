@@ -1,4 +1,4 @@
-export function humanizeString(text: String): String {
+export function humanizeString(text: string): string {
     // Split the sting to words
     const processedText = text.replace(/([A-Z])/g, " $1");
     // uppercase the first letter of the first word

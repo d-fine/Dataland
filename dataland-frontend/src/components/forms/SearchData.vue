@@ -11,7 +11,3 @@ export default {
   components: {RetrieveCompany, RetrieveSkyminder}
 }
 </script>
-
-<style scoped>
-
-</style>
