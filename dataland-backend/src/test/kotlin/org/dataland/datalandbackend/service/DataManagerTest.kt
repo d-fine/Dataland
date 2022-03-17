@@ -60,12 +60,12 @@ class DataManagerTest {
             listOfDataIds.add(testManager.addDataSet(dataSet))
         }
 
-        val dataSetsOfTestCompany = testManager.listDataSetsByCompanyId(testCompanyId)
+        val listDataSetsByCompanyIdResponse = testManager.listDataSetsByCompanyId(testCompanyId)
 
         for (dataId in listOfDataIds) {
             assertEquals(
-                testDataSetsToStore[dataId.toInt() - 1].dataType,
-                dataSetsOfTestCompany.first { it.dataId == dataId }.dataType
+                DataIdentifier(dataId =  dataId, dataType = testDataSetsToStore[dataId.toInt() - 1].dataType),
+                listDataSetsByCompanyIdResponse.first { it.dataId == dataId }
             )
         }
     }
