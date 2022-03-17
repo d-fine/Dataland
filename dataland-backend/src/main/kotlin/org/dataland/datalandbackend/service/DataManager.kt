@@ -2,7 +2,10 @@ package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.*
+import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
