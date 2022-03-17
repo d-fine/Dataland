@@ -14,7 +14,7 @@ services:
     image: eclipse-temurin:17.0.2_8-jre-alpine
     volumes:
       - ./jar:/jar
-    command: ["java","-jar","/jar/dala-backend.jar"]
+    command: ["java","-jar","/jar/dataland-backend.jar"]
     networks:
       - internal
     expose:

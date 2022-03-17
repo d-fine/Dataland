@@ -28,18 +28,18 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build all project outputs
-        run: ./gradlew assemble
+        run: ./gradlew assemble --no-daemon
       - name: Copy the gradle cache into the workspace
         run: cp -r /home/runner/.gradle ./gradlecache
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
       - name: Login to Github Packages
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
       - name: Build an eclipse temurin base image and push it to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
@@ -60,16 +60,10 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
-          docker build . -t unittests -f ./testing/unitTestsBackendDockerfile
-          docker run -v $(pwd)/:/app:rw unittests
+          docker run -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
+          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -94,7 +88,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testunit
+        run: ./gradlew :dataland-frontend:npm_run_testunit --no-daemon
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -107,12 +101,6 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
@@ -147,28 +135,24 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build project
-        run: ./gradlew assemble
+        run: ./gradlew assemble --no-daemon
       - uses: actions/download-artifact@v2
-        if: always()
         with:
           name: JaCoCoResultsUnitTests
       - uses: actions/download-artifact@v2
-        if: always()
         with:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v2
-        if: always()
         with:
           name: lcovResultsUnit
           path: fe-coverage/unit
       - uses: actions/download-artifact@v2
-        if: always()
         with:
           name: lcovResultsE2E
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
