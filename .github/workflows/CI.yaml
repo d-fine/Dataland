@@ -88,7 +88,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:npm_run_testunit --no-daemon
+        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testunit --no-daemon
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2

@@ -1,6 +1,7 @@
 #!/bin/sh
 set -ex
 #Start E2E Test and wait for E2E Test completion
+gradlew dataland-frontend:generateAPIClient
 docker-compose --project-name dala-e2e-test up -d
 timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info .
