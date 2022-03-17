@@ -64,7 +64,7 @@ class DataManagerTest {
 
         for (dataId in listOfDataIds) {
             assertEquals(
-                DataIdentifier(dataId =  dataId, dataType = testDataSetsToStore[dataId.toInt() - 1].dataType),
+                DataIdentifier(dataId = dataId, dataType = testDataSetsToStore[dataId.toInt() - 1].dataType),
                 listDataSetsByCompanyIdResponse.first { it.dataId == dataId }
             )
         }
@@ -93,30 +93,6 @@ class DataManagerTest {
             testDataSetsToStore[0].data,
             testManager.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType))
         )
-    }
-
-    @Test // TODO
-    fun `add all test data sets and check if they appear in the list of all data sets`() {
-        testManager.addCompany(testCompanyNamesToStore[0]).companyId
-
-        val listOfDataIds = mutableListOf<String>()
-
-        for (dataSet in testDataSetsToStore) {
-            listOfDataIds.add(testManager.addDataSet(dataSet))
-        }
-
-        val listOfAllDataSets = testManager.listDataSets()
-
-        for (dataId in listOfDataIds) {
-            assertEquals(
-                testDataSetsToStore[dataId.toInt() - 1].dataType,
-                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().dataIdentifier.dataType
-            )
-            assertEquals(
-                testDataSetsToStore[dataId.toInt() - 1].companyId,
-                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().companyId
-            )
-        }
     }
 
     @Test
