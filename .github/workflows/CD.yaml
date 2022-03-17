@@ -27,7 +27,7 @@ jobs:
       - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - name: Deploy to Preview
-        run: ./deployment/deploy_to_preview.sh ./dataland-backend/build/libs/dataland-backend*.jar
+        run: ./deployment/deploy_to_preview.sh
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
