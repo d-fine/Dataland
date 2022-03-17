@@ -1,6 +1,7 @@
 version: "3.3"
 services:
   proxy:
+    restart: always
     networks:
       - external
       - internal
@@ -11,6 +12,7 @@ services:
     volumes:
       - ./dataland-inbound-proxy/nginx.conf:/etc/nginx/nginx.conf
   backend:
+    restart: always
     image: eclipse-temurin:17.0.2_8-jre-alpine
     volumes:
       - ./jar:/jar
@@ -24,6 +26,7 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
   frontend:
+    restart: always
     image: nginx:stable-alpine
     volumes:
       - ./dist:/usr/share/nginx/html
