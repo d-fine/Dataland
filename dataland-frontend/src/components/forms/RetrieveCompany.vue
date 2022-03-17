@@ -9,8 +9,9 @@
             <FormKit
                 v-model="data"
                 :submit-attrs="{
-                  'name': 'getCompany'
+                  'name': 'getCompanies'
                 }"
+                submit-label="Search Company"
                 type="form"
                 @submit="getCompanyByName()">
               <FormKitSchema

@@ -17,6 +17,7 @@
 
             <FormKit
                 v-model="data"
+                submit-label="Post EU-Taxonomy Dataset"
                 :submit-attrs="{
                   'name': 'postEUData'
                 }"

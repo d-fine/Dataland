@@ -8,10 +8,11 @@
           <div class="card-content ">
             <FormKit
                 v-model="data"
+                type="form"
                 :submit-attrs="{
                   'name': 'postCompanyData'
                 }"
-                type="form"
+                submit-label="Post Company"
                 @submit="postCompanyData">
               <FormKitSchema
                   :data="data"

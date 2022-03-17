@@ -10,10 +10,6 @@ describe('Index testsuite', () => {
             .should('have.attr', 'src')
             .should('include','dataland-logo')
 
-        cy.get('img[alt="Dataland logo"]')
-            .should('be.visible')
-            .and(($img) => {
-                expect($img[0].naturalWidth).to.be.greaterThan(0)})
     })
 
 })
