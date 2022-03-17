@@ -1,4 +1,4 @@
-describe('Data Search Page', function () {
+describe('Data Search Page Skyminder', function () {
     it('page should be present', function () {
         cy.visit("/search")
         cy.get('#app').should("exist")
@@ -33,4 +33,29 @@ describe('Data Search Page', function () {
         cy.get('button[name="getSkyminderData"]').contains('Get Skyminder Data')
             .should('not.be.disabled')
     })
+});
+
+describe('Data Search Page Company', function () {
+    it('page should be present', function () {
+        cy.visit("/search")
+        cy.get('#app').should("exist")
+    });
+    it('Company Search form is present', () => {
+        cy.get('.card-title h2').should("contain", "Company Search")
+    });
+    it('Company Name Input field exists and works', () => {
+        const inputValue = "d-fine"
+        cy.get('input[name=companyName]')
+            .should('not.be.disabled')
+            .click({force: true})
+            .type(inputValue)
+            .should('have.value', inputValue)
+    });
+
+    it('Show all companies button exists', () => {
+        cy.get('button.btn').contains('Show all companies')
+            .should('not.be.disabled')
+            .click()
+        cy.get('table').contains('Company Search')
+    });
 });
