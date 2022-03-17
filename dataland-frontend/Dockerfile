@@ -9,7 +9,7 @@ WORKDIR /app
 COPY dataland-frontend/package*.json /app/
 RUN npm install
 COPY dataland-frontend /app/
-COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src/
+COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src/clients
 RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
