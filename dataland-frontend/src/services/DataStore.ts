@@ -11,7 +11,7 @@ export class DataStore {
 
     getSchema(): Object {
         if (this.rawSchema) {
-            return this.getSchemaFromJSON()
+            return this.getSchemaJSON()
         } else {
             return this.getSchemaFromFunction()
         }
@@ -39,7 +39,7 @@ export class DataStore {
         return schema
     }
 
-    private getSchemaFromJSON(): Object {
+    private getSchemaJSON(): Object {
         const schema = []
         for (const index in this.rawSchema.properties) {
             if ("enum" in this.rawSchema.properties[index]) {
