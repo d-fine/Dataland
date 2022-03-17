@@ -154,9 +154,6 @@ export default {
     response: null,
     companyID: null
   }),
-  mounted() {
-    console.warn(this.data)
-  },
   methods: {
     async postEUData() {
       try {

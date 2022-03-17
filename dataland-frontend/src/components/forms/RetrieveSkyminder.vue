@@ -6,7 +6,18 @@
           <div class="card-title"><h2>Skyminder Data Search</h2>
           </div>
           <div class="card-content ">
-            <FormKit v-model="data" type="form" @submit="getSkyminderByName">
+            <FormKit
+                v-model="data"
+                type="form"
+                submit-label="Get Skyminder Data"
+                :outer-class="{
+                    'formkit-wrapper':false
+                }"
+                :submit-attrs="{
+                  'name': 'skyminder',
+                  'classes': 'btn'
+                }"
+                @submit="getSkyminderByName">
               <FormKitSchema
                   :data="data"
                   :schema="schema"
@@ -14,8 +25,10 @@
             </FormKit>
             <br>
             <div v-if="response" class="col m12">
-              <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']" :data="response.data"/>
+              <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
+                              :data="response.data"/>
             </div>
+            <button class="btn btn-sm orange darken-2" @click="clearAll">Clear</button>
           </div>
         </div>
       </div>
@@ -27,9 +40,11 @@
 import {FormKit, FormKitSchema} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
+
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
 import SkyminderTable from "@/components/ui/SkyminderTable";
+
 export default {
   name: "RetrieveSkyminder",
   components: {FormKitSchema, FormKit, SkyminderTable},
@@ -41,6 +56,10 @@ export default {
     response: null
   }),
   methods: {
+    clearAll() {
+      this.data = {}
+    },
+
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.data)
@@ -56,7 +75,7 @@ export default {
 
 </script>
 
-<style>
+<style lang="css">
 @import "../../assets/css/buttons.css";
 @import "../../assets/css/forms.css";
 </style>

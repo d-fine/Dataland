@@ -12,7 +12,7 @@
                   :schema="schema"
               />
             </FormKit>
-            <button class="btn btn-md orange" @click="getCompanyByName(true)">Show all companies</button>
+            <button class="btn btn-md orange darken-2" @click="getCompanyByName(true)">Show all companies</button>
             <br>
             <div class="col m12">
               <ResultTable v-if="response" :headers="['Name', 'ID', 'Link']" :data="response.data" entity="Company Search" route="/companies/" linkkey="companyId"/>
