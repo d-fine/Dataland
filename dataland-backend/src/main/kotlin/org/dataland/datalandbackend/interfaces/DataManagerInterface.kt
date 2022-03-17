@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 // TODO Rewrite/Adjust docs
@@ -49,7 +48,7 @@ interface DataManagerInterface {
 
     /**
      * Method to list matching companies in the meta data store by searching for a company name
-     * @param name string used for substring matching against the companyNames of all entries
+     * @param companyName string used for substring matching against the companyNames of all entries
      * @return list of all matching companies in the meta data store
      */
     fun listCompaniesByName(companyName: String): List<CompanyMetaInformation>
@@ -60,4 +59,6 @@ interface DataManagerInterface {
      * @return list of all data set IDs along with their data type
      */
     fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
+
+    fun getCompanyById(companyId: String): CompanyMetaInformation
 }

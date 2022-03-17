@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of the API for company data exchange
- * @param dataStore implementation of the DataStoreInterface that defines how uploaded company data is to be stored
+ * @param dataManager implementation of the DataStoreInterface that defines how uploaded company data is to be stored
  */
 
 @RestController
@@ -33,6 +33,6 @@ class CompanyDataController(
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(this.dataStore.getCompanyById(companyId))
+        return ResponseEntity.ok(this.dataManager.getCompanyById(companyId))
     }
 }

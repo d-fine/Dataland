@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,9 +17,22 @@ import org.springframework.stereotype.Component
 class DataManager (
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface
         ) : DataManagerInterface  {
-    var dataMetaData = mutableMapOf<String, String>()
+    var dataMetaData = mutableMapOf<String, String>() //maybe add companyId to values, instead of only keeping dataType?
     var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
+
+    /*
+    ________________________________
+    Helper-methods:
+    ________________________________
+     */
+
+    fun companyIdExists(companyId: String) : Boolean {
+        if (companyData.containsKey(companyId)) {
+            return true
+        }
+        return false
+    }
 
     /*
     ________________________________
@@ -29,15 +41,15 @@ class DataManager (
      */
 
     override fun addDataSet(storedDataSet: StoredDataSet): String {
-        if (companyData.containsKey(storedDataSet.companyId)) {
+        if (companyIdExists(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
-            this.dataMetaData[dataId] = storedDataSet.dataType
+            this.dataMetaData[dataId] = storedDataSet.dataType //maybe add companyId to values, instead of only keeping dataType?
             this.companyData[storedDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
             )
             return dataId
         }
-        throw IllegalArgumentException("No company with the companyId $storedDataSet.companyId exists.")
+        throw IllegalArgumentException("The companyId: ${storedDataSet.companyId} does not exist.")
     }
 /*
     override fun listDataSets(): List<DataSetMetaInformation> {
@@ -92,10 +104,16 @@ class DataManager (
     }
 
     override fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier> {
-        if (!companyData.containsKey(companyId)) {
-            throw IllegalArgumentException("The companyId: $companyId does not exist.")
+        if (companyIdExists(companyId)) {
+            return companyData[companyId]?.dataSets ?: emptyList()
         }
-        return companyData[companyId]?.dataSets ?: emptyList()
+        throw IllegalArgumentException("The companyId: $companyId does not exist.")
     }
 
+    override fun getCompanyById(companyId: String): CompanyMetaInformation {
+        if (companyIdExists(companyId)) {
+            return CompanyMetaInformation(companyName = companyData[companyId]!!.companyName, companyId = companyId)
+        }
+        throw IllegalArgumentException("The companyId: $companyId does not exist.")
+    }
 }
