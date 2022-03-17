@@ -51,9 +51,7 @@ class DataManagerTest {
         }
     }
 
-    // Company-Methods: listDataSetsByCompanyId
-
-    @Test
+    @Test // TODO
     fun `post the first company and all dummy data sets for it and check if all data sets of it are listed`() {
         val testCompanyId = testManager.addCompany(testCompanyNamesToStore[0]).companyId
 
@@ -67,7 +65,7 @@ class DataManagerTest {
         for (dataId in listOfDataIds) {
             assertEquals(
                 testDataSetsToStore[dataId.toInt() - 1].dataType,
-                dataSetsOfTestCompany.filter { it.dataId == dataId }.first().dataType
+                dataSetsOfTestCompany.first { it.dataId == dataId }.dataType
             )
         }
     }
@@ -97,7 +95,7 @@ class DataManagerTest {
         )
     }
 
-    @Test
+    @Test // TODO
     fun `add all test data sets and check if they appear in the list of all data sets`() {
         testManager.addCompany(testCompanyNamesToStore[0]).companyId
 
