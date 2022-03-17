@@ -62,8 +62,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
-          docker build . -t unittests -f ./testing/unitTestsBackendDockerfile
-          docker run -v $(pwd)/:/app:rw unittests
+          docker run -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
+          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
