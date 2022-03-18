@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.stereotype.Component
 
 /**
- * Defines the required functionalities for a in-memory data store
+ * Defines the required functionalities for a data store
  */
 @Component
 interface DataStoreInterface {
