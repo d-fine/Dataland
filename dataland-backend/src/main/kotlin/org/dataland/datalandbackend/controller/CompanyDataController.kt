@@ -20,8 +20,8 @@ class CompanyDataController(
     @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
 ) : CompanyAPI {
 
-    override fun postCompany(companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(this.dataStore.addCompany(companyName.companyName))
+    override fun postCompany(companiesRequestBody: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation> {
+        return ResponseEntity.ok(this.dataStore.addCompany(companiesRequestBody.companyName))
     }
 
     override fun getCompaniesByName(companyName: String?): ResponseEntity<List<CompanyMetaInformation>> {

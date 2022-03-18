@@ -38,10 +38,10 @@ interface CompanyAPI {
     )
     /**
      * A method to create a new company entry in dataland
-     * @param companyName name of the company to be created
+     * @param companiesRequestBody includes the company name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
-    fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
+    fun postCompany(@Valid @RequestBody companiesRequestBody: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
 
     @Operation(
         summary = "Retrieve specific companies from the data store.",
