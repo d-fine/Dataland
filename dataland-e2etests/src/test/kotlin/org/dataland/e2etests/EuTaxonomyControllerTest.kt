@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-// TODO Cleanup the println()s
-
 class EuTaxonomyControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
@@ -61,13 +59,9 @@ class EuTaxonomyControllerTest {
         val postCompanyResponse =
             companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
-
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
-        println(testEuTaxonomyDataSetId)
 
         val getDataResponse = euTaxonomyDataControllerApi.getData()
-
-        println(getDataResponse)
         assertTrue(
             getDataResponse.contains(
                 DataSetMetaInformation(
