@@ -85,12 +85,12 @@ interface CompanyAPI {
     fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
 
     @Operation(
-        summary = "Retrieve company name.",
-        description = "The company name behind the given company Id is retrieved."
+        summary = "Retrieve company meta information.",
+        description = "The company meta information behind the given company Id is retrieved."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company name.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company meta information.")
         ]
     )
     @GetMapping(
@@ -99,7 +99,9 @@ interface CompanyAPI {
     )
 
     /**
-     * dummy
+     * A method to retrieve company meta information for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @return meta information (company Id and name)
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyMetaInformation>
 }
