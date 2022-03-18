@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 
-// TODO Add error messages to Assertions?
-
 @SpringBootTest
 class InMemoryDataStoreTest {
 
@@ -24,18 +22,21 @@ class InMemoryDataStoreTest {
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
         val companyMetaInformation = testStore.addCompany(testCompanyNamesToStore[0])
-        assertEquals(companyMetaInformation.companyName, testCompanyNamesToStore[0])
+        assertEquals(companyMetaInformation.companyName, testCompanyNamesToStore[0],
+        "The company name in the post-response does not match the actual name of the company to be posted.")
     }
 
     @Test
-    fun `add all companies, retrieve them as a list and check for each company if its name is as expected`() {
+    fun `add all companies then retrieve them as a list and check for each company if its name is as expected`() {
         for (companyName in testCompanyNamesToStore) {
             testStore.addCompany(companyName)
         }
 
         val allCompaniesInStore = testStore.listAllCompanies()
+
         for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
-            assertEquals(testCompanyNamesToStore[counter], storedCompany.companyName)
+            assertEquals(testCompanyNamesToStore[counter], storedCompany.companyName,
+            "The stored company name does not match the test company name.")
         }
     }
 
@@ -47,11 +48,10 @@ class InMemoryDataStoreTest {
 
         for (companyName in testCompanyNamesToStore) {
             val searchResponse = testStore.listCompaniesByName(companyName)
-            assertEquals(companyName, searchResponse.first().companyName)
+            assertEquals(companyName, searchResponse.first().companyName,
+            "The posted company could not be found in the data store by searching for its name.")
         }
     }
-
-    // Company-Methods: listDataSetsByCompanyId
 
     @Test
     fun `post the first company and all dummy data sets for it and check if all data sets of it are listed`() {
@@ -67,7 +67,8 @@ class InMemoryDataStoreTest {
         for (dataId in listOfDataIds) {
             assertEquals(
                 testDataSetsToStore[dataId.toInt() - 1].dataType,
-                dataSetsOfTestCompany.filter { it.dataId == dataId }.first().dataType
+                dataSetsOfTestCompany.filter { it.dataId == dataId }.first().dataType,
+                "The stored data set type does not match the test data set type."
             )
         }
     }
@@ -93,7 +94,8 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType))
+            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
+            "The posted data set does not match the retrieved data set."
         )
     }
 
@@ -112,11 +114,14 @@ class InMemoryDataStoreTest {
         for (dataId in listOfDataIds) {
             assertEquals(
                 testDataSetsToStore[dataId.toInt() - 1].dataType,
-                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().dataIdentifier.dataType
+                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().dataIdentifier.dataType,
+                "The data types of the test data set and the stored data set do not match."
+
             )
             assertEquals(
                 testDataSetsToStore[dataId.toInt() - 1].companyId,
-                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().companyId
+                listOfAllDataSets.filter { it.dataIdentifier.dataId == dataId }.first().companyId,
+                "The company Ids of the test data set and the stored data set do not match."
             )
         }
     }
