@@ -22,8 +22,10 @@ class InMemoryDataStoreTest {
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
         val companyMetaInformation = testStore.addCompany(testCompanyNamesToStore[0])
-        assertEquals(companyMetaInformation.companyName, testCompanyNamesToStore[0],
-        "The company name in the post-response does not match the actual name of the company to be posted.")
+        assertEquals(
+            companyMetaInformation.companyName, testCompanyNamesToStore[0],
+            "The company name in the post-response does not match the actual name of the company to be posted."
+        )
     }
 
     @Test
@@ -35,8 +37,10 @@ class InMemoryDataStoreTest {
         val allCompaniesInStore = testStore.listAllCompanies()
 
         for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
-            assertEquals(testCompanyNamesToStore[counter], storedCompany.companyName,
-            "The stored company name does not match the test company name.")
+            assertEquals(
+                testCompanyNamesToStore[counter], storedCompany.companyName,
+                "The stored company name does not match the test company name."
+            )
         }
     }
 
@@ -48,8 +52,10 @@ class InMemoryDataStoreTest {
 
         for (companyName in testCompanyNamesToStore) {
             val searchResponse = testStore.listCompaniesByName(companyName)
-            assertEquals(companyName, searchResponse.first().companyName,
-            "The posted company could not be found in the data store by searching for its name.")
+            assertEquals(
+                companyName, searchResponse.first().companyName,
+                "The posted company could not be found in the data store by searching for its name."
+            )
         }
     }
 

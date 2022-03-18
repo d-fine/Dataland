@@ -17,7 +17,7 @@ class CompanyDataControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
-    fun createEuTaxonomyTestDataSet(): EuTaxonomyDataSet {
+    private fun createEuTaxonomyTestDataSet(): EuTaxonomyDataSet {
         return EuTaxonomyDataSet(
             reportingObligation = EuTaxonomyDataSet.ReportingObligation.yes,
             attestation = EuTaxonomyDataSet.Attestation.full,
@@ -46,10 +46,14 @@ class CompanyDataControllerTest {
         val postCompanyResponse =
             companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
 
-        assertEquals(testCompanyName, postCompanyResponse.companyName,
-        "The company name in the post-response does not match the actual name of the company to be posted.")
-        assertTrue(postCompanyResponse.companyId.toInt() > 0,
-            "No valid company Id was assigend to the posted company.")
+        assertEquals(
+            testCompanyName, postCompanyResponse.companyName,
+            "The company name in the post-response does not match the actual name of the company to be posted."
+        )
+        assertTrue(
+            postCompanyResponse.companyId.toInt() > 0,
+            "No valid company Id was assigend to the posted company."
+        )
     }
 
     @Test
@@ -65,7 +69,8 @@ class CompanyDataControllerTest {
                     companyName = testCompanyName,
                     companyId = postCompanyResponse.companyId,
                 )
-            ),"The data store does not contain the posted company."
+            ),
+            "The data store does not contain the posted company."
         )
     }
 
@@ -77,8 +82,10 @@ class CompanyDataControllerTest {
             companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = i))
         }
         val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
-        assertEquals(testCompanyNames.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
-        "The size of the all-companies-list did not increase by one.")
+        assertEquals(
+            testCompanyNames.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
+            "The size of the all-companies-list did not increase by one."
+        )
     }
 
     @Test
@@ -99,7 +106,7 @@ class CompanyDataControllerTest {
                     dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
                 )
             ),
-                    "The all-data-sets-list of the posted company does not contain the posted data set."
-                )
+            "The all-data-sets-list of the posted company does not contain the posted data set."
+        )
     }
 }
