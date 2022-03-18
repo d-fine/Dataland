@@ -3,12 +3,9 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompaniesRequestBody
-import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
-import org.dataland.datalandbackend.openApiClient.model.DataSetMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
@@ -53,6 +50,7 @@ class EuTaxonomyControllerTest {
         )
     }
 
+/* WE DON'T HAVE A 'GET ALL DATA' ENDPOINT ANYMORE, THEREFORE THIS TEST IS OBSOLETE
     @Test
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
         val testCompanyName = "Fictitious-Company_B"
@@ -75,4 +73,5 @@ class EuTaxonomyControllerTest {
             "The list of all existing eu taxonomy data does not contain the posted data set."
         )
     }
+ */
 }
