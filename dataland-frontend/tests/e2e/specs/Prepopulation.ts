@@ -14,14 +14,15 @@ describe('Population Test', function () {
 
     it('Populate Companies', function (){
         for (const index in companiesData) {
-            cy.request('POST', `${Cypress.env("API")}/companies`, companiesData[index])
+            cy.request('POST', `${Cypress.env("API")}/companies`, companiesData[index]).its('status').should("equal", 200)
+
         }
         console.log(companiesData)
     });
 
     it('Populate EU Taxonomy Data', function (){
         for (const index in eutaxonomiesData) {
-            cy.request('POST', `${Cypress.env("API")}/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index])
+            cy.request('POST', `${Cypress.env("API")}/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index]).its('status').should("equal", 200)
         }
         console.log(eutaxonomiesData)
     });
