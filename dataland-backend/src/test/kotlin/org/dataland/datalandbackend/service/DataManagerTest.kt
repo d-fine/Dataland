@@ -22,8 +22,10 @@ class DataManagerTest {
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
         val companyMetaInformation = testManager.addCompany(testCompanyNamesToStore[0])
-        assertEquals(companyMetaInformation.companyName, testCompanyNamesToStore[0],
-        "The company name in the post-response does not match the actual name of the company to be posted.")
+        assertEquals(
+            companyMetaInformation.companyName, testCompanyNamesToStore[0],
+            "The company name in the post-response does not match the actual name of the company to be posted."
+        )
     }
 
     @Test
@@ -49,8 +51,10 @@ class DataManagerTest {
 
         for (companyName in testCompanyNamesToStore) {
             val searchResponse = testManager.listCompaniesByName(companyName)
-            assertEquals(companyName, searchResponse.first().companyName,
-                "The posted company could not be found in the data store by searching for its name.")
+            assertEquals(
+                companyName, searchResponse.first().companyName,
+                "The posted company could not be found in the data store by searching for its name."
+            )
         }
     }
 
