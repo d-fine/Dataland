@@ -19,15 +19,15 @@ class InMemoryDataStore : DataStoreInterface {
     private var companyCounter = 0
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
-        if (companyData.containsKey(storableDataSet.companyId)) {
-            dataCounter++
-            this.data["$dataCounter"] = storableDataSet
-            this.companyData[storableDataSet.companyId]?.dataSets?.add(
-                DataIdentifier(dataId = "$dataCounter", dataType = storableDataSet.dataType)
-            )
-            return "$dataCounter"
+        if (!companyData.containsKey(storableDataSet.companyId)) {
+            throw IllegalArgumentException("No company with the companyId $storableDataSet.companyId exists.")
         }
-        throw IllegalArgumentException("No company with the companyId $storableDataSet.companyId exists.")
+        dataCounter++
+        this.data["$dataCounter"] = storableDataSet
+        this.companyData[storableDataSet.companyId]!!.dataSets.add(
+            DataIdentifier(dataId = "$dataCounter", dataType = storableDataSet.dataType)
+        )
+        return "$dataCounter"
     }
 
     override fun listDataSets(): List<DataSetMetaInformation> {
