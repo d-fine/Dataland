@@ -49,7 +49,7 @@ class InMemoryDataStore : DataStoreInterface {
                     " ${data[dataIdentifier.dataId]?.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-        return data[dataIdentifier.dataId]?.data ?: ""
+        return data[dataIdentifier.dataId]!!.data
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
