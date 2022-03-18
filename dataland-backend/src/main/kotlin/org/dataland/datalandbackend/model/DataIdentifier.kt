@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- * Meta information associated to a data set in the data store
- * @param name name of the data set
- * @param id unique identifier to identify the data set in the data store
+ * Data identifier for a data set containing also data type info
+ * @param dataId unique identifier to identify the data set in the data store
+ * @param dataType type of the data set
  */
 data class DataIdentifier(
     @field:JsonProperty("Data ID", required = true) val dataId: String,

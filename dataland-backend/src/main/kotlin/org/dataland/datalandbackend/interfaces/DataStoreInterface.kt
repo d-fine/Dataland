@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.StoredDataSet
 import org.springframework.stereotype.Component
 
 /**
- * Defines the required functionalities for a data store
+ * Defines the required functionalities for a in-memory data store
  */
 @Component
 interface DataStoreInterface {
@@ -62,7 +62,9 @@ interface DataStoreInterface {
     fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
 
     /**
-     * dummy
+     * Method to retrieve meta information about a specific company
+     * @param companyId
+     * @return meta information consisting of company Id and company name
      */
     fun getCompanyById(companyId: String): CompanyMetaInformation
 }
