@@ -34,7 +34,7 @@ class InMemoryDataStoreTest {
             testStore.addCompany(companyName)
         }
 
-        val allCompaniesInStore = testStore.listAllCompanies()
+        val allCompaniesInStore = testStore.listCompaniesByName("")
 
         for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
             assertEquals(

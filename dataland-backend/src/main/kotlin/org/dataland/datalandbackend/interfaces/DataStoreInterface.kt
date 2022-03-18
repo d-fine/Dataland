@@ -42,12 +42,6 @@ interface DataStoreInterface {
     fun addCompany(companyName: String): CompanyMetaInformation
 
     /**
-     * Method to list all companies in the data store
-     * @return list of all company names along with their respective IDs in the data store
-     */
-    fun listAllCompanies(): List<CompanyMetaInformation>
-
-    /**
      * Method to list matching companies in the data store by searching for a name
      * @param name string used for substring matching against the companyName of all entries
      * @return list of all matching companies in the data store

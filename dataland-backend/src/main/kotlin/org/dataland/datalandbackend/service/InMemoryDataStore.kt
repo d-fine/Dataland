@@ -63,10 +63,6 @@ class InMemoryDataStore : DataStoreInterface {
         return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
     }
 
-    override fun listAllCompanies(): List<CompanyMetaInformation> {
-        return companyData.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
-    }
-
     override fun listCompaniesByName(name: String): List<CompanyMetaInformation> {
         val matches = companyData.filter { it.value.companyName.contains(name, true) }
         if (matches.isEmpty()) {
