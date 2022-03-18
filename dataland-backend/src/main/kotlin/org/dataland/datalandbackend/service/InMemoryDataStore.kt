@@ -21,12 +21,7 @@ class InMemoryDataStore : DataStoreInterface {
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         if (companyData.containsKey(storableDataSet.companyId)) {
             dataCounter++
-            this.data["$dataCounter"] =
-                StorableDataSet(
-                    companyId = storableDataSet.companyId,
-                    dataType = storableDataSet.dataType,
-                    data = storableDataSet.data
-                )
+            this.data["$dataCounter"] = storableDataSet
             this.companyData[storableDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = "$dataCounter", dataType = storableDataSet.dataType)
             )
