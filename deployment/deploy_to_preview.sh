@@ -13,6 +13,6 @@ ssh ubuntu@3.71.162.94 "cd $location && sudo docker-compose down; rm -rf $locati
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@3.71.162.94 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 
-scp -r ./dataland-frontend/dist ./deployment/docker-compose.yml ./dataland-inbound-proxy/ ubuntu@3.71.162.94:$location
+scp -r ./dataland-frontend/dist ./deployment/docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@3.71.162.94:$location
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@3.71.162.94:$location/jar/dataland-backend.jar
 ssh ubuntu@3.71.162.94 "cd $location; docker-compose pull; SKYMINDER_URL=$SKYMINDER_URL SKYMINDER_PW=$SKYMINDER_PW SKYMINDER_USER=$SKYMINDER_USER sudo -E docker-compose up -d"
