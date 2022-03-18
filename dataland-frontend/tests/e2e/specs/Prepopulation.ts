@@ -55,7 +55,6 @@ describe('Company Data', () => {
             .should('have.value', inputValue)
         cy.get('button[name=getCompanies]').click()
         cy.get('table').contains('Company Search')
-        cy.get('td').contains("1")
         cy.get('td').contains("d-fine")
         cy.get('td').contains("Link").click().url().should('include', '/companies/1')
     });
