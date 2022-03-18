@@ -53,7 +53,7 @@ export class DataStore {
                             label: humanizeString(index),
                             placeholder: "Please Choose",
                             name: index,
-                            validation:validation,
+                            validation: validation,
                             options: enumProperties
                         }
                     )
@@ -63,7 +63,7 @@ export class DataStore {
                             $formkit: 'radio',
                             label: humanizeString(index),
                             name: index,
-                            validation:validation,
+                            validation: validation,
                             classes: {
                                 outer: {'formkit-outer': false},
                                 inner: {'formkit-inner': false},
@@ -80,7 +80,7 @@ export class DataStore {
                         label: humanizeString(index),
                         placeholder: humanizeString(index),
                         name: index,
-                        validation:validation,
+                        validation: validation,
                     }
                 )
             }
