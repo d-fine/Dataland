@@ -1,4 +1,3 @@
-
 describe('EU Taxo Data testsuite', () => {
     it('Check if App is present', () => {
         cy.visit("/eutaxonomies")

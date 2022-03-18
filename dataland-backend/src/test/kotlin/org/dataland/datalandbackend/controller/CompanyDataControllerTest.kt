@@ -13,8 +13,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-// TODO Completely new unit tests needed here for ne CompanyAPI
-
 @SpringBootTest
 @AutoConfigureMockMvc
 internal class CompanyDataControllerTest(
@@ -51,20 +49,6 @@ internal class CompanyDataControllerTest(
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
-/*
-    @Test
-    fun `all-company-list can be retrieved`() {
-        mockMvc.perform(
-            get("/company")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpectAll(
-                status().isOk,
-                content().contentType(MediaType.APPLICATION_JSON),
-            )
-    }
- */
 
     @Test
     fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {

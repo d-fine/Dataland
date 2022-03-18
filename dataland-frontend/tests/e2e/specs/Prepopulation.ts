@@ -14,14 +14,15 @@ describe('Population Test', function () {
 
     it('Populate Companies', function (){
         for (const index in companiesData) {
-            cy.request('POST', 'http://localhost:8080/api/companies', companiesData[index])
+            cy.request('POST', `${Cypress.env("API")}/companies`, companiesData[index]).its('status').should("equal", 200)
+
         }
         console.log(companiesData)
     });
 
     it('Populate EU Taxonomy Data', function (){
         for (const index in eutaxonomiesData) {
-            cy.request('POST', `http://localhost:8080/api/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index])
+            cy.request('POST', `${Cypress.env("API")}/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index]).its('status').should("equal", 200)
         }
         console.log(eutaxonomiesData)
     });
@@ -54,8 +55,15 @@ describe('Company Data', () => {
             .should('have.value', inputValue)
         cy.get('button[name=getCompanies]').click()
         cy.get('table').contains('Company Search')
-        cy.get('td').contains("1")
         cy.get('td').contains("d-fine")
-        cy.get('td').contains("Link").click().url().should('include', '/companies/1')
+        cy.get('td').contains("Link").click().url().should('include', '/companies/')
+    });
+
+    it('Show all companies button exists', () => {
+        cy.visit("/search")
+        cy.get('button.btn').contains('Show all companies')
+            .should('not.be.disabled')
+            .click()
+        cy.get('table').contains('Company Search')
     });
 });
