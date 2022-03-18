@@ -40,6 +40,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
     into(clientOutputDir)
+    filter({ line -> line.replace("http://localhost:8080/api", "/api") })
 }
 
 tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
