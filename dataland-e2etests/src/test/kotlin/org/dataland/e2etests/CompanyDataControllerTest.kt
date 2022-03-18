@@ -19,8 +19,7 @@ class CompanyDataControllerTest {
 
     private fun createEuTaxonomyTestDataSet(): EuTaxonomyDataSet {
         return EuTaxonomyDataSet(
-            reportingObligation = EuTaxonomyDataSet.ReportingObligation.yes,
-            attestation = EuTaxonomyDataSet.Attestation.full,
+            EuTaxonomyDataSet.ReportingObligation.yes, EuTaxonomyDataSet.Attestation.full,
             capex = EuTaxonomyData(
                 total = BigDecimal(52705000),
                 alignedTurnover = BigDecimal(20),
