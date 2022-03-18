@@ -46,7 +46,7 @@ interface CompanyAPI {
     @Operation(
         summary = "Retrieve specific companies by name or just all companies from the data store.",
         description = "Companies identified via the provided company name are retrieved. " +
-                "If company name is an empty string, all companies in the data store are returned."
+            "If company name is an empty string, all companies in the data store are returned."
     )
     @ApiResponses(
         value = [
