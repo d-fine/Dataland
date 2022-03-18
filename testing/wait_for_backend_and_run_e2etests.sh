@@ -1,7 +1,5 @@
 #!/bin/sh
-# This script begins compiling the Kotlin code of the e2etests-project, so the time that the backend-container
-# and the skyminder-dummy-server-container need to be up and responding is used efficiently.
-# Then it continuously validates, whether the backend-container is running.
+# This script continuously validates, whether the backend-container is running.
 # Then it continuously validates, whether the skyminder-dummy-server-container is running.
 # Only then it executes the end-to-end tests.
 
