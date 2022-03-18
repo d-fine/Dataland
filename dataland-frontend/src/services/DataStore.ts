@@ -25,7 +25,6 @@ export class DataStore {
         for (const index in params) {
             const value = params[index]
             if (value != "options") {
-                console.log(value)
                 schema.push({
                         $formkit: 'text',
                         label: humanizeString(value),
