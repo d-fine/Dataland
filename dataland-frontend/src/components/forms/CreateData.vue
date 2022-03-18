@@ -1,7 +1,6 @@
 <template>
   <CreateCompany/>
   <CreateEUTaxonomy/>
-
 </template>
 
 <script>

@@ -7,17 +7,18 @@
             <caption><h4>Available datasets</h4></caption>
             <thead>
             <tr>
-              <th  v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i">{{ header }}</th>
+              <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i">{{ header }}</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(dataset, index) in response.data" :key="index">
               <td v-for="(item, i) in dataset.dataIdentifier" :key="i">
-                {{item}}
+                {{ item }}
               </td>
-              <td> <router-link :to='"/eutaxonomies/" + dataset.dataIdentifier["Data ID"]'>Data Information</router-link> </td>
+              <td>
+                <router-link :to='"/eutaxonomies/" + dataset.dataIdentifier["Data ID"]'>Data Information</router-link>
+              </td>
             </tr>
-
             </tbody>
           </table>
         </div>
@@ -29,6 +30,7 @@
 <script>
 import {EuTaxonomyDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
+
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.getData)
 export default {
