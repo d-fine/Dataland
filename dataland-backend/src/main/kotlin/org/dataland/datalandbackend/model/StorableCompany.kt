@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param companyName as name for the company to be stored
  * @param dataSets contains data identifiers for all data sets of this company and is initially an empty list
  */
-data class StoredCompany(
+data class StorableCompany(
     @field:JsonProperty(required = true) val companyName: String,
     @field:JsonProperty(required = true) val dataSets: MutableList<DataIdentifier>
 )

@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
@@ -35,7 +35,7 @@ abstract class DataController<T>(
     override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
-                StoredDataSet(
+                StorableDataSet(
                     companyId = companyId,
                     dataType = dataType,
                     data = objectMapper.writeValueAsString(dataSet)
