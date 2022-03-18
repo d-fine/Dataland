@@ -16,7 +16,7 @@ class InMemoryDataStoreTest {
     val testDataSetsToStore = listOf(
         StorableDataSet(companyId = "1", dataType = "SomeDataType", data = "some_data_in_specific_structure_yyy"),
         StorableDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
-        StorableDataSet(companyId = "1", dataType = "AgainAnotherDataType", data = "some_data_in_specific_structure_aaa")
+        StorableDataSet(companyId = "1", dataType = "RandomDataType", data = "some_data_in_specific_structure_aaa")
     )
 
     @Test
@@ -134,7 +134,7 @@ class InMemoryDataStoreTest {
 
     @Test
     fun `get add data set error`() {
-        val invalidDataSetToStore = StorableDataSet(companyId = "error", dataType = "someDataType", data = "random_data")
+        val invalidDataSetToStore = StorableDataSet(companyId = "error", dataType = "someDataType", data = "some_data")
         assertThrows<IllegalArgumentException> {
             testStore.addDataSet(invalidDataSetToStore)
         }
