@@ -1,8 +1,5 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col m12 s12">
-        <div class="card">
+  <CardWrapper>
           <div class="card-title"><h2>Company Search</h2>
           </div>
           <div class="card-content ">
@@ -32,14 +29,11 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </CardWrapper>
 </template>
 
 <script>
-import {FormKit} from "@formkit/vue";
+import {FormKit, FormKitSchema} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
@@ -48,10 +42,11 @@ const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompaniesRequestBody
 const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
 import ResultTable from "@/components/ui/ResultTable";
+import CardWrapper from "@/components/wrapper/CardWrapper";
 
 export default {
   name: "RetrieveCompany",
-  components: {FormKit, ResultTable},
+  components: {CardWrapper, FormKit, FormKitSchema, ResultTable},
 
   data: () => ({
     data: {},

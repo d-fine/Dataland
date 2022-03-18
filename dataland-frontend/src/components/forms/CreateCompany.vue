@@ -1,8 +1,5 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col m12 s12">
-        <div class="card">
+  <CardWrapper>
           <div class="card-title"><h2>Create a Company</h2>
           </div>
           <div class="card-content ">
@@ -26,10 +23,7 @@
               <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </CardWrapper>
 </template>
 
 <script>
@@ -38,6 +32,7 @@ import {CompanyDataControllerApi} from "@/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
+import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompaniesRequestBody
@@ -45,7 +40,7 @@ const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FormKit, SuccessUpload, FormKitSchema},
+  components: {CardWrapper, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
     data: {},
