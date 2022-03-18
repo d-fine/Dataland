@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.interfaces
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.stereotype.Component
 
 /**
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component
 interface DataStoreInterface {
     /**
      * Method to add a data set to the data store
-     * @param storedDataSet contains
+     * @param storableDataSet contains
      * companyId ID of the company the data belongs to
      * dataType as the type of data (e.g. EU Taxonomy)
      * data as data to be stored in the data store
      * @return ID of the newly created data store entry
      */
-    fun addDataSet(storedDataSet: StoredDataSet): String
+    fun addDataSet(storableDataSet: StorableDataSet): String
 
     /**
      * Method to list the meta information of all data sets in the data store

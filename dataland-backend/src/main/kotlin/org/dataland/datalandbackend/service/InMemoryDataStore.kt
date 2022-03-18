@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableCompany
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.stereotype.Component
 
 /**
@@ -13,26 +13,26 @@ import org.springframework.stereotype.Component
  */
 @Component("DefaultStore")
 class InMemoryDataStore : DataStoreInterface {
-    var data = mutableMapOf<String, StoredDataSet>()
+    var data = mutableMapOf<String, StorableDataSet>()
     private var dataCounter = 0
-    var companyData = mutableMapOf<String, StoredCompany>()
+    var companyData = mutableMapOf<String, StorableCompany>()
     private var companyCounter = 0
 
-    override fun addDataSet(storedDataSet: StoredDataSet): String {
-        if (companyData.containsKey(storedDataSet.companyId)) {
+    override fun addDataSet(storableDataSet: StorableDataSet): String {
+        if (companyData.containsKey(storableDataSet.companyId)) {
             dataCounter++
             this.data["$dataCounter"] =
-                StoredDataSet(
-                    companyId = storedDataSet.companyId,
-                    dataType = storedDataSet.dataType,
-                    data = storedDataSet.data
+                StorableDataSet(
+                    companyId = storableDataSet.companyId,
+                    dataType = storableDataSet.dataType,
+                    data = storableDataSet.data
                 )
-            this.companyData[storedDataSet.companyId]?.dataSets?.add(
-                DataIdentifier(dataId = "$dataCounter", dataType = storedDataSet.dataType)
+            this.companyData[storableDataSet.companyId]?.dataSets?.add(
+                DataIdentifier(dataId = "$dataCounter", dataType = storableDataSet.dataType)
             )
             return "$dataCounter"
         }
-        throw IllegalArgumentException("No company with the companyId $storedDataSet.companyId exists.")
+        throw IllegalArgumentException("No company with the companyId $storableDataSet.companyId exists.")
     }
 
     override fun listDataSets(): List<DataSetMetaInformation> {
@@ -59,7 +59,7 @@ class InMemoryDataStore : DataStoreInterface {
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = StoredCompany(companyName = companyName, dataSets = mutableListOf())
+        companyData["$companyCounter"] = StorableCompany(companyName = companyName, dataSets = mutableListOf())
         return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
     }
 

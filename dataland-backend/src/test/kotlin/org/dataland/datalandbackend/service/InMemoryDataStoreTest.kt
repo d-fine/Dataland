@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -14,9 +14,9 @@ class InMemoryDataStoreTest {
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
     val testDataSetsToStore = listOf(
-        StoredDataSet(companyId = "1", dataType = "SomeDataType", data = "some_data_in_specific_structure_yyy"),
-        StoredDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
-        StoredDataSet(companyId = "1", dataType = "AgainAnotherDataType", data = "some_data_in_specific_structure_aaa")
+        StorableDataSet(companyId = "1", dataType = "SomeDataType", data = "some_data_in_specific_structure_yyy"),
+        StorableDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
+        StorableDataSet(companyId = "1", dataType = "AgainAnotherDataType", data = "some_data_in_specific_structure_aaa")
     )
 
     @Test
@@ -134,7 +134,7 @@ class InMemoryDataStoreTest {
 
     @Test
     fun `get add data set error`() {
-        val invalidDataSetToStore = StoredDataSet(companyId = "error", dataType = "someDataType", data = "random_data")
+        val invalidDataSetToStore = StorableDataSet(companyId = "error", dataType = "someDataType", data = "random_data")
         assertThrows<IllegalArgumentException> {
             testStore.addDataSet(invalidDataSetToStore)
         }
