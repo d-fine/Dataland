@@ -58,9 +58,11 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve specific companies identified by their company names
-     * @param companyName identifier used to search for companies in the data store
-     * @return all companies whose names match with the companyName provided as search input
+     * A method to retrieve specific companies identified by their company names, or alternatively. However,
+     * if an empty string is passed as company name, all companies in the data store will be returned.
+     * @param companyName identifier used to search for companies in the data store (can also be an empty string)
+     * @return all companies whose names match with the companyName provided as search input (or alternatively
+     * just all companies in the data store, if an empty string was passed as company name)
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
