@@ -6,7 +6,7 @@ RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-COPY dataland-frontend/package*.json /app/
+COPY dataland-frontend/package.json /app/
 RUN npm install
 COPY dataland-frontend /app/
 COPY --from=prepare-stage /app/dataland-frontend/src/clients /app/src/clients
