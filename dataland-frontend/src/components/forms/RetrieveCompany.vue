@@ -14,11 +14,9 @@
                 submit-label="Search Company"
                 type="form"
                 @submit="getCompanyByName()">
-              <FormKit
-                  type="text"
-                  name="companyName"
-                  validation="required"
-                  label="Company Name"
+              <FormKitSchema
+                  :data="data"
+                  :schema="schema"
               />
 
             </FormKit>
@@ -44,8 +42,11 @@
 import {FormKit} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
+import backend from "@/clients/backend/backendOpenApi.json";
+
 const api = new CompanyDataControllerApi()
-const dataStore = new DataStore(api.getCompaniesByName)
+const contactSchema = backend.components.schemas.CompaniesRequestBody
+const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
 import ResultTable from "@/components/ui/ResultTable";
 
 export default {
@@ -65,7 +66,10 @@ export default {
         if (all) {
           this.data.companyName = ""
         }
-        this.response = await dataStore.perform(this.data.companyName, {baseURL: process.env.VUE_APP_API_URL})
+        const inputArgs = Object.values(this.data)
+        inputArgs.splice(0, 1)
+        console.log(inputArgs)
+        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
 
       } catch (error) {
         console.error(error)

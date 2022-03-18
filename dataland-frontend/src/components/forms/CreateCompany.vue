@@ -14,11 +14,9 @@
                 }"
                 submit-label="Post Company"
                 @submit="postCompanyData">
-              <FormKit
-                  type="text"
-                  name="companyName"
-                  validation="required"
-                  label="Company Name"
+              <FormKitSchema
+                  :data="data"
+                  :schema="schema"
               />
             </FormKit>
             <div class="progress" v-if="loading">
@@ -59,7 +57,9 @@ const createCompany = {
   methods: {
     async postCompanyData() {
       try {
-        this.response = await dataStore.perform(this.data, {baseURL: process.env.VUE_APP_API_URL})
+        const inputArgs = Object.values(this.data)
+        inputArgs.splice(0, 1)
+        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
       } catch (error) {
         console.error(error)
       }
