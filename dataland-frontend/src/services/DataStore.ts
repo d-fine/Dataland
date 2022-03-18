@@ -41,9 +41,9 @@ export class DataStore {
 
     private processRawSchema(): object {
         const propertiesSchema = this.rawSchema.properties
-        const requiredProperties = this.rawSchema.required
         const schema = []
         for (const index in propertiesSchema) {
+            const validation = this.rawSchema.required.includes(index) ? "required" : ""
             if ("enum" in propertiesSchema[index]) {
                 const enumProperties = propertiesSchema[index].enum
                 if (enumProperties.length > 2) {
@@ -53,7 +53,7 @@ export class DataStore {
                             label: humanizeString(index),
                             placeholder: "Please Choose",
                             name: index,
-                            validation: requiredProperties.includes(index) ? "required" : "",
+                            validation:validation,
                             options: enumProperties
                         }
                     )
@@ -63,7 +63,7 @@ export class DataStore {
                             $formkit: 'radio',
                             label: humanizeString(index),
                             name: index,
-                            validation: requiredProperties.includes(index) ? "required" : "",
+                            validation:validation,
                             classes: {
                                 outer: {'formkit-outer': false},
                                 inner: {'formkit-inner': false},
@@ -80,7 +80,7 @@ export class DataStore {
                         label: humanizeString(index),
                         placeholder: humanizeString(index),
                         name: index,
-                    validation: requiredProperties.includes(index) ? "required" : ""
+                        validation:validation,
                     }
                 )
             }
