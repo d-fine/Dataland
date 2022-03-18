@@ -21,6 +21,6 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         cy.get('button[name="postEUData"]').click()
-        cy.get('body').contains('success').contains('EU Taxonomy Data')
+        cy.get('body',{ timeout: 10000 }).contains('success').contains('EU Taxonomy Data')
     })
 })
