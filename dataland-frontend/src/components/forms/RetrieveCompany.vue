@@ -1,34 +1,34 @@
 <template>
   <CardWrapper>
-          <div class="card-title"><h2>Company Search</h2>
-          </div>
-          <div class="card-content ">
-            <FormKit
-                v-model="data"
-                :submit-attrs="{
+    <div class="card-title"><h2>Company Search</h2>
+    </div>
+    <div class="card-content ">
+      <FormKit
+          v-model="data"
+          :submit-attrs="{
                   'name': 'getCompanies'
                 }"
-                submit-label="Search Company"
-                type="form"
-                @submit="getCompanyByName()">
-              <FormKitSchema
-                  :data="data"
-                  :schema="schema"
-              />
+          submit-label="Search Company"
+          type="form"
+          @submit="getCompanyByName()">
+        <FormKitSchema
+            :data="data"
+            :schema="schema"
+        />
 
-            </FormKit>
-            <button class="btn btn-md orange darken-2" @click="getCompanyByName(true)">Show all companies</button>
-            <br>
-            <div class="col m12">
-              <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID', 'Link']"
-                           entity="Company Search" linkkey="companyId" route="/companies/"/>
-              <p v-else-if="response_error">The resource you requested does not exist yet. You can create it:
-                <router-link to="/upload">Create Data</router-link>
-              </p>
-              <div>
-              </div>
-            </div>
-          </div>
+      </FormKit>
+      <button class="btn btn-md orange darken-2" @click="getCompanyByName(true)">Show all companies</button>
+      <br>
+      <div class="col m12">
+        <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID', 'Link']"
+                     entity="Company Search" linkkey="companyId" route="/companies/"/>
+        <p v-else-if="response_error">The resource you requested does not exist yet. You can create it:
+          <router-link to="/upload">Create Data</router-link>
+        </p>
+        <div>
+        </div>
+      </div>
+    </div>
   </CardWrapper>
 </template>
 

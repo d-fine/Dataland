@@ -1,28 +1,28 @@
 <template>
   <CardWrapper>
-          <div class="card-title"><h2>Create a Company</h2>
-          </div>
-          <div class="card-content ">
-            <FormKit
-                v-model="data"
-                type="form"
-                :submit-attrs="{
+    <div class="card-title"><h2>Create a Company</h2>
+    </div>
+    <div class="card-content ">
+      <FormKit
+          v-model="data"
+          type="form"
+          :submit-attrs="{
                   'name': 'postCompanyData'
                 }"
-                submit-label="Post Company"
-                @submit="postCompanyData">
-              <FormKitSchema
-                  :data="data"
-                  :schema="schema"
-              />
-            </FormKit>
-            <div class="progress" v-if="loading">
-              <div class="indeterminate"></div>
-            </div>
-            <div v-if="response" class="col m12">
-              <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
-            </div>
-          </div>
+          submit-label="Post Company"
+          @submit="postCompanyData">
+        <FormKitSchema
+            :data="data"
+            :schema="schema"
+        />
+      </FormKit>
+      <div class="progress" v-if="loading">
+        <div class="indeterminate"></div>
+      </div>
+      <div v-if="response" class="col m12">
+        <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
+      </div>
+    </div>
   </CardWrapper>
 </template>
 
