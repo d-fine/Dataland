@@ -2,7 +2,7 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompaniesRequestBody
+import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
 import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -19,7 +19,7 @@ class CompanyDataControllerTest {
         val testCompanyName = "Test-Company_01"
 
         val postCompanyResponse =
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
 
         assertEquals(
             testCompanyName, postCompanyResponse.companyName,
@@ -35,7 +35,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyName = "Dummy-Company_02"
         val postCompanyResponse =
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
 
         assertTrue(
@@ -54,7 +54,7 @@ class CompanyDataControllerTest {
         val testCompanyNames = listOf("Imaginary-Company_03", "Company_04", "Some-Company_05")
         val allCompaniesListSizeBefore = companyDataControllerApi.getCompaniesByName("").size
         for (i in testCompanyNames) {
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = i))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = i))
         }
         val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
         assertEquals(
@@ -68,7 +68,7 @@ class CompanyDataControllerTest {
         val testCompanyName = "Possible-Company_06"
         val testEuTaxonomyDataSet = DummyDataCreator().createEuTaxonomyTestDataSet()
 
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(testCompanyName))
+        val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)

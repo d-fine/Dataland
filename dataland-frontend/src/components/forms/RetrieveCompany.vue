@@ -39,7 +39,7 @@ import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.CompaniesRequestBody
+const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
 import ResultTable from "@/components/ui/ResultTable";
 import CardWrapper from "@/components/wrapper/CardWrapper";

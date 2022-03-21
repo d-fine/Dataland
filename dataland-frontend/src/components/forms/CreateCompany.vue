@@ -35,7 +35,7 @@ import backend from "@/clients/backend/backendOpenApi.json";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.CompaniesRequestBody
+const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
