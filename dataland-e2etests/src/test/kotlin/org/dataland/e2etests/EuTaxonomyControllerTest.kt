@@ -36,8 +36,7 @@ class EuTaxonomyControllerTest {
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
         val testCompanyName = "Fictitious-Company_B"
         val testEuTaxonomyDataSet = DummyDataCreator().createEuTaxonomyTestDataSet()
-        val postCompanyResponse =
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
         val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
 
