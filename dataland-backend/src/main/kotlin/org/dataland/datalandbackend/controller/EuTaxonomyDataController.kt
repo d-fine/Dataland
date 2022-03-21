@@ -17,8 +17,4 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataController(
     @Autowired var myDataStore: DataStoreInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<EuTaxonomyDataSet>(myDataStore, myObjectMapper) {
-    override fun getClazz(): Class<EuTaxonomyDataSet> {
-        return EuTaxonomyDataSet::class.java
-    }
-}
+) : DataController<EuTaxonomyDataSet>(myDataStore, myObjectMapper, EuTaxonomyDataSet::class.java)

@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 abstract class DataController<T>(
     @Autowired var dataStore: DataStoreInterface,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
+    val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = getClazz().toString().substringAfterLast(".")
-
+    private val dataType = clazz.toString().substringAfterLast(".")
     /**
      * Method to get the class of the abstract T
      */
-    abstract fun getClazz(): Class<T>
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
         return ResponseEntity.ok(this.dataStore.listDataSets())
@@ -48,7 +47,7 @@ abstract class DataController<T>(
             objectMapper.readValue(
                 this.dataStore
                     .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
-                getClazz()
+                clazz
             )
         )
     }
