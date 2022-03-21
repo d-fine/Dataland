@@ -14,8 +14,6 @@ class CompanyDataControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
-
-
     @Test
     fun `post a dummy company and check if post was successful`() {
         val testCompanyName = "Test-Company_01"
