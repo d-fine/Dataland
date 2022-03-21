@@ -29,7 +29,7 @@
         <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
                         :data="response.data"/>
       </div>
-      <button class="btn btn-sm orange darken-2" @click="clearAll">Clear</button>
+      <button class="btn btn-sm orange darken-3" @click="clearAll">Clear</button>
     </div>
   </CardWrapper>
 </template>

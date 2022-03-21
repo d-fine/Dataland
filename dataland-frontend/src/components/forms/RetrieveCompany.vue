@@ -17,7 +17,7 @@
         />
 
       </FormKit>
-      <button class="btn btn-md orange darken-2" @click="getCompanyByName(true)">Show all companies</button>
+      <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
       <br>
       <div class="col m12">
         <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID', 'Link']"
