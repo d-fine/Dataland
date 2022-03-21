@@ -60,12 +60,7 @@ export default {
   },
   methods: {
     async getCompanyEUDataset() {
-      try {
-        this.response = await dataStore.perform(this.dataID, {baseURL: process.env.VUE_APP_API_URL})
-        console.log(this.response)
-      } catch (error) {
-        console.error(error)
-      }
+        this.response = await dataStore.perform(this.dataID)
     }
   }
 }

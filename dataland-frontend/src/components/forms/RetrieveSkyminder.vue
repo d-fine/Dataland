@@ -60,12 +60,8 @@ export default {
     },
 
     async getSkyminderByName() {
-      try {
         const inputArgs = Object.values(this.data)
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
-      } catch (error) {
-        console.error(error)
-      }
+        this.response = await dataStore.perform(...inputArgs)
     }
   },
 

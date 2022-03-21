@@ -87,7 +87,11 @@ export class DataStore {
         return schema
     }
 
-    perform(...args: any[]): any {
-        return this.axiosFunction(...args)
+    perform(...args: any): any {
+        try {
+            return this.axiosFunction(...args, {baseURL: process.env.VUE_APP_API_URL})
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
