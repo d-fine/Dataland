@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.UploadableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
@@ -32,13 +33,13 @@ abstract class DataController<T>(
         return ResponseEntity.ok(this.dataStore.listDataSets())
     }
 
-    override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
+    override fun postData(uploadableDataSet: UploadableDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
                 StoredDataSet(
-                    companyId = companyId,
+                    companyId = uploadableDataSet.companyId,
                     dataType = dataType,
-                    data = objectMapper.writeValueAsString(dataSet)
+                    data = objectMapper.writeValueAsString(uploadableDataSet.dataSet)
                 )
             )
         )
