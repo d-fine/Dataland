@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 abstract class DataController<T>(
-    @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
-    var objectMapper: ObjectMapper
+    @Autowired var dataStore: DataStoreInterface,
+    @Autowired var objectMapper: ObjectMapper
 ) : DataAPI<T> {
     private val dataType = getClazz().toString().substringAfterLast(".")
 

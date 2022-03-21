@@ -4,12 +4,10 @@ import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.springframework.stereotype.Component
 
 /**
  * Defines the required functionalities for a data store
  */
-@Component
 interface DataStoreInterface {
     /**
      * Method to add a data set to the data store

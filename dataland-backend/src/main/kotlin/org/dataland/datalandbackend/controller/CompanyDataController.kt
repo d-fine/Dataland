@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CompanyDataController(
-    @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
+    @Autowired var dataStore: DataStoreInterface,
 ) : CompanyAPI {
 
     override fun postCompany(companiesRequestBody: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation> {
