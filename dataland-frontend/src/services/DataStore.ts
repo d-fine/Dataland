@@ -88,10 +88,6 @@ export class DataStore {
     }
 
     perform(...args: any): any {
-        try {
-            return this.axiosFunction(...args, {baseURL: process.env.VUE_APP_API_URL})
-        } catch (error) {
-            console.error(error)
-        }
+        return this.axiosFunction(...args, {baseURL: process.env.VUE_APP_API_URL})
     }
 }

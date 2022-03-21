@@ -51,9 +51,13 @@ const createCompany = {
   }),
   methods: {
     async postCompanyData() {
+      try {
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
         this.response = await dataStore.perform(...inputArgs)
+      } catch (error) {
+        console.error(error)
+      }
     }
   },
 
