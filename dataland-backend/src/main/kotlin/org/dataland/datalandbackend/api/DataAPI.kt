@@ -53,9 +53,7 @@ interface DataAPI<T> {
     )
     /**
      * A method to store a provided data set via dataland into the data store
-     * TODO: KAPUTT
-     * @param companyId the ID of the company the data belongs to
-     * @param dataSet a set of data to be stored
+     * @param uploadableDataSet consisting of the ID of the company and the data to be stored
      * @return the ID of the created entry in the data store
      */
     fun postData(@Valid @RequestBody uploadableDataSet: UploadableDataSet<T>): ResponseEntity<String>
