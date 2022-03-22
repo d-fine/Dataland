@@ -17,4 +17,8 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataController(
     @Autowired var myDataManager: DataManagerInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<EuTaxonomyDetailsPerCashFlowType>(myDataManager, myObjectMapper, EuTaxonomyDetailsPerCashFlowType::class.java)
+) : DataController<EuTaxonomyDetailsPerCashFlowType>(
+    myDataManager,
+    myObjectMapper,
+    EuTaxonomyDetailsPerCashFlowType::class.java
+)
