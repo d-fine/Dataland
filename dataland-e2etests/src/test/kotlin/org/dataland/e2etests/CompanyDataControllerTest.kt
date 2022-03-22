@@ -2,49 +2,25 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompaniesRequestBody
 import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
-import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyDataSet
+import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class CompanyDataControllerTest {
 
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
-    private fun createEuTaxonomyTestDataSet(): EuTaxonomyDataSet {
-        return EuTaxonomyDataSet(
-            EuTaxonomyDataSet.ReportingObligation.yes, EuTaxonomyDataSet.Attestation.full,
-            capex = EuTaxonomyData(
-                total = BigDecimal(52705000),
-                alignedTurnover = BigDecimal(20),
-                eligibleTurnover = BigDecimal(10)
-            ),
-            opex = EuTaxonomyData(
-                total = BigDecimal(80490000),
-                alignedTurnover = BigDecimal(15),
-                eligibleTurnover = BigDecimal(5)
-            ),
-            revenue = EuTaxonomyData(
-                total = BigDecimal(432590000),
-                alignedTurnover = BigDecimal(5),
-                eligibleTurnover = BigDecimal(3)
-            )
-        )
-    }
-
     @Test
     fun `post a dummy company and check if post was successful`() {
         val testCompanyName = "Test-Company_01"
 
         val postCompanyResponse =
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
 
         assertEquals(
             testCompanyName, postCompanyResponse.companyName,
@@ -60,7 +36,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyName = "Dummy-Company_02"
         val postCompanyResponse =
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyName)
 
         assertTrue(
@@ -79,7 +55,7 @@ class CompanyDataControllerTest {
         val testCompanyNames = listOf("Imaginary-Company_03", "Company_04", "Some-Company_05")
         val allCompaniesListSizeBefore = companyDataControllerApi.getCompaniesByName("").size
         for (i in testCompanyNames) {
-            companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = i))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = i))
         }
         val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
         assertEquals(
@@ -91,21 +67,21 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyName = "Possible-Company_06"
-        val testEuTaxonomyDataSet = createEuTaxonomyTestDataSet()
+        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
-        val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(testCompanyName))
+        val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(
-            UploadableDataSetEuTaxonomyDataSet(testEuTaxonomyDataSet, testCompanyId)
+        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyData(testEuTaxonomyData,testCompanyId)
         )
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
 
         assertTrue(
             getCompanyDataSetsResponse.contains(
                 DataIdentifier(
-                    dataID = testEuTaxonomyDataSetId,
-                    dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
+                    dataID = testEuTaxonomyDataId,
+                    dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
                 )
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
