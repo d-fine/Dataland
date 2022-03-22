@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.CompaniesRequestBody
+import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,12 +23,12 @@ internal class CompanyDataControllerTest(
     val testCompanyName = "Imaginary-Company_I"
 
     fun uploadCompany(mockMvc: MockMvc, companyName: String) {
-        val companiesRequestBody = CompaniesRequestBody(companyName = companyName)
+        val postCompanyRequestBody = PostCompanyRequestBody(companyName = companyName)
         mockMvc.perform(
             post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(companiesRequestBody))
+                .content(objectMapper.writeValueAsBytes(postCompanyRequestBody))
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }

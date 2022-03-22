@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,7 +19,7 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding company data.
  */
 
-@RequestMapping("/")
+@RequestMapping("/companies")
 interface CompanyAPI {
 
     @Operation(
@@ -32,16 +32,16 @@ interface CompanyAPI {
         ]
     )
     @PostMapping(
-        value = ["/companies"],
+        value = [""],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
     /**
      * A method to create a new company entry in dataland
-     * @param companiesRequestBody includes the company name of the company to be created
+     * @param postCompanyRequestBody includes the company name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
-    fun postCompany(@Valid @RequestBody companiesRequestBody: CompaniesRequestBody):
+    fun postCompany(@Valid @RequestBody postCompanyRequestBody: PostCompanyRequestBody):
         ResponseEntity<CompanyMetaInformation>
 
     @Operation(
@@ -55,15 +55,14 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies"],
+        value = [""],
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve specific companies identified by their company names, or alternatively. However,
-     * if an empty string is passed as company name, all companies in the data store will be returned.
+     * A method to retrieve specific companies identified by their company names
+     * If an empty string is passed as company name, all companies in the data store will be returned.
      * @param companyName identifier used to search for companies in the data store (can also be an empty string)
-     * @return all companies whose names match with the companyName provided as search input (or alternatively
-     * just all companies in the data store, if an empty string was passed as company name)
+     * @return all companies matching the search criteria
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
@@ -78,7 +77,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies/{companyId}/data"],
+        value = ["/{companyId}/data"],
         produces = ["application/json"]
     )
     /**
@@ -98,7 +97,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies/{companyId}"],
+        value = ["/{companyId}"],
         produces = ["application/json"]
     )
 

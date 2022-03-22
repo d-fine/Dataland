@@ -164,7 +164,7 @@ export default {
   methods: {
     async postEUData() {
       try {
-        this.response = await api.postData(this.data, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await api.postData(this.companyID, this.data, {baseURL: process.env.VUE_APP_BASE_API_URL})
         console.log(this.response.status)
       } catch (error) {
         console.error(error)

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * Defines the restful dataland-backend API regarding the communication with Skyminder.
  */
 
-@RequestMapping("/")
+@RequestMapping("/data/skyminder")
 interface SkyminderAPI {
     @Operation(
         summary = "Retrieve company data from Skyminder server.",
@@ -25,7 +25,7 @@ interface SkyminderAPI {
         ]
     )
     @GetMapping(
-        value = ["/data/skyminder/{code}/{name}"],
+        value = ["/{code}/{name}"],
         produces = ["application/json"]
     )
     /**

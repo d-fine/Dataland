@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import javax.validation.Valid
 
 /**
  * Defines the restful dataland-backend API regarding data exchange
  */
 
-@RequestMapping("/")
 interface DataAPI<T> {
     @Operation(
         summary = "Retrieve list of existing data for this data type.",

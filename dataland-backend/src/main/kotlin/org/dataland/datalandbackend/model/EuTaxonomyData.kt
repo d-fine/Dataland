@@ -3,10 +3,22 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- * Figures to be filled out for some of the EU-Taxonomy questionnaire fields
+ * Fields of the questionnaire for EU-Taxonomy data
  */
 data class EuTaxonomyData(
-    @field:JsonProperty("total") val total: java.math.BigDecimal? = null,
-    @field:JsonProperty("aligned_turnover") val aligned: java.math.BigDecimal? = null,
-    @field:JsonProperty("eligible_turnover") val eligible: java.math.BigDecimal? = null
-)
+    @field:JsonProperty("Capex") val capex: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("Opex") val opex: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("Revenue") val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("Reporting Obligation", required = true) val reportObligation: YesNo? = null,
+    @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions? = null
+) {
+    /**
+     * Possible options to specify if obligation to report exists
+     */
+    enum class YesNo { Yes, No }
+
+    /**
+     * Possible options to specify how the report figures were attested
+     */
+    enum class AttestationOptions { None, Some, Full }
+}
