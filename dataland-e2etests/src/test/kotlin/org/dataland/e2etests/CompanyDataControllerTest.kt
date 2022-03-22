@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
+import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -95,7 +96,9 @@ class CompanyDataControllerTest {
         val postCompanyResponse = companyDataControllerApi.postCompany(CompaniesRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyDataSet(testEuTaxonomyDataSet, testCompanyId)
+        )
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
 
         assertTrue(

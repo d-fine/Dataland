@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataSetMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataSet
+import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -42,7 +43,9 @@ class EuTaxonomyControllerTest {
             companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyDataSet(testEuTaxonomyDataSet, testCompanyId)
+        )
 
         val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataSetId)
 
@@ -59,7 +62,9 @@ class EuTaxonomyControllerTest {
         val postCompanyResponse =
             companyDataControllerApi.postCompany(CompaniesRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyDataSet(testEuTaxonomyDataSet, testCompanyId)
+        )
 
         val getDataResponse = euTaxonomyDataControllerApi.getData()
         assertTrue(
