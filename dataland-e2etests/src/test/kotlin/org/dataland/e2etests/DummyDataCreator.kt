@@ -8,7 +8,7 @@ class DummyDataCreator {
 
     internal fun createEuTaxonomyTestDataSet(): EuTaxonomyData {
         return EuTaxonomyData(
-            EuTaxonomyData.ReportingObligation.yes , EuTaxonomyData.Attestation.fullAssurance,
+            EuTaxonomyData.ReportingObligation.yes, EuTaxonomyData.Attestation.fullAssurance,
             capex = EuTaxonomyDetailsPerCashFlowType(
                 total = BigDecimal(52705000),
                 aligned = BigDecimal(20),
