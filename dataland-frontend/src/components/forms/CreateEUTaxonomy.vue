@@ -58,15 +58,15 @@
           >
             <FormKit
                 type="text"
-                name="aligned_turnover"
+                name="aligned"
                 validation="number"
-                label="Aligned Turnover / €"
+                label="Aligned / €"
             />
             <FormKit
                 type="text"
-                name="eligible_turnover"
+                name="eligible"
                 validation="number"
-                label="Eligible Turnover / €"
+                label="Eligible / €"
             />
             <FormKit
                 type="text"
@@ -86,15 +86,15 @@
           >
             <FormKit
                 type="text"
-                name="aligned_turnover"
+                name="aligned"
                 validation="number"
-                label="Aligned Turnover / €"
+                label="Aligned / €"
             />
             <FormKit
                 type="text"
-                name="eligible_turnover"
+                name="eligible"
                 validation="number"
-                label="Eligible Turnover / €"
+                label="Eligible / €"
             />
             <FormKit
                 type="text"
@@ -113,15 +113,15 @@
           >
             <FormKit
                 type="text"
-                name="aligned_turnover"
+                name="aligned"
                 validation="number"
-                label="Aligned Turnover / €"
+                label="Aligned / €"
             />
             <FormKit
                 type="text"
-                name="eligible_turnover"
+                name="eligible"
                 validation="number"
-                label="Eligible Turnover / €"
+                label="Eligible / €"
             />
             <FormKit
                 type="text"
