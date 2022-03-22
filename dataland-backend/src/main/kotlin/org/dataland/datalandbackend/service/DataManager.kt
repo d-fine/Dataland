@@ -4,10 +4,9 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableCompany
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
@@ -15,10 +14,10 @@ import org.springframework.stereotype.Component
  */
 @Component("DefaultManager")
 class DataManager(
-    @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface
+    @Autowired var dataStore: DataStoreInterface
 ) : DataManagerInterface {
     var dataMetaData = mutableMapOf<String, String>() // maybe also add companyId to values, instead of only dataType?
-    var companyData = mutableMapOf<String, StoredCompany>()
+    var companyData = mutableMapOf<String, StorableCompany>()
     private var companyCounter = 0
 
     /*
@@ -40,7 +39,7 @@ class DataManager(
     ________________________________
      */
 
-    override fun addDataSet(storedDataSet: StoredDataSet): String {
+    override fun addDataSet(storedDataSet: StorableDataSet): String {
         if (companyIdExists(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
             this.dataMetaData[dataId] = storedDataSet.dataType /* maybe also add companyId to values,
@@ -52,16 +51,7 @@ class DataManager(
         }
         throw IllegalArgumentException("The companyId: ${storedDataSet.companyId} does not exist.")
     }
-/*
-    override fun listDataSets(): List<DataSetMetaInformation> {
-        return data.map {
-            DataSetMetaInformation(
-                DataIdentifier(dataId = it.key, dataType = it.value.dataType),
-                companyId = it.value.companyId
-            )
-        }
-    }
-*/
+
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
         if (!dataMetaData.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
@@ -90,7 +80,7 @@ class DataManager(
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = StoredCompany(companyName = companyName, dataSets = mutableListOf())
+        companyData["$companyCounter"] = StorableCompany(companyName = companyName, dataSets = mutableListOf())
         return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
     }
 

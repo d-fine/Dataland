@@ -2,32 +2,24 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.StoredDataSet
-import org.springframework.stereotype.Component
-// TODO Rewrite/Adjust docs
+import org.dataland.datalandbackend.model.StorableDataSet
+
 /**
  * Defines the required functionalities for the Dataland data manager
  */
-@Component
 interface DataManagerInterface {
     /**
-     * Method to add a data set to a data store
+     * Method to make the data manager add a data set to a data store
      * @param storedDataSet contains
      * companyId ID of the company the data belongs to
      * dataType as the type of data (e.g. EU Taxonomy)
      * data as data to be stored in the data store
      * @return ID of the newly created data store entry
      */
-    fun addDataSet(storedDataSet: StoredDataSet): String
-/*
+    fun addDataSet(storedDataSet: StorableDataSet): String
+
     /**
-     * Method to list the meta information of all data sets in the data store
-     * @return list of meta information of all data sets in the data store
-     */
-    fun listDataSets(): List<DataSetMetaInformation>
-*/
-    /**
-     * Method to get the data of a single entry from the data store
+     * Method to make the data manager get the data of a single entry from the data store
      * @param dataIdentifier identifier of the stored data (consists of data id and data type)
      * @return all data associated to the identifier provided
      */

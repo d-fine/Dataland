@@ -2,14 +2,14 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.EuTaxonomyDataSet
+import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the EU Taxonomy endpoints
- * @param myDataStore implementation of the data store to be used
+ * @param myDataManager  data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/eutaxonomies")
@@ -17,4 +17,4 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataController(
     @Autowired var myDataManager: DataManagerInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<EuTaxonomyData>(myDataManager, myObjectMapper, EuTaxonomyData::class.java)
+) : DataController<EuTaxonomyDetailsPerCashFlowType>(myDataManager, myObjectMapper, EuTaxonomyDetailsPerCashFlowType::class.java)
