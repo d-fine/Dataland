@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.SkyminderAPI
+import org.dataland.skyminderClient.interfaces.SkyminderConnectorInterface
 import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
