@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.UploadableDataSet
 import org.springframework.http.ResponseEntity
 
 /**
@@ -19,21 +20,18 @@ abstract class DataController<T>(
     val clazz: Class<T>
 ) : DataAPI<T> {
     private val dataType = clazz.toString().substringAfterLast(".")
-    /**
-     * Method to get the class of the abstract T
-     */
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
         return ResponseEntity.ok(this.dataStore.listDataSets())
     }
 
-    override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
+    override fun postData(uploadableDataSet: UploadableDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
                 StorableDataSet(
-                    companyId = companyId,
+                    companyId = uploadableDataSet.companyId,
                     dataType = dataType,
-                    data = objectMapper.writeValueAsString(dataSet)
+                    data = objectMapper.writeValueAsString(uploadableDataSet.dataSet)
                 )
             )
         )
