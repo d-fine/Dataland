@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
+import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataController(
     @Autowired var myDataManager: DataManagerInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<EuTaxonomyDetailsPerCashFlowType>(
+) : DataController<EuTaxonomyData>(
     myDataManager,
     myObjectMapper,
-    EuTaxonomyDetailsPerCashFlowType::class.java
+    EuTaxonomyData::class.java
 )
