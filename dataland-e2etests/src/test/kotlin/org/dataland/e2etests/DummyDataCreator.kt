@@ -1,7 +1,7 @@
 package org.dataland.e2etests
 
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDetailsPerCashFlowType
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDetailsPerCashFlowType
 import java.math.BigDecimal
 
 class DummyDataCreator {
