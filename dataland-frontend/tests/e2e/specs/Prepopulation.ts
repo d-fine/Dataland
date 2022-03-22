@@ -22,7 +22,7 @@ describe('Population Test', function () {
 
     it('Populate EU Taxonomy Data', function (){
         for (const index in eutaxonomiesData) {
-            cy.request('POST', `${Cypress.env("API")}/eutaxonomies/${Number(index) + 1}`, eutaxonomiesData[index]).its('status').should("equal", 200)
+            cy.request('POST', `${Cypress.env("API")}/eutaxonomies`, eutaxonomiesData[index]).its('status').should("equal", 200)
         }
         console.log(eutaxonomiesData)
     });
