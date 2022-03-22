@@ -14,12 +14,13 @@ class EuTaxonomyControllerTest {
     val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
+    val testCompanyName = listOf("Test-Company_A", "Fictitious-Company_B")
+
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyName = "Test-Company_A"
         val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val postCompanyResponse =
-            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
+            companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName[0]))
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
@@ -37,14 +38,12 @@ class EuTaxonomyControllerTest {
 
     @Test
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
-        val testCompanyName = "Fictitious-Company_B"
         val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
-        val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName))
+        val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName[1]))
         val testCompanyId = postCompanyResponse.companyId
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
             UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
         )
-
         val getDataResponse = euTaxonomyDataControllerApi.getData()
         assertTrue(
             getDataResponse.contains(
