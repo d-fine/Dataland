@@ -43,10 +43,10 @@ class InMemoryDataStore : DataStoreInterface {
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
         }
-        if (data[dataIdentifier.dataId]?.dataType != dataIdentifier.dataType) {
+        if (data[dataIdentifier.dataId]!!.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                    " ${data[dataIdentifier.dataId]?.dataType} instead of the expected ${dataIdentifier.dataType}."
+                    " ${data[dataIdentifier.dataId]!!.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
         return data[dataIdentifier.dataId]!!.data
@@ -77,6 +77,6 @@ class InMemoryDataStore : DataStoreInterface {
         if (!companyData.containsKey(companyId)) {
             throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
-        return CompanyMetaInformation(companyData[companyId]?.companyName ?: "", companyId)
+        return CompanyMetaInformation(companyData[companyId]!!.companyName, companyId)
     }
 }
