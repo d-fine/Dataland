@@ -32,8 +32,8 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
             for (let i = 0; i < 3; i++) {
-                const randomNumber = Math.floor(Math.random() * 1000)
-                cy.get(`div[title=${argument}] input`).eq(i).type(randomNumber.toString(), {force: true})
+                const inputNumber = 10 * i
+                cy.get(`div[title=${argument}] input`).eq(i).type(inputNumber.toString(), {force: true})
             }
         }
         cy.get('button[name="postEUData"]').click()
