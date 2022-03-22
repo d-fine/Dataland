@@ -20,7 +20,7 @@ abstract class DataController<T>(
 ) : DataAPI<T> {
     private val dataType = clazz.toString().substringAfterLast(".")
 
-    override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
+    override fun postData(uploadableDataSet: UploadableDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataManager.addDataSet(
                 StorableDataSet(
