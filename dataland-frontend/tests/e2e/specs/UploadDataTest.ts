@@ -22,8 +22,22 @@ describe('User interactive tests for Data Upload', () => {
             cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
             cy.get('select[name="Attestation"]').select('None')
             cy.get('button[name="postEUData"]').click()
-            cy.get('h4').contains('success').contains('EU Taxonomy Data')
-            cy.visit("/eutaxonomies/1").get('body').should("contain", "Dataset: 1")
-            cy.go('back')
+            cy.get('body').contains('success').contains('EU Taxonomy Data')
+            cy.visit("/eutaxonomies/1").get('body').should("contain", "Dataset: 1").should("contain", "NaN")
         })
+
+    it('Create EU Taxonomy Dataset with Reporting Obligation', () => {
+        cy.get('input[name="companyId"]').type("2", {force: true})
+        cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
+        cy.get('select[name="Attestation"]').select('None')
+        for (const argument of ["capex", "opex", "revenue"]) {
+            for (let i = 0; i < 3; i++) {
+                const randomNumber = Math.floor(Math.random() * 1000)
+                cy.get(`div[title=${argument}] input`).eq(i).type(randomNumber.toString(), {force: true})
+            }
+        }
+        cy.get('button[name="postEUData"]').click()
+        cy.get('body').contains('success').contains('EU Taxonomy Data')
+        cy.visit("/eutaxonomies/2").get('body').should("contain", "Eligible Revenue").should("not.contain", "NaN")
+    })
 })
