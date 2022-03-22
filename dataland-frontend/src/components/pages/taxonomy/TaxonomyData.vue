@@ -7,6 +7,7 @@
         <div class="card">
           <div class="card-title left-align">
             <h4>Revenue</h4>
+            {{response}}
           </div>
           <div class="card-content">
             <div class="row">

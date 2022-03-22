@@ -21,8 +21,11 @@
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
-      <div v-if="response" class="col m12">
-        <SuccessUpload msg="company" :data="response.data" :status="response.status"/>
+      <div v-if="response && enableClose" class="col m12">
+        <div class="right-align">
+        <button class="btn btn-small orange darken-3" @click="close">Close</button>
+        </div>
+        <SuccessUpload msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
       </div>
     </div>
   </CardWrapper>
@@ -45,6 +48,7 @@ const createCompany = {
   components: {CardWrapper, FormKit, SuccessUpload},
 
   data: () => ({
+    enableClose: true,
     data: {},
     schema: dataStore.getSchema(),
     model: {},
@@ -52,8 +56,12 @@ const createCompany = {
     response: null,
   }),
   methods: {
+    close() {
+      this.enableClose = false
+    },
     async postCompanyData() {
         this.response = await dataStore.perform(this.data)
+        this.enableClose = true
     }
   },
 

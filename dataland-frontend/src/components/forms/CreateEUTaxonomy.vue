@@ -136,12 +136,14 @@
           </div>
         </FormKit>
       </FormKit>
-      <p>{{data}}</p>
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
-      <div v-if="response" class="col m12">
-        <SuccessUpload msg="EU Taxonomy Data" :data="{'dataId': response.data}" :status="response.status"/>
+      <div v-if="response && enableClose" class="col m12">
+        <div class="right-align">
+          <button class="btn btn-small orange darken-3" @click="close">Close</button>
+        </div>
+        <SuccessUpload msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
       </div>
     </div>
   </CardWrapper>
@@ -159,6 +161,7 @@ export default {
   components: {CardWrapper, FormKit, SuccessUpload},
 
   data: () => ({
+    enableClose: true,
     data: {},
     model: {},
     loading: false,
@@ -166,10 +169,13 @@ export default {
     companyID: null
   }),
   methods: {
+    close() {
+      this.enableClose = false
+    },
     async postEUData() {
       try {
         this.response = await api.postData(this.data, {baseURL: process.env.VUE_APP_BASE_API_URL})
-        console.log(this.response.status)
+        this.enableClose = true
       } catch (error) {
         console.error(error)
       }
