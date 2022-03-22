@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,24 +17,19 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 abstract class DataController<T>(
-    @Autowired @Qualifier("DefaultManager") var dataManager: DataManagerInterface,
-    var objectMapper: ObjectMapper
+    @Autowired var dataManager: DataManagerInterface,
+    @Autowired var objectMapper: ObjectMapper,
+    val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = getClazz().toString().substringAfterLast(".")
-
+    private val dataType = clazz.toString().substringAfterLast(".")
     /**
      * Method to get the class of the abstract T
      */
-    abstract fun getClazz(): Class<T>
-/*
-    override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listDataSets())
-    }
-*/
+
     override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataManager.addDataSet(
-                StoredDataSet(
+                StorableDataSet(
                     companyId = companyId,
                     dataType = dataType,
                     data = objectMapper.writeValueAsString(dataSet)
@@ -48,7 +43,7 @@ abstract class DataController<T>(
             objectMapper.readValue(
                 this.dataManager
                     .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
-                getClazz()
+                clazz
             )
         )
     }

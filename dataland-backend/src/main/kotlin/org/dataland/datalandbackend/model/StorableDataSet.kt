@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param dataType the type of the data set
  * @param data the actual data
  */
-data class StoredDataSet(
+data class StorableDataSet(
     @field:JsonProperty(required = true) val companyId: String,
     @field:JsonProperty(required = true) val dataType: String,
     @field:JsonProperty(required = true) val data: String

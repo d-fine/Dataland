@@ -29,7 +29,7 @@
         <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
                         :data="response.data"/>
       </div>
-      <button class="btn btn-sm orange darken-2" @click="clearAll">Clear</button>
+      <button class="btn btn-sm orange darken-3" @click="clearAll">Clear</button>
     </div>
   </CardWrapper>
 </template>
@@ -62,7 +62,7 @@ export default {
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.data)
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(...inputArgs)
       } catch (error) {
         console.error(error)
       }

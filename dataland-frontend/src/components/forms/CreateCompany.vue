@@ -35,7 +35,7 @@ import backend from "@/clients/backend/backendOpenApi.json";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.CompaniesRequestBody
+const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
@@ -54,7 +54,7 @@ const createCompany = {
       try {
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
-        this.response = await dataStore.perform(...inputArgs, {baseURL: process.env.VUE_APP_API_URL})
+        this.response = await dataStore.perform(...inputArgs)
       } catch (error) {
         console.error(error)
       }

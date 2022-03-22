@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.CompaniesRequestBody
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,7 +19,7 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding company data.
  */
 
-@RequestMapping("/")
+@RequestMapping("/companies")
 interface CompanyAPI {
 
     @Operation(
@@ -32,20 +32,22 @@ interface CompanyAPI {
         ]
     )
     @PostMapping(
-        value = ["/companies"],
+        value = [""],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
     /**
      * A method to create a new company entry in dataland
-     * @param companyName name of the company to be created
+     * @param postCompanyRequestBody includes the company name of the company to be created
      * @return meta information about the stored company (id and company name)
      */
-    fun postCompany(@Valid @RequestBody companyName: CompaniesRequestBody): ResponseEntity<CompanyMetaInformation>
+    fun postCompany(@Valid @RequestBody postCompanyRequestBody: PostCompanyRequestBody):
+        ResponseEntity<CompanyMetaInformation>
 
     @Operation(
-        summary = "Retrieve specific companies by name.",
-        description = "Companies identified via the provided company name are retrieved."
+        summary = "Retrieve specific companies by name or just all companies from the data store.",
+        description = "Companies identified via the provided company name are retrieved. " +
+            "If company name is an empty string, all companies in the data store are returned."
     )
     @ApiResponses(
         value = [
@@ -53,20 +55,21 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies"],
+        value = [""],
         produces = ["application/json"]
     )
     /**
      * A method to retrieve specific companies identified by their company names
-     * @param companyName identifier used to search for companies
-     * @return all companies whose names match with the companyName provided by the search input
+     * If an empty string is passed as company name, all companies in the data store will be returned.
+     * @param companyName identifier used to search for companies in the data store (can also be an empty string)
+     * @return all companies matching the search criteria
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
 
     @Operation(
         summary = "Retrieve list of existing data sets for given company.",
-        description = "A List of data ID and data type for all data sets of the given company is retrieved."
+        description = "A List of data ID and data type of all data sets of the given company is retrieved."
     )
     @ApiResponses(
         value = [
@@ -74,11 +77,11 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies/{companyId}/data"],
+        value = ["/{companyId}/data"],
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve all existing data sets of a specific company identified by the company Id
+     * A method to retrieve all existing data sets of a specific company identified by the company ID
      * @param companyId identifier of the company in dataland
      * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
      */
@@ -94,7 +97,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/companies/{companyId}"],
+        value = ["/{companyId}"],
         produces = ["application/json"]
     )
 

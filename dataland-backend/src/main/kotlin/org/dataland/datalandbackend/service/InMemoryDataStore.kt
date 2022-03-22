@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 /**
  * Simple implementation of a data store using in memory storage
  */
-@Component("DefaultStore")
+@Component
 class InMemoryDataStore : DataStoreInterface {
     var data = mutableMapOf<String, String>()
     private var dataCounter = 0

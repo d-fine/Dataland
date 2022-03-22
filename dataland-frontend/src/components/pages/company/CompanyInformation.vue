@@ -37,20 +37,10 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-      try {
-        this.companyInfo = await companyStore.perform(this.companyID, {baseURL: process.env.VUE_APP_API_URL})
-      } catch (err){
-        console.error(err)
-      }
-
+        this.companyInfo = await companyStore.perform(this.companyID)
     },
     async getCompanyDataset() {
-      try {
-        this.response = await dataStore.perform(this.companyID, {baseURL: process.env.VUE_APP_API_URL})
-        console.log(this.response)
-      } catch (error) {
-        console.error(error)
-      }
+        this.response = await dataStore.perform(this.companyID)
     }
   }
 }

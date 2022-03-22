@@ -47,12 +47,7 @@ export default {
   },
   methods: {
     async getTaxoData() {
-      try {
-        this.response = await dataStore.perform({baseURL: process.env.VUE_APP_API_URL})
-        console.log(this.response)
-      } catch (error) {
-        console.error(error)
-      }
+        this.response = await dataStore.perform()
     }
   }
 }

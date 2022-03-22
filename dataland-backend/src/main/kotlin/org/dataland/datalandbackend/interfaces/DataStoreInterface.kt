@@ -1,11 +1,8 @@
 package org.dataland.datalandbackend.interfaces
 
-import org.springframework.stereotype.Component
-
 /**
- * Defines the required functionalities for an in-memory data store
+ * Defines the required functionalities for a data store
  */
-@Component
 interface DataStoreInterface {
     /**
      * Method to insert data into to the data store
