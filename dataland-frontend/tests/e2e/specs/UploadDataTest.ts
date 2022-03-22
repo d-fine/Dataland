@@ -16,12 +16,14 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success")
     })
 
-    it('Create EU Taxonomy Dataset when everything is fine',
+    it('Create EU Taxonomy Dataset without Reporting Obligation',
         () => {
             cy.get('input[name="companyId"]').type("1", {force: true})
-            cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
+            cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
             cy.get('select[name="Attestation"]').select('None')
             cy.get('button[name="postEUData"]').click()
             cy.get('h4').contains('success').contains('EU Taxonomy Data')
+            cy.visit("/eutaxonomies/1").get('body').should("contain", "Dataset: 1")
+            cy.go('back')
         })
 })
