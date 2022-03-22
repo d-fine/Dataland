@@ -5,33 +5,28 @@ import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.springframework.beans.factory.annotation.Autowired
+import org.dataland.datalandbackend.model.UploadableDataSet
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of the API for data exchange
  * @param dataManager implementation of the DataManagerInterface that defines how
  * Dataland handles data */
 
-@RestController
 abstract class DataController<T>(
-    @Autowired var dataManager: DataManagerInterface,
-    @Autowired var objectMapper: ObjectMapper,
+    var dataManager: DataManagerInterface,
+    var objectMapper: ObjectMapper,
     val clazz: Class<T>
 ) : DataAPI<T> {
     private val dataType = clazz.toString().substringAfterLast(".")
-    /**
-     * Method to get the class of the abstract T
-     */
 
     override fun postData(companyId: String, dataSet: T): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataManager.addDataSet(
                 StorableDataSet(
-                    companyId = companyId,
+                    companyId = uploadableDataSet.companyId,
                     dataType = dataType,
-                    data = objectMapper.writeValueAsString(dataSet)
+                    data = objectMapper.writeValueAsString(uploadableDataSet.dataSet)
                 )
             )
         )

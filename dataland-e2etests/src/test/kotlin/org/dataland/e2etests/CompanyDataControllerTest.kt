@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerAp
 import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -66,19 +67,21 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyName = "Possible-Company_06"
-        val testEuTaxonomyDataSet = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
         val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
+        )
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
 
         assertTrue(
             getCompanyDataSetsResponse.contains(
                 DataIdentifier(
-                    dataID = testEuTaxonomyDataSetId,
-                    dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
+                    dataID = testEuTaxonomyDataId,
+                    dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
                 )
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."

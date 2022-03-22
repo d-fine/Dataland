@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
-    implementation("org.dataland:skyminder-server:0.1.1")
+    implementation("org.dataland:skyminder-server:0.1.2")
     implementation("org.apache.logging.log4j:log4j:2.17.2")
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")

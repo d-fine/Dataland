@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class EuTaxonomyDetailsPerCashFlowType(
     @field:JsonProperty("total") val total: java.math.BigDecimal? = null,
-    @field:JsonProperty("aligned_turnover") val aligned: java.math.BigDecimal? = null,
-    @field:JsonProperty("eligible_turnover") val eligible: java.math.BigDecimal? = null
+    @field:JsonProperty("aligned") val aligned: java.math.BigDecimal? = null,
+    @field:JsonProperty("eligible") val eligible: java.math.BigDecimal? = null
 )

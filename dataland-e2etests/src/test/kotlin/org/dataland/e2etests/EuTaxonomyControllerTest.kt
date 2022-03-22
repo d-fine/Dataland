@@ -3,6 +3,7 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -18,12 +19,14 @@ class EuTaxonomyControllerTest {
             companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
+            UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
+        )
 
-        val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataSetId)
+        val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataId)
 
         assertEquals(
-            testEuTaxonomyDataSet,
+            testEuTaxonomyData,
             getDataSetResponse,
             "The posted and the received eu taxonomy data sets are not equal."
         )

@@ -25,11 +25,11 @@
         />
       </FormKit>
       <br>
+      <button class="btn btn-sm orange darken-3" @click="clearAll">Clear</button>
       <div v-if="response" class="col m12">
         <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
                         :data="response.data"/>
       </div>
-      <button class="btn btn-sm orange darken-3" @click="clearAll">Clear</button>
     </div>
   </CardWrapper>
 </template>
@@ -57,6 +57,7 @@ export default {
   methods: {
     clearAll() {
       this.data = {}
+      this.response = null
     },
 
     async getSkyminderByName() {
