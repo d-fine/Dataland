@@ -16,17 +16,17 @@ class EuTaxonomyControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyName = "Test-Company_A"
-        val testEuTaxonomyDataSet = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val postCompanyResponse =
             companyDataControllerApi.postCompany(PostCompanyRequestBody(companyName = testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
 
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyData)
 
-        val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataSetId)
+        val getDataSetResponse = euTaxonomyDataControllerApi.getDataSet(testEuTaxonomyDataId)
 
         assertEquals(
-            testEuTaxonomyDataSet,
+            testEuTaxonomyData,
             getDataSetResponse,
             "The posted and the received eu taxonomy data sets are not equal."
         )
@@ -35,18 +35,18 @@ class EuTaxonomyControllerTest {
     @Test
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
         val testCompanyName = "Fictitious-Company_B"
-        val testEuTaxonomyDataSet = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName))
         val testCompanyId = postCompanyResponse.companyId
-        val testEuTaxonomyDataSetId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyDataSet)
+        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(testCompanyId, testEuTaxonomyData)
 
         val getDataResponse = euTaxonomyDataControllerApi.getData()
         assertTrue(
             getDataResponse.contains(
                 DataSetMetaInformation(
                     dataIdentifier = DataIdentifier(
-                        dataID = testEuTaxonomyDataSetId,
-                        dataType = testEuTaxonomyDataSet.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+                        dataID = testEuTaxonomyDataId,
+                        dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
                     ),
                     companyId = testCompanyId
                 )

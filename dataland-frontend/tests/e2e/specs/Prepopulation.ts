@@ -32,7 +32,7 @@ describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit("/eutaxonomies")
         cy.get('td').contains("1")
-        cy.get('td').contains("EuTaxonomyDataSet")
+        cy.get('td').contains("EuTaxonomyData")
         cy.get('td').contains("Data Information").click().url().should('include', '/eutaxonomies/1')
     });
 });
