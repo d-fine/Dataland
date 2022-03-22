@@ -47,7 +47,6 @@ interface DataAPI<T> {
         ]
     )
     @PostMapping(
-        value = ["/"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
