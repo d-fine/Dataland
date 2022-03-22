@@ -73,7 +73,7 @@ class CompanyDataControllerTest {
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
-            UploadableDataSetEuTaxonomyData(testEuTaxonomyData,testCompanyId)
+            UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
         )
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
 

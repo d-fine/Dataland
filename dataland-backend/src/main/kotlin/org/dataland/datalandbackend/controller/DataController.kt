@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.UploadableDataSet
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 
 /**
