@@ -5,10 +5,9 @@ import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StoredDataSet
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.UploadableDataSet
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,15 +18,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 abstract class DataController<T>(
-    @Autowired @Qualifier("DefaultStore") var dataStore: DataStoreInterface,
-    var objectMapper: ObjectMapper
+    @Autowired var dataStore: DataStoreInterface,
+    @Autowired var objectMapper: ObjectMapper,
+    val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = getClazz().toString().substringAfterLast(".")
-
-    /**
-     * Method to get the class of the abstract T
-     */
-    abstract fun getClazz(): Class<T>
+    private val dataType = clazz.toString().substringAfterLast(".")
 
     override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
         return ResponseEntity.ok(this.dataStore.listDataSets())
@@ -36,7 +31,7 @@ abstract class DataController<T>(
     override fun postData(uploadableDataSet: UploadableDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
-                StoredDataSet(
+                StorableDataSet(
                     companyId = uploadableDataSet.companyId,
                     dataType = dataType,
                     data = objectMapper.writeValueAsString(uploadableDataSet.dataSet)
@@ -50,7 +45,7 @@ abstract class DataController<T>(
             objectMapper.readValue(
                 this.dataStore
                     .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
-                getClazz()
+                clazz
             )
         )
     }
