@@ -26,7 +26,8 @@ export default {
   },
   methods: {
     humanize(text) {
-      return humanizeString(text)
+      if (typeof text == "string") return humanizeString(text)
+      else return null
     }
 }}
 </script>
