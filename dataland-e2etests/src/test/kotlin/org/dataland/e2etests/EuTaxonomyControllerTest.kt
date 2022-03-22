@@ -38,21 +38,19 @@ class EuTaxonomyControllerTest {
 
     @Test
     fun `post a dummy company and dummy data set and check if the list of all existing data contains that data set`() {
-        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val postCompanyResponse = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName[1]))
-        val testCompanyId = postCompanyResponse.companyId
-        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
-            UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
-        )
+        val companyId = postCompanyResponse.companyId
+        val dataId = euTaxonomyDataControllerApi.postData(UploadableDataSetEuTaxonomyData(testData, companyId))
         val getDataResponse = euTaxonomyDataControllerApi.getData()
         assertTrue(
             getDataResponse.contains(
                 DataSetMetaInformation(
                     dataIdentifier = DataIdentifier(
-                        dataID = testEuTaxonomyDataId,
-                        dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+                        dataID = dataId,
+                        dataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
                     ),
-                    companyId = testCompanyId
+                    companyId = companyId
                 )
             ),
             "The list of all existing eu taxonomy data does not contain the posted data set."
