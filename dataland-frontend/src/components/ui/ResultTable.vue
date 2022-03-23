@@ -9,10 +9,10 @@
     <tbody>
     <tr v-for="(dataset, index) in data" :key="index">
       <td v-for="(item, i) in dataset" :key="i">
-        {{ item }}
-      </td>
-      <td>
-        <router-link :to="route + dataset[linkkey]">Link</router-link>
+        <router-link v-if="i === linkKey" :to="route + dataset[linkID]">{{ item }}</router-link>
+        <template v-else>
+          {{item }}
+        </template>
       </td>
     </tr>
     </tbody>
@@ -22,6 +22,6 @@
 <script>
 export default {
   name: "ResultTable",
-  props: ["headers", "data", "entity", "route", "linkkey"]
+  props: ["headers", "data", "entity", "route", "linkID", "linkKey"]
 }
 </script>
