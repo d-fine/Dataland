@@ -1,5 +1,6 @@
 {
   "pluginsFile": "tests/e2e/plugins/index.js",
+  "defaultCommandTimeout": 6000,
   "retries": {
     "runMode": 2,
     "openMode": 1
