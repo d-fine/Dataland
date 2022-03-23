@@ -1,7 +1,11 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.*
+import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.StorableCompany
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.stereotype.Component
 
 /**
