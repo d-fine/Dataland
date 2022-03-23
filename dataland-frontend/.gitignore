@@ -30,3 +30,4 @@ reports
 
 # auto generated clients
 src/clients
+/package-lock.json
