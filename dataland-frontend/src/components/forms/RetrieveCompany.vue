@@ -63,7 +63,6 @@ export default {
         }
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
-        console.warn(inputArgs)
         this.response = await dataStore.perform(...inputArgs)
 
       } catch (error) {

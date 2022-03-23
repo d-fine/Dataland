@@ -105,7 +105,7 @@ class InMemoryDataStoreTest {
                     dataId = testDataSetId,
                     dataType = testDataSetsToStore[0].dataType
                 )
-            )[0],
+            ).data,
             "The posted data set does not match the retrieved data set."
         )
     }

@@ -39,7 +39,7 @@ class InMemoryDataStore : DataStoreInterface {
         }
     }
 
-    override fun getCompanyAssociatedDataSet(dataIdentifier: DataIdentifier): List<String> {
+    override fun getCompanyAssociatedDataSet(dataIdentifier: DataIdentifier): StorableDataSet {
 
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
@@ -51,7 +51,7 @@ class InMemoryDataStore : DataStoreInterface {
                     " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-        return listOf(storedDataset.data, storedDataset.companyId)
+        return storedDataset
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
