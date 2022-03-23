@@ -153,8 +153,10 @@ import {EuTaxonomyDataControllerApi} from "@/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";
+import {DataStore} from "@/services/DataStore";
 
 const api = new EuTaxonomyDataControllerApi()
+const dataStore = new DataStore(api.postData)
 
 export default {
   name: "CustomEUTaxonomy",
@@ -174,7 +176,7 @@ export default {
     },
     async postEUData() {
       try {
-        this.response = await api.postData(this.data, {baseURL: process.env.VUE_APP_BASE_API_URL})
+        this.response = await dataStore.perform(this.data)
         this.enableClose = true
       } catch (error) {
         console.error(error)
