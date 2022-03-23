@@ -1,11 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StorableCompany
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.*
 import org.springframework.stereotype.Component
 
 /**
@@ -48,7 +44,7 @@ class InMemoryDataStore : DataStoreInterface {
         if (storedDataset.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                    " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
+                        " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
         return listOf(storedDataset.data, storedDataset.companyId)
