@@ -11,6 +11,7 @@
                 'name': 'postEUData'
               }"
         type="form"
+        id="createEuTaxonomyForm"
         @submit="postEUData">
         <FormKit
             type="text"
@@ -195,7 +196,10 @@ export default {
     async postEUData() {
       try {
         this.response = await dataStore.perform(this.data)
+        this.$formkit.reset('createEuTaxonomyForm')
+        this.errorOccurence = false
       } catch (error) {
+        this.response = null
         this.errorOccurence = true
         console.error(error)
       }

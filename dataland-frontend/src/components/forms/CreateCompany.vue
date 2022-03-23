@@ -6,6 +6,7 @@
       <FormKit
           v-model="data"
           type="form"
+          id="createCompanyForm"
           :submit-attrs="{
                   'name': 'postCompanyData'
                 }"
@@ -15,6 +16,7 @@
             type="text"
             name="companyName"
             validation="required"
+            validation-visibility="submit"
             label="Company Name"
         />
       </FormKit>
@@ -65,7 +67,10 @@ const createCompany = {
     async postCompanyData() {
       try {
         this.response = await dataStore.perform(this.data)
+        this.$formkit.reset('createCompanyForm')
+        this.errorOccurence = false
       } catch (error) {
+        this.response = null
         this.errorOccurence = true
       }
         this.enableClose = true
