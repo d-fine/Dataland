@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.PostDataRequestBody
+import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -50,10 +50,10 @@ interface DataAPI<T> {
     )
     /**
      * A method to store a provided data set via dataland into the data store
-     * @param postDataRequestBody consisting of the ID of the company and the data to be stored
+     * @param companyAssociatedDataSet consisting of the ID of the company and the data to be stored
      * @return the ID of the created entry in the data store
      */
-    fun postData(@Valid @RequestBody postDataRequestBody: PostDataRequestBody<T>): ResponseEntity<String>
+    fun postData(@Valid @RequestBody companyAssociatedDataSet: CompanyAssociatedDataSet<T>): ResponseEntity<String>
 
     @Operation(
         summary = "Retrieve specific data set from the data store.",
@@ -73,5 +73,5 @@ interface DataAPI<T> {
      * @param dataId identifier used to uniquely determine the data set in the data store
      * @return the complete data stored under the provided ID
      */
-    fun getDataSet(@PathVariable("dataId") dataId: String): ResponseEntity<T>
+    fun getCompanyAssociatedDataSet(@PathVariable("dataId") dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>>
 }

@@ -5,4 +5,4 @@ package org.dataland.datalandbackend.model
  * @param dataSet data to be uploaded of general type T
  * @param companyId identifier of the company the data belongs to
  */
-data class PostDataRequestBody<T> (val dataSet: T, val companyId: String)
+data class CompanyAssociatedDataSet<T> (val dataSet: T, val companyId: String)

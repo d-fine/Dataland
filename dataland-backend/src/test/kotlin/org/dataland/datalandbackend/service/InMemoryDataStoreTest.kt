@@ -100,7 +100,7 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
+            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
             "The posted data set does not match the retrieved data set."
         )
     }
@@ -147,7 +147,7 @@ class InMemoryDataStoreTest {
         testStore.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testStore.getDataSet(DataIdentifier(dataId = "error", dataType = testDataSetsToStore[0].dataType))
+            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = "error", dataType = testDataSetsToStore[0].dataType))
         }
     }
 
@@ -158,7 +158,7 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testStore.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
+            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
         }
     }
 }

@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.PostDataRequestBody
+import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.http.ResponseEntity
 
@@ -25,25 +25,20 @@ abstract class DataController<T>(
         return ResponseEntity.ok(this.dataStore.listDataSets())
     }
 
-    override fun postData(postDataRequestBody: PostDataRequestBody<T>): ResponseEntity<String> {
+    override fun postData(companyAssociatedDataSet: CompanyAssociatedDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataStore.addDataSet(
                 StorableDataSet(
-                    companyId = postDataRequestBody.companyId,
+                    companyId = companyAssociatedDataSet.companyId,
                     dataType = dataType,
-                    data = objectMapper.writeValueAsString(postDataRequestBody.dataSet)
+                    data = objectMapper.writeValueAsString(companyAssociatedDataSet.dataSet)
                 )
             )
         )
     }
 
-    override fun getDataSet(dataId: String): ResponseEntity<T> {
-        return ResponseEntity.ok(
-            objectMapper.readValue(
-                this.dataStore
-                    .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
-                clazz
-            )
-        )
+    override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>> {
+        val dataset = this.dataStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
+        return ResponseEntity.ok(CompanyAssociatedDataSet(objectMapper.readValue(dataset[0], clazz), dataset[1]))
     }
 }

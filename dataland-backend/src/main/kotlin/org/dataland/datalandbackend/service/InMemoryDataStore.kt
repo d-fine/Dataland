@@ -1,11 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StorableCompany
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.*
 import org.springframework.stereotype.Component
 
 /**
@@ -39,17 +35,19 @@ class InMemoryDataStore : DataStoreInterface {
         }
     }
 
-    override fun getDataSet(dataIdentifier: DataIdentifier): String {
+    override fun getCompanyAssociatedDataSet(dataIdentifier: DataIdentifier): List<String> {
+
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")
         }
-        if (data[dataIdentifier.dataId]!!.dataType != dataIdentifier.dataType) {
+        val storedDataset = data[dataIdentifier.dataId]!!
+        if (storedDataset.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                    " ${data[dataIdentifier.dataId]!!.dataType} instead of the expected ${dataIdentifier.dataType}."
+                        " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
-        return data[dataIdentifier.dataId]!!.data
+        return listOf(storedDataset.data, storedDataset.companyId)
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
