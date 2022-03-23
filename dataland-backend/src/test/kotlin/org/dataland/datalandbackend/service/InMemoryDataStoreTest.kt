@@ -100,7 +100,7 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
+            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType))[0],
             "The posted data set does not match the retrieved data set."
         )
     }

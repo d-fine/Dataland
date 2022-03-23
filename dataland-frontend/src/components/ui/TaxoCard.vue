@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     percentCalculation(){
-      return (this.amount/this.total)*100
+      return Math.round((this.amount/this.total)*100*100)/100
     }
   }
 }

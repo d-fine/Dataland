@@ -23,7 +23,11 @@ describe('User interactive tests for Data Upload', () => {
             cy.get('select[name="Attestation"]').select('None')
             cy.get('button[name="postEUData"]').click()
             cy.get('body').contains('success').contains('EU Taxonomy Data')
-            cy.visit("/eutaxonomies/1").get('body').should("contain", "Dataset: 1").should("contain", "NaN")
+            cy.get('span[title=DataId]').then(($dataID) => {
+                const id = $dataID.text()
+                cy.visit(`/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "NaN")
+            })
+
         })
 
     it('Create EU Taxonomy Dataset with Reporting Obligation', () => {
@@ -38,6 +42,9 @@ describe('User interactive tests for Data Upload', () => {
         }
         cy.get('button[name="postEUData"]').click()
         cy.get('body').contains('success').contains('EU Taxonomy Data')
-        cy.visit("/eutaxonomies/2").get('body').should("contain", "Eligible Revenue").should("not.contain", "NaN")
+        cy.get('span[title=DataId]').then(($dataID) => {
+            const id = $dataID.text()
+            cy.visit(`/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("not.contain", "NaN")
+        })
     })
 })

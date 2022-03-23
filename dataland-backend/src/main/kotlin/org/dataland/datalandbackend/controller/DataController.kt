@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
+import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.http.ResponseEntity
 

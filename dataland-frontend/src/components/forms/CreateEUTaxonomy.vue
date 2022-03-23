@@ -29,11 +29,11 @@
               validation="required"
               label="Attestation"
               placeholder="Please choose"
-              :options="[
-                    'None',
-                    'Some',
-                    'Full'
-                  ]"
+              :options="
+                    {'None':'None',
+                    'Limited_Assurance': 'Limited Assurance',
+                    'Reasonable_Assurance': 'Reasonable Assurance'}
+                  "
           />
           <FormKit
               type="radio"
@@ -63,19 +63,19 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / €"
+                  label="Aligned / m€"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / €"
+                  label="Eligible / m€"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / €"
+                  label="Total / m€"
               />
 
             </FormKit>
@@ -91,19 +91,19 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / €"
+                  label="Aligned / m€"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / €"
+                  label="Eligible / m€"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / €"
+                  label="Total / m€"
               />
             </FormKit>
           </div>
@@ -143,7 +143,7 @@
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
+        <SuccessUpload msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
       </div>
     </div>
   </CardWrapper>

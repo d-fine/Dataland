@@ -4,7 +4,7 @@
       <div class="card-title green-text"><h4>You successfully uploaded the {{msg}}</h4>
       </div>
       <div class="card-content left-align">
-          <p v-for="(value, key) in data" :key="key">{{ humanize(key) }}: {{ value }}</p>
+          <p v-for="(value, key) in data" :key="key"><span>{{ humanize(key) }}</span>: <span :title="key">{{ value }}</span></p>
       </div>
     </div>
     <div class="card" v-else>
