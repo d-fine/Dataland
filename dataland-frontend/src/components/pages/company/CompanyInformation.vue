@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col m12 s12">
         <h2>Company Information about {{companyInfo.data.companyName}} (ID: {{companyInfo.data.companyId}})</h2>
-        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/" :headers="['Data ID', 'Data Type', 'Data Insight']" linkkey="Data ID"/>
+        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/" :headers="['Data ID', 'Data Type']" linkKey="Data Type" linkID="Data ID" />
       </div>
     </div>
   </div>
