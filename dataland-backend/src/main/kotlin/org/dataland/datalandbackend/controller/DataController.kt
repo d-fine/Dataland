@@ -38,8 +38,11 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>> {
-        val dataset = this.dataStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
-        return ResponseEntity.ok(CompanyAssociatedDataSet(
-            objectMapper.readValue(dataset.data, clazz), dataset.companyId))
+        val dataset = this.dataStore.getStorableDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
+        return ResponseEntity.ok(
+            CompanyAssociatedDataSet(
+                objectMapper.readValue(dataset.data, clazz), dataset.companyId
+            )
+        )
     }
 }

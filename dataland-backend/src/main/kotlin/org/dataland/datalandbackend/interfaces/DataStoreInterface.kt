@@ -30,7 +30,7 @@ interface DataStoreInterface {
      * @param dataIdentifier identifier of the stored data (consists of data id and data type)
      * @return all data associated to the identifier provided
      */
-    fun getCompanyAssociatedDataSet(dataIdentifier: DataIdentifier): StorableDataSet
+    fun getStorableDataSet(dataIdentifier: DataIdentifier): StorableDataSet
 
     /**
      * Method to add a company to the data store

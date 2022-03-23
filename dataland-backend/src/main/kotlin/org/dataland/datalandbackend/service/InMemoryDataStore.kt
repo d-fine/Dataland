@@ -39,7 +39,7 @@ class InMemoryDataStore : DataStoreInterface {
         }
     }
 
-    override fun getCompanyAssociatedDataSet(dataIdentifier: DataIdentifier): StorableDataSet {
+    override fun getStorableDataSet(dataIdentifier: DataIdentifier): StorableDataSet {
 
         if (!data.containsKey(dataIdentifier.dataId)) {
             throw IllegalArgumentException("The id: ${dataIdentifier.dataId} does not exist.")

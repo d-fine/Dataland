@@ -100,7 +100,7 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testStore.getCompanyAssociatedDataSet(
+            testStore.getStorableDataSet(
                 DataIdentifier(
                     dataId = testDataSetId,
                     dataType = testDataSetsToStore[0].dataType
@@ -152,7 +152,7 @@ class InMemoryDataStoreTest {
         testStore.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testStore.getCompanyAssociatedDataSet(
+            testStore.getStorableDataSet(
                 DataIdentifier(
                     dataId = "error",
                     dataType = testDataSetsToStore[0].dataType
@@ -168,7 +168,7 @@ class InMemoryDataStoreTest {
         val testDataSetId = testStore.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testStore.getCompanyAssociatedDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
+            testStore.getStorableDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
         }
     }
 }
