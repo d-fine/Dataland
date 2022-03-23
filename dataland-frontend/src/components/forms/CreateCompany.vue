@@ -21,11 +21,12 @@
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
-      <div v-if="response && enableClose" class="col m12">
+      <div v-if="enableClose" class="col m12">
         <div class="right-align">
         <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
+        <SuccessUpload v-if="response" msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
+        <FailedUpload v-if="errorOccurence" msg="Company" :enableClose="true" />
       </div>
     </div>
   </CardWrapper>
@@ -38,6 +39,7 @@ import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
 import CardWrapper from "@/components/wrapper/CardWrapper";
+import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
@@ -45,22 +47,27 @@ const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
 
   data: () => ({
-    enableClose: true,
+    enableClose: false,
     data: {},
     schema: dataStore.getSchema(),
     model: {},
     loading: false,
     response: null,
+    errorOccurence: false
   }),
   methods: {
     close() {
       this.enableClose = false
     },
     async postCompanyData() {
+      try {
         this.response = await dataStore.perform(this.data)
+      } catch (error) {
+        this.errorOccurence = true
+      }
         this.enableClose = true
     }
   },

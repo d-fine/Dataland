@@ -7,11 +7,6 @@
           <p v-for="(value, key) in data" :key="key"><span>{{ humanize(key) }}</span>: <span :title="key">{{ value }}</span></p>
       </div>
     </div>
-    <div class="card" v-else>
-      <div class="card-title red-text">
-        <h4>{{msg}} was not uploaded.</h4>
-      </div>
-    </div>
 </div>
 </template>
 

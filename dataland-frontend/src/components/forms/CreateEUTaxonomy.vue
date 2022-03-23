@@ -16,6 +16,7 @@
             type="text"
             name="companyId"
             label="Company ID"
+            @input="getCompanyIDs"
             :validation="[['required'],['is', ...idList]]"
             :validation-messages="{
                 is: 'The company ID you provided does not exist.',
@@ -142,11 +143,12 @@
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
-      <div v-if="response && enableClose" class="col m12">
+      <div v-if="enableClose" class="col m12">
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
+        <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
       </div>
     </div>
   </CardWrapper>
@@ -157,6 +159,7 @@ import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 import {DataStore} from "@/services/DataStore";
+import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.postData)
@@ -164,10 +167,11 @@ const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
   name: "CustomEUTaxonomy",
-  components: {CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
 
   data: () => ({
-    enableClose: true,
+    enableClose: false,
+    errorOccurence: false,
     data: {},
     model: {},
     loading: false,
@@ -175,9 +179,6 @@ export default {
     companyID: null,
     idList: []
   }),
-  created() {
-    this.getCompanyIDs()
-  },
   methods: {
     close() {
       this.enableClose = false
@@ -194,11 +195,11 @@ export default {
     async postEUData() {
       try {
         this.response = await dataStore.perform(this.data)
-        this.enableClose = true
       } catch (error) {
+        this.errorOccurence = true
         console.error(error)
-        alert(error)
       }
+        this.enableClose = true
     }
   },
 }

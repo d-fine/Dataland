@@ -17,7 +17,6 @@
         />
 
       </FormKit>
-      <p>{{data}}</p>
       <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
       <br>
       <div class="col m12">
