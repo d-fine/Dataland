@@ -48,7 +48,7 @@ class InMemoryDataStore : DataStoreInterface {
         if (storedDataset.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
                 "The data with id: ${dataIdentifier.dataId} is of type" +
-                        " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
+                    " ${storedDataset.dataType} instead of the expected ${dataIdentifier.dataType}."
             )
         }
         return listOf(storedDataset.data, storedDataset.companyId)
