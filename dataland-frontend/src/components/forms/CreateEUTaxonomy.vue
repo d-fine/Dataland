@@ -15,8 +15,11 @@
         <FormKit
             type="text"
             name="companyId"
-            validation="required|number"
             label="Company ID"
+            :validation="[['required'],['is', ...idList]]"
+            :validation-messages="{
+                is: 'The company ID you provided does not exist.',
+              }"
         />
         <FormKit
             type="group"
@@ -149,7 +152,7 @@
   </CardWrapper>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";
@@ -157,7 +160,8 @@ import {DataStore} from "@/services/DataStore";
 
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.postData)
-
+const companyApi = new CompanyDataControllerApi()
+const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
   name: "CustomEUTaxonomy",
   components: {CardWrapper, FormKit, SuccessUpload},
@@ -168,18 +172,32 @@ export default {
     model: {},
     loading: false,
     response: null,
-    companyID: null
+    companyID: null,
+    idList: []
   }),
+  created() {
+    this.getCompanyIDs()
+  },
   methods: {
     close() {
       this.enableClose = false
     },
+    async getCompanyIDs(){
+      try {
+        const companyList = await companyStore.perform([""])
+        this.idList = companyList.data.map(element => parseInt(Object.values(element)[1]))
+      } catch(error) {
+        this.idList = [0]
+      }
+    },
+
     async postEUData() {
       try {
         this.response = await dataStore.perform(this.data)
         this.enableClose = true
       } catch (error) {
         console.error(error)
+        alert(error)
       }
     }
   },

@@ -17,6 +17,7 @@
         />
 
       </FormKit>
+      <p>{{data}}</p>
       <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
       <br>
       <div class="col m12">
@@ -63,7 +64,7 @@ export default {
         }
         const inputArgs = Object.values(this.data)
         inputArgs.splice(0, 1)
-        console.log(inputArgs)
+        console.warn(inputArgs)
         this.response = await dataStore.perform(...inputArgs)
 
       } catch (error) {
