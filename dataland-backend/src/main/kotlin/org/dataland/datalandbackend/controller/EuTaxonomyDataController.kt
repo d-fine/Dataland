@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the EU Taxonomy endpoints
- * @param myDataManager  data manager to be used
+ * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/eutaxonomies")
