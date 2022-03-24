@@ -29,13 +29,13 @@ class DataManager(
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyData.containsKey(companyId)) {
-            throw IllegalArgumentException("The companyId: ${companyId} does not exist.")
+            throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
     }
 
     private fun verifyDataIdIsRegistered(dataId: String) {
         if (!dataMetaData.containsKey(dataId)) {
-            throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataId} ")
+            throw IllegalArgumentException("Dataland does not know a data set with the id: $dataId ")
         }
     }
 
