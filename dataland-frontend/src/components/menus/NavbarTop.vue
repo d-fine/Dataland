@@ -11,9 +11,6 @@
         <li>
           <router-link to="/search">Data Search</router-link>
         </li>
-        <li>
-          <router-link to="/eutaxonomies">EU Taxonomy Data</router-link>
-        </li>
       </ul>
     </div>
   </nav>
