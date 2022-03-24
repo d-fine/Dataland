@@ -18,10 +18,7 @@ interface DataManagerInterface {
 
     /**
      * Method to make the data manager add a data set to a data store
-     * @param storedDataSet contains
-     * companyId ID of the company the data belongs to
-     * dataType as the type of data (e.g. EU Taxonomy)
-     * data as data to be stored in the data store
+     * @param storedDataSet contains all the inputs needed by Dataland to add a data set to a data store
      * @return ID of the newly created data store entry
      */
     fun addDataSet(storedDataSet: StorableDataSet): String
