@@ -68,7 +68,7 @@ class DataManager(
             throw IllegalArgumentException(
                 "The data with the id: ${dataIdentifier.dataId} is of registered as type" +
                     " ${dataMetaData[dataIdentifier.dataId]} by Dataland instead of your requested" +
-                        " type ${dataIdentifier.dataType}."
+                    " type ${dataIdentifier.dataType}."
             )
         }
         return dataStore.selectDataSet(dataIdentifier.dataId)
