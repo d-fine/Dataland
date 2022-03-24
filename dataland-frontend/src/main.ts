@@ -5,5 +5,5 @@ import 'materialize-css'
 import '@formkit/themes/genesis'
 import { plugin, defaultConfig } from '@formkit/vue'
 import router from './router'
-
-createApp(App).use(plugin, defaultConfig).use(router).mount('#app')
+import PrimeVue from 'primevue/config';
+createApp(App).use(plugin, defaultConfig).use(router).use(PrimeVue).mount('#app')
