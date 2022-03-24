@@ -28,11 +28,12 @@ class CompanyDataController(
         return ResponseEntity.ok(this.dataManager.listCompaniesByName(companyName ?: ""))
     }
 
+    override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
+        return ResponseEntity.ok(this.dataManager.getCompanyById(companyId))
+    }
+
     override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataIdentifier>> {
         return ResponseEntity.ok(this.dataManager.listDataSetsByCompanyId(companyId))
     }
 
-    override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(this.dataManager.getCompanyById(companyId))
-    }
 }
