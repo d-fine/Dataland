@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableCompany
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component
 class DataManager(
     @Autowired var dataStore: DataStoreInterface
 ) : DataManagerInterface {
-    var dataMetaData = mutableMapOf<String, String>() // maybe also add companyId to values, instead of only dataType?
+    var dataMetaData = mutableMapOf<String, DataSetMetaInformation>()
     var companyData = mutableMapOf<String, StorableCompany>()
     private var companyCounter = 0
 
@@ -42,8 +43,8 @@ class DataManager(
     override fun addDataSet(storedDataSet: StorableDataSet): String {
         if (companyIdExists(storedDataSet.companyId)) {
             val dataId = dataStore.insertDataSet(storedDataSet.data)
-            this.dataMetaData[dataId] = storedDataSet.dataType /* maybe also add companyId to values,
-             instead of only  dataType?*/
+            this.dataMetaData[dataId] =
+                DataSetMetaInformation(dataType = storedDataSet.dataType, companyId = storedDataSet.companyId)
             this.companyData[storedDataSet.companyId]?.dataSets?.add(
                 DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
             )
@@ -63,10 +64,11 @@ class DataManager(
                     "could be found in the data store."
             )
         }
-        if (dataMetaData[dataIdentifier.dataId] != dataIdentifier.dataType) {
+        if (dataMetaData[dataIdentifier.dataId]!!.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
-                "The data with id: ${dataIdentifier.dataId} is of type" +
-                    " ${dataMetaData[dataIdentifier.dataId]} instead of the expected ${dataIdentifier.dataType}."
+                "The data with the id: ${dataIdentifier.dataId} is of registered as type" +
+                    " ${dataMetaData[dataIdentifier.dataId]} by Dataland instead of your requested" +
+                        " type ${dataIdentifier.dataType}."
             )
         }
         return dataStore.selectDataSet(dataIdentifier.dataId)
@@ -74,7 +76,21 @@ class DataManager(
 
     /*
     ________________________________
-    Methods to add and retrieve company info and save meta data in the Dataland-Company-Meta-Data-Storage:
+    Methods to process meta data:
+    ________________________________
+     */
+
+    override fun getMetaData(dataId: String): DataSetMetaInformation {
+        if (!dataMetaData.containsKey(dataId)) {
+            throw IllegalArgumentException("Dataland does not know a data set with the id: $dataId ")
+        }
+        return dataMetaData[dataId]!!
+    }
+
+    /*
+    ________________________________
+    Methods to add and retrieve company info and save associated company meta data in the
+    Dataland-Company-Meta-Data-Storage:
     ________________________________
      */
 

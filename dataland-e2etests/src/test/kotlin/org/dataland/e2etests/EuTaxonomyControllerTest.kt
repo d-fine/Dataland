@@ -3,8 +3,6 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSetEuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
-import org.dataland.datalandbackend.openApiClient.model.DataSetMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

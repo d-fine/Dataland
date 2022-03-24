@@ -2,12 +2,20 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.DataSetMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 
 /**
  * Defines the required functionalities for the Dataland data manager
  */
 interface DataManagerInterface {
+
+    /*
+    ________________________________
+    Methods to route data inserts and queries to the data store and save meta data in the Dataland-Meta-Data-Storage:
+    ________________________________
+     */
+
     /**
      * Method to make the data manager add a data set to a data store
      * @param storedDataSet contains
@@ -24,6 +32,26 @@ interface DataManagerInterface {
      * @return all data associated to the identifier provided
      */
     fun getDataSet(dataIdentifier: DataIdentifier): String
+
+    /*
+    ________________________________
+    Methods to process meta data:
+    ________________________________
+     */
+
+    /**
+     * Method to make the data manager get meta info associated with a data ID
+     * @param dataId
+     * @return all meta data associated with the data behind the data ID
+     */
+    fun getMetaData(dataId: String): DataSetMetaInformation
+
+    /*
+    ________________________________
+    Methods to add and retrieve company info and save associated company meta data in the
+    Dataland-Company-Meta-Data-Storage:
+    ________________________________
+     */
 
     /**
      * Method to add a company to the meta data store

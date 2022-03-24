@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
 import org.springframework.http.ResponseEntity
 
 /**
@@ -20,7 +20,7 @@ abstract class DataController<T>(
 ) : DataAPI<T> {
     private val dataType = clazz.toString().substringAfterLast(".")
 
-    override fun postData(companyAssociatedDataSet: CompanyAssociatedDataSet<T>): ResponseEntity<String> {
+    override fun postCompanyAssociatedDataSet(companyAssociatedDataSet: CompanyAssociatedDataSet<T>): ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataManager.addDataSet(
                 StorableDataSet(
@@ -33,14 +33,11 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>> {
-        val dataset = this.dataManager.getStorableDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
+        val dataset = this.dataManager.getDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
         return ResponseEntity.ok(
-            objectMapper.readValue(
-                this.dataManager
-                    .getDataSet(DataIdentifier(dataId = dataId, dataType = dataType)),
-                clazz
             CompanyAssociatedDataSet(
-                objectMapper.readValue(dataset.data, clazz), dataset.companyId
+                dataSet = objectMapper.readValue(dataset, clazz),
+                companyId = this.dataManager.getMetaData(dataId).companyId
             )
         )
     }
