@@ -27,9 +27,9 @@ class EuTaxonomyControllerTest {
             euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testEuTaxonomyDataId)
 
         assertEquals(
-            testEuTaxonomyData,
-            companyAssociatedDataSetEuTaxonomyData.dataSet,
-            "The posted and the received eu taxonomy data sets are not equal."
+            CompanyAssociatedDataSetEuTaxonomyData(companyId = testCompanyId, dataSet = testEuTaxonomyData),
+            companyAssociatedDataSetEuTaxonomyData,
+            "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
     }
 }

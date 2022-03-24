@@ -27,8 +27,15 @@ class DataManager(
     ________________________________
      */
 
-    private fun companyIdExists(companyId: String): Boolean {
+    private fun verifyCompanyIdExists(companyId: String): Boolean {
         if (companyData.containsKey(companyId)) {
+            return true
+        }
+        return false
+    }
+
+    private fun verifyDataIdIsRegistered(dataId: String): Boolean {
+        if (dataMetaData.containsKey(dataId)) {
             return true
         }
         return false
@@ -41,20 +48,21 @@ class DataManager(
      */
 
     override fun addDataSet(storedDataSet: StorableDataSet): String {
-        if (companyIdExists(storedDataSet.companyId)) {
-            val dataId = dataStore.insertDataSet(storedDataSet.data)
-            this.dataMetaData[dataId] =
-                DataSetMetaInformation(dataType = storedDataSet.dataType, companyId = storedDataSet.companyId)
-            this.companyData[storedDataSet.companyId]?.dataSets?.add(
-                DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
-            )
-            return dataId
+        if (!verifyCompanyIdExists(storedDataSet.companyId)) {
+            throw IllegalArgumentException("The companyId: ${storedDataSet.companyId} does not exist.")
         }
-        throw IllegalArgumentException("The companyId: ${storedDataSet.companyId} does not exist.")
+        val dataId = dataStore.insertDataSet(storedDataSet.data)
+        this.dataMetaData[dataId] =
+            DataSetMetaInformation(dataType = storedDataSet.dataType, companyId = storedDataSet.companyId)
+        this.companyData[storedDataSet.companyId]!!.dataSets.add(
+            DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
+        )
+        return dataId
     }
 
+
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
-        if (!dataMetaData.containsKey(dataIdentifier.dataId)) {
+        if (!verifyDataIdIsRegistered(dataIdentifier.dataId)) {
             throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
         }
 
@@ -66,7 +74,7 @@ class DataManager(
         }
         if (dataMetaData[dataIdentifier.dataId]!!.dataType != dataIdentifier.dataType) {
             throw IllegalArgumentException(
-                "The data with the id: ${dataIdentifier.dataId} is of registered as type" +
+                "The data with the id: ${dataIdentifier.dataId} is registered as type" +
                     " ${dataMetaData[dataIdentifier.dataId]} by Dataland instead of your requested" +
                     " type ${dataIdentifier.dataType}."
             )
@@ -81,7 +89,7 @@ class DataManager(
      */
 
     override fun getMetaData(dataId: String): DataSetMetaInformation {
-        if (!dataMetaData.containsKey(dataId)) {
+        if (!verifyDataIdIsRegistered(dataId)) {
             throw IllegalArgumentException("Dataland does not know a data set with the id: $dataId ")
         }
         return dataMetaData[dataId]!!
@@ -109,16 +117,17 @@ class DataManager(
     }
 
     override fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier> {
-        if (companyIdExists(companyId)) {
-            return companyData[companyId]?.dataSets ?: emptyList()
+        if (!verifyCompanyIdExists(companyId)) {
+            throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
-        throw IllegalArgumentException("The companyId: $companyId does not exist.")
+        return companyData[companyId]!!.dataSets
     }
 
     override fun getCompanyById(companyId: String): CompanyMetaInformation {
-        if (companyIdExists(companyId)) {
-            return CompanyMetaInformation(companyName = companyData[companyId]!!.companyName, companyId = companyId)
+        if (!verifyCompanyIdExists(companyId)) {
+            throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
-        throw IllegalArgumentException("The companyId: $companyId does not exist.")
+        return CompanyMetaInformation(companyName = companyData[companyId]!!.companyName, companyId = companyId)
+
     }
 }
