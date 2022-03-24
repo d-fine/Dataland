@@ -37,8 +37,8 @@ abstract class DataController<T>(
         val dataset = this.dataManager.getDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
         return ResponseEntity.ok(
             CompanyAssociatedDataSet(
-                dataSet = objectMapper.readValue(dataset, clazz),
-                companyId = this.dataManager.getMetaData(dataId).companyId
+                companyId = this.dataManager.getMetaData(dataId).companyId,
+                dataSet = objectMapper.readValue(dataset, clazz)
             )
         )
     }
