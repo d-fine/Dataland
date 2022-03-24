@@ -28,18 +28,10 @@ class DataManager(
      */
 
     private fun verifyCompanyIdExists(companyId: String): Boolean {
-        if (companyData.containsKey(companyId)) {
-            return true
-        }
-        return false
-    }
+        return (companyData.containsKey(companyId)) }
 
     private fun verifyDataIdIsRegistered(dataId: String): Boolean {
-        if (dataMetaData.containsKey(dataId)) {
-            return true
-        }
-        return false
-    }
+        return (dataMetaData.containsKey(dataId)) }
 
     /*
     ________________________________
