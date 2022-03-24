@@ -60,7 +60,6 @@ class DataManager(
         return dataId
     }
 
-
     override fun getDataSet(dataIdentifier: DataIdentifier): String {
         if (!verifyDataIdIsRegistered(dataIdentifier.dataId)) {
             throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
@@ -128,6 +127,5 @@ class DataManager(
             throw IllegalArgumentException("The companyId: $companyId does not exist.")
         }
         return CompanyMetaInformation(companyName = companyData[companyId]!!.companyName, companyId = companyId)
-
     }
 }
