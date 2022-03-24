@@ -20,5 +20,5 @@ data class EuTaxonomyData(
     /**
      * Possible options to specify how the report figures were attested
      */
-    enum class AttestationOptions { None, Some, Full }
+    enum class AttestationOptions { None, Limited_Assurance, Reasonable_Assurance }
 }

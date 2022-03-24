@@ -4,12 +4,7 @@
       <div class="card-title green-text"><h4>You successfully uploaded the {{msg}}</h4>
       </div>
       <div class="card-content left-align">
-          <p v-for="(value, key) in data" :key="key">{{ humanize(key) }}: {{ value }}</p>
-      </div>
-    </div>
-    <div class="card" v-else>
-      <div class="card-title red-text">
-        <h4>{{msg}} was not uploaded.</h4>
+          <p v-for="(value, key) in data" :key="key"><span>{{ humanize(key) }}</span>: <span :title="key">{{ value }}</span></p>
       </div>
     </div>
 </div>
@@ -26,7 +21,8 @@ export default {
   },
   methods: {
     humanize(text) {
-      return humanizeString(text)
+      if (typeof text == "string") return humanizeString(text)
+      else return null
     }
 }}
 </script>

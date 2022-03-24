@@ -11,12 +11,17 @@
                 'name': 'postEUData'
               }"
         type="form"
+        id="createEuTaxonomyForm"
         @submit="postEUData">
         <FormKit
             type="text"
             name="companyId"
-            validation="required|number"
             label="Company ID"
+            @input="getCompanyIDs"
+            :validation="[['required'],['is', ...idList]]"
+            :validation-messages="{
+                is: 'The company ID you provided does not exist.',
+              }"
         />
         <FormKit
             type="group"
@@ -29,11 +34,11 @@
               validation="required"
               label="Attestation"
               placeholder="Please choose"
-              :options="[
-                    'None',
-                    'Some',
-                    'Full'
-                  ]"
+              :options="
+                    {'None':'None',
+                    'Limited_Assurance': 'Limited Assurance',
+                    'Reasonable_Assurance': 'Reasonable Assurance'}
+                  "
           />
           <FormKit
               type="radio"
@@ -63,19 +68,19 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / €"
+                  label="Aligned / m€"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / €"
+                  label="Eligible / m€"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / €"
+                  label="Total / m€"
               />
 
             </FormKit>
@@ -91,19 +96,19 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / €"
+                  label="Aligned / m€"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / €"
+                  label="Eligible / m€"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / €"
+                  label="Total / m€"
               />
             </FormKit>
           </div>
@@ -136,43 +141,69 @@
           </div>
         </FormKit>
       </FormKit>
-      <p>{{data}}</p>
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
-      <div v-if="response" class="col m12">
-        <SuccessUpload msg="EU Taxonomy Data" :data="{'dataId': response.data}" :status="response.status"/>
+      <div v-if="enableClose" class="col m12">
+        <div class="right-align">
+          <button class="btn btn-small orange darken-3" @click="close">Close</button>
+        </div>
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
+        <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
       </div>
     </div>
   </CardWrapper>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";
+import {DataStore} from "@/services/DataStore";
+import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new EuTaxonomyDataControllerApi()
-
+const dataStore = new DataStore(api.postData)
+const companyApi = new CompanyDataControllerApi()
+const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
   name: "CustomEUTaxonomy",
-  components: {CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
 
   data: () => ({
+    enableClose: false,
+    errorOccurence: false,
     data: {},
     model: {},
     loading: false,
     response: null,
-    companyID: null
+    companyID: null,
+    idList: []
   }),
   methods: {
+    close() {
+      this.enableClose = false
+    },
+    async getCompanyIDs(){
+      try {
+        const companyList = await companyStore.perform([""])
+        this.idList = companyList.data.map(element => parseInt(Object.values(element)[1]))
+      } catch(error) {
+        this.idList = [0]
+      }
+    },
+
     async postEUData() {
       try {
-        this.response = await api.postData(this.data, {baseURL: process.env.VUE_APP_BASE_API_URL})
-        console.log(this.response.status)
+        this.response = await dataStore.perform(this.data)
+        this.$formkit.reset('createEuTaxonomyForm')
+        this.errorOccurence = false
       } catch (error) {
+        this.response = null
+        this.errorOccurence = true
         console.error(error)
       }
+        this.enableClose = true
     }
   },
 }

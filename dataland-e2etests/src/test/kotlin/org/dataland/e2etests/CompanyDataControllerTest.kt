@@ -2,10 +2,10 @@ package org.dataland.e2etests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSetEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataIdentifier
 import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
-import org.dataland.datalandbackend.openApiClient.model.UploadableDataSetEuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -73,7 +73,7 @@ class CompanyDataControllerTest {
         val testCompanyId = postCompanyResponse.companyId
 
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postData(
-            UploadableDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
+            CompanyAssociatedDataSetEuTaxonomyData(testEuTaxonomyData, testCompanyId)
         )
         val getCompanyDataSetsResponse = companyDataControllerApi.getCompanyDataSets(testCompanyId)
 
