@@ -11,9 +11,14 @@ describe('User interactive tests for Data Upload', () => {
     })
 
     it('Create a Company when everything is fine', () => {
-        cy.get('input[name=companyName]').type("BMW", {force: true})
+        const companyName = "BMW"
+        cy.get('input[name=companyName]').type(companyName, {force: true})
         cy.get('button[name="postCompanyData"]').click()
         cy.get('body').should("contain", "success")
+        cy.get('span[title=companyId]').then(($companyID) => {
+            const id = $companyID.text()
+            cy.visit(`/companies/${id}`).get('body').should("contain", companyName)
+        })
     })
 
     it('Create EU Taxonomy Dataset with Reporting Obligation', () => {
