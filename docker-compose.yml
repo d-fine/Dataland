@@ -35,7 +35,10 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   frontend:
     build:
-      context: ./dataland-frontend
+      context: ./
+      dockerfile: ./dataland-frontend/Dockerfile
+    volumes:
+      - ./dataland-frontend/default.conf:/etc/nginx/conf.d/default.conf
     expose:
       - "80"
     networks:

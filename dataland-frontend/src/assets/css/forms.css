@@ -1,0 +1,11 @@
+.formkit-form {
+    text-align: left;
+}
+
+input[type=text].formkit-input {
+    border-bottom: none;
+}
+input[type=text]:not(.browser-default).formkit-input:focus {
+    border-bottom: none;
+    box-shadow: none;
+}

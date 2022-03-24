@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * Meta information associated to a data set in the data store
- * @param name name of the data set
- * @param id unique identifier to identify the data set in the data store
+ * @param dataIdentifier identifier for a data set
+ * @param companyId unique identifier to identify the company the data set belongs to
  */
 data class DataSetMetaInformation(
-    @field:JsonProperty("name", required = true) val name: String,
-    @field:JsonProperty("id", required = true) val id: String
+    @field:JsonProperty(required = true) val dataIdentifier: DataIdentifier,
+    @field:JsonProperty(required = true) val companyId: String
 )

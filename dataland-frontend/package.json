@@ -5,57 +5,55 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 8090",
     "build": "vue-cli-service build",
-    "testunit": "vue-cli-service test:unit",
-    "teste2e": "vue-cli-service test:e2e --mode e2e",
-    "testheadless": "vue-cli-service test:e2e --mode e2e --headless",
+    "lint": "vue-cli-service lint",
+    "teste2e": "vue-cli-service test:e2e --mode development --url http://localhost:8090",
+    "testheadless": "vue-cli-service test:e2e --mode development --headless ",
+    "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
     "testproductive": "vue-cli-service test:e2e --url http://localhost --headless",
     "testremote": "vue-cli-service test:e2e --url http://localhost",
-    "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
-    "lint": "vue-cli-service lint"
+    "testunit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.26.0",
+    "@formkit/themes": "^1.0.0-beta.6",
+    "@formkit/vue": "^1.0.0-beta.6",
+    "axios": "^0.26.1",
     "axios-mock-adapter": "^1.20.0",
     "core-js": "^3.21.1",
     "cross-var": "^1.1.0",
     "dotenv-cli": "^5.0.0",
+    "get-parameter-names": "^0.3.0",
     "materialize-css": "^1.0.0",
     "vue": "^3.2.31",
-    "vue-axios": "^3.4.1"
+    "vue-axios": "^3.4.1",
+    "vue-class-component": "^8.0.0-0",
+    "vue-router": "^4.0.14",
+    "vue3-live-form": "^0.1.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
+    "@babel/core": "^7.17.7",
     "@babel/eslint-parser": "^7.17.0",
     "@cypress/code-coverage": "^3.9.12",
-    "@vue/cli-plugin-babel": "~5.0.1",
-    "@vue/cli-plugin-e2e-cypress": "~5.0.1",
-    "@vue/cli-plugin-eslint": "~5.0.1",
-    "@vue/cli-plugin-unit-jest": "~5.0.1",
-    "@vue/cli-service": "~5.0.1",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "@vue/cli-plugin-babel": "~5.0.3",
+    "@vue/cli-plugin-e2e-cypress": "~5.0.3",
+    "@vue/cli-plugin-eslint": "~5.0.3",
+    "@vue/cli-plugin-typescript": "~5.0.3",
+    "@vue/cli-plugin-unit-jest": "~5.0.3",
+    "@vue/cli-service": "~5.0.3",
+    "@vue/eslint-config-typescript": "^10.0.0",
     "@vue/test-utils": "^2.0.0-rc.17",
     "@vue/vue3-jest": "^27.0.0-alpha.4",
     "babel-jest": "^27.5.1",
-    "cypress": "^9.5.1",
-    "eslint": "^8.10.0",
+    "cypress": "^9.5.2",
+    "eslint": "^8.11.0",
     "eslint-plugin-vue": "^8.5.0",
-    "jest": "^27.5.1"
-  },
-  "nyc": {
-    "report-dir": "coverage/e2e",
-    "reporter": [
-      "lcov",
-      "json"
-    ],
-    "all": true,
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "**/*.test.js",
-      "**/test.js",
-      "**/*.stories.js",
-      "**/stories.js"
-    ]
+    "jest": "^27.5.1",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^12.6.0",
+    "ts-jest": "^27.1.3",
+    "typescript": "~4.6.2"
   },
   "eslintConfig": {
     "root": true,
@@ -64,10 +62,11 @@
     },
     "extends": [
       "plugin:vue/vue3-essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript"
     ],
     "parserOptions": {
-      "parser": "@babel/eslint-parser"
+      "parser": "@typescript-eslint/parser"
     },
     "rules": {},
     "overrides": [
@@ -87,5 +86,22 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "nyc": {
+    "report-dir": "coverage/e2e",
+    "reporter": [
+      "lcov",
+      "json"
+    ],
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.test.js",
+      "**/test.js",
+      "**/*.stories.js",
+      "**/stories.js"
+    ]
+  }
 }

@@ -1,0 +1,28 @@
+<template>
+<div>
+    <div class="card" v-if="status === 200">
+      <div class="card-title green-text"><h4>You successfully uploaded the {{msg}}</h4>
+      </div>
+      <div class="card-content left-align">
+          <p v-for="(value, key) in data" :key="key"><span>{{ humanize(key) }}</span>: <span :title="key">{{ value }}</span></p>
+      </div>
+    </div>
+</div>
+</template>
+
+<script>
+import {humanizeString} from "@/utils/stringHumanizer"
+export default {
+  name: "SuccessUpload",
+  props: {
+    msg: String,
+    data: Object,
+    status: Number
+  },
+  methods: {
+    humanize(text) {
+      if (typeof text == "string") return humanizeString(text)
+      else return null
+    }
+}}
+</script>

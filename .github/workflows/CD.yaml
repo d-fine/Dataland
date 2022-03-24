@@ -23,7 +23,7 @@ jobs:
       - name: Build backend and Assemble boot jar
         run: ./gradlew dataland-backend:bootJar --no-daemon
       - name: Build frontend
-        run: ./gradlew dataland-frontend:npm_run_build --no-daemon
+        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
       - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - name: Deploy to Preview

@@ -19,9 +19,14 @@ node_modules
 *.sln
 *.sw?
 
+# Coverage
+cypress
 reports
 /tests/e2e/videos/
 /.nyc_output/
 **/coverage/
 **/.gradle/
 /tests/*/screenshots/
+
+# auto generated clients
+src/clients
