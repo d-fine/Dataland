@@ -20,13 +20,13 @@ describe("DataStore", () => {
             "type": "object",
             "properties": {
                 "Capex": {
-                    "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+                    "$ref": "#/components/schemas/EuTaxonomyData"
                 },
                 "Opex": {
-                    "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+                    "$ref": "#/components/schemas/EuTaxonomyData"
                 },
                 "Revenue": {
-                    "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+                    "$ref": "#/components/schemas/EuTaxonomyData"
                 },
                 "Reporting Obligation": {
                     "type": "string",
