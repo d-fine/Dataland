@@ -65,7 +65,9 @@ class DataManager(
             throw IllegalArgumentException("Dataland does not know a data set with the id: ${dataIdentifier.dataId} ")
         }
 
-        if (dataStore.selectDataSet(dataIdentifier.dataId) == "") {
+        val dataSet = dataStore.selectDataSet(dataIdentifier.dataId)
+
+        if (dataSet == "") {
             throw IllegalArgumentException(
                 "No data set with the id: ${dataIdentifier.dataId} " +
                     "could be found in the data store."
@@ -78,7 +80,7 @@ class DataManager(
                     " type ${dataIdentifier.dataType}."
             )
         }
-        return dataStore.selectDataSet(dataIdentifier.dataId)
+        return dataSet
     }
 
     /*
