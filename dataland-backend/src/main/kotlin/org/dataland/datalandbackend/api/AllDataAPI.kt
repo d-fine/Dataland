@@ -36,7 +36,7 @@ interface AllDataAPI {
 
     @Operation(
         summary = "Look up meta data on Dataland for specific data set.",
-        description = "Meta info of a specific data set identified by its data ID is retrieved."
+        description = "Meta info about a specific data set identified by its data ID is retrieved."
     )
     @ApiResponses(
         value = [
