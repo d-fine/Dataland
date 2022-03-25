@@ -37,11 +37,14 @@ interface DataManagerInterface {
      */
 
     /**
-     * Method to make the data manager get meta info associated with a data ID
-     * @param dataId
-     * @return all meta data associated with the data behind the data ID
+     * Method to make the data manager search for meta info
+     * @param dataId as unique identifier if meta info about one specific data entry should be retrieved, and can remain empty
+     * @param companyId filters the requested meta info to a specific company, and can remain empty
+     * @param dataType filters the requested meta info to a specific data type, and can remain empty
+     * @return a list of meta info about data depending on the filters:
+     * It contains only one element, if a specific dataId was given as input
      */
-    fun getMetaData(dataId: String): DataMetaInformation
+    fun searchDataMetaInfo(dataId: String? = "", companyId: String? = "", dataType: String? = ""): List<DataMetaInformation>
 
     /*
     ________________________________

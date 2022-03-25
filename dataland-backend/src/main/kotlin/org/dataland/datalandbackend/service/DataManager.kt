@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import javax.xml.crypto.Data
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -37,6 +38,10 @@ class DataManager(
             throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
         }
     }
+
+    private fun verifyDataTypeIsRegistered(dataType: String) {
+        // TODO verify that data type is valid
+        }
 
     /*
     ________________________________
@@ -84,9 +89,39 @@ class DataManager(
     ________________________________
      */
 
-    override fun getMetaData(dataId: String): DataMetaInformation {
-        verifyDataIdIsRegistered(dataId)
-        return dataMetaData[dataId]!!
+    override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
+        if (dataId.isNotEmpty()) {
+            verifyDataIdIsRegistered(dataId)
+            return listOf(dataMetaData[dataId]!!)
+        }
+
+        var matches = mapOf<String, DataMetaInformation>()
+
+        if (companyId.isNotEmpty()) {
+            verifyCompanyIdExists(companyId)
+            matches = dataMetaData.filter { it.value.companyId == companyId }
+
+            if (dataType.isEmpty()) {
+                return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+            }
+
+            matches = matches.filter { it.value.dataType == dataType}
+            return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+        }
+
+        if (dataType.isNotEmpty()) {
+            verifyDataTypeIsRegistered(dataType)
+            matches = dataMetaData.filter { it.value.dataType == dataType }
+
+            if (companyId.isEmpty()) {
+                return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+            }
+
+            matches = matches.filter { it.value.companyId == companyId}
+            return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+        }
+
+        return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
     }
 
     /*
