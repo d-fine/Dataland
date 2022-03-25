@@ -31,13 +31,12 @@ interface AllDataAPI {
         value = [""],
         produces = ["application/json"]
     )
-            /**
-             * A method to search for meta data on all data sets registered by Dataland
-             * @param dataId as unique identifier for a specific data set
-             * @param dataType filters the requested meta data to a specific data type.
-             * @return the ID of the created entry in the data store
-             */
-    fun getData (@RequestParam dataId: String? = null, @RequestParam dataType: String? = null):
-            List<DataSetMetaInformation>
-
+    /**
+     * A method to search for meta data on all data sets registered by Dataland
+     * @param dataId as unique identifier for a specific data set
+     * @param dataType filters the requested meta data to a specific data type.
+     * @return the ID of the created entry in the data store
+     */
+    fun getData(@RequestParam dataId: String? = null, @RequestParam dataType: String? = null):
+        List<DataSetMetaInformation>
 }
