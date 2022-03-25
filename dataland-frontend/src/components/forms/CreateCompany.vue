@@ -1,8 +1,8 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Create a Company</h2>
-    </div>
-    <div class="card-content ">
+  <Card class="col-5 col-offset-1">
+    <template #title>Create a Company
+    </template>
+    <template #content>
       <FormKit
           v-model="data"
           type="form"
@@ -20,18 +20,13 @@
             label="Company Name"
         />
       </FormKit>
-      <div class="progress" v-if="loading">
-        <div class="indeterminate"></div>
-      </div>
-      <div v-if="enableClose" class="col m12">
-        <div class="right-align">
-        <button class="btn btn-small orange darken-3" @click="close">Close</button>
-        </div>
-        <SuccessUpload v-if="response" msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
-        <FailedUpload v-if="errorOccurence" msg="Company" :enableClose="true" />
-      </div>
-    </div>
-  </CardWrapper>
+
+        <template v-if="action">
+          <SuccessUpload v-if="response" msg="company" :count="count"/>
+          <FailedUpload v-else msg="Company" :count="count" />
+        </template>
+    </template>
+  </Card>
 </template>
 
 <script>
@@ -40,25 +35,26 @@ import {CompanyDataControllerApi} from "@/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/clients/backend/backendOpenApi.json";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 import FailedUpload from "@/components/ui/FailedUpload";
-
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, Card, Button, Message, FormKit, SuccessUpload},
 
   data: () => ({
-    enableClose: false,
+    action: false,
     data: {},
     schema: dataStore.getSchema(),
     model: {},
     loading: false,
     response: null,
-    errorOccurence: false
+    count: 0
   }),
   methods: {
     close() {
@@ -66,14 +62,15 @@ const createCompany = {
     },
     async postCompanyData() {
       try {
+        this.action = false
+        this.count++
         this.response = await dataStore.perform(this.data)
         this.$formkit.reset('createCompanyForm')
-        this.errorOccurence = false
       } catch (error) {
         this.response = null
-        this.errorOccurence = true
+      } finally {
+        this.action = true
       }
-        this.enableClose = true
     }
   },
 

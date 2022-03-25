@@ -1,21 +1,21 @@
 <template>
-  <Knob v-model="value"/>
-  <CreateCompany/>
-  <CreateEUTaxonomy/>
+  <div class="grid">
+    <CreateCompany/>
+    <CreateEUTaxonomy/>
+  </div>
 </template>
 
 <script>
 import CreateCompany from "@/components/forms/CreateCompany"
 import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy";
-import Knob from 'primevue/knob';
+
 export default {
   name: "CreateData",
   components: {
     CreateEUTaxonomy,
-    CreateCompany,
-    Knob
+    CreateCompany
   },
-  data(){
+  data() {
     return {
       value: 5
     }

@@ -1,8 +1,10 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Company Search</h2>
-    </div>
-    <div class="card-content ">
+  <Card class="col-5 col-offset-1">
+    <template #title>
+      Company Search
+    </template>
+    <template #content>
+
       <FormKit
           v-model="data"
           :submit-attrs="{
@@ -17,7 +19,7 @@
         />
 
       </FormKit>
-      <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
+      <Button @click="getCompanyByName(true)" label="Show all companies" class="p-button-warning"/>
       <br>
       <div class="col m12">
         <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"
@@ -28,8 +30,8 @@
         <div>
         </div>
       </div>
-    </div>
-  </CardWrapper>
+    </template>
+  </Card>
 </template>
 
 <script>
@@ -42,11 +44,12 @@ const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
 import ResultTable from "@/components/ui/ResultTable";
-import CardWrapper from "@/components/wrapper/CardWrapper";
+import Card from 'primevue/card';
+import Button from 'primevue/button';
 
 export default {
   name: "RetrieveCompany",
-  components: {CardWrapper, FormKit, FormKitSchema, ResultTable},
+  components: {Card, Button, FormKit, FormKitSchema, ResultTable},
 
   data: () => ({
     data: {},

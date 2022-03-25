@@ -1,17 +1,17 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col m12 s12">
-        <div class="card">
+  <div class="grid">
+      <div class="col-12">
+          <Card>
           <slot></slot>
-        </div>
+          </Card>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
+import Card from 'primevue/card';
 export default {
-  name: "CardWrapper"
+  name: "CardWrapper",
+  components: {Card},
 }
 </script>
