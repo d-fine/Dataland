@@ -45,15 +45,15 @@ class DataManager(
     ________________________________
      */
 
-    override fun addDataSet(storedDataSet: StorableDataSet): String {
-        verifyCompanyIdExists(storedDataSet.companyId)
+    override fun addDataSet(storableDataSet: StorableDataSet): String {
+        verifyCompanyIdExists(storableDataSet.companyId)
 
-        val dataId = dataStore.insertDataSet(storedDataSet.data)
+        val dataId = dataStore.insertDataSet(storableDataSet.data)
 
         dataMetaData[dataId] =
-            DataSetMetaInformation(dataType = storedDataSet.dataType, companyId = storedDataSet.companyId)
-        companyData[storedDataSet.companyId]!!.dataSets.add(
-            DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
+            DataSetMetaInformation(dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
+        companyData[storableDataSet.companyId]!!.dataSets.add(
+            DataIdentifier(dataId = dataId, dataType = storableDataSet.dataType)
         )
         return dataId
     }

@@ -18,10 +18,10 @@ interface DataManagerInterface {
 
     /**
      * Method to make the data manager add a data set to a data store
-     * @param storedDataSet contains all the inputs needed by Dataland to add a data set to a data store
+     * @param storableDataSet contains all the inputs needed by Dataland to add a data set to a data store
      * @return ID of the newly created data store entry
      */
-    fun addDataSet(storedDataSet: StorableDataSet): String
+    fun addDataSet(storableDataSet: StorableDataSet): String
 
     /**
      * Method to make the data manager get the data of a single entry from the data store
