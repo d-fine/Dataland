@@ -26,7 +26,7 @@
         />
       </FormKit>
       <br>
-      <Button class="p-button-warning" @click="clearAll" label="Clear"/>
+      <Button @click="clearAll" label="Clear"/>
       <div v-if="response" class="col m12">
         <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
                         :data="response.data"/>

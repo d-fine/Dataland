@@ -19,7 +19,7 @@
         />
 
       </FormKit>
-      <Button @click="getCompanyByName(true)" label="Show all companies" class="p-button-warning"/>
+      <Button @click="getCompanyByName(true)" label="Show all companies" />
       <br>
       <div class="col m12">
         <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"
