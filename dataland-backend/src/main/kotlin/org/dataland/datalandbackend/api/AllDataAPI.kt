@@ -53,5 +53,5 @@ interface AllDataAPI {
      * @param dataId as unique identifier for a specific data set
      * @return the DataMetaInformation for the specified data set
      */
-    fun getDataMetaInfo(@PathVariable dataId: String): String
+    fun getDataMetaInfo(@PathVariable dataId: String): DataMetaInformation
 }
