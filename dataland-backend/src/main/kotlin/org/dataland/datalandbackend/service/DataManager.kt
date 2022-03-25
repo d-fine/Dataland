@@ -50,9 +50,9 @@ class DataManager(
 
         val dataId = dataStore.insertDataSet(storedDataSet.data)
 
-        this.dataMetaData[dataId] =
+        dataMetaData[dataId] =
             DataSetMetaInformation(dataType = storedDataSet.dataType, companyId = storedDataSet.companyId)
-        this.companyData[storedDataSet.companyId]!!.dataSets.add(
+        companyData[storedDataSet.companyId]!!.dataSets.add(
             DataIdentifier(dataId = dataId, dataType = storedDataSet.dataType)
         )
         return dataId
