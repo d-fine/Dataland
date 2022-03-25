@@ -3,11 +3,11 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- * Data identifier for a data set containing also data type info
- * @param dataId unique identifier to identify the data set in the data store
- * @param dataType type of the data set
+ * Required input for data manager to get valid data from data store
+ * @param dataId unique identifier to identify data in the data store
+ * @param dataType expected type of the data
  */
-data class DataIdentifier(
+data class DataManagerInputToGetData(
     @field:JsonProperty("Data ID", required = true) val dataId: String,
     @field:JsonProperty("Data Type", required = true) val dataType: String
 )

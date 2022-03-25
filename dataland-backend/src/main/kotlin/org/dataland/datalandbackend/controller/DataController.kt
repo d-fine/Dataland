@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
-import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.http.ResponseEntity
 
@@ -20,25 +20,25 @@ abstract class DataController<T>(
 ) : DataAPI<T> {
     private val dataType = clazz.toString().substringAfterLast(".")
 
-    override fun postCompanyAssociatedDataSet(companyAssociatedDataSet: CompanyAssociatedDataSet<T>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<String> {
         return ResponseEntity.ok(
             this.dataManager.addDataSet(
                 StorableDataSet(
-                    companyId = companyAssociatedDataSet.companyId,
+                    companyId = companyAssociatedData.companyId,
                     dataType = dataType,
-                    data = objectMapper.writeValueAsString(companyAssociatedDataSet.dataSet)
+                    data = objectMapper.writeValueAsString(companyAssociatedData.data)
                 )
             )
         )
     }
 
-    override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>> {
-        val dataset = this.dataManager.getDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
+    override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        val dataset = this.dataManager.getData(DataManagerInputToGetData(dataId = dataId, dataType = dataType))
         return ResponseEntity.ok(
-            CompanyAssociatedDataSet(
+            CompanyAssociatedData(
                 companyId = this.dataManager.getMetaData(dataId).companyId,
-                dataSet = objectMapper.readValue(dataset, clazz)
+                data = objectMapper.readValue(dataset, clazz)
             )
         )
     }

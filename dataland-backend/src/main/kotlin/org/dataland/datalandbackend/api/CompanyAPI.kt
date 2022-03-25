@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -66,10 +65,13 @@ interface CompanyAPI {
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
+/*
+
+This endpoint will be obsolete as soon as AllDataAPI is implemented.
 
     @Operation(
-        summary = "Retrieve list of existing data sets for given company.",
-        description = "A List of data ID and data type of all data sets of the given company is retrieved."
+        summary = "Retrieve list of meta info about data sets for company.",
+        description = "A List of meta info about all data sets for of the given company is retrieved."
     )
     @ApiResponses(
         value = [
@@ -81,11 +83,12 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve all existing data sets of a specific company identified by the company ID
-     * @param companyId identifier of the company in dataland
-     * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
+     * A method to retrieve meta info about all existing data sets of a specific company identified by the company ID
+     * @param companyId identifier of the company
+     * @return list of data meta info about all existing data sets of the specified company
      */
-    fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
+    fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataMetaInformation>>
+*/
 
     @Operation(
         summary = "Retrieve company meta information.",

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
+import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,7 +22,7 @@ interface DataAPI<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added data set to the data store.")
+            ApiResponse(responseCode = "200", description = "Successfully added data to the data store.")
         ]
     )
     @PostMapping(
@@ -30,16 +30,16 @@ interface DataAPI<T> {
         consumes = ["application/json"]
     )
     /**
-     * A method to store a provided data set via dataland into the data store
-     * @param companyAssociatedDataSet consisting of the ID of the company and the data to be stored
+     * A method to store data via Dataland into a data store
+     * @param companyAssociatedData consisting of the ID of the company and the data to be stored
      * @return the ID of the created entry in the data store
      */
-    fun postCompanyAssociatedDataSet(@Valid @RequestBody companyAssociatedDataSet: CompanyAssociatedDataSet<T>):
+    fun postCompanyAssociatedData(@Valid @RequestBody companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<String>
 
     @Operation(
-        summary = "Retrieve specific data set from the data store.",
-        description = "The data set identified via the provided data ID is retrieved."
+        summary = "Retrieve specific data from the data store.",
+        description = "Data identified by the provided data ID is retrieved."
     )
     @ApiResponses(
         value = [
@@ -51,10 +51,10 @@ interface DataAPI<T> {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve a specific data set identified by its ID
-     * @param dataId identifier used to uniquely determine the data set in the data store
+     * A method to retrieve specific data identified by its ID
+     * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
     fun getCompanyAssociatedDataSet(@PathVariable("dataId") dataId: String):
-        ResponseEntity<CompanyAssociatedDataSet<T>>
+        ResponseEntity<CompanyAssociatedData<T>>
 }

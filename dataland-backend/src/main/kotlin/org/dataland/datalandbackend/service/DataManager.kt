@@ -3,9 +3,8 @@ package org.dataland.datalandbackend.service
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
-import org.dataland.datalandbackend.model.StorableCompany
+import org.dataland.datalandbackend.model.DataManagerInputToGetData
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -17,8 +16,8 @@ import org.springframework.stereotype.Component
 class DataManager(
     @Autowired var dataStore: DataStoreInterface
 ) : DataManagerInterface {
-    var dataMetaData = mutableMapOf<String, DataSetMetaInformation>()
-    var companyData = mutableMapOf<String, StorableCompany>()
+    var dataMetaData = mutableMapOf<String, DataMetaInformation>()
+    var companyData = mutableMapOf<String, CompanyMetaInformation>()
     private var companyCounter = 0
 
     /*
@@ -29,13 +28,13 @@ class DataManager(
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyData.containsKey(companyId)) {
-            throw IllegalArgumentException("The companyId: $companyId does not exist.")
+            throw IllegalArgumentException("Dataland does not know the company ID $companyId.")
         }
     }
 
     private fun verifyDataIdIsRegistered(dataId: String) {
         if (!dataMetaData.containsKey(dataId)) {
-            throw IllegalArgumentException("Dataland does not know a data set with the id: $dataId ")
+            throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
         }
     }
 
@@ -51,32 +50,32 @@ class DataManager(
         val dataId = dataStore.insertDataSet(storableDataSet.data)
 
         dataMetaData[dataId] =
-            DataSetMetaInformation(dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
-        companyData[storableDataSet.companyId]!!.dataSets.add(
-            DataIdentifier(dataId = dataId, dataType = storableDataSet.dataType)
+            DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
+        companyData[storableDataSet.companyId]!!.dataRegisteredByDataland.add(
+            DataMetaInformation(dataId = dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
         )
         return dataId
     }
 
-    override fun getDataSet(dataIdentifier: DataIdentifier): String {
-        verifyDataIdIsRegistered(dataIdentifier.dataId)
+    override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
+        verifyDataIdIsRegistered(dataManagerInputToGetData.dataId)
 
-        val dataSet = dataStore.selectDataSet(dataIdentifier.dataId)
+        val data = dataStore.selectDataSet(dataManagerInputToGetData.dataId)
 
-        if (dataSet == "") {
+        if (data == "") {
             throw IllegalArgumentException(
-                "No data set with the id: ${dataIdentifier.dataId} " +
+                "No data set with the id: ${dataManagerInputToGetData.dataId} " +
                     "could be found in the data store."
             )
         }
-        if (dataMetaData[dataIdentifier.dataId]!!.dataType != dataIdentifier.dataType) {
+        if (dataMetaData[dataManagerInputToGetData.dataId]!!.dataType != dataManagerInputToGetData.dataType) {
             throw IllegalArgumentException(
-                "The data with the id: ${dataIdentifier.dataId} is registered as type" +
-                    " ${dataMetaData[dataIdentifier.dataId]} by Dataland instead of your requested" +
-                    " type ${dataIdentifier.dataType}."
+                "The data with the id: ${dataManagerInputToGetData.dataId} is registered as type" +
+                    " ${dataMetaData[dataManagerInputToGetData.dataId]} by Dataland instead of your requested" +
+                    " type ${dataManagerInputToGetData.dataType}."
             )
         }
-        return dataSet
+        return data
     }
 
     /*
@@ -85,7 +84,7 @@ class DataManager(
     ________________________________
      */
 
-    override fun getMetaData(dataId: String): DataSetMetaInformation {
+    override fun getMetaData(dataId: String): DataMetaInformation {
         verifyDataIdIsRegistered(dataId)
         return dataMetaData[dataId]!!
     }
@@ -99,8 +98,8 @@ class DataManager(
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = StorableCompany(companyName = companyName, dataSets = mutableListOf())
-        return CompanyMetaInformation(companyName = companyName, companyId = "$companyCounter")
+        companyData["$companyCounter"] = CompanyMetaInformation(companyId = companyCounter.toString(), companyName = companyName, dataRegisteredByDataland = mutableListOf())
+        return companyData["$companyCounter"]!!
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
@@ -108,18 +107,21 @@ class DataManager(
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }
-        return matches.map { CompanyMetaInformation(companyName = it.value.companyName, companyId = it.key) }
+        return matches.map { CompanyMetaInformation(companyId = it.key, companyName = it.value.companyName, dataRegisteredByDataland = it.value.dataRegisteredByDataland) }
     }
+/*
 
-    override fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier> {
+This method will be obsolete as soon as AllDataAPI is implemented.
+
+    override fun listDataSetsByCompanyId(companyId: String): List<DataManagerInputToGetData> {
         verifyCompanyIdExists(companyId)
 
-        return companyData[companyId]!!.dataSets
+        return companyData[companyId]!!.dataMetaInformation
     }
-
+*/
     override fun getCompanyById(companyId: String): CompanyMetaInformation {
         verifyCompanyIdExists(companyId)
 
-        return CompanyMetaInformation(companyName = companyData[companyId]!!.companyName, companyId = companyId)
+        return companyData[companyId]!!
     }
 }

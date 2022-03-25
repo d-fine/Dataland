@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.service
 
-import org.dataland.datalandbackend.model.DataIdentifier
+import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -71,7 +71,7 @@ class DataManagerTest {
 
         for (dataId in listOfDataIds) {
             assertEquals(
-                DataIdentifier(dataId = dataId, dataType = testDataSetsToStore[dataId.toInt() - 1].dataType),
+                DataManagerInputToGetData(dataId = dataId, dataType = testDataSetsToStore[dataId.toInt() - 1].dataType),
                 listDataSetsByCompanyIdResponse.first { it.dataId == dataId },
                 "The stored data set type does not match the test data set type."
             )
@@ -99,7 +99,7 @@ class DataManagerTest {
         val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testManager.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
+            testManager.getData(DataManagerInputToGetData(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
             "The posted data set does not match the retrieved data set."
         )
     }
@@ -119,7 +119,7 @@ class DataManagerTest {
         testManager.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testManager.getDataSet(DataIdentifier(dataId = "error", dataType = testDataSetsToStore[0].dataType))
+            testManager.getData(DataManagerInputToGetData(dataId = "error", dataType = testDataSetsToStore[0].dataType))
         }
     }
 
@@ -130,7 +130,7 @@ class DataManagerTest {
         val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
 
         assertThrows<IllegalArgumentException> {
-            testManager.getDataSet(DataIdentifier(dataId = testDataSetId, dataType = "error"))
+            testManager.getData(DataManagerInputToGetData(dataId = testDataSetId, dataType = "error"))
         }
     }
 }

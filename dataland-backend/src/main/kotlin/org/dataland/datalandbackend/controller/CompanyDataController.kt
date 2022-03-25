@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -31,8 +30,12 @@ class CompanyDataController(
     override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
         return ResponseEntity.ok(this.dataManager.getCompanyById(companyId))
     }
+/*
 
-    override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataIdentifier>> {
+This endpoint and implementation will be obsolete as soon as AllDataAPI is implemented.
+
+    override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataMetaInformation>> {
         return ResponseEntity.ok(this.dataManager.listDataSetsByCompanyId(companyId))
     }
+*/
 }

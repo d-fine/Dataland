@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.model.DataManagerInputToGetData
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 
 /**
@@ -17,18 +17,18 @@ interface DataManagerInterface {
      */
 
     /**
-     * Method to make the data manager add a data set to a data store
-     * @param storableDataSet contains all the inputs needed by Dataland to add a data set to a data store
-     * @return ID of the newly created data store entry
+     * Method to make the data manager add data to a data store and store meta data in Dataland
+     * @param storableDataSet contains all the inputs needed by Dataland
+     * @return ID of the newly stored data in the data store
      */
     fun addDataSet(storableDataSet: StorableDataSet): String
 
     /**
      * Method to make the data manager get the data of a single entry from the data store
-     * @param dataIdentifier identifier of the stored data (consists of data id and data type)
-     * @return all data associated to the identifier provided
+     * @param dataManagerInputToGetData contains all the inputs needed by Dataland
+     * @return data associated with the data ID provided in the input
      */
-    fun getDataSet(dataIdentifier: DataIdentifier): String
+    fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String
 
     /*
     ________________________________
@@ -41,7 +41,7 @@ interface DataManagerInterface {
      * @param dataId
      * @return all meta data associated with the data behind the data ID
      */
-    fun getMetaData(dataId: String): DataSetMetaInformation
+    fun getMetaData(dataId: String): DataMetaInformation
 
     /*
     ________________________________
@@ -51,30 +51,33 @@ interface DataManagerInterface {
      */
 
     /**
-     * Method to add a company to the meta data store
-     * @param companyName name of the company to be stored in the meta data store
-     * @return meta information of the newly created entry in the meta data store (companyId and companyName)
+     * Method to add a company
+     * @param companyName name of the company to be stored
+     * @return meta information of the newly created entry in the company data store of Dataland
      */
     fun addCompany(companyName: String): CompanyMetaInformation
 
     /**
-     * Method to list matching companies in the meta data store by searching for a company name
+     * Method to list matching companies in Dataland by searching for a company name
      * @param companyName string used for substring matching against the companyNames of all entries
-     * @return list of all matching companies in the meta data store
+     * @return list of all matching companies in Dataland
      */
     fun listCompaniesByName(companyName: String): List<CompanyMetaInformation>
+/*
+
+This method will be obsolete as soon as AllDataAPI is implemented.
 
     /**
      * Method to list all existing data sets of a given company
      * @param companyId
      * @return list of all data set IDs along with their data type
      */
-    fun listDataSetsByCompanyId(companyId: String): List<DataIdentifier>
-
+    fun listDataSetsByCompanyId(companyId: String): List<DataManagerInputToGetData>
+*/
     /**
      * Method to retrieve meta information about a specific company
      * @param companyId
-     * @return meta information consisting of company Id and company name
+     * @return meta information about the retrieved company
      */
     fun getCompanyById(companyId: String): CompanyMetaInformation
 }
