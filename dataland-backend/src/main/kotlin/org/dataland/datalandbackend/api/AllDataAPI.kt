@@ -8,15 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
-// TODO: Endpoint to search and filter all data meta data
-
 @RequestMapping("/data")
 interface AllDataAPI {
-
-    /* Inputs: Search and filter params
-    Output: List of DataSetMetaInformation => user can take the output and query a dataset via the respective
-    data endpoint (e.g. /eutaxonomies)
-     */
 
     @Operation(
         summary = "Search for data meta data on Dataland.",
