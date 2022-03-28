@@ -99,7 +99,12 @@ class DataManagerTest {
         val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
         assertEquals(
             testDataSetsToStore[0].data,
-            testManager.getData(DataManagerInputToGetData(dataId = testDataSetId, dataType = testDataSetsToStore[0].dataType)),
+            testManager.getData(
+                DataManagerInputToGetData(
+                    dataId = testDataSetId,
+                    dataType = testDataSetsToStore[0].dataType
+                )
+            ),
             "The posted data set does not match the retrieved data set."
         )
     }

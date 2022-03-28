@@ -30,12 +30,4 @@ class CompanyDataController(
     override fun getCompanyById(companyId: String): ResponseEntity<CompanyMetaInformation> {
         return ResponseEntity.ok(this.dataManager.getCompanyById(companyId))
     }
-/*
-
-This endpoint and implementation will be obsolete as soon as AllDataAPI is implemented.
-
-    override fun getCompanyDataSets(companyId: String): ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(this.dataManager.listDataSetsByCompanyId(companyId))
-    }
-*/
 }

@@ -32,15 +32,28 @@ class DataManager(
         }
     }
 
-    private fun verifyDataIdIsRegistered(dataId: String) {
+    private fun verifyDataIdIsExists(dataId: String) {
         if (!dataMetaData.containsKey(dataId)) {
             throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
         }
     }
 
-    private fun verifyDataTypeIsRegistered(dataType: String) {
-        // TODO verify that data type is valid
+    private fun verifyDataTypeExists(dataType: String) {
+        val matchesForDataType = dataMetaData.filter { it.value.dataType.contains(dataType, true) }
+        if (matchesForDataType.isEmpty()) {
+            throw IllegalArgumentException("Dataland does not know the data type: $dataType")
         }
+    }
+
+    private fun mapToListConversion(inputMap: Map<String, DataMetaInformation>): List<DataMetaInformation> {
+        return inputMap.map {
+            DataMetaInformation(
+                dataId = it.key,
+                dataType = it.value.dataType,
+                companyId = it.value.companyId
+            )
+        }
+    }
 
     /*
     ________________________________
@@ -56,13 +69,17 @@ class DataManager(
         dataMetaData[dataId] =
             DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
         companyData[storableDataSet.companyId]!!.dataRegisteredByDataland.add(
-            DataMetaInformation(dataId = dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
+            DataMetaInformation(
+                dataId = dataId,
+                dataType = storableDataSet.dataType,
+                companyId = storableDataSet.companyId
+            )
         )
         return dataId
     }
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
-        verifyDataIdIsRegistered(dataManagerInputToGetData.dataId)
+        verifyDataIdIsExists(dataManagerInputToGetData.dataId)
 
         val data = dataStore.selectDataSet(dataManagerInputToGetData.dataId)
 
@@ -88,37 +105,23 @@ class DataManager(
     ________________________________
      */
 
-    override fun searchDataMetaInfo(dataId: String , companyId: String, dataType: String): List<DataMetaInformation> {
-        if (dataId.isNotEmpty()) {
-            verifyDataIdIsRegistered(dataId)
-            return listOf(dataMetaData[dataId]!!)
-        }
-
+    override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
+        if (dataId.isNotEmpty()) { verifyDataIdIsExists(dataId); return listOf(dataMetaData[dataId]!!) }
         if (companyId.isNotEmpty()) {
             verifyCompanyIdExists(companyId)
             var matches = dataMetaData.filter { it.value.companyId == companyId }
-
-            if (dataType.isEmpty()) {
-                return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
-            }
-
-            matches = matches.filter { it.value.dataType == dataType}
-            return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+            if (dataType.isEmpty()) { return mapToListConversion(matches) }
+            matches = matches.filter { it.value.dataType == dataType }
+            return mapToListConversion(matches)
         }
-
         if (dataType.isNotEmpty()) {
-            verifyDataTypeIsRegistered(dataType)
+            verifyDataTypeExists(dataType)
             var matches = dataMetaData.filter { it.value.dataType == dataType }
-
-            if (companyId.isEmpty()) {
-                return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
-            }
-
-            matches = matches.filter { it.value.companyId == companyId}
-            return matches.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+            if (companyId.isEmpty()) { return mapToListConversion(matches) }
+            matches = matches.filter { it.value.companyId == companyId }
+            return mapToListConversion(matches)
         }
-
-        return dataMetaData.map { DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId) }
+        return mapToListConversion(dataMetaData)
     }
 
     /*
@@ -130,7 +133,11 @@ class DataManager(
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = CompanyMetaInformation(companyId = companyCounter.toString(), companyName = companyName, dataRegisteredByDataland = mutableListOf())
+        companyData["$companyCounter"] = CompanyMetaInformation(
+            companyId = companyCounter.toString(),
+            companyName = companyName,
+            dataRegisteredByDataland = mutableListOf()
+        )
         return companyData["$companyCounter"]!!
     }
 
@@ -139,18 +146,15 @@ class DataManager(
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }
-        return matches.map { CompanyMetaInformation(companyId = it.key, companyName = it.value.companyName, dataRegisteredByDataland = it.value.dataRegisteredByDataland) }
+        return matches.map {
+            CompanyMetaInformation(
+                companyId = it.key,
+                companyName = it.value.companyName,
+                dataRegisteredByDataland = it.value.dataRegisteredByDataland
+            )
+        }
     }
-/*
 
-This method will be obsolete as soon as AllDataAPI is implemented.
-
-    override fun listDataSetsByCompanyId(companyId: String): List<DataManagerInputToGetData> {
-        verifyCompanyIdExists(companyId)
-
-        return companyData[companyId]!!.dataMetaInformation
-    }
-*/
     override fun getCompanyById(companyId: String): CompanyMetaInformation {
         verifyCompanyIdExists(companyId)
 
