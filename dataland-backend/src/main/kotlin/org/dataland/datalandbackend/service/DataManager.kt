@@ -111,7 +111,7 @@ class DataManager(
             return listOf(dataMetaData[dataId]!!)
         }
 
-        var matches : Map<String, DataMetaInformation> = dataMetaData
+        var matches: Map<String, DataMetaInformation> = dataMetaData
 
         if (companyId.isNotEmpty()) {
             verifyCompanyIdExists(companyId)

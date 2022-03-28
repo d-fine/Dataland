@@ -32,7 +32,7 @@ internal class AllDataControllerTest(
         )
             .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
     }
-/*
+
     @Test
     fun `list of meta info about data of specific company can be retrieved`() {
         uploadCompany(mockMvc, testCompanyName)
