@@ -5,5 +5,5 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y temurin-17-jdk
 
+RUN ./gradlew dataland-frontend:npmInstall --no-daemon
 COPY ./gradlecache /root/.gradle
-COPY ./dataland-frontend/node_modules /app/dataland-frontend/node_modules
