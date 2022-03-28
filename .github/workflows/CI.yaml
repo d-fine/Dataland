@@ -161,9 +161,9 @@ jobs:
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
-          find . -type f -iname "*.exec" \
-          find . -type f -iname "*.lcov" \
-          find . -type f -name jacocoTestReport.xml \
+          find . -type f -iname "*.exec";
+          find . -type f -iname "*.lcov";
+          find . -type f -name jacocoTestReport.xml;
           ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
