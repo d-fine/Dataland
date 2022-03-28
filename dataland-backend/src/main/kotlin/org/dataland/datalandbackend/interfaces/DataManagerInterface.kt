@@ -44,7 +44,7 @@ interface DataManagerInterface {
      * @return a list of meta info about data depending on the filters:
      * It contains only one element, if a specific dataId was given as input
      */
-    fun searchDataMetaInfo(dataId: String? = "", companyId: String? = "", dataType: String? = ""): List<DataMetaInformation>
+    fun searchDataMetaInfo(dataId: String = "", companyId: String = "", dataType: String = ""): List<DataMetaInformation>
 
     /*
     ________________________________

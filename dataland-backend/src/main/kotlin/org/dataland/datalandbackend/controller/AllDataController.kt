@@ -1,11 +1,8 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.AllDataAPI
-import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -22,7 +19,7 @@ class AllDataController(
 ) : AllDataAPI {
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: String?): ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(companyId = companyId, dataType = dataType))
+        return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(companyId = companyId ?: "", dataType = dataType ?: ""))
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
