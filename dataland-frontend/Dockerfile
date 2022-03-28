@@ -2,7 +2,7 @@
 FROM ghcr.io/d-fine/dataland/cypressbase:latest as build-stage
 WORKDIR /app
 COPY . .
-RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npmInstall --no-daemon
+RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
 # build stage
 #FROM node:lts-alpine as build-stage
 #WORKDIR /app
