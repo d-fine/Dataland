@@ -26,10 +26,10 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
-            for (let i = 0; i < 3; i++) {
-                const inputNumber = 10 * i + 7.
-                cy.get(`div[title=${argument}] input`).eq(i).type(inputNumber.toString(), {force: true})
-            }
+            cy.get(`div[title=${argument}] input`).each(($element, index) => {
+                const inputNumber = 10 * index + 7.
+                cy.wrap($element).type(inputNumber.toString(), {force: true})
+            })
         }
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
