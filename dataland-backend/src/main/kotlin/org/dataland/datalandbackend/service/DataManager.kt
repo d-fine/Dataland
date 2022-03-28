@@ -89,7 +89,7 @@ class DataManager(
     ________________________________
      */
 
-    override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
+    override fun searchDataMetaInfo(dataId: String?, companyId: String?, dataType: String?): List<DataMetaInformation> {
         if (dataId.isNotEmpty()) {
             verifyDataIdIsRegistered(dataId)
             return listOf(dataMetaData[dataId]!!)

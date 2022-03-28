@@ -21,7 +21,7 @@ class AllDataController(
     @Autowired var dataManager: DataManagerInterface,
 ) : AllDataAPI {
 
-    override fun getListOfDataMetaInfo(companyId: String, dataType: String): ResponseEntity<List<DataMetaInformation>> {
+    override fun getListOfDataMetaInfo(companyId: String?, dataType: String?): ResponseEntity<List<DataMetaInformation>> {
         return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(companyId = companyId, dataType = dataType))
     }
 

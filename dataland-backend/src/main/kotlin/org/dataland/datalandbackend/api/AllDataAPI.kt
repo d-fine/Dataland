@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,7 +33,7 @@ interface AllDataAPI {
      * @return a list of matching DataMetaInformation
      */
     fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: String? = null):
-        List<DataMetaInformation>
+        ResponseEntity<List<DataMetaInformation>>
 
     @Operation(
         summary = "Look up meta info about a specific data set.",
@@ -53,5 +54,5 @@ interface AllDataAPI {
      * @param dataId as unique identifier for a specific data set
      * @return the DataMetaInformation for the specified data set
      */
-    fun getDataMetaInfo(@PathVariable dataId: String): DataMetaInformation
+    fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
 }
