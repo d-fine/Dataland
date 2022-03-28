@@ -27,8 +27,8 @@ class AllDataController(
         )
     }
 
-    override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
-        return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(dataId = dataId).elementAt(0))
+    override fun getDataMetaInfo(dataId: String): ResponseEntity<List<DataMetaInformation>> {
+        return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(dataId = dataId))
     }
 }
 

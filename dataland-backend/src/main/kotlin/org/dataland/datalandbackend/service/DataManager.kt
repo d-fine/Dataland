@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.service
 
+import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.interfaces.DataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  */
 @Component("DefaultManager")
 class DataManager(
-    @Autowired var dataStore: DataStoreInterface
+    @Autowired var edcClient: DefaultApi
 ) : DataManagerInterface {
     var dataMetaData = mutableMapOf<String, DataMetaInformation>()
     var companyData = mutableMapOf<String, CompanyMetaInformation>()
@@ -64,7 +64,7 @@ class DataManager(
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
 
-        val dataId = dataStore.insertDataSet(storableDataSet.data)
+        val dataId = edcClient.insertData(storableDataSet.data)
 
         dataMetaData[dataId] =
             DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
@@ -81,7 +81,7 @@ class DataManager(
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
         verifyDataIdIsExists(dataManagerInputToGetData.dataId)
 
-        val data = dataStore.selectDataSet(dataManagerInputToGetData.dataId)
+        val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
 
         if (data == "") {
             throw IllegalArgumentException(
@@ -110,20 +110,20 @@ class DataManager(
             verifyDataIdIsExists(dataId)
             return listOf(dataMetaData[dataId]!!)
         }
+
+        var matches : Map<String, DataMetaInformation> = dataMetaData
+
         if (companyId.isNotEmpty()) {
             verifyCompanyIdExists(companyId)
-            val matches = dataMetaData.filter { it.value.companyId == companyId }
-            if (dataType.isEmpty()) {
-                return mapToListConversion(matches)
-            }
-            verifyDataTypeExists(dataType)
-            return mapToListConversion(matches.filter { it.value.dataType == dataType })
+            matches = matches.filter { it.value.companyId == companyId }
         }
+
         if (dataType.isNotEmpty()) {
             verifyDataTypeExists(dataType)
-            return mapToListConversion(dataMetaData.filter { it.value.dataType == dataType })
+            matches = matches.filter { it.value.dataType == dataType }
         }
-        return mapToListConversion(dataMetaData)
+
+        return mapToListConversion(matches)
     }
 
     /*
