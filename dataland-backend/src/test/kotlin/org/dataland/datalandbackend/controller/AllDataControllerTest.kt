@@ -34,11 +34,11 @@ internal class AllDataControllerTest(
     }
 /*
     @Test
-    fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {
+    fun `list of meta info about data of specific company can be retrieved`() {
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/data param blabla")
+            get("/data?companyId=1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
