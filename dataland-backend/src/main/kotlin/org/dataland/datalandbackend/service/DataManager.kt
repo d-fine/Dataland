@@ -106,20 +106,22 @@ class DataManager(
      */
 
     override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
-        if (dataId.isNotEmpty()) { verifyDataIdIsExists(dataId); return listOf(dataMetaData[dataId]!!) }
+        if (dataId.isNotEmpty()) {
+            verifyDataIdIsExists(dataId)
+            return listOf(dataMetaData[dataId]!!)
+        }
         if (companyId.isNotEmpty()) {
             verifyCompanyIdExists(companyId)
-            var matches = dataMetaData.filter { it.value.companyId == companyId }
-            if (dataType.isEmpty()) { return mapToListConversion(matches) }
-            matches = matches.filter { it.value.dataType == dataType }
-            return mapToListConversion(matches)
+            val matches = dataMetaData.filter { it.value.companyId == companyId }
+            if (dataType.isEmpty()) {
+                return mapToListConversion(matches)
+            }
+            verifyDataTypeExists(dataType)
+            return mapToListConversion(matches.filter { it.value.dataType == dataType })
         }
         if (dataType.isNotEmpty()) {
             verifyDataTypeExists(dataType)
-            var matches = dataMetaData.filter { it.value.dataType == dataType }
-            if (companyId.isEmpty()) { return mapToListConversion(matches) }
-            matches = matches.filter { it.value.companyId == companyId }
-            return mapToListConversion(matches)
+            return mapToListConversion(dataMetaData.filter { it.value.dataType == dataType })
         }
         return mapToListConversion(dataMetaData)
     }
