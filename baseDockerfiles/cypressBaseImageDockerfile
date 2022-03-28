@@ -7,4 +7,5 @@ RUN apt-get update && \
 
 COPY ./gradlecache /root/.gradle
 WORKDIR /app
+COPY . .
 RUN ./gradlew dataland-frontend:npmInstall --no-daemon
