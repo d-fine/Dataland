@@ -156,7 +156,7 @@ jobs:
         run: |
           find . -type f -iname "*.exec";
           find . -type f -iname "*.info";
-          docker run -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
+          docker run -e GITHUB_TOKEN=$GITHUB_TOKEN -e SONAR_TOKEN=$SONAR_TOKEN -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
           /app/gradlew -p /app jacocoTestReport sonarqube --no-daemon;
           find . -type f -name jacocoTestReport.xml;
         env:
