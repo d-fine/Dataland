@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +35,7 @@ internal class AllDataControllerTest(
     }
 
     @Test
-    fun `list of meta info about data of specific company can be retrieved`() {
+    fun `list of meta info about data for specific company can be retrieved`() {
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
@@ -46,6 +47,52 @@ internal class AllDataControllerTest(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
                 content().string("[]")
+            )
+    }
+
+    @Test
+    fun `list of meta info about data of specific data type can be retrieved`() {
+        mockMvc.perform(
+            get("/data/1/data")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                content().string("[]")
+            )
+    }
+
+    // TODO Search for data with new all data endpoint after upload
+    @Test
+    fun `upload data for a company and retrieve meta info about that data by searching for the data Id`() {
+        mockMvc.perform(
+            post("/eutaxonomies")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    objectMapper.writeValueAsBytes(CompanyAssociatedData(companyId = "1", data = "dummy"))
+                )
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                content().string("1")
+            )
+
+        mockMvc.perform(
+            get("/data/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    objectMapper.writeValueAsBytes(CompanyAssociatedData(companyId = "1", data = "dummy"))
+                )
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                content().string("1")
             )
     }
 }

@@ -51,22 +51,6 @@ internal class CompanyDataControllerTest(
     }
 
     @Test
-    fun `list of all data sets for a specific company Id can be retrieved and is empty because no data was posted`() {
-        uploadCompany(mockMvc, testCompanyName)
-
-        mockMvc.perform(
-            get("/companies/1/data")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpectAll(
-                status().isOk,
-                content().contentType(MediaType.APPLICATION_JSON),
-                content().string("[]")
-            )
-    }
-
-    @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
         uploadCompany(mockMvc, testCompanyName)
 

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 class DataManagerTest {
 
     val testManager = DataManager(dataStore = InMemoryDataStore())
+
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
     val testDataSetsToStore = listOf(
@@ -67,7 +68,7 @@ class DataManagerTest {
             listOfDataIds.add(testManager.addDataSet(dataSet))
         }
 
-        val listDataSetsByCompanyIdResponse = testManager.listDataSetsByCompanyId(testCompanyId)
+        val listDataSetsByCompanyIdResponse = testManager.searchDataMetaInfo(companyId = testCompanyId)
 
         for (dataId in listOfDataIds) {
             assertEquals(
@@ -79,21 +80,21 @@ class DataManagerTest {
     }
 
     @Test
-    fun `get companies with a name that does not exist yet in the store`() {
+    fun `get companies with a name that does not exist`() {
         assertThrows<IllegalArgumentException> {
             testManager.listCompaniesByName("error")
         }
     }
 
     @Test
-    fun `get the data sets for a company id that does not exist yet in the store`() {
+    fun `get the data sets for a company id that does not exist`() {
         assertThrows<IllegalArgumentException> {
-            testManager.listDataSetsByCompanyId("error")
+            testManager.searchDataMetaInfo(companyId = "error")
         }
     }
 
     @Test
-    fun `add and get data set by identifier`() {
+    fun `add data set and get data back by using its data ID`() {
         testManager.addCompany(testCompanyNamesToStore[0]).companyId
 
         val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
@@ -105,7 +106,7 @@ class DataManagerTest {
                     dataType = testDataSetsToStore[0].dataType
                 )
             ),
-            "The posted data set does not match the retrieved data set."
+            "The data in the posted data set does not match the retrieved data."
         )
     }
 
@@ -119,7 +120,7 @@ class DataManagerTest {
 
     @Test
     fun `produce get data set error for invalid data id`() {
-        testManager.addCompany(testCompanyNamesToStore[0]).companyId
+        testManager.addCompany(testCompanyNamesToStore[0])
 
         testManager.addDataSet(testDataSetsToStore[0])
 
@@ -130,7 +131,7 @@ class DataManagerTest {
 
     @Test
     fun `produce get data set error for invalid data type`() {
-        testManager.addCompany(testCompanyNamesToStore[0]).companyId
+        testManager.addCompany(testCompanyNamesToStore[0])
 
         val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
 
