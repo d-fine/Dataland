@@ -1,6 +1,6 @@
 [
   {
-    "dataSet": {
+    "data": {
       "Capex": {
         "total": 50,
         "aligned": 10,
@@ -22,7 +22,7 @@
     "companyId": 1
   },
   {
-    "dataSet": {
+    "data": {
       "Capex": {
         "total": 38,
         "aligned": 10,

@@ -56,10 +56,8 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   edc-dummyserver:
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
-    networks:
-      - internal
-    expose:
-      - "8080"
+    ports:
+      - "8081:8080"
   develop:
     profiles:
       - "development"
