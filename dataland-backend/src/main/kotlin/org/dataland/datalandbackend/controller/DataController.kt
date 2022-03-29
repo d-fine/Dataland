@@ -23,7 +23,7 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<String> {
         return ResponseEntity.ok(
-            this.dataManager.addDataSet(
+            dataManager.addDataSet(
                 StorableDataSet(
                     companyId = companyAssociatedData.companyId,
                     dataType = dataType,
@@ -34,10 +34,10 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val dataset = this.dataManager.getData(DataManagerInputToGetData(dataId = dataId, dataType = dataType))
+        val dataset = dataManager.getData(DataManagerInputToGetData(dataId = dataId, dataType = dataType))
         return ResponseEntity.ok(
             CompanyAssociatedData(
-                companyId = this.dataManager.searchDataMetaInfo(dataId).first().companyId,
+                companyId = dataManager.searchDataMetaInfo(dataId).first().companyId,
                 data = objectMapper.readValue(dataset, clazz)
             )
         )

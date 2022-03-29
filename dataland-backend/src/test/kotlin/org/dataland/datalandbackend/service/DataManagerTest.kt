@@ -1,8 +1,6 @@
 package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
-import org.dataland.datalandbackend.model.DataManagerInputToGetData
-import org.dataland.datalandbackend.model.StorableDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -11,15 +9,17 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class DataManagerTest {
 
-    val testManager = DataManager(edcClient = DefaultApi())
+    val testManager = DataManager(edcClient = DefaultApi(basePath = "dummy"))
 
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
+    /*
     val testDataSetsToStore = listOf(
         StorableDataSet(companyId = "1", dataType = "SomeDataType", data = "some_data_in_specific_structure_yyy"),
         StorableDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
         StorableDataSet(companyId = "1", dataType = "RandomDataType", data = "some_data_in_specific_structure_aaa")
     )
+    */
 
     /*
     ________________________________
@@ -85,7 +85,7 @@ class DataManagerTest {
     Tests for all data manager functionalities associated with adding and getting data for companies:
     ________________________________
      */
-
+/*
     @Test
     fun `add data set and get data back by using its data ID`() {
         testManager.addCompany(testCompanyNamesToStore[0]).companyId
@@ -152,4 +152,6 @@ class DataManagerTest {
             testManager.getData(DataManagerInputToGetData(dataId = testDataSetId, dataType = "error"))
         }
     }
+
+ */
 }
