@@ -45,16 +45,6 @@ class DataManager(
         }
     }
 
-    private fun mapToListConversion(inputMap: Map<String, DataMetaInformation>): List<DataMetaInformation> {
-        return inputMap.map {
-            DataMetaInformation(
-                dataId = it.key,
-                dataType = it.value.dataType,
-                companyId = it.value.companyId
-            )
-        }
-    }
-
     /*
     ________________________________
     Methods to route data inserts and queries to the data store and save meta data in the Dataland-Meta-Data-Storage:
@@ -117,13 +107,14 @@ class DataManager(
             verifyCompanyIdExists(companyId)
             matches = matches.filter { it.value.companyId == companyId }
         }
-
         if (dataType.isNotEmpty()) {
             verifyDataTypeExists(dataType)
             matches = matches.filter { it.value.dataType == dataType }
         }
 
-        return mapToListConversion(matches)
+        return matches.map {
+            DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId)
+        }
     }
 
     /*
