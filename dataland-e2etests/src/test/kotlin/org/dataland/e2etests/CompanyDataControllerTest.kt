@@ -74,12 +74,12 @@ class CompanyDataControllerTest {
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData)
         )
-        val dataMetaInfoForTestCompany = allDataControllerApi.getListOfDataMetaInfo(
+        val listOfDataMetaInfoForTestCompany = allDataControllerApi.getListOfDataMetaInfo(
             companyId = testCompanyId,
             dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         )
         assertTrue(
-            dataMetaInfoForTestCompany.contains(
+            listOfDataMetaInfoForTestCompany.contains(
                 DataMetaInformation(
                     dataId = testEuTaxonomyDataId,
                     dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
