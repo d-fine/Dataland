@@ -64,11 +64,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
-          docker run -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest 
-          -e "DATALAND_SKYMINDERCLIENT_TOKEN=${DATALAND_SKYMINDERCLIENT_TOKEN}" 
-          -e "DATALAND_SKYMINDERCLIENT_USER=${DATALAND_SKYMINDERCLIENT_USER}" 
-          -e "DATALAND_EDC_TOKEN=${DATALAND_EDC_TOKEN}" 
-          -e "DATALAND_EDC_USER=${DATALAND_EDC_USER}" \
+          docker run -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
+          -e DATALAND_SKYMINDERCLIENT_TOKEN \
+          -e DATALAND_SKYMINDERCLIENT_USER \
+          -e DATALAND_EDC_TOKEN=${DATALAND_EDC_TOKEN} \
+          -e DATALAND_EDC_USER \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
       - name: Upload Test Reports
         if: always()
