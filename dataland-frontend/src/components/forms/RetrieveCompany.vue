@@ -21,15 +21,22 @@
       </FormKit>
       <Button @click="getCompanyByName(true)" label="Show all companies" />
       <br>
-      <div class="col m12">
-        <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"
-                     entity="Company Search" linkID="companyId" route="/companies/"/>
-        <p v-else-if="response_error">The resource you requested does not exist yet. You can create it:
+      <template v-if="action">
+      <DataTable  v-if="response" :value="response.data" stripedRows responsive-layout="scroll">
+        <Column field="companyName" header="Company Name" :sortable="true" >
+          <template #body="{data}">
+            <router-link :to="/companies/ + data.companyId" class="text-primary font-bold">{{ data.companyName }} </router-link>
+          </template>
+        </Column>
+        <Column field="companyId" header="Company ID" :sortable="true"> </Column>
+
+      </DataTable>
+        <p v-else>The resource you requested does not exist yet. You can create it:
           <router-link to="/upload">Create Data</router-link>
         </p>
-        <div>
-        </div>
-      </div>
+      </template>
+<!--        <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"-->
+<!--                     entity="Company Search" linkID="companyId" route="/companies/"/>-->
     </template>
   </Card>
 </template>
@@ -43,24 +50,27 @@ import backend from "@/clients/backend/backendOpenApi.json";
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
-import ResultTable from "@/components/ui/ResultTable";
+// import ResultTable from "@/components/ui/ResultTable";
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 export default {
   name: "RetrieveCompany",
-  components: {Card, Button, FormKit, FormKitSchema, ResultTable},
+  components: {Card, Button, DataTable, Column , FormKit, FormKitSchema},
 
   data: () => ({
     data: {},
     schema: dataStore.getSchema(),
     model: {},
     response: null,
-    response_error: false
+    action: false
   }),
   methods: {
     async getCompanyByName(all = false) {
       try {
+        this.action = false
         if (all) {
           this.data.companyName = ""
         }
@@ -71,7 +81,8 @@ export default {
       } catch (error) {
         console.error(error)
         this.response = null
-        this.response_error = true
+      } finally {
+        this.action = true
       }
     }
   },

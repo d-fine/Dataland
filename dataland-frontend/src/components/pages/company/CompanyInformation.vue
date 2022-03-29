@@ -1,24 +1,33 @@
 <template>
-  <div v-if="companyInfo" class="container">
-    <div class="row">
-      <div class="col m12 s12">
+  <div v-if="companyInfo" class="grid">
+      <div class="col md:col-10 col-offset-1">
         <h2>Company Information about {{companyInfo.data.companyName}} (ID: {{companyInfo.data.companyId}})</h2>
-        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/" :headers="['Data ID', 'Data Type']" linkKey="Data Type" linkID="Data ID" />
+
+        <DataTable  v-if="response" :value="response.data" stripedRows responsive-layout="scroll" class="col col-6 col-offset-3">
+          <Column field="Data ID" header="Data ID" :sortable="true" >
+          </Column>
+          <Column field="Data Type" header="Data Type" >
+            <template #body="{data}">
+              <router-link :to="/companies/ + data['Data ID']" class="text-primary font-bold">{{ data["Data Type"] }} </router-link>
+            </template>
+          </Column>
+
+        </DataTable>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
 import {CompanyDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
-import ResultTable from "@/components/ui/ResultTable";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 const api = new CompanyDataControllerApi()
 const dataStore = new DataStore(api.getCompanyDataSets)
 const companyStore = new DataStore(api.getCompanyById)
 export default {
   name: "CompanyInformation",
-  components: {ResultTable},
+  components: { DataTable, Column},
   data() {
     return {
       response: null,

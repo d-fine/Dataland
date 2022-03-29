@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="fluid">
     <caption><h4>{{ entity }}</h4></caption>
     <thead>
     <tr>

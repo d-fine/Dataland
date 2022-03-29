@@ -30,10 +30,9 @@ describe('Population Test', function () {
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/eutaxonomies")
+        cy.visit("/companies/1")
         cy.get('td').contains("1")
-        cy.get('td').contains("EuTaxonomyData")
-        cy.get('td').contains("Data Information").click().url().should('include', '/eutaxonomies/1')
+        cy.get('td').contains("EuTaxonomyData").click().url().should('include', '/eutaxonomies/1')
     });
 });
 
@@ -60,7 +59,7 @@ describe('Company Data', () => {
 
     it('Show all companies button exists', () => {
         cy.visit("/search")
-        cy.get('button.btn').contains('Show all companies')
+        cy.get('button.p-button').contains('Show all companies')
             .should('not.be.disabled')
             .click()
         cy.get('table').contains('Company Search')
