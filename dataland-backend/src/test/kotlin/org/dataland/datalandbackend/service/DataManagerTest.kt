@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.service
 
+import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -10,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class DataManagerTest {
 
-    val testManager = DataManager(dataStore = InMemoryDataStore())
+    val testManager = DataManager(edcClient = DefaultApi())
 
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
@@ -19,6 +20,12 @@ class DataManagerTest {
         StorableDataSet(companyId = "1", dataType = "AnotherDataType", data = "some_data_in_specific_structure_iii"),
         StorableDataSet(companyId = "1", dataType = "RandomDataType", data = "some_data_in_specific_structure_aaa")
     )
+
+    /*
+    ________________________________
+    Tests for all data manager functionalities associated with adding and getting companies:
+    ________________________________
+     */
 
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
@@ -60,6 +67,43 @@ class DataManagerTest {
     }
 
     @Test
+    fun `get companies with a name that does not exist`() {
+        assertThrows<IllegalArgumentException> {
+            testManager.listCompaniesByName("error")
+        }
+    }
+
+    @Test
+    fun `get the data sets for a company id that does not exist`() {
+        assertThrows<IllegalArgumentException> {
+            testManager.searchDataMetaInfo(companyId = "error")
+        }
+    }
+
+    /*
+    ________________________________
+    Tests for all data manager functionalities associated with adding and getting data for companies:
+    ________________________________
+     */
+
+    @Test
+    fun `add data set and get data back by using its data ID`() {
+        testManager.addCompany(testCompanyNamesToStore[0]).companyId
+
+        val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
+        assertEquals(
+            testDataSetsToStore[0].data,
+            testManager.getData(
+                DataManagerInputToGetData(
+                    dataId = testDataSetId,
+                    dataType = testDataSetsToStore[0].dataType
+                )
+            ),
+            "The data in the posted data set does not match the retrieved data."
+        )
+    }
+
+    @Test
     fun `post the first company and all dummy data sets for it and check if all data sets of it are listed`() {
         val testCompanyId = testManager.addCompany(testCompanyNamesToStore[0]).companyId
 
@@ -77,37 +121,6 @@ class DataManagerTest {
                 "The stored data set type does not match the test data set type."
             )
         }
-    }
-
-    @Test
-    fun `get companies with a name that does not exist`() {
-        assertThrows<IllegalArgumentException> {
-            testManager.listCompaniesByName("error")
-        }
-    }
-
-    @Test
-    fun `get the data sets for a company id that does not exist`() {
-        assertThrows<IllegalArgumentException> {
-            testManager.searchDataMetaInfo(companyId = "error")
-        }
-    }
-
-    @Test
-    fun `add data set and get data back by using its data ID`() {
-        testManager.addCompany(testCompanyNamesToStore[0]).companyId
-
-        val testDataSetId = testManager.addDataSet(testDataSetsToStore[0])
-        assertEquals(
-            testDataSetsToStore[0].data,
-            testManager.getData(
-                DataManagerInputToGetData(
-                    dataId = testDataSetId,
-                    dataType = testDataSetsToStore[0].dataType
-                )
-            ),
-            "The data in the posted data set does not match the retrieved data."
-        )
     }
 
     @Test
