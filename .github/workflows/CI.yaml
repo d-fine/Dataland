@@ -135,6 +135,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Build project
+        run: ./gradlew assemble --no-daemon
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
@@ -156,8 +163,7 @@ jobs:
         run: |
           find . -type f -iname "*.exec";
           find . -type f -iname "*.info";
-          docker run -e GITHUB_TOKEN=$GITHUB_TOKEN -e SONAR_TOKEN=$SONAR_TOKEN -v $(pwd):/app:rw ghcr.io/d-fine/dataland/temurinbase:latest \
-          /app/gradlew -p /app jacocoTestReport sonarqube --no-daemon;
+          ./gradlew jacocoTestReport sonarqube --no-daemon
           find . -type f -name jacocoTestReport.xml;
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
