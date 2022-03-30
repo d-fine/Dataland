@@ -47,11 +47,6 @@ services:
       - "80"
     networks:
       - internal
-    environment:
-      DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
-      DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
-      DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-      DATALAND_EDC_USER: ${DATALAND_EDC_USER}
   skyminder-server:
     build:
       context: ./

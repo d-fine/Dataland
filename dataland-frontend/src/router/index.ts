@@ -4,6 +4,7 @@ import SearchData from "@/components/forms/SearchData.vue";
 import WelcomeDataland from "@/components/WelcomeDataland.vue";
 import CompanyEU from "@/components/pages/taxonomy/TaxonomyData.vue";
 import CompanyInformation from "@/components/pages/company/CompanyInformation.vue";
+import DataList from "@/components/pages/data/DataList.vue";
 
 const routes = [
     {
@@ -20,6 +21,11 @@ const routes = [
         path: "/search",
         name: "Search Data",
         component: SearchData,
+    },
+    {
+        path: "/data",
+        name: "List Data",
+        component: DataList,
     },
     {
         path: "/eutaxonomies/:dataID",
