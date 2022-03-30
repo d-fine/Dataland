@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {MetaDataControllerApi} from "@/clients/backend";
+import {MetaDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 const api = new MetaDataControllerApi()
 const dataStore = new DataStore(api.getListOfDataMetaInfo())

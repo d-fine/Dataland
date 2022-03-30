@@ -36,7 +36,7 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {SkyminderControllerApi} from "@/clients/backend";
+import {SkyminderControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 
 const api = new SkyminderControllerApi()

@@ -155,7 +155,7 @@
   </CardWrapper>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";

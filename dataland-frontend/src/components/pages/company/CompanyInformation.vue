@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {CompanyDataControllerApi} from "@/clients/backend";
+import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import ResultTable from "@/components/ui/ResultTable";
 const api = new CompanyDataControllerApi()
