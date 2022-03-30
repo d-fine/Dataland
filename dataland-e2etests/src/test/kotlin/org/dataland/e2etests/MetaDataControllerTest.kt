@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 class MetaDataControllerTest {
 
-    private val basePathToDatalandProxy = "http://localhost/api"
+    private val basePathToDatalandProxy = "http://proxy:80/api"
     private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
