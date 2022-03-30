@@ -38,7 +38,7 @@ internal class MetaDataControllerTest(
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/data?companyId=1")
+            get("/metadata?companyId=1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )

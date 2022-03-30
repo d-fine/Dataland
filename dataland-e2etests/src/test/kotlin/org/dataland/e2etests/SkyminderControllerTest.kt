@@ -10,7 +10,7 @@ class SkyminderControllerTest {
     @Test
     fun `get dummy company data by sending a request to dummy skyminder server`() {
         assertTrue(
-            skyminderControllerApi.getDataSkyminderRequest(code = "dummy", name = "dummy").isNotEmpty(),
+            skyminderControllerApi.getDataSkyminderRequest("dummy", "dummy").isNotEmpty(),
             "The dummy skyminder server is returning an empty response."
         )
     }
