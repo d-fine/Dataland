@@ -1,6 +1,5 @@
 {
-  "sourcePaths": ["./src/clients/backendOpenApi.json"],
+  "sourcePaths": ["./src/clients/backend/backendOpenApi.json"],
   "outputFolder": "mock-server",
-  "timeout": 180000,
-  "port": 8081
+  "timeout": 180000
 }
