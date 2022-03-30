@@ -6,6 +6,10 @@ import okhttp3.Response
 import org.springframework.boot.actuate.health.Health
 import org.springframework.boot.actuate.health.HealthIndicator
 
+/**
+ * This class customizes the actuator/health endpoint of the backend to display if the given server
+ * is available.
+ */
 open class DummyServerHealthIndicator(private val basePath: String) : HealthIndicator {
 
     /**
