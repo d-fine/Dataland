@@ -13,9 +13,10 @@ import org.junit.jupiter.api.Test
 
 class CompanyDataControllerTest {
 
-    private val metaDataControllerApi = MetaDataControllerApi(basePath = "http://proxy:80/api")
-    private val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
+    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
+    private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
+    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -69,22 +70,20 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyName = "Possible-Company_06"
-        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+
         val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
-        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData)
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         )
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             companyId = testCompanyId,
-            dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+            dataType = testDataType
         )
         assertTrue(
             listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(
-                    dataId = testEuTaxonomyDataId,
-                    dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
-                    companyId = testCompanyId
-                )
+                DataMetaInformation(testDataId, testDataType, testCompanyId)
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
         )

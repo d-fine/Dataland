@@ -14,18 +14,18 @@ class EuTaxonomyControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyName = "Test-Company_A"
-        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
 
-        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData)
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         )
 
         val companyAssociatedDataSetEuTaxonomyData =
-            euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testEuTaxonomyDataId)
+            euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
 
         assertEquals(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData),
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData),
             companyAssociatedDataSetEuTaxonomyData,
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )

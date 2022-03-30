@@ -35,7 +35,7 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=DataId]').then(($dataID) => {
             const id = $dataID.text()
-            cy.visit(`/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("not.contain", "NaN")
+            cy.visit(`/data/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("not.contain", "NaN")
         })
     })
 
@@ -48,7 +48,7 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=DataId]').then(($dataID) => {
             const id = $dataID.text()
-            cy.visit(`/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("contain", "NaN")
+            cy.visit(`/data/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("contain", "NaN")
         })
     })
 

@@ -38,7 +38,7 @@ internal class MetaDataControllerTest(
         uploadCompany(mockMvc, testCompanyName)
 
         mockMvc.perform(
-            get("/data?companyId=1")
+            get("/metadata?companyId=1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -48,7 +48,12 @@ internal class MetaDataControllerTest(
                 content().string("[]")
             )
     }
-/*
+
+/* The following tests require, that data is posted. To post data, a running instance of edc-dummyserver is needed.
+Until now, we haven't mocked the edc-dummyserver, and therefore the following unit tests cannot run.
+They stay commented out, until a decision is made.
+
+
     @Test
     fun `list of meta info about data of specific data type can be retrieved`() {
         mockMvc.perform(
@@ -63,7 +68,6 @@ internal class MetaDataControllerTest(
             )
     }
 
-    // TODO Search for data with new all data endpoint after upload
     @Test
     fun `upload data for a company and retrieve meta info about that data by searching for the data Id`() {
         mockMvc.perform(

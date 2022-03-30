@@ -60,8 +60,10 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   edc-dummyserver:
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
-    ports:
-      - "8081:8080"
+    networks:
+      - internal
+    expose:
+      - "8080"
     environment:
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}

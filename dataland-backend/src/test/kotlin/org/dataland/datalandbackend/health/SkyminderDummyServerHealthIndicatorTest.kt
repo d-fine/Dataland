@@ -21,7 +21,7 @@ class SkyminderDummyServerHealthIndicatorTest {
 
     @Test
     fun `test if the Skyminder Dummy Server container is not responding and therefore the output is false`() {
-        val isRunningSkyminderServer: Boolean = skyminderDummyServerHealthIndicator.isRunningSkyminderServer()
+        val isRunningSkyminderServer: Boolean = skyminderDummyServerHealthIndicator.isServerRunning()
         assertFalse(
             isRunningSkyminderServer,
             "The Skyminder Dummy Server Health Indicator is not returning the status \"DOWN\"." +
