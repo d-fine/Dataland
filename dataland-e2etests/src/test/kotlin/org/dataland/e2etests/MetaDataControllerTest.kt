@@ -16,12 +16,12 @@ class MetaDataControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
-    private fun populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfDataSetsPerCompany: Int): List<String> {
-        val listOfTestCompanyNames = listOf("Fantasy-Company_100", "Fantasy-Company_200", "Fantasy-Company_300")
+    private fun populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfCompanies : Int, numberOfDataSetsPerCompany: Int): List<String> {
+        val testCompanyName = "Fantasy-Company_100"
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
         val listOfTestCompanyIds = mutableListOf<String>()
-        for (testCompanyName in listOfTestCompanyNames) {
+        repeat(numberOfCompanies) {
             val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
             repeat(numberOfDataSetsPerCompany) {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
@@ -59,11 +59,12 @@ class MetaDataControllerTest {
 
     @Test
     fun `post several dummy companies and n dummy data sets for them and check filtering options`() {
+        val numberOfCompanies = 5
         val numberOfDataSetsToPostPerCompany = 3
-        val totalNumberOfDataSets = 3 * numberOfDataSetsToPostPerCompany
+        val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
 
-        val listOfTestCompanyIds = populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfDataSetsToPostPerCompany)
+        val listOfTestCompanyIds = populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
