@@ -71,7 +71,7 @@ export default {
     async getCompanyEUDataset() {
       try {
         this.response = await dataStore.perform(this.dataID)
-        this.dataSet = this.response.data.dataSet
+        this.dataSet = this.response.data.data
         this.companyInfo = await companyStore.perform(this.response.data.companyId)
 
       } catch (error) {
