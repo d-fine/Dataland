@@ -163,7 +163,7 @@ import {DataStore} from "@/services/DataStore";
 import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new EuTaxonomyDataControllerApi()
-const dataStore = new DataStore(api.postCompanyAssociatedDataSet)
+const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
