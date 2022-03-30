@@ -6,6 +6,5 @@ RUN apt-get update && \
     apt-get install -y temurin-17-jdk
 
 COPY ./gradlecache /root/.gradle
-WORKDIR /app
-COPY ./dataland-frontend/package.json ./dataland-frontend/package.json
-RUN cd ./dataland-frontend && npm install
+COPY ./cypresscache /root/.cache/Cypress
+COPY ./dataland-frontend/node_modules /app/dataland-frontend/node_modules
