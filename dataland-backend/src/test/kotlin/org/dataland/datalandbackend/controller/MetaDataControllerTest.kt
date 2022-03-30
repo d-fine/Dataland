@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class AllDataControllerTest(
+internal class MetaDataControllerTest(
     @Autowired var mockMvc: MockMvc,
     @Autowired var objectMapper: ObjectMapper
 ) {

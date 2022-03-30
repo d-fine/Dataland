@@ -1,6 +1,6 @@
 package org.dataland.e2etests
 
-import org.dataland.datalandbackend.openApiClient.api.AllDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 class CompanyDataControllerTest {
 
-    private val allDataControllerApi = AllDataControllerApi(basePath = "http://proxy:80/api")
+    private val metaDataControllerApi = MetaDataControllerApi(basePath = "http://proxy:80/api")
     private val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
 
@@ -74,7 +74,7 @@ class CompanyDataControllerTest {
         val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData)
         )
-        val listOfDataMetaInfoForTestCompany = allDataControllerApi.getListOfDataMetaInfo(
+        val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             companyId = testCompanyId,
             dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         )
