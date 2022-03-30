@@ -10,12 +10,14 @@
 </template>
 
 <script>
-import {CompanyDataControllerApi} from "@/../build/clients/backend";
+import {CompanyDataControllerApi, MetaDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import ResultTable from "@/components/ui/ResultTable";
-const api = new CompanyDataControllerApi()
-const dataStore = new DataStore(api.getCompanyDataSets)
-const companyStore = new DataStore(api.getCompanyById)
+
+const companyApi = new CompanyDataControllerApi()
+const metaDataApi = new MetaDataControllerApi()
+const dataStore = new DataStore(metaDataApi.getListOfDataMetaInfo)
+const companyStore = new DataStore(companyApi.getCompanyById)
 export default {
   name: "CompanyInformation",
   components: {ResultTable},
@@ -25,7 +27,7 @@ export default {
       companyInfo: null
     }
   },
-  props:{
+  props: {
     companyID: {
       default: 1,
       type: Number
