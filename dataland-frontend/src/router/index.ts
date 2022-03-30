@@ -28,7 +28,7 @@ const routes = [
         component: DataList,
     },
     {
-        path: "/eutaxonomies/:dataID",
+        path: "/data/eutaxonomies/:dataID",
         props: true,
         name: "EU Taxonomy",
         component: CompanyEU,
