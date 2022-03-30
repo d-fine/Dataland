@@ -7,24 +7,24 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class SkyminderDummyServerHealthIndicatorTest {
-    val skyminderDummyServerHealthIndicator = SkyminderDummyServerHealthIndicator()
+    val healthIndicatorExtensionForDummyServers = HealthIndicatorExtensionForDummyServers("dummy")
 
     @Test
-    fun `test if health of the Skyminder Dummy Server has the status DOWN because it is not responding`() {
-        val status: String = skyminderDummyServerHealthIndicator.health().status.code
+    fun `test if health has the status DOWN because no actual server is running`() {
+        val status: String = healthIndicatorExtensionForDummyServers.health().status.code
         assertEquals(
             status, "DOWN",
-            "The Skyminder Dummy Server Health Indicator is not returning the status \"DOWN\"." +
+            "The health() method is not returning the status \"DOWN\"." +
                 " It should return \"DOWN\", since this is a unit test and no services should be reachable."
         )
     }
 
     @Test
-    fun `test if the Skyminder Dummy Server container is not responding and therefore the output is false`() {
-        val isRunningSkyminderServer: Boolean = skyminderDummyServerHealthIndicator.isServerRunning()
+    fun `test if the output is false because no actual server is running` () {
+        val isRunningSkyminderServer: Boolean = healthIndicatorExtensionForDummyServers.isServerRunning()
         assertFalse(
             isRunningSkyminderServer,
-            "The Skyminder Dummy Server Health Indicator is not returning the status \"DOWN\"." +
+            "The health() method is not returning the status \"DOWN\"." +
                 " It should return \"DOWN\", since this is a unit test and no services should be reachable."
         )
     }
