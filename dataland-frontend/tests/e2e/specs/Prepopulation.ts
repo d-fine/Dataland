@@ -21,7 +21,7 @@ describe('Population Test', () => {
 
     it('Populate EU Taxonomy Data', function (){
         for (const index in eutaxonomiesData) {
-            cy.request('POST', `${Cypress.env("API")}/eutaxonomies`, eutaxonomiesData[index]).its('status').should("equal", 200)
+            cy.request('POST', `${Cypress.env("API")}/data/eutaxonomies`, eutaxonomiesData[index]).its('status').should("equal", 200)
         }
         console.log(eutaxonomiesData)
     });
@@ -29,7 +29,7 @@ describe('Population Test', () => {
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/eutaxonomies/1")
+        cy.visit("/data/eutaxonomies/1")
         cy.get('h1').contains("Company Data")
         cy.get('h4').contains("EU Taxonomy Data")
     });

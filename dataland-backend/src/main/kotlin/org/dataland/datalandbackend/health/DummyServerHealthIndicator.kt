@@ -17,7 +17,7 @@ open class DummyServerHealthIndicator(private val basePath: String) : HealthIndi
      * @return a Health object
      */
     override fun health(): Health {
-        return if (isRunningSkyminderServer()) {
+        return if (isServerRunning()) {
             Health.up().build()
         } else {
             Health.down().build()
@@ -28,7 +28,7 @@ open class DummyServerHealthIndicator(private val basePath: String) : HealthIndi
      * A method to check the health status of the given server by sending a request to its health endpoint.
      * @return a Boolean that declares if the given server runs
      */
-    fun isRunningSkyminderServer(): Boolean {
+    fun isServerRunning(): Boolean {
         val client = OkHttpClient()
 
         try {
