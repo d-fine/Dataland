@@ -1,5 +1,5 @@
 # build stage
-FROM ghcr.io/d-fine/dataland/cypressbase:latest as prepare-stage
+FROM ghcr.io/d-fine/dataland/cypressbase:latest as build-stage
 WORKDIR /app
 COPY . .
 RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
