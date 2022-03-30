@@ -147,11 +147,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
-          path: be-coverage/unit
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsE2ETest
-          path: be-coverage/e2e
       - uses: actions/download-artifact@v2
         with:
           name: lcovResultsUnit
@@ -163,6 +161,8 @@ jobs:
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: |
+          find -type f -iname "*.exec"
+          find -type f -iname "*.info"
           ./gradlew jacocoTestReport sonarqube --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
