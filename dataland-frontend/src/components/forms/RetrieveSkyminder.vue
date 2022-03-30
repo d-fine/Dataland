@@ -38,11 +38,11 @@
 import {FormKit} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
+import SkyminderTable from "@/components/ui/SkyminderTable";
+import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
-import SkyminderTable from "@/components/ui/SkyminderTable";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 
 export default {
   name: "RetrieveSkyminder",
