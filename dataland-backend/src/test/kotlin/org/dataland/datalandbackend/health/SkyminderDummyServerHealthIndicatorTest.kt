@@ -20,7 +20,7 @@ class SkyminderDummyServerHealthIndicatorTest {
     }
 
     @Test
-    fun `test if the output is false because no actual server is running` () {
+    fun `test if the output is false because no actual server is running`() {
         val isRunningSkyminderServer: Boolean = healthIndicatorExtensionForDummyServers.isServerRunning()
         assertFalse(
             isRunningSkyminderServer,
