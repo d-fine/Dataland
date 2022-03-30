@@ -86,6 +86,11 @@ class DataManagerTest {
     ________________________________
      */
 /*
+
+The following tests require, that data is posted. To post data, a running instance of edc-dummyserver is needed.
+Until now, we haven't mocked the edc-dummyserver, and therefore the following unit tests cannot run.
+They stay commented out, until a decision is made.
+
     @Test
     fun `add data set and get data back by using its data ID`() {
         testManager.addCompany(testCompanyNamesToStore[0]).companyId
