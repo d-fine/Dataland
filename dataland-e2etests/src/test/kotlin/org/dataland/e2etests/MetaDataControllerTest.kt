@@ -17,7 +17,7 @@ class MetaDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if meta info about the data can be retrieved`() {
+    fun `post a dummy company and a dummy data set for it and check if meta info about that data can be retrieved`() {
         val testCompanyName = "Non-Existent-Company_1"
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
