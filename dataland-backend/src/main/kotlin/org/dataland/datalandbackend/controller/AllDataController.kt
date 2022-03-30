@@ -21,14 +21,14 @@ class AllDataController(
     override fun getListOfDataMetaInfo(companyId: String?, dataType: String?):
         ResponseEntity<List<DataMetaInformation>> {
         return ResponseEntity.ok(
-            this.dataManager.searchDataMetaInfo(
+            dataManager.searchDataMetaInfo(
                 companyId = companyId ?: "", dataType = dataType ?: ""
             )
         )
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(this.dataManager.searchDataMetaInfo(dataId = dataId))
+        return ResponseEntity.ok(dataManager.searchDataMetaInfo(dataId = dataId))
     }
 }
 
