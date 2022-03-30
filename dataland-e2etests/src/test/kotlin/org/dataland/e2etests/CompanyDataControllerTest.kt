@@ -69,22 +69,20 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyName = "Possible-Company_06"
-        val testEuTaxonomyData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+
         val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
-        val testEuTaxonomyDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testEuTaxonomyData)
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         )
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             companyId = testCompanyId,
-            dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+            dataType = testDataType
         )
         assertTrue(
             listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(
-                    dataId = testEuTaxonomyDataId,
-                    dataType = testEuTaxonomyData.javaClass.kotlin.qualifiedName!!.substringAfterLast("."),
-                    companyId = testCompanyId
-                )
+                DataMetaInformation(testDataId, testDataType, testCompanyId)
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
         )
