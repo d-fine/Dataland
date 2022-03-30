@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component
  * is available.
  */
 @Component
-class EdcDummyServerHealthIndicator : DummyServerHealthIndicator("http://edc-dummyserver:8080/actuator/health")
+class EdcDummyServerHealthIndicator :
+    HealthIndicatorExtensionForDummyServers("http://edc-dummyserver:8080/actuator/health")

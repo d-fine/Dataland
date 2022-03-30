@@ -10,7 +10,7 @@ import org.springframework.boot.actuate.health.HealthIndicator
  * This class customizes the actuator/health endpoint of the backend to display if the given server
  * is available.
  */
-open class DummyServerHealthIndicator(private val basePath: String) : HealthIndicator {
+open class HealthIndicatorExtensionForDummyServers(private val basePath: String) : HealthIndicator {
 
     /**
      * A method to build the health status of the given server.
