@@ -1,8 +1,12 @@
 # build stage
+ARG DATALAND_EDC_USER
+ARG DATALAND_EDC_TOKEN
 FROM ghcr.io/d-fine/dataland/temurinbase:latest as prepare-stage
 WORKDIR /app
 COPY . .
-RUN ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
+RUN DATALAND_EDC_USER=${DATALAND_EDC_USER} \
+    DATALAND_EDC_TOKEN=${DATALAND_EDC_TOKEN} \
+    ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
