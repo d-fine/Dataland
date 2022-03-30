@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * Defines the restful dataland-backend API regarding meta data searches.
  */
 
-@RequestMapping("/data")
+@RequestMapping("/metadata")
 interface MetaDataApi {
 
     @Operation(
