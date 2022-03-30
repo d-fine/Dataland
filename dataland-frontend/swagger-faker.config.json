@@ -1,0 +1,5 @@
+{
+  "sourcePaths": ["./src/clients/backend/backendOpenApi.json"],
+  "outputFolder": "mock-server",
+  "timeout": 180000
+}
