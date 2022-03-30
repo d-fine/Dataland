@@ -41,9 +41,6 @@ services:
     build:
       context: ./
       dockerfile: ./dataland-frontend/Dockerfile
-      args:
-        DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-        DATALAND_EDC_USER: ${DATALAND_EDC_USER}
     volumes:
       - ./dataland-frontend/default.conf:/etc/nginx/conf.d/default.conf
     expose:
