@@ -6,14 +6,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-backend API regarding the communication with Skyminder.
  */
 
-@RequestMapping("/data/skyminder")
+@RequestMapping("/skyminder")
 interface SkyminderAPI {
     @Operation(
         summary = "Retrieve company data from Skyminder server.",
@@ -25,7 +25,7 @@ interface SkyminderAPI {
         ]
     )
     @GetMapping(
-        value = ["/{code}/{name}"],
+        value = [""],
         produces = ["application/json"]
     )
     /**
@@ -35,7 +35,7 @@ interface SkyminderAPI {
      * @return the list of ContactInformation generated from all responses returned by Skyminder
      */
     fun getDataSkyminderRequest(
-        @PathVariable("code") countryCode: String,
-        @PathVariable("name") companyName: String
+        @RequestParam countryCode: String,
+        @RequestParam companyName: String
     ): ResponseEntity<List<ContactInformation>>
 }
