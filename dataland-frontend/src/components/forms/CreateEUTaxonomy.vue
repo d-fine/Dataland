@@ -163,7 +163,7 @@ import {DataStore} from "@/services/DataStore";
 import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new EuTaxonomyDataControllerApi()
-const dataStore = new DataStore(api.postCompanyAssociatedDataSet)
+const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
@@ -187,7 +187,7 @@ export default {
     async getCompanyIDs(){
       try {
         const companyList = await companyStore.perform([""])
-        this.idList = companyList.data.map(element => parseInt(Object.values(element)[1]))
+        this.idList = Object.keys(companyList.data)
       } catch(error) {
         this.idList = [0]
       }

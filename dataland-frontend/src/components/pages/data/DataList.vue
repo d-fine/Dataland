@@ -6,7 +6,7 @@
 import {MetaDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 const api = new MetaDataControllerApi()
-const dataStore = new DataStore(api.getListOfDataMetaInfo())
+const dataStore = new DataStore(api.getListOfDataMetaInfo)
 
 export default {
   name: "DataList",
