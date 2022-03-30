@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import {AllDataControllerApi} from "@/clients/backend";
+import {MetaDataControllerApi} from "@/clients/backend";
 import {DataStore} from "@/services/DataStore";
-const api = new AllDataControllerApi()
+const api = new MetaDataControllerApi()
 const dataStore = new DataStore(api.getListOfDataMetaInfo())
 
 export default {
