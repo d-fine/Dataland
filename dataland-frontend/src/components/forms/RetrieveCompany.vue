@@ -34,9 +34,9 @@
 
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/clients/backend";
+import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
-import backend from "@/clients/backend/backendOpenApi.json";
+import backend from "@/../build/clients/backend/backendOpenApi.json";
 
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
