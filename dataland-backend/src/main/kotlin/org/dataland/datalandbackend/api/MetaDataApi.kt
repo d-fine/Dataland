@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 
 @RequestMapping("/data")
-interface AllDataAPI {
+interface MetaDataApi {
 
     @Operation(
         summary = "Search in Dataland for meta info about data.",
