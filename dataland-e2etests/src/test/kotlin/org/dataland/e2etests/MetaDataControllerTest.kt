@@ -16,24 +16,24 @@ class MetaDataControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
-    private fun populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfCompanies : Int, numberOfDataSetsPerCompany: Int): List<String> {
+    private fun populateDatalandWithCompaniesAndEuTaxnomyDataSets(
+        numberOfCompanies: Int,
+        numberOfDataSetsPerCompany: Int
+    ): List<String> {
         val testCompanyName = "Fantasy-Company_100"
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
-        val listOfTestCompanyIds = mutableListOf<String>()
+        val listOfPostedTestCompanyIds = mutableListOf<String>()
         repeat(numberOfCompanies) {
             val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
             repeat(numberOfDataSetsPerCompany) {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
-                    CompanyAssociatedDataEuTaxonomyData(
-                        testCompanyId,
-                        testData
-                    )
+                    CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
                 )
             }
-            listOfTestCompanyIds.add(testCompanyId)
+            listOfPostedTestCompanyIds.add(testCompanyId)
         }
-        return listOfTestCompanyIds
+        return listOfPostedTestCompanyIds
     }
 
     @Test
@@ -64,7 +64,8 @@ class MetaDataControllerTest {
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
 
-        val listOfTestCompanyIds = populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val listOfTestCompanyIds =
+            populateDatalandWithCompaniesAndEuTaxnomyDataSets(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
