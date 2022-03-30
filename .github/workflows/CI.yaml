@@ -27,10 +27,12 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Build all project outputs
-        run: ./gradlew assemble --no-daemon
+      - name: Build all project outputs and npm install
+        run: ./gradlew assemble npmInstall --no-daemon
       - name: Copy the gradle cache into the workspace
-        run: cp -r /home/runner/.gradle ./gradlecache
+        run: |
+          cp -r /home/runner/.gradle ./gradlecache
+          cp -r /home/runner/.cache/Cypress ./cypresscache
       - name: Login to Github Packages
         uses: docker/login-action@v1
         with:
