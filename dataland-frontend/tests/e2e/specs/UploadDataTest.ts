@@ -1,4 +1,4 @@
-describe.only('User interactive tests for Data Upload', () => {
+describe('User interactive tests for Data Upload', () => {
 
     beforeEach(() => {
         cy.visit("/upload")
