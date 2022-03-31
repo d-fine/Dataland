@@ -39,10 +39,11 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-        this.companyInfo = await companyStore.perform(this.companyID)
+      this.companyInfo = await companyStore.perform(this.companyID)
     },
     async getCompanyDataset() {
-        this.response = await dataStore.perform(this.companyID)
+      console.log(this.companyID)
+      this.response = await dataStore.perform(this.companyID, "")
     }
   }
 }
