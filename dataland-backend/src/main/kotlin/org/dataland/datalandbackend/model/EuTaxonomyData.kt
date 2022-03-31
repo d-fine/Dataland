@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * --- API model ---
  * Fields of the questionnaire for EU-Taxonomy data
  */
 data class EuTaxonomyData(

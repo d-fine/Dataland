@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * --- API model ---
  * Class for defining the meta data of a company
  * @param companyId identifies the company
  * @param companyName name of the company

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 /**
+ * --- Non-API model ---
  * Class for defining the fields needed by the Data Manager to handle data storage
  * @param companyId identifies the company for which a data set is to be stored
  * @param dataType the type of the data set

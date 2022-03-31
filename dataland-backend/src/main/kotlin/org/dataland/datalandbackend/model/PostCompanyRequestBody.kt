@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * --- API model ---
  * Class for defining the request body of a request containing only a company name
  * @param companyName name of the company
  */

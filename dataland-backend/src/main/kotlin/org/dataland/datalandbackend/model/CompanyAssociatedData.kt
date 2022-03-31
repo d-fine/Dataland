@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 /**
+ * --- Generic API model ---
  * DTO for uploading general data sets for a specific company
  * @param data to be uploaded of general type T
  * @param companyId identifier of the company the data belongs to
