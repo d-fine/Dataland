@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.math.BigDecimal
-import java.util.*
+import java.util.Date
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,7 +39,7 @@ internal class CompanyDataControllerTest(
         CompanyUploader().uploadCompany(mockMvc, objectMapper, postCompanyRequestBody)
 
         mockMvc.perform(
-            get("/companies?companyName=$postCompanyRequestBody.companyName")
+            get("/companies?companyName=${postCompanyRequestBody.companyName}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
