@@ -3,9 +3,8 @@ package org.dataland.datalandbackend.interfaces
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.dataland.datalandbackend.model.StorableDataSet
-import java.math.BigDecimal
-import java.util.Date
 
 /**
  * Defines the required functionalities for the Dataland data manager
@@ -69,13 +68,7 @@ interface DataManagerInterface {
      * @param reportingDateOfMarketCap date to which the market cap value refers
      * @return meta information of the newly created entry in the company data store of Dataland
      */
-    fun addCompany(
-        companyName: String,
-        headquarters: String,
-        industrialSector: String,
-        marketCap: BigDecimal,
-        reportingDateOfMarketCap: Date
-    ): CompanyMetaInformation
+    fun addCompany(postCompanyRequestBody: PostCompanyRequestBody): CompanyMetaInformation
 
     /**
      * Method to list matching companies in Dataland by searching for a company name

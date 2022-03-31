@@ -9,8 +9,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 class CompanyUploader {
 
-    internal fun uploadCompany(mockMvc: MockMvc, objectMapper: ObjectMapper, companyName: String) {
-        val postCompanyRequestBody = PostCompanyRequestBody(companyName = companyName)
+    internal fun uploadCompany(
+        mockMvc: MockMvc,
+        objectMapper: ObjectMapper,
+        postCompanyRequestBody: PostCompanyRequestBody
+    ) {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)

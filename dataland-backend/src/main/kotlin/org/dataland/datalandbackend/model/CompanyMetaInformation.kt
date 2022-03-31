@@ -17,10 +17,6 @@ import java.util.Date
  */
 data class CompanyMetaInformation(
     @field:JsonProperty(required = true) val companyId: String,
-    @field:JsonProperty(required = true) val companyName: String,
-    @field:JsonProperty(required = true) val headquarters: String,
-    @field:JsonProperty(required = true) val industrialSector: String,
-    @field:JsonProperty(required = true) val marketCap: BigDecimal,
-    @field:JsonProperty(required = true) val reportingDateOfMarketCap: Date,
+    @field:JsonProperty(required = true) val postCompanyRequestBody: PostCompanyRequestBody,
     @field:JsonProperty(required = true) val dataRegisteredByDataland: MutableList<DataMetaInformation>
 )

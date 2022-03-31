@@ -5,11 +5,10 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.math.BigDecimal
-import java.util.Date
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -52,11 +51,7 @@ class DataManager(
         return input.map {
             CompanyMetaInformation(
                 companyId = it.key,
-                companyName = it.value.companyName,
-                headquarters = it.value.headquarters,
-                industrialSector = it.value.industrialSector,
-                marketCap = it.value.marketCap,
-                reportingDateOfMarketCap = it.value.reportingDateOfMarketCap,
+                postCompanyRequestBody = it.value.postCompanyRequestBody,
                 dataRegisteredByDataland = it.value.dataRegisteredByDataland
             )
         }
@@ -141,24 +136,18 @@ class DataManager(
     ________________________________
      */
 
-    override fun addCompany(
-        companyName: String,
-        headquarters: String,
-        industrialSector: String,
-        marketCap: BigDecimal,
-        reportingDateOfMarketCap: Date
-    ): CompanyMetaInformation {
+    override fun addCompany(postCompanyRequestBody: PostCompanyRequestBody): CompanyMetaInformation {
         companyCounter++
         companyData["$companyCounter"] = CompanyMetaInformation(
             companyId = companyCounter.toString(),
-            companyName, headquarters, industrialSector, marketCap, reportingDateOfMarketCap,
+            postCompanyRequestBody,
             dataRegisteredByDataland = mutableListOf()
         )
         return companyData["$companyCounter"]!!
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        val matches = companyData.filter { it.value.companyName.contains(companyName, true) }
+        val matches = companyData.filter { it.value.postCompanyRequestBody.companyName.contains(companyName, true) }
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }

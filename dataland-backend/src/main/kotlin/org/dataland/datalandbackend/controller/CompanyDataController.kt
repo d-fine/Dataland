@@ -20,7 +20,7 @@ class CompanyDataController(
 ) : CompanyAPI {
 
     override fun postCompany(postCompanyRequestBody: PostCompanyRequestBody): ResponseEntity<CompanyMetaInformation> {
-        return ResponseEntity.ok(dataManager.addCompany(postCompanyRequestBody.companyName))
+        return ResponseEntity.ok(dataManager.addCompany(postCompanyRequestBody))
     }
 
     override fun getCompaniesByName(companyName: String?): ResponseEntity<List<CompanyMetaInformation>> {
