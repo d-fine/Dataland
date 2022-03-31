@@ -15,4 +15,3 @@ data class PostCompanyRequestBody(
     @field:JsonProperty(required = true) val marketCap: java.math.BigDecimal,
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: Date,
 )
-
