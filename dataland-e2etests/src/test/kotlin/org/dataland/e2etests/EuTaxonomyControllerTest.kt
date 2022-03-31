@@ -19,7 +19,7 @@ class EuTaxonomyControllerTest {
 
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
-        )
+        ).dataId
 
         val companyAssociatedDataSetEuTaxonomyData =
             euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
