@@ -25,8 +25,8 @@
         />
         <FormKit
             type="group"
-            name="dataSet"
-            label="dataSet"
+            name="data"
+            label="data"
         >
           <FormKit
               type="select"
@@ -141,9 +141,6 @@
           </div>
         </FormKit>
       </FormKit>
-      <div class="progress" v-if="loading">
-        <div class="indeterminate"></div>
-      </div>
       <div v-if="enableClose" class="col m12">
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
