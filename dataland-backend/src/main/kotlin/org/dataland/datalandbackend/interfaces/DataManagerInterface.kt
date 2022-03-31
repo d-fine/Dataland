@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
+import java.math.BigDecimal
+import java.util.Date
 
 /**
  * Defines the required functionalities for the Dataland data manager
@@ -60,9 +62,20 @@ interface DataManagerInterface {
     /**
      * Method to add a company
      * @param companyName name of the company to be stored
+     * @param headquarters city where the headquarters of the company is located
+     * @param industrialSector sector in which the company operates
+     * @param marketCap For publicly traded companies: The total monetary value of the
+     * outstanding shares of the company
+     * @param reportingDateOfMarketCap date to which the market cap value refers
      * @return meta information of the newly created entry in the company data store of Dataland
      */
-    fun addCompany(companyName: String): CompanyMetaInformation
+    fun addCompany(
+        companyName: String,
+        headquarters: String,
+        industrialSector: String,
+        marketCap: BigDecimal,
+        reportingDateOfMarketCap: Date
+    ): CompanyMetaInformation
 
     /**
      * Method to list matching companies in Dataland by searching for a company name

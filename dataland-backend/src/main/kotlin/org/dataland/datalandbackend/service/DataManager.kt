@@ -8,6 +8,8 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
+import java.util.Date
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -42,6 +44,21 @@ class DataManager(
         val matchesForDataType = dataMetaData.filter { it.value.dataType.equals(dataType) }
         if (matchesForDataType.isEmpty()) {
             throw IllegalArgumentException("Dataland does not know the data type: $dataType")
+        }
+    }
+
+    private fun companyDataMapToListConversion(input: Map<String, CompanyMetaInformation>):
+        List<CompanyMetaInformation> {
+        return input.map {
+            CompanyMetaInformation(
+                companyId = it.key,
+                companyName = it.value.companyName,
+                headquarters = it.value.headquarters,
+                industrialSector = it.value.industrialSector,
+                marketCap = it.value.marketCap,
+                reportingDateOfMarketCap = it.value.reportingDateOfMarketCap,
+                dataRegisteredByDataland = it.value.dataRegisteredByDataland
+            )
         }
     }
 
@@ -124,11 +141,17 @@ class DataManager(
     ________________________________
      */
 
-    override fun addCompany(companyName: String): CompanyMetaInformation {
+    override fun addCompany(
+        companyName: String,
+        headquarters: String,
+        industrialSector: String,
+        marketCap: BigDecimal,
+        reportingDateOfMarketCap: Date
+    ): CompanyMetaInformation {
         companyCounter++
         companyData["$companyCounter"] = CompanyMetaInformation(
             companyId = companyCounter.toString(),
-            companyName = companyName,
+            companyName, headquarters, industrialSector, marketCap, reportingDateOfMarketCap,
             dataRegisteredByDataland = mutableListOf()
         )
         return companyData["$companyCounter"]!!
@@ -139,13 +162,7 @@ class DataManager(
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }
-        return matches.map {
-            CompanyMetaInformation(
-                companyId = it.key,
-                companyName = it.value.companyName,
-                dataRegisteredByDataland = it.value.dataRegisteredByDataland
-            )
-        }
+        return companyDataMapToListConversion(matches)
     }
 
     override fun getCompanyById(companyId: String): CompanyMetaInformation {
