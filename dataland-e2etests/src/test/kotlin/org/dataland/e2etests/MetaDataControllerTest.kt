@@ -45,7 +45,7 @@ class MetaDataControllerTest {
         val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
-        )
+        ).dataId
 
         val listOfDataMetaInfo =
             metaDataControllerApi.getDataMetaInfo(testDataId)
