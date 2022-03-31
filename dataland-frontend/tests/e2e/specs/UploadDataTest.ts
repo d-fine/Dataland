@@ -17,7 +17,8 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success")
         cy.get('span[title=companyId]').then(($companyID) => {
             const id = $companyID.text()
-            cy.visit(`/companies/${id}`).get('body').should("contain", companyName)
+            cy.visit(`/companies/${id}`)
+            cy.get('body').should("contain", companyName)
         })
     })
 
