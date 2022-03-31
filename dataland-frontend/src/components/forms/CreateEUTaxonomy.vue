@@ -145,7 +145,8 @@
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="response.data" :status="response.status"
+                       :enableClose="true"/>
         <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
       </div>
     </div>
