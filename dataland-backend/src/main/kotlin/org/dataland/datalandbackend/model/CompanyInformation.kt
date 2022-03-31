@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal
-import java.util.Date
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -18,5 +18,5 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val headquarters: String,
     @field:JsonProperty(required = true) val industrialSector: String,
     @field:JsonProperty(required = true) val marketCap: BigDecimal,
-    @field:JsonProperty(required = true) val reportingDateOfMarketCap: Date,
+    @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
 )
