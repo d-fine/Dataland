@@ -12,12 +12,9 @@
                 }"
           submit-label="Post Company"
           @submit="postCompanyData">
-        <FormKit
-            type="text"
-            name="companyName"
-            validation="required"
-            validation-visibility="submit"
-            label="Company Name"
+        <FormKitSchema
+            :data="data"
+            :schema="schema"
         />
       </FormKit>
       <div class="progress" v-if="loading">
@@ -35,7 +32,7 @@
 </template>
 
 <script>
-import {FormKit} from "@formkit/vue";
+import {FormKit, FormKitSchema} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
@@ -44,12 +41,12 @@ import CardWrapper from "@/components/wrapper/CardWrapper";
 import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.PostCompanyRequestBody
+const contactSchema = backend.components.schemas.CompanyInformation
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, CardWrapper, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
     enableClose: false,
