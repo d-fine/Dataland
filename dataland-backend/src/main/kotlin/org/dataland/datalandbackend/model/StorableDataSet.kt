@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 /**
  * Class for defining the fields needed by the Data Manager to handle data storage
  * @param companyId identifies the company for which a data set is to be stored
@@ -9,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param data the actual data
  */
 data class StorableDataSet(
-    @field:JsonProperty(required = true) val companyId: String,
-    @field:JsonProperty(required = true) val dataType: String,
-    @field:JsonProperty(required = true) val data: String
+    val companyId: String,
+    val dataType: String,
+    val data: String
 )
