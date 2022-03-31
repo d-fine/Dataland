@@ -1,7 +1,7 @@
 # build stage
+FROM ghcr.io/d-fine/dataland/cypressbase:latest as build-stage
 ARG DATALAND_EDC_USER
 ARG DATALAND_EDC_TOKEN
-FROM ghcr.io/d-fine/dataland/cypressbase:latest as build-stage
 WORKDIR /app
 COPY . .
 RUN DATALAND_EDC_USER=${DATALAND_EDC_USER} \
