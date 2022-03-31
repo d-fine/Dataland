@@ -28,7 +28,7 @@ open class HealthIndicatorExtensionForDummyServers(private val basePath: String)
      * A method to check the health status of the given server by sending a request to its health endpoint.
      * @return a Boolean that declares if the given server runs
      */
-    fun isServerRunning(): Boolean {
+    private fun isServerRunning(): Boolean {
         val client = OkHttpClient()
 
         try {
