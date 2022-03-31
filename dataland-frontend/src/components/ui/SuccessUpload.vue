@@ -19,7 +19,7 @@ export default {
   name: "SuccessUpload",
   components: {Message},
   props: {
-    count: Number,
+    data: Object,
     msg: String,
   },
   methods: {

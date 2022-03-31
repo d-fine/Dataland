@@ -22,7 +22,7 @@
       </FormKit>
 
         <template v-if="action">
-          <SuccessUpload v-if="response" msg="company" :count="count"/>
+          <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data" />
           <FailedUpload v-else msg="Company" :count="count" />
         </template>
     </template>
