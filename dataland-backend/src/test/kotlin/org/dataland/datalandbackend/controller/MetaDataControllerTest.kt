@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -21,7 +21,7 @@ internal class MetaDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val postCompanyRequestBody = PostCompanyRequestBody(
+    val companyInformation = CompanyInformation(
         companyName = "Test-Company_I",
         headquarters = "Test-Headquarters_I",
         industrialSector = "Test-IndustrialSector_I",
@@ -31,7 +31,7 @@ internal class MetaDataControllerTest(
 
     @Test
     fun `list of meta info about data for specific company can be retrieved`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, postCompanyRequestBody)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, companyInformation)
 
         mockMvc.perform(
             get("/metadata?companyId=1")

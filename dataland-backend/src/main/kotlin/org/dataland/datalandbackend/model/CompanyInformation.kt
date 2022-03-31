@@ -13,7 +13,7 @@ import java.util.Date
  * @param marketCap For publicly traded companies: The total monetary value of the outstanding shares of the company
  * @param reportingDateOfMarketCap date to which the market cap value refers
  */
-data class PostCompanyRequestBody(
+data class CompanyInformation(
     @field:JsonProperty(required = true) val companyName: String = "",
     @field:JsonProperty(required = true) val headquarters: String,
     @field:JsonProperty(required = true) val industrialSector: String,

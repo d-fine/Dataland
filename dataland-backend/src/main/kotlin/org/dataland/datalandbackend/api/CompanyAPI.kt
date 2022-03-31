@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -37,10 +37,10 @@ interface CompanyAPI {
     )
     /**
      * A method to create a new company entry in dataland
-     * @param postCompanyRequestBody includes the company name of the company to be created
+     * @param companyInformation includes the company information
      * @return meta information about the stored company (id and company name)
      */
-    fun postCompany(@Valid @RequestBody postCompanyRequestBody: PostCompanyRequestBody):
+    fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation):
         ResponseEntity<CompanyMetaInformation>
 
     @Operation(

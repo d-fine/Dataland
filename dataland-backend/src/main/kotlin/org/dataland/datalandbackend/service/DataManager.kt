@@ -2,10 +2,10 @@ package org.dataland.datalandbackend.service
 
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -51,7 +51,7 @@ class DataManager(
         return input.map {
             CompanyMetaInformation(
                 companyId = it.key,
-                postCompanyRequestBody = it.value.postCompanyRequestBody,
+                companyInformation = it.value.companyInformation,
                 dataRegisteredByDataland = it.value.dataRegisteredByDataland
             )
         }
@@ -136,18 +136,18 @@ class DataManager(
     ________________________________
      */
 
-    override fun addCompany(postCompanyRequestBody: PostCompanyRequestBody): CompanyMetaInformation {
+    override fun addCompany(companyInformation: CompanyInformation): CompanyMetaInformation {
         companyCounter++
         companyData["$companyCounter"] = CompanyMetaInformation(
             companyId = companyCounter.toString(),
-            postCompanyRequestBody,
+            companyInformation,
             dataRegisteredByDataland = mutableListOf()
         )
         return companyData["$companyCounter"]!!
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        val matches = companyData.filter { it.value.postCompanyRequestBody.companyName.contains(companyName, true) }
+        val matches = companyData.filter { it.value.companyInformation.companyName.contains(companyName, true) }
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
         }

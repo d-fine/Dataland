@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -12,13 +12,13 @@ class CompanyUploader {
     internal fun uploadCompany(
         mockMvc: MockMvc,
         objectMapper: ObjectMapper,
-        postCompanyRequestBody: PostCompanyRequestBody
+        companyInformation: CompanyInformation
     ) {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(postCompanyRequestBody))
+                .content(objectMapper.writeValueAsBytes(companyInformation))
         )
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk,

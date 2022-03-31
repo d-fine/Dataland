@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.interfaces
 
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.dataland.datalandbackend.model.StorableDataSet
 
 /**
@@ -60,15 +60,10 @@ interface DataManagerInterface {
 
     /**
      * Method to add a company
-     * @param companyName name of the company to be stored
-     * @param headquarters city where the headquarters of the company is located
-     * @param industrialSector sector in which the company operates
-     * @param marketCap For publicly traded companies: The total monetary value of the
-     * outstanding shares of the company
-     * @param reportingDateOfMarketCap date to which the market cap value refers
+     * @param companyInformation denotes information of the company
      * @return meta information of the newly created entry in the company data store of Dataland
      */
-    fun addCompany(postCompanyRequestBody: PostCompanyRequestBody): CompanyMetaInformation
+    fun addCompany(companyInformation: CompanyInformation): CompanyMetaInformation
 
     /**
      * Method to list matching companies in Dataland by searching for a company name
