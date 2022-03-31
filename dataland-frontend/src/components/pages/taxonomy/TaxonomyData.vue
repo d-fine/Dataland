@@ -1,6 +1,6 @@
 <template>
-  <div class="container" >
-    <div v-if="response" class="row">
+  <div class="grid" >
+    <div v-if="response" class="col ">
       <h1>Company Data</h1>
       <div class="left-align">
       <h2 v-if="companyInfo">Company: {{companyInfo.data.companyName}}</h2>
@@ -8,31 +8,35 @@
 
       </div>
       <div  class="col m12 s12">
-        <div class="card">
-          <div class="card-title left-align">
+        <Card>
+          <template #title>
             <h4>EU Taxonomy Data</h4>
-          </div>
-          <div class="card-content">
-            <div class="row">
-              <div class="col m6">
+          </template>
+          <template #content>
+            <div class="grid">
+              <div class="col md:col-4 col-offset-2">
                 <TaxoCard title="Eligible Revenue" :amount='dataSet.Revenue.eligible'
                           :total='dataSet.Revenue.total'></TaxoCard>
+                <br>
                 <TaxoCard title="Eligible CapEx" :amount='dataSet.Capex.eligible'
                           :total='dataSet.Capex.total'></TaxoCard>
+                <br>
                 <TaxoCard title="Eligible OpEx" :amount='dataSet.Opex.eligible'
                           :total='dataSet.Opex.total'></TaxoCard>
               </div>
-              <div class="col m6">
+              <div class="col md:col-4 ">
                 <TaxoCard title="Aligned Revenue" :amount='dataSet.Revenue.aligned'
                           :total='dataSet.Revenue.total'></TaxoCard>
+                <br>
                 <TaxoCard title="Aligned CapEx" :amount='dataSet.Capex.aligned'
                           :total='dataSet.Capex.total'></TaxoCard>
+                <br>
                 <TaxoCard title="Aligned OpEx" :amount='dataSet.Opex.aligned'
                           :total='dataSet.Opex.total'></TaxoCard>
               </div>
             </div>
-          </div>
-        </div>
+          </template>
+        </Card>
       </div>
 
     </div>
@@ -43,7 +47,7 @@
 import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import TaxoCard from "@/components/ui/TaxoCard";
-
+import Card from "primevue/card";
 const euTaxonomyApi = new EuTaxonomyDataControllerApi()
 const companyApi = new CompanyDataControllerApi()
 const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)
@@ -51,7 +55,7 @@ const companyStore = new DataStore(companyApi.getCompanyById)
 
 export default {
   name: "CompanyEU",
-  components: {TaxoCard},
+  components: {TaxoCard, Card},
   data() {
     return {
       response: null,

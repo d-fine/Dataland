@@ -1,6 +1,7 @@
 <template>
   <div>
     <NavbarTop />
+    <br>
     <router-view />
 
   </div>
@@ -24,5 +25,4 @@ export default {
 @import "./assets/css/main.css";
 @import "./assets/css/forms.css";
 @import "./assets/css/variables";
-
 </style>

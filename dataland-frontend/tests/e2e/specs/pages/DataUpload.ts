@@ -4,7 +4,7 @@ describe('Data Upload Page', function () {
         cy.get('#app').should("exist")
     });
     it('Create a company is present', () => {
-        cy.get('.card-title h2').should("contain", "Create a Company")
+        cy.get('.p-card-title').should("contain", "Create a Company")
     });
     it('Company name Input field exists and works', () => {
         const inputValue = "A company name"

@@ -57,7 +57,7 @@ describe('Company Data', () => {
 
     it('Show all companies button exists', () => {
         cy.visit("/search")
-        cy.get('button.btn').contains('Show all companies')
+        cy.get('button.p-button').contains('Show all companies')
             .should('not.be.disabled')
             .click()
         cy.get('table').contains('Company Search')

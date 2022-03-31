@@ -1,16 +1,24 @@
 <template>
-  <CreateCompany/>
-  <CreateEUTaxonomy/>
+  <div class="grid">
+    <CreateCompany/>
+    <CreateEUTaxonomy/>
+  </div>
 </template>
 
 <script>
 import CreateCompany from "@/components/forms/CreateCompany"
 import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy";
+
 export default {
   name: "CreateData",
   components: {
     CreateEUTaxonomy,
     CreateCompany
+  },
+  data() {
+    return {
+      value: 5
+    }
   }
 }
 </script>

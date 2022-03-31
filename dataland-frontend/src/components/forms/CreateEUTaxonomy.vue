@@ -1,9 +1,8 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Create EU Taxonomy Dataset</h2>
-    </div>
-    <div class="card-content ">
-
+  <Card class="col-5 col-offset-1">
+    <template #title>Create EU Taxonomy Dataset
+    </template>
+    <template #content>
       <FormKit
         v-model="data"
         submit-label="Post EU-Taxonomy Dataset"
@@ -141,35 +140,32 @@
           </div>
         </FormKit>
       </FormKit>
-      <div v-if="enableClose" class="col m12">
-        <div class="right-align">
-          <button class="btn btn-small orange darken-3" @click="close">Close</button>
-        </div>
-        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
-        <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
-      </div>
-    </div>
-  </CardWrapper>
+      <template v-if="action">
+        <SuccessUpload v-if="response" msg="company" :count="count"/>
+        <FailedUpload v-else msg="Company" :count="count" />
+      </template>
+
+    </template>
+  </Card>
 </template>
 <script>
 import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 import {DataStore} from "@/services/DataStore";
 import FailedUpload from "@/components/ui/FailedUpload";
-
+import Card from 'primevue/card';
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
   name: "CustomEUTaxonomy",
-  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, Card, FormKit, SuccessUpload},
 
   data: () => ({
-    enableClose: false,
-    errorOccurence: false,
+    action: false,
+    count: 0,
     data: {},
     model: {},
     loading: false,
@@ -178,9 +174,6 @@ export default {
     idList: []
   }),
   methods: {
-    close() {
-      this.enableClose = false
-    },
     async getCompanyIDs(){
       try {
         const companyList = await companyStore.perform([""])
@@ -192,15 +185,16 @@ export default {
 
     async postEUData() {
       try {
+        this.action = false
+        this.count++
         this.response = await dataStore.perform(this.data)
         this.$formkit.reset('createEuTaxonomyForm')
-        this.errorOccurence = false
       } catch (error) {
         this.response = null
-        this.errorOccurence = true
         console.error(error)
+      } finally {
+        this.action = true
       }
-        this.enableClose = true
     }
   },
 }

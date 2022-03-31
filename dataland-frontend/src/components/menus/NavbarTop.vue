@@ -1,23 +1,37 @@
 <template>
-  <nav>
-    <div class="nav-wrapper orange darken-2">
-      <ul id="nav-mobile" class="center-align hide-on-med-and-down">
-        <li>
-          <router-link to="/">Home</router-link>
-        </li>
-        <li>
-          <router-link to="/upload">Data Upload</router-link>
-        </li>
-        <li>
-          <router-link to="/search">Data Search</router-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
+  <Menubar :model="items"/>
+
 </template>
 
 <script>
+
+import Menubar from 'primevue/menubar';
+
+
 export default {
-  name: "NavbarTop"
+  name: "NavbarTop",
+  components: {Menubar},
+  data() {
+    return {
+      items: [
+        {
+          label: 'Home',
+          to: '/',
+          icon: 'pi pi-home',
+        },
+        {
+          label: 'Data Upload',
+          to: '/upload',
+          icon: 'pi pi-upload',
+        },
+        {
+          label: 'Data Search',
+          to: '/search',
+          icon: 'pi pi-search',
+        }
+      ]
+    }
+  }
 }
 </script>
