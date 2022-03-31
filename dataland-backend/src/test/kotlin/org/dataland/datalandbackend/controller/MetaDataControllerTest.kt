@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.math.BigDecimal
-import java.util.Date
+import java.time.LocalDate
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -21,17 +21,17 @@ internal class MetaDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val companyInformation = CompanyInformation(
+    val testCompanyInformation = CompanyInformation(
         companyName = "Test-Company_I",
         headquarters = "Test-Headquarters_I",
         industrialSector = "Test-IndustrialSector_I",
         marketCap = BigDecimal(100),
-        reportingDateOfMarketCap = Date()
+        reportingDateOfMarketCap = LocalDate.now()
     )
 
     @Test
     fun `list of meta info about data for specific company can be retrieved`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, companyInformation)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
 
         mockMvc.perform(
             get("/metadata?companyId=1")

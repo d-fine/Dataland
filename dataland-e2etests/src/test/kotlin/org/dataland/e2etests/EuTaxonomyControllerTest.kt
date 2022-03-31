@@ -3,9 +3,11 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.time.LocalDate
 
 class EuTaxonomyControllerTest {
     private val basePathToDatalandProxy = "http://proxy:80/api"
@@ -14,9 +16,15 @@ class EuTaxonomyControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyName = "Test-Company_A"
+        val testCompanyInformation = CompanyInformation(
+            companyName = "Test-Company_10",
+            headquarters = "Test-Headquarters_10",
+            industrialSector = "Test-IndustrialSector_10",
+            marketCap = BigDecimal(200),
+            reportingDateOfMarketCap = LocalDate.now()
+        )
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
-        val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
 
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)

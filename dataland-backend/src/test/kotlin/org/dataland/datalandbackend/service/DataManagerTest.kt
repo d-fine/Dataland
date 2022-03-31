@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
-import java.util.Date
+import java.time.LocalDate
 
 @SpringBootTest
 class DataManagerTest {
@@ -20,14 +20,14 @@ class DataManagerTest {
             headquarters = "Test-Headquarters_1",
             industrialSector = "Test-IndustrialSector_1",
             marketCap = BigDecimal(100),
-            reportingDateOfMarketCap = Date()
+            reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_2",
             headquarters = "Test-Headquarters_2",
             industrialSector = "Test-IndustrialSector_2",
             marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = Date()
+            reportingDateOfMarketCap = LocalDate.now()
         )
     )
 

@@ -4,10 +4,12 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.time.LocalDate
 
 class MetaDataControllerTest {
 
@@ -20,12 +22,18 @@ class MetaDataControllerTest {
         numberOfCompanies: Int,
         numberOfDataSetsPerCompany: Int
     ): List<String> {
-        val testCompanyName = "Fantasy-Company_100"
+        val testCompanyInformation = CompanyInformation(
+            companyName = "Test-Company_20",
+            headquarters = "Test-Headquarters_20",
+            industrialSector = "Test-IndustrialSector_20",
+            marketCap = BigDecimal(200),
+            reportingDateOfMarketCap = LocalDate.now()
+        )
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         repeat(numberOfCompanies) {
-            val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
+            val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
             repeat(numberOfDataSetsPerCompany) {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
                     CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
@@ -38,11 +46,17 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if meta info about that data can be retrieved`() {
-        val testCompanyName = "Non-Existent-Company_1"
+        val testCompanyInformation = CompanyInformation(
+            companyName = "Non-Existent_1",
+            headquarters = "Non-Existent-Headquarters_1",
+            industrialSector = "Non-Existent-IndustrialSector_2",
+            marketCap = BigDecimal(200),
+            reportingDateOfMarketCap = LocalDate.now()
+        )
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
-        val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId

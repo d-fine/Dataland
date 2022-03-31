@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.math.BigDecimal
-import java.util.Date
+import java.time.LocalDate
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -21,25 +21,25 @@ internal class CompanyDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val companyInformation = CompanyInformation(
+    val testCompanyInformation = CompanyInformation(
         companyName = "Test-Company_I",
         headquarters = "Test-Headquarters_I",
         industrialSector = "Test-IndustrialSector_I",
         marketCap = BigDecimal(100),
-        reportingDateOfMarketCap = Date()
+        reportingDateOfMarketCap = LocalDate.now()
     )
 
     @Test
     fun `company can be posted`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, companyInformation)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
     }
 
     @Test
     fun `company can be retrieved by name`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, companyInformation)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
 
         mockMvc.perform(
-            get("/companies?companyName=${companyInformation.companyName}")
+            get("/companies?companyName=${testCompanyInformation.companyName}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -48,7 +48,7 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, companyInformation)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
 
         mockMvc.perform(
             get("/companies/1")
