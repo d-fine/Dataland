@@ -42,7 +42,6 @@ export default {
       this.companyInfo = await companyStore.perform(this.companyID)
     },
     async getCompanyDataset() {
-      console.log(this.companyID)
       this.response = await dataStore.perform(this.companyID, "")
     }
   }
