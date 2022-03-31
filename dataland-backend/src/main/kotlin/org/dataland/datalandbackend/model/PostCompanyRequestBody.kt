@@ -8,5 +8,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param companyName name of the company
  */
 data class PostCompanyRequestBody(
-    @field:JsonProperty(required = true) val companyName: String
+    @field:JsonProperty(required = true) val companyName: String = ""
 )
