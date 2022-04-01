@@ -9,12 +9,6 @@ env:
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches:
-      - 'main'
   workflow_dispatch:
 
 jobs:
