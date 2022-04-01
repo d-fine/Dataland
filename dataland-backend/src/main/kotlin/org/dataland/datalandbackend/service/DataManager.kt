@@ -39,9 +39,9 @@ class DataManager(
     }
 
     private fun verifyDataTypeExists(dataType: String) {
-        val matchesForDataType = dataMetaData.filter { it.value.dataType.equals(dataType) }
-        if (matchesForDataType.isEmpty()) {
-            throw IllegalArgumentException("Dataland does not know the data type: $dataType.")
+        val matchesForDataType = dataMetaData.any { it.value.dataType == dataType }
+        if (!matchesForDataType) {
+            throw IllegalArgumentException("Dataland does not know the data type: $dataType")
         }
     }
 
