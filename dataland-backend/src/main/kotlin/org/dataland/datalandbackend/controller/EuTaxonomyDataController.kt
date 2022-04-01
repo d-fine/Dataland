@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.interfaces.DataProcessorInterface
+import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/eutaxonomies")
 @RestController
 class EuTaxonomyDataController(
-    @Autowired var euTaxonomyDataManager: DataProcessorInterface,
+    @Autowired var euTaxonomyDataManager: DataManagerInterface,
     @Autowired var euTaxonomyObjectMapper: ObjectMapper
 ) : DataController<EuTaxonomyData>(
     euTaxonomyDataManager,
