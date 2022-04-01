@@ -41,7 +41,7 @@ class DataManager(
     private fun verifyDataTypeExists(dataType: String) {
         val matchesForDataType = dataMetaData.filter { it.value.dataType.equals(dataType) }
         if (matchesForDataType.isEmpty()) {
-            throw IllegalArgumentException("Dataland does not know the data type: $dataType")
+            throw IllegalArgumentException("Dataland does not know the data type: $dataType.")
         }
     }
 
@@ -55,6 +55,10 @@ class DataManager(
         verifyCompanyIdExists(storableDataSet.companyId)
 
         val dataId = edcClient.insertData(storableDataSet.data)
+
+        if (dataMetaData.containsKey(dataId)) {
+            throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
+        }
 
         dataMetaData[dataId] =
             DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
