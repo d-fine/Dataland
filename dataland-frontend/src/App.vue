@@ -1,4 +1,11 @@
 <template>
+  <div class="grid">
+    <div class="col-1">
+    <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" />
+
+    </div>
+
+  </div>
   <div>
     <NavbarTop />
     <br>
@@ -9,7 +16,6 @@
 
 <script>
 import NavbarTop from "@/components/menus/NavbarTop";
-
 
 
 
