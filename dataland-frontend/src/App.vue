@@ -1,10 +1,12 @@
 <template>
-  <div class="grid surface-900">
+  <div class="grid surface-900 align-items-center">
     <div class="col-1">
     <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" />
 
     </div>
-
+    <div class="col-1 col-offset-10">
+      <i class="pi pi-question-circle"></i>
+    </div>
   </div>
   <div>
     <NavbarTop />
