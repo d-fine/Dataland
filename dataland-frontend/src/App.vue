@@ -5,7 +5,7 @@
 
     </div>
     <div class="col-1 col-offset-10">
-      <i class="pi pi-question-circle"></i>
+      <i class="pi pi-question-circle"></i> <!-- Compliant icon fonts usage -->
     </div>
   </div>
   <div>
