@@ -27,7 +27,7 @@
           <caption><h4>Company Search</h4></caption>
           <thead>
           <tr>
-            <th v-for="(header, i) in ['Name', 'Headquarter', 'Sector','Market cap', 'Market Cap date']" :key="i">
+            <th v-for="(header, i) in ['Name', 'Headquarter', 'Sector','Market Cap', 'Market Cap Date']" :key="i">
               {{ header }}
             </th>
           </tr>

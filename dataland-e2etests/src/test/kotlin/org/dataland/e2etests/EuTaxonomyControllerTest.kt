@@ -15,7 +15,7 @@ class EuTaxonomyControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
+    fun `post a dummy company with dummy data set and check if the dummy data set can be retrieved`() {
         val testCompanyInformation = CompanyInformation(
             companyName = "Test-Company_10",
             headquarters = "Test-Headquarters_10",
@@ -25,14 +25,11 @@ class EuTaxonomyControllerTest {
         )
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
-
         val companyAssociatedDataSetEuTaxonomyData =
             euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
-
         assertEquals(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData),
             companyAssociatedDataSetEuTaxonomyData,

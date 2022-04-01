@@ -52,10 +52,8 @@ class CompanyDataControllerTest {
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now()
         )
-        val postCompanyResponse =
-            companyDataControllerApi.postCompany(testCompanyInformation)
+        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyInformation.companyName)
-
         assertTrue(
             getCompaniesByNameResponse.contains(
                 CompanyMetaInformation(
