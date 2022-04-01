@@ -45,7 +45,8 @@ class DataManager(
         }
     }
 
-    private fun verifyDataIdIsOfType(dataId: String, dataType: String) {
+    private fun verifyDataIdExistsAndIsOfType(dataId: String, dataType: String) {
+        verifyDataIdExists(dataId)
         if (dataMetaData[dataId]!!.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data with the id: $dataId is registered as type" +
@@ -79,7 +80,7 @@ class DataManager(
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
         verifyDataIdExists(dataManagerInputToGetData.dataId)
-        verifyDataIdIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
+        verifyDataIdExistsAndIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
 
         val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
 
