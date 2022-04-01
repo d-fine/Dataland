@@ -16,7 +16,10 @@
             type="text"
             name="companyId"
             label="Company ID"
+            placeholder="Company ID"
             @input="getCompanyIDs"
+            :inner-class="innerClass"
+            :input-class="inputClass"
             :validation="[['required'],['is', ...idList]]"
             :validation-messages="{
                 is: 'The company ID you provided does not exist.',
@@ -33,6 +36,8 @@
               validation="required"
               label="Attestation"
               placeholder="Please choose"
+              :inner-class="innerClass"
+              :input-class="inputClass"
               :options="
                     {'None':'None',
                     'Limited_Assurance': 'Limited Assurance',
@@ -51,7 +56,8 @@
                       'formkit-inner':false
                       }"
               :input-class="{
-                      'formkit-input':false
+                      'formkit-input': false,
+                      'p-radiobutton:': true
                       }"
 
               :options="['Yes', 'No']"
@@ -68,25 +74,24 @@
                   name="aligned"
                   validation="number"
                   label="Aligned / m€"
-                  :inner-class="{
-                      'formkit-inner':false
-                      }"
-                  :input-class="{
-                      'formkit-input':false,
-                      'p-inputtext': true
-                      }"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
                   label="Eligible / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
                   label="Total / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
 
             </FormKit>
@@ -103,18 +108,24 @@
                   name="aligned"
                   validation="number"
                   label="Aligned / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
                   label="Eligible / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
                   label="Total / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
             </FormKit>
           </div>
@@ -129,19 +140,25 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / €"
+                  label="Aligned / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / €"
+                  label="Eligible / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / €"
+                  label="Total / m€"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
             </FormKit>
           </div>
@@ -172,6 +189,14 @@ export default {
   components: {FailedUpload, Card, FormKit, SuccessUpload},
 
   data: () => ({
+    innerClass: {
+      'formkit-inner':false,
+      'p-inputwrapper':true
+    },
+    inputClass: {
+      'formkit-input':false,
+      'p-inputtext': true
+    },
     action: false,
     count: 0,
     data: {},
