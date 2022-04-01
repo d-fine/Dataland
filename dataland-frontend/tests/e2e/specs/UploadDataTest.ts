@@ -13,6 +13,10 @@ describe('User interactive tests for Data Upload', () => {
     it('Create a Company when everything is fine', () => {
         const companyName = "BMW"
         cy.get('input[name=companyName]').type(companyName, {force: true})
+        cy.get('input[name=headquarters]').type("applications", {force: true})
+        cy.get('input[name=industrialSector]').type("Handmade", {force: true})
+        cy.get('input[name=marketCap]').type("123", {force: true})
+        cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
         cy.get('button[name="postCompanyData"]').click()
         cy.get('body').should("contain", "success")
         cy.get('span[title=companyId]').then(($companyID) => {

@@ -23,8 +23,26 @@
       <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
       <br>
       <div class="col m12">
-        <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"
-                     entity="Company Search" linkID="companyId" route="/companies/"/>
+        <table v-if="response">
+          <caption><h4>Company Search</h4></caption>
+          <thead>
+          <tr>
+            <th v-for="(header, i) in ['Name', 'headquarter', 'sector','Market cap', 'market Cap date']" :key="i">
+              {{ header }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(dataset, index) in response.data" :key="index">
+            <td v-for="(item, i) in dataset.companyInformation" :key="i">
+              <router-link v-if="i === 'companyName'" :to="'/companies/'+ dataset.companyId ">{{ item }}</router-link>
+              <template v-else>
+                {{ item }}
+              </template>
+            </td>
+          </tr>
+          </tbody>
+        </table>
         <p v-else-if="response_error">The resource you requested does not exist yet. You can create it:
           <router-link to="/upload">Create Data</router-link>
         </p>
@@ -39,7 +57,6 @@
 import {FormKit} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
-import ResultTable from "@/components/ui/ResultTable";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
@@ -47,12 +64,13 @@ const dataStore = new DataStore(api.getCompaniesByName)
 
 export default {
   name: "RetrieveCompany",
-  components: {CardWrapper, FormKit, ResultTable},
+  components: {CardWrapper, FormKit},
 
   data: () => ({
     data: {},
     model: {},
     response: null,
+    companyInformation: null,
     response_error: false
   }),
   methods: {
@@ -62,6 +80,7 @@ export default {
           this.data.companyName = ""
         }
         this.response = await dataStore.perform(this.data.companyName)
+        console.log(this.response.data[0].companyInformation)
 
       } catch (error) {
         console.error(error)

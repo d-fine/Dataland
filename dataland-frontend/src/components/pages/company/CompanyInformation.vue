@@ -1,9 +1,14 @@
 <template>
-  <div v-if="companyInfo" class="container">
+  <div v-if="company" class="container">
     <div class="row">
       <div class="col m12 s12">
-        <h2>Company Information about {{companyInfo.data.companyName}} (ID: {{companyInfo.data.companyId}})</h2>
-        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/" :headers="['Data ID', 'Data Type']" linkKey="Data Type" linkID="Data ID" />
+        <h2>Company Information about {{ companyInformation.companyName }} (ID: {{ company.data.companyId }})</h2>
+        <p>market cap: {{ companyInformation.marketCap }}</p>
+        <p>reporting Date Of MarketCap: {{ companyInformation.reportingDateOfMarketCap }}</p>
+        <p>headquarters: {{ companyInformation.headquarters }}</p>
+        <p>Industrial Sector: {{ companyInformation.industrialSector }}</p>
+        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/"
+                     :headers="['Data ID', 'Data Type']" linkKey="Data Type" linkID="Data ID"/>
       </div>
     </div>
   </div>
@@ -24,7 +29,8 @@ export default {
   data() {
     return {
       response: null,
-      companyInfo: null
+      company: null,
+      companyInformation: null
     }
   },
   props: {
@@ -39,7 +45,11 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-      this.companyInfo = await companyStore.perform(this.companyID)
+      this.company = await companyStore.perform(this.companyID)
+      this.companyInformation = this.company.data.companyInformation
+      console.log(this.companyInformation)
+      console.log(this.companyInformation.companyName)
+      console.log(this.company.data.companyId)
     },
     async getCompanyDataset() {
       this.response = await dataStore.perform(this.companyID, "")
