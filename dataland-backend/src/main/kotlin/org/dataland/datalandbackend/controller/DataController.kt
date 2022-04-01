@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.interfaces.DataProcessorInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity
  * Dataland handles data */
 
 abstract class DataController<T>(
-    var dataManager: DataManagerInterface,
+    var dataManager: DataProcessorInterface,
     var objectMapper: ObjectMapper,
     val clazz: Class<T>
 ) : DataAPI<T> {

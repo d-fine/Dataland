@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyAPI
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.interfaces.CompanyDataStoreInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CompanyDataController(
-    @Autowired var dataManager: DataManagerInterface,
+    @Autowired var dataManager: CompanyDataStoreInterface,
 ) : CompanyAPI {
 
     override fun postCompany(postCompanyRequestBody: PostCompanyRequestBody): ResponseEntity<CompanyMetaInformation> {
