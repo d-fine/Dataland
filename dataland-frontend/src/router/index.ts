@@ -5,6 +5,7 @@ import WelcomeDataland from "@/components/WelcomeDataland.vue";
 import CompanyEU from "@/components/pages/taxonomy/TaxonomyData.vue";
 import CompanyInformation from "@/components/pages/company/CompanyInformation.vue";
 import DataList from "@/components/pages/data/DataList.vue";
+import SearchTaxonomy from "@/components/pages/taxonomy/SearchTaxonomy.vue";
 
 const routes = [
     {
@@ -26,6 +27,11 @@ const routes = [
         path: "/data",
         name: "List Data",
         component: DataList,
+    },
+    {
+        path: "/searchtaxonomy",
+        name: "Search Eu Taxonomy",
+        component: SearchTaxonomy,
     },
     {
         path: "/data/eutaxonomies/:dataID",

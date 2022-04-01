@@ -29,6 +29,11 @@ export default {
           label: 'Data Search',
           to: '/search',
           icon: 'pi pi-search',
+        },
+        {
+          label: 'EU Taxonomy Search',
+          to: '/searchtaxonomy',
+          icon: 'pi pi-euro',
         }
       ]
     }

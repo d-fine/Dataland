@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid surface-900">
     <div class="col-1">
     <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" />
 
