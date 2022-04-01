@@ -13,19 +13,18 @@ class EuTaxonomyControllerTest {
     private val basePathToDatalandProxy = "http://proxy:80/api"
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
+    private val testCompanyInformation = CompanyInformation(
+        companyName = "Test-Company_10",
+        headquarters = "Test-Headquarters_10",
+        industrialSector = "Test-IndustrialSector_10",
+        marketCap = BigDecimal(200),
+        reportingDateOfMarketCap = LocalDate.now()
+    )
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyInformation = CompanyInformation(
-            companyName = "Test-Company_10",
-            headquarters = "Test-Headquarters_10",
-            industrialSector = "Test-IndustrialSector_10",
-            marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now()
-        )
+    fun `post a dummy company with dummy data set and check if the dummy data set can be retrieved`() {
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
