@@ -7,7 +7,7 @@
             <caption><h4>Available datasets</h4></caption>
             <thead>
             <tr>
-              <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i">{{ header }}</th>
+              <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i" scope="col">{{ header }}</th>
             </tr>
             </thead>
             <tbody>

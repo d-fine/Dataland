@@ -35,8 +35,6 @@
           <router-link to="/upload">Create Data</router-link>
         </p>
       </template>
-<!--        <ResultTable v-if="response" :data="response.data" :headers="['Name', 'ID']" linkKey="companyName"-->
-<!--                     entity="Company Search" linkID="companyId" route="/companies/"/>-->
     </template>
   </Card>
 </template>
@@ -50,7 +48,6 @@ import backend from "@/../build/clients/backend/backendOpenApi.json";
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
 const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
-// import ResultTable from "@/components/ui/ResultTable";
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
