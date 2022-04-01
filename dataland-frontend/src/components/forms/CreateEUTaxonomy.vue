@@ -68,6 +68,13 @@
                   name="aligned"
                   validation="number"
                   label="Aligned / m€"
+                  :inner-class="{
+                      'formkit-inner':false
+                      }"
+                  :input-class="{
+                      'formkit-input':false,
+                      'p-inputtext': true
+                      }"
               />
               <FormKit
                   type="text"
