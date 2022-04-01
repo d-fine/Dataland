@@ -6,12 +6,6 @@ env:
   DATALAND_EDC_USER: ${{ secrets.DATALAND_EDC_USER }}
 
 on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches:
-      - 'main'
   workflow_dispatch:
 
 jobs:
