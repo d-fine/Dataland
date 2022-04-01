@@ -17,18 +17,28 @@ class MetaDataControllerTest {
     private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
+    private val testCompanyList = listOf(
+        CompanyInformation(
+            companyName = "Test-Company_new_1",
+            headquarters = "Test-Headquarters_new_1",
+            industrialSector = "Test-IndustrialSector_new_1",
+            marketCap = BigDecimal(100),
+            reportingDateOfMarketCap = LocalDate.now()
+        ),
+        CompanyInformation(
+            companyName = "Test-Company_new_2",
+            headquarters = "Test-Headquarters_new_2",
+            industrialSector = "Test-IndustrialSector_new_2",
+            marketCap = BigDecimal(200),
+            reportingDateOfMarketCap = LocalDate.now()
+        )
+    )
 
     private fun populateCompaniesAndEuTaxonomyDataSets(
         numberOfCompanies: Int,
         numberOfDataSetsPerCompany: Int
     ): List<String> {
-        val testCompanyInformation = CompanyInformation(
-            companyName = "Test-Company_20",
-            headquarters = "Test-Headquarters_20",
-            industrialSector = "Test-IndustrialSector_20",
-            marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now()
-        )
+        val testCompanyInformation = testCompanyList[0]
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
 
         val listOfPostedTestCompanyIds = mutableListOf<String>()
@@ -46,13 +56,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy company with dummy data set and check if its meta info can be retrieved`() {
-        val testCompanyInformation = CompanyInformation(
-            companyName = "Non-Existent_1",
-            headquarters = "Non-Existent-Headquarters_1",
-            industrialSector = "Non-Existent-IndustrialSector_2",
-            marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now()
-        )
+        val testCompanyInformation = testCompanyList[1]
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
