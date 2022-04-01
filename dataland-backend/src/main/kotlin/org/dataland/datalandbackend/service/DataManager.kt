@@ -45,17 +45,6 @@ class DataManager(
         }
     }
 
-    private fun verifyDataIdExistsAndIsOfType(dataId: String, dataType: String) {
-        verifyDataIdExists(dataId)
-        if (dataMetaData[dataId]!!.dataType != dataType) {
-            throw IllegalArgumentException(
-                "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaData[dataId]!!.dataType} by Dataland instead of your requested" +
-                    " type $dataType."
-            )
-        }
-    }
-
     /*
     ________________________________
     Methods to route data inserts and queries to the data store and save meta data in the Dataland-Meta-Data-Storage:
@@ -79,7 +68,7 @@ class DataManager(
     }
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
-        verifyDataIdExistsAndIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
+        verifyDataIdExists(dataManagerInputToGetData.dataId)
 
         val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
 
@@ -87,6 +76,13 @@ class DataManager(
             throw IllegalArgumentException(
                 "No data set with the id: ${dataManagerInputToGetData.dataId} " +
                     "could be found in the data store."
+            )
+        }
+        if (dataMetaData[dataManagerInputToGetData.dataId]!!.dataType != dataManagerInputToGetData.dataType) {
+            throw IllegalArgumentException(
+                "The data with the id: ${dataManagerInputToGetData.dataId} is registered as type" +
+                    " ${dataMetaData[dataManagerInputToGetData.dataId]} by Dataland instead of your requested" +
+                    " type ${dataManagerInputToGetData.dataType}."
             )
         }
         return data
@@ -138,7 +134,11 @@ class DataManager(
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        return companyData.filter { it.value.companyName.contains(companyName, true) }.map {
+        val matches = companyData.filter { it.value.companyName.contains(companyName, true) }
+        if (matches.isEmpty()) {
+            throw IllegalArgumentException("No matches for company with name '$companyName'.")
+        }
+        return matches.map {
             CompanyMetaInformation(
                 companyId = it.key,
                 companyName = it.value.companyName,

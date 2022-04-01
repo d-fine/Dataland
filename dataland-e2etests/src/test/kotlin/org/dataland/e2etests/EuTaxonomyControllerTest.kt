@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class EuTaxonomyControllerTest {
-    private val basePathToBackendViaProxy = "http://proxy:80/api"
-    private val companyDataControllerApi = CompanyDataControllerApi(basePathToBackendViaProxy)
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToBackendViaProxy)
+    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
+    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {

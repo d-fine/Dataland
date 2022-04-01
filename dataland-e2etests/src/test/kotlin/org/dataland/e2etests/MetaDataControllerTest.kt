@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test
 
 class MetaDataControllerTest {
 
-    private val basePathToBackendViaProxy = "http://proxy:80/api"
-    private val metaDataControllerApi = MetaDataControllerApi(basePathToBackendViaProxy)
-    private val companyDataControllerApi = CompanyDataControllerApi(basePathToBackendViaProxy)
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToBackendViaProxy)
+    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
+    private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
+    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
 
     private fun populateDatalandWithCompaniesAndEuTaxnomyDataSets(
         numberOfCompanies: Int,

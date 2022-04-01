@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
 
 class EdcDummyServerHealthTest {
-    private val basePathToBackendViaProxy = "http://proxy:80/api"
+    private val basePathToDatalandProxy = "http://proxy:80/api"
 
     @Test
     fun `test if EDC Dummy Server is up by using the backend actuator health endpoint`() {
@@ -16,7 +16,7 @@ class EdcDummyServerHealthTest {
         var responseString = "INITIALIZE"
         try {
             val request: Request = Request.Builder()
-                .url("$basePathToBackendViaProxy/actuator/health/edcDummyServer").build()
+                .url("$basePathToDatalandProxy/actuator/health/edcDummyServer").build()
             val response: Response = client.newCall(request).execute()
             responseString = response.body?.string().toString()
         } catch (_: Exception) {
