@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class SkyminderControllerTest {
-    val skyminderControllerApi = SkyminderControllerApi(basePath = "http://proxy:80/api")
+    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val skyminderControllerApi = SkyminderControllerApi(basePathToDatalandProxy)
 
     @Test
     fun `get dummy company data by sending a request to dummy skyminder server`() {

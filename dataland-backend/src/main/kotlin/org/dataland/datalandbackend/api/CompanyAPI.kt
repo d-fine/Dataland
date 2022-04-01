@@ -32,7 +32,6 @@ interface CompanyAPI {
         ]
     )
     @PostMapping(
-        value = [""],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
@@ -55,7 +54,6 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = [""],
         produces = ["application/json"]
     )
     /**

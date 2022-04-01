@@ -27,7 +27,6 @@ interface MetaDataApi {
         ]
     )
     @GetMapping(
-        value = [""],
         produces = ["application/json"]
     )
     /**

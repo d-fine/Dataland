@@ -1,4 +1,4 @@
-// dataland-skyminder-server
+// dataland-skyminder-dummyserver
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)

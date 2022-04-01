@@ -25,7 +25,6 @@ interface SkyminderAPI {
         ]
     )
     @GetMapping(
-        value = [""],
         produces = ["application/json"]
     )
     /**
