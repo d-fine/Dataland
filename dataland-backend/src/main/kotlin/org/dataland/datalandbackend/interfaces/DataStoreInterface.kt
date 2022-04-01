@@ -1,20 +1,23 @@
 package org.dataland.datalandbackend.interfaces
 
+import org.dataland.datalandbackend.model.DataManagerInputToGetData
+import org.dataland.datalandbackend.model.StorableDataSet
+
 /**
- * Defines the required functionalities for a data store
+ * Defines the required functionalities to the data store and save meta data in the Dataland-Meta-Data-Storage
  */
 interface DataStoreInterface {
     /**
-     * Method to insert data into to the data store
-     * @param data contains the data to be stored in the data store
-     * @return ID of the newly created data store entry
+     * Method to make the data manager add data to a data store and store meta data in Dataland
+     * @param storableDataSet contains all the inputs needed by Dataland
+     * @return ID of the newly stored data in the data store
      */
-    fun insertDataSet(data: String): String
+    fun addDataSet(storableDataSet: StorableDataSet): String
 
     /**
-     * Method to get the data of a single entry in the data store
-     * @param dataId identifier of the stored data
-     * @return all data associated to the dataId provided
+     * Method to make the data manager get the data of a single entry from the data store
+     * @param dataManagerInputToGetData contains all the inputs needed by Dataland
+     * @return data associated with the data ID provided in the input
      */
-    fun selectDataSet(dataId: String): String
+    fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String
 }

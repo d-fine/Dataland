@@ -134,7 +134,11 @@ class DataManager(
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        return companyData.filter { it.value.companyName.contains(companyName, true) }.map {
+        val matches = companyData.filter { it.value.companyName.contains(companyName, true) }
+        if (matches.isEmpty()) {
+            throw IllegalArgumentException("No matches for company with name '$companyName'.")
+        }
+        return matches.map {
             CompanyMetaInformation(
                 companyId = it.key,
                 companyName = it.value.companyName,
