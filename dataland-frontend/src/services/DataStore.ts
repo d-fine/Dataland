@@ -43,8 +43,10 @@ export class DataStore {
         if ("format" in propertiesSchema[param]) {
             const format = propertiesSchema[param].format
             if (format == "date") {
-                const now = new Date()
-                return `date_before:${now.toLocaleDateString()}`
+                const today = new Date()
+                const tomorrow = new Date(today)
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                return `date_before:${tomorrow.toLocaleDateString()}`
             }
         }
         if ("type" in propertiesSchema[param]) {
@@ -96,17 +98,31 @@ export class DataStore {
                         }
                     )
                 }
-            } else {
-                /* create a text form */
-                const type = this.getType(index).includes("date") ? "date" : "text"
+            } else if (this.getType(index).includes("date")) {
+                /* create a data form */
                 schema.push({
-                        $formkit: type,
+                        $formkit: "date",
                         label: humanizeString(index),
                         placeholder: humanizeString(index),
                         name: index,
                         validation: validation,
+                        classes: {
+                            inner: {'formkit-inner': false},
+                        }
                     }
                 )
+            } else {
+                {
+                    /* create a text form */
+                    schema.push({
+                            $formkit: "text",
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: validation,
+                        }
+                    )
+                }
             }
         }
         return schema
