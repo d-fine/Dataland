@@ -60,7 +60,7 @@ interface CompanyAPI {
      * A method to retrieve specific companies identified by their company names
      * If an empty string is passed as company name, all companies in the data store will be returned.
      * @param companyName identifier used to search for companies in the data store (can also be an empty string)
-     * @return infrotmation about all companies matching the search criteria
+     * @return information about all companies matching the search criteria
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<StoredCompany>>
