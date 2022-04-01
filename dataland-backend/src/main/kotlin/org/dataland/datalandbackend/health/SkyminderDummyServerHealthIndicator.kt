@@ -8,4 +8,4 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SkyminderDummyServerHealthIndicator :
-    HealthIndicatorExtensionForDummyServers("http://skyminder-server:8080/actuator/health")
+    HealthIndicatorExtensionForDummyServers("http://skyminder-dummyserver:8080/actuator/health")
