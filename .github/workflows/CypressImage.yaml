@@ -22,7 +22,7 @@ jobs:
           cache: gradle
       - name: Build all project outputs and npm install
         run: ./gradlew assemble npmInstall --no-daemon
-      - name: Copy the gradle cache into the workspace
+      - name: Copy the gradle and cpyress cache into the workspace
         run: |
           cp -r /home/runner/.gradle ./gradlecache
           cp -r /home/runner/.cache/Cypress ./cypresscache
