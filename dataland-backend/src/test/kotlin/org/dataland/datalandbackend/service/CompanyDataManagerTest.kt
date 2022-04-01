@@ -1,27 +1,19 @@
 package org.dataland.datalandbackend.service
 
-import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DataManagerTest {
+class CompanyDataManagerTest {
 
-    val testManager = DataManager(edcClient = DefaultApi(basePath = "dummy"))
-
+    val testCompanyDataManager = CompanyDataManager()
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
-
-    /*
-    ________________________________
-    Tests for all data manager functionalities associated with adding and getting companies:
-    ________________________________
-     */
 
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val companyMetaInformation = testManager.addCompany(testCompanyNamesToStore[0])
+        val companyMetaInformation = testCompanyDataManager.addCompany(testCompanyNamesToStore[0])
         assertEquals(
             companyMetaInformation.companyName, testCompanyNamesToStore[0],
             "The company name in the post-response does not match the actual name of the company to be posted."
@@ -31,10 +23,10 @@ class DataManagerTest {
     @Test
     fun `add all companies then retrieve them as a list and check for each company if its name is as expected`() {
         for (companyName in testCompanyNamesToStore) {
-            testManager.addCompany(companyName)
+            testCompanyDataManager.addCompany(companyName)
         }
 
-        val allCompaniesInStore = testManager.listCompaniesByName("")
+        val allCompaniesInStore = testCompanyDataManager.listCompaniesByName("")
         for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
             assertEquals(
                 testCompanyNamesToStore[counter], storedCompany.companyName,
@@ -46,11 +38,11 @@ class DataManagerTest {
     @Test
     fun `add all companies and search for them one by one by using their names`() {
         for (companyName in testCompanyNamesToStore) {
-            testManager.addCompany(companyName)
+            testCompanyDataManager.addCompany(companyName)
         }
 
         for (companyName in testCompanyNamesToStore) {
-            val searchResponse = testManager.listCompaniesByName(companyName)
+            val searchResponse = testCompanyDataManager.listCompaniesByName(companyName)
             assertEquals(
                 companyName, searchResponse.first().companyName,
                 "The posted company could not be found in the data store by searching for its name."
@@ -61,14 +53,7 @@ class DataManagerTest {
     @Test
     fun `get companies with a name that does not exist`() {
         assertThrows<IllegalArgumentException> {
-            testManager.listCompaniesByName("error")
-        }
-    }
-
-    @Test
-    fun `get the data sets for a company id that does not exist`() {
-        assertThrows<IllegalArgumentException> {
-            testManager.searchDataMetaInfo(companyId = "error")
+            testCompanyDataManager.listCompaniesByName("error")
         }
     }
 }
