@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerAp
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -56,7 +56,7 @@ class CompanyDataControllerTest {
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyInformation.companyName)
         assertTrue(
             getCompaniesByNameResponse.contains(
-                CompanyMetaInformation(
+                StoredCompany(
                     companyId = postCompanyResponse.companyId,
                     companyInformation = testCompanyInformation,
                     dataRegisteredByDataland = emptyList()
