@@ -32,7 +32,7 @@ class DataManager(
         }
     }
 
-    private fun verifyDataIdIsExists(dataId: String) {
+    private fun verifyDataIdExists(dataId: String) {
         if (!dataMetaData.containsKey(dataId)) {
             throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
         }
@@ -69,7 +69,7 @@ class DataManager(
     }
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
-        verifyDataIdIsExists(dataManagerInputToGetData.dataId)
+        verifyDataIdExists(dataManagerInputToGetData.dataId)
 
         val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
 
@@ -97,7 +97,7 @@ class DataManager(
 
     override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
         if (dataId.isNotEmpty()) {
-            verifyDataIdIsExists(dataId)
+            verifyDataIdExists(dataId)
             return listOf(dataMetaData[dataId]!!)
         }
 
