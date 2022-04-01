@@ -79,7 +79,6 @@ class DataManager(
     }
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
-        verifyDataIdExists(dataManagerInputToGetData.dataId)
         verifyDataIdExistsAndIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
 
         val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
