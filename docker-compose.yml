@@ -67,9 +67,6 @@ services:
       - internal
     expose:
       - "8080"
-    environment:
-      DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-      DATALAND_EDC_USER: ${DATALAND_EDC_USER}
   develop:
     profiles:
       - "development"
