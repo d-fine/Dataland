@@ -3,10 +3,10 @@ package org.dataland.datalandbackend.service
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StoredCompany
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -18,7 +18,7 @@ class DataManager(
     @Autowired var edcClient: DefaultApi
 ) : DataManagerInterface {
     var dataMetaData = mutableMapOf<String, DataMetaInformation>()
-    var companyData = mutableMapOf<String, CompanyMetaInformation>()
+    var companyData = mutableMapOf<String, StoredCompany>()
     private var companyCounter = 0
 
     /*
@@ -46,10 +46,10 @@ class DataManager(
         }
     }
 
-    private fun companyDataMapToListConversion(input: Map<String, CompanyMetaInformation>):
-        List<CompanyMetaInformation> {
+    private fun companyDataMapToListConversion(input: Map<String, StoredCompany>):
+        List<StoredCompany> {
         return input.map {
-            CompanyMetaInformation(
+            StoredCompany(
                 companyId = it.key,
                 companyInformation = it.value.companyInformation,
                 dataRegisteredByDataland = it.value.dataRegisteredByDataland
@@ -136,9 +136,9 @@ class DataManager(
     ________________________________
      */
 
-    override fun addCompany(companyInformation: CompanyInformation): CompanyMetaInformation {
+    override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         companyCounter++
-        companyData["$companyCounter"] = CompanyMetaInformation(
+        companyData["$companyCounter"] = StoredCompany(
             companyId = companyCounter.toString(),
             companyInformation,
             dataRegisteredByDataland = mutableListOf()
@@ -146,7 +146,7 @@ class DataManager(
         return companyData["$companyCounter"]!!
     }
 
-    override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
+    override fun listCompaniesByName(companyName: String): List<StoredCompany> {
         val matches = companyData.filter { it.value.companyInformation.companyName.contains(companyName, true) }
         if (matches.isEmpty()) {
             throw IllegalArgumentException("No matches for company with name '$companyName'.")
@@ -154,7 +154,7 @@ class DataManager(
         return companyDataMapToListConversion(matches)
     }
 
-    override fun getCompanyById(companyId: String): CompanyMetaInformation {
+    override fun getCompanyById(companyId: String): StoredCompany {
         verifyCompanyIdExists(companyId)
 
         return companyData[companyId]!!

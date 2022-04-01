@@ -33,9 +33,9 @@ class DataManagerTest {
 
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val companyMetaInformation = testManager.addCompany(testCompanyList[0])
+        val storedCompany = testManager.addCompany(testCompanyList[0])
         assertEquals(
-            companyMetaInformation.companyInformation.companyName, testCompanyList[0].companyName,
+            storedCompany.companyInformation.companyName, testCompanyList[0].companyName,
             "The company name in the post-response does not match the actual name of the company to be posted."
         )
     }

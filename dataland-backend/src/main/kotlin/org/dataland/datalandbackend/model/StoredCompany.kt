@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param companyInformation contains information of company
  * @param dataRegisteredByDataland contains meta info for all data sets of this company
  */
-data class CompanyMetaInformation(
+data class StoredCompany(
     @field:JsonProperty(required = true) val companyId: String,
     @field:JsonProperty(required = true) val companyInformation: CompanyInformation,
     @field:JsonProperty(required = true) val dataRegisteredByDataland: MutableList<DataMetaInformation>

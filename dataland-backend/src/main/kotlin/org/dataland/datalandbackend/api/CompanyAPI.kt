@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.StoredCompany
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,7 +23,7 @@ interface CompanyAPI {
 
     @Operation(
         summary = "Add a new company.",
-        description = "A new company is added using the provided information, the generated company ID is returned."
+        description = "A new company is added using the provided information, the response includes the generated company ID."
     )
     @ApiResponses(
         value = [
@@ -38,10 +38,10 @@ interface CompanyAPI {
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
-     * @return meta information about the stored company (id and company name)
+     * @return information about the stored company, including the generated company ID
      */
     fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation):
-        ResponseEntity<CompanyMetaInformation>
+        ResponseEntity<StoredCompany>
 
     @Operation(
         summary = "Retrieve specific companies by name or just all companies from the data store.",
@@ -61,18 +61,18 @@ interface CompanyAPI {
      * A method to retrieve specific companies identified by their company names
      * If an empty string is passed as company name, all companies in the data store will be returned.
      * @param companyName identifier used to search for companies in the data store (can also be an empty string)
-     * @return all companies matching the search criteria
+     * @return infrotmation about all companies matching the search criteria
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
-        ResponseEntity<List<CompanyMetaInformation>>
+        ResponseEntity<List<StoredCompany>>
 
     @Operation(
-        summary = "Retrieve company meta information.",
-        description = "The company meta information behind the given company Id is retrieved."
+        summary = "Retrieve company information.",
+        description = "Company information behind the given company Id is retrieved."
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company meta information.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company information.")
         ]
     )
     @GetMapping(
@@ -81,9 +81,9 @@ interface CompanyAPI {
     )
 
     /**
-     * A method to retrieve company meta information for one specific company identified by its company Id
+     * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
-     * @return meta information (company Id and name)
+     * @return information about the company
      */
-    fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyMetaInformation>
+    fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
 }
