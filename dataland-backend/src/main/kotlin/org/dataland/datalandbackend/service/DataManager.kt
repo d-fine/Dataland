@@ -60,15 +60,10 @@ class DataManager(
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
         }
 
-        dataMetaData[dataId] =
+        val dataMetaInformation =
             DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
-        companyData[storableDataSet.companyId]!!.dataRegisteredByDataland.add(
-            DataMetaInformation(
-                dataId = dataId,
-                dataType = storableDataSet.dataType,
-                companyId = storableDataSet.companyId
-            )
-        )
+        dataMetaData[dataId] = dataMetaInformation
+        companyData[storableDataSet.companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
         return dataId
     }
 
