@@ -56,6 +56,6 @@ interface DataAPI<T> {
      * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
-    fun getCompanyAssociatedDataSet(@PathVariable("dataId") dataId: String):
+    fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<T>>
 }

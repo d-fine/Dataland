@@ -22,12 +22,12 @@ class EuTaxonomyControllerTest {
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
 
-        val companyAssociatedDataSetEuTaxonomyData =
-            euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
+        val companyAssociatedDataEuTaxonomyData =
+            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
 
         assertEquals(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData),
-            companyAssociatedDataSetEuTaxonomyData,
+            companyAssociatedDataEuTaxonomyData,
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
     }

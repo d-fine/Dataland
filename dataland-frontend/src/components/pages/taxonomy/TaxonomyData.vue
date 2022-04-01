@@ -46,7 +46,7 @@ import TaxoCard from "@/components/ui/TaxoCard";
 
 const euTaxonomyApi = new EuTaxonomyDataControllerApi()
 const companyApi = new CompanyDataControllerApi()
-const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)
+const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedData)
 const companyStore = new DataStore(companyApi.getCompanyById)
 
 export default {
