@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="grid">
-    <div class="col-6">
+    <div class="col-6 text-left">
       <Button class="bg-white border-gray-50 border-2 text-900">
         <span>Invite someone to access this data.&nbsp;</span>
         <span class="font-semibold"> No registration necessary.</span>
@@ -19,19 +19,16 @@
     </div>
   </div>
   <div class="grid">
-    <div class="col-1 bg-green-50">1</div>
-    <div class="col-1 bg-green-100">2</div>
-    <div class="col-1 bg-green-200">3</div>
-    <div class="col-1 bg-green-300">4</div>
-    <div class="col-1 bg-green-400">5</div>
-    <div class="col-1 bg-green-500">6</div>
-    <div class="col-1 bg-green-600">7</div>
-    <div class="col-1 bg-green-700">8</div>
-    <div class="col-1 bg-green-800">9</div>
-    <div class="col-1 bg-green-900">10</div>
-    <div class="col-1 bg-green-50">11</div>
-    <div class="col-1 bg-green-100">12</div>
+    <div class="col-2 text-left">
+      <span class="font-semibold">NFRD required: </span>
+      <span>No</span>
+    </div>
+    <div class="col-2 text-left">
+      <span class="font-semibold">Level of Assurance: </span>
+      <span>Reasonable</span>
+    </div>
   </div>
+  <GridHelper/>
   <div v-if="false">
     <pre>{{metaDataInfo.data[0]}}</pre>
   </div>
@@ -42,12 +39,13 @@ import Button from "primevue/button";
 
 import {DataStore} from "@/services/DataStore";
 import {MetaDataControllerApi} from "@/../build/clients/backend";
+import GridHelper from "@/components/helper/GridHelper";
 const metaApi = new MetaDataControllerApi()
 const metaStore = new DataStore(metaApi.getListOfDataMetaInfo)
 
 export default {
   name: "EUData",
-  components: {Button},
+  components: {GridHelper, Button},
   data() {
     return {
       response: null,
