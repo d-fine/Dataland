@@ -80,12 +80,7 @@ class DataManager(
         return data
     }
 
-    override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
-        if (dataId.isNotEmpty()) {
-            verifyDataIdExists(dataId)
-            return listOf(dataMetaData[dataId]!!)
-        }
-
+    override fun searchDataMetaInfo(companyId: String, dataType: String): List<DataMetaInformation> {
         var matches: Map<String, DataMetaInformation> = dataMetaData
 
         if (companyId.isNotEmpty()) {
@@ -100,6 +95,11 @@ class DataManager(
         return matches.map {
             DataMetaInformation(dataId = it.key, dataType = it.value.dataType, companyId = it.value.companyId)
         }
+    }
+
+    override fun getDataMetaInfo(dataId: String): DataMetaInformation {
+        verifyDataIdExists(dataId)
+        return dataMetaData[dataId]!!
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {

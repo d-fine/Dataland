@@ -57,5 +57,5 @@ interface MetaDataApi {
      * @param dataId as unique identifier for a specific data set
      * @return the DataMetaInformation for the specified data set
      */
-    fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<List<DataMetaInformation>>
+    fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
 }

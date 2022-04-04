@@ -20,14 +20,10 @@ class MetaDataController(
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: String?):
         ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(
-            dataManager.searchDataMetaInfo(
-                companyId = companyId ?: "", dataType = dataType ?: ""
-            )
-        )
+        return ResponseEntity.ok(dataManager.searchDataMetaInfo(companyId ?: "", dataType ?: ""))
     }
 
-    override fun getDataMetaInfo(dataId: String): ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(dataManager.searchDataMetaInfo(dataId = dataId))
+    override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
+        return ResponseEntity.ok(dataManager.getDataMetaInfo(dataId))
     }
 }
