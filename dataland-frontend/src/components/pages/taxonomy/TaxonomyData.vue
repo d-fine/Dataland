@@ -30,13 +30,10 @@
   </div>
   <div class="grid">
     <div class="col-7">
-      <TaxonomyPanel dataID="1"/>
+      <TaxonomyPanel :dataID="metaDataInfo.data[0].dataId" v-if="metaDataInfo"/>
     </div>
   </div>
 
-  <div v-if="false">
-    <pre>{{metaDataInfo.data[0]}}</pre>
-  </div>
 </template>
 
 <script>

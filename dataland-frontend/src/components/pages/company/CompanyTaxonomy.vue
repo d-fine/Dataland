@@ -1,4 +1,5 @@
 <template>
+  <EuTaxoSearchBar/>
   <div class="grid align-items-end">
     <div class="col-9 ml-4">
       <CompanyInformation :companyID="$route.params.companyID"/>
@@ -11,7 +12,7 @@
   </div>
   <div class="grid m-3 surface-800">
     <div class="col-12">
-      <TaxonomyData/>
+      <TaxonomyData :companyID="$route.params.companyID"/>
     </div>
 
   </div>
@@ -21,10 +22,11 @@
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import Button from "primevue/button";
 import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
+import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 
 export default {
   name: "CompanyTaxonomy",
-  components: {TaxonomyData, CompanyInformation, Button},
+  components: {EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
 
 }
 </script>

@@ -19,8 +19,10 @@
           <Column field="companyName" header="COMPANY" :sortable="true" class="surface-0" >
           </Column>
           <Column field="companyId" header="Company ID" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyId" header="SECTOR" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyId" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
           <Column field="companyId" header="" class="surface-0"> <template #body="{data}">
-            <router-link :to="/companies/ + data.companyId" class="text-primary no-underline font-bold"> <span> VIEW</span> <span class="ml-3">></span></router-link>
+            <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'" class="text-primary no-underline font-bold"> <span> VIEW</span> <span class="ml-3">></span></router-link>
           </template> </Column>
         </DataTable>
         <p v-else>The resource you requested does not exist yet. You can create it:
