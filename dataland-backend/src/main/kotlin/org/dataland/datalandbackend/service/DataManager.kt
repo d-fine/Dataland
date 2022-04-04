@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.annotations.AnnotationProcessor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,20 +68,20 @@ class DataManager(
         return dataId
     }
 
-    override fun getDataSet(dataManagerInputToGetData: DataManagerInputToGetData): StorableDataSet {
-        verifyDataIdExistsAndIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
-        val dataAsString = edcClient.selectDataById(dataManagerInputToGetData.dataId)
+    override fun getDataSet(dataId: String, dataType: String): StorableDataSet {
+        verifyDataIdExistsAndIsOfType(dataId, dataType)
+        val dataAsString = edcClient.selectDataById(dataId)
         if (dataAsString == "") {
             throw IllegalArgumentException(
-                "No data set with the id: ${dataManagerInputToGetData.dataId} could be found in the data store."
+                "No data set with the id: $dataId could be found in the data store."
             )
         }
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        if (dataAsStorableDataSet.dataType != dataManagerInputToGetData.dataType) {
+        if (dataAsStorableDataSet.dataType != dataType) {
             throw IllegalArgumentException(
-                "The data set with the id: ${dataManagerInputToGetData.dataId} " +
+                "The data set with the id: $dataId " +
                     "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformationPerDataId[dataManagerInputToGetData.dataId]} as registered by Dataland."
+                    "${dataMetaInformationPerDataId[dataId]} as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
