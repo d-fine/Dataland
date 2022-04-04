@@ -76,10 +76,7 @@ class DataManager(
                 "No data set with the id: ${dataManagerInputToGetData.dataId} could be found in the data store."
             )
         }
-        val dataAsStorableDataSet = StorableDataSet(
-            objectMapper.readValue(dataAsString, StorableDataSet::class.java).companyId,
-            objectMapper.readValue(dataAsString, StorableDataSet::class.java).dataType, dataAsString
-        )
+        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != dataManagerInputToGetData.dataType) {
             throw IllegalArgumentException(
                 "The data set with the id: ${dataManagerInputToGetData.dataId} " +

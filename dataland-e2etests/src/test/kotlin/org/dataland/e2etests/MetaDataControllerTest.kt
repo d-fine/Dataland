@@ -58,7 +58,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post several dummy companies and n dummy data sets for them and check filtering options`() {
-        val numberOfCompanies = 5
+        val numberOfCompanies = 5       // TODO Error Messages
         val numberOfDataSetsToPostPerCompany = 3
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
