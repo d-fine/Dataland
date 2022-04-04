@@ -1,34 +1,35 @@
 <template>
-  <div v-if="companyInfo" class="grid">
-      <div class="col md:col-10 col-offset-1">
-        <h2>Company Information about {{companyInfo.data.companyName}} (ID: {{companyInfo.data.companyId}})</h2>
-
-        <DataTable  v-if="response" :value="response.data" stripedRows responsive-layout="scroll" class="col col-6 col-offset-3">
-          <Column field="Data ID" header="Data ID" :sortable="true" >
-          </Column>
-          <Column field="Data Type" header="Data Type" >
-            <template #body="{data}">
-              <router-link :to="/companies/ + data['Data ID']" class="text-primary font-bold">{{ data["Data Type"] }} </router-link>
-            </template>
-          </Column>
-
-        </DataTable>
-      </div>
+  <div v-if="companyInfo" class="grid align-items-end text-left">
+    <div class="col-4">
+      <h1>{{companyInfo.data.companyName}}</h1>
+    </div>
+    <div class="col-4 mb-4">
+      <span>Market Cap:</span> <span class="font-semibold">$45.00 B</span>
+    </div>
+    <div class="col-4 mb-4">
+      Company Reports:
+    </div>
+    <div class="col-4">
+      <span>Sector: </span> <span class="font-semibold" >Manufacturing</span>
+    </div>
+    <div class="col-4">
+      <span>Headquarter: </span> <span class="font-semibold" >Herzogenaurach</span>
+    </div>
+    <div class="col-4">
+      <Button label="Financial and sustainability" class="uppercase bg-white text-primary font-semibold border-2"> Financial and sustainability 2021 <i class="pi pi-download pl-2" aria-hidden="true"/> </Button>
+    </div>
   </div>
 </template>
 
 <script>
-import {CompanyDataControllerApi, MetaDataControllerApi} from "@/../build/clients/backend";
+import {CompanyDataControllerApi} from "@/../build/clients/backend";
+import Button from "primevue/button";
 import {DataStore} from "@/services/DataStore";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 const companyApi = new CompanyDataControllerApi()
-const metaDataApi = new MetaDataControllerApi()
-const dataStore = new DataStore(metaDataApi.getListOfDataMetaInfo)
 const companyStore = new DataStore(companyApi.getCompanyById)
 export default {
   name: "CompanyInformation",
-  components: { DataTable, Column},
+  components: { Button},
   data() {
     return {
       response: null,
@@ -42,15 +43,11 @@ export default {
     }
   },
   created() {
-    this.getCompanyDataset()
     this.getCompanyInformation()
   },
   methods: {
     async getCompanyInformation() {
       this.companyInfo = await companyStore.perform(this.companyID)
-    },
-    async getCompanyDataset() {
-      this.response = await dataStore.perform(this.companyID, "")
     }
   }
 }
