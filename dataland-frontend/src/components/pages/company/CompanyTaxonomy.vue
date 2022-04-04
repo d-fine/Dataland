@@ -11,7 +11,7 @@
   </div>
   <div class="grid m-3 surface-800">
     <div class="col-12">
-      <EUData/>
+      <TaxonomyData/>
     </div>
 
   </div>
@@ -20,11 +20,11 @@
 <script>
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import Button from "primevue/button";
-import EUData from "@/components/pages/taxonomy/EUData";
+import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 
 export default {
   name: "CompanyTaxonomy",
-  components: {EUData, CompanyInformation, Button},
+  components: {TaxonomyData, CompanyInformation, Button},
 
 }
 </script>

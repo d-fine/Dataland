@@ -1,88 +1,79 @@
 <template>
-  <div class="grid" >
-    <div v-if="response" class="col ">
-      <h1>Company Data</h1>
-      <div class="left-align">
-      <h2 v-if="companyInfo">Company: {{companyInfo.data.companyName}}</h2>
-      <h2>Dataset: {{$route.params.dataID}}</h2>
-
-      </div>
-      <div  class="col m12 s12">
-        <Card>
-          <template #title>
-            <h4>EU Taxonomy Data</h4>
-          </template>
-          <template #content>
-            <div class="grid">
-              <div class="col md:col-4 col-offset-2">
-                <TaxoCard title="Eligible Revenue" :amount='dataSet.Revenue.eligible'
-                          :total='dataSet.Revenue.total'></TaxoCard>
-                <br>
-                <TaxoCard title="Eligible CapEx" :amount='dataSet.Capex.eligible'
-                          :total='dataSet.Capex.total'></TaxoCard>
-                <br>
-                <TaxoCard title="Eligible OpEx" :amount='dataSet.Opex.eligible'
-                          :total='dataSet.Opex.total'></TaxoCard>
-              </div>
-              <div class="col md:col-4 ">
-                <TaxoCard title="Aligned Revenue" :amount='dataSet.Revenue.aligned'
-                          :total='dataSet.Revenue.total'></TaxoCard>
-                <br>
-                <TaxoCard title="Aligned CapEx" :amount='dataSet.Capex.aligned'
-                          :total='dataSet.Capex.total'></TaxoCard>
-                <br>
-                <TaxoCard title="Aligned OpEx" :amount='dataSet.Opex.aligned'
-                          :total='dataSet.Opex.total'></TaxoCard>
-              </div>
-            </div>
-          </template>
-        </Card>
-      </div>
-
+  <div class="grid">
+    <div class="col-12 text-left">
+      <h2>EU Taxonomy Data</h2>
     </div>
+    <div class="col-6 text-left">
+      <span class="font-semibold text-gray-800">Complete dataset for reporting according
+        to EU Taxonomy Regulation, Article 8. For 2022 requirements.
+      </span>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-6 text-left">
+      <Button class="bg-white border-gray-50 border-2 text-900">
+        <span>Invite someone to access this data.&nbsp;</span>
+        <span class="font-semibold"> No registration necessary.</span>
+        <span class="uppercase ml-4 text-primary font-semibold"> SHARE <i class="pi pi-share-alt ml-2" aria-hidden="true"/> </span>
+      </Button>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-2 text-left">
+      <span class="font-semibold">NFRD required: </span>
+      <span>No</span>
+    </div>
+    <div class="col-2 text-left">
+      <span class="font-semibold">Level of Assurance: </span>
+      <span>Reasonable</span>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-7">
+      <TaxonomyPanel dataID="1"/>
+    </div>
+  </div>
+
+  <div v-if="false">
+    <pre>{{metaDataInfo.data[0]}}</pre>
   </div>
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
+import Button from "primevue/button";
+
 import {DataStore} from "@/services/DataStore";
-import TaxoCard from "@/components/ui/TaxoCard";
-import Card from "primevue/card";
-const euTaxonomyApi = new EuTaxonomyDataControllerApi()
-const companyApi = new CompanyDataControllerApi()
-const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)
-const companyStore = new DataStore(companyApi.getCompanyById)
+import {MetaDataControllerApi} from "@/../build/clients/backend";
+import TaxonomyPanel from "@/components/pages/taxonomy/TaxonomyPanel";
+const metaApi = new MetaDataControllerApi()
+const metaStore = new DataStore(metaApi.getListOfDataMetaInfo)
 
 export default {
-  name: "CompanyEU",
-  components: {TaxoCard, Card},
+  name: "TaxonomyData",
+  components: {TaxonomyPanel, Button},
   data() {
     return {
       response: null,
-      dataSet: null,
-      companyInfo: null
+      metaDataInfo: null
     }
   },
   props: {
-    dataID: {
+    companyID: {
+      default: 1,
       type: Number
     }
   },
   created() {
-    this.getCompanyEUDataset()
+    this.getCompanyInformation()
   },
   methods: {
-    async getCompanyEUDataset() {
-      try {
-        this.response = await dataStore.perform(this.dataID)
-        this.dataSet = this.response.data.data
-        this.companyInfo = await companyStore.perform(this.response.data.companyId)
-
-      } catch (error) {
-        console.error(error)
-      }
-    },
-
+    async getCompanyInformation() {
+      this.metaDataInfo = await metaStore.perform(this.companyID, "EuTaxonomyData")
+    }
   }
 }
 </script>
+
+<style scoped>
+
+</style>
