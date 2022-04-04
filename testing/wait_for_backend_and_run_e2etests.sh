@@ -7,10 +7,10 @@ set -ex
 is_infrastructure_up () {
   declare -A services
   services["backend"]=http://proxy:80/api/actuator/health/ping
-  services["skyminder-dummyserver"]=http://proxy:80/api/actuator/health/skyminderDummyServer
-  services["edc-dummyserver"]=http://proxy:80/api/actuator/health/edcDummyServer
+  services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
+  services["edc-dummyserver"]=http://dataland-edc:8080/actuator/health
 
-  for service in ${!services[@]}; do
+  for service in "${!services[@]}"; do
     if ! curl ${services[$service]} 2>/dev/null | grep -q UP; then
       echo "$service not yet there"
       return 1
