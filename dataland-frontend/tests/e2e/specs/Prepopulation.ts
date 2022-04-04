@@ -30,8 +30,9 @@ describe('Population Test', () => {
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit("/data/eutaxonomies/1")
-        cy.get('h1').contains("Company Data")
-        cy.get('h4').contains("EU Taxonomy Data")
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
     });
 });
 
