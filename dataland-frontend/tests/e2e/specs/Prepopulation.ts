@@ -27,12 +27,28 @@ describe('Population Test', () => {
     });
 });
 
-describe('EU Taxonomy Data', () => {
+describe.only('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit("/data/eutaxonomies/1")
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
         cy.get('h3').contains("OpEx")
+        cy.get('.d-card').should('contain', 'Eligible')
+        cy.get('.d-card .p-progressbar').should('exist')
+    });
+});
+
+describe('Company EU Taxonomy Data', () => {
+    it('Check Data Presence and Link route', () => {
+        cy.visit("/companies/1/eutaxonomies")
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
+        cy.get('body').contains("Market Cap:")
+        cy.get('body').contains("Headquarter:")
+        cy.get('body').contains("Sector:")
+        cy.get('button.p-button.p-component').contains('Financial and sustainability')
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
 });
 
