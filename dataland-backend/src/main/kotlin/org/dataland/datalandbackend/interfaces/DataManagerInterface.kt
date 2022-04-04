@@ -20,9 +20,9 @@ interface DataManagerInterface {
     /**
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataManagerInputToGetData contains all the inputs needed by Dataland
-     * @return data associated with the data ID provided in the input
+     * @return data set associated with the data ID provided in the input
      */
-    fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String
+    fun getDataSet(dataManagerInputToGetData: DataManagerInputToGetData): StorableDataSet
 
     /**
      * Method to make the data manager search for meta info
