@@ -61,7 +61,7 @@ services:
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
-  edc-dummyserver:
+  dataland-edc:
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
     networks:
       - internal
