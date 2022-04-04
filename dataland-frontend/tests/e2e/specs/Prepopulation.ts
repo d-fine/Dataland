@@ -27,7 +27,7 @@ describe('Population Test', () => {
     });
 });
 
-describe.only('EU Taxonomy Data', () => {
+describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit("/data/eutaxonomies/1")
         cy.get('h3').contains("Revenue")
