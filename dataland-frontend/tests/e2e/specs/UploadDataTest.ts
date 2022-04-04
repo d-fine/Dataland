@@ -51,6 +51,8 @@ describe('User interactive tests for Data Upload', () => {
             const id = $dataID.text()
             cy.visit(`/data/eutaxonomies/${id}`).get('body').should("contain", "Eligible Revenue").should("contain", "NaN")
         })
-    })
+    });
+
+
 
 })
