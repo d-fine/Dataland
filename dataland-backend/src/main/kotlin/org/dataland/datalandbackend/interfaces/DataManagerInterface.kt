@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 
@@ -19,10 +18,11 @@ interface DataManagerInterface {
 
     /**
      * Method to make the data manager get the data of a single entry from the data store
-     * @param dataManagerInputToGetData contains all the inputs needed by Dataland
+     * @param dataId to identify the stored data
+     * @param dataType to check the correctness of the type of the retrieved data
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(dataManagerInputToGetData: DataManagerInputToGetData): StorableDataSet
+    fun getDataSet(dataId: String, dataType: String): StorableDataSet
 
     /**
      * Method to make the data manager search for meta info

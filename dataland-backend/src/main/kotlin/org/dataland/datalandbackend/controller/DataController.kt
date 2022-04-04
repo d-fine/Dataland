@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
-import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.http.ResponseEntity
@@ -39,7 +38,7 @@ abstract class DataController<T>(
             CompanyAssociatedData(
                 companyId = dataManager.getDataMetaInfo(dataId).companyId,
                 data = objectMapper.readValue(
-                    dataManager.getDataSet(DataManagerInputToGetData(dataId, dataType)).data,
+                    dataManager.getDataSet(dataId, dataType).data,
                     clazz
                 )
             )
