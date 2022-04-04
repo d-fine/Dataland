@@ -38,12 +38,16 @@ export default {
   },
   props: {
     companyID: {
-      default: 1,
       type: Number
     }
   },
   created() {
-    this.getCompanyInformation()
+      this.getCompanyInformation()
+  },
+  watch: {
+    companyID(){
+      this.getCompanyInformation()
+    }
   },
   methods: {
     async getCompanyInformation() {

@@ -14,7 +14,6 @@
     <div class="col-12">
       <TaxonomyData :companyID="$route.params.companyID"/>
     </div>
-
   </div>
 </template>
 
