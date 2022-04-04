@@ -73,7 +73,7 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / m€"
+                  label="Aligned / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -81,7 +81,7 @@
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / m€"
+                  label="Eligible / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -89,7 +89,7 @@
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / m€"
+                  label="Total / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -107,7 +107,7 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / m€"
+                  label="Aligned / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -115,7 +115,7 @@
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / m€"
+                  label="Eligible / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -123,7 +123,7 @@
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / m€"
+                  label="Total / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -140,7 +140,7 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / m€"
+                  label="Aligned / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -148,7 +148,7 @@
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / m€"
+                  label="Eligible / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />
@@ -156,7 +156,7 @@
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / m€"
+                  label="Total / €"
                   :inner-class="innerClass"
                   :input-class="inputClass"
               />

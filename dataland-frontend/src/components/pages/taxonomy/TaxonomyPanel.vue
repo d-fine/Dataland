@@ -46,7 +46,7 @@
 <script>
 import {EuTaxonomyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
-import TaxoCard from "@/components/ui/TaxoCard";
+import TaxoCard from "@/components/pages/taxonomy/TaxoCard";
 
 const euTaxonomyApi = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)

@@ -16,10 +16,9 @@
       <div class="grid mt-4 ">
         <div class="col col-6 text-left p-0 pl-2">
           <span class="font-semibold text-lg">€ </span>
-          <span class="font-bold text-2xl">{{ amount }}</span>
+          <span class="font-bold text-2xl">{{ OMS(amount) }}</span>
 
-          <span class="font-semibold text-lg"> m</span>
-          <p class="left-align"><strong>Out of total of € {{ total }} m</strong></p>
+          <p class="left-align"><strong>Out of total of € {{ OMS(total) }}</strong></p>
         </div>
       </div>
     </template>
@@ -29,6 +28,7 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
+import {nFormatter} from "@/utils/currencyMagnitude";
 
 export default {
   name: "TaxoCard",
@@ -57,6 +57,12 @@ export default {
     percentCalculation() {
       return Math.round((this.amount / this.total) * 100 * 100) / 100
     }
+  },
+  methods: {
+    // OrderOfMagnitudeSuffix
+    OMS(value){
+      return nFormatter(value,2)
+    }
   }
 }
 </script>
@@ -68,7 +74,7 @@ export default {
 
 .d-card {
   border-radius: 0.3rem;
-  box-shadow: 0px 0px 32px 8px rgba(30, 30, 31, 0.08);
+  box-shadow: 0 0 32px 8px rgba(30, 30, 31, 0.08);
 }
 
 .d-card > .p-card-body {
