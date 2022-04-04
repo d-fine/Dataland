@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.annotations.DataTypeAnnotation
 
 /**
  * --- API model ---
  * Fields of the questionnaire for EU-Taxonomy data
  */
+@DataTypeAnnotation
 data class EuTaxonomyData(
     @field:JsonProperty("Capex") val capex: EuTaxonomyDetailsPerCashFlowType? = null,
     @field:JsonProperty("Opex") val opex: EuTaxonomyDetailsPerCashFlowType? = null,

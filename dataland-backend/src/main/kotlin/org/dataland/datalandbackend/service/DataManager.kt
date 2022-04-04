@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.annotations.AnnotationProcessor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyMetaInformation
@@ -35,8 +36,8 @@ class DataManager(
     }
 
     private fun verifyDataTypeExists(dataType: String) {
-        val matchesForDataType = dataMetaInformationPerDataId.any { it.value.dataType == dataType }
-        if (!matchesForDataType) {
+        val allDataTypes = AnnotationProcessor().getAllDataTypes()
+        if (allDataTypes.filter { it == dataType }.isEmpty()) {
             throw IllegalArgumentException("Dataland does not know the data type: $dataType")
         }
     }
