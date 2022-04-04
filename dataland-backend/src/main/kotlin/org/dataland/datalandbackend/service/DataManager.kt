@@ -16,24 +16,24 @@ import org.springframework.stereotype.Component
 class DataManager(
     @Autowired var edcClient: DefaultApi
 ) : DataManagerInterface {
-    var dataMetaData = mutableMapOf<String, DataMetaInformation>()
-    var companyData = mutableMapOf<String, CompanyMetaInformation>()
+    var dataMetaInformationPerDataId = mutableMapOf<String, DataMetaInformation>()
+    var companyDataPerCompanyId = mutableMapOf<String, CompanyMetaInformation>()
     private var companyCounter = 0
 
     private fun verifyCompanyIdExists(companyId: String) {
-        if (!companyData.containsKey(companyId)) {
+        if (!companyDataPerCompanyId.containsKey(companyId)) {
             throw IllegalArgumentException("Dataland does not know the company ID $companyId.")
         }
     }
 
     private fun verifyDataIdExists(dataId: String) {
-        if (!dataMetaData.containsKey(dataId)) {
+        if (!dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
         }
     }
 
     private fun verifyDataTypeExists(dataType: String) {
-        val matchesForDataType = dataMetaData.any { it.value.dataType == dataType }
+        val matchesForDataType = dataMetaInformationPerDataId.any { it.value.dataType == dataType }
         if (!matchesForDataType) {
             throw IllegalArgumentException("Dataland does not know the data type: $dataType")
         }
@@ -41,10 +41,10 @@ class DataManager(
 
     private fun verifyDataIdExistsAndIsOfType(dataId: String, dataType: String) {
         verifyDataIdExists(dataId)
-        if (dataMetaData[dataId]!!.dataType != dataType) {
+        if (dataMetaInformationPerDataId[dataId]!!.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaData[dataId]!!.dataType} by Dataland instead of your requested" +
+                    " ${dataMetaInformationPerDataId[dataId]!!.dataType} by Dataland instead of your requested" +
                     " type $dataType."
             )
         }
@@ -55,14 +55,14 @@ class DataManager(
 
         val dataId = edcClient.insertData(storableDataSet.data)
 
-        if (dataMetaData.containsKey(dataId)) {
+        if (dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
         }
 
         val dataMetaInformation =
             DataMetaInformation(dataId, dataType = storableDataSet.dataType, companyId = storableDataSet.companyId)
-        dataMetaData[dataId] = dataMetaInformation
-        companyData[storableDataSet.companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
+        dataMetaInformationPerDataId[dataId] = dataMetaInformation
+        companyDataPerCompanyId[storableDataSet.companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
         return dataId
     }
 
@@ -81,7 +81,7 @@ class DataManager(
     }
 
     override fun searchDataMetaInfo(companyId: String, dataType: String): List<DataMetaInformation> {
-        var matches: Map<String, DataMetaInformation> = dataMetaData
+        var matches: Map<String, DataMetaInformation> = dataMetaInformationPerDataId
 
         if (companyId.isNotEmpty()) {
             verifyCompanyIdExists(companyId)
@@ -99,21 +99,21 @@ class DataManager(
 
     override fun getDataMetaInfo(dataId: String): DataMetaInformation {
         verifyDataIdExists(dataId)
-        return dataMetaData[dataId]!!
+        return dataMetaInformationPerDataId[dataId]!!
     }
 
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
-        companyData["$companyCounter"] = CompanyMetaInformation(
+        companyDataPerCompanyId["$companyCounter"] = CompanyMetaInformation(
             companyId = companyCounter.toString(),
             companyName = companyName,
             dataRegisteredByDataland = mutableListOf()
         )
-        return companyData["$companyCounter"]!!
+        return companyDataPerCompanyId["$companyCounter"]!!
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        return companyData.filter { it.value.companyName.contains(companyName, true) }.map {
+        return companyDataPerCompanyId.filter { it.value.companyName.contains(companyName, true) }.map {
             CompanyMetaInformation(
                 companyId = it.key,
                 companyName = it.value.companyName,
@@ -125,6 +125,6 @@ class DataManager(
     override fun getCompanyById(companyId: String): CompanyMetaInformation {
         verifyCompanyIdExists(companyId)
 
-        return companyData[companyId]!!
+        return companyDataPerCompanyId[companyId]!!
     }
 }
