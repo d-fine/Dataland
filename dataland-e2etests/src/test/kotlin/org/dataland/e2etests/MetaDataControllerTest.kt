@@ -47,12 +47,11 @@ class MetaDataControllerTest {
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
 
-        val listOfDataMetaInfo =
-            metaDataControllerApi.getDataMetaInfo(testDataId)
+        val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(testDataId)
 
         assertEquals(
-            listOf(DataMetaInformation(testDataId, testDataType, testCompanyId)),
-            listOfDataMetaInfo,
+            DataMetaInformation(testDataId, testDataType, testCompanyId),
+            dataMetaInformation,
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
     }
