@@ -1,19 +1,19 @@
 <template>
-  <div v-if="companyInfo" class="grid align-items-end text-left">
+  <div v-if="company" class="grid align-items-end text-left">
     <div class="col-4">
-      <h1>{{companyInfo.data.companyName}}</h1>
+      <h1>{{companyInformation.companyName}}</h1>
     </div>
     <div class="col-4 mb-4">
-      <span>Market Cap:</span> <span class="font-semibold">$45.00 B (Placeholder)</span>
+      <span>Market Cap:</span> <span class="font-semibold">{{companyInformation.marketCap}}</span>
     </div>
     <div class="col-4 mb-4">
       Company Reports:
     </div>
     <div class="col-4">
-      <span>Sector: </span> <span class="font-semibold" >Manufacturing (Placeholder)</span>
+      <span>Sector: </span> <span class="font-semibold" >{{companyInformation.industrialSector}}</span>
     </div>
     <div class="col-4">
-      <span>Headquarter: </span> <span class="font-semibold" >Herzogenaurach (Placeholder)</span>
+      <span>Headquarter: </span> <span class="font-semibold" >{{companyInformation.headquarters}}</span>
     </div>
     <div class="col-4">
       <Button label="Financial and sustainability" class="uppercase bg-white text-primary font-semibold border-2"> Financial and sustainability 2021 <i class="pi pi-download pl-2" aria-hidden="true"/> </Button>
@@ -52,16 +52,9 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-      this.companyInfo = await companyStore.perform(this.companyID)
       this.company = await companyStore.perform(this.companyID)
       this.companyInformation = this.company.data.companyInformation
-      console.log(this.companyInformation)
-      console.log(this.companyInformation.companyName)
-      console.log(this.company.data.companyId)
     },
-    async getCompanyDataset() {
-      this.response = await dataStore.perform(this.companyID, "")
-    }
   }
 }
 </script>

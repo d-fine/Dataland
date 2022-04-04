@@ -16,11 +16,10 @@
     <div class="col-12 text-left pl-8 pr-8" >
       <template v-if="action">
         <DataTable v-if="data" :value="data" responsive-layout="scroll">
-          <Column field="companyName" header="COMPANY" :sortable="true" class="surface-0" >
+          <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
           </Column>
-          <Column field="companyId" header="Company ID" :sortable="true" class="surface-0"> </Column>
-          <Column field="companyId" header="SECTOR" :sortable="true" class="surface-0"> </Column>
-          <Column field="companyId" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
           <Column field="companyId" header="" class="surface-0"> <template #body="{data}">
             <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'" class="text-primary no-underline font-bold"> <span> VIEW</span> <span class="ml-3">></span></router-link>
           </template> </Column>

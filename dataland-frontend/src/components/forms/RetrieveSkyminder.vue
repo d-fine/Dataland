@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-5 col-offset-1">
+  <Card class="col-12">
     <template #title>Skyminder Data Search
     </template>
     <template #content>

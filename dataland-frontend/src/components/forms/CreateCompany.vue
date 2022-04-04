@@ -34,7 +34,6 @@ import {DataStore} from "@/services/DataStore";
 import backend from "@/../build/clients/backend/backendOpenApi.json";
 import FailedUpload from "@/components/ui/FailedUpload";
 import Card from 'primevue/card';
-import Button from 'primevue/button';
 import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompanyInformation

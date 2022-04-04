@@ -49,7 +49,7 @@ import {DataStore} from "@/services/DataStore";
 import TaxoCard from "@/components/pages/taxonomy/TaxoCard";
 
 const euTaxonomyApi = new EuTaxonomyDataControllerApi()
-const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)
+const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedData)
 
 export default {
   name: "TaxonomyPanel",
