@@ -1,6 +1,5 @@
 <template>
   <div v-if="metaDataInfo && metaDataInfo.data.length > 0">
-
     <div class="grid">
       <div class="col-12 text-left">
         <h2>EU Taxonomy Data</h2>
@@ -86,7 +85,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

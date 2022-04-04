@@ -20,7 +20,3 @@ export default {
   name: "GridHelper"
 }
 </script>
-
-<style scoped>
-
-</style>
