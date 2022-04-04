@@ -1,5 +1,6 @@
 <template>
-  <div v-if="metaDataInfo">
+  <div v-if="metaDataInfo && metaDataInfo.data.length > 0">
+
     <div class="grid">
       <div class="col-12 text-left">
         <h2>EU Taxonomy Data</h2>
@@ -32,7 +33,7 @@
     </div>
     <div class="grid">
       <div class="col-7">
-        <TaxonomyPanel :dataID="metaDataInfo.data[0].dataId" v-if="metaDataInfo"/>
+        <TaxonomyPanel :dataID="metaDataInfo.data[0].dataId" v-if="metaDataInfo.data.length > 0"/>
       </div>
     </div>
   </div>
