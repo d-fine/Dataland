@@ -1,15 +1,20 @@
 package org.dataland.datalandbackend.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DataManagerTest {
+class DataManagerTest(
+    @Autowired var edcClient: DefaultApi,
+    @Autowired var objectMapper: ObjectMapper
+) {
 
-    val testManager = DataManager(edcClient = DefaultApi(basePath = "dummy"))
+    val testManager = DataManager(edcClient, objectMapper)
 
     val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
 
