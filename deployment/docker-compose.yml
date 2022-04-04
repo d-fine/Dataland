@@ -35,6 +35,12 @@ services:
       - "80"
     networks:
       - internal
+  dataland-edc:
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
+    networks:
+      - internal
+    expose:
+      - "8080"
 
 networks:
   internal:
