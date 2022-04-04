@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
 
 class SkyminderDummyServerHealthTest {
-    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val basePathToBackendViaProxy = "http://proxy:80/api"
 
     @Test
     fun `test if Skyminder Dummy Server is up by using the backend actuator health endpoint`() {
@@ -16,7 +16,7 @@ class SkyminderDummyServerHealthTest {
         var responseString = "INITIALIZE"
         try {
             val request: Request = Request.Builder()
-                .url("$basePathToDatalandProxy/actuator/health/skyminderDummyServer").build()
+                .url("$basePathToBackendViaProxy/actuator/health/skyminderDummyServer").build()
             val response: Response = client.newCall(request).execute()
             responseString = response.body?.string().toString()
         } catch (_: Exception) {

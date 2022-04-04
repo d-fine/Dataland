@@ -20,12 +20,6 @@ class DataManager(
     var companyData = mutableMapOf<String, CompanyMetaInformation>()
     private var companyCounter = 0
 
-    /*
-    ________________________________
-    Helper-methods:
-    ________________________________
-     */
-
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyData.containsKey(companyId)) {
             throw IllegalArgumentException("Dataland does not know the company ID $companyId.")
@@ -45,11 +39,16 @@ class DataManager(
         }
     }
 
-    /*
-    ________________________________
-    Methods to route data inserts and queries to the data store and save meta data in the Dataland-Meta-Data-Storage:
-    ________________________________
-     */
+    private fun verifyDataIdExistsAndIsOfType(dataId: String, dataType: String) {
+        verifyDataIdExists(dataId)
+        if (dataMetaData[dataId]!!.dataType != dataType) {
+            throw IllegalArgumentException(
+                "The data with the id: $dataId is registered as type" +
+                    " ${dataMetaData[dataId]!!.dataType} by Dataland instead of your requested" +
+                    " type $dataType."
+            )
+        }
+    }
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
@@ -68,7 +67,7 @@ class DataManager(
     }
 
     override fun getData(dataManagerInputToGetData: DataManagerInputToGetData): String {
-        verifyDataIdExists(dataManagerInputToGetData.dataId)
+        verifyDataIdExistsAndIsOfType(dataManagerInputToGetData.dataId, dataManagerInputToGetData.dataType)
 
         val data = edcClient.selectDataById(dataManagerInputToGetData.dataId)
 
@@ -78,21 +77,8 @@ class DataManager(
                     "could be found in the data store."
             )
         }
-        if (dataMetaData[dataManagerInputToGetData.dataId]!!.dataType != dataManagerInputToGetData.dataType) {
-            throw IllegalArgumentException(
-                "The data with the id: ${dataManagerInputToGetData.dataId} is registered as type" +
-                    " ${dataMetaData[dataManagerInputToGetData.dataId]} by Dataland instead of your requested" +
-                    " type ${dataManagerInputToGetData.dataType}."
-            )
-        }
         return data
     }
-
-    /*
-    ________________________________
-    Methods to process meta data:
-    ________________________________
-     */
 
     override fun searchDataMetaInfo(dataId: String, companyId: String, dataType: String): List<DataMetaInformation> {
         if (dataId.isNotEmpty()) {
@@ -116,13 +102,6 @@ class DataManager(
         }
     }
 
-    /*
-    ________________________________
-    Methods to add and retrieve company info and save associated company meta data in the
-    Dataland-Company-Meta-Data-Storage:
-    ________________________________
-     */
-
     override fun addCompany(companyName: String): CompanyMetaInformation {
         companyCounter++
         companyData["$companyCounter"] = CompanyMetaInformation(
@@ -134,11 +113,7 @@ class DataManager(
     }
 
     override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        val matches = companyData.filter { it.value.companyName.contains(companyName, true) }
-        if (matches.isEmpty()) {
-            throw IllegalArgumentException("No matches for company with name '$companyName'.")
-        }
-        return matches.map {
+        return companyData.filter { it.value.companyName.contains(companyName, true) }.map {
             CompanyMetaInformation(
                 companyId = it.key,
                 companyName = it.value.companyName,
