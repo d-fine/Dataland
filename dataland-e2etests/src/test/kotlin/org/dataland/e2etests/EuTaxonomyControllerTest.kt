@@ -23,7 +23,7 @@ class EuTaxonomyControllerTest {
         ).dataId
 
         val companyAssociatedDataEuTaxonomyData =
-            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
+            euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
 
         assertEquals(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData),
