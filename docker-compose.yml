@@ -65,8 +65,12 @@ services:
   dataland-edc:
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
     networks:
-      - internal
-      - external
+      internal:
+        aliases:
+         - dataland-edc
+      external:
+        aliases:
+         - dataland-edc
     expose:
       - "8080"
   develop:
