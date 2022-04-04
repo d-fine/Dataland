@@ -28,7 +28,7 @@ jobs:
           docker run -v $(pwd):/app:rw \
           -e DATALAND_SKYMINDERCLIENT_TOKEN \
           -e DATALAND_SKYMINDERCLIENT_USER \
-          -e DATALAND_EDC_TOKEN=${DATALAND_EDC_TOKEN} \
+          -e DATALAND_EDC_TOKEN \
           -e DATALAND_EDC_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
@@ -72,7 +72,7 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
-          SKYMINDER_URL: "http://skyminder-server:8080"
+          SKYMINDER_URL: "http://skyminder-dummyserver:8080"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2

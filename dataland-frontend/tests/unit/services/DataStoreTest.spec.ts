@@ -19,14 +19,15 @@ describe("DataStore", () => {
             ],
             "type": "object",
             "properties": {
-                "Capex": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "industrialSector": {
+                    "type": "string"
                 },
-                "Opex": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "marketCap": {
+                    "type": "number"
                 },
-                "Revenue": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "reportingDateOfMarketCap": {
+                    "type": "string",
+                    "format": "date"
                 },
                 "Reporting Obligation": {
                     "type": "string",

@@ -38,11 +38,37 @@ export class DataStore {
         return schema
     }
 
+    private getType(param: string): string {
+        const propertiesSchema = this.rawSchema.properties
+        if ("format" in propertiesSchema[param]) {
+            const format = propertiesSchema[param].format
+            if (format == "date") {
+                const today = new Date()
+                const tomorrow = new Date(today)
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                return `date_before:${tomorrow.toLocaleDateString()}`
+            }
+        }
+        if ("type" in propertiesSchema[param]) {
+            const type = propertiesSchema[param].type
+            if (type == "number") {
+                return type
+            }
+        }
+        return ""
+    }
+
+    private getValidationStatus(param: string): string {
+        const required = this.rawSchema.required.includes(param) ? "required" : ""
+        const type = this.getType(param)
+        return `${required}|${type}`
+    }
+
     private processRawSchema(): object {
         const propertiesSchema = this.rawSchema.properties
         const schema = []
         for (const index in propertiesSchema) {
-            const validation = this.rawSchema.required.includes(index) ? "required" : ""
+            const validation = this.getValidationStatus(index)
             if ("enum" in propertiesSchema[index]) {
                 const enumProperties = propertiesSchema[index].enum
                 if (enumProperties.length > 2) {
@@ -72,16 +98,31 @@ export class DataStore {
                         }
                     )
                 }
-            } else {
-                /* create a text form */
+            } else if (this.getType(index).includes("date")) {
+                /* create a data form */
                 schema.push({
-                        $formkit: 'text',
+                        $formkit: "date",
                         label: humanizeString(index),
                         placeholder: humanizeString(index),
                         name: index,
                         validation: validation,
+                        classes: {
+                            inner: {'formkit-inner': false},
+                        }
                     }
                 )
+            } else {
+                {
+                    /* create a text form */
+                    schema.push({
+                            $formkit: "text",
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: validation,
+                        }
+                    )
+                }
             }
         }
         return schema

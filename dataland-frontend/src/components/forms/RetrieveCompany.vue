@@ -4,7 +4,6 @@
       Company Search
     </template>
     <template #content>
-
       <FormKit
           v-model="data"
           :submit-attrs="{
@@ -13,9 +12,12 @@
           submit-label="Search Company"
           type="form"
           @submit="getCompanyByName()">
-        <FormKitSchema
-            :data="data"
-            :schema="schema"
+        <FormKit
+            type="text"
+            name="companyName"
+            validation="required"
+            validation-visibility="submit"
+            label="Company Name"
         />
 
       </FormKit>
@@ -40,14 +42,14 @@
 </template>
 
 <script>
-import {FormKit, FormKitSchema} from "@formkit/vue";
+import {FormKit} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/../build/clients/backend/backendOpenApi.json";
 
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.PostCompanyRequestBody
-const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
+const dataStore = new DataStore(api.getCompaniesByName)
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
@@ -55,13 +57,14 @@ import Column from 'primevue/column';
 
 export default {
   name: "RetrieveCompany",
-  components: {Card, Button, DataTable, Column , FormKit, FormKitSchema},
+  components: {Card, Button, DataTable, Column , FormKit},
 
   data: () => ({
     data: {},
-    schema: dataStore.getSchema(),
     model: {},
     response: null,
+    companyInformation: null,
+    response_error: false,
     action: false
   }),
   methods: {
@@ -71,9 +74,8 @@ export default {
         if (all) {
           this.data.companyName = ""
         }
-        const inputArgs = Object.values(this.data)
-        inputArgs.splice(0, 1)
-        this.response = await dataStore.perform(...inputArgs)
+        this.response = await dataStore.perform(this.data.companyName)
+        console.log(this.response.data[0].companyInformation)
 
       } catch (error) {
         console.error(error)

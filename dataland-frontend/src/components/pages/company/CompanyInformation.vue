@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       response: null,
-      companyInfo: null
+      company: null,
+      companyInformation: null
     }
   },
   props: {
@@ -52,6 +53,14 @@ export default {
   methods: {
     async getCompanyInformation() {
       this.companyInfo = await companyStore.perform(this.companyID)
+      this.company = await companyStore.perform(this.companyID)
+      this.companyInformation = this.company.data.companyInformation
+      console.log(this.companyInformation)
+      console.log(this.companyInformation.companyName)
+      console.log(this.company.data.companyId)
+    },
+    async getCompanyDataset() {
+      this.response = await dataStore.perform(this.companyID, "")
     }
   }
 }

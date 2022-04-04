@@ -3,30 +3,38 @@ package org.dataland.e2etests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.PostCompanyRequestBody
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.time.LocalDate
 
 class EuTaxonomyControllerTest {
-    private val companyDataControllerApi = CompanyDataControllerApi(basePath = "http://proxy:80/api")
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePath = "http://proxy:80/api")
+    private val basePathToDatalandProxy = "http://proxy:80/api"
+    private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
+    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
+    private val testCompanyInformation = CompanyInformation(
+        companyName = "Test-Company_10",
+        headquarters = "Test-Headquarters_10",
+        industrialSector = "Test-IndustrialSector_10",
+        marketCap = BigDecimal(200),
+        reportingDateOfMarketCap = LocalDate.now()
+    )
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyName = "Test-Company_A"
+    fun `post a dummy company with dummy data set and check if the dummy data set can be retrieved`() {
         val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
-        val testCompanyId = companyDataControllerApi.postCompany(PostCompanyRequestBody(testCompanyName)).companyId
-
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
 
-        val companyAssociatedDataSetEuTaxonomyData =
-            euTaxonomyDataControllerApi.getCompanyAssociatedDataSet(testDataId)
+        val companyAssociatedDataEuTaxonomyData =
+            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
 
         assertEquals(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData),
-            companyAssociatedDataSetEuTaxonomyData,
+            companyAssociatedDataEuTaxonomyData,
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
     }

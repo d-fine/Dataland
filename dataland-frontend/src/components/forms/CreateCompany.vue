@@ -12,12 +12,9 @@
                 }"
           submit-label="Post Company"
           @submit="postCompanyData">
-        <FormKit
-            type="text"
-            name="companyName"
-            validation="required"
-            validation-visibility="submit"
-            label="Company Name"
+        <FormKitSchema
+            :data="data"
+            :schema="schema"
         />
       </FormKit>
 
@@ -30,7 +27,7 @@
 </template>
 
 <script>
-import {FormKit} from "@formkit/vue";
+import {FormKit, FormKitSchema} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
@@ -40,12 +37,12 @@ import Card from 'primevue/card';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.PostCompanyRequestBody
+const contactSchema = backend.components.schemas.CompanyInformation
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, Card, Button, Message, FormKit, SuccessUpload},
+  components: {FailedUpload, Card, Message, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
     action: false,

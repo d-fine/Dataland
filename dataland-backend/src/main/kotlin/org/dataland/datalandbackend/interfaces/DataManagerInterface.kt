@@ -1,9 +1,10 @@
 package org.dataland.datalandbackend.interfaces
 
-import org.dataland.datalandbackend.model.CompanyMetaInformation
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataManagerInputToGetData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StoredCompany
 
 /**
  * Defines the required functionalities for the Dataland data manager
@@ -59,22 +60,23 @@ interface DataManagerInterface {
 
     /**
      * Method to add a company
-     * @param companyName name of the company to be stored
-     * @return meta information of the newly created entry in the company data store of Dataland
+     * @param companyInformation denotes information of the company
+     * @return information of the newly created entry in the company data store of Dataland,
+     * including the generated company ID
      */
-    fun addCompany(companyName: String): CompanyMetaInformation
+    fun addCompany(companyInformation: CompanyInformation): StoredCompany
 
     /**
      * Method to list matching companies in Dataland by searching for a company name
      * @param companyName string used for substring matching against the companyNames of all entries
      * @return list of all matching companies in Dataland
      */
-    fun listCompaniesByName(companyName: String): List<CompanyMetaInformation>
+    fun listCompaniesByName(companyName: String): List<StoredCompany>
 
     /**
-     * Method to retrieve meta information about a specific company
+     * Method to retrieve information about a specific company
      * @param companyId
-     * @return meta information about the retrieved company
+     * @return information about the retrieved company
      */
-    fun getCompanyById(companyId: String): CompanyMetaInformation
+    fun getCompanyById(companyId: String): StoredCompany
 }

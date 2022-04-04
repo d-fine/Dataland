@@ -31,22 +31,3 @@ class MetaDataController(
         return ResponseEntity.ok(dataManager.searchDataMetaInfo(dataId = dataId))
     }
 }
-
-/*
- /**
-     * A method to search for meta info about data sets registered by Dataland
-     * @param companyId filters the requested meta info to a specific company.
-     * @param dataType filters the requested meta info to a specific data type.
-     * @return a list of matching DataMetaInformation
-     */
-    fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: String? = null):
-        List<DataMetaInformation>
-
-
-    /**
-     * A method to retrieve meta info about a specific data set
-     * @param dataId as unique identifier for a specific data set
-     * @return the DataMetaInformation for the specified data set
-     */
-    fun getDataMetaInfo(@PathVariable dataId: String): DataMetaInformation
- */

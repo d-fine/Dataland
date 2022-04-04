@@ -34,7 +34,7 @@ abstract class DataController<T>(
         )
     }
 
-    override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         return ResponseEntity.ok(
             CompanyAssociatedData(
                 companyId = dataManager.searchDataMetaInfo(dataId).first().companyId,
