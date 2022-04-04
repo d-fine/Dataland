@@ -68,7 +68,7 @@ describe('Company Data', () => {
             .type(inputValue, {force: true})
             .should('have.value', inputValue)
         cy.get('button[name=getCompanies]').click()
-        cy.get('td').contains("d-fine").click().url().should('include', '/companies/')
+        cy.get('td').contains("VIEW").click().url().should('include', '/companies/')
     });
 
     it('Show all companies button exists', () => {
