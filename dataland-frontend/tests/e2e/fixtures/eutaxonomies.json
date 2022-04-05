@@ -3,9 +3,9 @@
     "companyId": 1,
     "data": {
       "Capex": {
-        "total": 54383,
+        "total": 96762,
         "aligned": 49408,
-        "eligible": 96762
+        "eligible": 54383
       },
       "Opex": {
         "total": 87050,
@@ -13,7 +13,7 @@
         "eligible": 9600
       },
       "Revenue": {
-        "total": 25914,
+        "total": 259141,
         "aligned": 3476,
         "eligible": 57338
       },

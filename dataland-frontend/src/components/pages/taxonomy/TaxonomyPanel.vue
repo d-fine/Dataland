@@ -70,6 +70,11 @@ export default {
   created() {
     this.getCompanyEUDataset()
   },
+  watch: {
+    dataID(){
+      this.getCompanyEUDataset()
+    }
+  },
   methods: {
     async getCompanyEUDataset() {
       try {
