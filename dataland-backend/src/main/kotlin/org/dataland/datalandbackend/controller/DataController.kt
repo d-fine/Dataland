@@ -18,7 +18,7 @@ abstract class DataController<T>(
     var objectMapper: ObjectMapper,
     val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = clazz.toString().substringAfterLast(".")
+    private val dataType = clazz.simpleName
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
