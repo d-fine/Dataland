@@ -4,7 +4,7 @@
       <h1>{{companyInformation.companyName}}</h1>
     </div>
     <div class="col-4 mb-4">
-      <span>Market Cap:</span> <span class="font-semibold">{{companyInformation.marketCap}}</span>
+      <span>Market Cap:</span> <span class="font-semibold">{{OMS(companyInformation.marketCap)}}</span>
     </div>
     <div class="col-4 mb-4">
       Company Reports:
@@ -22,9 +22,12 @@
 </template>
 
 <script>
+
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import Button from "primevue/button";
 import {DataStore} from "@/services/DataStore";
+import {nFormatter} from "@/utils/currencyMagnitude";
+
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompanyById)
 export default {
@@ -52,9 +55,18 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-      this.company = await companyStore.perform(this.companyID)
-      this.companyInformation = this.company.data.companyInformation
+      try {
+        this.company = await companyStore.perform(this.companyID)
+        this.companyInformation = this.company.data.companyInformation
+      } catch (error) {
+        console.error(error)
+        this.company=null
+      }
+
     },
+     OMS(value){
+      return nFormatter(value)
+     }
   }
 }
 </script>

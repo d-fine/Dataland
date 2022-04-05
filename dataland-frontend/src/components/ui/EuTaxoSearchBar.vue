@@ -12,7 +12,9 @@
       <Button @click="getCompanyByName(true)" label="Search" class="uppercase" ><i class="pi pi-search pr-2" aria-hidden="true"/>Search</Button>
     </div>
   </div>
-  <EuTaxoSearchResults v-if="action" :data="response.data" :action="action" />
+  <div v-if="action && response">
+    <EuTaxoSearchResults :data="response.data" :action="action" />
+  </div>
 
 </template>
 
