@@ -2,7 +2,7 @@
   <EuTaxoSearchBar/>
   <div class="grid align-items-end">
     <div class="col-9 ml-4">
-      <CompanyInformation :companyID="$route.params.companyID"/>
+      <CompanyInformation :companyID="companyID"/>
     </div>
     <div class="col-2 mr-4 pb-4">
       <Button label="Get Report" class="uppercase p-button">Get Report
@@ -12,7 +12,7 @@
   </div>
   <div class="grid m-3 surface-800">
     <div class="col-12">
-      <TaxonomyData :companyID="$route.params.companyID"/>
+      <TaxonomyData :companyID="companyID"/>
     </div>
   </div>
 </template>
@@ -26,6 +26,11 @@ import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 export default {
   name: "CompanyTaxonomy",
   components: {EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
+  props: {
+    companyID: {
+      type: Number
+    }
+  }
 
 }
 </script>

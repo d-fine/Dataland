@@ -48,7 +48,11 @@ const routes = [
     },
     {
         path: "/companies/:companyID/eutaxonomies",
-        props: true,
+        props(route:any) {
+            return {
+                companyID: parseInt(route.params.companyID)
+            }
+        },
         name: "Company EU Taxonomy",
         component: CompanyTaxonomy,
     },
