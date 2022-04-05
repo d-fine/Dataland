@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.annotations
 import org.reflections.Reflections
 
 /**
- * Class to extract custom annotations
+ * Class to extract DataType annotations
  */
 class DataTypesExtractor {
 
