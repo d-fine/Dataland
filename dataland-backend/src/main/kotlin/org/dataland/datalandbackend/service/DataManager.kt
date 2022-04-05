@@ -36,7 +36,7 @@ class DataManager(
 
     private fun verifyDataTypeExists(dataType: String) {
         val allDataTypes = AnnotationProcessor().getAllDataTypes()
-        if (allDataTypes.filter { it == dataType }.isEmpty()) {
+        if (!allDataTypes.contains(dataType)) {
             throw IllegalArgumentException("Dataland does not know the data type: $dataType")
         }
     }
