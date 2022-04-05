@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class DataTypesExtractorTest {
 
     @Test
-    fun `check if the allowed data types is not empty`() {
+    fun `check if extracting data types works as expected`() {
         val dataTypes = DataTypesExtractor().getAllDataTypes()
         Assertions.assertFalse(dataTypes.isEmpty())
         Assertions.assertTrue(
