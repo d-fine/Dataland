@@ -51,9 +51,7 @@ services:
     networks:
       - internal
   skyminder-dummyserver:
-    build:
-      context: ./
-      dockerfile: ./dataland-skyminder-dummyserver/Dockerfile
+    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:latest
     networks:
       - internal
       - external
