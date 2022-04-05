@@ -38,7 +38,8 @@ describe('User interactive tests for Data Upload', () => {
             const dataID = $dataID.text()
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
-                cy.visit(`/companies/${companyID}`).get('td').contains(dataID.toString()).click().should('contain', 'Eligible Revenue')
+                cy.visit(`/companies/${companyID}`).get('td').contains(dataID.toString()).click().url().should('include', '/eutaxonomies/')
+                cy.get('body').should('contain', 'Eligible Revenue')
             })
             cy.visit(`/data/eutaxonomies/${dataID}`).get('body').should("contain", `Dataset: ${dataID}`).should("contain", "Eligible Revenue").should("not.contain", "NaN")
         })
