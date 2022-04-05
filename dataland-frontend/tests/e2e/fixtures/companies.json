@@ -1,16 +1,702 @@
 [
-  {
-    "companyName": "Bahraini",
-    "headquarters": "Frankfurt",
-    "industrialSector": "Handmade",
-    "marketCap": 54344,
-    "reportingDateOfMarketCap": "2021-09-02"
-  },
-  {
-    "companyName": "Chief",
-    "headquarters": "Stuttgart",
-    "industrialSector": "Chips",
-    "marketCap": 35920,
-    "reportingDateOfMarketCap": "2021-06-03"
-  }
+	{
+		"companyName": "Hetzler OHG",
+		"headquarters": "Bad Enno",
+		"industrialSector": "niches",
+		"marketCap": 5932037,
+		"reportingDateOfMarketCap": "2021-09-16"
+	},
+	{
+		"companyName": "Ophey, Köhler and Strogies",
+		"headquarters": "Prahburg",
+		"industrialSector": "synergies",
+		"marketCap": 5021174,
+		"reportingDateOfMarketCap": "2021-07-04"
+	},
+	{
+		"companyName": "Bahl, Benninger and Prah",
+		"headquarters": "Dothan",
+		"industrialSector": "portals",
+		"marketCap": 7600362,
+		"reportingDateOfMarketCap": "2022-01-11"
+	},
+	{
+		"companyName": "Fenske - Krueger",
+		"headquarters": "Wyoming",
+		"industrialSector": "e-business",
+		"marketCap": 3813205,
+		"reportingDateOfMarketCap": "2021-12-21"
+	},
+	{
+		"companyName": "Deuschle UG",
+		"headquarters": "Ost Nisadorf",
+		"industrialSector": "architectures",
+		"marketCap": 484490,
+		"reportingDateOfMarketCap": "2021-07-11"
+	},
+	{
+		"companyName": "Dörner Gruppe",
+		"headquarters": "Bad Malin",
+		"industrialSector": "partnerships",
+		"marketCap": 2420945,
+		"reportingDateOfMarketCap": "2021-10-15"
+	},
+	{
+		"companyName": "Walther - Wujak",
+		"headquarters": "Bad Thies",
+		"industrialSector": "functionalities",
+		"marketCap": 8256925,
+		"reportingDateOfMarketCap": "2021-09-23"
+	},
+	{
+		"companyName": "Deerberg, Ziegler and Piesker",
+		"headquarters": "Chicago",
+		"industrialSector": "deliverables",
+		"marketCap": 1537512,
+		"reportingDateOfMarketCap": "2021-07-24"
+	},
+	{
+		"companyName": "Einert - Wessinghage",
+		"headquarters": "Bad Sorayascheid",
+		"industrialSector": "synergies",
+		"marketCap": 5164522,
+		"reportingDateOfMarketCap": "2021-10-18"
+	},
+	{
+		"companyName": "Sauerland - Ranz",
+		"headquarters": "Neu Benjaminstadt",
+		"industrialSector": "methodologies",
+		"marketCap": 5656153,
+		"reportingDateOfMarketCap": "2022-03-03"
+	},
+	{
+		"companyName": "Grimm GmbH",
+		"headquarters": "Kiaraland",
+		"industrialSector": "supply-chains",
+		"marketCap": 3939014,
+		"reportingDateOfMarketCap": "2021-11-26"
+	},
+	{
+		"companyName": "Retzke - Ackermann",
+		"headquarters": "Ost Anouk",
+		"industrialSector": "interfaces",
+		"marketCap": 4223310,
+		"reportingDateOfMarketCap": "2021-07-27"
+	},
+	{
+		"companyName": "Erwes, Dressler and Spank",
+		"headquarters": "Centreville",
+		"industrialSector": "markets",
+		"marketCap": 4923081,
+		"reportingDateOfMarketCap": "2022-03-21"
+	},
+	{
+		"companyName": "Poser, Haverney and Kausemann",
+		"headquarters": "Poeschlscheid",
+		"industrialSector": "paradigms",
+		"marketCap": 6418014,
+		"reportingDateOfMarketCap": "2021-08-03"
+	},
+	{
+		"companyName": "Schönfeld - Buss",
+		"headquarters": "Bad Amonstadt",
+		"industrialSector": "solutions",
+		"marketCap": 3265257,
+		"reportingDateOfMarketCap": "2021-09-27"
+	},
+	{
+		"companyName": "Streck, Leibold and Behrenbruch",
+		"headquarters": "Pueblo",
+		"industrialSector": "deliverables",
+		"marketCap": 9012086,
+		"reportingDateOfMarketCap": "2021-06-28"
+	},
+	{
+		"companyName": "Rath - Soller",
+		"headquarters": "Bad Domenik",
+		"industrialSector": "e-business",
+		"marketCap": 8638253,
+		"reportingDateOfMarketCap": "2022-01-14"
+	},
+	{
+		"companyName": "Abramovic - Kral",
+		"headquarters": "Guntherdorf",
+		"industrialSector": "infrastructures",
+		"marketCap": 4503923,
+		"reportingDateOfMarketCap": "2021-09-25"
+	},
+	{
+		"companyName": "Leiter, Spielvogel and Minah",
+		"headquarters": "Steffnyscheid",
+		"industrialSector": "users",
+		"marketCap": 2411909,
+		"reportingDateOfMarketCap": "2021-10-17"
+	},
+	{
+		"companyName": "Keiner AG",
+		"headquarters": "Hübnerdorf",
+		"industrialSector": "e-tailers",
+		"marketCap": 2380493,
+		"reportingDateOfMarketCap": "2021-05-19"
+	},
+	{
+		"companyName": "Holdt, Dück and Mesloh",
+		"headquarters": "Drechslerburg",
+		"industrialSector": "interfaces",
+		"marketCap": 5774150,
+		"reportingDateOfMarketCap": "2022-01-07"
+	},
+	{
+		"companyName": "Bogdashin, Ruckdeschel and Weight",
+		"headquarters": "Janinastadt",
+		"industrialSector": "solutions",
+		"marketCap": 9738961,
+		"reportingDateOfMarketCap": "2021-09-08"
+	},
+	{
+		"companyName": "Schuldt Gruppe",
+		"headquarters": "San Ramon",
+		"industrialSector": "portals",
+		"marketCap": 2606834,
+		"reportingDateOfMarketCap": "2022-01-14"
+	},
+	{
+		"companyName": "Schötz, Herwig and Goy",
+		"headquarters": "Bowie",
+		"industrialSector": "web-readiness",
+		"marketCap": 1035543,
+		"reportingDateOfMarketCap": "2021-11-15"
+	},
+	{
+		"companyName": "Friedmann OHG",
+		"headquarters": "Josiestadt",
+		"industrialSector": "markets",
+		"marketCap": 567684,
+		"reportingDateOfMarketCap": "2021-12-22"
+	},
+	{
+		"companyName": "Bogdashin - Berner",
+		"headquarters": "Nord Lilith",
+		"industrialSector": "supply-chains",
+		"marketCap": 9913247,
+		"reportingDateOfMarketCap": "2021-05-14"
+	},
+	{
+		"companyName": "Riediger - Weimer",
+		"headquarters": "Sutschetscheid",
+		"industrialSector": "paradigms",
+		"marketCap": 4383116,
+		"reportingDateOfMarketCap": "2021-05-31"
+	},
+	{
+		"companyName": "Büker AG",
+		"headquarters": "Bossier City",
+		"industrialSector": "e-markets",
+		"marketCap": 3852693,
+		"reportingDateOfMarketCap": "2021-08-05"
+	},
+	{
+		"companyName": "Co - Wiechmann",
+		"headquarters": "Portage",
+		"industrialSector": "deliverables",
+		"marketCap": 7973432,
+		"reportingDateOfMarketCap": "2021-06-06"
+	},
+	{
+		"companyName": "Krieger KG",
+		"headquarters": "Försterburg",
+		"industrialSector": "metrics",
+		"marketCap": 1009520,
+		"reportingDateOfMarketCap": "2022-01-19"
+	},
+	{
+		"companyName": "Konya, Ryjikh and Krippner",
+		"headquarters": "Schmiddorf",
+		"industrialSector": "content",
+		"marketCap": 5971952,
+		"reportingDateOfMarketCap": "2022-03-14"
+	},
+	{
+		"companyName": "Klauder Gruppe",
+		"headquarters": "Nord Nikolas",
+		"industrialSector": "experiences",
+		"marketCap": 8677376,
+		"reportingDateOfMarketCap": "2021-10-14"
+	},
+	{
+		"companyName": "Schwuchow, Kneifel and Brandis",
+		"headquarters": "Reichlingdorf",
+		"industrialSector": "markets",
+		"marketCap": 525153,
+		"reportingDateOfMarketCap": "2022-02-11"
+	},
+	{
+		"companyName": "Thiomas AG",
+		"headquarters": "West Michael",
+		"industrialSector": "infomediaries",
+		"marketCap": 1636422,
+		"reportingDateOfMarketCap": "2022-02-14"
+	},
+	{
+		"companyName": "Bielert AG",
+		"headquarters": "Urbandale",
+		"industrialSector": "infomediaries",
+		"marketCap": 8622624,
+		"reportingDateOfMarketCap": "2021-06-08"
+	},
+	{
+		"companyName": "Wolf - Weis",
+		"headquarters": "Leventscheid",
+		"industrialSector": "deliverables",
+		"marketCap": 4523895,
+		"reportingDateOfMarketCap": "2021-11-10"
+	},
+	{
+		"companyName": "Hold - Lenfers",
+		"headquarters": "Smyrna",
+		"industrialSector": "web services",
+		"marketCap": 1010727,
+		"reportingDateOfMarketCap": "2021-06-26"
+	},
+	{
+		"companyName": "Krodinger UG",
+		"headquarters": "Bad Maximiliandorf",
+		"industrialSector": "niches",
+		"marketCap": 6573074,
+		"reportingDateOfMarketCap": "2021-12-20"
+	},
+	{
+		"companyName": "Dutkiewicz, Roos and Knippel",
+		"headquarters": "Dieckmannland",
+		"industrialSector": "action-items",
+		"marketCap": 4430066,
+		"reportingDateOfMarketCap": "2021-09-24"
+	},
+	{
+		"companyName": "Seiler Gruppe",
+		"headquarters": "West Tristanland",
+		"industrialSector": "niches",
+		"marketCap": 1285875,
+		"reportingDateOfMarketCap": "2021-08-20"
+	},
+	{
+		"companyName": "Jellinghaus - Kesselschläger",
+		"headquarters": "Topeka",
+		"industrialSector": "communities",
+		"marketCap": 7715819,
+		"reportingDateOfMarketCap": "2021-04-21"
+	},
+	{
+		"companyName": "Wassilew - Krieger",
+		"headquarters": "Nord Eleonora",
+		"industrialSector": "deliverables",
+		"marketCap": 1928747,
+		"reportingDateOfMarketCap": "2021-04-23"
+	},
+	{
+		"companyName": "Salow, Gotthardt and Hohenberger",
+		"headquarters": "Nord Damian",
+		"industrialSector": "bandwidth",
+		"marketCap": 8605727,
+		"reportingDateOfMarketCap": "2021-12-28"
+	},
+	{
+		"companyName": "Nolte - Kesselring",
+		"headquarters": "Bad Friedrichstadt",
+		"industrialSector": "e-commerce",
+		"marketCap": 1898785,
+		"reportingDateOfMarketCap": "2021-06-13"
+	},
+	{
+		"companyName": "Janich - Malkus",
+		"headquarters": "Philadelphia",
+		"industrialSector": "users",
+		"marketCap": 9970407,
+		"reportingDateOfMarketCap": "2021-08-24"
+	},
+	{
+		"companyName": "Polizzi - Ruch",
+		"headquarters": "Neu Richardburg",
+		"industrialSector": "users",
+		"marketCap": 664937,
+		"reportingDateOfMarketCap": "2021-04-28"
+	},
+	{
+		"companyName": "Bosler - Herweg",
+		"headquarters": "Nabowburg",
+		"industrialSector": "e-business",
+		"marketCap": 1502164,
+		"reportingDateOfMarketCap": "2021-04-11"
+	},
+	{
+		"companyName": "Ahlke GmbH & Co. KG",
+		"headquarters": "Bad Peterscheid",
+		"industrialSector": "e-tailers",
+		"marketCap": 6314297,
+		"reportingDateOfMarketCap": "2021-09-22"
+	},
+	{
+		"companyName": "Diekmann OHG",
+		"headquarters": "Alt Alexandra",
+		"industrialSector": "ROI",
+		"marketCap": 9293684,
+		"reportingDateOfMarketCap": "2021-04-26"
+	},
+	{
+		"companyName": "Kuschmann, Ostendarp and Heuck",
+		"headquarters": "Ost Laurens",
+		"industrialSector": "metrics",
+		"marketCap": 7165361,
+		"reportingDateOfMarketCap": "2021-12-31"
+	},
+	{
+		"companyName": "Trauth, Esser and Esser",
+		"headquarters": "Bad Matsdorf",
+		"industrialSector": "systems",
+		"marketCap": 490647,
+		"reportingDateOfMarketCap": "2021-04-08"
+	},
+	{
+		"companyName": "Rietmüller, Willwacher and Lieder",
+		"headquarters": "Ivanburg",
+		"industrialSector": "e-markets",
+		"marketCap": 3234397,
+		"reportingDateOfMarketCap": "2021-07-05"
+	},
+	{
+		"companyName": "Gadschiew, Bartels and Crosskofp",
+		"headquarters": "Alt Lilianastadt",
+		"industrialSector": "systems",
+		"marketCap": 3025291,
+		"reportingDateOfMarketCap": "2022-01-27"
+	},
+	{
+		"companyName": "Baumann - Stengel",
+		"headquarters": "Mioland",
+		"industrialSector": "deliverables",
+		"marketCap": 418118,
+		"reportingDateOfMarketCap": "2021-10-29"
+	},
+	{
+		"companyName": "Koszewski - Urbaniak",
+		"headquarters": "Sandraland",
+		"industrialSector": "portals",
+		"marketCap": 7839008,
+		"reportingDateOfMarketCap": "2021-05-27"
+	},
+	{
+		"companyName": "Dold - Schmitt",
+		"headquarters": "Kumbernussland",
+		"industrialSector": "systems",
+		"marketCap": 9168640,
+		"reportingDateOfMarketCap": "2021-10-17"
+	},
+	{
+		"companyName": "Zekl, Daimer and Riepl",
+		"headquarters": "Keuteldorf",
+		"industrialSector": "communities",
+		"marketCap": 3941536,
+		"reportingDateOfMarketCap": "2021-09-14"
+	},
+	{
+		"companyName": "Hohl, Umminger and Schröder",
+		"headquarters": "Nord Aliyah",
+		"industrialSector": "eyeballs",
+		"marketCap": 3293723,
+		"reportingDateOfMarketCap": "2021-10-06"
+	},
+	{
+		"companyName": "Bertenbreiter OHG",
+		"headquarters": "Nord Gabrielburg",
+		"industrialSector": "technologies",
+		"marketCap": 9312421,
+		"reportingDateOfMarketCap": "2021-05-06"
+	},
+	{
+		"companyName": "Otto Gruppe",
+		"headquarters": "Maddoxscheid",
+		"industrialSector": "partnerships",
+		"marketCap": 7207828,
+		"reportingDateOfMarketCap": "2022-02-08"
+	},
+	{
+		"companyName": "Behrenbruch GmbH",
+		"headquarters": "Gutowiczdorf",
+		"industrialSector": "content",
+		"marketCap": 6830330,
+		"reportingDateOfMarketCap": "2021-07-25"
+	},
+	{
+		"companyName": "Haferkamp, Mögenburg and Horak",
+		"headquarters": "Bad Jonastadt",
+		"industrialSector": "e-business",
+		"marketCap": 8060575,
+		"reportingDateOfMarketCap": "2021-10-28"
+	},
+	{
+		"companyName": "Schwarzmeier - Klose",
+		"headquarters": "Tarjaburg",
+		"industrialSector": "models",
+		"marketCap": 8534642,
+		"reportingDateOfMarketCap": "2021-10-03"
+	},
+	{
+		"companyName": "Erhardt UG",
+		"headquarters": "Vallejo",
+		"industrialSector": "experiences",
+		"marketCap": 6296183,
+		"reportingDateOfMarketCap": "2022-01-19"
+	},
+	{
+		"companyName": "Gerdel, Kumbernuss and Geisler",
+		"headquarters": "Chesapeake",
+		"industrialSector": "supply-chains",
+		"marketCap": 9218121,
+		"reportingDateOfMarketCap": "2021-08-28"
+	},
+	{
+		"companyName": "Dittmer - Esser",
+		"headquarters": "Alt Leyladorf",
+		"industrialSector": "interfaces",
+		"marketCap": 7523132,
+		"reportingDateOfMarketCap": "2021-12-11"
+	},
+	{
+		"companyName": "Galander - Kuschewitz",
+		"headquarters": "Kleindorf",
+		"industrialSector": "portals",
+		"marketCap": 8279494,
+		"reportingDateOfMarketCap": "2021-09-20"
+	},
+	{
+		"companyName": "Glatting UG",
+		"headquarters": "Jonahstadt",
+		"industrialSector": "relationships",
+		"marketCap": 8491924,
+		"reportingDateOfMarketCap": "2021-10-16"
+	},
+	{
+		"companyName": "Lamos - Mächtig",
+		"headquarters": "Orthdorf",
+		"industrialSector": "metrics",
+		"marketCap": 2951864,
+		"reportingDateOfMarketCap": "2021-04-06"
+	},
+	{
+		"companyName": "Ringer - Lange",
+		"headquarters": "Catonsville",
+		"industrialSector": "applications",
+		"marketCap": 9864677,
+		"reportingDateOfMarketCap": "2021-11-05"
+	},
+	{
+		"companyName": "Retzke, Gutschank and Wolfarth",
+		"headquarters": "Newton",
+		"industrialSector": "vortals",
+		"marketCap": 2039179,
+		"reportingDateOfMarketCap": "2021-04-17"
+	},
+	{
+		"companyName": "Geiger - Koczulla",
+		"headquarters": "Teostadt",
+		"industrialSector": "e-markets",
+		"marketCap": 3390363,
+		"reportingDateOfMarketCap": "2021-05-27"
+	},
+	{
+		"companyName": "Bartels KG",
+		"headquarters": "Nöhland",
+		"industrialSector": "applications",
+		"marketCap": 3515276,
+		"reportingDateOfMarketCap": "2022-01-24"
+	},
+	{
+		"companyName": "Sussmann - Michallek",
+		"headquarters": "Silasdorf",
+		"industrialSector": "infomediaries",
+		"marketCap": 1475599,
+		"reportingDateOfMarketCap": "2021-09-13"
+	},
+	{
+		"companyName": "Hübenbecker, Sporrer and Wierig",
+		"headquarters": "Bad Caspar",
+		"industrialSector": "deliverables",
+		"marketCap": 3147780,
+		"reportingDateOfMarketCap": "2021-12-26"
+	},
+	{
+		"companyName": "Wiechmann Gruppe",
+		"headquarters": "Jamrozyscheid",
+		"industrialSector": "bandwidth",
+		"marketCap": 1996959,
+		"reportingDateOfMarketCap": "2021-12-08"
+	},
+	{
+		"companyName": "Reumann, Blochwitz and Porth",
+		"headquarters": "Tucholkestadt",
+		"industrialSector": "web services",
+		"marketCap": 2395125,
+		"reportingDateOfMarketCap": "2021-08-25"
+	},
+	{
+		"companyName": "Lehner, Poeschl and Schüler",
+		"headquarters": "Kuhleeburg",
+		"industrialSector": "systems",
+		"marketCap": 3033878,
+		"reportingDateOfMarketCap": "2022-03-22"
+	},
+	{
+		"companyName": "Stifel OHG",
+		"headquarters": "Strellerdorf",
+		"industrialSector": "blockchains",
+		"marketCap": 5697373,
+		"reportingDateOfMarketCap": "2022-01-30"
+	},
+	{
+		"companyName": "Nannen, Fischer and Heck",
+		"headquarters": "Carlsbad",
+		"industrialSector": "e-commerce",
+		"marketCap": 6353502,
+		"reportingDateOfMarketCap": "2021-05-30"
+	},
+	{
+		"companyName": "Nitzsche, Ehm and Geissler",
+		"headquarters": "Heuckstadt",
+		"industrialSector": "portals",
+		"marketCap": 5274729,
+		"reportingDateOfMarketCap": "2022-03-04"
+	},
+	{
+		"companyName": "Kohlmann, Kampf and Gruber",
+		"headquarters": "Lilliandorf",
+		"industrialSector": "partnerships",
+		"marketCap": 2938713,
+		"reportingDateOfMarketCap": "2022-03-30"
+	},
+	{
+		"companyName": "Reumann OHG",
+		"headquarters": "Petzoldscheid",
+		"industrialSector": "architectures",
+		"marketCap": 4328860,
+		"reportingDateOfMarketCap": "2021-08-22"
+	},
+	{
+		"companyName": "Lieder - Hache",
+		"headquarters": "Ost Abbyscheid",
+		"industrialSector": "systems",
+		"marketCap": 7193030,
+		"reportingDateOfMarketCap": "2022-03-17"
+	},
+	{
+		"companyName": "Vogelgsang, Vieweg and Zaczkiewicz",
+		"headquarters": "Weigelstadt",
+		"industrialSector": "mindshare",
+		"marketCap": 1211645,
+		"reportingDateOfMarketCap": "2021-04-07"
+	},
+	{
+		"companyName": "Krauel OHG",
+		"headquarters": "Ost Marla",
+		"industrialSector": "convergence",
+		"marketCap": 7688910,
+		"reportingDateOfMarketCap": "2022-03-25"
+	},
+	{
+		"companyName": "Uliczka, Heck and Dolch",
+		"headquarters": "Friessdorf",
+		"industrialSector": "deliverables",
+		"marketCap": 3229860,
+		"reportingDateOfMarketCap": "2022-03-10"
+	},
+	{
+		"companyName": "Franta - Gatzka",
+		"headquarters": "Aliciaburg",
+		"industrialSector": "e-commerce",
+		"marketCap": 5535623,
+		"reportingDateOfMarketCap": "2021-05-11"
+	},
+	{
+		"companyName": "Viellehner - Jess",
+		"headquarters": "Martinscheid",
+		"industrialSector": "infrastructures",
+		"marketCap": 4415656,
+		"reportingDateOfMarketCap": "2022-03-30"
+	},
+	{
+		"companyName": "Bode Gruppe",
+		"headquarters": "Ost Celia",
+		"industrialSector": "niches",
+		"marketCap": 2537134,
+		"reportingDateOfMarketCap": "2021-09-02"
+	},
+	{
+		"companyName": "Scholz - Meyer",
+		"headquarters": "Bad Annelie",
+		"industrialSector": "e-business",
+		"marketCap": 1342944,
+		"reportingDateOfMarketCap": "2021-07-14"
+	},
+	{
+		"companyName": "Strohschank, Steuk and Kuhlee",
+		"headquarters": "Jonscheid",
+		"industrialSector": "convergence",
+		"marketCap": 7152362,
+		"reportingDateOfMarketCap": "2021-04-09"
+	},
+	{
+		"companyName": "Borgschulze - Gabler",
+		"headquarters": "Ost Nisaland",
+		"industrialSector": "experiences",
+		"marketCap": 5347426,
+		"reportingDateOfMarketCap": "2022-04-05"
+	},
+	{
+		"companyName": "Hiller, Eich and Schlechtweg",
+		"headquarters": "Miriamstadt",
+		"industrialSector": "channels",
+		"marketCap": 8270995,
+		"reportingDateOfMarketCap": "2022-04-01"
+	},
+	{
+		"companyName": "Oppong - Streit",
+		"headquarters": "Nord Sinja",
+		"industrialSector": "functionalities",
+		"marketCap": 7435493,
+		"reportingDateOfMarketCap": "2021-10-03"
+	},
+	{
+		"companyName": "Gilde, Schumacher and Poschmann",
+		"headquarters": "Bad Madleenland",
+		"industrialSector": "architectures",
+		"marketCap": 6273314,
+		"reportingDateOfMarketCap": "2021-08-25"
+	},
+	{
+		"companyName": "Pohland - Scheuring",
+		"headquarters": "Friedrichburg",
+		"industrialSector": "functionalities",
+		"marketCap": 6029523,
+		"reportingDateOfMarketCap": "2021-08-21"
+	},
+	{
+		"companyName": "Koderisch, Lienshöft and Strege",
+		"headquarters": "Jooststadt",
+		"industrialSector": "e-markets",
+		"marketCap": 2394729,
+		"reportingDateOfMarketCap": "2022-03-14"
+	},
+	{
+		"companyName": "Kazmarek GmbH & Co. KG",
+		"headquarters": "Nataliescheid",
+		"industrialSector": "supply-chains",
+		"marketCap": 1899239,
+		"reportingDateOfMarketCap": "2021-10-16"
+	},
+	{
+		"companyName": "Barr - Ripken",
+		"headquarters": "Bad Emilyland",
+		"industrialSector": "action-items",
+		"marketCap": 6112458,
+		"reportingDateOfMarketCap": "2021-09-28"
+	}
 ]
