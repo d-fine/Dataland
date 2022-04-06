@@ -4,7 +4,7 @@
       <h1>{{companyInformation.companyName}}</h1>
     </div>
     <div class="col-4 mb-4">
-      <span>Market Cap:</span> <span class="font-semibold">{{OMS(companyInformation.marketCap)}}</span>
+      <span>Market Cap:</span> <span class="font-semibold">€ {{OMS(companyInformation.marketCap)}}</span>
     </div>
     <div class="col-4 mb-4">
       Company Reports:

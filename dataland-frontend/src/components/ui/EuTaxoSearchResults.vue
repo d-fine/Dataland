@@ -16,13 +16,18 @@
       </div>
       <div class="col-12 text-left">
         <template v-if="action">
-          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5">
+          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5" >
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0">
             </Column>
             <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true"
                     class="surface-0"></Column>
             <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true"
-                    class="surface-0"></Column>
+                    class="surface-0">
+              <template #body="{data}">
+                {{OMS(data.companyInformation.marketCap)}}
+              </template>
+
+            </Column>
             <Column field="companyId" header="" class="surface-0">
               <template #body="{data}">
                 <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
@@ -44,7 +49,7 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-
+import {nFormatter} from "@/utils/currencyMagnitude";
 export default {
   name: "EuTaxoSearchResults",
   components: {MarginWrapper, DataTable, Column},
@@ -57,6 +62,12 @@ export default {
       type: Boolean,
       default: false
     }
-  }
+  },
+    methods: {
+      // OrderOfMagnitudeSuffix
+      OMS(value){
+        return nFormatter(value,2) + " €"
+      }
+    }
 }
 </script>
