@@ -28,7 +28,7 @@ class CompanyDataControllerTest {
         assertEquals(
             testCompanyInformation, postCompanyResponse.companyInformation,
             "The company information in the post-response does not match " +
-                    "the actual information of the company to be posted."
+                "the actual information of the company to be posted."
         )
         assertTrue(
             postCompanyResponse.companyId.toInt() > 0,

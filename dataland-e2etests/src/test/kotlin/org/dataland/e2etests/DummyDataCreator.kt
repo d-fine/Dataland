@@ -12,12 +12,12 @@ class DummyDataCreator {
         return EuTaxonomyData(
             EuTaxonomyData.ReportingObligation.yes, EuTaxonomyData.Attestation.reasonableAssurance,
             capex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(revenue*0.1),
+                total = BigDecimal(revenue * 0.1),
                 aligned = BigDecimal(20),
                 eligible = BigDecimal(15)
             ),
             opex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(revenue*0.4),
+                total = BigDecimal(revenue * 0.4),
                 aligned = BigDecimal(15),
                 eligible = BigDecimal(5)
             ),
