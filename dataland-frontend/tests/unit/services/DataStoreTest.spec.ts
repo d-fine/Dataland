@@ -14,8 +14,8 @@ describe("DataStore", () => {
     it("checks if the schema can be generated automatically", () => {
         const testSchema = {
             "required": [
-                "enumProp",
-                "yesNoProb"
+                "listProp",
+                "yesNoProp"
             ],
             "type": "object",
             "properties": {
@@ -29,14 +29,14 @@ describe("DataStore", () => {
                     "type": "string",
                     "format": "date"
                 },
-                "yesNoProb": {
+                "yesNoProp": {
                     "type": "string",
                     "enum": [
                         "Yes",
                         "No"
                     ]
                 },
-                "enumProp": {
+                "listProp": {
                     "type": "string",
                     "enum": [
                         "None",
