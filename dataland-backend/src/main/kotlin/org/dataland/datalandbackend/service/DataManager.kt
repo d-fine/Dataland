@@ -5,8 +5,6 @@ import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.DataManagerInputToGetData
-import org.dataland.datalandbackend.model.CompanyMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
@@ -112,9 +110,9 @@ class DataManager(
         return dataMetaInformationPerDataId[dataId]!!
     }
 
-    override fun addCompany(companyName: String): CompanyMetaInformation {
+    override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         companyCounter++
-        companyDataPerCompanyId["$companyCounter"] = CompanyMetaInformation(
+        companyDataPerCompanyId["$companyCounter"] = StoredCompany(
             companyId = companyCounter.toString(),
             companyInformation,
             dataRegisteredByDataland = mutableListOf()
@@ -122,17 +120,18 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompaniesByName(companyName: String): List<CompanyMetaInformation> {
-        return companyDataPerCompanyId.filter { it.value.companyName.contains(companyName, true) }.map {
-            CompanyMetaInformation(
-                companyId = it.key,
-                companyName = it.value.companyName,
-                dataRegisteredByDataland = it.value.dataRegisteredByDataland
-            )
-        }
+    override fun listCompaniesByName(companyName: String): List<StoredCompany> {
+        return companyDataPerCompanyId.filter { it.value.companyInformation.companyName.contains(companyName, true) }
+            .map {
+                StoredCompany(
+                    companyId = it.key,
+                    it.value.companyInformation,
+                    it.value.dataRegisteredByDataland
+                )
+            }
     }
 
-    override fun getCompanyById(companyId: String): CompanyMetaInformation {
+    override fun getCompanyById(companyId: String): StoredCompany {
         verifyCompanyIdExists(companyId)
 
         return companyDataPerCompanyId[companyId]!!
