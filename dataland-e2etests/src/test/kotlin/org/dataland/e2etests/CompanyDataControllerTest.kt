@@ -26,8 +26,9 @@ class CompanyDataControllerTest {
             companyDataControllerApi.postCompany(testCompanyInformation)
 
         assertEquals(
-            testCompanyInformation.companyName, postCompanyResponse.companyInformation.companyName,
-            "The company name in the post-response does not match the actual name of the company to be posted."
+            testCompanyInformation, postCompanyResponse.companyInformation,
+            "The company information in the post-response does not match " +
+                    "the actual information of the company to be posted."
         )
         assertTrue(
             postCompanyResponse.companyId.toInt() > 0,
@@ -43,8 +44,8 @@ class CompanyDataControllerTest {
         assertTrue(
             getCompaniesByNameResponse.contains(
                 StoredCompany(
-                    companyId = postCompanyResponse.companyId,
-                    companyInformation = testCompanyInformation,
+                    postCompanyResponse.companyId,
+                    testCompanyInformation,
                     dataRegisteredByDataland = emptyList()
                 )
             ),
@@ -82,8 +83,8 @@ class CompanyDataControllerTest {
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
-            companyId = testCompanyId,
-            dataType = testDataType
+            testCompanyId,
+            testDataType
         )
         assertTrue(
             listOfDataMetaInfoForTestCompany.contains(
