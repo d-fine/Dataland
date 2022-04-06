@@ -74,7 +74,7 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
         val testCompanyInformation = DummyDataCreator().createCompanyTestInformation("F")
-        val testData = DummyDataCreator().createEuTaxonomyTestData()
+        val testData = DummyDataCreator().createEuTaxonomyTestData(1200500350)
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId

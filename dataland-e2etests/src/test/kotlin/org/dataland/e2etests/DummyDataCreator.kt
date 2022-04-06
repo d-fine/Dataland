@@ -8,21 +8,21 @@ import java.time.LocalDate
 
 class DummyDataCreator {
 
-    internal fun createEuTaxonomyTestData(): EuTaxonomyData {
+    internal fun createEuTaxonomyTestData(revenue: Int): EuTaxonomyData {
         return EuTaxonomyData(
             EuTaxonomyData.ReportingObligation.yes, EuTaxonomyData.Attestation.reasonableAssurance,
             capex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(52705000),
+                total = BigDecimal(revenue*0.1),
                 aligned = BigDecimal(20),
-                eligible = BigDecimal(10)
+                eligible = BigDecimal(15)
             ),
             opex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(80490000),
+                total = BigDecimal(revenue*0.4),
                 aligned = BigDecimal(15),
                 eligible = BigDecimal(5)
             ),
             revenue = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(432590000),
+                total = BigDecimal(revenue),
                 aligned = BigDecimal(5),
                 eligible = BigDecimal(3)
             )
