@@ -15,7 +15,7 @@ class MetaDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val dummyDataCreator = DummyDataCreator()
 
-    private fun createCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataSetsPerCompany: Int): List<String> {
+    private fun createCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataPerCompany: Int): List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         var counterToMarkCompanies = 1000
         var counterToMarkData = 50000000
@@ -23,7 +23,7 @@ class MetaDataControllerTest {
             val testCompanyId = companyDataControllerApi.postCompany(
                 dummyDataCreator.createCompanyTestInformation(counterToMarkCompanies.toString())
             ).companyId
-            repeat(numberOfDataSetsPerCompany) {
+            repeat(numberOfDataPerCompany) {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
                     CompanyAssociatedDataEuTaxonomyData(
                         testCompanyId,
