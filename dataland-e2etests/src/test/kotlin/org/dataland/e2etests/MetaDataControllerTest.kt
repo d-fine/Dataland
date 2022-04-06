@@ -39,7 +39,7 @@ class MetaDataControllerTest {
         numberOfDataSetsPerCompany: Int
     ): List<String> {
         val testCompanyInformation = testCompanyList[0]
-        val testData = DummyDataCreator().createEuTaxonomyTestData()
+        val testData = DummyDataCreator().createEuTaxonomyTestData(790240100)
 
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         repeat(numberOfCompanies) {
@@ -57,7 +57,7 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company and a dummy data set for it and check if meta info about that data can be retrieved`() {
         val testCompanyInformation = testCompanyList[1]
-        val testData = DummyDataCreator().createEuTaxonomyTestData()
+        val testData = DummyDataCreator().createEuTaxonomyTestData(990714200)
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
