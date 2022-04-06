@@ -23,14 +23,14 @@ class DataManagerTest(
         CompanyInformation(
             companyName = "Test-Company_1",
             headquarters = "Test-Headquarters_1",
-            industrialSector = "Test-IndustrialSector_1",
+            sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_2",
             headquarters = "Test-Headquarters_2",
-            industrialSector = "Test-IndustrialSector_2",
+            sector = "Test-Sector_2",
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now()
         )

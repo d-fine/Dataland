@@ -21,14 +21,14 @@ class MetaDataControllerTest {
         CompanyInformation(
             companyName = "Test-Company_new_1",
             headquarters = "Test-Headquarters_new_1",
-            industrialSector = "Test-IndustrialSector_new_1",
+            sector = "Test-Sector_new_1",
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_new_2",
             headquarters = "Test-Headquarters_new_2",
-            industrialSector = "Test-IndustrialSector_new_2",
+            sector = "Test-Sector_new_2",
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now()
         )

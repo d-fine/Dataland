@@ -16,7 +16,7 @@ class EuTaxonomyControllerTest {
     private val testCompanyInformation = CompanyInformation(
         companyName = "Test-Company_10",
         headquarters = "Test-Headquarters_10",
-        industrialSector = "Test-IndustrialSector_10",
+        sector = "Test-Sector_10",
         marketCap = BigDecimal(200),
         reportingDateOfMarketCap = LocalDate.now()
     )

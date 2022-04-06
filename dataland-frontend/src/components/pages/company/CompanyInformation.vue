@@ -6,7 +6,7 @@
         <p>market cap: {{ companyInformation.marketCap }}</p>
         <p>reporting Date Of MarketCap: {{ companyInformation.reportingDateOfMarketCap }}</p>
         <p>headquarters: {{ companyInformation.headquarters }}</p>
-        <p>Industrial Sector: {{ companyInformation.industrialSector }}</p>
+        <p>Sector: {{ companyInformation.sector }}</p>
         <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/data/eutaxonomies/"
                      :headers="['Data ID', 'Data Type']" linkKey="dataId" linkID="dataId"/>
       </div>

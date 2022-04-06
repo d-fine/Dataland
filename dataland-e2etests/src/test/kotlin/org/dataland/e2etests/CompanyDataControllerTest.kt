@@ -23,21 +23,21 @@ class CompanyDataControllerTest {
         CompanyInformation(
             companyName = "Test-Company_1",
             headquarters = "Test-Headquarters_1",
-            industrialSector = "Test-IndustrialSector_1",
+            sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_2",
             headquarters = "Test-Headquarters_2",
-            industrialSector = "Test-IndustrialSector_2",
+            sector = "Test-Sector_2",
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_3",
             headquarters = "Test-Headquarters_3",
-            industrialSector = "Test-IndustrialSector_3",
+            sector = "Test-Sector_3",
             marketCap = BigDecimal(500),
             reportingDateOfMarketCap = LocalDate.now()
         )
@@ -46,14 +46,14 @@ class CompanyDataControllerTest {
         CompanyInformation(
             companyName = "Test-Company_list1",
             headquarters = "Test-Headquarters_list1",
-            industrialSector = "Test-IndustrialSector_list1",
+            sector = "Test-Sector_list1",
             marketCap = BigDecimal(300),
             reportingDateOfMarketCap = LocalDate.now()
         ),
         CompanyInformation(
             companyName = "Test-Company_list2",
             headquarters = "Test-Headquarters_list2",
-            industrialSector = "Test-IndustrialSector_list2",
+            sector = "Test-Sector_list2",
             marketCap = BigDecimal(400),
             reportingDateOfMarketCap = LocalDate.now()
         )

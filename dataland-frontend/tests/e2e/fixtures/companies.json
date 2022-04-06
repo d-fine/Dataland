@@ -2,14 +2,14 @@
   {
     "companyName": "Bahraini",
     "headquarters": "applications",
-    "industrialSector": "Handmade",
+    "sector": "Handmade",
     "marketCap": 54344,
     "reportingDateOfMarketCap": "2021-09-02"
   },
   {
     "companyName": "Chief",
     "headquarters": "withdrawal Account",
-    "industrialSector": "Chips",
+    "sector": "Chips",
     "marketCap": 35920,
     "reportingDateOfMarketCap": "2021-06-03"
   }
