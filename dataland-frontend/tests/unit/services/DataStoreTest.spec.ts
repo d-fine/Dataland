@@ -11,32 +11,32 @@ describe("DataStore", () => {
         expect(Object.keys(dataStore.getSchema()).length).toEqual(3)
     })
 
-    it("gets schema using json", () => {
-        const contactSchema = {
+    it("checks if the schema can be generated automatically", () => {
+        const testSchema = {
             "required": [
-                "Attestation",
-                "Reporting Obligation"
+                "enumProp",
+                "yesNoProb"
             ],
             "type": "object",
             "properties": {
-                "industrialSector": {
+                "textProp": {
                     "type": "string"
                 },
-                "marketCap": {
+                "numberProp": {
                     "type": "number"
                 },
-                "reportingDateOfMarketCap": {
+                "dateProp": {
                     "type": "string",
                     "format": "date"
                 },
-                "Reporting Obligation": {
+                "yesNoProb": {
                     "type": "string",
                     "enum": [
                         "Yes",
                         "No"
                     ]
                 },
-                "Attestation": {
+                "enumProp": {
                     "type": "string",
                     "enum": [
                         "None",
@@ -46,7 +46,7 @@ describe("DataStore", () => {
                 }
             }
         }
-        const dataStore = new DataStore(dummyFunction, contactSchema)
+        const dataStore = new DataStore(dummyFunction, testSchema)
         expect(Object.keys(dataStore.getSchema()).length).toEqual(5)
     })
 
