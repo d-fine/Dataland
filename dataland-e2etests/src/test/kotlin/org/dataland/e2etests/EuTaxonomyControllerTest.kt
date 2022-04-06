@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class EuTaxonomyControllerTest {
-    private val basePathToDatalandProxy = "http://proxy:80/api"
-    private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
+    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
+    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val dummyDataCreator = DummyDataCreator()
 
     @Test
