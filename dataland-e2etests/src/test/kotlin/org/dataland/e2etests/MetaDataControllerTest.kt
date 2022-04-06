@@ -16,28 +16,32 @@ class MetaDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
     private val dummyDataCreator = DummyDataCreator()
 
-    private fun createCompaniesAndEuTaxonomyDataSets(
-        numberOfCompanies: Int,
-        numberOfDataSetsPerCompany: Int
-    ): List<String> {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("new_1")
-        val testData = dummyDataCreator.createEuTaxonomyTestData(790240100)
-
+    private fun createCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataSetsPerCompany: Int)
+            : List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
+        var counterToMarkCompanies = 1000
+        var counterToMarkData = 50000000
         repeat(numberOfCompanies) {
-            val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+            val testCompanyId = companyDataControllerApi.postCompany(
+                dummyDataCreator.createCompanyTestInformation(counterToMarkCompanies.toString())
+            ).companyId
             repeat(numberOfDataSetsPerCompany) {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
-                    CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+                    CompanyAssociatedDataEuTaxonomyData(
+                        testCompanyId,
+                        dummyDataCreator.createEuTaxonomyTestData(counterToMarkData)
+                    )
                 )
+                counterToMarkData++
             }
+            counterToMarkCompanies++
             listOfPostedTestCompanyIds.add(testCompanyId)
         }
         return listOfPostedTestCompanyIds
     }
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if meta info about that data can be retrieved`() {
+    fun `post a dummy company dummy taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("new_2")
         val testData = dummyDataCreator.createEuTaxonomyTestData(990714200)
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
@@ -50,7 +54,7 @@ class MetaDataControllerTest {
         assertEquals(
             DataMetaInformation(testDataId, testDataType, testCompanyId),
             dataMetaInformation,
-            "The posted and the received eu taxonomy data sets and their company IDs are not equal."
+            "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
     }
 
@@ -61,7 +65,7 @@ class MetaDataControllerTest {
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
         val listOfTestCompanyIds =
-            createCompaniesAndEuTaxonomyDataSets(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+            createCompaniesAndEuTaxonomyData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
