@@ -57,7 +57,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check meta-info-search with empty filters`() {
+    fun `post companies and eu taxonomy data and check meta info search with empty filters`() {
         val numberOfCompanies = 5
         val numberOfDataSetsToPostPerCompany = 3
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
@@ -68,7 +68,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check meta-info-search with filter on company ID`() {
+    fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
         val numberOfCompanies = 3
         val numberOfDataSetsToPostPerCompany = 4
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
@@ -78,7 +78,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check meta-info-search with filter on data type`() {
+    fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
         val numberOfCompanies = 4
         val numberOfDataSetsToPostPerCompany = 5
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
@@ -89,7 +89,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check meta-info-search with filters on company ID and data type`() {
+    fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
