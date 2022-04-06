@@ -43,10 +43,7 @@ export class DataStore {
         if ("format" in propertiesSchema[param]) {
             const format = propertiesSchema[param].format
             if (format == "date") {
-                const today = new Date()
-                const tomorrow = new Date(today)
-                tomorrow.setDate(tomorrow.getDate() + 1)
-                return `date_format:MM.DD.YYYY|date_format:MM/DD/YYYY|date_before:${tomorrow.toLocaleDateString()}`
+                return 'date_format:DD.MM.YYYY|date_format:DD/MM/YYYY'
             }
         }
         if ("type" in propertiesSchema[param]) {
@@ -103,12 +100,8 @@ export class DataStore {
                 schema.push({
                         $formkit: "date",
                         label: humanizeString(index),
-                        placeholder: humanizeString(index),
                         name: index,
                         validation: validation,
-                        classes: {
-                            inner: {'formkit-inner': false},
-                        }
                     }
                 )
             } else {
