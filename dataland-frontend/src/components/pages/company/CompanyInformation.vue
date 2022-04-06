@@ -16,7 +16,10 @@
       <span>Headquarter: </span> <span class="font-semibold" >{{companyInformation.headquarters}}</span>
     </div>
     <div class="col-4">
-      <Button label="Financial and sustainability" class="uppercase bg-white text-primary font-semibold border-2"> Financial and sustainability 2021 <i class="pi pi-download pl-2" aria-hidden="true"/> </Button>
+      <Button label="Financial and sustainability" class="uppercase bg-white text-primary font-semibold border-2">
+        Financial and sustainability 2021
+        <i class="material-icons pl-2" aria-hidden="true">download</i>
+      </Button>
     </div>
   </div>
 </template>

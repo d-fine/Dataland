@@ -12,11 +12,14 @@
     </div>
     <div class="grid">
       <div class="col-6 text-left">
-        <Button class="bg-white border-gray-50 border-2 text-900">
+        <Button class="bg-white border-gray-50 border-2 text-900 ">
           <span>Invite someone to access this data.&nbsp;</span>
           <span class="font-semibold"> No registration necessary.</span>
-          <span class="uppercase ml-4 text-primary font-semibold"> SHARE <i class="pi pi-share-alt ml-2"
-                                                                            aria-hidden="true"/> </span>
+          <span class="uppercase ml-4 text-primary font-semibold">
+            SHARE
+          </span>
+            <i class="material-icons ml-2 text-primary " aria-hidden="true">share</i>
+
         </Button>
       </div>
     </div>

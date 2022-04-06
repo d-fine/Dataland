@@ -5,7 +5,7 @@
 
     </div>
     <div class="col-1 col-offset-10">
-      <i class="pi pi-question-circle text-white" aria-hidden="true"></i>
+      <i class="material-icons text-white" aria-hidden="true">help_outline</i>
     </div>
   </div>
   <div>

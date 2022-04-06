@@ -6,7 +6,7 @@
     </div>
     <div class="col-2 mr-4 pb-4">
       <Button label="Get Report" class="uppercase p-button">Get Report
-        <i class="pi pi-caret-down pl-3" aria-hidden="true"/>
+        <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
       </Button>
     </div>
   </div>

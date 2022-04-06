@@ -9,7 +9,7 @@
       </span>
     </div>
     <div class="col-2 text-left">
-      <Button @click="getCompanyByName(true)" label="Search" class="uppercase" ><i class="pi pi-search pr-2" aria-hidden="true"/>Search</Button>
+      <Button @click="getCompanyByName(true)" label="Search" class="uppercase p-button-sm" ><i class="material-icons pr-2" aria-hidden="true">search</i> Search</Button>
     </div>
   </div>
   <div v-if="action && response">
