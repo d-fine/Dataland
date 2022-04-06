@@ -7,7 +7,7 @@ describe('EU Taxonomy Page', function () {
         cy.get('h1').should("contain", "Search EU Taxonomy data")
     });
     it('Search Input field should be present', () => {
-        const placeholder = "Search by company name, CIN or ISIN"
+        const placeholder = "Search by company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('be.disabled')
             .invoke('attr', 'placeholder').should('contain', placeholder)

@@ -4,7 +4,7 @@
       <span class="p-fluid">
         <span class="p-input-icon-left ">
             <i class="pi pi-search" aria-hidden="true"/>
-            <InputText type="text" v-model="model" placeholder="Search by company name, CIN or ISIN" disabled="true" name="eu_taxonomy_search_input"/>
+            <InputText type="text" v-model="model" placeholder="Search by company name, LEI, PermID or ISIN" disabled="true" name="eu_taxonomy_search_input"/>
         </span>
       </span>
     </div>

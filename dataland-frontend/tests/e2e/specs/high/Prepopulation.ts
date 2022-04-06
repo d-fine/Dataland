@@ -1,3 +1,4 @@
+    let idList: any
 describe('Population Test', () => {
     let eutaxonomiesData:any
     let companiesData:any
@@ -25,11 +26,21 @@ describe('Population Test', () => {
         }
         console.log(eutaxonomiesData)
     });
+
+    it('Retrieve data ID list', () => {
+        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
+            idList = response.body.map(function (e:string){
+                return parseInt(Object.values(e)[0])
+            })
+        })
+        console.log(eutaxonomiesData)
+    });
 });
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/data/eutaxonomies/1")
+
+        cy.visit("/data/eutaxonomies/"+idList[0])
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
         cy.get('h3').contains("OpEx")
