@@ -1,18 +1,23 @@
 package org.dataland.datalandbackend.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
 import java.time.LocalDate
 
 @SpringBootTest
-class DataManagerTest {
+class DataManagerTest(
+    @Autowired var edcClient: DefaultApi,
+    @Autowired var objectMapper: ObjectMapper
+) {
 
-    val testManager = DataManager(edcClient = DefaultApi(basePath = "dummy"))
+    val testManager = DataManager(edcClient, objectMapper)
 
     val testCompanyList = listOf(
         CompanyInformation(
@@ -33,9 +38,9 @@ class DataManagerTest {
 
     @Test
     fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val storedCompany = testManager.addCompany(testCompanyList[0])
+        val companyMetaInformation = testManager.addCompany(testCompanyList[0])
         assertEquals(
-            storedCompany.companyInformation.companyName, testCompanyList[0].companyName,
+            companyMetaInformation.companyInformation.companyName, testCompanyList[0].companyName,
             "The company name in the post-response does not match the actual name of the company to be posted."
         )
     }
@@ -67,13 +72,6 @@ class DataManagerTest {
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be found in the data store by searching for its name."
             )
-        }
-    }
-
-    @Test
-    fun `get companies with a name that does not exist`() {
-        assertThrows<IllegalArgumentException> {
-            testManager.listCompaniesByName("error")
         }
     }
 
