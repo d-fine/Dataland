@@ -23,7 +23,7 @@ interface CompanyAPI {
 
     @Operation(
         summary = "Add a new company.",
-        description = "A new company is added using the provided information with the generated company ID in response."
+        description = "A new company is added using the provided information, the generated company ID is returned."
     )
     @ApiResponses(
         value = [

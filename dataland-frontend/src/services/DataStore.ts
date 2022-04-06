@@ -46,7 +46,7 @@ export class DataStore {
                 const today = new Date()
                 const tomorrow = new Date(today)
                 tomorrow.setDate(tomorrow.getDate() + 1)
-                return `date_before:${tomorrow.toLocaleDateString()}`
+                return `date_format:MM.DD.YYYY|date_format:MM/DD/YYYY|date_before:${tomorrow.toLocaleDateString()}`
             }
         }
         if ("type" in propertiesSchema[param]) {
