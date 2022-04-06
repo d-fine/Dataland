@@ -17,18 +17,16 @@
       <div class="col-12 text-left">
         <template v-if="action">
           <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5" >
-            <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0">
+            <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3">
             </Column>
-            <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true"
-                    class="surface-0"></Column>
-            <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true"
-                    class="surface-0">
+            <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0 w-3">
+            </Column>
+            <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
               <template #body="{data}">
                 {{OMS(data.companyInformation.marketCap)}}
               </template>
-
             </Column>
-            <Column field="companyId" header="" class="surface-0">
+            <Column field="companyId" header="" class="surface-0 w-2">
               <template #body="{data}">
                 <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
                              class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>
