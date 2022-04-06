@@ -15,7 +15,7 @@
     </div>
     <div class="col-12 text-left pl-8 pr-8" >
       <template v-if="action">
-        <DataTable v-if="data" :value="data" responsive-layout="scroll">
+        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5">
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
           </Column>
           <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
