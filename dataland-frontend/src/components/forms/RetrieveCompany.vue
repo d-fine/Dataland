@@ -62,7 +62,6 @@ export default {
     model: {},
     response: null,
     companyInformation: null,
-    response_error: false,
     action: false
   }),
   methods: {

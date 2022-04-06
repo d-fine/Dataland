@@ -1,4 +1,4 @@
-describe('EU Taxonomy Page', function () {
+describe.only('EU Taxonomy Page', function () {
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
@@ -24,7 +24,9 @@ describe('EU Taxonomy Page', function () {
         cy.get('table.p-datatable-table').contains('th','SECTOR')
         cy.get('table.p-datatable-table').contains('th','MARKET CAP')
         cy.get('table.p-datatable-table').contains('td','VIEW')
-            .click().url().should('include', '/companies/')
+            .contains('a', 'VIEW')
+            .click()
+            .url().should('include', '/companies/')
             .url().should('include', '/eutaxonomies')
     });
 });

@@ -1,4 +1,5 @@
 #!/bin/bash
+docker login ghcr.io -u $DATALAND_SKYMINDERCLIENT_USER -p $DATALAND_SKYMINDERCLIENT_TOKEN
 #start containers for skyminder and edc-dummyserver
 docker-compose --profile development up -d
 #start the backend
