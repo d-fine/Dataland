@@ -41,6 +41,7 @@ services:
       - internal
     expose:
       - "8080"
+
 networks:
   internal:
   external:

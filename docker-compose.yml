@@ -56,9 +56,7 @@ services:
       - internal
   skyminder-dummyserver:
     profiles: ["development", "testing"]
-    build:
-      context: ./
-      dockerfile: ./dataland-skyminder-dummyserver/Dockerfile
+    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:latest
     networks:
       - internal
     expose:
