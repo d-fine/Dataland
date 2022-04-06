@@ -1,4 +1,4 @@
-describe.only('EU Taxonomy Page', function () {
+describe('EU Taxonomy Page', function () {
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
