@@ -23,7 +23,7 @@ class EuTaxonomyControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testData = DummyDataCreator().createEuTaxonomyTestDataSet()
+        val testData = DummyDataCreator().createEuTaxonomyTestData()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
