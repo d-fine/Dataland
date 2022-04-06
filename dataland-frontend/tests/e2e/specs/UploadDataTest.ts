@@ -22,7 +22,7 @@ describe('User interactive tests for Data Upload', () => {
         })
     })
 
-    it('Create EU Taxonomy Dataset with Reporting Obligation and check the link', () => {
+    it('Create EU Taxonomy Dataset with Reporting Obligation and Check the Link', () => {
         cy.get('input[name="companyId"]').type("1", {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
