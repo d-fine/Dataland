@@ -2,7 +2,7 @@
   <div v-if="companyInformation" class="container">
     <div class="row">
       <div class="col m12 s12">
-        <h2>Company Information about {{ companyInformation.companyName }} (ID: {{ companyID }})</h2>
+        <h2>Company Information about {{ companyInformation.companyName }} (ID: {{ company.data.companyID }})</h2>
         <p>market cap: {{ companyInformation.marketCap }}</p>
         <p>reporting Date Of MarketCap: {{ companyInformation.reportingDateOfMarketCap }}</p>
         <p>headquarters: {{ companyInformation.headquarters }}</p>
