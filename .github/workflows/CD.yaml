@@ -30,22 +30,3 @@ jobs:
         run: ./deployment/deploy_to_preview.sh
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-  smoke-tests:
-    runs-on: ubuntu-latest
-    if: success()
-    needs:
-      - build-prod-and-deploy
-    steps:
-      - uses: actions/checkout@v2
-      - name: Execute Smoke Tests
-        run: ./gradlew dataland-frontend:npm_run_testpreview
-
-  summary:
-    runs-on: ubuntu-latest
-    if: success()
-    needs:
-      - smoke-tests
-    steps:
-      - name: Summary of this workflow's overall outcome
-        run: exit 0
