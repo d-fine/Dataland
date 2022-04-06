@@ -25,8 +25,8 @@
         />
         <FormKit
             type="group"
-            name="dataSet"
-            label="dataSet"
+            name="data"
+            label="data"
         >
           <FormKit
               type="select"
@@ -141,21 +141,19 @@
           </div>
         </FormKit>
       </FormKit>
-      <div class="progress" v-if="loading">
-        <div class="indeterminate"></div>
-      </div>
       <div v-if="enableClose" class="col m12">
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="{'DataId': response.data}" :status="response.status" :enableClose="true" />
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="response.data" :status="response.status"
+                       :enableClose="true"/>
         <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
       </div>
     </div>
   </CardWrapper>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
 import CardWrapper from "@/components/wrapper/CardWrapper";
@@ -163,7 +161,7 @@ import {DataStore} from "@/services/DataStore";
 import FailedUpload from "@/components/ui/FailedUpload";
 
 const api = new EuTaxonomyDataControllerApi()
-const dataStore = new DataStore(api.postData)
+const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompaniesByName)
 export default {
@@ -186,8 +184,8 @@ export default {
     },
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform([""])
-        this.idList = companyList.data.map(element => parseInt(Object.values(element)[1]))
+        const companyList = await companyStore.perform("")
+        this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]
       }

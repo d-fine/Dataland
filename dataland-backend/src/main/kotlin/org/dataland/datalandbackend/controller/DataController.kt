@@ -2,46 +2,45 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
-import org.dataland.datalandbackend.interfaces.DataStoreInterface
-import org.dataland.datalandbackend.model.CompanyAssociatedDataSet
-import org.dataland.datalandbackend.model.DataIdentifier
-import org.dataland.datalandbackend.model.DataSetMetaInformation
+import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.http.ResponseEntity
 
 /**
  * Implementation of the API for data exchange
- * @param dataStore implementation of the DataStoreInterface that defines how uploaded data is to be stored
- */
+ * @param dataManager implementation of the DataManagerInterface that defines how
+ * Dataland handles data */
 
 abstract class DataController<T>(
-    var dataStore: DataStoreInterface,
+    var dataManager: DataManagerInterface,
     var objectMapper: ObjectMapper,
     val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = clazz.toString().substringAfterLast(".")
+    private val dataType = clazz.simpleName
 
-    override fun getData(): ResponseEntity<List<DataSetMetaInformation>> {
-        return ResponseEntity.ok(this.dataStore.listDataSets())
-    }
-
-    override fun postData(companyAssociatedDataSet: CompanyAssociatedDataSet<T>): ResponseEntity<String> {
-        return ResponseEntity.ok(
-            this.dataStore.addDataSet(
-                StorableDataSet(
-                    companyId = companyAssociatedDataSet.companyId,
-                    dataType = dataType,
-                    data = objectMapper.writeValueAsString(companyAssociatedDataSet.dataSet)
-                )
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
+        ResponseEntity<DataMetaInformation> {
+        val dataIdOfPostedData = dataManager.addDataSet(
+            StorableDataSet(
+                companyAssociatedData.companyId, dataType,
+                data = objectMapper.writeValueAsString(companyAssociatedData.data)
             )
+        )
+        return ResponseEntity.ok(
+            DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId)
         )
     }
 
-    override fun getCompanyAssociatedDataSet(dataId: String): ResponseEntity<CompanyAssociatedDataSet<T>> {
-        val dataset = this.dataStore.getStorableDataSet(DataIdentifier(dataId = dataId, dataType = dataType))
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         return ResponseEntity.ok(
-            CompanyAssociatedDataSet(
-                objectMapper.readValue(dataset.data, clazz), dataset.companyId
+            CompanyAssociatedData(
+                companyId = dataManager.getDataMetaInfo(dataId).companyId,
+                data = objectMapper.readValue(
+                    dataManager.getDataSet(dataId, dataType).data,
+                    clazz
+                )
             )
         )
     }

@@ -1,28 +1,28 @@
 [
   {
-    "dataSet": {
+    "companyId": 1,
+    "data": {
       "Capex": {
-        "total": 50,
-        "aligned": 10,
-        "eligible": 25
+        "total": 54383,
+        "aligned": 49408,
+        "eligible": 96762
       },
       "Opex": {
-        "total": 100,
-        "aligned": 10,
-        "eligible": 25
+        "total": 87050,
+        "aligned": 89397,
+        "eligible": 9600
       },
       "Revenue": {
-        "total": 200,
-        "aligned": 15,
-        "eligible": 35
+        "total": 25914,
+        "aligned": 3476,
+        "eligible": 57338
       },
       "Reporting Obligation": "Yes",
       "Attestation": "None"
-    },
-    "companyId": 1
+    }
   },
   {
-    "dataSet": {
+    "data": {
       "Capex": {
         "total": 38,
         "aligned": 10,

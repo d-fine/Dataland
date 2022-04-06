@@ -3,19 +3,21 @@
     <div class="row">
       <div class="col m12 s12">
         <h2>Company Information about {{companyInfo.data.companyName}} (ID: {{companyInfo.data.companyId}})</h2>
-        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/eutaxonomies/" :headers="['Data ID', 'Data Type']" linkKey="Data Type" linkID="Data ID" />
+        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/data/eutaxonomies/" :headers="['Data ID', 'Data Type']" linkKey="dataId" linkID="dataId" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {CompanyDataControllerApi} from "@/clients/backend";
+import {CompanyDataControllerApi, MetaDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import ResultTable from "@/components/ui/ResultTable";
-const api = new CompanyDataControllerApi()
-const dataStore = new DataStore(api.getCompanyDataSets)
-const companyStore = new DataStore(api.getCompanyById)
+
+const companyApi = new CompanyDataControllerApi()
+const metaDataApi = new MetaDataControllerApi()
+const dataStore = new DataStore(metaDataApi.getListOfDataMetaInfo)
+const companyStore = new DataStore(companyApi.getCompanyById)
 export default {
   name: "CompanyInformation",
   components: {ResultTable},
@@ -25,7 +27,7 @@ export default {
       companyInfo: null
     }
   },
-  props:{
+  props: {
     companyID: {
       default: 1,
       type: Number
@@ -37,10 +39,10 @@ export default {
   },
   methods: {
     async getCompanyInformation() {
-        this.companyInfo = await companyStore.perform(this.companyID)
+      this.companyInfo = await companyStore.perform(this.companyID)
     },
     async getCompanyDataset() {
-        this.response = await dataStore.perform(this.companyID)
+      this.response = await dataStore.perform(this.companyID, "")
     }
   }
 }

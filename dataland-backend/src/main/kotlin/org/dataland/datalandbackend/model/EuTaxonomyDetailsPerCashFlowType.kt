@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * --- API model ---
  * Figures to be filled out for some of the EU-Taxonomy questionnaire fields
  */
 data class EuTaxonomyDetailsPerCashFlowType(

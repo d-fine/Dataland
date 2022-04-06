@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.CompanyMetaInformation
-import org.dataland.datalandbackend.model.DataIdentifier
 import org.dataland.datalandbackend.model.PostCompanyRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,7 +31,6 @@ interface CompanyAPI {
         ]
     )
     @PostMapping(
-        value = [""],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
@@ -51,11 +49,10 @@ interface CompanyAPI {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved a map of companies.")
+            ApiResponse(responseCode = "200", description = "Successfully retrieved companies.")
         ]
     )
     @GetMapping(
-        value = [""],
         produces = ["application/json"]
     )
     /**
@@ -66,26 +63,6 @@ interface CompanyAPI {
      */
     fun getCompaniesByName(@RequestParam companyName: String? = null):
         ResponseEntity<List<CompanyMetaInformation>>
-
-    @Operation(
-        summary = "Retrieve list of existing data sets for given company.",
-        description = "A List of data ID and data type of all data sets of the given company is retrieved."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data sets.")
-        ]
-    )
-    @GetMapping(
-        value = ["/{companyId}/data"],
-        produces = ["application/json"]
-    )
-    /**
-     * A method to retrieve all existing data sets of a specific company identified by the company ID
-     * @param companyId identifier of the company in dataland
-     * @return list of data identifiers (data ID and data type) of all existing data sets of the specified company
-     */
-    fun getCompanyDataSets(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataIdentifier>>
 
     @Operation(
         summary = "Retrieve company meta information.",

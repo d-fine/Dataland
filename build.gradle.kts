@@ -4,11 +4,19 @@ allprojects {
     repositories {
         mavenCentral()
         maven {
-            name = "GitHubPackages"
+            name = "GitHubPackagesSkyminderClient"
             url = uri("https://maven.pkg.github.com/d-fine/DatalandSkyminderClient")
             credentials {
                 username = System.getenv("DATALAND_SKYMINDERCLIENT_USER")
                 password = System.getenv("DATALAND_SKYMINDERCLIENT_TOKEN")
+            }
+        }
+        maven {
+            name = "GitHubPackagesEDC"
+            url = uri("https://maven.pkg.github.com/d-fine/datalandEDC")
+            credentials {
+                username = System.getenv("DATALAND_EDC_USER")
+                password = System.getenv("DATALAND_EDC_TOKEN")
             }
         }
     }

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 
 const api = new EuTaxonomyDataControllerApi()

@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class CompanyDataControllerTest(
+internal class MetaDataControllerTest(
     @Autowired var mockMvc: MockMvc,
     @Autowired var objectMapper: ObjectMapper
 ) {
@@ -21,34 +21,18 @@ internal class CompanyDataControllerTest(
     val testCompanyName = "Imaginary-Company_I"
 
     @Test
-    fun `company can be posted`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyName)
-    }
-
-    @Test
-    fun `company can be retrieved by name`() {
+    fun `list of meta info about data for specific company can be retrieved`() {
         CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyName)
 
         mockMvc.perform(
-            get("/companies?companyName=$testCompanyName")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
-    }
-
-    @Test
-    fun `meta info about a specific company can be retrieved by its company Id`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyName)
-
-        mockMvc.perform(
-            get("/companies/1")
+            get("/metadata?companyId=1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(
                 status().isOk,
-                content().contentType(MediaType.APPLICATION_JSON)
+                content().contentType(MediaType.APPLICATION_JSON),
+                content().string("[]")
             )
     }
 }

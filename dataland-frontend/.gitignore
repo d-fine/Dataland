@@ -28,5 +28,5 @@ reports
 **/.gradle/
 /tests/*/screenshots/
 
-# auto generated clients
-src/clients
+# auto generated code
+mock-server

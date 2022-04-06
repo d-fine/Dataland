@@ -36,10 +36,10 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/clients/backend";
+import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
-import backend from "@/clients/backend/backendOpenApi.json";
+import backend from "@/../build/clients/backend/backendOpenApi.json";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 import FailedUpload from "@/components/ui/FailedUpload";
 

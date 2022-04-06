@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/clients/backend";
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
 import TaxoCard from "@/components/ui/TaxoCard";
 
 const euTaxonomyApi = new EuTaxonomyDataControllerApi()
 const companyApi = new CompanyDataControllerApi()
-const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedDataSet)
+const dataStore = new DataStore(euTaxonomyApi.getCompanyAssociatedData)
 const companyStore = new DataStore(companyApi.getCompanyById)
 
 export default {
@@ -71,7 +71,7 @@ export default {
     async getCompanyEUDataset() {
       try {
         this.response = await dataStore.perform(this.dataID)
-        this.dataSet = this.response.data.dataSet
+        this.dataSet = this.response.data.data
         this.companyInfo = await companyStore.perform(this.response.data.companyId)
 
       } catch (error) {

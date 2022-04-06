@@ -27,7 +27,7 @@ dependencies {
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 val taskName = "generateAPIClientFrontend"
-val clientOutputDir = "$projectDir/src/clients/backend"
+val clientOutputDir = "$buildDir/clients/backend"
 val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
 val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
 
