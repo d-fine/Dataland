@@ -17,10 +17,11 @@ class CompanyDataControllerTest {
     private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
+    private val dummyDataCreator = DummyDataCreator()
 
     @Test
     fun `post a dummy company and check if post was successful`() {
-        val testCompanyInformation = DummyDataCreator().createCompanyTestInformation("A")
+        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("A")
 
         val postCompanyResponse =
             companyDataControllerApi.postCompany(testCompanyInformation)
@@ -38,7 +39,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val testCompanyInformation = DummyDataCreator().createCompanyTestInformation("B")
+        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("B")
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyInformation.companyName)
         assertTrue(
@@ -55,7 +56,6 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
-        val dummyDataCreator = DummyDataCreator()
         val listOfTestCompanyInformation = listOf<CompanyInformation>(
             dummyDataCreator.createCompanyTestInformation("C"),
             dummyDataCreator.createCompanyTestInformation("D"),
@@ -74,8 +74,8 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
-        val testCompanyInformation = DummyDataCreator().createCompanyTestInformation("F")
-        val testData = DummyDataCreator().createEuTaxonomyTestData(1200500350)
+        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("F")
+        val testData = dummyDataCreator.createEuTaxonomyTestData(1200500350)
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
