@@ -4,12 +4,9 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
-import java.time.LocalDate
 
 class MetaDataControllerTest {
 
@@ -17,29 +14,14 @@ class MetaDataControllerTest {
     private val metaDataControllerApi = MetaDataControllerApi(basePathToDatalandProxy)
     private val companyDataControllerApi = CompanyDataControllerApi(basePathToDatalandProxy)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(basePathToDatalandProxy)
-    private val testCompanyList = listOf(
-        CompanyInformation(
-            companyName = "Test-Company_new_1",
-            headquarters = "Test-Headquarters_new_1",
-            sector = "Test-Sector_new_1",
-            marketCap = BigDecimal(100),
-            reportingDateOfMarketCap = LocalDate.now()
-        ),
-        CompanyInformation(
-            companyName = "Test-Company_new_2",
-            headquarters = "Test-Headquarters_new_2",
-            sector = "Test-Sector_new_2",
-            marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now()
-        )
-    )
+    private val dummyDataCreator = DummyDataCreator()
 
     private fun createCompaniesAndEuTaxonomyDataSets(
         numberOfCompanies: Int,
         numberOfDataSetsPerCompany: Int
     ): List<String> {
-        val testCompanyInformation = testCompanyList[0]
-        val testData = DummyDataCreator().createEuTaxonomyTestData(790240100)
+        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("new_1")
+        val testData = dummyDataCreator.createEuTaxonomyTestData(790240100)
 
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         repeat(numberOfCompanies) {
@@ -56,8 +38,8 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if meta info about that data can be retrieved`() {
-        val testCompanyInformation = testCompanyList[1]
-        val testData = DummyDataCreator().createEuTaxonomyTestData(990714200)
+        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("new_2")
+        val testData = dummyDataCreator.createEuTaxonomyTestData(990714200)
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
