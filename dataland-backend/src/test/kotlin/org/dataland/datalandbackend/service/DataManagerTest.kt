@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -37,25 +38,28 @@ class DataManagerTest(
     )
 
     @Test
-    fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val companyMetaInformation = testManager.addCompany(testCompanyList[0])
+    fun `add the first company and check if it can be retrieved by using the company ID that is returned`() {
+        val testCompanyId = testManager.addCompany(testCompanyList[0]).companyId
         assertEquals(
-            companyMetaInformation.companyInformation.companyName, testCompanyList[0].companyName,
-            "The company name in the post-response does not match the actual name of the company to be posted."
+            StoredCompany(testCompanyId, testCompanyList[0], mutableListOf()),
+            testManager.getCompanyById(testCompanyId),
+            "The company behind the company ID in the post-response " +
+                "does not contain company information of the posted company."
         )
     }
 
     @Test
-    fun `add all companies then retrieve them as a list and check for each company if its name is as expected`() {
+    fun `add all companies then retrieve them as a list and check for each company if it can be found as expected`() {
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
 
         val allCompaniesInStore = testManager.listCompaniesByName("")
-        for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
+        for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
+            val expectedCompanyId = (index + 1).toString()
             assertEquals(
-                testCompanyList[counter].companyName, storedCompany.companyInformation.companyName,
-                "The stored company name does not match the test company name."
+                StoredCompany(expectedCompanyId, testCompanyList[index], mutableListOf()), storedCompany,
+                "The stored company does not contain the company information of the posted company."
             )
         }
     }
@@ -70,7 +74,7 @@ class DataManagerTest(
             val searchResponse = testManager.listCompaniesByName(company.companyName)
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
-                "The posted company could not be found in the data store by searching for its name."
+                "The posted company could not be retrieved by searching for its name."
             )
         }
     }
