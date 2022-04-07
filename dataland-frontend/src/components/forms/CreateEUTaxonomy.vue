@@ -209,8 +209,8 @@ export default {
   methods: {
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform([""])
-        this.idList = Object.keys(companyList.data)
+        const companyList = await companyStore.perform("")
+        this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]
       }
