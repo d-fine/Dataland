@@ -47,7 +47,7 @@ describe("DataStore", () => {
             }
         }
         const dataStore = new DataStore(dummyFunction, testSchema)
-        expect(Object.keys(dataStore.getSchema()).length).toEqual(5)
+        expect(Object.keys(dataStore.getSchema()).length).toEqual(Object.keys(testSchema.properties).length)
     })
 
     it("checks if the function is called properly", () => {
