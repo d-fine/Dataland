@@ -43,14 +43,11 @@ export class DataStore {
         if ("format" in propertiesSchema[param]) {
             const format = propertiesSchema[param].format
             if (format == "date") {
-                return `date_format:DD.MM.YYYY|date_format:DD/MM/YYYY`
+                return 'date_format:DD.MM.YYYY|date_format:DD/MM/YYYY'
             }
         }
         if ("type" in propertiesSchema[param]) {
-            const type = propertiesSchema[param].type
-            if (type == "number") {
-                return type
-            }
+            return propertiesSchema[param].type
         }
         return ""
     }
@@ -107,18 +104,36 @@ export class DataStore {
                         }
                     }
                 )
-            } else {
-                {
-                    /* create a text form */
-                    schema.push({
-                            $formkit: "text",
-                            label: humanizeString(index),
-                            placeholder: humanizeString(index),
-                            name: index,
-                            validation: validation,
-                        }
-                    )
+            } else if (this.getType(index) == "array") {
+                /* create a checkbox form */
+                const enumProperties = []
+                for (const enumItem of propertiesSchema[index].items.enum) {
+                    enumProperties.push(humanizeString(enumItem))
                 }
+                schema.push({
+                        $formkit: "checkbox",
+                        label: humanizeString(index),
+                        placeholder: humanizeString(index),
+                        name: index,
+                        validation: validation,
+                        options: enumProperties,
+                        classes: {
+                            outer: {'formkit-outer': false},
+                            inner: {'formkit-inner': false},
+                            input: {'formkit-input': false}
+                        }
+                    }
+                )
+            } else {
+                /* create a text form */
+                schema.push({
+                        $formkit: "text",
+                        label: humanizeString(index),
+                        placeholder: humanizeString(index),
+                        name: index,
+                        validation: validation,
+                    }
+                )
             }
         }
         return schema
