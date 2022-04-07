@@ -4,7 +4,9 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -15,24 +17,34 @@ class MetaDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val dummyDataCreator = DummyDataCreator()
 
-    private fun postCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataPerCompany: Int): List<String> {
-        val listOfPostedTestCompanyIds = mutableListOf<String>()
+    private fun generateTestData(numberOfCompanies: Int, numberOfDataPerCompany: Int):
+        Map<CompanyInformation, List<EuTaxonomyData>> {
+        val data = mutableMapOf<CompanyInformation, List<EuTaxonomyData>>()
         var counterToMarkCompanies = 1000
         var counterToMarkData = 50000000
         repeat(numberOfCompanies) {
-            val testCompanyId = companyDataControllerApi.postCompany(
-                dummyDataCreator.createCompanyTestInformation(counterToMarkCompanies.toString())
-            ).companyId
+            val company = dummyDataCreator.createCompanyTestInformation(counterToMarkCompanies.toString())
+            val dataSets = mutableListOf<EuTaxonomyData>()
             repeat(numberOfDataPerCompany) {
-                euTaxonomyDataControllerApi.postCompanyAssociatedData(
-                    CompanyAssociatedDataEuTaxonomyData(
-                        testCompanyId,
-                        dummyDataCreator.createEuTaxonomyTestData(counterToMarkData)
-                    )
-                )
+                dataSets.add(dummyDataCreator.createEuTaxonomyTestData(counterToMarkData))
                 counterToMarkData++
             }
+            data[company] = dataSets
             counterToMarkCompanies++
+        }
+        return data
+    }
+
+    private fun postCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataPerCompany: Int): List<String> {
+        val listOfPostedTestCompanyIds = mutableListOf<String>()
+        val data = generateTestData(numberOfCompanies, numberOfDataPerCompany)
+        for (company in data.keys) {
+            val testCompanyId = companyDataControllerApi.postCompany(company).companyId
+            for (dataSet in data[company]!!) {
+                euTaxonomyDataControllerApi.postCompanyAssociatedData(
+                    CompanyAssociatedDataEuTaxonomyData(testCompanyId, dataSet)
+                )
+            }
             listOfPostedTestCompanyIds.add(testCompanyId)
         }
         return listOfPostedTestCompanyIds
