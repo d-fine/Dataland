@@ -6,7 +6,7 @@
         <span class="p-input-icon-left ">
             <i class="pi pi-search" aria-hidden="true"/>
             <InputText type="text" v-model="model" placeholder="Search by company name, LEI, PermID or ISIN"
-                       disabled="true" name="eu_taxonomy_search_input"/>
+                       disabled="true" name="eu_taxonomy_search_input" class="h-3rem"/>
         </span>
       </span>
       </div>

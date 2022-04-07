@@ -1,11 +1,11 @@
 <template>
   <MarginWrapper bgClass="surface-800">
-    <div class="grid align-items-center">
+    <div class="grid align-items-center pr-2">
       <div class="col-1 text-left">
         <h2>Results</h2>
       </div>
-      <div class="col-3 col-offset-7 surface-0 p-card " style="border-radius: 0.2rem">
-        <div class="grid align-items-center">
+      <div class="col-3 col-offset-8 surface-0 d-card" style="border-radius: 0.5rem">
+        <div class="grid align-items-center h-3rem ">
           <div class="col-6 text-left">
             <span class="font-semibold">Avg Green asset ratio </span>
           </div>
@@ -14,10 +14,12 @@
           </div>
         </div>
       </div>
+      </div>
+    <div class="grid">
       <div class="col-12 text-left">
         <template v-if="action">
-          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5" >
-            <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3">
+          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5">
+            <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3 d-datatable-column-left">
             </Column>
             <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0 w-3">
             </Column>
@@ -26,7 +28,7 @@
                 {{OMS(data.companyInformation.marketCap)}}
               </template>
             </Column>
-            <Column field="companyId" header="" class="surface-0 w-2">
+            <Column field="companyId" header="" class="surface-0 w-2 d-datatable-column-right">
               <template #body="{data}">
                 <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
                              class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>
@@ -69,3 +71,13 @@ export default {
     }
 }
 </script>
+
+<style>
+.p-datatable-thead .d-datatable-column-left {
+  border-top-left-radius: 8px;
+}
+
+.p-datatable-thead .d-datatable-column-right {
+  border-top-right-radius: 8px;
+}
+</style>

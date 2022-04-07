@@ -1,7 +1,10 @@
 <template>
-  <div class="grid surface-900 align-items-center">
-    <div class="col-1">
-    <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" />
+  <div class="grid surface-900 align-items-center h-4rem">
+    <div class="col-1 ">
+      <router-link to="/">
+
+    <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" class="pl-3"/>
+      </router-link>
 
     </div>
     <div class="col-1 col-offset-10">
