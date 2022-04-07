@@ -64,7 +64,7 @@ class DataManagerTest(
             testManager.addCompany(company)
         }
 
-        val allCompaniesInStore = testManager.listCompanies("", wildcardSearch)
+        val allCompaniesInStore = testManager.listCompanies("", "")
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
             assertEquals(
@@ -81,11 +81,29 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val searchResponse = testManager.listCompanies(company.companyName, wildcardSearch)
+            val searchResponse = testManager.listCompanies(company.companyName, "")
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be retrieved by searching for its name."
             )
+        }
+    }
+
+    @Test
+    fun `search for identifiers and check it can find the one`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
+        }
+
+        for (company in testCompanyList) {
+            val identifiers = company.identifiers.values
+            for (identifier in identifiers) {
+                val searchResponse = testManager.listCompanies("", identifier)
+                assertEquals(
+                    company, searchResponse.first().companyInformation,
+                    "The posted company could not be retrieved by searching for its identifier."
+                )
+            }
         }
     }
 

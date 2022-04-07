@@ -23,7 +23,7 @@ class CompanyDataController(
         return ResponseEntity.ok(dataManager.addCompany(companyInformation))
     }
 
-    override fun getCompaniesByName(companyName: String?, wildcardSearch: String?): ResponseEntity<List<StoredCompany>> {
+    override fun getCompanies(companyName: String?, wildcardSearch: String?): ResponseEntity<List<StoredCompany>> {
         return ResponseEntity.ok(dataManager.listCompanies(companyName ?: "", wildcardSearch ?: ""))
     }
 
