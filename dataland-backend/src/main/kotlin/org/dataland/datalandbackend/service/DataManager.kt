@@ -47,9 +47,18 @@ class DataManager(
         if (dataMetaInformationPerDataId[dataId]!!.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaInformationPerDataId[dataId]!!.dataType} by Dataland instead of your requested" +
-                    " type $dataType."
+                        " ${dataMetaInformationPerDataId[dataId]!!.dataType} by Dataland instead of your requested" +
+                        " type $dataType."
             )
+        }
+    }
+
+    private fun searchForCompanies(
+        searchString: String,
+        attributeGetters: List<(CompanyInformation) -> List<String>>
+    ): List<StoredCompany> {
+        return companyDataPerCompanyId.values.filter { storedCompany ->
+            attributeGetters.any { getter -> getter(storedCompany.companyInformation).any { it.contains(searchString, true) } }
         }
     }
 
@@ -81,8 +90,8 @@ class DataManager(
         if (dataAsStorableDataSet.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data set with the id: $dataId " +
-                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformationPerDataId[dataId]} as registered by Dataland."
+                        "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
+                        "${dataMetaInformationPerDataId[dataId]} as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
@@ -120,15 +129,12 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompaniesByName(companyName: String): List<StoredCompany> {
-        return companyDataPerCompanyId.filter { it.value.companyInformation.companyName.contains(companyName, true) }
-            .map {
-                StoredCompany(
-                    companyId = it.key,
-                    it.value.companyInformation,
-                    it.value.dataRegisteredByDataland
-                )
-            }
+    override fun listCompanies(companyName: String, wildcardSearch: String): List<StoredCompany> {
+        return if (companyName == "" && wildcardSearch != "" ) {
+            searchForCompanies(wildcardSearch, listOf { it.identifiers.values.toList() })
+        } else {
+            searchForCompanies(companyName, listOf { listOf(it.companyName) })
+        }
     }
 
     override fun getCompanyById(companyId: String): StoredCompany {

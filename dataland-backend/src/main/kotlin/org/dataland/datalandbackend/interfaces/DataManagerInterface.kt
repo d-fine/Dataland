@@ -53,7 +53,7 @@ interface DataManagerInterface {
      * @param companyName string used for substring matching against the companyNames of all entries
      * @return list of all matching companies in Dataland
      */
-    fun listCompaniesByName(companyName: String): List<StoredCompany>
+    fun listCompanies(companyName: String, wildcardSearch: String): List<StoredCompany>
 
     /**
      * Method to retrieve information about a specific company
