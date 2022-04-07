@@ -14,8 +14,8 @@ import java.time.LocalDate
 
 @SpringBootTest
 class DataManagerTest(
-    @Autowired var edcClient: DefaultApi,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired val edcClient: DefaultApi,
+    @Autowired val objectMapper: ObjectMapper
 ) {
 
     val testManager = DataManager(edcClient, objectMapper)
@@ -26,14 +26,24 @@ class DataManagerTest(
             headquarters = "Test-Headquarters_1",
             sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
-            reportingDateOfMarketCap = LocalDate.now()
+            reportingDateOfMarketCap = LocalDate.now(),
+            indices = listOf(CompanyInformation.StockIndex.MDAX),
+            identifiers = mapOf(
+                Pair(CompanyInformation.Identifier.ISIN, "DE0987654321"),
+                Pair(CompanyInformation.Identifier.LEI, "BLA")
+            )
         ),
         CompanyInformation(
             companyName = "Test-Company_2",
             headquarters = "Test-Headquarters_2",
             sector = "Test-Sector_2",
             marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now()
+            reportingDateOfMarketCap = LocalDate.now(),
+            indices = listOf(CompanyInformation.StockIndex.DAX),
+            identifiers = mapOf(
+                Pair(CompanyInformation.Identifier.ISIN, "DE1337"),
+                Pair(CompanyInformation.Identifier.LEI, "BLUB")
+            )
         )
     )
 
@@ -44,7 +54,7 @@ class DataManagerTest(
             StoredCompany(testCompanyId, testCompanyList[0], mutableListOf()),
             testManager.getCompanyById(testCompanyId),
             "The company behind the company ID in the post-response " +
-                "does not contain company information of the posted company."
+                    "does not contain company information of the posted company."
         )
     }
 
