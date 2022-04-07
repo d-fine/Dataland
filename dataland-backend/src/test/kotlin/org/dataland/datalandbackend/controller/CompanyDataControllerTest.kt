@@ -24,7 +24,7 @@ internal class CompanyDataControllerTest(
     val testCompanyInformation = CompanyInformation(
         companyName = "Test-Company_I",
         headquarters = "Test-Headquarters_I",
-        industrialSector = "Test-IndustrialSector_I",
+        sector = "Test-Sector_I",
         marketCap = BigDecimal(100),
         reportingDateOfMarketCap = LocalDate.now()
     )

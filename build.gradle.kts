@@ -12,7 +12,7 @@ allprojects {
             }
         }
         maven {
-            name = "GitHubPackagesEDC"
+            name = "GitHubPackagesEDCClient"
             url = uri("https://maven.pkg.github.com/d-fine/datalandEDC")
             credentials {
                 username = System.getenv("DATALAND_EDC_USER")
