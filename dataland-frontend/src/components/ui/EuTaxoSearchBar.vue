@@ -12,7 +12,7 @@
       </div>
       <div class="col-2 text-left">
         <Button @click="getCompanyByName(true)" label="Search" class="uppercase p-button-sm"><i
-            class="material-icons pr-2" aria-hidden="true">search</i> Search
+            class="material-icons pr-2" aria-hidden="true" id="eu_taxonomy_search_button">search</i> Search
         </Button>
       </div>
     </div>

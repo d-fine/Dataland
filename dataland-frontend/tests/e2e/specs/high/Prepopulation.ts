@@ -33,7 +33,6 @@ describe('Population Test', () => {
                 return parseInt(Object.values(e)[0])
             })
         })
-        console.log(eutaxonomiesData)
     });
 });
 
@@ -79,7 +78,9 @@ describe('Company Data', () => {
             .type(inputValue, {force: true})
             .should('have.value', inputValue)
         cy.get('button[name=getCompanies]').click()
-        cy.get('td').contains("VIEW").click().url().should('include', '/companies/')
+        cy.get('td').contains("VIEW")
+            .contains('a', 'VIEW')
+            .click().url().should('include', '/companies/')
     });
 
     it('Show all companies button exists', () => {
