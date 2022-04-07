@@ -126,7 +126,7 @@ class DataManagerTest(
         }
         val searchResponse = testManager.listCompanies("", "de")
         assertEquals(
-            searchResponse.size, 2,
+            2, searchResponse.size,
             "The companies with identifier 'de' could not be found."
         )
     }
