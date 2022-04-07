@@ -4,7 +4,7 @@
       <h1 class="mb-0">{{companyInformation.companyName}}</h1>
     </div>
     <div class="col-4">
-      <span>Market Cap:</span> <span class="font-semibold">€ {{OMS(companyInformation.marketCap)}}</span>
+      <span>Market Cap:</span> <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
     </div>
     <div class="col-4">
       Company Reports:
@@ -29,7 +29,7 @@
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import Button from "primevue/button";
 import {DataStore} from "@/services/DataStore";
-import {nFormatter} from "@/utils/currencyMagnitude";
+import {numberFormatter} from "@/utils/currencyMagnitude";
 
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompanyById)
@@ -67,8 +67,8 @@ export default {
       }
 
     },
-     OMS(value){
-      return nFormatter(value)
+     orderOfMagnitudeSuffix(value){
+      return numberFormatter(value)
      }
   }
 }

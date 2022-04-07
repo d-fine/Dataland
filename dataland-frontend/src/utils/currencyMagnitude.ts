@@ -1,4 +1,12 @@
-export function nFormatter(num:number , digits:number) {
+/**
+ * Format a number using the symbol and the value as break points.
+ * adopted from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+ *
+ * @param  {number} number      is the number to be converted such as an amount
+ * @param  {number} digits      are the decimal places to be displayed
+ */
+
+export function numberFormatter(number:number , digits:number) {
     const lookup = [
         { value: 1, symbol: "" },
         { value: 1e3, symbol: "k" },
@@ -8,9 +16,9 @@ export function nFormatter(num:number , digits:number) {
         { value: 1e15, symbol: "qa" },
         { value: 1e18, symbol: "qi" }
     ];
-    const rx = /\.0+$|(\.d*[1-9])0+$/;
+    const regex = /\.0+$|(\.d*[1-9])0+$/;
     const item = lookup.slice().reverse().find(function(part) {
-        return num >= part.value;
+        return number >= part.value;
     });
-    return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + " " + item.symbol : "0";
+    return item ? (number / item.value).toFixed(digits).replace(regex, "$1") + " " + item.symbol : "0";
 }

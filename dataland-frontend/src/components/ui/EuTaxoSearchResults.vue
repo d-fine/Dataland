@@ -25,7 +25,7 @@
             </Column>
             <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
               <template #body="{data}">
-                {{OMS(data.companyInformation.marketCap)}}
+                {{orderOfMagnitudeSuffix(data.companyInformation.marketCap)}}
               </template>
             </Column>
             <Column field="companyId" header="" class="surface-0 w-2 d-datatable-column-right">
@@ -49,7 +49,7 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import {nFormatter} from "@/utils/currencyMagnitude";
+import {numberFormatter} from "@/utils/currencyMagnitude";
 export default {
   name: "EuTaxoSearchResults",
   components: {MarginWrapper, DataTable, Column},
@@ -64,9 +64,8 @@ export default {
     }
   },
     methods: {
-      // OrderOfMagnitudeSuffix
-      OMS(value){
-        return nFormatter(value,2) + " €"
+      orderOfMagnitudeSuffix(value){
+        return numberFormatter(value,2) + " €"
       }
     }
 }

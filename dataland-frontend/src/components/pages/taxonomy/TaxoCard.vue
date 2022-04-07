@@ -16,9 +16,9 @@
       <div class="grid mt-4 ">
         <div class="col col-6 text-left p-0 pl-2">
           <span class="font-semibold text-lg">€ </span>
-          <span class="font-bold text-2xl">{{ OMS(amount) }}</span>
+          <span class="font-bold text-2xl">{{ orderOfMagnitudeSuffix(amount) }}</span>
 
-          <p class="left-align"><strong>Out of total of € {{ OMS(total) }}</strong></p>
+          <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix(total) }}</strong></p>
         </div>
       </div>
     </template>
@@ -28,7 +28,7 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
-import {nFormatter} from "@/utils/currencyMagnitude";
+import {numberFormatter} from "@/utils/currencyMagnitude";
 
 export default {
   name: "TaxoCard",
@@ -60,8 +60,8 @@ export default {
   },
   methods: {
     // OrderOfMagnitudeSuffix
-    OMS(value){
-      return nFormatter(value,2)
+    orderOfMagnitudeSuffix(value){
+      return numberFormatter(value,2)
     }
   }
 }

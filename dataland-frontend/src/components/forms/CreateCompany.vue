@@ -4,7 +4,7 @@
     </template>
     <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           type="form"
           id="createCompanyForm"
           :submit-attrs="{
@@ -13,12 +13,12 @@
           submit-label="Post Company"
           @submit="postCompanyData">
         <FormKitSchema
-            :data="data"
+            :data="model"
             :schema="schema"
         />
       </FormKit>
 
-        <template v-if="action">
+        <template v-if="processing">
           <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data" />
           <FailedUpload v-else msg="Company" :count="count" />
         </template>
@@ -44,11 +44,9 @@ const createCompany = {
   components: {FailedUpload, Card, Message, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
-    action: false,
-    data: {},
-    schema: dataStore.getSchema(),
+    processing: false,
     model: {},
-    loading: false,
+    schema: dataStore.getSchema(),
     response: null,
     count: 0
   }),
@@ -58,7 +56,7 @@ const createCompany = {
     },
     async postCompanyData() {
       try {
-        this.action = false
+        this.processing = false
         this.count++
         this.response = await dataStore.perform(this.data)
         this.$formkit.reset('createCompanyForm')
@@ -66,7 +64,7 @@ const createCompany = {
         console.error(error)
         this.response = null
       } finally {
-        this.action = true
+        this.processing = true
       }
     }
   },
