@@ -2,25 +2,31 @@
   <Card class="bg-white d-card mr-2">
     <template #title></template>
     <template #content>
-      <div class="grid">
-        <div class="col col-6 text-left">
+      <div class="grid ">
+        <div class="col-5 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div class="col col-6 text-right text-green-500">
+        <div v-if="amount" class="col-6 text-right text-green-500">
           <span class="font-semibold text-xl">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
+        <div v-else class="col-6 col-offset-1 grid align-items-center text-right">
+          <i class="material-icons"> error </i> <span class="pl-4 font-semibold">No data available</span>
+        </div>
       </div>
+      <template v-if="amount">
       <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar">
       </ProgressBar>
       <div class="grid mt-4 ">
-        <div class="col col-6 text-left p-0 pl-2">
+        <div class="col-6 text-left p-0 pl-2">
           <span class="font-semibold text-lg">€ </span>
           <span class="font-bold text-2xl">{{ orderOfMagnitudeSuffix(amount) }}</span>
 
           <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix(total) }}</strong></p>
         </div>
+
       </div>
+      </template>
     </template>
   </Card>
 </template>

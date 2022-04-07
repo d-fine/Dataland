@@ -167,7 +167,6 @@
       <template v-if="processed">
         <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data"/>
         <FailedUpload v-else msg="Company" :count="count" />
-        {{ response.data }}
       </template>
 
     </template>
