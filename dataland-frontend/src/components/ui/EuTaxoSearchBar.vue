@@ -17,8 +17,8 @@
       </div>
     </div>
   </MarginWrapper>
-  <div v-if="action && response">
-    <EuTaxoSearchResults :data="response.data" :action="action"/>
+  <div v-if="processed && response">
+    <EuTaxoSearchResults :data="response.data" :processed="processed"/>
   </div>
 </template>
 
@@ -44,13 +44,13 @@ export default {
     return {
       model: null,
       response: null,
-      action: false
+      processed: false
     }
   },
   methods: {
     async getCompanyByName(all = false) {
       try {
-        this.action = false
+        this.processed = false
         if (all) {
           this.model = ""
         }
@@ -60,7 +60,7 @@ export default {
         console.error(error)
         this.response = null
       } finally {
-        this.action = true
+        this.processed = true
       }
     }
   }

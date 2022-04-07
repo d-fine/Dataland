@@ -5,7 +5,7 @@
     </template>
     <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           :submit-attrs="{
                   'name': 'getCompanies'
                 }"
@@ -23,11 +23,11 @@
       </FormKit>
       <Button @click="getCompanyByName(true)" label="Show all companies" />
       <br>
-      <template v-if="action">
+      <template v-if="processed">
         <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
           </Column>
-          <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
           <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
           <Column field="companyId" header="" class="surface-0"> <template #body="{data}">
             <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'" class="text-primary no-underline font-bold"> <span> VIEW</span> <span class="ml-3">></span></router-link>
@@ -58,25 +58,24 @@ export default {
   components: {Card, Button, DataTable, Column , FormKit},
 
   data: () => ({
-    data: {},
     model: {},
     response: null,
     companyInformation: null,
-    action: false
+    processed: false
   }),
   methods: {
     async getCompanyByName(all = false) {
       try {
-        this.action = false
+        this.processed = false
         if (all) {
           this.data.companyName = ""
         }
-        this.response = await dataStore.perform(this.data.companyName)
+        this.response = await dataStore.perform(this.model.companyName)
       } catch (error) {
         console.error(error)
         this.response = null
       } finally {
-        this.action = true
+        this.processed = true
       }
     }
   },
