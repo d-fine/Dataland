@@ -47,8 +47,8 @@ class DataManager(
         if (dataMetaInformationPerDataId[dataId]!!.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data with the id: $dataId is registered as type" +
-                        " ${dataMetaInformationPerDataId[dataId]!!.dataType} by Dataland instead of your requested" +
-                        " type $dataType."
+                    " ${dataMetaInformationPerDataId[dataId]!!.dataType} by Dataland instead of your requested" +
+                    " type $dataType."
             )
         }
     }
@@ -90,8 +90,8 @@ class DataManager(
         if (dataAsStorableDataSet.dataType != dataType) {
             throw IllegalArgumentException(
                 "The data set with the id: $dataId " +
-                        "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                        "${dataMetaInformationPerDataId[dataId]} as registered by Dataland."
+                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
+                    "${dataMetaInformationPerDataId[dataId]} as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
