@@ -1,3 +1,4 @@
+let idList: any
 describe('Population Test', () => {
     let eutaxonomiesData:any
     let companiesData:any
