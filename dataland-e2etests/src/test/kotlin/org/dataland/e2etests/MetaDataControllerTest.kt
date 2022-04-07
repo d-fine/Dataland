@@ -17,7 +17,8 @@ class MetaDataControllerTest {
 
     private fun postCompaniesAndEuTaxonomyData(numberOfCompanies: Int, numberOfDataPerCompany: Int): List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
-        var counterToMarkCompanies = 1000; var counterToMarkData = 50000000
+        var counterToMarkCompanies = 1000
+        var counterToMarkData = 50000000
         repeat(numberOfCompanies) {
             val testCompanyId = companyDataControllerApi.postCompany(
                 dummyDataCreator.createCompanyTestInformation(counterToMarkCompanies.toString())
