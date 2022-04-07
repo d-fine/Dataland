@@ -2,11 +2,15 @@ package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
+import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.math.BigDecimal
+import java.time.LocalDate
 
 @SpringBootTest
 class DataManagerTest(
@@ -16,43 +20,61 @@ class DataManagerTest(
 
     val testManager = DataManager(edcClient, objectMapper)
 
-    val testCompanyNamesToStore = listOf("Imaginary-Company_I", "Fantasy-Company_II", "Dream-Company_III")
+    val testCompanyList = listOf(
+        CompanyInformation(
+            companyName = "Test-Company_1",
+            headquarters = "Test-Headquarters_1",
+            sector = "Test-Sector_1",
+            marketCap = BigDecimal(100),
+            reportingDateOfMarketCap = LocalDate.now()
+        ),
+        CompanyInformation(
+            companyName = "Test-Company_2",
+            headquarters = "Test-Headquarters_2",
+            sector = "Test-Sector_2",
+            marketCap = BigDecimal(200),
+            reportingDateOfMarketCap = LocalDate.now()
+        )
+    )
 
     @Test
-    fun `add the first company and check if its name is as expected by using the return value of addCompany`() {
-        val companyMetaInformation = testManager.addCompany(testCompanyNamesToStore[0])
+    fun `add the first company and check if it can be retrieved by using the company ID that is returned`() {
+        val testCompanyId = testManager.addCompany(testCompanyList[0]).companyId
         assertEquals(
-            companyMetaInformation.companyName, testCompanyNamesToStore[0],
-            "The company name in the post-response does not match the actual name of the company to be posted."
+            StoredCompany(testCompanyId, testCompanyList[0], mutableListOf()),
+            testManager.getCompanyById(testCompanyId),
+            "The company behind the company ID in the post-response " +
+                "does not contain company information of the posted company."
         )
     }
 
     @Test
-    fun `add all companies then retrieve them as a list and check for each company if its name is as expected`() {
-        for (companyName in testCompanyNamesToStore) {
-            testManager.addCompany(companyName)
+    fun `add all companies then retrieve them as a list and check for each company if it can be found as expected`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
         }
 
         val allCompaniesInStore = testManager.listCompaniesByName("")
-        for ((counter, storedCompany) in allCompaniesInStore.withIndex()) {
+        for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
+            val expectedCompanyId = (index + 1).toString()
             assertEquals(
-                testCompanyNamesToStore[counter], storedCompany.companyName,
-                "The stored company name does not match the test company name."
+                StoredCompany(expectedCompanyId, testCompanyList[index], mutableListOf()), storedCompany,
+                "The stored company does not contain the company information of the posted company."
             )
         }
     }
 
     @Test
     fun `add all companies and search for them one by one by using their names`() {
-        for (companyName in testCompanyNamesToStore) {
-            testManager.addCompany(companyName)
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
         }
 
-        for (companyName in testCompanyNamesToStore) {
-            val searchResponse = testManager.listCompaniesByName(companyName)
+        for (company in testCompanyList) {
+            val searchResponse = testManager.listCompaniesByName(company.companyName)
             assertEquals(
-                companyName, searchResponse.first().companyName,
-                "The posted company could not be found in the data store by searching for its name."
+                company.companyName, searchResponse.first().companyInformation.companyName,
+                "The posted company could not be retrieved by searching for its name."
             )
         }
     }

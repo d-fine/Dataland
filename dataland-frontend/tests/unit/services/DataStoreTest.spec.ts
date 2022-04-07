@@ -11,31 +11,32 @@ describe("DataStore", () => {
         expect(Object.keys(dataStore.getSchema()).length).toEqual(3)
     })
 
-    it("gets schema using json", () => {
-        const contactSchema = {
+    it("checks if the schema can be generated automatically", () => {
+        const testSchema = {
             "required": [
-                "Attestation",
-                "Reporting Obligation"
+                "listProp",
+                "yesNoProp"
             ],
             "type": "object",
             "properties": {
-                "Capex": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "textProp": {
+                    "type": "string"
                 },
-                "Opex": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "numberProp": {
+                    "type": "number"
                 },
-                "Revenue": {
-                    "$ref": "#/components/schemas/EuTaxonomyData"
+                "dateProp": {
+                    "type": "string",
+                    "format": "date"
                 },
-                "Reporting Obligation": {
+                "yesNoProp": {
                     "type": "string",
                     "enum": [
                         "Yes",
                         "No"
                     ]
                 },
-                "Attestation": {
+                "listProp": {
                     "type": "string",
                     "enum": [
                         "None",
@@ -45,8 +46,8 @@ describe("DataStore", () => {
                 }
             }
         }
-        const dataStore = new DataStore(dummyFunction, contactSchema)
-        expect(Object.keys(dataStore.getSchema()).length).toEqual(5)
+        const dataStore = new DataStore(dummyFunction, testSchema)
+        expect(Object.keys(dataStore.getSchema()).length).toEqual(Object.keys(testSchema.properties).length)
     })
 
     it("checks if the function is called properly", () => {
