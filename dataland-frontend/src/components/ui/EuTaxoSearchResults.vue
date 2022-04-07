@@ -17,11 +17,11 @@
       </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <template v-if="action">
+        <template v-if="processed">
           <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="5">
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3 d-datatable-column-left">
             </Column>
-            <Column field="companyInformation.industrialSector" header="SECTOR" :sortable="true" class="surface-0 w-3">
+            <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-3">
             </Column>
             <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
               <template #body="{data}">
@@ -58,7 +58,7 @@ export default {
       type: Object,
       default: null
     },
-    action: {
+    processed: {
       type: Boolean,
       default: false
     }

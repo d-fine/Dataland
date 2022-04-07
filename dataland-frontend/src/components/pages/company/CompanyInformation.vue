@@ -10,7 +10,7 @@
       Company Reports:
     </div>
     <div class="col-4">
-      <span>Sector: </span> <span class="font-semibold" >{{companyInformation.industrialSector}}</span>
+      <span>Sector: </span> <span class="font-semibold" >{{companyInformation.sector}}</span>
     </div>
     <div class="col-4">
       <span>Headquarter: </span> <span class="font-semibold" >{{companyInformation.headquarters}}</span>

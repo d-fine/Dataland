@@ -4,7 +4,7 @@
     </template>
     <template #content>
       <FormKit
-        v-model="data"
+        v-model="model"
         submit-label="Post EU-Taxonomy Dataset"
         :submit-attrs="{
                 'name': 'postEUData'
@@ -164,7 +164,7 @@
           </div>
         </FormKit>
       </FormKit>
-      <template v-if="action">
+      <template v-if="processed">
         <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data"/>
         <FailedUpload v-else msg="Company" :count="count" />
         {{ response.data }}
@@ -197,9 +197,8 @@ export default {
       'formkit-input':false,
       'p-inputtext': true
     },
-    action: false,
+    processed: false,
     count: 0,
-    data: {},
     model: {},
     loading: false,
     response: null,
@@ -218,15 +217,15 @@ export default {
 
     async postEUData() {
       try {
-        this.action = false
+        this.processed = false
         this.count++
-        this.response = await dataStore.perform(this.data)
+        this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null
         console.error(error)
       } finally {
-        this.action = true
+        this.processed = true
       }
     }
   },
