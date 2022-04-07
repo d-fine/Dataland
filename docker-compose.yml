@@ -17,7 +17,7 @@ services:
       - internal
     build:
       context: ./
-      dockerfile: ./dataland-backend/${FRONTBACK_DOCKERFILE:-DockerfileTest}
+      dockerfile: ${BACKEND_DOCKERFILE:-./dataland-backend/DockerfileTest}
     expose:
       - "8080"
     environment:
@@ -44,7 +44,7 @@ services:
     profiles: ["production", "testing"]
     build:
       context: ./
-      dockerfile: ./dataland-frontend/${FRONTBACK_DOCKERFILE:-DockerfileTest}
+      dockerfile: ${FRONTEND_DOCKERFILE:-./dataland-frontend/DockerfileTest}
       args:
         DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
         DATALAND_EDC_USER: ${DATALAND_EDC_USER}
