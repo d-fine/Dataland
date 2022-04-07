@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDetailsPerCashFlowType
 import java.math.BigDecimal
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 class DummyDataCreator {
 
@@ -12,19 +13,19 @@ class DummyDataCreator {
         return EuTaxonomyData(
             EuTaxonomyData.ReportingObligation.yes, EuTaxonomyData.Attestation.reasonableAssurance,
             capex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(revenue * 0.1),
-                aligned = BigDecimal(revenue * 0.1 * 0.2),
-                eligible = BigDecimal(revenue * 0.1 * 0.15)
+                total = BigDecimal((revenue * 0.1).roundToInt()),
+                aligned = BigDecimal((revenue * 0.1 * 0.2).roundToInt()),
+                eligible = BigDecimal((revenue * 0.1 * 0.15).roundToInt())
             ),
             opex = EuTaxonomyDetailsPerCashFlowType(
-                total = BigDecimal(revenue * 0.4),
-                aligned = BigDecimal(revenue * 0.4 * 0.15),
-                eligible = BigDecimal(revenue * 0.4 * 0.05)
+                total = BigDecimal((revenue * 0.4).roundToInt()),
+                aligned = BigDecimal((revenue * 0.4 * 0.15).roundToInt()),
+                eligible = BigDecimal((revenue * 0.4 * 0.05).roundToInt())
             ),
             revenue = EuTaxonomyDetailsPerCashFlowType(
                 total = BigDecimal(revenue),
-                aligned = BigDecimal(revenue * 0.05),
-                eligible = BigDecimal(revenue * 0.03)
+                aligned = BigDecimal((revenue * 0.05).roundToInt()),
+                eligible = BigDecimal((revenue * 0.03).roundToInt())
             )
         )
     }
