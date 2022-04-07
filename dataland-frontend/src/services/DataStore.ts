@@ -106,9 +106,10 @@ export class DataStore {
                 )
             } else if (this.getType(index) == "array") {
                 /* create a checkbox form */
-                const enumProperties = []
+                const enumProperties = {}
                 for (const enumItem of propertiesSchema[index].items.enum) {
-                    enumProperties.push(humanizeString(enumItem))
+                    // @ts-ignore
+                    enumProperties[enumItem] = humanizeString(enumItem)
                 }
                 schema.push({
                         $formkit: "checkbox",
