@@ -44,6 +44,18 @@ class DataManagerTest(
                 Pair(CompanyInformation.Identifier.Isin, "DE1337"),
                 Pair(CompanyInformation.Identifier.Lei, "BLUB")
             )
+        ),
+        CompanyInformation(
+            companyName = "Test-Company_3",
+            headquarters = "Test-Headquarters_3",
+            sector = "Test-Sector_3",
+            marketCap = BigDecimal(300),
+            reportingDateOfMarketCap = LocalDate.now(),
+            indices = listOf(CompanyInformation.StockIndex.Dax),
+            identifiers = mapOf(
+                Pair(CompanyInformation.Identifier.Isin, "IT8765"),
+                Pair(CompanyInformation.Identifier.Lei, "BLIB")
+            )
         )
     )
 
@@ -90,7 +102,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for identifiers and check it can find the one`() {
+    fun `search for identifiers and check if it can find the one`() {
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
@@ -99,13 +111,24 @@ class DataManagerTest(
             val identifiers = company.identifiers.values
             for (identifier in identifiers) {
                 val searchResponse = testManager.listCompanies("", identifier)
-                // FixMe: company might be different but contains the identifier
                 assertEquals(
                     company, searchResponse.first().companyInformation,
                     "The posted company could not be retrieved by searching for its identifier."
                 )
             }
         }
+    }
+
+    @Test
+    fun `search for de as identifier and check if it returns two companies`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
+        }
+        val searchResponse = testManager.listCompanies("", "de")
+        assertEquals(
+            searchResponse.size, 2,
+            "The companies with identifier 'de' could not be found."
+        )
     }
 
     @Test
