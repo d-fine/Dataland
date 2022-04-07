@@ -58,7 +58,7 @@ const createCompany = {
       try {
         this.processing = false
         this.count++
-        this.response = await dataStore.perform(this.data)
+        this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {
         console.error(error)

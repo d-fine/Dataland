@@ -14,11 +14,6 @@ export default {
   components: {
     CreateEUTaxonomy,
     CreateCompany
-  },
-  data() {
-    return {
-      value: 5
-    }
   }
 }
 </script>
