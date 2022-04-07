@@ -26,11 +26,8 @@ class MetaDataControllerTest {
         Map<CompanyInformation, List<EuTaxonomyData>> {
         val testData = mutableMapOf<CompanyInformation, List<EuTaxonomyData>>()
         for (companyCounter in companyMarker until companyMarker + numberOfCompanies) {
-            val data = mutableListOf<EuTaxonomyData>()
-            for (dataCounter in dataMarker until dataMarker + numberOfDataPerCompany) {
-                data.add(dummyDataCreator.createEuTaxonomyTestData(dataCounter))
-            }
-            testData[dummyDataCreator.createCompanyTestInformation(companyCounter.toString())] = data
+            testData[dummyDataCreator.createCompanyTestInformation(companyCounter.toString())] =
+                List(numberOfDataPerCompany) { dummyDataCreator.createEuTaxonomyTestData(it + dataMarker) }
         }
         return testData
     }
