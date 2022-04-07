@@ -19,4 +19,9 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val sector: String,
     @field:JsonProperty(required = true) val marketCap: BigDecimal,
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
-)
+    @field:JsonProperty(required = false) val indices: List<StockIndex>,
+    @field:JsonProperty(required = true) val identifiers: Map<Identifier, String>
+) {
+    enum class StockIndex { CDAX, DAX, GENERAL_STANDARDS, GEX, MDAX, PRIME_STANDARDS, SDAX, TECDAX, SCALE_HDAX, DAX_50_ESG }
+    enum class Identifier { LEI, ISIN, PERMID }
+}
