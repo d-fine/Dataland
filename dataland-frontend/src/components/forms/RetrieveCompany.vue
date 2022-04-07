@@ -72,8 +72,6 @@ export default {
           this.data.companyName = ""
         }
         this.response = await dataStore.perform(this.data.companyName)
-        console.log(this.response.data[0].companyInformation)
-
       } catch (error) {
         console.error(error)
         this.response = null

@@ -96,7 +96,7 @@ export class DataStore {
                     )
                 }
             } else if (this.getType(index).includes("date")) {
-                /* create a data form */
+                /* create a date form */
                 schema.push({
                         $formkit: "date",
                         label: humanizeString(index),
