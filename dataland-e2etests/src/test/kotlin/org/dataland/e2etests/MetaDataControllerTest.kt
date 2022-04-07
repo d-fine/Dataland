@@ -17,11 +17,14 @@ class MetaDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val dummyDataCreator = DummyDataCreator()
 
-    private fun generateTestData(numberOfCompanies: Int, numberOfDataPerCompany: Int):
+    private fun generateTestData(
+        numberOfCompanies: Int,
+        numberOfDataPerCompany: Int,
+        companyMarker: Int,
+        dataMarker: Int
+    ):
         Map<CompanyInformation, List<EuTaxonomyData>> {
         val testData = mutableMapOf<CompanyInformation, List<EuTaxonomyData>>()
-        val companyMarker = 1000
-        val dataMarker = 50000000
         for (companyCounter in companyMarker until companyMarker + numberOfCompanies) {
             val data = mutableListOf<EuTaxonomyData>()
             for (dataCounter in dataMarker until dataMarker + numberOfDataPerCompany) {
@@ -70,7 +73,7 @@ class MetaDataControllerTest {
         val numberOfDataSetsToPostPerCompany = 3
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 1000, 200000000)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
         assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoComplete.size)
@@ -80,7 +83,7 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
         val numberOfCompanies = 3
         val numberOfDataSetsToPostPerCompany = 4
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 2000, 300000000)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
@@ -93,7 +96,7 @@ class MetaDataControllerTest {
         val numberOfDataSetsToPostPerCompany = 5
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 3000, 400000000)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerDataType = metaDataControllerApi.getListOfDataMetaInfo("", "EuTaxonomyData")
         assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoPerDataType.size)
@@ -103,7 +106,7 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 4000, 500000000)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyIdAndDataType =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyData")
