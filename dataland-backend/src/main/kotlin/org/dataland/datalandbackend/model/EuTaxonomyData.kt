@@ -23,9 +23,5 @@ data class EuTaxonomyData(
     /**
      * Possible options to specify how the report figures were attested
      */
-    enum class AttestationOptions(val displayName: String) {
-        None("None"),
-        LimitedAssurance("Limited Assurance"),
-        ReasonableAssurance("Reasonable Assurance")
-    }
+    enum class AttestationOptions { None, LimitedAssurance, ReasonableAssurance }
 }
