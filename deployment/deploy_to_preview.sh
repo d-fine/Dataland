@@ -17,4 +17,4 @@ ssh ubuntu@3.71.162.94 "sudo rm -rf $location; mkdir -p $location/jar"
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@3.71.162.94:$location
 scp ./dataland-frontend/Dockerfile ./dataland-backend/Dockerfile ubuntu@3.71.162.94:$location
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@3.71.162.94:$location/jar/dataland-backend.jar
-ssh ubuntu@3.71.162.94 "cd $location; docker-compose pull; SKYMINDER_URL=$SKYMINDER_URL SKYMINDER_PW=$SKYMINDER_PW SKYMINDER_USER=$SKYMINDER_USER FRONTBACK_DOCKERFILE='Dockerfile'  sudo -E docker-compose --profile production up -d"
+ssh ubuntu@3.71.162.94 "cd $location; sudo docker-compose pull; SKYMINDER_URL=$SKYMINDER_URL SKYMINDER_PW=$SKYMINDER_PW SKYMINDER_USER=$SKYMINDER_USER FRONTBACK_DOCKERFILE='Dockerfile' sudo -E docker-compose --profile production up -d"
