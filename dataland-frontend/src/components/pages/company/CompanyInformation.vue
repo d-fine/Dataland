@@ -1,12 +1,12 @@
 <template>
   <div v-if="company" class="grid align-items-end text-left">
     <div class="col-4">
-      <h1>{{companyInformation.companyName}}</h1>
+      <h1 class="mb-0">{{companyInformation.companyName}}</h1>
     </div>
-    <div class="col-4 mb-4">
+    <div class="col-4">
       <span>Market Cap:</span> <span class="font-semibold">€ {{OMS(companyInformation.marketCap)}}</span>
     </div>
-    <div class="col-4 mb-4">
+    <div class="col-4">
       Company Reports:
     </div>
     <div class="col-4">

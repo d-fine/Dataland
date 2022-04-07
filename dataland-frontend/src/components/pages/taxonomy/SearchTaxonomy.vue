@@ -6,7 +6,7 @@
 
       </div>
       <div class="col-4 text-right font-semibold">
-        <span>Welcome to Dataland, Roger</span>
+        <span title="login message">Welcome to Dataland, Roger</span>
       </div>
 
     </div>

@@ -5,7 +5,7 @@
       <div class="col-9">
         <CompanyInformation :companyID="companyID"/>
       </div>
-      <div class="col-2 pb-4">
+      <div class="col-3 pb-4 text-right">
         <Button label="Get Report" class="uppercase p-button">Get Report
           <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
         </Button>

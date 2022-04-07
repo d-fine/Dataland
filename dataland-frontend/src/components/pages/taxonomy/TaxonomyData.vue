@@ -2,7 +2,7 @@
   <div v-if="metaDataInfo && metaDataInfo.data.length > 0">
     <div class="grid">
       <div class="col-12 text-left">
-        <h2>EU Taxonomy Data</h2>
+        <h2 class="mb-0">EU Taxonomy Data</h2>
       </div>
       <div class="col-6 text-left">
       <span class="font-semibold text-gray-800">Complete dataset for reporting according
@@ -12,7 +12,7 @@
     </div>
     <div class="grid">
       <div class="col-6 text-left">
-        <Button class="bg-white border-gray-50 border-2 text-900 ">
+        <Button class="bg-white border-gray-50 border-2 text-900 mt-2 mb-3 h-3rem">
           <span>Invite someone to access this data.&nbsp;</span>
           <span class="font-semibold"> No registration necessary.</span>
           <span class="uppercase ml-4 text-primary font-semibold">

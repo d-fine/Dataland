@@ -4,7 +4,7 @@
       <div class="col-1 text-left">
         <h2>Results</h2>
       </div>
-      <div class="col-3 col-offset-8 surface-0 d-card" style="border-radius: 0.5rem">
+      <div class="col-3 col-offset-8 surface-0 d-card">
         <div class="grid align-items-center h-3rem ">
           <div class="col-6 text-left">
             <span class="font-semibold">Avg Green asset ratio </span>
