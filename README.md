@@ -15,7 +15,22 @@ To allow for individual licenses and eventual future license changes, we require
 
 # Developer Remarks
 In this section, you find information that might be useful for you as a developer.
-## add scripts executable
+## add scripts to git with the executable flag
 Especially under Windows, it's unclear which file permissions a script will get. 
 To explicitly mark a script executable, do:
 `git update-index --chmod=+x script.sh`
+## Environment Variables
+Some environment variables are used within the project. Find attached the variables and their meaning
+
+| Variable name                  | Description                                                                               | example values                           |
+|--------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------|
+| PROXY_NGINX_CONFIG             | Defines the nginx configuration file used in the docker compose stack                     | `./dataland-inbound-proxy/nginxdev.conf` |
+| DATALAND_SKYMINDERCLIENT_TOKEN | An Access Token to access the Github Skyminder Package registry                           |                                          |
+| DATALAND_SKYMINDERCLIENT_USER  | The User corresponding to `DATALAND_SKYMINDERCLIENT_TOKEN`                                |                                          |
+| DATALAND_EDC_TOKEN             | An Access Token to access the Github DatalandEDC Package registry                         |                                          |
+| DATALAND_EDC_USER              | The User corresponding to `DATALAND_EDC_TOKEN`                                            |                                          |
+| SKYMINDER_URL                  | The base URL of the Skyminder API                                                         |                                          |
+| SKYMINDER_USER                 | The username for the Skyminder API                                                        |                                          |
+| SKYMINDER_PW                   | The password for the Skyminder API                                                        |                                          |
+| FRONTEND_DOCKERFILE            | Defines the dockerfile to be used for the fronted container in the docker compose stack   | `./dataland-frontend/DockerfileTest`     |
+| BACKEND_DOCKERFILE             | Defines the dockerfile to be used for the backend container in the docker compose stack   | `./dataland-backend/DockerfileTest`      |
