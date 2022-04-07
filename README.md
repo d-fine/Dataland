@@ -34,3 +34,9 @@ Some environment variables are used within the project. Find attached the variab
 | SKYMINDER_PW                   | The password for the Skyminder API                                                        |                                          |
 | FRONTEND_DOCKERFILE            | Defines the dockerfile to be used for the fronted container in the docker compose stack   | `./dataland-frontend/DockerfileTest`     |
 | BACKEND_DOCKERFILE             | Defines the dockerfile to be used for the backend container in the docker compose stack   | `./dataland-backend/DockerfileTest`      |
+
+## Run Cypress Tests locally
+* start the docker-compose stack with the "development" profile. Set the env-variables (see above). Use 
+* start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
+* start the frontend - using npm serve. to be safe do an npm install and a gradle generateAPIClientFrontend beforehand.
+* start the E2E cypress tests using npm teste2e
