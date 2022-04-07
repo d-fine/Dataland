@@ -1,4 +1,4 @@
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const fs = require('fs')
 // sets locale to de
 faker.locale = 'de';
@@ -9,7 +9,7 @@ function generateCompanies() {
     for (let id=1; id <= 100; id++) {
         let companyName = faker.company.companyName();
         let headquarters = faker.address.city();
-        let industrialSector = faker.company.bsNoun();
+        let sector = faker.company.bsNoun();
         let marketCap = faker.mersenne.rand(50000, 10000000);
         let reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
 
@@ -17,7 +17,7 @@ function generateCompanies() {
             {
                 "companyName": companyName,
                 "headquarters": headquarters,
-                "industrialSector": industrialSector,
+                "sector": sector,
                 "marketCap": marketCap,
                 "reportingDateOfMarketCap": reportingDateOfMarketCap
             }
