@@ -99,6 +99,7 @@ class DataManagerTest(
             val identifiers = company.identifiers.values
             for (identifier in identifiers) {
                 val searchResponse = testManager.listCompanies("", identifier)
+                // FixMe: company might be different but contains the identifier
                 assertEquals(
                     company, searchResponse.first().companyInformation,
                     "The posted company could not be retrieved by searching for its identifier."
