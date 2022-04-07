@@ -58,7 +58,11 @@ class DataManager(
         attributeGetters: List<(CompanyInformation) -> List<String>>
     ): List<StoredCompany> {
         return companyDataPerCompanyId.values.filter { storedCompany ->
-            attributeGetters.any { getter -> getter(storedCompany.companyInformation).any { it.contains(searchString, true) } }
+            attributeGetters.any { getter ->
+                getter(storedCompany.companyInformation).any {
+                    it.contains(searchString, true)
+                }
+            }
         }
     }
 
@@ -131,8 +135,13 @@ class DataManager(
 
     override fun listCompanies(companyName: String, wildcardSearch: String): List<StoredCompany> {
         /*
-        val resultsByName = companyDataPerCompanyId.values.filter { it.companyInformation.companyName.contains(companyName, true) }
-        return resultsByName.filter { it.companyInformation.identifiers.values.any { identifier -> identifier.contains(wildcardSearch, true) } }
+        val resultsByName =
+            companyDataPerCompanyId.values.filter { it.companyInformation.companyName.contains(companyName, true) }
+        return resultsByName.filter {
+            it.companyInformation.identifiers.values.any { identifier ->
+                identifier.contains(wildcardSearch, true)
+            }
+        }
         */
         return if (companyName == "" && wildcardSearch != "") {
             searchForCompanies(wildcardSearch, listOf { it.identifiers.values.toList() })
