@@ -13,18 +13,18 @@ class DummyDataCreator {
             EuTaxonomyData.ReportingObligation.yes, EuTaxonomyData.Attestation.reasonableAssurance,
             capex = EuTaxonomyDetailsPerCashFlowType(
                 total = BigDecimal(revenue * 0.1),
-                aligned = BigDecimal(20),
-                eligible = BigDecimal(15)
+                aligned = BigDecimal(revenue * 0.1 * 0.2),
+                eligible = BigDecimal(revenue * 0.1 * 0.15)
             ),
             opex = EuTaxonomyDetailsPerCashFlowType(
                 total = BigDecimal(revenue * 0.4),
-                aligned = BigDecimal(15),
-                eligible = BigDecimal(5)
+                aligned = BigDecimal(revenue * 0.4 * 0.15),
+                eligible = BigDecimal(revenue * 0.4 * 0.05)
             ),
             revenue = EuTaxonomyDetailsPerCashFlowType(
                 total = BigDecimal(revenue),
-                aligned = BigDecimal(5),
-                eligible = BigDecimal(3)
+                aligned = BigDecimal(revenue * 0.05),
+                eligible = BigDecimal(revenue * 0.03)
             )
         )
     }
@@ -34,7 +34,7 @@ class DummyDataCreator {
             companyName = "Test-Company_$testDataMarker",
             headquarters = "Test-Headquarters_$testDataMarker",
             sector = "Test-Sector_$testDataMarker",
-            marketCap = BigDecimal(100),
+            marketCap = BigDecimal(125670200),
             reportingDateOfMarketCap = LocalDate.of(2022, 1, 1)
         )
     }
