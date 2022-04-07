@@ -18,15 +18,14 @@ data class EuTaxonomyData(
     /**
      * Possible options to specify if obligation to report exists
      */
-    enum class YesNo { YES, NO }
+    enum class YesNo { Yes, No }
 
     /**
      * Possible options to specify how the report figures were attested
      */
-    /* TODO: Check if displayName is helpful. Keep i18n in mind */
     enum class AttestationOptions(val displayName: String) {
-        NONE("None"),
-        LIMITED_ASSURANCE("Limited Assurance"),
-        REASONABLE_ASSURANCE("Reasonable Assurance")
+        None("None"),
+        LimitedAssurance("Limited Assurance"),
+        ReasonableAssurance("Reasonable Assurance")
     }
 }

@@ -27,8 +27,8 @@ internal class MetaDataControllerTest(
         sector = "Test-Sector_I",
         marketCap = BigDecimal(100),
         reportingDateOfMarketCap = LocalDate.now(),
-        indices = listOf(CompanyInformation.StockIndex.PRIME_STANDARDS),
-        identifiers = mapOf(Pair(CompanyInformation.Identifier.LEI, "LEI123"))
+        indices = listOf(CompanyInformation.StockIndex.PrimeStandards),
+        identifiers = mapOf(Pair(CompanyInformation.Identifier.Lei, "LEI123"))
     )
 
     @Test

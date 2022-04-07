@@ -40,7 +40,10 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("B")
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
-        val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyInformation.companyName)
+        val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
+            companyName = testCompanyInformation.companyName,
+            wildcardSearch = null
+        )
         assertTrue(
             getCompaniesByNameResponse.contains(
                 StoredCompany(
@@ -60,11 +63,18 @@ class CompanyDataControllerTest {
             dummyDataCreator.createCompanyTestInformation("D"),
             dummyDataCreator.createCompanyTestInformation("E")
         )
-        val allCompaniesListSizeBefore = companyDataControllerApi.getCompaniesByName("").size
+        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies(
+            companyName = "",
+            wildcardSearch = null
+        ).size
         for (companyInformation in listOfTestCompanyInformation) {
             companyDataControllerApi.postCompany(companyInformation)
         }
-        val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
+        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies(
+            companyName = "",
+            wildcardSearch = null
+        ).size
+
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${listOfTestCompanyInformation.size}."

@@ -36,7 +36,9 @@ class DummyDataCreator {
             headquarters = "Test-Headquarters_$testDataMarker",
             sector = "Test-Sector_$testDataMarker",
             marketCap = BigDecimal(125670200),
-            reportingDateOfMarketCap = LocalDate.of(2022, 1, 1)
+            reportingDateOfMarketCap = LocalDate.of(2022, 1, 1),
+            indices = listOf(CompanyInformation.Indices.cdax),
+            identifiers = mapOf(Pair("ISIN", "DE123456"))
         )
     }
 }

@@ -27,8 +27,8 @@ internal class CompanyDataControllerTest(
         sector = "Test-Sector_I",
         marketCap = BigDecimal(100),
         reportingDateOfMarketCap = LocalDate.now(),
-        indices = listOf(CompanyInformation.StockIndex.GENERAL_STANDARDS),
-        identifiers = mapOf(Pair(CompanyInformation.Identifier.ISIN, "DE1234567890"))
+        indices = listOf(CompanyInformation.StockIndex.GeneralStandards),
+        identifiers = mapOf(Pair(CompanyInformation.Identifier.Isin, "DE1234567890"))
     )
 
     @Test

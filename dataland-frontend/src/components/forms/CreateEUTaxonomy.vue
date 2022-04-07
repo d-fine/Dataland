@@ -35,9 +35,9 @@
               label="Attestation"
               placeholder="Please choose"
               :options="
-                    {'NONE':'None',
-                    'LIMITED_ASSURANCE': 'Limited Assurance',
-                    'REASONABLE_ASSURANCE': 'Reasonable Assurance'}
+                    {'None':'None',
+                    'LimitedAssurance': 'Limited Assurance',
+                    'ReasonableAssurance': 'Reasonable Assurance'}
                   "
           />
           <FormKit
