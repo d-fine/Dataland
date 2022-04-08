@@ -134,12 +134,15 @@ class DataManager(
     }
 
     override fun listCompanies(companyName: String, wildcardSearch: String): List<StoredCompany> {
-
-        val resultsByName =
-            companyDataPerCompanyId.values.filter { it.companyInformation.companyName.contains(companyName, true) }
-        return resultsByName.filter {
-            it.companyInformation.identifiers.any { identifier ->
-                identifier.value.contains(wildcardSearch, true)
+        return if (companyName != "") {
+            companyDataPerCompanyId.values.filter {
+                it.companyInformation.companyName.contains(companyName, true)
+            }
+        } else {
+            companyDataPerCompanyId.values.filter {
+                it.companyInformation.identifiers.any { identifier ->
+                    identifier.value.contains(wildcardSearch, true)
+                }
             }
         }
 
