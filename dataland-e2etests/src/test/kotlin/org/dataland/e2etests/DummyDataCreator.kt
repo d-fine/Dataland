@@ -40,8 +40,8 @@ class DummyDataCreator {
             reportingDateOfMarketCap = LocalDate.of(2022, 1, 1),
             indices = listOf(CompanyInformation.Indices.cdax),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLA")
+                CompanyIdentifier(CompanyIdentifier.Type.isin, "DE0987654321"),
+                CompanyIdentifier(CompanyIdentifier.Type.lei, "BLA")
             )
         )
     }
