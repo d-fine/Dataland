@@ -70,7 +70,6 @@ sonarqube {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "**/DummySkyminder.kt," +
                 "./dataland-frontend/src/main.ts" +
                 "./dataland-frontend/src/components/helper/*"
         )

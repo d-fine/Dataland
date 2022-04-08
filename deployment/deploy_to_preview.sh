@@ -12,7 +12,7 @@ location=/home/ubuntu/dataland
 ssh ubuntu@3.71.162.94 "cd $location && sudo docker-compose down && cd"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@3.71.162.94 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
-ssh ubuntu@3.71.162.94 "sudo rm -rf $location; mkdir -p $location/jar;"
+ssh ubuntu@3.71.162.94 "sudo rm -rf $location; mkdir -p $location/jar"
 
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@3.71.162.94:$location
 scp ./dataland-frontend/Dockerfile ubuntu@3.71.162.94:$location/DockerfileFrontend
