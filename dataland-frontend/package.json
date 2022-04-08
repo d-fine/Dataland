@@ -107,7 +107,9 @@
       "**/*.test.js",
       "**/test.js",
       "**/*.stories.js",
-      "**/stories.js"
+      "**/stories.js",
+      "src/main.ts",
+      "src/components/helper/*"
     ]
   }
 }
