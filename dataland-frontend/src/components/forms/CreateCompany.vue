@@ -16,7 +16,26 @@
             :data="data"
             :schema="schema"
         />
+        <FormKit
+            type="select"
+            label="Identifier Type"
+            name="identifierType"
+            placeholder="Please choose"
+            :options="
+                    {'Lei':'Lei',
+                    'Isin': 'Isin',
+                    'PermId': 'PermId'}"
+            validation="required"
+        />
+        <FormKit
+            type="text"
+            name="identifier"
+            label="Identifier"
+            placeholder="Identifier"
+            validation="required"
+        />
       </FormKit>
+      <p> {{ data }}</p>
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
@@ -57,6 +76,10 @@ const createCompany = {
     response: null,
     errorOccurence: false
   }),
+  created() {
+    // delete auto identifiers
+    delete this.schema[6]
+  },
   methods: {
     close() {
       this.enableClose = false
