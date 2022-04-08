@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
+import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,9 +29,9 @@ class DataManagerTest(
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.Mdax),
-            identifiers = mapOf(
-                Pair(CompanyInformation.Identifier.Isin, "DE0987654321"),
-                Pair(CompanyInformation.Identifier.Lei, "BLA")
+            identifiers = listOf(
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLA")
             )
         ),
         CompanyInformation(
@@ -40,9 +41,9 @@ class DataManagerTest(
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.Dax),
-            identifiers = mapOf(
-                Pair(CompanyInformation.Identifier.Isin, "DE1337"),
-                Pair(CompanyInformation.Identifier.Lei, "BLUB")
+            identifiers = listOf(
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLUB")
             )
         ),
         CompanyInformation(
@@ -52,9 +53,9 @@ class DataManagerTest(
             marketCap = BigDecimal(300),
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.Dax),
-            identifiers = mapOf(
-                Pair(CompanyInformation.Identifier.Isin, "IT8765"),
-                Pair(CompanyInformation.Identifier.Lei, "BLIB")
+            identifiers = listOf(
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
             )
         )
     )
@@ -108,9 +109,9 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val identifiers = company.identifiers.values
+            val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies("", identifier)
+                val searchResponse = testManager.listCompanies("", identifier.value)
                 assertEquals(
                     company, searchResponse.first().companyInformation,
                     "The posted company could not be retrieved by searching for its identifier."

@@ -134,20 +134,20 @@ class DataManager(
     }
 
     override fun listCompanies(companyName: String, wildcardSearch: String): List<StoredCompany> {
-        /*
+
         val resultsByName =
             companyDataPerCompanyId.values.filter { it.companyInformation.companyName.contains(companyName, true) }
         return resultsByName.filter {
-            it.companyInformation.identifiers.values.any { identifier ->
-                identifier.contains(wildcardSearch, true)
+            it.companyInformation.identifiers.any { identifier ->
+                identifier.value.contains(wildcardSearch, true)
             }
         }
-        */
-        return if (companyName == "" && wildcardSearch != "") {
-            searchForCompanies(wildcardSearch, listOf { it.identifiers.values.toList() })
+
+/*        return if (companyName == "" && wildcardSearch != "") {
+            searchForCompanies(wildcardSearch, listOf { it.identifiers })
         } else {
             searchForCompanies(companyName, listOf { listOf(it.companyName) })
-        }
+        }*/
     }
 
     override fun getCompanyById(companyId: String): StoredCompany {

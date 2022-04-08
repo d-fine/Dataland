@@ -20,9 +20,8 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val marketCap: BigDecimal,
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
     @field:JsonProperty(required = false) val indices: List<StockIndex>,
-    @field:JsonProperty(required = true) val identifiers: Map<Identifier, String>
+    @field:JsonProperty(required = true) val identifiers: List<CompanyIdentifier>
 ) {
-
     /**
      * A class that holds Stock Index Types that a company can be listed in
      */
@@ -38,9 +37,4 @@ data class CompanyInformation(
         ScaleHdaxSCALE_HDAX,
         Dax50Esg
     }
-
-    /**
-     * A class that holds Identifier Types for a company
-     */
-    enum class Identifier { Lei, Isin, PermId }
 }

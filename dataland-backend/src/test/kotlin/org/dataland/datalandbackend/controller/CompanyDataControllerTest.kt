@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +29,7 @@ internal class CompanyDataControllerTest(
         marketCap = BigDecimal(100),
         reportingDateOfMarketCap = LocalDate.now(),
         indices = listOf(CompanyInformation.StockIndex.GeneralStandards),
-        identifiers = mapOf(Pair(CompanyInformation.Identifier.Isin, "DE1234567890"))
+        identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"))
     )
 
     @Test
