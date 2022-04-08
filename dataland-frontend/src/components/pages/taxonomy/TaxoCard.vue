@@ -11,7 +11,7 @@
           <span>%</span>
         </div>
         <div v-else class="col-6 col-offset-1 grid align-items-center text-right">
-          <i class="material-icons"> error </i> <span class="pl-4 font-semibold">No data available</span>
+          <i class="material-icons" aria-hidden="true"> error </i> <span class="pl-4 font-semibold">No data available</span>
         </div>
       </div>
       <template v-if="amount">
