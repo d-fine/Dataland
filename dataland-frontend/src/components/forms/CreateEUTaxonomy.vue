@@ -199,7 +199,6 @@ export default {
     processed: false,
     messageCount: 0,
     model: {},
-    loading: false,
     response: null,
     companyID: null,
     idList: []
