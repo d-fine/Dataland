@@ -53,7 +53,7 @@ class DataManager(
         }
     }
 
-    private fun searchForCompanies(
+/*    private fun searchForCompanies(
         searchString: String,
         attributeGetters: List<(CompanyInformation) -> List<String>>
     ): List<StoredCompany> {
@@ -64,7 +64,7 @@ class DataManager(
                 }
             }
         }
-    }
+    }*/
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)

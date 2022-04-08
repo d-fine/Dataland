@@ -39,8 +39,8 @@
             <FormKit
                 type="text"
                 name="value"
-                label="Identifier"
-                placeholder="Identifier"
+                label="Identifier Value"
+                placeholder="Identifier Value"
                 validation="required"
             />
           </FormKit>
