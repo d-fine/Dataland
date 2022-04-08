@@ -1,5 +1,6 @@
 package org.dataland.e2etests
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDetailsPerCashFlowType
@@ -38,7 +39,10 @@ class DummyDataCreator {
             marketCap = BigDecimal(125670200),
             reportingDateOfMarketCap = LocalDate.of(2022, 1, 1),
             indices = listOf(CompanyInformation.Indices.cdax),
-            identifiers = mapOf(Pair("ISIN", "DE123456"))
+            identifiers = listOf(
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLA")
+            )
         )
     }
 }
