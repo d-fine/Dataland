@@ -57,6 +57,18 @@ class DataManagerTest(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
             )
+        ),
+        CompanyInformation(
+            companyName = "Test-Company_4dE",
+            headquarters = "Test-Headquarters_4",
+            sector = "Test-Sector_3",
+            marketCap = BigDecimal(400),
+            reportingDateOfMarketCap = LocalDate.now(),
+            indices = listOf(CompanyInformation.StockIndex.Dax),
+            identifiers = listOf(
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
+            )
         )
     )
 
@@ -77,7 +89,7 @@ class DataManagerTest(
             testManager.addCompany(company)
         }
 
-        val allCompaniesInStore = testManager.listCompanies("", "")
+        val allCompaniesInStore = testManager.listCompanies("", true)
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
             assertEquals(
@@ -94,7 +106,7 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val searchResponse = testManager.listCompanies(company.companyName, "")
+            val searchResponse = testManager.listCompanies(company.companyName, true)
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be retrieved by searching for its name."
@@ -111,7 +123,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies("", identifier.value)
+                val searchResponse = testManager.listCompanies(identifier.value, false)
                 assertEquals(
                     company, searchResponse.first().companyInformation,
                     "The posted company could not be retrieved by searching for its identifier."
@@ -125,9 +137,9 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("", "de")
+        val searchResponse = testManager.listCompanies("de", false)
         assertEquals(
-            2, searchResponse.size,
+            3, searchResponse.size,
             "The companies with identifier 'de' could not be found."
         )
     }

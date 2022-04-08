@@ -145,6 +145,7 @@
         <div class="right-align">
           <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
+        <p> {{}}</p>
         <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="response.data" :status="response.status"
                        :enableClose="true"/>
         <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
@@ -184,7 +185,7 @@ export default {
     },
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform("", "")
+        const companyList = await companyStore.perform("", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]

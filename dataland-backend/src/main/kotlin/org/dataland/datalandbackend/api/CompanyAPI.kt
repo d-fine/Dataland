@@ -61,7 +61,7 @@ interface CompanyAPI {
      * @param companyName identifier used to search for companies in the data store (can also be an empty string)
      * @return information about all companies matching the search criteria
      */
-    fun getCompanies(@RequestParam companyName: String? = null, wildcardSearch: String? = null):
+    fun getCompanies(@RequestParam wildcardSearch: String? = null, onlyCompanyNames: Boolean? = null):
         ResponseEntity<List<StoredCompany>>
 
     @Operation(
