@@ -41,8 +41,7 @@ class CompanyDataControllerTest {
         val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("B")
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
-            companyName = testCompanyInformation.companyName,
-            wildcardSearch = null
+            testCompanyInformation.companyName, true
         )
         assertTrue(
             getCompaniesByNameResponse.contains(
@@ -63,17 +62,11 @@ class CompanyDataControllerTest {
             dummyDataCreator.createCompanyTestInformation("D"),
             dummyDataCreator.createCompanyTestInformation("E")
         )
-        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies(
-            companyName = "",
-            wildcardSearch = null
-        ).size
+        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies("", true).size
         for (companyInformation in listOfTestCompanyInformation) {
             companyDataControllerApi.postCompany(companyInformation)
         }
-        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies(
-            companyName = "",
-            wildcardSearch = null
-        ).size
+        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies("", true).size
 
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
