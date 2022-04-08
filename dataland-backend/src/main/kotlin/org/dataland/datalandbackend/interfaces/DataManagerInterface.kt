@@ -50,7 +50,8 @@ interface DataManagerInterface {
 
     /**
      * Method to list matching companies in Dataland by searching for a company name
-     * @param companyName string used for substring matching against the companyNames of all entries
+     * @param wildcardSearch string used for substring matching
+     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return list of all matching companies in Dataland
      */
     fun listCompanies(wildcardSearch: String, onlyCompanyNames: Boolean): List<StoredCompany>

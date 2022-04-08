@@ -58,9 +58,11 @@ interface CompanyAPI {
     /**
      * A method to retrieve specific companies identified by their company names
      * If an empty string is passed as company name, all companies in the data store will be returned.
-     * @param companyName identifier used to search for companies in the data store (can also be an empty string)
+     * @param wildcardSearch string used for substring matching
+     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return information about all companies matching the search criteria
      */
+    /* ToDo maybe a default value for onlyCompanyNames? */
     fun getCompanies(@RequestParam wildcardSearch: String? = null, onlyCompanyNames: Boolean? = null):
         ResponseEntity<List<StoredCompany>>
 

@@ -31,7 +31,7 @@ class DataManagerTest(
             indices = listOf(CompanyInformation.StockIndex.Mdax),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLA")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
             )
         ),
         CompanyInformation(
@@ -67,7 +67,7 @@ class DataManagerTest(
             indices = listOf(CompanyInformation.StockIndex.Dax),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
             )
         )
     )
@@ -140,7 +140,7 @@ class DataManagerTest(
         val searchResponse = testManager.listCompanies("de", false)
         assertEquals(
             3, searchResponse.size,
-            "The companies with identifier 'de' could not be found."
+            "All companies containing 'de' (in name or identifier) could not be found."
         )
     }
 
