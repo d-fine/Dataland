@@ -1,7 +1,7 @@
 import RetrieveSkyminder from '@/components/forms/RetrieveSkyminder.vue'
 import {shallowMount} from "@vue/test-utils"
 
-describe('CreateCompanyTest', () => {
+describe('RetrieveSkyminderTest', () => {
 
     const wrapper = shallowMount(RetrieveSkyminder)
 
