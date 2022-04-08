@@ -17,34 +17,47 @@
             :schema="schema"
         />
         <FormKit
-            type="select"
-            label="Identifier Type"
-            name="identifierType"
-            placeholder="Please choose"
-            :options="
-                    {'Lei':'Lei',
-                    'Isin': 'Isin',
-                    'PermId': 'PermId'}"
-            validation="required"
-        />
-        <FormKit
-            type="text"
-            name="identifier"
-            label="Identifier"
-            placeholder="Identifier"
-            validation="required"
-        />
+            type="list"
+            name="identifiers"
+        >
+          <FormKit
+              v-for="nIdentifier in identifierListSize"
+              :key="nIdentifier"
+              type="group"
+          >
+            <FormKit
+                type="select"
+                label="Identifier Type"
+                name="type"
+                placeholder="Please choose"
+                :options="
+                    {'Lei':'LEI',
+                    'Isin': 'ISIN',
+                    'PermId': 'PERM Id'}"
+                validation="required"
+            />
+            <FormKit
+                type="text"
+                name="value"
+                label="Identifier"
+                placeholder="Identifier"
+                validation="required"
+            />
+          </FormKit>
+        </FormKit>
       </FormKit>
+      <button @click="identifierListSize++"> Add a new identifier</button>
       <p> {{ data }}</p>
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
       </div>
       <div v-if="enableClose" class="col m12">
         <div class="right-align">
-        <button class="btn btn-small orange darken-3" @click="close">Close</button>
+          <button class="btn btn-small orange darken-3" @click="close">Close</button>
         </div>
-        <SuccessUpload v-if="response" msg="company" :data="response.data" :status="response.status" :enableClose="true"/>
-        <FailedUpload v-if="errorOccurence" msg="Company" :enableClose="true" />
+        <SuccessUpload v-if="response" msg="company" :data="response.data" :status="response.status"
+                       :enableClose="true"/>
+        <FailedUpload v-if="errorOccurence" msg="Company" :enableClose="true"/>
       </div>
     </div>
   </CardWrapper>
@@ -74,7 +87,8 @@ const createCompany = {
     model: {},
     loading: false,
     response: null,
-    errorOccurence: false
+    errorOccurence: false,
+    identifierListSize: 1
   }),
   created() {
     // delete auto identifiers
