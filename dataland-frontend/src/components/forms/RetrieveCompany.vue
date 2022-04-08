@@ -60,7 +60,7 @@ import {DataStore} from "@/services/DataStore";
 import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
-const dataStore = new DataStore(api.getCompaniesByName)
+const dataStore = new DataStore(api.getCompanies)
 
 export default {
   name: "RetrieveCompany",
@@ -79,7 +79,7 @@ export default {
         if (all) {
           this.data.companyName = ""
         }
-        this.response = await dataStore.perform(this.data.companyName)
+        this.response = await dataStore.perform(this.data.companyName, "")
       } catch (error) {
         console.error(error)
         this.response = null

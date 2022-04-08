@@ -163,7 +163,7 @@ import FailedUpload from "@/components/ui/FailedUpload";
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
-const companyStore = new DataStore(companyApi.getCompaniesByName)
+const companyStore = new DataStore(companyApi.getCompanies)
 export default {
   name: "CustomEUTaxonomy",
   components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
@@ -184,7 +184,7 @@ export default {
     },
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform("")
+        const companyList = await companyStore.perform("", "")
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]
