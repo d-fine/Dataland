@@ -2,8 +2,8 @@
   <div class="grid">
     <div class="col-12">
       <div class="grid">
-        <RetrieveSkyminder/>
         <RetrieveCompany/>
+        <RetrieveSkyminder/>
       </div>
     </div>
   </div>
