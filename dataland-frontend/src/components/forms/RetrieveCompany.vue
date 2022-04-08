@@ -37,6 +37,29 @@
           <router-link to="/upload">Create Data</router-link>
         </p>
       </template>
+      <div class="grid align-items-top">
+        <div class="col-10">
+        <span class="p-fluid">
+             <span class="p-input-icon-left p-input-icon-right ">
+            <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
+                  <i v-if="processed" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
+                  <i v-else aria-hidden="true"/>
+            <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
+                          @complete="searchCompany($event)" placeholder="something" inputClass="something"
+                          field="companyName" style="z-index:10"
+                          completeOnFocus forceSelection
+                          @keyup.enter="filter=true" @item-select="filter=false"/>
+        </span>
+
+        </span>
+          <p>Selection: {{ selectedCompany }}</p>
+          <p v-if="filter">Filter: {{ filteredCompaniesBasic }} </p>
+          <p v-if="additionalCompanies" class="text-primary">View all {{ additionalCompanies.length }} companies</p>
+        </div>
+        <div class="col-2" v-if="processed">
+          <ProgressSpinner/>
+        </div>
+      </div>
     </template>
   </Card>
 </template>
@@ -52,23 +75,31 @@ import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import AutoComplete from 'primevue/autocomplete';
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default {
   name: "RetrieveCompany",
-  components: {Card, Button, DataTable, Column , FormKit},
+  components: {Card, Button, DataTable, Column, FormKit, AutoComplete, ProgressSpinner},
 
   data: () => ({
+    responseArray: null,
+    filter: false,
+    processed: false,
     model: {},
     response: null,
     companyInformation: null,
-    processed: false
+    selectedCompany: null,
+    filteredCompanies: null,
+    filteredCompaniesBasic: null,
+    additionalCompanies: null
   }),
   methods: {
     async getCompanyByName(all = false) {
       try {
         this.processed = false
         if (all) {
-          this.data.companyName = ""
+          this.model.companyName = ""
         }
         this.response = await dataStore.perform(this.model.companyName)
       } catch (error) {
@@ -76,6 +107,26 @@ export default {
         this.response = null
       } finally {
         this.processed = true
+      }
+    },
+    async searchCompany(event) {
+      try {
+        this.processed = true
+        this.responseArray = await dataStore.perform(event.query).then(response => {
+              return response.data.map(e => ({
+                "companyName": e.companyInformation.companyName,
+                "companyId": e.companyId
+              }))
+              // hier muss noch viel logic rein und diese zusätzlichen Elemente die noch geladen sind sollten in einem extra feld als link gerendert werden
+              // splitting der arrays und dann den rest ensprechend gestylt und an eine bestimmte stelle gehängt
+            }
+        )
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+        this.additionalCompanies = this.responseArray.slice(0)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.processed = false
       }
     }
   },
