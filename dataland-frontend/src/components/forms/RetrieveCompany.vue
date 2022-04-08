@@ -46,7 +46,7 @@
                   <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                   <i v-else aria-hidden="true"/>
             <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
-                          @complete="searchCompany($event)" placeholder="something" inputClass="something"
+                          @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="something"
                           field="companyName" style="z-index:10"
 
                           @keyup.enter="filter=true; table=true" @item-select="filter=false; table=true"/>
@@ -55,9 +55,6 @@
         </span>
           <p>Selection: {{ selectedCompany }}</p>
           <p v-if="filter">Filter: {{ filteredCompaniesBasic }} </p>
-          <p>TableInput: {{filter ? responseArray : selectedCompany}}</p>
-          <p>Table: {{table}}</p>
-          <p>Filter: {{filter}}</p>
           <DataTable v-if="table" :value="filter ? responseArray : [selectedCompany] "  responsive-layout="scroll" paginator="true" :alwaysShowPaginator="false" rows="5">
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
             </Column>
