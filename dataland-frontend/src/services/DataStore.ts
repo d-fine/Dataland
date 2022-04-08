@@ -106,25 +106,27 @@ export class DataStore {
                 )
             } else if (this.getType(index) == "array") {
                 /* create a checkbox form */
-                const enumProperties = {}
-                for (const enumItem of propertiesSchema[index].items.enum) {
-                    // @ts-ignore
-                    enumProperties[enumItem] = humanizeString(enumItem)
-                }
-                schema.push({
-                        $formkit: "checkbox",
-                        label: humanizeString(index),
-                        placeholder: humanizeString(index),
-                        name: index,
-                        validation: validation,
-                        options: enumProperties,
-                        classes: {
-                            outer: {'formkit-outer': false},
-                            inner: {'formkit-inner': false},
-                            input: {'formkit-input': false}
-                        }
+                if ("enum" in propertiesSchema[index].items) {
+                    const enumProperties = {}
+                    for (const enumItem of propertiesSchema[index].items.enum) {
+                        // @ts-ignore
+                        enumProperties[enumItem] = humanizeString(enumItem)
                     }
-                )
+                    schema.push({
+                            $formkit: "checkbox",
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: validation,
+                            options: enumProperties,
+                            classes: {
+                                outer: {'formkit-outer': false},
+                                inner: {'formkit-inner': false},
+                                input: {'formkit-input': false}
+                            }
+                        }
+                    )
+                }
             } else {
                 /* create a text form */
                 schema.push({
