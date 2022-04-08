@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Message severity="error" :sticky="false" :key="count">
+    <Message severity="error" :sticky="false" :key="messageCount">
       <h4>Sorry, but an Error occurred.</h4>
       <h4>{{ msg }} was not uploaded!</h4>
     </Message>
@@ -17,7 +17,7 @@ export default {
   components: {Message},
   props: {
     msg: String,
-    count: Number
+    messageCount: Number
   },
   methods: {
     humanize(text) {

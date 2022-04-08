@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Message severity="success" :sticky="false" :key="count">
+    <Message severity="success" :sticky="false" :key="messageCount">
         <h4>You successfully uploaded the {{ msg }}</h4>
         <ul class="list-none align-content-start">
           <li v-for="(value, key) in data" :key="key" ><span>{{ humanize(key) }}</span>: <span :title="key">{{

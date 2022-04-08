@@ -65,7 +65,6 @@ export default {
     }
   },
   methods: {
-    // OrderOfMagnitudeSuffix
     orderOfMagnitudeSuffix(value){
       return numberFormatter(value,2)
     }

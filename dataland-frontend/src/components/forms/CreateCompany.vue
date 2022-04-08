@@ -19,8 +19,8 @@
       </FormKit>
 
         <template v-if="processed">
-          <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data" />
-          <FailedUpload v-else msg="Company" :count="count" />
+          <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
+          <FailedUpload v-else msg="Company" :messageCount="messageCount" />
         </template>
     </template>
   </Card>
@@ -48,13 +48,13 @@ const createCompany = {
     model: {},
     schema: dataStore.getSchema(),
     response: null,
-    count: 0
+    messageCount: 0
   }),
   methods: {
     async postCompanyData() {
       try {
         this.processed = false
-        this.count++
+        this.messageCount++
         this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {

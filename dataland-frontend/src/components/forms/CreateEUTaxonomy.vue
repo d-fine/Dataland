@@ -165,8 +165,8 @@
         </FormKit>
       </FormKit>
       <template v-if="processed">
-        <SuccessUpload v-if="response" msg="company" :count="count" :data="response.data"/>
-        <FailedUpload v-else msg="Company" :count="count" />
+        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data"/>
+        <FailedUpload v-else msg="Company" :messageCount="messageCount" />
       </template>
 
     </template>
@@ -197,7 +197,7 @@ export default {
       'p-inputtext': true
     },
     processed: false,
-    count: 0,
+    messageCount: 0,
     model: {},
     loading: false,
     response: null,
@@ -217,7 +217,7 @@ export default {
     async postEUData() {
       try {
         this.processed = false
-        this.count++
+        this.messageCount++
         this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {

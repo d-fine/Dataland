@@ -65,13 +65,14 @@ sonarqube {
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
-        property("sonar.coverage.exclusions",
+        property(
+            "sonar.coverage.exclusions",
             "**/test/**," +
-            "**/tests/**," +
-            "**/LocalCorsConfig.kt," +
-            "**/DummySkyminder.kt," +
-            "./dataland-frontend/src/main.ts" +
-            "./dataland-frontend/src/components/helper/*"
+                "**/tests/**," +
+                "**/LocalCorsConfig.kt," +
+                "**/DummySkyminder.kt," +
+                "./dataland-frontend/src/main.ts" +
+                "./dataland-frontend/src/components/helper/*"
         )
         property(
             "sonar.sources",
