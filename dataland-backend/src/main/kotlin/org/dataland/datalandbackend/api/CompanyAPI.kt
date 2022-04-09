@@ -62,8 +62,7 @@ interface CompanyAPI {
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return information about all companies matching the search criteria
      */
-    /* ToDo maybe a default value for onlyCompanyNames? */
-    fun getCompanies(@RequestParam wildcardSearch: String? = null, onlyCompanyNames: Boolean? = null):
+    fun getCompanies(@RequestParam wildcardSearch: String? = null, onlyCompanyNames: Boolean = false):
         ResponseEntity<List<StoredCompany>>
 
     @Operation(

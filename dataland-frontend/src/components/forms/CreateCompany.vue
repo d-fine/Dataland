@@ -46,7 +46,8 @@
           </FormKit>
         </FormKit>
       </FormKit>
-      <button @click="identifierListSize++"> Add a new identifier</button>
+        <button @click="identifierListSize++"> Add a new identifier</button>
+        <button v-if="identifierListSize>1" @click="identifierListSize--"> Remove the last identifier</button>
       <p> {{ data }}</p>
       <div class="progress" v-if="loading">
         <div class="indeterminate"></div>
