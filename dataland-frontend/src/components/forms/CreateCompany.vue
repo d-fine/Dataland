@@ -62,8 +62,8 @@
           </FormKit>
         </FormKit>
       </FormKit>
-      <button @click="identifierListSize++"> Add a new identifier</button>
-      <button v-if="identifierListSize>1" @click="identifierListSize--"> Remove the last identifier</button>
+      <Button @click="identifierListSize++"> Add a new identifier</Button>
+      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier</Button>
         <template v-if="processed">
           <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
           <FailedUpload v-else msg="Company" :messageCount="messageCount" />
@@ -80,6 +80,7 @@ import {DataStore} from "@/services/DataStore";
 import backend from "@/../build/clients/backend/backendOpenApi.json";
 import FailedUpload from "@/components/ui/FailedUpload";
 import Card from 'primevue/card';
+import Button from "primevue/button";
 import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompanyInformation
@@ -87,7 +88,7 @@ const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, Card, Message, FormKit, FormKitSchema, SuccessUpload},
+  components: {FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
     processed: false,

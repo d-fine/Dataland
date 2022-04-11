@@ -11,4 +11,8 @@ import { plugin, defaultConfig } from '@formkit/vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
 
-createApp(App).use(plugin, defaultConfig).use(router).use(PrimeVue).mount('#app')
+const app = createApp(App)
+app.use(plugin, defaultConfig)
+app.use(router)
+app.use(PrimeVue)
+app.mount('#app')
