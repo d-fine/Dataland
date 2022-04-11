@@ -89,7 +89,6 @@ class DataManager(
     }
 
     override fun searchDataMetaInfo(companyId: String, dataType: String): List<DataMetaInformation> {
-        DataTypesExtractor().getAllDataTypes()
         var matches: Map<String, DataMetaInformation> = dataMetaInformationPerDataId
 
         if (companyId.isNotEmpty()) {

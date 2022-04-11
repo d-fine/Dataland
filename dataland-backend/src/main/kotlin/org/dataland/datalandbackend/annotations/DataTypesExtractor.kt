@@ -1,9 +1,10 @@
 package org.dataland.datalandbackend.annotations
 
-import org.dataland.datalandbackend.model.StorableDataSet
-import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
+import org.springframework.core.type.filter.RegexPatternTypeFilter
+import java.util.regex.Pattern
+
 
 /**
  * Class to extract DataType annotations
@@ -15,11 +16,13 @@ class DataTypesExtractor {
      * @return list of all permissible data types
      */
     fun getAllDataTypes(): List<String> {
-        val dumnmy = StorableDataSet("companyId", "dataType", "data")
-        val reflections = Reflections("org.dataland.datalandbackend.model.*", ResourcesScanner())
-        logger.info("Searching for known Datatypes. Datatypes found: ${reflections.allTypes}")
-        val allDataTypes = reflections.getTypesAnnotatedWith(DataType::class.java).map { it.simpleName }
-        logger.info("Searching for known Datatypes. Datatypes found: $allDataTypes")
-        return allDataTypes
+        val provider = ClassPathScanningCandidateComponentProvider(false)
+        provider.addIncludeFilter(RegexPatternTypeFilter(Pattern.compile(".*")))
+        val modelBeans = provider.findCandidateComponents("org.dataland.datalandbackend.model")
+        val dataTypes = modelBeans.map{Class.forName(it.beanClassName)}
+            .filter { it.isAnnotationPresent(DataType::class.java) }
+            .map{it.simpleName}
+        logger.info("Searching for known Datatypes. Datatypes found: $dataTypes")
+        return dataTypes
     }
 }
