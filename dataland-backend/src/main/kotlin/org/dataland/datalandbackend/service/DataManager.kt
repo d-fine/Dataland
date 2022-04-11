@@ -140,7 +140,7 @@ class DataManager(
             }
         }
 
-        return if (onlyCompanyNames) {
+        return if (onlyCompanyNames || wildcardSearch == "") {
             resultsByName
         } else {
             val resultsByIdentifier = matchingCompanies.filter {
