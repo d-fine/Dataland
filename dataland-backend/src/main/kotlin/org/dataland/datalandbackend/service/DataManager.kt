@@ -132,8 +132,12 @@ class DataManager(
                 it.companyInformation.indices.any { index -> index == selectedIndex }
             }
         }
-        val resultsByName = matchingCompanies.filter {
-            it.companyInformation.companyName.contains(wildcardSearch, true)
+
+        var resultsByName = matchingCompanies.toMutableList()
+        if (wildcardSearch != "") {
+            resultsByName.retainAll {
+                it.companyInformation.companyName.contains(wildcardSearch, true)
+            }
         }
 
         return if (onlyCompanyNames) {
