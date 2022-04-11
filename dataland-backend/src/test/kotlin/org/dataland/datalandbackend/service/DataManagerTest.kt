@@ -171,7 +171,8 @@ class DataManagerTest(
         val searchResponse = testManager.listCompanies("de", CompanyInformation.StockIndex.DAX, false)
         assertEquals(
             1, searchResponse.size,
-            "There is 1 company containing 'de' (in name or identifier) with DAX index but found ${searchResponse.size}."
+            "There is 1 company containing 'de' (in name or identifier) with DAX index " +
+                "but found ${searchResponse.size}."
         )
     }
 
