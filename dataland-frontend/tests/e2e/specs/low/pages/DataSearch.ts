@@ -35,7 +35,7 @@ describe('Data Search Page Skyminder', function () {
     })
 });
 
-describe('Data Search Page Company', function () {
+describe.only('Data Search Page Company', function () {
     it('page should be present', function () {
         cy.visit("/search")
         cy.get('#app').should("exist")
@@ -51,6 +51,20 @@ describe('Data Search Page Company', function () {
             .type(inputValue)
             .should('have.value', inputValue)
     });
-
+    it('Should have button to search all companies', () => {
+        cy.get('button[name=show_all_companies_button].p-button')
+            .should('not.be.disabled')
+            .should('contain', 'Show all companies')
+            .click({force: true})
+        cy.get('table.p-datatable-table').should('exist')
+        cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','SECTOR')
+        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('td','VIEW')
+            .contains('a', 'VIEW')
+            .click()
+            .url().should('include', '/companies/')
+            .url().should('include', '/eutaxonomies')
+    });
 
 });
