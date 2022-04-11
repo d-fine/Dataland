@@ -35,8 +35,8 @@ import backend from "@/../build/clients/backend/backendOpenApi.json";
 import AutoComplete from 'primevue/autocomplete';
 
 const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.PostCompanyRequestBody
-const dataStore = new DataStore(api.getCompaniesByName, contactSchema)
+const contactSchema = backend.components.schemas.ContactInformation
+const dataStore = new DataStore(api.getCompanies, contactSchema)
 import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
