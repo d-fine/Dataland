@@ -6,7 +6,7 @@ describe('RetrieveSkyminderTest', () => {
     const wrapper = shallowMount(RetrieveSkyminder)
 
     it('checks field properties', () => {
-        expect(wrapper.vm.data).toBeDefined()
+        expect(wrapper.vm.model).toBeDefined()
         expect(wrapper.vm.schema).toBeDefined()
     })
 
