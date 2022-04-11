@@ -15,8 +15,8 @@ describe('EuTaxoSearchBarTest', () => {
         expect.assertions(2)
         jest.spyOn(console, 'error');
         wrapper.setData({model: {"something": "none"}})
-        expect(wrapper.vm.getCompanyByName()).toBeDefined()
-        await wrapper.vm.getCompanyByName();
+        expect(wrapper.vm.searchCompany()).toBeDefined()
+        await wrapper.vm.searchCompany();
         expect(console.error).toHaveBeenCalled();
     });
 
