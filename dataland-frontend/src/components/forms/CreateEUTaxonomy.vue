@@ -185,7 +185,7 @@ export default {
     },
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform("", true)
+        const companyList = await companyStore.perform("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]

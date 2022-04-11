@@ -79,7 +79,7 @@ export default {
         if (all) {
           this.data.companyName = ""
         }
-        this.response = await dataStore.perform(this.data.companyName, true)
+        this.response = await dataStore.perform(this.data.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null
