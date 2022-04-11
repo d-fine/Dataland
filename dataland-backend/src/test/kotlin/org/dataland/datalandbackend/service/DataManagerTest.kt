@@ -164,6 +164,18 @@ class DataManagerTest(
     }
 
     @Test
+    fun `search for DAX index and check if two companies will be returned`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
+        }
+        val searchResponse = testManager.listCompanies("", CompanyInformation.StockIndex.DAX, true)
+        assertEquals(
+            2, searchResponse.size,
+            "There are 2 companies with DAX index but found ${searchResponse.size}."
+        )
+    }
+
+    @Test
     fun `search for companies containing de and DAX index and check if it returns one company`() {
         for (company in testCompanyList) {
             testManager.addCompany(company)
