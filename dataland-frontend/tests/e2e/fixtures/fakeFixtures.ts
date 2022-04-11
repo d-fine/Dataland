@@ -1,4 +1,5 @@
 const {faker} = require('@faker-js/faker');
+const backend = require( "../../../build/clients/backend/backendOpenApi.json")
 const fs = require('fs')
 // sets locale to de
 faker.locale = 'de';
@@ -12,18 +13,7 @@ function generateCompanies() {
         let sector = faker.company.bsNoun();
         let marketCap = faker.mersenne.rand(50000, 10000000);
         let reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
-        let indices = faker.random.arrayElements([
-            "CDAX",
-            "DAX",
-            "GeneralStandards",
-            "GEX",
-            "MDAX",
-            "PrimeStandards",
-            "SDAX",
-            "TecDAX",
-            "ScaleHDAX",
-            "DAX_50_ESG"
-        ]);
+        let indices = faker.random.arrayElements( backend.components.schemas.CompanyInformation.properties["indices"].items.enum );
         let identifiers = faker.random.arrayElements([
             { "type": "Lei", "value": "529900W18LQJJN6SJ336"},
             { "type": "Isin", "value": "529900W18LQJJN6SJ336"},
@@ -51,15 +41,8 @@ function generateTaxonomies() {
     let taxonomies = []
 
     for (let id = 1; id <= 100; id++) {
-        let attestation = faker.random.arrayElement([
-            "None",
-            "LimitedAssurance",
-            "ReasonableAssurance"
-        ]);
-        let reportingObligation = faker.random.arrayElement([
-            "Yes",
-            "No"
-        ]);
+        let attestation = faker.random.arrayElement(backend.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
+        let reportingObligation = faker.random.arrayElement(backend.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
         let capexTotal = faker.mersenne.rand(50000, 10000000);
         let capexEligible = faker.mersenne.rand(50000, capexTotal);
         let capexAligned = faker.mersenne.rand(50000, capexTotal);
