@@ -16,6 +16,35 @@
             :data="model"
             :schema="schema"
         />
+        <FormKit
+            type="list"
+            name="identifiers"
+        >
+          <FormKit
+              v-for="nIdentifier in identifierListSize"
+              :key="nIdentifier"
+              type="group"
+          >
+            <FormKit
+                type="select"
+                label="Identifier Type"
+                name="type"
+                placeholder="Please choose"
+                :options="
+                    {'Lei':'LEI',
+                    'Isin': 'ISIN',
+                    'PermId': 'PERM Id'}"
+                validation="required"
+            />
+            <FormKit
+                type="text"
+                name="value"
+                label="Identifier Value"
+                placeholder="Identifier Value"
+                validation="required"
+            />
+          </FormKit>
+        </FormKit>
       </FormKit>
       <button @click="identifierListSize++"> Add a new identifier</button>
       <button v-if="identifierListSize>1" @click="identifierListSize--"> Remove the last identifier</button>
