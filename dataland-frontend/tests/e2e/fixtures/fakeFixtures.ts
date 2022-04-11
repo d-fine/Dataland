@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+const {faker} = require('@faker-js/faker');
 const fs = require('fs')
 // sets locale to de
 faker.locale = 'de';
@@ -6,12 +6,29 @@ faker.locale = 'de';
 function generateCompanies() {
     let companies = []
 
-    for (let id=1; id <= 100; id++) {
+    for (let id = 1; id <= 100; id++) {
         let companyName = faker.company.companyName();
         let headquarters = faker.address.city();
         let sector = faker.company.bsNoun();
         let marketCap = faker.mersenne.rand(50000, 10000000);
         let reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
+        let indices = faker.random.arrayElements([
+            "CDAX",
+            "DAX",
+            "GeneralStandards",
+            "GEX",
+            "MDAX",
+            "PrimeStandards",
+            "SDAX",
+            "TecDAX",
+            "ScaleHDAX",
+            "DAX_50_ESG"
+        ]);
+        let identifiers = faker.random.arrayElements([
+            { "type": "Lei", "value": "529900W18LQJJN6SJ336"},
+            { "type": "Isin", "value": "529900W18LQJJN6SJ336"},
+            { "type": "PermId", "value": "529900W18LQJJN6SJ336"}
+        ]);
 
         companies.push(
             {
@@ -19,7 +36,9 @@ function generateCompanies() {
                 "headquarters": headquarters,
                 "sector": sector,
                 "marketCap": marketCap,
-                "reportingDateOfMarketCap": reportingDateOfMarketCap
+                "reportingDateOfMarketCap": reportingDateOfMarketCap,
+                "indices": indices,
+                "identifiers": identifiers
             }
         )
 
@@ -31,9 +50,16 @@ function generateCompanies() {
 function generateTaxonomies() {
     let taxonomies = []
 
-    for (let id=1; id <= 100; id++) {
-        let attestation = faker.random.arrayElement(['None', 'Limited_Assurance', 'Reasonable_Assurance']);
-        let reportingObligation = faker.random.arrayElement(['Yes', 'No']);
+    for (let id = 1; id <= 100; id++) {
+        let attestation = faker.random.arrayElement([
+            "None",
+            "LimitedAssurance",
+            "ReasonableAssurance"
+        ]);
+        let reportingObligation = faker.random.arrayElement([
+            "Yes",
+            "No"
+        ]);
         let capexTotal = faker.mersenne.rand(50000, 10000000);
         let capexEligible = faker.mersenne.rand(50000, capexTotal);
         let capexAligned = faker.mersenne.rand(50000, capexTotal);
