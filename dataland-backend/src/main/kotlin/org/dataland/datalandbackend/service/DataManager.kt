@@ -120,7 +120,11 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompanies(wildcardSearch: String, selectedIndex: CompanyInformation.StockIndex?, onlyCompanyNames: Boolean): List<StoredCompany> {
+    override fun listCompanies(
+        wildcardSearch: String,
+        selectedIndex: CompanyInformation.StockIndex?,
+        onlyCompanyNames: Boolean
+    ): List<StoredCompany> {
         var matchingCompanies = companyDataPerCompanyId.values.toMutableList()
 
         if (selectedIndex != null) {

@@ -55,7 +55,11 @@ interface DataManagerInterface {
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return list of all matching companies in Dataland
      */
-    fun listCompanies(wildcardSearch: String, selectedIndex: CompanyInformation.StockIndex?, onlyCompanyNames: Boolean): List<StoredCompany>
+    fun listCompanies(
+        wildcardSearch: String,
+        selectedIndex: CompanyInformation.StockIndex?,
+        onlyCompanyNames: Boolean
+    ): List<StoredCompany>
 
     /**
      * Method to retrieve information about a specific company
