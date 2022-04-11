@@ -2,8 +2,7 @@ package org.dataland.datalandbackend.annotations
 
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
-import org.springframework.core.type.filter.RegexPatternTypeFilter
-import java.util.regex.Pattern
+import org.springframework.core.type.filter.AnnotationTypeFilter
 
 /**
  * Class to extract DataType annotations
@@ -17,11 +16,11 @@ class DataTypesExtractor {
      */
     fun getAllDataTypes(): List<String> {
         val provider = ClassPathScanningCandidateComponentProvider(false)
-        provider.addIncludeFilter(RegexPatternTypeFilter(Pattern.compile(".*")))
+        provider.addIncludeFilter(
+            AnnotationTypeFilter(DataType::class.java)
+        )
         val modelBeans = provider.findCandidateComponents("org.dataland.datalandbackend.model")
-        val dataTypes = modelBeans.map { Class.forName(it.beanClassName) }
-            .filter { it.isAnnotationPresent(DataType::class.java) }
-            .map { it.simpleName }
+        val dataTypes = modelBeans.map { Class.forName(it.beanClassName) }.map { it.simpleName }
         logger.info("Searching for known Datatypes. Datatypes found: $dataTypes")
         return dataTypes
     }
