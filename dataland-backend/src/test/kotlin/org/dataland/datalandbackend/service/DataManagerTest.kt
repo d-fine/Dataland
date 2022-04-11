@@ -65,7 +65,7 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(400),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.DAX_50_ESG),
+            indices = listOf(CompanyInformation.StockIndex.GEX),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
