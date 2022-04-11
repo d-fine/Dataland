@@ -26,15 +26,15 @@ data class CompanyInformation(
      * A class that holds Stock Index Types that a company can be listed in
      */
     enum class StockIndex {
-        Cdax,
-        Dax,
+        CDAX,
+        DAX,
         GeneralStandards,
-        Gex,
-        Mdax,
+        GEX,
+        MDAX,
         PrimeStandards,
-        Sdax,
-        TecDax,
-        ScaleHdaxSCALE_HDAX,
-        Dax50Esg
+        SDAX,
+        TecDAX,
+        ScaleHDAX,
+        DAX_50_ESG
     }
 }
