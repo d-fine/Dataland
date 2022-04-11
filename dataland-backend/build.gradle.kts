@@ -36,6 +36,9 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation("ch.qos.logback:logback-core:1.2.11")
+    implementation("org.slf4j:slf4j-api:1.7.36")
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
