@@ -24,7 +24,7 @@ class DataManagerTest(
 
     val testCompanyList = listOf(
         CompanyInformation(
-            companyName = "Test-Company_1",
+            companyName = "Test-Company_1de",
             headquarters = "Test-Headquarters_1",
             sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
@@ -65,7 +65,7 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(400),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.DAX),
+            indices = listOf(CompanyInformation.StockIndex.DAX_50_ESG),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
@@ -152,7 +152,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for de as identifier and check if it returns two companies`() {
+    fun `search for companies containing de and check if it returns three companies`() {
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
@@ -160,6 +160,18 @@ class DataManagerTest(
         assertEquals(
             3, searchResponse.size,
             "There are 3 companies containing 'de' (in name or identifier) but found ${searchResponse.size}."
+        )
+    }
+
+    @Test
+    fun `search for companies containing de and DAX index and check if it returns one company`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
+        }
+        val searchResponse = testManager.listCompanies("de", CompanyInformation.StockIndex.DAX, false)
+        assertEquals(
+            1, searchResponse.size,
+            "There is 1 company containing 'de' (in name or identifier) with DAX index but found ${searchResponse.size}."
         )
     }
 
