@@ -12,10 +12,10 @@
                             inputClass="h-3rem" ref="cac"
                             field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
 
-                            @keyup.enter="filter=true; table=true; close()" @item-select="filter=false; table=true">
+                            @item-select="filter=false; singleton=true; table=false">
                 <template #footer>
                   <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
-                    <li class="p-autocomplete-item text-primary font-semibold" @click="filter=true; table=true; close()">View all ({{responseArray.length}}) results. </li>
+                    <li class="p-autocomplete-item text-primary font-semibold" @click="filter=true; table=true;singleton=false; close();">View all ({{responseArray.length}}) results. </li>
                   </ul>
                 </template>
               </AutoComplete>
@@ -26,10 +26,27 @@
       </div>
     </div>
   </MarginWrapper>
-  <div v-if="processed && table">
+  <template v-if="processed && table">
     <EuTaxoSearchResults :data="filter ? responseArray : [selectedCompany]" :processed="processed"/>
-  </div>
+  </template>
+  <template v-if="processed && singleton">
+  <MarginWrapper >
+    <div class="grid align-items-end">
+      <div class="col-9">
+        <CompanyInformation :companyID="selectedCompany.companyId"/>
+      </div>
+      <div class="col-3 pb-4 text-right">
+        <Button label="Get Report" class="uppercase p-button">Get Report
+          <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
+        </Button>
+      </div>
+    </div>
+  </MarginWrapper>
+  <MarginWrapper bgClass="surface-800">
+    <TaxonomyData :companyID="selectedCompany.companyId"/>
+  </MarginWrapper>
 
+  </template>
 </template>
 
 <script>
@@ -43,12 +60,15 @@ const contactSchema = backend.components.schemas.ContactInformation
 const dataStore = new DataStore(api.getCompanies, contactSchema)
 import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import CompanyInformation from "@/components/pages/company/CompanyInformation";
+import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 
 export default {
   name: "EuTaxoSearchBar",
-  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete},
+  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation},
   data() {
     return {
+      singleton: false,
       processed: false,
       table: false,
       responseArray: null,

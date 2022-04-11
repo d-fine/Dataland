@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import Button from "primevue/button";
+import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
