@@ -28,7 +28,7 @@ class DataManagerTest(
             sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Mdax),
+            indices = listOf(CompanyInformation.StockIndex.MDAX),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
@@ -40,7 +40,7 @@ class DataManagerTest(
             sector = "Test-Sector_2",
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Dax),
+            indices = listOf(CompanyInformation.StockIndex.DAX),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLUB")
@@ -52,7 +52,7 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(300),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Dax),
+            indices = listOf(CompanyInformation.StockIndex.DAX),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
@@ -64,7 +64,7 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(400),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Dax),
+            indices = listOf(CompanyInformation.StockIndex.DAX),
             identifiers = listOf(
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
                 CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
