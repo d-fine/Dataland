@@ -1,8 +1,8 @@
 <template>
   <MarginWrapper>
     <div class="grid align-items-center">
-      <div class="col-8 text-left">
-        <h1>Search EU Taxonomy data</h1>
+      <div class="col-8 text-left pb-0">
+        <h1 class="mb-0">Search EU Taxonomy data</h1>
 
       </div>
       <div class="col-4 text-right font-semibold">
