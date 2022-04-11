@@ -4,7 +4,7 @@
     </template>
     <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           type="form"
           submit-label="Get Skyminder Data"
           :submit-attrs="{
@@ -50,20 +50,19 @@ export default {
   components: {Card, Button, FormKit, SkyminderTable},
 
   data: () => ({
-    data: {},
     schema: dataStore.getSchema(),
     model: {},
     response: null
   }),
   methods: {
     clearAll() {
-      this.data = {}
+      this.model = {}
       this.response = null
     },
 
     async getSkyminderByName() {
       try {
-        const inputArgs = Object.values(this.data)
+        const inputArgs = Object.values(this.model)
         this.response = await dataStore.perform(...inputArgs)
       } catch (error) {
         console.error(error)

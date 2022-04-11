@@ -165,8 +165,8 @@
         </FormKit>
       </FormKit>
       <template v-if="processed">
-        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data"/>
-        <FailedUpload v-else msg="Company" :messageCount="messageCount" />
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data"/>
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
       </template>
 
     </template>
