@@ -35,6 +35,6 @@ data class CompanyInformation(
         SDAX,
         TecDAX,
         ScaleHDAX,
-        DAX_50_ESG
+        DAX50ESG
     }
 }
