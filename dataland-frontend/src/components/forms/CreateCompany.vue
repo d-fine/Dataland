@@ -35,6 +35,14 @@
                     'Isin': 'ISIN',
                     'PermId': 'PERM Id'}"
                 validation="required"
+                :inner-class="{
+                                'formkit-inner':false,
+                                'p-inputwrapper':true
+                              }"
+                :input-class="{
+                                'formkit-input':false,
+                                'p-inputtext': true
+                              }"
             />
             <FormKit
                 type="text"
@@ -42,6 +50,14 @@
                 label="Identifier Value"
                 placeholder="Identifier Value"
                 validation="required"
+                :inner-class="{
+                                'formkit-inner':false,
+                                'p-inputwrapper':true
+                              }"
+                :input-class="{
+                                'formkit-input':false,
+                                'p-inputtext': true
+                              }"
             />
           </FormKit>
         </FormKit>
