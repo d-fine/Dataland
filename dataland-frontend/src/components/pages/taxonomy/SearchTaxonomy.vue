@@ -1,7 +1,7 @@
 <template>
   <MarginWrapper>
     <div class="grid align-items-center">
-      <div class="col-8 text-left pb-0">
+      <div class="col-8 text-left">
         <h1 class="mb-0">Search EU Taxonomy data</h1>
 
       </div>

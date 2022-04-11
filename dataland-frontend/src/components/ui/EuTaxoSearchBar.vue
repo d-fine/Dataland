@@ -1,9 +1,7 @@
 <template>
   <MarginWrapper>
     <div class="grid">
-      <div class="col-8 text-left pt-0">
-        <p v-if="responseArray && responseArray.length > 0" class="text-primary mt-0">Select company or <a class="font-semibold text-primary no-underline" @click="filter=true; table=true" href="#">View all ({{responseArray.length}}) results. </a></p>
-        <p v-else class="mt-0"> &nbsp; </p>
+      <div class="col-8 text-left">
         <span class="p-fluid">
           <span class="p-input-icon-left p-input-icon-right ">
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
@@ -11,10 +9,16 @@
                     <i v-else aria-hidden="true"/>
               <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
                             @complete="searchCompany($event)" placeholder="Search a company by name"
-                            inputClass="h-3rem"
+                            inputClass="h-3rem" ref="cac"
                             field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
 
-                            @keyup.enter="filter=true; table=true" @item-select="filter=false; table=true"/>
+                            @keyup.enter="filter=true; table=true; close()" @item-select="filter=false; table=true">
+                <template #footer>
+                  <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
+                    <li class="p-autocomplete-item text-primary font-semibold" @click="filter=true; table=true; close()">View all ({{responseArray.length}}) results. </li>
+                  </ul>
+                </template>
+              </AutoComplete>
           </span>
         </span>
       </div>
@@ -60,11 +64,14 @@ export default {
     }
   },
   methods: {
+    close(){
+      this.$refs.cac.hideOverlay()
+    },
     async searchCompany(event) {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform(event.query).then(response => {
+        this.responseArray = await dataStore.perform(event.query, "", false).then(response => {
               return response.data.map(e => ({
                 "companyName": e.companyInformation.companyName,
                 "companyInformation": e.companyInformation,
