@@ -86,7 +86,7 @@ export class DataStore {
                             classes: {
                                 outer: {'formkit-outer': false},
                                 inner: {'formkit-inner': false},
-                                input: {'formkit-input': false}
+                                input: {'formkit-input': false, 'p-radiobutton:': true}
                             },
                             options: enumProperties
                         }
@@ -100,7 +100,8 @@ export class DataStore {
                         name: index,
                         validation: validation,
                         classes: {
-                            inner: {'formkit-inner': false},
+                            inner: {'formkit-inner': false, 'p-inputwrapper': true},
+                            input: {'formkit-input': false, 'p-inputtext': true}
                         }
                     }
                 )
@@ -128,15 +129,21 @@ export class DataStore {
                     )
                 }
             } else {
-                /* create a text form */
-                schema.push({
-                        $formkit: "text",
-                        label: humanizeString(index),
-                        placeholder: humanizeString(index),
-                        name: index,
-                        validation: validation,
-                    }
-                )
+                {
+                    /* create a text form */
+                    schema.push({
+                            $formkit: "text",
+                            label: humanizeString(index),
+                            placeholder: humanizeString(index),
+                            name: index,
+                            validation: validation,
+                            classes: {
+                                inner: {'formkit-inner': false, 'p-inputwrapper': true},
+                                input: {'formkit-input': false, 'p-inputtext': true}
+                            }
+                        }
+                    )
+                }
             }
         }
         return schema

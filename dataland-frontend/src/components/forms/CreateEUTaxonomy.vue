@@ -1,11 +1,10 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Create EU Taxonomy Dataset</h2>
-    </div>
-    <div class="card-content ">
-
+  <Card class="col-5 col-offset-1">
+    <template #title>Create EU Taxonomy Dataset
+    </template>
+    <template #content>
       <FormKit
-        v-model="data"
+        v-model="model"
         submit-label="Post EU-Taxonomy Dataset"
         :submit-attrs="{
                 'name': 'postEUData'
@@ -17,7 +16,10 @@
             type="text"
             name="companyId"
             label="Company ID"
+            placeholder="Company ID"
             @input="getCompanyIDs"
+            :inner-class="innerClass"
+            :input-class="inputClass"
             :validation="[['required'],['is', ...idList]]"
             :validation-messages="{
                 is: 'The company ID you provided does not exist.',
@@ -34,6 +36,8 @@
               validation="required"
               label="Attestation"
               placeholder="Please choose"
+              :inner-class="innerClass"
+              :input-class="inputClass"
               :options="
                     {'None':'None',
                     'LimitedAssurance': 'Limited Assurance',
@@ -52,7 +56,8 @@
                       'formkit-inner':false
                       }"
               :input-class="{
-                      'formkit-input':false
+                      'formkit-input': false,
+                      'p-radiobutton:': true
                       }"
 
               :options="['Yes', 'No']"
@@ -68,19 +73,25 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / m€"
+                  label="Aligned / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / m€"
+                  label="Eligible / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / m€"
+                  label="Total / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
 
             </FormKit>
@@ -96,19 +107,25 @@
                   type="text"
                   name="aligned"
                   validation="number"
-                  label="Aligned / m€"
+                  label="Aligned / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
-                  label="Eligible / m€"
+                  label="Eligible / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
-                  label="Total / m€"
+                  label="Total / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
             </FormKit>
           </div>
@@ -124,65 +141,69 @@
                   name="aligned"
                   validation="number"
                   label="Aligned / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="eligible"
                   validation="number"
                   label="Eligible / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
               <FormKit
                   type="text"
                   name="total"
                   validation="number"
                   label="Total / €"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
               />
             </FormKit>
           </div>
         </FormKit>
       </FormKit>
-      <div v-if="enableClose" class="col m12">
-        <div class="right-align">
-          <button class="btn btn-small orange darken-3" @click="close">Close</button>
-        </div>
-        <p> {{}}</p>
-        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :data="response.data" :status="response.status"
-                       :enableClose="true"/>
-        <FailedUpload v-if="errorOccurence" msg="EU Taxonomy Data" :enableClose="true" />
-      </div>
-    </div>
-  </CardWrapper>
+      <template v-if="processed">
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data"/>
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+      </template>
+
+    </template>
+  </Card>
 </template>
 <script>
 import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {FormKit} from "@formkit/vue";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 import {DataStore} from "@/services/DataStore";
 import FailedUpload from "@/components/ui/FailedUpload";
-
+import Card from 'primevue/card';
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.postCompanyAssociatedData)
 const companyApi = new CompanyDataControllerApi()
 const companyStore = new DataStore(companyApi.getCompanies)
 export default {
   name: "CustomEUTaxonomy",
-  components: {FailedUpload, CardWrapper, FormKit, SuccessUpload},
+  components: {FailedUpload, Card, FormKit, SuccessUpload},
 
   data: () => ({
-    enableClose: false,
-    errorOccurence: false,
-    data: {},
+    innerClass: {
+      'formkit-inner':false,
+      'p-inputwrapper':true
+    },
+    inputClass: {
+      'formkit-input':false,
+      'p-inputtext': true
+    },
+    processed: false,
+    messageCount: 0,
     model: {},
-    loading: false,
     response: null,
     companyID: null,
     idList: []
   }),
   methods: {
-    close() {
-      this.enableClose = false
-    },
     async getCompanyIDs(){
       try {
         const companyList = await companyStore.perform("", "", true)
@@ -194,15 +215,16 @@ export default {
 
     async postEUData() {
       try {
-        this.response = await dataStore.perform(this.data)
+        this.processed = false
+        this.messageCount++
+        this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
-        this.errorOccurence = false
       } catch (error) {
         this.response = null
-        this.errorOccurence = true
         console.error(error)
+      } finally {
+        this.processed = true
       }
-        this.enableClose = true
     }
   },
 }

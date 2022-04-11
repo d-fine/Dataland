@@ -1,10 +1,10 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Skyminder Data Search</h2>
-    </div>
-    <div class="card-content ">
+  <Card class="col-12">
+    <template #title>Skyminder Data Search
+    </template>
+    <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           type="form"
           submit-label="Get Skyminder Data"
           :submit-attrs="{
@@ -15,7 +15,7 @@
             type="text"
             name="code"
             validation="required"
-            label="Country Code"
+            label="messageCountry Code"
         />
         <FormKit
             type="text"
@@ -25,44 +25,44 @@
         />
       </FormKit>
       <br>
-      <button class="btn btn-sm orange darken-3" @click="clearAll">Clear</button>
+      <Button @click="clearAll" label="Clear"/>
       <div v-if="response" class="col m12">
         <SkyminderTable :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
                         :data="response.data"/>
       </div>
-    </div>
-  </CardWrapper>
+    </template>
+  </Card>
 </template>
 
 <script>
 import {FormKit} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
+import Card from 'primevue/card';
+import Button from 'primevue/button';
 import SkyminderTable from "@/components/ui/SkyminderTable";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new SkyminderControllerApi()
 const dataStore = new DataStore(api.getDataSkyminderRequest)
 
 export default {
   name: "RetrieveSkyminder",
-  components: {CardWrapper, FormKit, SkyminderTable},
+  components: {Card, Button, FormKit, SkyminderTable},
 
   data: () => ({
-    data: {},
     schema: dataStore.getSchema(),
     model: {},
     response: null
   }),
   methods: {
     clearAll() {
-      this.data = {}
+      this.model = {}
       this.response = null
     },
 
     async getSkyminderByName() {
       try {
-        const inputArgs = Object.values(this.data)
+        const inputArgs = Object.values(this.model)
         this.response = await dataStore.perform(...inputArgs)
       } catch (error) {
         console.error(error)

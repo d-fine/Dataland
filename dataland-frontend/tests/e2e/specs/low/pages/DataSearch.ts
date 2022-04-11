@@ -4,7 +4,7 @@ describe('Data Search Page Skyminder', function () {
         cy.get('#app').should("exist")
     });
     it('Contact Data Form is present', () => {
-        cy.get('.card-title h2').should("contain", "Skyminder Data Search")
+        cy.get('.p-card-title').should("contain", "Skyminder Data Search")
     });
     it('Country Code Input field exists and works', () => {
         const inputValue = "A 3 letter country code"
@@ -23,7 +23,7 @@ describe('Data Search Page Skyminder', function () {
             .should('have.value', inputValue)
     });
     it('Clear button exists and clears all', () => {
-        cy.get('button.btn.btn-sm').contains('Clear')
+        cy.get('button.p-button').contains('Clear')
             .should('not.be.disabled')
             .click()
         cy.get('input[name=code]').should("have.value", '')
@@ -41,7 +41,7 @@ describe('Data Search Page Company', function () {
         cy.get('#app').should("exist")
     });
     it('Company Search form is present', () => {
-        cy.get('.card-title h2').should("contain", "Company Search")
+        cy.get('.p-card-title').should("contain", "Company Search")
     });
     it('Company Name Input field exists and works', () => {
         const inputValue = "d-fine"

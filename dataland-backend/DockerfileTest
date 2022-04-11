@@ -1,0 +1,5 @@
+FROM ghcr.io/d-fine/dataland/temurinbase:latest
+COPY . /app/
+WORKDIR /app
+
+CMD ./gradlew :dataland-backend:bootRun --no-daemon

@@ -6,7 +6,7 @@ describe('CreateCompanyTest', () => {
     const wrapper = shallowMount(CustomEUTaxonomy)
 
     it('checks field properties', () => {
-        expect(wrapper.vm.data).toBeDefined()
+        expect(wrapper.vm.model).toBeDefined()
     })
 
     it('checks postCompanyData()', async () => {

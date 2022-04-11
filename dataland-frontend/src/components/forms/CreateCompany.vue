@@ -1,10 +1,10 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Create a Company</h2>
-    </div>
-    <div class="card-content ">
+  <Card class="col-5 col-offset-1">
+    <template #title>Create a Company
+    </template>
+    <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           type="form"
           id="createCompanyForm"
           :submit-attrs="{
@@ -13,55 +13,18 @@
           submit-label="Post Company"
           @submit="postCompanyData">
         <FormKitSchema
-            :data="data"
+            :data="model"
             :schema="schema"
         />
-        <FormKit
-            type="list"
-            name="identifiers"
-        >
-          <FormKit
-              v-for="nIdentifier in identifierListSize"
-              :key="nIdentifier"
-              type="group"
-          >
-            <FormKit
-                type="select"
-                label="Identifier Type"
-                name="type"
-                placeholder="Please choose"
-                :options="
-                    {'Lei':'LEI',
-                    'Isin': 'ISIN',
-                    'PermId': 'PERM Id'}"
-                validation="required"
-            />
-            <FormKit
-                type="text"
-                name="value"
-                label="Identifier Value"
-                placeholder="Identifier Value"
-                validation="required"
-            />
-          </FormKit>
-        </FormKit>
       </FormKit>
-        <button @click="identifierListSize++"> Add a new identifier</button>
-        <button v-if="identifierListSize>1" @click="identifierListSize--"> Remove the last identifier</button>
-      <p> {{ data }}</p>
-      <div class="progress" v-if="loading">
-        <div class="indeterminate"></div>
-      </div>
-      <div v-if="enableClose" class="col m12">
-        <div class="right-align">
-          <button class="btn btn-small orange darken-3" @click="close">Close</button>
-        </div>
-        <SuccessUpload v-if="response" msg="company" :data="response.data" :status="response.status"
-                       :enableClose="true"/>
-        <FailedUpload v-if="errorOccurence" msg="Company" :enableClose="true"/>
-      </div>
-    </div>
-  </CardWrapper>
+      <button @click="identifierListSize++"> Add a new identifier</button>
+      <button v-if="identifierListSize>1" @click="identifierListSize--"> Remove the last identifier</button>
+        <template v-if="processed">
+          <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
+          <FailedUpload v-else msg="Company" :messageCount="messageCount" />
+        </template>
+    </template>
+  </Card>
 </template>
 
 <script>
@@ -70,25 +33,23 @@ import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import SuccessUpload from "@/components/ui/SuccessUpload";
 import {DataStore} from "@/services/DataStore";
 import backend from "@/../build/clients/backend/backendOpenApi.json";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 import FailedUpload from "@/components/ui/FailedUpload";
-
+import Card from 'primevue/card';
+import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompanyInformation
 const dataStore = new DataStore(api.postCompany, contactSchema)
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, CardWrapper, FormKit, FormKitSchema, SuccessUpload},
+  components: {FailedUpload, Card, Message, FormKit, FormKitSchema, SuccessUpload},
 
   data: () => ({
-    enableClose: false,
-    data: {},
-    schema: dataStore.getSchema(),
+    processed: false,
     model: {},
-    loading: false,
+    schema: dataStore.getSchema(),
     response: null,
-    errorOccurence: false,
+    messageCount: 0,
     identifierListSize: 1
   }),
   created() {
@@ -96,19 +57,18 @@ const createCompany = {
     delete this.schema[6]
   },
   methods: {
-    close() {
-      this.enableClose = false
-    },
     async postCompanyData() {
       try {
-        this.response = await dataStore.perform(this.data)
+        this.processed = false
+        this.messageCount++
+        this.response = await dataStore.perform(this.model)
         this.$formkit.reset('createCompanyForm')
-        this.errorOccurence = false
       } catch (error) {
+        console.error(error)
         this.response = null
-        this.errorOccurence = true
+      } finally {
+        this.processed = true
       }
-        this.enableClose = true
     }
   },
 
