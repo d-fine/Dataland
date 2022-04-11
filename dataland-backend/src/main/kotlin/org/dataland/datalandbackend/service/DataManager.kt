@@ -53,19 +53,6 @@ class DataManager(
         }
     }
 
-/*    private fun searchForCompanies(
-        searchString: String,
-        attributeGetters: List<(CompanyInformation) -> List<String>>
-    ): List<StoredCompany> {
-        return companyDataPerCompanyId.values.filter { storedCompany ->
-            attributeGetters.any { getter ->
-                getter(storedCompany.companyInformation).any {
-                    it.contains(searchString, true)
-                }
-            }
-        }
-    }*/
-
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
 
@@ -133,26 +120,28 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompanies(wildcardSearch: String, onlyCompanyNames: Boolean): List<StoredCompany> {
-        val resultsByName = companyDataPerCompanyId.values.filter {
+    override fun listCompanies(wildcardSearch: String, selectedIndex: CompanyInformation.StockIndex?, onlyCompanyNames: Boolean): List<StoredCompany> {
+        var matchingCompanies = companyDataPerCompanyId.values.toMutableList()
+
+        if (selectedIndex != null) {
+            matchingCompanies.retainAll {
+                it.companyInformation.indices.any { index -> index == selectedIndex }
+            }
+        }
+        val resultsByName = matchingCompanies.filter {
             it.companyInformation.companyName.contains(wildcardSearch, true)
         }
-        return if (!onlyCompanyNames) {
-            val resultsByIdentifier = companyDataPerCompanyId.values.filter {
+
+        return if (onlyCompanyNames) {
+            resultsByName
+        } else {
+            val resultsByIdentifier = matchingCompanies.filter {
                 it.companyInformation.identifiers.any { identifier ->
                     identifier.value.contains(wildcardSearch, true)
                 }
             }
-            resultsByName + resultsByIdentifier
-        } else {
-            resultsByName
+            (resultsByName + resultsByIdentifier).distinct()
         }
-
-/*        return if (companyName == "" && wildcardSearch != "") {
-            searchForCompanies(wildcardSearch, listOf { it.identifiers })
-        } else {
-            searchForCompanies(companyName, listOf { listOf(it.companyName) })
-        }*/
     }
 
     override fun getCompanyById(companyId: String): StoredCompany {

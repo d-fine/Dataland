@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -89,7 +90,7 @@ class DataManagerTest(
             testManager.addCompany(company)
         }
 
-        val allCompaniesInStore = testManager.listCompanies("", true)
+        val allCompaniesInStore = testManager.listCompanies("", null, true)
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
             assertEquals(
@@ -106,7 +107,7 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val searchResponse = testManager.listCompanies(company.companyName, true)
+            val searchResponse = testManager.listCompanies(company.companyName, null, true)
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be retrieved by searching for its name."
@@ -123,10 +124,28 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies(identifier.value, false)
-                assertEquals(
-                    company, searchResponse.first().companyInformation,
+                val searchResponse = testManager.listCompanies(identifier.value, null, false)
+                assertTrue(
+                    searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The posted company could not be retrieved by searching for its identifier."
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `search for stock indices and check if it can find the ones`() {
+        for (company in testCompanyList) {
+            testManager.addCompany(company)
+        }
+
+        for (company in testCompanyList) {
+            val stockIndices = company.indices
+            for (stockIndex in stockIndices) {
+                val searchResponse = testManager.listCompanies("", stockIndex, true)
+                assertTrue(
+                    searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
+                    "The posted company could not be retrieved by searching for its stock indices."
                 )
             }
         }
@@ -137,10 +156,10 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("de", false)
+        val searchResponse = testManager.listCompanies("de", null, false)
         assertEquals(
             3, searchResponse.size,
-            "All companies containing 'de' (in name or identifier) could not be found."
+            "There are 3 companies containing 'de' (in name or identifier) but found ${searchResponse.size}."
         )
     }
 
