@@ -15,7 +15,7 @@
             type="text"
             name="code"
             validation="required"
-            label="Country Code"
+            label="messageCountry Code"
         />
         <FormKit
             type="text"
