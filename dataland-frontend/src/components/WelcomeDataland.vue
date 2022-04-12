@@ -10,12 +10,32 @@
         </div>
       </div>
     </div>
+    <div class="col">
+      <Button v-for="item in items" :key="item" @click="currentItem = item">{{item}}</Button>
+      <component :is="currentItem"></component>
+      <TabMenu :model="items" :label="items">
+        <template #item="{item}">
+          <Button @click="currentItem = item">{{item}}</Button>
+        </template>
+      </TabMenu>
+    </div>
   </div>
 </template>
 
 <script>
+import SearchTaxonomy from "@/components/pages/taxonomy/SearchTaxonomy.vue";
+import IndexPanel from "@/components/pages/indices/IndexPanel.vue";
+import Button from "primevue/button";
+import TabMenu from "primevue/tabmenu";
 export default {
-  name: 'WelcomeDataland'
+  name: 'WelcomeDataland',
+  components: {SearchTaxonomy, IndexPanel, Button, TabMenu},
+  data(){
+    return {
+      items:["SearchTaxonomy", "IndexPanel"],
+      currentItem: "SearchTaxonomy"
+    }
+  }
 }
 </script>
 
