@@ -122,18 +122,9 @@ class DataManager(
 
     override fun listCompanies(
         wildcardSearch: String,
-        selectedIndex: CompanyInformation.StockIndex?,
         onlyCompanyNames: Boolean
     ): List<StoredCompany> {
-        var matchingCompanies = companyDataPerCompanyId.values.toMutableList()
-
-        if (selectedIndex != null) {
-            matchingCompanies.retainAll {
-                it.companyInformation.indices.any { index -> index == selectedIndex }
-            }
-        }
-
-        var resultsByName = matchingCompanies.toMutableList()
+        var resultsByName = companyDataPerCompanyId.values.toMutableList()
         if (wildcardSearch != "") {
             resultsByName.retainAll {
                 it.companyInformation.companyName.contains(wildcardSearch, true)
@@ -143,13 +134,24 @@ class DataManager(
         return if (onlyCompanyNames || wildcardSearch == "") {
             resultsByName
         } else {
-            val resultsByIdentifier = matchingCompanies.filter {
+            val resultsByIdentifier = companyDataPerCompanyId.values.filter {
                 it.companyInformation.identifiers.any { identifier ->
                     identifier.value.contains(wildcardSearch, true)
                 }
             }
             (resultsByName + resultsByIdentifier).distinct()
         }
+    }
+
+    override fun listCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex?): List<StoredCompany> {
+        var matchingCompanies = companyDataPerCompanyId.values.toMutableList()
+
+        if (selectedIndex != null) {
+            matchingCompanies.retainAll {
+                it.companyInformation.indices.any { index -> index == selectedIndex }
+            }
+        }
+        return matchingCompanies
     }
 
     override fun getCompanyById(companyId: String): StoredCompany {

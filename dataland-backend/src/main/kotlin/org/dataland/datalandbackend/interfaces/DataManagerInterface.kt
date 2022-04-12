@@ -49,16 +49,23 @@ interface DataManagerInterface {
     fun addCompany(companyInformation: CompanyInformation): StoredCompany
 
     /**
-     * Method to list matching companies in Dataland by searching for a company name
+     * Method to list matching companies in Dataland by searching for a company name or identifier
      * @param wildcardSearch string used for substring matching
-     * @param selectedIndex string used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return list of all matching companies in Dataland
      */
     fun listCompanies(
         wildcardSearch: String,
-        selectedIndex: CompanyInformation.StockIndex?,
         onlyCompanyNames: Boolean
+    ): List<StoredCompany>
+
+    /**
+     * Method to list matching companies in Dataland by searching for a stock index
+     * @param selectedIndex string used to filter against a stock index
+     * @return list of all matching companies in Dataland
+     */
+    fun listCompaniesByIndex(
+        selectedIndex: CompanyInformation.StockIndex?
     ): List<StoredCompany>
 
     /**

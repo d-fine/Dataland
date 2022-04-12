@@ -28,11 +28,11 @@ class CompanyDataController(
         selectedIndex: CompanyInformation.StockIndex?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
-        return ResponseEntity.ok(
-            dataManager.listCompanies(
-                wildcardSearch ?: "", selectedIndex, onlyCompanyNames
-            )
-        )
+        return if (selectedIndex == null) {
+            ResponseEntity.ok(dataManager.listCompanies(wildcardSearch ?: "", onlyCompanyNames))
+        } else {
+            ResponseEntity.ok(dataManager.listCompaniesByIndex(selectedIndex))
+        }
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {

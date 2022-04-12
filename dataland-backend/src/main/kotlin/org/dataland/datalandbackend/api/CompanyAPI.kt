@@ -43,9 +43,10 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name or just all companies from the data store.",
-        description = "Companies identified via the provided company name are retrieved. " +
-            "If company name is an empty string, all companies in the data store are returned."
+        summary = "Retrieve specific companies by name/identifier/index or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier/index are retrieved. " +
+            "If an empty string is passed as search argument, all companies in the data store will be returned." +
+            "If selectedIndex is not null, all companies with the given stock index will be returned."
     )
     @ApiResponses(
         value = [
@@ -56,8 +57,9 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve specific companies identified by their company names
-     * If an empty string is passed as company name, all companies in the data store will be returned.
+     * A method to retrieve specific companies identified by their company names identifier or stock index
+     * If an empty string is passed as search argument, all companies in the data store will be returned.
+     * If selectedIndex is not null, all companies with the given stock index will be returned.
      * @param wildcardSearch string used for substring matching
      * @param selectedIndex StockIndex Enum used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames

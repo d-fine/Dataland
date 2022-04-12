@@ -90,7 +90,7 @@ class DataManagerTest(
             testManager.addCompany(company)
         }
 
-        val allCompaniesInStore = testManager.listCompanies("", null, true)
+        val allCompaniesInStore = testManager.listCompanies("", true)
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
             assertEquals(
@@ -107,7 +107,7 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val searchResponse = testManager.listCompanies(company.companyName, null, true)
+            val searchResponse = testManager.listCompanies(company.companyName, true)
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be retrieved by searching for its name."
@@ -124,7 +124,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies(identifier.value, null, false)
+                val searchResponse = testManager.listCompanies(identifier.value, false)
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The posted company could not be retrieved by searching for its identifier."
@@ -142,7 +142,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val stockIndices = company.indices
             for (stockIndex in stockIndices) {
-                val searchResponse = testManager.listCompanies("", stockIndex, true)
+                val searchResponse = testManager.listCompaniesByIndex(stockIndex)
                 assertTrue(
                     searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
                     "The posted company could not be retrieved by searching for its stock indices."
@@ -156,7 +156,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("de", null, false)
+        val searchResponse = testManager.listCompanies("de", false)
         assertEquals(
             3, searchResponse.size,
             "There are 3 companies containing 'de' (in name or identifier) but found ${searchResponse.size}."
@@ -168,7 +168,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("", CompanyInformation.StockIndex.DAX, true)
+        val searchResponse = testManager.listCompaniesByIndex(CompanyInformation.StockIndex.DAX)
         assertEquals(
             2, searchResponse.size,
             "There are 2 companies with DAX index but found ${searchResponse.size}."
@@ -176,14 +176,14 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for companies containing de and DAX index and check if it returns one company`() {
+    fun `search for companies with no index and check if all companies will be returned`() {
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("de", CompanyInformation.StockIndex.DAX, false)
+        val searchResponse = testManager.listCompaniesByIndex(null)
         assertEquals(
-            1, searchResponse.size,
-            "There is 1 company containing 'de' (in name or identifier) with DAX index " +
+            testCompanyList.size, searchResponse.size,
+            "There are ${testCompanyList.size} companies containing with DAX index " +
                 "but found ${searchResponse.size}."
         )
     }
