@@ -35,7 +35,7 @@ describe('Data Search Page Skyminder', function () {
     })
 });
 
-describe.only('Data Search Page Company', function () {
+describe('Data Search Page Company', function () {
     it('page should be present', function () {
         cy.visit("/search")
         cy.get('#app').should("exist")
