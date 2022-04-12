@@ -176,19 +176,6 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for companies with no index and check if all companies will be returned`() {
-        for (company in testCompanyList) {
-            testManager.addCompany(company)
-        }
-        val searchResponse = testManager.listCompaniesByIndex(null)
-        assertEquals(
-            testCompanyList.size, searchResponse.size,
-            "There are ${testCompanyList.size} companies containing with DAX index " +
-                "but found ${searchResponse.size}."
-        )
-    }
-
-    @Test
     fun `get the data sets for a company id that does not exist`() {
         assertThrows<IllegalArgumentException> {
             testManager.searchDataMetaInfo(companyId = "error")

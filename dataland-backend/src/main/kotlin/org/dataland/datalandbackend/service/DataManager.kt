@@ -6,10 +6,12 @@ import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -120,11 +122,8 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompanies(
-        wildcardSearch: String,
-        onlyCompanyNames: Boolean
-    ): List<StoredCompany> {
-        var resultsByName = companyDataPerCompanyId.values.toMutableList()
+    override fun listCompanies(wildcardSearch: String, onlyCompanyNames: Boolean): List<StoredCompany> {
+        val resultsByName = companyDataPerCompanyId.values.toMutableList()
         if (wildcardSearch != "") {
             resultsByName.retainAll {
                 it.companyInformation.companyName.contains(wildcardSearch, true)
@@ -143,20 +142,47 @@ class DataManager(
         }
     }
 
-    override fun listCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex?): List<StoredCompany> {
-        var matchingCompanies = companyDataPerCompanyId.values.toMutableList()
-
-        if (selectedIndex != null) {
-            matchingCompanies.retainAll {
-                it.companyInformation.indices.any { index -> index == selectedIndex }
-            }
+    override fun listCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex): List<StoredCompany> {
+        return companyDataPerCompanyId.values.filter {
+            it.companyInformation.indices.any { index -> index == selectedIndex }
         }
-        return matchingCompanies
     }
 
     override fun getCompanyById(companyId: String): StoredCompany {
         verifyCompanyIdExists(companyId)
 
         return companyDataPerCompanyId[companyId]!!
+    }
+
+    override fun getGreenAssetRatio(selectedIndex: CompanyInformation.StockIndex?):
+        Map<CompanyInformation.StockIndex, BigDecimal> {
+        val objectMapper = ObjectMapper()
+        val indices = if (selectedIndex == null) {
+            CompanyInformation.StockIndex.values().toList()
+        } else {
+            listOf(selectedIndex)
+        }
+
+        val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
+        for (index in indices) {
+            val indexFilteredCompanies = listCompaniesByIndex(index)
+            val dataFilteredCompanies = indexFilteredCompanies.filter {
+                it.dataRegisteredByDataland.any { it.dataType == "EuTaxonomyData" }
+            }
+            var eligibleSum = BigDecimal(0.0)
+            var totalSum = BigDecimal(0.0)
+            for (company in dataFilteredCompanies) {
+                val test = company.dataRegisteredByDataland.filter { it.dataType == "EuTaxonomyData" }.last().dataId
+                val data = objectMapper.readValue(getDataSet(test, "EuTaxonomyData").data, EuTaxonomyData::class.java)
+                eligibleSum += data.capex?.eligible ?: BigDecimal(0.0)
+                eligibleSum += data.opex?.eligible ?: BigDecimal(0.0)
+                eligibleSum += data.revenue?.eligible ?: BigDecimal(0.0)
+                totalSum += data.capex?.total ?: BigDecimal(0.0)
+                totalSum += data.opex?.total ?: BigDecimal(0.0)
+                totalSum += data.revenue?.total ?: BigDecimal(0.0)
+            }
+            greenAssetRatio[index] = eligibleSum / totalSum
+        }
+        return greenAssetRatio
     }
 }
