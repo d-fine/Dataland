@@ -7,6 +7,7 @@ import CompanyInformation from "@/components/pages/company/CompanyInformation.vu
 import DataList from "@/components/pages/data/DataList.vue";
 import SearchTaxonomy from "@/components/pages/taxonomy/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/company/CompanyTaxonomy.vue";
+import IndexPanel from "@/components/pages/indices/IndexPanel.vue";
 
 const routes = [
     {
@@ -39,6 +40,12 @@ const routes = [
         props: true,
         name: "EU Taxonomy",
         component: CompanyEU,
+    },
+    {
+        path: "/indices",
+        props: true,
+        name: "Indices",
+        component: IndexPanel,
     },
     {
         path: "/companies/:companyID",

@@ -10,7 +10,7 @@
               <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
                             @complete="searchCompany($event)" placeholder="Search a company by name"
                             inputClass="h-3rem" ref="cac"
-                            field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
+                            field="companyName" style="z-index:10" name="eu_taxonomy_search_input" @keyup.enter="filter=true; table=true; close();"
 
                             @item-select="filter=false; singleton=true; table=false">
                 <template #footer>
@@ -91,7 +91,7 @@ export default {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform(event.query, "", false).then(response => {
+        this.responseArray = await dataStore.perform(event.query, "", true).then(response => {
               return response.data.map(e => ({
                 "companyName": e.companyInformation.companyName,
                 "companyInformation": e.companyInformation,
