@@ -137,7 +137,7 @@ class DataManager(
         } else {
             val resultsByIdentifier = companyDataPerCompanyId.values.filter {
                 it.companyInformation.identifiers.any { identifier ->
-                    identifier.value.contains(wildcardSearch, true)
+                    identifier.identifierValue.contains(wildcardSearch, true)
                 }
             }
             (resultsByName + resultsByIdentifier).distinct()
