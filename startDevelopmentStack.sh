@@ -3,5 +3,6 @@ docker login ghcr.io -u $DATALAND_SKYMINDERCLIENT_USER -p $DATALAND_SKYMINDERCLI
 #start containers for skyminder and edc-dummyserver
 docker-compose --profile development up -d
 #start the backend
-./gradlew dataland-frontend:generateAPIClientFrontend dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon
+./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon
+./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon
 
