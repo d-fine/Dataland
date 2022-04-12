@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col m12 s12">
         <div v-if="response">
-          <table>
+          <DataTable>
             <caption><h4>Available datasets</h4></caption>
             <thead>
             <tr>
-              <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i">{{ header }}</th>
+              <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i" scope="col">{{ header }}</th>
             </tr>
             </thead>
             <tbody>
@@ -20,7 +20,7 @@
               </td>
             </tr>
             </tbody>
-          </table>
+          </DataTable>
         </div>
       </div>
     </div>
@@ -30,12 +30,12 @@
 <script>
 import {EuTaxonomyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
-
+import DataTable from "primevue/datatable";
 const api = new EuTaxonomyDataControllerApi()
 const dataStore = new DataStore(api.getData)
 export default {
   name: "TaxonomyData",
-  components: {},
+  components: {DataTable},
 
   data() {
     return {

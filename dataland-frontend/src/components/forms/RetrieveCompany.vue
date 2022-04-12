@@ -1,10 +1,11 @@
 <template>
-  <CardWrapper>
-    <div class="card-title"><h2>Company Search</h2>
-    </div>
-    <div class="card-content ">
+  <Card class="col-12">
+    <template #title>
+      Company Search
+    </template>
+    <template #content>
       <FormKit
-          v-model="data"
+          v-model="model"
           :submit-attrs="{
                   'name': 'getCompanies'
                 }"
@@ -20,70 +21,61 @@
         />
 
       </FormKit>
-      <button class="btn btn-md orange darken-3" @click="getCompanyByName(true)">Show all companies</button>
+      <Button @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
       <br>
-      <div class="col m12">
-        <table v-if="response">
-          <caption><h4>Company Search</h4></caption>
-          <thead>
-          <tr>
-            <th v-for="(header, i) in ['Name', 'Headquarter', 'Sector','Market Cap', 'Market Cap Date']" :key="i">
-              {{ header }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(dataset, index) in response.data" :key="index">
-            <td v-for="(item, i) in dataset.companyInformation" :key="i">
-              <router-link v-if="i === 'companyName'" :to="'/companies/'+ dataset.companyId ">{{ item }}</router-link>
-              <template v-else>
-                {{ item }}
-              </template>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <p v-else-if="response_error">The resource you requested does not exist yet. You can create it:
+      <template v-if="processed">
+        <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
+          <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
+          </Column>
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyId" header="" class="surface-0"> <template #body="{data}">
+            <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'" class="text-primary no-underline font-bold"> <span> VIEW</span> <span class="ml-3">></span></router-link>
+          </template> </Column>
+        </DataTable>
+        <p v-else>The resource you requested does not exist yet. You can create it:
           <router-link to="/upload">Create Data</router-link>
         </p>
-        <div>
-        </div>
-      </div>
-    </div>
-  </CardWrapper>
+      </template>
+    </template>
+  </Card>
 </template>
 
 <script>
 import {FormKit} from "@formkit/vue";
 import {CompanyDataControllerApi} from "@/../build/clients/backend";
 import {DataStore} from "@/services/DataStore";
-import CardWrapper from "@/components/wrapper/CardWrapper";
 
 const api = new CompanyDataControllerApi()
 const dataStore = new DataStore(api.getCompaniesByName)
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 export default {
   name: "RetrieveCompany",
-  components: {CardWrapper, FormKit},
+  components: {Card, Button, DataTable, Column , FormKit},
 
   data: () => ({
-    data: {},
     model: {},
     response: null,
     companyInformation: null,
-    response_error: false
+    processed: false
   }),
   methods: {
     async getCompanyByName(all = false) {
       try {
+        this.processed = false
         if (all) {
-          this.data.companyName = ""
+          this.model.companyName = ""
         }
-        this.response = await dataStore.perform(this.data.companyName)
+        this.response = await dataStore.perform(this.model.companyName)
       } catch (error) {
         console.error(error)
         this.response = null
-        this.response_error = true
+      } finally {
+        this.processed = true
       }
     }
   },

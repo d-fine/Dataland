@@ -1,3 +1,4 @@
+let idList: any
 describe('Population Test', () => {
     let eutaxonomiesData:any
     let companiesData:any
@@ -25,13 +26,39 @@ describe('Population Test', () => {
         }
         console.log(eutaxonomiesData)
     });
+
+    it('Retrieve data ID list', () => {
+        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
+            idList = response.body.map(function (e:string){
+                return parseInt(Object.values(e)[0])
+            })
+        })
+    });
 });
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/data/eutaxonomies/1")
-        cy.get('h1').contains("Company Data")
-        cy.get('h4').contains("EU Taxonomy Data")
+
+        cy.visit("/data/eutaxonomies/"+idList[0])
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
+        cy.get('.d-card').should('contain', 'Eligible')
+        cy.get('.d-card .p-progressbar').should('exist')
+    });
+});
+
+describe('Company EU Taxonomy Data', () => {
+    it('Check Data Presence and Link route', () => {
+        cy.visit("/companies/1/eutaxonomies")
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
+        cy.get('body').contains("Market Cap:")
+        cy.get('body').contains("Headquarter:")
+        cy.get('body').contains("Sector:")
+        cy.get('button.p-button.p-component').contains('Financial and sustainability')
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
 });
 
@@ -51,14 +78,15 @@ describe('Company Data', () => {
             .type(inputValue, {force: true})
             .should('have.value', inputValue)
         cy.get('button[name=getCompanies]').click()
-        cy.get('table').contains('Company Search')
+        cy.get('td').contains("VIEW")
+            .contains('a', 'VIEW')
+            .click().url().should('include', '/companies/')
     });
 
     it('Show all companies button exists', () => {
         cy.visit("/search")
-        cy.get('button.btn').contains('Show all companies')
+        cy.get('button.p-button').contains('Show all companies')
             .should('not.be.disabled')
             .click()
-        cy.get('table').contains('Company Search')
     });
 });

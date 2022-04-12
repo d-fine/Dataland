@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 #Start E2E Test and wait for E2E Test completion
-docker-compose --project-name dala-e2e-test up -d
+docker-compose --project-name dala-e2e-test --profile testing up -d
 timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info .
 docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/cypress/ .

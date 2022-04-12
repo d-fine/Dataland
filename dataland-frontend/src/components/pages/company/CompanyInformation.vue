@@ -1,28 +1,41 @@
 <template>
-  <div v-if="companyInformation" class="container">
-    <div class="row">
-      <div class="col m12 s12">
-        <h2>Company Information about {{ companyInformation.companyName }} (ID: {{ company.data.companyID }})</h2>
-        <p>companyInformation: {{ companyInformation }}</p>
-        <ResultTable v-if="response" entity="Available Datasets" :data="response.data" route="/data/eutaxonomies/"
-                     :headers="['Data ID', 'Data Type']" linkKey="dataId" linkID="dataId"/>
-      </div>
+  <div v-if="company" class="grid align-items-end text-left">
+    <div class="col-4">
+      <h1 class="mb-0">{{companyInformation.companyName}}</h1>
+    </div>
+    <div class="col-4">
+      <span>Market Cap:</span> <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
+    </div>
+    <div class="col-4">
+      Company Reports:
+    </div>
+    <div class="col-4">
+      <span>Sector: </span> <span class="font-semibold" >{{companyInformation.sector}}</span>
+    </div>
+    <div class="col-4">
+      <span>Headquarter: </span> <span class="font-semibold" >{{companyInformation.headquarters}}</span>
+    </div>
+    <div class="col-4">
+      <Button label="Financial and sustainability" class="uppercase bg-white text-primary font-semibold border-2">
+        Financial and sustainability 2021
+        <i class="material-icons pl-2" aria-hidden="true">download</i>
+      </Button>
     </div>
   </div>
 </template>
 
 <script>
-import {CompanyDataControllerApi, MetaDataControllerApi} from "@/../build/clients/backend";
+
+import {CompanyDataControllerApi} from "@/../build/clients/backend";
+import Button from "primevue/button";
 import {DataStore} from "@/services/DataStore";
-import ResultTable from "@/components/ui/ResultTable";
+import {numberFormatter} from "@/utils/currencyMagnitude";
 
 const companyApi = new CompanyDataControllerApi()
-const metaDataApi = new MetaDataControllerApi()
-const dataStore = new DataStore(metaDataApi.getListOfDataMetaInfo)
 const companyStore = new DataStore(companyApi.getCompanyById)
 export default {
   name: "CompanyInformation",
-  components: {ResultTable},
+  components: { Button},
   data() {
     return {
       response: null,
@@ -32,22 +45,31 @@ export default {
   },
   props: {
     companyID: {
-      default: 1,
       type: Number
     }
   },
   created() {
-    this.getCompanyDataset()
-    this.getCompanyInformation()
+      this.getCompanyInformation()
+  },
+  watch: {
+    companyID(){
+      this.getCompanyInformation()
+    }
   },
   methods: {
     async getCompanyInformation() {
-      this.company = await companyStore.perform(this.companyID)
-      this.companyInformation = this.company.data.companyInformation
+      try {
+        this.company = await companyStore.perform(this.companyID)
+        this.companyInformation = this.company.data.companyInformation
+      } catch (error) {
+        console.error(error)
+        this.company=null
+      }
+
     },
-    async getCompanyDataset() {
-      this.response = await dataStore.perform(this.companyID, "")
-    }
+     orderOfMagnitudeSuffix(value){
+      return numberFormatter(value)
+     }
   }
 }
 </script>

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-@Profile("dev")
+@Profile("development")
 
 /**
  * Class is for local api route configuration

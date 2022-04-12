@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "ResultTable",
+  name: "SkyminderTable",
   props: ["headers", "data"]
 }
 </script>

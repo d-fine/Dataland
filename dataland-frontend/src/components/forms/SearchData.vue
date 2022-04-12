@@ -1,6 +1,12 @@
 <template>
-  <RetrieveSkyminder/>
-  <RetrieveCompany/>
+  <div class="grid">
+    <div class="col-12">
+      <div class="grid">
+        <RetrieveSkyminder/>
+        <RetrieveCompany/>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -38,12 +38,11 @@ describe('User interactive tests for Data Upload', () => {
         }
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
-        cy.get('span[title=dataId]').then(($dataID) => {
-            const dataID = $dataID.text()
+        cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
-                cy.visit(`/companies/${companyID}`).get('td').contains(dataID.toString()).click().url().should('include', `/data/eutaxonomies/${dataID}`)
-                cy.get('body').should("contain", `Dataset: ${dataID}`).should('contain', 'Eligible Revenue').should("not.contain", "NaN")
+                cy.visit(`/companies/${companyID}/eutaxonomies`)
+                cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "NaN")
             })
         })
     })
@@ -57,7 +56,7 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {
             const id = $dataID.text()
-            cy.visit(`/data/eutaxonomies/${id}`).get('body').should("contain", `Dataset: ${id}`).should("contain", "Eligible Revenue").should("contain", "NaN")
+            cy.visit(`/data/eutaxonomies/${id}`).get('body').should("contain", "Eligible Revenue").should("contain", "No data available")
         })
     })
 

@@ -4,5 +4,10 @@
   "retries": {
     "runMode": 2,
     "openMode": 1
-  }
+  },
+  "testFiles": [
+    "high/**/*.ts",
+    "medium/**/*.ts",
+    "low/**/*.ts"
+  ]
 }

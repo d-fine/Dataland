@@ -1,9 +1,15 @@
 <template>
-  <div class="hello">
-    <h1>Welcome to DataLand</h1>
-    <section class="hero container max-w-screen-lg mx-auto pb-10 flex">
-      <img alt="Dataland logo" src="@/assets/images/logos/dataland-logo-lr.png" class="mx-auto" >
-    </section>
+  <div class="grid">
+    <div class="col-12 surface-ground">
+      <div class="grid align-items-center">
+        <div class="col-4 col-offset-2">
+          <h1 class="text-justify">COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE COSTS.</h1>
+        </div>
+        <div class="col-2 col-offset-2">
+          <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -43,7 +43,7 @@ export class DataStore {
         if ("format" in propertiesSchema[param]) {
             const format = propertiesSchema[param].format
             if (format == "date") {
-                return `date_format:DD.MM.YYYY|date_format:DD/MM/YYYY`
+                return 'date_format:DD.MM.YYYY|date_format:DD/MM/YYYY'
             }
         }
         if ("type" in propertiesSchema[param]) {
@@ -89,7 +89,7 @@ export class DataStore {
                             classes: {
                                 outer: {'formkit-outer': false},
                                 inner: {'formkit-inner': false},
-                                input: {'formkit-input': false}
+                                input: {'formkit-input': false, 'p-radiobutton:': true}
                             },
                             options: enumProperties
                         }
@@ -103,7 +103,8 @@ export class DataStore {
                         name: index,
                         validation: validation,
                         classes: {
-                            inner: {'formkit-inner': false},
+                            inner: {'formkit-inner': false, 'p-inputwrapper': true},
+                            input: {'formkit-input': false, 'p-inputtext': true}
                         }
                     }
                 )
@@ -116,6 +117,10 @@ export class DataStore {
                             placeholder: humanizeString(index),
                             name: index,
                             validation: validation,
+                            classes: {
+                                inner: {'formkit-inner': false, 'p-inputwrapper': true},
+                                input: {'formkit-input': false, 'p-inputtext': true}
+                            }
                         }
                     )
                 }

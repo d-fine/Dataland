@@ -1,27 +1,29 @@
 <template>
-<div>
-    <div class="card">
-      <div class="card-title red-text">
-        <h2>Sorry, but an Error occurred.</h2>
-        <h4>{{msg}} was not uploaded!</h4>
-      </div>
-
-    </div>
-</div>
+  <div>
+    <Message severity="error" :sticky="false" :key="messageCount">
+      <h4>Sorry, but an Error occurred.</h4>
+      <h4>{{ msg }} was not uploaded!</h4>
+    </Message>
+  </div>
 </template>
 
 <script>
+import Message from 'primevue/message';
+
 import {humanizeString} from "@/utils/stringHumanizer"
+
 export default {
   name: "FailedUpload",
+  components: {Message},
   props: {
     msg: String,
-    status: Number
+    messageCount: Number
   },
   methods: {
     humanize(text) {
       if (typeof text == "string") return humanizeString(text)
       else return null
     }
-}}
+  }
+}
 </script>
