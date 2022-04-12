@@ -1,5 +1,12 @@
 <template>
   <MarginWrapper>
+    <pre>{{ selectedCompany }}</pre>
+    <p>
+
+      Query: {{ route.query }}
+      Selected Company: {{ selectedCompany }}
+      Presence: {{ presence }}
+    </p>
     <div class="grid">
       <div class="col-8 text-left">
         <span class="p-fluid">
@@ -10,12 +17,14 @@
               <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
                             @complete="searchCompany($event)" placeholder="Search a company by name"
                             inputClass="h-3rem" ref="cac"
-                            field="companyName" style="z-index:10" name="eu_taxonomy_search_input" @keyup.enter="filter=true; table=true; close();"
+                            field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
+                            @keyup.enter="filter=true; table=true; $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}}); queryCompany(); close();"
 
-                            @item-select="filter=false; singleton=true; table=false">
+                            @item-select="filter=false; singleton=true; table=false; $router.push(`/companies/${selectedCompany.companyId}/eutaxonomies`)">
                 <template #footer>
                   <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
-                    <li class="p-autocomplete-item text-primary font-semibold" @click="filter=true; table=true;singleton=false; close();">View all ({{responseArray.length}}) results. </li>
+                    <li class="p-autocomplete-item text-primary font-semibold"
+                        @click="filter=true; table=true;singleton=false; close(); $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}})">View all ({{ responseArray.length }}) results. </li>
                   </ul>
                 </template>
               </AutoComplete>
@@ -27,24 +36,24 @@
     </div>
   </MarginWrapper>
   <template v-if="processed && table">
-    <EuTaxoSearchResults :data="filter ? responseArray : [selectedCompany]" :processed="processed"/>
+    <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
   </template>
   <template v-if="processed && singleton">
-  <MarginWrapper >
-    <div class="grid align-items-end">
-      <div class="col-9">
-        <CompanyInformation :companyID="selectedCompany.companyId"/>
+    <MarginWrapper>
+      <div class="grid align-items-end">
+        <div class="col-9">
+          <CompanyInformation :companyID="parseInt(selectedCompany.companyId)"/>
+        </div>
+        <div class="col-3 pb-4 text-right">
+          <Button label="Get Report" class="uppercase p-button">Get Report
+            <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
+          </Button>
+        </div>
       </div>
-      <div class="col-3 pb-4 text-right">
-        <Button label="Get Report" class="uppercase p-button">Get Report
-          <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
-        </Button>
-      </div>
-    </div>
-  </MarginWrapper>
-  <MarginWrapper bgClass="surface-800">
-    <TaxonomyData :companyID="selectedCompany.companyId"/>
-  </MarginWrapper>
+    </MarginWrapper>
+    <MarginWrapper bgClass="surface-800">
+      <TaxonomyData :companyID="parseInt(selectedCompany.companyId)"/>
+    </MarginWrapper>
 
   </template>
 </template>
@@ -62,16 +71,20 @@ import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
+import Button from "primevue/button";
+import {useRoute} from "vue-router"
 
 export default {
   name: "EuTaxoSearchBar",
-  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation},
+  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button},
   data() {
     return {
+      presence: "No",
+      route: useRoute(),
       singleton: false,
       processed: false,
       table: false,
-      responseArray: null,
+      responseArray: this.paramsArray,
       filter: false,
       loading: false,
       model: {},
@@ -83,24 +96,42 @@ export default {
       additionalCompanies: null
     }
   },
+  props: {
+    paramsSelection: {
+      type: String,
+      default: ""
+    },
+    paramsArray: {
+      type: Array,
+      default() {
+        return [
+          {}
+        ]
+      }
+    }
+  },
+  mounted() {
+    if (this.route.query.input) {
+      this.selectedCompany = this.route.query.input
+      this.queryCompany()
+    }
+  },
   methods: {
-    close(){
+    responseMapper(response){
+      return response.data.map(e => ({
+        "companyName": e.companyInformation.companyName,
+        "companyInformation": e.companyInformation,
+        "companyId": e.companyId
+      }))
+    },
+    close() {
       this.$refs.cac.hideOverlay()
     },
     async searchCompany(event) {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform(event.query, "", true).then(response => {
-              return response.data.map(e => ({
-                "companyName": e.companyInformation.companyName,
-                "companyInformation": e.companyInformation,
-                "companyId": e.companyId
-              }))
-              // hier muss noch viel logic rein und diese zusätzlichen Elemente die noch geladen sind sollten in einem extra feld als link gerendert werden
-              // splitting der arrays und dann den rest ensprechend gestylt und an eine bestimmte stelle gehängt
-            }
-        )
+        this.responseArray = await dataStore.perform(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
@@ -108,6 +139,21 @@ export default {
       } finally {
         this.loading = false
         this.processed = true
+      }
+    },
+    async queryCompany() {
+      try {
+        this.processed = false
+        this.loading = true
+        this.responseArray = await dataStore.perform(this.selectedCompany, "", false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+        this.additionalCompanies = this.responseArray.slice(0)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.processed = true
+        this.table = true
       }
     }
   }
