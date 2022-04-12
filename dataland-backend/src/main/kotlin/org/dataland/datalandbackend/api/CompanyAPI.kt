@@ -67,8 +67,8 @@ interface CompanyAPI {
      */
     fun getCompanies(
         @RequestParam wildcardSearch: String? = null,
-        selectedIndex: CompanyInformation.StockIndex? = null,
-        onlyCompanyNames: Boolean = false
+        @RequestParam selectedIndex: CompanyInformation.StockIndex? = null,
+        @RequestParam onlyCompanyNames: Boolean = false
     ):
         ResponseEntity<List<StoredCompany>>
 
