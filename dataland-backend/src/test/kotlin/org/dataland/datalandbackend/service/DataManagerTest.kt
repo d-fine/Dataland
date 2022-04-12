@@ -31,8 +31,8 @@ class DataManagerTest(
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.MDAX),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "DE0987654321"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLAB")
             )
         ),
         CompanyInformation(
@@ -43,8 +43,8 @@ class DataManagerTest(
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.DAX),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLUB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "DE1337"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLUB")
             )
         ),
         CompanyInformation(
@@ -55,8 +55,8 @@ class DataManagerTest(
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.DAX),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "IT8765"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLIB")
             )
         ),
         CompanyInformation(
@@ -67,8 +67,8 @@ class DataManagerTest(
             reportingDateOfMarketCap = LocalDate.now(),
             indices = listOf(CompanyInformation.StockIndex.GEX),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "FR8525"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLEB")
             )
         )
     )
@@ -124,7 +124,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies(identifier.value, false)
+                val searchResponse = testManager.listCompanies(identifier.identifierValue, false)
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The posted company could not be retrieved by searching for its identifier."
