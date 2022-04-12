@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.RATIO_PRECISION
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
@@ -9,9 +10,11 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -135,7 +138,7 @@ class DataManager(
         } else {
             val resultsByIdentifier = companyDataPerCompanyId.values.filter {
                 it.companyInformation.identifiers.any { identifier ->
-                    identifier.value.contains(wildcardSearch, true)
+                    identifier.identifierValue.contains(wildcardSearch, true)
                 }
             }
             (resultsByName + resultsByIdentifier).distinct()
@@ -156,6 +159,7 @@ class DataManager(
 
     override fun getGreenAssetRatio(selectedIndex: CompanyInformation.StockIndex?):
         Map<CompanyInformation.StockIndex, BigDecimal> {
+        val logger = LoggerFactory.getLogger(javaClass)
         val objectMapper = ObjectMapper()
         val indices = if (selectedIndex == null) {
             CompanyInformation.StockIndex.values().toList()
@@ -165,15 +169,18 @@ class DataManager(
 
         val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
         for (index in indices) {
-            val indexFilteredCompanies = listCompaniesByIndex(index)
-            val dataFilteredCompanies = indexFilteredCompanies.filter {
-                it.dataRegisteredByDataland.any { it.dataType == "EuTaxonomyData" }
+            logger.info("Calculating green asset ratio for index: $index")
+            val filteredCompanies = listCompaniesByIndex(index).filter {
+                it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyData" }
             }
             var eligibleSum = BigDecimal(0.0)
             var totalSum = BigDecimal(0.0)
-            for (company in dataFilteredCompanies) {
-                val test = company.dataRegisteredByDataland.filter { it.dataType == "EuTaxonomyData" }.last().dataId
-                val data = objectMapper.readValue(getDataSet(test, "EuTaxonomyData").data, EuTaxonomyData::class.java)
+            if (filteredCompanies.isEmpty()) {
+                continue
+            }
+            for (company in filteredCompanies) {
+                val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
+                val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
                 eligibleSum += data.capex?.eligible ?: BigDecimal(0.0)
                 eligibleSum += data.opex?.eligible ?: BigDecimal(0.0)
                 eligibleSum += data.revenue?.eligible ?: BigDecimal(0.0)
@@ -181,7 +188,7 @@ class DataManager(
                 totalSum += data.opex?.total ?: BigDecimal(0.0)
                 totalSum += data.revenue?.total ?: BigDecimal(0.0)
             }
-            greenAssetRatio[index] = eligibleSum / totalSum
+            greenAssetRatio[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
         }
         return greenAssetRatio
     }

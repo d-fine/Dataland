@@ -13,8 +13,7 @@
           submit-label="Post Company"
           @submit="postCompanyData">
         <FormKitSchema
-            :data="model"
-            :schema="schema"
+            :schema="companyInformationSchema"
         />
         <FormKit
             type="list"
@@ -25,43 +24,13 @@
               :key="nIdentifier"
               type="group"
           >
-            <FormKit
-                type="select"
-                label="Identifier Type"
-                name="type"
-                placeholder="Please choose"
-                :options="
-                    {'Lei':'LEI',
-                    'Isin': 'ISIN',
-                    'PermId': 'PERM Id'}"
-                validation="required"
-                :inner-class="{
-                                'formkit-inner':false,
-                                'p-inputwrapper':true
-                              }"
-                :input-class="{
-                                'formkit-input':false,
-                                'p-inputtext': true
-                              }"
-            />
-            <FormKit
-                type="text"
-                name="value"
-                label="Identifier Value"
-                placeholder="Identifier Value"
-                validation="required"
-                :inner-class="{
-                                'formkit-inner':false,
-                                'p-inputwrapper':true
-                              }"
-                :input-class="{
-                                'formkit-input':false,
-                                'p-inputtext': true
-                              }"
+            <FormKitSchema
+                :schema="companyIdentifierSchema"
             />
           </FormKit>
         </FormKit>
       </FormKit>
+      <p> {{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
       <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier</Button>
         <template v-if="processed">
@@ -84,7 +53,9 @@ import Button from "primevue/button";
 import Message from 'primevue/message';
 const api = new CompanyDataControllerApi()
 const contactSchema = backend.components.schemas.CompanyInformation
+const companyIdentifier = backend.components.schemas.CompanyIdentifier
 const dataStore = new DataStore(api.postCompany, contactSchema)
+const companyIdentifierDataStore = new DataStore(api.postCompany, companyIdentifier)
 
 const createCompany = {
   name: "CreateCompany",
@@ -93,14 +64,15 @@ const createCompany = {
   data: () => ({
     processed: false,
     model: {},
-    schema: dataStore.getSchema(),
+    companyInformationSchema: dataStore.getSchema(),
+    companyIdentifierSchema: companyIdentifierDataStore.getSchema(),
     response: null,
     messageCount: 0,
     identifierListSize: 1
   }),
   created() {
     // delete auto identifiers
-    delete this.schema[6]
+    delete this.companyInformationSchema[6]
   },
   methods: {
     async postCompanyData() {

@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class MetaDataControllerTest {
@@ -108,5 +109,16 @@ class MetaDataControllerTest {
         val listOfDataMetaInfoPerCompanyIdAndDataType =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyData")
         assertEquals(numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size)
+    }
+
+    @Test
+    fun `post companies and eu taxonomy data and check if green asset ratio can be calculated for each index`() {
+        val numberOfCompanies = 2
+        val numberOfDataSetsToPostPerCompany = 6
+        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 5000, 600000000)
+        postCompaniesAndEuTaxonomyData(testData)
+        val greenAssetRatio = metaDataControllerApi.getGreenAssetRatio(null)
+        // assertEquals(CompanyInformation.Indices.values().size, greenAssetRatio.size)
+        assertTrue(greenAssetRatio.all { it.value.toDouble() > 0.0 })
     }
 }

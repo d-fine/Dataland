@@ -52,6 +52,14 @@ export class DataStore {
         return ""
     }
 
+    private processEnum(rawEnumProperties: any): any {
+        const enumProperties: any = {}
+        for (const enumItem of rawEnumProperties) {
+            enumProperties[enumItem] = humanizeString(enumItem)
+        }
+        return enumProperties
+    }
+
     private getValidationStatus(param: string): string {
         const required = this.rawSchema.required.includes(param) ? "required" : ""
         const type = this.getType(param)
@@ -64,8 +72,9 @@ export class DataStore {
         for (const index in propertiesSchema) {
             const validation = this.getValidationStatus(index)
             if ("enum" in propertiesSchema[index]) {
-                const enumProperties = propertiesSchema[index].enum
-                if (enumProperties.length > 2) {
+                const enumProperties = this.processEnum(propertiesSchema[index].enum)
+                console.log(enumProperties)
+                if (Object.keys(enumProperties).length > 2) {
                     /* create a select form */
                     schema.push({
                             $formkit: 'select',
@@ -108,11 +117,7 @@ export class DataStore {
             } else if (this.getType(index) == "array") {
                 /* create a checkbox form */
                 if ("enum" in propertiesSchema[index].items) {
-                    const enumProperties = {}
-                    for (const enumItem of propertiesSchema[index].items.enum) {
-                        // @ts-ignore
-                        enumProperties[enumItem] = humanizeString(enumItem)
-                    }
+                    const enumProperties = this.processEnum(propertiesSchema[index].items.enum)
                     schema.push({
                             $formkit: "checkbox",
                             label: humanizeString(index),

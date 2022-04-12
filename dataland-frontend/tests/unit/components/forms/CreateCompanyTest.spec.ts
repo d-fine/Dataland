@@ -7,7 +7,7 @@ describe('CreateCompanyTest', () => {
 
     it('checks field properties', () => {
         expect(wrapper.vm.model).toBeDefined()
-        expect(wrapper.vm.schema).toBeDefined()
+        expect(wrapper.vm.companyInformationSchema).toBeDefined()
         expect(wrapper.vm.processed).toBeDefined()
         expect(wrapper.vm.response).toBeDefined()
         expect(wrapper.vm.messageCount).toBeDefined()
