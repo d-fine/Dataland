@@ -33,7 +33,6 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j:2.17.2")
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
-    implementation("org.reflections:reflections:0.10.2")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("ch.qos.logback:logback-classic:1.2.11")

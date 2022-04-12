@@ -21,7 +21,7 @@
         />
 
       </FormKit>
-      <Button @click="getCompanyByName(true)" label="Show all companies" />
+      <Button @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
       <br>
       <template v-if="loading">
         <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
