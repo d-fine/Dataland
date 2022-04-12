@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.RATIO_PRECISION
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
@@ -187,8 +188,7 @@ class DataManager(
                 totalSum += data.opex?.total ?: BigDecimal(0.0)
                 totalSum += data.revenue?.total ?: BigDecimal(0.0)
             }
-            val result = eligibleSum.divide(totalSum, 4, RoundingMode.HALF_UP)
-            greenAssetRatio[index] = result
+            greenAssetRatio[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
         }
         return greenAssetRatio
     }
