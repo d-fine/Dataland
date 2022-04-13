@@ -4,8 +4,8 @@
     <div class="col-12 text-left">
     <h4 class="mb-0">Choose by stock market index</h4>
     </div>
-    <div class="col-3" v-for="index in indexArray" :key="index">
-      <IndexCard  :index="index"/>
+    <div class="col-3" v-for="(item, index) in indexArray" :key="index" @click="handleIndexCardClick(item, index)">
+      <IndexCard  :index="item"/>
     </div>
   </div>
 </template>
@@ -15,31 +15,20 @@
 
 import IndexCard from "@/components/pages/indices/IndexCard";
 import backend from "@/../build/clients/backend/backendOpenApi.json";
-import {humanizeString} from "@/utils/stringHumanizer";
 
 export default {
   name: "IndexPanel",
   components: {IndexCard},
+  props: ['indexArray'],
   data() {
     return {
       indices: backend.components.schemas.CompanyInformation.properties["indices"].items.enum,
-      indexArray: [
-        "CDAX",
-        "DAX",
-        "General Standards",
-        "GEX",
-        "MDAX",
-        "Prime Standards",
-        "SDAX",
-        "TecDAX",
-        "ScaleHDAX",
-        "DAX 50 ESG"
-      ]
     }
   },
   methods: {
-    humanizeIndex(index){
-      return humanizeString(index)
+    handleIndexCardClick(item, index){
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: item}})
+      this.$emit("index-click", index)
     }
   }
 }
