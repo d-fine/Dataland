@@ -125,27 +125,30 @@ class DataManager(
         return companyDataPerCompanyId["$companyCounter"]!!
     }
 
-    override fun listCompanies(wildcardSearch: String, onlyCompanyNames: Boolean): List<StoredCompany> {
-        val resultsByName = companyDataPerCompanyId.values.toMutableList()
-        if (wildcardSearch != "") {
-            resultsByName.retainAll {
-                it.companyInformation.companyName.contains(wildcardSearch, true)
-            }
-        }
+    override fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany> {
+        val allCompanies = companyDataPerCompanyId.values.toList()
 
-        return if (onlyCompanyNames || wildcardSearch == "") {
-            resultsByName
+        return if (searchString == "") {
+            allCompanies
+        } else if (onlyCompanyNames) {
+            filterCompaniesByName(searchString, allCompanies)
         } else {
-            val resultsByIdentifier = companyDataPerCompanyId.values.filter {
-                it.companyInformation.identifiers.any { identifier ->
-                    identifier.identifierValue.contains(wildcardSearch, true)
-                }
-            }
-            (resultsByName + resultsByIdentifier).distinct()
+            (filterCompaniesByName(searchString, allCompanies) +
+                    filterCompaniesByIdentifier(searchString, allCompanies)).distinct()
         }
     }
 
-    override fun listCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex): List<StoredCompany> {
+    private fun filterCompaniesByName(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+        return companies.filter { it.companyInformation.companyName.contains(searchString, true) }
+    }
+
+    private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+        return companies.filter { it.companyInformation.identifiers.any { identifier ->
+            identifier.identifierValue.contains(searchString, true) }
+        }
+    }
+
+    override fun searchCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex): List<StoredCompany> {
         return companyDataPerCompanyId.values.filter {
             it.companyInformation.indices.any { index -> index == selectedIndex }
         }
@@ -170,7 +173,7 @@ class DataManager(
         val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
         for (index in indices) {
             logger.info("Calculating green asset ratio for index: $index")
-            val filteredCompanies = listCompaniesByIndex(index).filter {
+            val filteredCompanies = searchCompaniesByIndex(index).filter {
                 it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyData" }
             }
             var eligibleSum = BigDecimal(0.0)
