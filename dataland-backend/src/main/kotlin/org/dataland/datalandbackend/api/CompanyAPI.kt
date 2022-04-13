@@ -60,13 +60,13 @@ interface CompanyAPI {
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If an empty string is passed as search argument, all companies in the data store will be returned.
      * If selectedIndex is not null, all companies with the given stock index will be returned.
-     * @param wildcardSearch string used for substring matching
+     * @param searchString string used for substring matching
      * @param selectedIndex StockIndex Enum used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return information about all companies matching the search criteria
      */
     fun getCompanies(
-        @RequestParam wildcardSearch: String? = null,
+        @RequestParam searchString: String? = null,
         @RequestParam selectedIndex: CompanyInformation.StockIndex? = null,
         @RequestParam onlyCompanyNames: Boolean = false
     ):

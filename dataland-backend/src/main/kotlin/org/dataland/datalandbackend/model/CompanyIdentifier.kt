@@ -15,5 +15,5 @@ data class CompanyIdentifier(
     /**
      * A class that holds Identifier Types for a company
      */
-    enum class IdentifierType { LEI, ISIN, PERMId }
+    enum class IdentifierType { Lei, Isin, PermId }
 }

@@ -29,7 +29,7 @@ internal class CompanyDataControllerTest(
         marketCap = BigDecimal(100),
         reportingDateOfMarketCap = LocalDate.now(),
         indices = listOf(CompanyInformation.StockIndex.GeneralStandards),
-        identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "DE1337"))
+        identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"))
     )
 
     @Test
