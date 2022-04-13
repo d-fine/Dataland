@@ -1,5 +1,10 @@
 <template>
+
   <div class="grid">
+    <div class="col-12 text-left">
+    <h4 class="mb-0">Choose by stock market index</h4>
+
+    </div>
     <div class="col-3" v-for="index in indices" :key="index">
       <IndexCard  :index="humanizeIndex(index)"/>
     </div>

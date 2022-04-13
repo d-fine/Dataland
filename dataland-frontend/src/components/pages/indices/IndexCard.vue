@@ -1,5 +1,5 @@
 <template>
-  <Card class="bg-white d-card mr-2">
+  <Card class="bg-white d-card mr-2 cursor-pointer" @click="$router.push({name: 'Search Eu Taxonomy', query: {input: index}})">
     <template #index></template>
     <template #content>
       <div class="grid align-items-center">

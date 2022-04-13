@@ -14,7 +14,7 @@
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-else aria-hidden="true"/>
-              <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
+              <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="focus=false"
                             @complete="searchCompany($event)" placeholder="Search a company by name"
                             inputClass="h-3rem" ref="cac"
                             field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
@@ -34,6 +34,7 @@
       <div class="col-2 text-left">
       </div>
     </div>
+
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
@@ -79,6 +80,7 @@ export default {
   components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button},
   data() {
     return {
+      focus: false,
       presence: "No",
       route: useRoute(),
       singleton: false,
@@ -117,6 +119,9 @@ export default {
     }
   },
   methods: {
+    focused(){
+      this.$emit('focus', "hallo")
+    },
     responseMapper(response){
       return response.data.map(e => ({
         "companyName": e.companyInformation.companyName,
