@@ -10,11 +10,7 @@
 
     </div>
   </MarginWrapper>
-    <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus"/>
-  <MarginWrapper>
-    <IndexTabs v-if="!showIndexPanel" :indexArray="indexArray" :initIndex="index"/>
-
-  </MarginWrapper>
+    <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :indexArray="indexArray" ref="euTaxoSearchBar"/>
   <MarginWrapper bgClass="surface-800" v-if="showIndexPanel">
     <IndexPanel :indexArray="indexArray" @index-click="handleIndex"/>
   </MarginWrapper>
@@ -26,7 +22,7 @@
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
-import IndexTabs from "@/components/pages/indices/IndexTabs";
+
 const indexArray = [
   "CDAX",
   "DAX",
@@ -41,7 +37,7 @@ const indexArray = [
 ]
 export default {
   name: "SearchTaxonomy",
-  components: {IndexTabs, IndexPanel, MarginWrapper, EuTaxoSearchBar},
+  components: { IndexPanel, MarginWrapper, EuTaxoSearchBar},
   data(){
     return {
       autocompletefocus: null,
@@ -58,6 +54,7 @@ export default {
     handleIndex(index){
       console.log(index)
       this.showIndexPanel = false
+      this.$refs.euTaxoSearchBar.toggleIndexTabs(index)
       this.index = index
     }
   }

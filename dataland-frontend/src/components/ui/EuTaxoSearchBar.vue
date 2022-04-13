@@ -42,6 +42,9 @@
     </div>
 
   </MarginWrapper>
+  <MarginWrapper>
+    <IndexTabs v-if="showIndexTabs" :indexArray="indexArray" :initIndex="index"/>
+  </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
   </template>
@@ -78,14 +81,17 @@ import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
+import IndexTabs from "@/components/pages/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
 
 export default {
   name: "EuTaxoSearchBar",
-  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button},
+  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button, IndexTabs},
   data() {
     return {
+      showIndexTabs: false,
+      index: null,
       scrolled: false,
       focus: false,
       presence: "No",
@@ -106,6 +112,9 @@ export default {
     }
   },
   props: {
+    indexArray: {
+      type: Array,
+    },
     paramsSelection: {
       type: String,
       default: ""
@@ -152,6 +161,10 @@ export default {
         "companyInformation": e.companyInformation,
         "companyId": e.companyId
       }))
+    },
+    toggleIndexTabs(index) {
+      this.index = index
+      this.showIndexTabs = true
     },
     close() {
       this.$refs.cac.hideOverlay()
