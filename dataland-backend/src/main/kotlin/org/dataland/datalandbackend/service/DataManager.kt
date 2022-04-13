@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
@@ -28,6 +27,7 @@ class DataManager(
     var companyDataPerCompanyId = mutableMapOf<String, StoredCompany>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
     private var companyCounter = 0
+    private val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -133,18 +133,25 @@ class DataManager(
         } else if (onlyCompanyNames) {
             filterCompaniesByName(searchString, allCompanies)
         } else {
-            (filterCompaniesByName(searchString, allCompanies) +
-                    filterCompaniesByIdentifier(searchString, allCompanies)).distinct()
+            (
+                filterCompaniesByName(searchString, allCompanies) +
+                    filterCompaniesByIdentifier(searchString, allCompanies)
+                ).distinct()
         }
     }
 
     private fun filterCompaniesByName(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
-        return companies.filter { it.companyInformation.companyName.contains(searchString, true) }
+        return (
+            companies.filter { it.companyInformation.companyName.startsWith(searchString, true) } +
+                companies.filter { it.companyInformation.companyName.contains(searchString, true) }
+            ).distinct()
     }
 
     private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
-        return companies.filter { it.companyInformation.identifiers.any { identifier ->
-            identifier.identifierValue.contains(searchString, true) }
+        return companies.filter {
+            it.companyInformation.identifiers.any { identifier ->
+                identifier.identifierValue.contains(searchString, true)
+            }
         }
     }
 
@@ -162,37 +169,39 @@ class DataManager(
 
     override fun getGreenAssetRatio(selectedIndex: CompanyInformation.StockIndex?):
         Map<CompanyInformation.StockIndex, BigDecimal> {
-        val logger = LoggerFactory.getLogger(javaClass)
-        val objectMapper = ObjectMapper()
+
         val indices = if (selectedIndex == null) {
             CompanyInformation.StockIndex.values().toList()
         } else {
             listOf(selectedIndex)
         }
 
-        val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
         for (index in indices) {
-            logger.info("Calculating green asset ratio for index: $index")
             val filteredCompanies = searchCompaniesByIndex(index).filter {
                 it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyData" }
             }
-            var eligibleSum = BigDecimal(0.0)
-            var totalSum = BigDecimal(0.0)
+
             if (filteredCompanies.isEmpty()) {
                 continue
             }
-            for (company in filteredCompanies) {
-                val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
-                val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
-                eligibleSum += data.capex?.eligible ?: BigDecimal(0.0)
-                eligibleSum += data.opex?.eligible ?: BigDecimal(0.0)
-                eligibleSum += data.revenue?.eligible ?: BigDecimal(0.0)
-                totalSum += data.capex?.total ?: BigDecimal(0.0)
-                totalSum += data.opex?.total ?: BigDecimal(0.0)
-                totalSum += data.revenue?.total ?: BigDecimal(0.0)
-            }
-            greenAssetRatio[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
+            updateGreenAssetRatioOnIndexLevel(index,filteredCompanies)
         }
         return greenAssetRatio
+    }
+
+    private fun updateGreenAssetRatioOnIndexLevel(index: CompanyInformation.StockIndex, companies: List<StoredCompany>) {
+        var eligibleSum = BigDecimal(0.0)
+        var totalSum = BigDecimal(0.0)
+        for (company in companies) {
+            val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
+            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
+            eligibleSum += data.capex?.eligible ?: BigDecimal(0.0)
+            eligibleSum += data.opex?.eligible ?: BigDecimal(0.0)
+            eligibleSum += data.revenue?.eligible ?: BigDecimal(0.0)
+            totalSum += data.capex?.total ?: BigDecimal(0.0)
+            totalSum += data.opex?.total ?: BigDecimal(0.0)
+            totalSum += data.revenue?.total ?: BigDecimal(0.0)
+        }
+        greenAssetRatio[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
     }
 }

@@ -40,8 +40,8 @@ class DummyDataCreator {
             reportingDateOfMarketCap = LocalDate.of(2022, 1, 1),
             indices = listOf(CompanyInformation.Indices.generalStandards),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.iSIN, "DE000$testDataMarker"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.lEI, "BLA$testDataMarker")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "DE000$testDataMarker"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.lei, "BLA$testDataMarker")
             )
         )
     }

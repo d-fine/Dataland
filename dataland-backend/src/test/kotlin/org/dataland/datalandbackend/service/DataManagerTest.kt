@@ -29,10 +29,10 @@ class DataManagerTest(
             sector = "Test-Sector_1",
             marketCap = BigDecimal(100),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.MDAX),
+            indices = listOf(CompanyInformation.StockIndex.Mdax),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "DE0987654321"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLAB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
             )
         ),
         CompanyInformation(
@@ -41,10 +41,10 @@ class DataManagerTest(
             sector = "Test-Sector_2",
             marketCap = BigDecimal(200),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.DAX),
+            indices = listOf(CompanyInformation.StockIndex.Dax),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "DE1337"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLUB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLUB")
             )
         ),
         CompanyInformation(
@@ -53,10 +53,10 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(300),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.DAX),
+            indices = listOf(CompanyInformation.StockIndex.Dax),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "IT8765"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLIB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
             )
         ),
         CompanyInformation(
@@ -65,10 +65,10 @@ class DataManagerTest(
             sector = "Test-Sector_3",
             marketCap = BigDecimal(400),
             reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.GEX),
+            indices = listOf(CompanyInformation.StockIndex.Gex),
             identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.ISIN, "FR8525"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.LEI, "BLEB")
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
+                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
             )
         )
     )
@@ -90,7 +90,7 @@ class DataManagerTest(
             testManager.addCompany(company)
         }
 
-        val allCompaniesInStore = testManager.listCompanies("", true)
+        val allCompaniesInStore = testManager.searchCompanies("", true)
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
             assertEquals(
@@ -107,7 +107,7 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val searchResponse = testManager.listCompanies(company.companyName, true)
+            val searchResponse = testManager.searchCompanies(company.companyName, true)
             assertEquals(
                 company.companyName, searchResponse.first().companyInformation.companyName,
                 "The posted company could not be retrieved by searching for its name."
@@ -124,7 +124,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val identifiers = company.identifiers
             for (identifier in identifiers) {
-                val searchResponse = testManager.listCompanies(identifier.identifierValue, false)
+                val searchResponse = testManager.searchCompanies(identifier.identifierValue, false)
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The posted company could not be retrieved by searching for its identifier."
@@ -142,7 +142,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             val stockIndices = company.indices
             for (stockIndex in stockIndices) {
-                val searchResponse = testManager.listCompaniesByIndex(stockIndex)
+                val searchResponse = testManager.searchCompaniesByIndex(stockIndex)
                 assertTrue(
                     searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
                     "The posted company could not be retrieved by searching for its stock indices."
@@ -156,7 +156,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompanies("de", false)
+        val searchResponse = testManager.searchCompanies("de", false)
         assertEquals(
             3, searchResponse.size,
             "There are 3 companies containing 'de' (in name or identifier) but found ${searchResponse.size}."
@@ -168,7 +168,7 @@ class DataManagerTest(
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.listCompaniesByIndex(CompanyInformation.StockIndex.DAX)
+        val searchResponse = testManager.searchCompaniesByIndex(CompanyInformation.StockIndex.Dax)
         assertEquals(
             2, searchResponse.size,
             "There are 2 companies with DAX index but found ${searchResponse.size}."

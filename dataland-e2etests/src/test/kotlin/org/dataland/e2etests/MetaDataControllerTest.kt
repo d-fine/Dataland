@@ -112,13 +112,12 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check if green asset ratio can be calculated for each index`() {
+    fun `post companies and eu taxonomy data and check if green asset ratio is in expected range`() {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
         val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 5000, 600000000)
         postCompaniesAndEuTaxonomyData(testData)
         val greenAssetRatio = metaDataControllerApi.getGreenAssetRatio(null)
-        // assertEquals(CompanyInformation.Indices.values().size, greenAssetRatio.size)
-        assertTrue(greenAssetRatio.all { it.value.toDouble() > 0.0 })
+        assertTrue(greenAssetRatio.all { it.value.toDouble() in 0.0..1.0 })
     }
 }
