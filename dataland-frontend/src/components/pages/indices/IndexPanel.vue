@@ -3,10 +3,9 @@
   <div class="grid">
     <div class="col-12 text-left">
     <h4 class="mb-0">Choose by stock market index</h4>
-
     </div>
-    <div class="col-3" v-for="index in indices" :key="index">
-      <IndexCard  :index="humanizeIndex(index)"/>
+    <div class="col-3" v-for="index in indexArray" :key="index">
+      <IndexCard  :index="index"/>
     </div>
   </div>
 </template>
@@ -22,7 +21,21 @@ export default {
   name: "IndexPanel",
   components: {IndexCard},
   data() {
-    return {indices: backend.components.schemas.CompanyInformation.properties["indices"].items.enum}
+    return {
+      indices: backend.components.schemas.CompanyInformation.properties["indices"].items.enum,
+      indexArray: [
+        "CDAX",
+        "DAX",
+        "General Standards",
+        "GEX",
+        "MDAX",
+        "Prime Standards",
+        "SDAX",
+        "TecDAX",
+        "ScaleHDAX",
+        "DAX 50 ESG"
+      ]
+    }
   },
   methods: {
     humanizeIndex(index){

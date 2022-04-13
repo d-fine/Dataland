@@ -14,7 +14,7 @@
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-else aria-hidden="true"/>
-              <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="focus=false"
+              <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
                             @complete="searchCompany($event)" placeholder="Search a company by name"
                             inputClass="h-3rem" ref="cac"
                             field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
@@ -120,7 +120,10 @@ export default {
   },
   methods: {
     focused(){
-      this.$emit('focus', "hallo")
+      this.$emit('autocomplete-focus', true)
+    },
+    unfocused(){
+      this.$emit('autocomplete-focus', false)
     },
     responseMapper(response){
       return response.data.map(e => ({

@@ -15,9 +15,18 @@ function generateCompanies() {
         let reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
         let indices = faker.random.arrayElements( backend.components.schemas.CompanyInformation.properties["indices"].items.enum );
         let identifiers = faker.random.arrayElements([
-            { "type": "Lei", "value": "529900W18LQJJN6SJ336"},
-            { "type": "Isin", "value": "529900W18LQJJN6SJ336"},
-            { "type": "PermId", "value": "529900W18LQJJN6SJ336"}
+            {
+                "identifierType": backend.components.schemas.CompanyIdentifier.properties.identifierType.enum[0],
+                "identifierValue": "529900W18LQJJN6SJ336"
+            },
+            {
+                "identifierType": backend.components.schemas.CompanyIdentifier.properties.identifierType.enum[1],
+                "identifierValue": "529900W18LQJJN6SJ336"
+            },
+            {
+                "identifierType": backend.components.schemas.CompanyIdentifier.properties.identifierType.enum[2],
+                "identifierValue": "529900W18LQJJN6SJ336"
+            }
         ]);
 
         companies.push(
