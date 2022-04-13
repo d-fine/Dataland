@@ -6,10 +6,12 @@
       Query: {{ route.query }}
       Selected Company: {{ selectedCompany }}
       Presence: {{ presence }}
+      Scrolling: {{ scrolled }}
     </p>
     <div class="grid">
-      <div class="col-8 text-left">
-        <span class="p-fluid">
+      <div class="col-8 text-left" v-if="!scrolled">
+
+        <span class="p-fluid" >
           <span class="p-input-icon-left p-input-icon-right ">
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
@@ -24,17 +26,24 @@
                 <template #footer>
                   <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
                     <li class="p-autocomplete-item text-primary font-semibold"
-                        @click="filter=true; table=true;singleton=false; close(); $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}})">View all ({{ responseArray.length }}) results. </li>
+                        @click="filter=true; table=true;singleton=false; close(); $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}})">View all results. </li>
                   </ul>
                 </template>
               </AutoComplete>
           </span>
         </span>
       </div>
-      <div class="col-2 text-left">
+      <div class="col-8 align-items-center grid" v-if="scrolled">
+        <span class="mr-3 font-semibold">Search EU Taxonomy data</span> <Button class="p-button-rounded surface-ground border-none"><i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/></Button>
+      </div>
+      <div class="col-4">
+
       </div>
     </div>
 
+  </MarginWrapper>
+  <MarginWrapper>
+    <IndexTabs v-if="showIndexTabs" :indexArray="indexArray" :initIndex="index"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
@@ -72,14 +81,18 @@ import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
 import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
+import IndexTabs from "@/components/pages/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
 
 export default {
   name: "EuTaxoSearchBar",
-  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button},
+  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button, IndexTabs},
   data() {
     return {
+      showIndexTabs: false,
+      index: null,
+      scrolled: false,
       focus: false,
       presence: "No",
       route: useRoute(),
@@ -99,6 +112,9 @@ export default {
     }
   },
   props: {
+    indexArray: {
+      type: Array,
+    },
     paramsSelection: {
       type: String,
       default: ""
@@ -118,7 +134,21 @@ export default {
       this.queryCompany()
     }
   },
+  created () {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  unmounted () {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      this.scrolled = true
+      if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 25) {
+        this.scrolled = true
+      } else {
+        this.scrolled = false
+      }
+    },
     focused(){
       this.$emit('autocomplete-focus', true)
     },
@@ -131,6 +161,10 @@ export default {
         "companyInformation": e.companyInformation,
         "companyId": e.companyId
       }))
+    },
+    toggleIndexTabs(index) {
+      this.index = index
+      this.showIndexTabs = true
     },
     close() {
       this.$refs.cac.hideOverlay()
@@ -167,3 +201,18 @@ export default {
   }
 }
 </script>
+<style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+</style>
