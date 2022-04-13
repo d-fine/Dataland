@@ -11,6 +11,10 @@
     </div>
   </MarginWrapper>
     <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus"/>
+  <MarginWrapper>
+    <IndexTabs/>
+
+  </MarginWrapper>
   <MarginWrapper bgClass="surface-800">
     <IndexPanel/>
   </MarginWrapper>
@@ -22,10 +26,11 @@
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
+import IndexTabs from "@/components/pages/indices/IndexTabs";
 
 export default {
   name: "SearchTaxonomy",
-  components: {IndexPanel, MarginWrapper, EuTaxoSearchBar},
+  components: {IndexTabs, IndexPanel, MarginWrapper, EuTaxoSearchBar},
   data(){
     return {
       autocompletefocus: null
