@@ -24,7 +24,6 @@ Some environment variables are used within the project. Find attached the variab
 
 | Variable name                  | Description                                                                               | example values                           |
 |--------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------|
-| PROXY_NGINX_CONFIG             | Defines the nginx configuration file used in the docker compose stack                     | `./dataland-inbound-proxy/nginxdev.conf` |
 | DATALAND_SKYMINDERCLIENT_TOKEN | An Access Token to access the Github Skyminder Package registry                           |                                          |
 | DATALAND_SKYMINDERCLIENT_USER  | The User corresponding to `DATALAND_SKYMINDERCLIENT_TOKEN`                                |                                          |
 | DATALAND_EDC_TOKEN             | An Access Token to access the Github DatalandEDC Package registry                         |                                          |
@@ -38,5 +37,5 @@ Some environment variables are used within the project. Find attached the variab
 ## Run Cypress Tests locally
 * start the docker-compose stack with the "development" profile. Set the env-variables (see above). 
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
-* start the frontend - using npm serve. to be safe do an npm install and a gradle generateAPIClientFrontend beforehand.
-* start the E2E cypress tests using npm teste2e
+* start the frontend - using `npm run serve`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
+* start the E2E cypress tests using `npm run teste2e`
