@@ -69,3 +69,12 @@ jacoco {
     toolVersion = "0.8.7"
     applyTo(tasks.bootRun.get())
 }
+
+tasks.register<Copy>("getTestData") {
+    from("$rootDir/testing/data")
+    into("$buildDir/testData")
+}
+
+tasks.withType<Test> {
+    dependsOn("getTestData")
+}

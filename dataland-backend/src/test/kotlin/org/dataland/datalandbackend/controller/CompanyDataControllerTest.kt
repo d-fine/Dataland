@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.TestDataProvider
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -12,8 +11,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.math.BigDecimal
-import java.time.LocalDate
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,15 +19,8 @@ internal class CompanyDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val testCompanyInformation = CompanyInformation(
-        companyName = "Test-Company_I",
-        headquarters = "Test-Headquarters_I",
-        sector = "Test-Sector_I",
-        marketCap = BigDecimal(100),
-        reportingDateOfMarketCap = LocalDate.now(),
-        indices = listOf(CompanyInformation.StockIndex.GeneralStandards),
-        identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"))
-    )
+    val dataProvider = TestDataProvider()
+    val testCompanyInformation = dataProvider.getCompanyInformation(1).last()
 
     @Test
     fun `company can be posted`() {

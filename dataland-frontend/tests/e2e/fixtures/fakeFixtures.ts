@@ -54,13 +54,13 @@ function generateTaxonomies() {
         let reportingObligation = faker.random.arrayElement(backend.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
         let capexTotal = faker.mersenne.rand(50000, 10000000);
         let capexEligible = faker.mersenne.rand(50000, capexTotal);
-        let capexAligned = faker.mersenne.rand(50000, capexTotal);
+        let capexAligned = faker.mersenne.rand(50000, capexEligible);
         let opexTotal = faker.mersenne.rand(50000, 10000000);
         let opexEligible = faker.mersenne.rand(50000, opexTotal);
-        let opexAligned = faker.mersenne.rand(50000, opexTotal);
+        let opexAligned = faker.mersenne.rand(50000, opexEligible);
         let revenueTotal = faker.mersenne.rand(50000, 10000000);
         let revenueEligible = faker.mersenne.rand(50000, revenueTotal);
-        let revenueAligned = faker.mersenne.rand(50000, revenueTotal);
+        let revenueAligned = faker.mersenne.rand(50000, revenueEligible);
 
 
         taxonomies.push(

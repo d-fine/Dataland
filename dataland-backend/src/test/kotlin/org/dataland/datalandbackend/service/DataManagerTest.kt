@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.TestDataProvider
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
-import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import java.math.BigDecimal
-import java.time.LocalDate
 
 @SpringBootTest
 class DataManagerTest(
@@ -22,56 +20,8 @@ class DataManagerTest(
 
     val testManager = DataManager(edcClient, objectMapper)
 
-    val testCompanyList = listOf(
-        CompanyInformation(
-            companyName = "Test-Company_1de",
-            headquarters = "Test-Headquarters_1",
-            sector = "Test-Sector_1",
-            marketCap = BigDecimal(100),
-            reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Mdax),
-            identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE0987654321"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLAB")
-            )
-        ),
-        CompanyInformation(
-            companyName = "Test-Company_2",
-            headquarters = "Test-Headquarters_2",
-            sector = "Test-Sector_2",
-            marketCap = BigDecimal(200),
-            reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Dax),
-            identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "DE1337"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLUB")
-            )
-        ),
-        CompanyInformation(
-            companyName = "Test-Company_3",
-            headquarters = "Test-Headquarters_3",
-            sector = "Test-Sector_3",
-            marketCap = BigDecimal(300),
-            reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Dax),
-            identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "IT8765"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLIB")
-            )
-        ),
-        CompanyInformation(
-            companyName = "Test-Company_4dE",
-            headquarters = "Test-Headquarters_4",
-            sector = "Test-Sector_3",
-            marketCap = BigDecimal(400),
-            reportingDateOfMarketCap = LocalDate.now(),
-            indices = listOf(CompanyInformation.StockIndex.Gex),
-            identifiers = listOf(
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Isin, "FR8525"),
-                CompanyIdentifier(CompanyIdentifier.IdentifierType.Lei, "BLEB")
-            )
-        )
-    )
+    val dataProvider = TestDataProvider()
+    val testCompanyList = dataProvider.getCompanyInformation(4)
 
     @Test
     fun `add the first company and check if it can be retrieved by using the company ID that is returned`() {
