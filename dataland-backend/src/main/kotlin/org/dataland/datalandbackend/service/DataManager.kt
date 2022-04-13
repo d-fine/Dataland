@@ -184,12 +184,15 @@ class DataManager(
             if (filteredCompanies.isEmpty()) {
                 continue
             }
-            updateGreenAssetRatioOnIndexLevel(index,filteredCompanies)
+            updateGreenAssetRatioOnIndexLevel(index, filteredCompanies)
         }
         return greenAssetRatio
     }
 
-    private fun updateGreenAssetRatioOnIndexLevel(index: CompanyInformation.StockIndex, companies: List<StoredCompany>) {
+    private fun updateGreenAssetRatioOnIndexLevel(
+        index: CompanyInformation.StockIndex,
+        companies: List<StoredCompany>
+    ) {
         var eligibleSum = BigDecimal(0.0)
         var totalSum = BigDecimal(0.0)
         for (company in companies) {
