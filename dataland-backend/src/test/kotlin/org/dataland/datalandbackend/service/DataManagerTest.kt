@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.TestDataProvider
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
+import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -20,7 +21,7 @@ class DataManagerTest(
 
     val testManager = DataManager(edcClient, objectMapper)
 
-    val dataProvider = TestDataProvider()
+    val dataProvider = TestDataProvider(objectMapper)
     val testCompanyList = dataProvider.getCompanyInformation(4)
 
     @Test
@@ -58,8 +59,8 @@ class DataManagerTest(
 
         for (company in testCompanyList) {
             val searchResponse = testManager.searchCompanies(company.companyName, true)
-            assertEquals(
-                company.companyName, searchResponse.first().companyInformation.companyName,
+            assertTrue(
+                searchResponse.any { it.companyInformation.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name."
             )
         }
@@ -72,9 +73,17 @@ class DataManagerTest(
         }
 
         for (company in testCompanyList) {
-            val identifiers = company.identifiers
-            for (identifier in identifiers) {
-                val searchResponse = testManager.searchCompanies(identifier.identifierValue, false)
+            for (identifier in company.identifiers) {
+                val searchResponse = testManager.searchCompanies(identifier.identifierValue, false).toMutableList()
+                // The response list is filtered to exclude results that match in account of another identifier having
+                // the required value but the looked for identifier type does not exist (This happens due to the test
+                // data having non-unique identifier values for different identifier types)
+                searchResponse.retainAll {
+                    it.companyInformation.identifiers.any {
+                        identifierInResponse ->
+                        identifierInResponse.identifierType == identifier.identifierType
+                    }
+                }
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The posted company could not be retrieved by searching for its identifier."
@@ -84,49 +93,78 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for stock indices and check if it can find the ones`() {
+    fun `add all companies and verify that searching for stock indices returns correct results`() {
+        val stockIndiciesInTestData = mutableSetOf<CompanyInformation.StockIndex>()
         for (company in testCompanyList) {
             testManager.addCompany(company)
+            stockIndiciesInTestData += company.indices
         }
 
-        for (company in testCompanyList) {
-            val stockIndices = company.indices
-            for (stockIndex in stockIndices) {
-                val searchResponse = testManager.searchCompaniesByIndex(stockIndex)
-                assertTrue(
-                    searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
-                    "The posted company could not be retrieved by searching for its stock indices."
-                )
-            }
+        for (stockIndex in stockIndiciesInTestData) {
+            val searchResponse = testManager.searchCompaniesByIndex(stockIndex)
+            assertTrue(
+                searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
+                "The posted company could not be retrieved by searching for its stock indices."
+            )
         }
     }
 
     @Test
     fun `search for companies containing de and check if it returns three companies`() {
+        val alteredTestCompanies = testCompanyList.toMutableList()
+        val addedString = "JUSTATEST#123"
+        alteredTestCompanies[0] = CompanyInformation(
+            companyName = alteredTestCompanies[0].companyName + addedString,
+            headquarters = alteredTestCompanies[0].headquarters,
+            sector = alteredTestCompanies[0].sector,
+            marketCap = alteredTestCompanies[0].marketCap,
+            reportingDateOfMarketCap = alteredTestCompanies[0].reportingDateOfMarketCap,
+            identifiers = alteredTestCompanies[0].identifiers,
+            indices = alteredTestCompanies[0].indices
+        )
+        val alteredIdentifier = alteredTestCompanies[1].identifiers.toMutableList()
+        alteredIdentifier[1] = CompanyIdentifier(
+            identifierType = alteredIdentifier[1].identifierType,
+            identifierValue = addedString + alteredTestCompanies[1].identifiers.first().identifierValue
+        )
+        alteredTestCompanies[1] = CompanyInformation(
+            companyName = alteredTestCompanies[1].companyName,
+            headquarters = alteredTestCompanies[1].headquarters,
+            sector = alteredTestCompanies[1].sector,
+            marketCap = alteredTestCompanies[1].marketCap,
+            reportingDateOfMarketCap = alteredTestCompanies[0].reportingDateOfMarketCap,
+            identifiers = alteredIdentifier,
+            indices = alteredTestCompanies[1].indices
+        )
         for (company in testCompanyList) {
             testManager.addCompany(company)
         }
-        val searchResponse = testManager.searchCompanies("de", false)
+        val searchResponse = testManager.searchCompanies(addedString, false)
         assertEquals(
-            3, searchResponse.size,
-            "There are 3 companies containing 'de' (in name or identifier) but found ${searchResponse.size}."
+            2, searchResponse.size,
+            "There are 2 companies containing $addedString (in name or identifier) but found ${searchResponse.size}."
         )
     }
 
     @Test
-    fun `search for DAX index and check if two companies will be returned`() {
+    fun `add all companies and check that the number of results when searching for DAX index is as expected`() {
+        var expectedResult = 0
+        val testIndex = CompanyInformation.StockIndex.Dax
         for (company in testCompanyList) {
             testManager.addCompany(company)
+            if (company.indices.contains(testIndex)) {
+                expectedResult ++
+            }
         }
-        val searchResponse = testManager.searchCompaniesByIndex(CompanyInformation.StockIndex.Dax)
+        val searchResponse = testManager.searchCompaniesByIndex(testIndex)
         assertEquals(
-            2, searchResponse.size,
+            expectedResult, searchResponse.size,
             "There are 2 companies with DAX index but found ${searchResponse.size}."
         )
     }
 
     @Test
-    fun `get the data sets for a company id that does not exist`() {
+    fun `check that an exception is thrown when company id is provided that does not exist`() {
         assertThrows<IllegalArgumentException> {
             testManager.searchDataMetaInfo(companyId = "error")
         }

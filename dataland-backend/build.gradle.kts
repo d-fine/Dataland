@@ -72,9 +72,9 @@ jacoco {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
-    into("$buildDir/testData")
+    into("$projectDir/src/main/resources")
 }
 
-tasks.withType<Test> {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("getTestData")
 }

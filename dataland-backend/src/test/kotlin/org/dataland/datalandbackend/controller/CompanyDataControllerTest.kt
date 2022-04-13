@@ -19,7 +19,7 @@ internal class CompanyDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val dataProvider = TestDataProvider()
+    val dataProvider = TestDataProvider(objectMapper)
     val testCompanyInformation = dataProvider.getCompanyInformation(1).last()
 
     @Test
