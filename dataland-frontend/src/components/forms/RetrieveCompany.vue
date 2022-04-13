@@ -68,6 +68,8 @@
         <div class="col-2" v-if="loading">
           <ProgressSpinner/>
         </div>
+        <pre>Object: {{indexobject}}</pre>
+        <p>GS: {{indexobject.GeneralStandards}}</p>
       </div>
     </template>
   </Card>
@@ -86,6 +88,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import AutoComplete from 'primevue/autocomplete';
 import ProgressSpinner from 'primevue/progressspinner';
+import {indexObject} from '@/utils/indexMapper'
 
 export default {
   name: "RetrieveCompany",
@@ -102,7 +105,8 @@ export default {
     selectedCompany: null,
     filteredCompanies: null,
     filteredCompaniesBasic: null,
-    additionalCompanies: null
+    additionalCompanies: null,
+    indexobject: indexObject()
   }),
   methods: {
     async getCompanyByName(all = false) {
