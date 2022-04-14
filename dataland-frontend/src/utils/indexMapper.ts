@@ -5,7 +5,7 @@
  */
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 
-export function indexObject() {
+export function stockIndexObject() {
     const frontend = [
         "CDAX",
         "DAX",

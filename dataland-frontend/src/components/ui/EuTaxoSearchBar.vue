@@ -43,7 +43,7 @@
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs"  :indexObject="indexObject" :initIndex="index"/>
+    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
@@ -112,7 +112,7 @@ export default {
     }
   },
   props: {
-    indexObject: {
+    stockIndexObject: {
       type: Object,
     },
     paramsSelection: {
@@ -165,6 +165,7 @@ export default {
     toggleIndexTabs(index) {
       this.index = index
       this.showIndexTabs = true
+      this.filterByIndex()
     },
     close() {
       this.$refs.cac.hideOverlay()
@@ -188,6 +189,21 @@ export default {
         this.processed = false
         this.loading = true
         this.responseArray = await dataStore.perform(this.selectedCompany, "", false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+        this.additionalCompanies = this.responseArray.slice(0)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.processed = true
+        this.table = true
+      }
+    },
+    async filterByIndex() {
+      try {
+        this.processed = false
+        this.loading = true
+        this.responseArray = await dataStore.perform("", this.stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {

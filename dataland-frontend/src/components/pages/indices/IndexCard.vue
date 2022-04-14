@@ -1,10 +1,10 @@
 <template>
   <Card class="bg-white d-card mr-2 cursor-pointer" >
-    <template #index></template>
+    <template #stockIndex></template>
     <template #content>
       <div class="grid align-items-center">
         <div class="col-12 text-left pb-0">
-        <strong>{{ indexObject[index] }}</strong>
+        <strong>{{ stockIndexObject[stockIndex] }}</strong>
         </div>
         <div class="col-5 text-left pt-0 text-gray-800">
           <p>Green asset ratio</p>
@@ -23,18 +23,18 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
-import {indexObject} from "@/utils/indexMapper";
+import {stockIndexObject} from "@/utils/indexMapper";
 
 export default {
   name: "IndexCard",
   components: {Card, ProgressBar},
   data(){
     return {
-      indexObject: indexObject()
+      stockIndexObject: stockIndexObject()
     }
   },
   props: {
-    index: {
+    stockIndex: {
       default: "Dax",
       type: String
     },
