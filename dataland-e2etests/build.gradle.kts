@@ -85,9 +85,9 @@ ktlint {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
-    into("$projectDir/src/main/resources")
+    into("$projectDir/src/test/resources")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.getByName("processTestResources") {
     dependsOn("getTestData")
 }
