@@ -34,7 +34,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     }
 
     fun getCompaniesWithData(requiredCompanyNumber: Int, dataSetsPerCompany: Int):
-            Map<CompanyInformation, List<EuTaxonomyData>> {
+        Map<CompanyInformation, List<EuTaxonomyData>> {
         if (dataSetsPerCompany > testData.size) {
             throw(
                 IllegalArgumentException(
