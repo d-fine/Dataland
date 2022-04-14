@@ -4,7 +4,7 @@
           return {
             label: stockIndexObject[e],
             command: () => {
-              handleIndexTabClick(e)
+              handleIndexTabClick(e, Object.keys(stockIndexObject).indexOf(e))
             }
           }
         })"  v-model:activeIndex="activeIndex" >
@@ -27,10 +27,11 @@ export default {
     }
   },
   methods: {
-    handleIndexTabClick(element){
+    handleIndexTabClick(element, currentIndex){
       console.log("Tab function executed:")
       console.dir(element)
-      this.$emit("tab-click", this.activeIndex, element)
+      console.dir(currentIndex)
+      this.$emit("tab-click", currentIndex, element)
     },
     change(index){
       this.activeIndex = index

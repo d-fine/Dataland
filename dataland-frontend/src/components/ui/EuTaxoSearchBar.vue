@@ -29,12 +29,13 @@
         <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar"><i class="pi pi-search" aria-hidden="true"
                                                                        style="z-index:20; color:#958D7C"/>
         </Button>
+        <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
       </div>
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+    <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
