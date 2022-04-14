@@ -1,5 +1,5 @@
 <template>
-  <MarginWrapper bgClass="fixed d-header col-12">
+  <MarginWrapper>
     <div class="grid">
       <div class="col-8 text-left" v-if="!scrolled">
         <span class="p-fluid" >
@@ -24,11 +24,10 @@
           </span>
         </span>
       </div>
-      <div class="col-12 align-items-center grid mt-3 bg-white" v-if="scrolled">
+      <div class="col-12 align-items-center grid mt-3 bg-white d-header fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
         <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar"><i class="pi pi-search" aria-hidden="true"
                                                                        style="z-index:20; color:#958D7C"/>
-          <ScrollTop/>
         </Button>
       </div>
       </div>

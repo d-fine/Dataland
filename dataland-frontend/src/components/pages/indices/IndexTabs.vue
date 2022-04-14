@@ -7,7 +7,7 @@
               handleIndexTabClick(e)
             }
           }
-        })"  v-model:activeIndex="activeIndex" class="d-header fixed d-content w-full">
+        })"  v-model:activeIndex="activeIndex" >
   </TabMenu>
 </template>
 
