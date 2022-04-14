@@ -32,7 +32,8 @@ export default {
       autocompletefocus: null,
       showIndexPanel: true,
       index: null,
-      stockIndexObject: stockIndexObject()
+      stockIndexObject: stockIndexObject(),
+      stockIndex: null
     }
   },
   methods: {
@@ -40,11 +41,12 @@ export default {
       this.autocompletefocus = focus
       this.showIndexPanel = false
     },
-    handleIndex(index){
+    handleIndex(stockIndex, index){
       console.log(index)
       this.showIndexPanel = false
-      this.$refs.euTaxoSearchBar.toggleIndexTabs(index)
+      this.$refs.euTaxoSearchBar.toggleIndexTabs(index, stockIndex)
       this.index = index
+      this.stockIndex = stockIndex
     }
   }
 }

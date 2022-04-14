@@ -162,10 +162,10 @@ export default {
         "companyId": e.companyId
       }))
     },
-    toggleIndexTabs(index) {
+    toggleIndexTabs(index, stockIndex) {
       this.index = index
       this.showIndexTabs = true
-      this.filterByIndex()
+      this.filterByIndex(stockIndex)
     },
     close() {
       this.$refs.cac.hideOverlay()
@@ -199,11 +199,11 @@ export default {
         this.table = true
       }
     },
-    async filterByIndex() {
+    async filterByIndex(stockIndex) {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform("", this.stockIndex, false).then(this.responseMapper)
+        this.responseArray = await dataStore.perform("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {

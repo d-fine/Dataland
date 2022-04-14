@@ -1,30 +1,36 @@
 <template>
-  <TabMenu :model="items" v-model:activeIndex="activeIndex"></TabMenu>
-  <button @click="change(3)">Chang active tab</button>
+  <TabMenu :model="Object.keys(stockIndexObject).map(e => {
+  return {
+    label: stockIndexObject[e],
+    command: (event) => {
+      tab(event.item.label)
+    }
+  }})"
+
+           v-model:activeIndex="activeIndex">
+
+  </TabMenu>
 </template>
 
 <script>
 
 import TabMenu from 'primevue/tabmenu';
+import {stockIndexObject} from "@/utils/indexMapper";
+
 export default {
   name: "IndexTabs",
   components: {TabMenu},
-  props: ['stockIndexObject', 'initIndex'],
+  props: ['initIndex'],
   data(){
     return {
       activeIndex: null,
-      items: Object.values(this.stockIndexObject).map(e => {
-        return {
-          label: e,
-          command: this.tab
-        }
-      })
+      stockIndexObject: stockIndexObject(),
     }
   },
   methods: {
-    tab(){
+    tab(element){
       console.log("Tab function executed:")
-      console.dir(this.activeIndex)
+      console.dir(element)
     },
     change(index){
       this.activeIndex = index

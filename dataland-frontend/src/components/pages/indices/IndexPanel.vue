@@ -20,9 +20,8 @@ export default {
   components: {IndexCard},
   props: ['stockIndexObject'],
   methods: {
-    handleIndexCardClick(item, index){
-      this.$router.push({name: 'Search Eu Taxonomy', query: {index: item}})
-      this.$emit("index-click", index)
+    handleIndexCardClick(stockIndex, index){
+      this.$emit("index-click", stockIndex, index)
     }
   }
 }
