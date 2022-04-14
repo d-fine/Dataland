@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.TestDataProvider
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
-import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,6 +23,12 @@ class DataManagerTest(
     val dataProvider = TestDataProvider(objectMapper)
     val testCompanyList = dataProvider.getCompanyInformation(4)
 
+    private fun addAllCompanies(companies: List<CompanyInformation>) {
+        for (company in companies) {
+            testManager.addCompany(company)
+        }
+    }
+
     @Test
     fun `add the first company and check if it can be retrieved by using the company ID that is returned`() {
         val testCompanyId = testManager.addCompany(testCompanyList[0]).companyId
@@ -37,10 +42,7 @@ class DataManagerTest(
 
     @Test
     fun `add all companies then retrieve them as a list and check for each company if it can be found as expected`() {
-        for (company in testCompanyList) {
-            testManager.addCompany(company)
-        }
-
+        addAllCompanies(testCompanyList)
         val allCompaniesInStore = testManager.searchCompanies("", true)
         for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
             val expectedCompanyId = (index + 1).toString()
@@ -53,10 +55,7 @@ class DataManagerTest(
 
     @Test
     fun `add all companies and search for them one by one by using their names`() {
-        for (company in testCompanyList) {
-            testManager.addCompany(company)
-        }
-
+        addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             val searchResponse = testManager.searchCompanies(company.companyName, true)
             assertTrue(
@@ -68,10 +67,7 @@ class DataManagerTest(
 
     @Test
     fun `search for identifiers and check if it can find the one`() {
-        for (company in testCompanyList) {
-            testManager.addCompany(company)
-        }
-
+        addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
                 val searchResponse = testManager.searchCompanies(identifier.identifierValue, false).toMutableList()
@@ -110,40 +106,22 @@ class DataManagerTest(
     }
 
     @Test
-    fun `upload all companies and search for an injected string to verify substring matching of the company search`() {
-        val alteredTestCompanies = testCompanyList.toMutableList()
-        val addedString = "JUSTATEST#123"
-        alteredTestCompanies[0] = CompanyInformation(
-            companyName = alteredTestCompanies[0].companyName + addedString,
-            headquarters = alteredTestCompanies[0].headquarters,
-            sector = alteredTestCompanies[0].sector,
-            marketCap = alteredTestCompanies[0].marketCap,
-            reportingDateOfMarketCap = alteredTestCompanies[0].reportingDateOfMarketCap,
-            identifiers = alteredTestCompanies[0].identifiers,
-            indices = alteredTestCompanies[0].indices
-        )
-        val alteredIdentifier = alteredTestCompanies[1].identifiers.toMutableList()
-        alteredIdentifier[0] = CompanyIdentifier(
-            identifierType = alteredIdentifier[0].identifierType,
-            identifierValue = addedString + alteredTestCompanies[0].identifiers.first().identifierValue
-        )
-        alteredTestCompanies[1] = CompanyInformation(
-            companyName = alteredTestCompanies[1].companyName,
-            headquarters = alteredTestCompanies[1].headquarters,
-            sector = alteredTestCompanies[1].sector,
-            marketCap = alteredTestCompanies[1].marketCap,
-            reportingDateOfMarketCap = alteredTestCompanies[0].reportingDateOfMarketCap,
-            identifiers = alteredIdentifier,
-            indices = alteredTestCompanies[1].indices
-        )
-        for (company in alteredTestCompanies) {
-            testManager.addCompany(company)
-        }
-
-        val searchResponse = testManager.searchCompanies(addedString, false)
+    fun `upload all companies and search for identifier substring to verify substring matching in company search`() {
+        addAllCompanies(testCompanyList)
+        val searchResponse = testManager.searchCompanies("9900W18LQJJN6SJ3", false)
         assertEquals(
-            2, searchResponse.size,
-            "There are 2 companies containing $addedString (in name or identifier) but found ${searchResponse.size}."
+            testCompanyList.size, searchResponse.size,
+            "There are ${testCompanyList.size} expected matches but found ${searchResponse.size}."
+        )
+    }
+
+    @Test
+    fun `upload all companies and search for name substring to verify substring matching in company search`() {
+        addAllCompanies(testCompanyList)
+        val searchResponse = testManager.searchCompanies("usse - Hoh", true)
+        assertEquals(
+            1, searchResponse.size,
+            "There is 1 expected match but found ${searchResponse.size}."
         )
     }
 

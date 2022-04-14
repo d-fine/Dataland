@@ -14,6 +14,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.openapi.generator") version "5.4.0"
+    id("org.springframework.boot")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -31,6 +32,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j:2.17.2")
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 
@@ -78,4 +81,13 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
+}
+
+tasks.register<Copy>("getTestData") {
+    from("$rootDir/testing/data")
+    into("$projectDir/src/test/resources")
+}
+
+tasks.getByName("processTestResources") {
+    dependsOn("getTestData")
 }
