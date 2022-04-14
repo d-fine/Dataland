@@ -71,7 +71,7 @@ jacoco {
 }
 
 tasks.register<Copy>("getTestData") {
-    from("$rootDir/testing/data")
+    from("$rootDir/testing/data/companies.json")
     into("$projectDir/src/main/resources")
 }
 

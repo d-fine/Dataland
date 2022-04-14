@@ -110,7 +110,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for companies containing de and check if it returns three companies`() {
+    fun `upload all companies and search for an injected string to verify substring matching of the company search`() {
         val alteredTestCompanies = testCompanyList.toMutableList()
         val addedString = "JUSTATEST#123"
         alteredTestCompanies[0] = CompanyInformation(
@@ -123,9 +123,9 @@ class DataManagerTest(
             indices = alteredTestCompanies[0].indices
         )
         val alteredIdentifier = alteredTestCompanies[1].identifiers.toMutableList()
-        alteredIdentifier[1] = CompanyIdentifier(
-            identifierType = alteredIdentifier[1].identifierType,
-            identifierValue = addedString + alteredTestCompanies[1].identifiers.first().identifierValue
+        alteredIdentifier[0] = CompanyIdentifier(
+            identifierType = alteredIdentifier[0].identifierType,
+            identifierValue = addedString + alteredTestCompanies[0].identifiers.first().identifierValue
         )
         alteredTestCompanies[1] = CompanyInformation(
             companyName = alteredTestCompanies[1].companyName,
@@ -136,9 +136,10 @@ class DataManagerTest(
             identifiers = alteredIdentifier,
             indices = alteredTestCompanies[1].indices
         )
-        for (company in testCompanyList) {
+        for (company in alteredTestCompanies) {
             testManager.addCompany(company)
         }
+
         val searchResponse = testManager.searchCompanies(addedString, false)
         assertEquals(
             2, searchResponse.size,
