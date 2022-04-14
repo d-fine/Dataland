@@ -192,6 +192,7 @@ export default {
     async queryCompany() {
       try {
         this.processed = false
+        this.showIndexTabs = true
         this.loading = true
         this.responseArray = await dataStore.perform(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
