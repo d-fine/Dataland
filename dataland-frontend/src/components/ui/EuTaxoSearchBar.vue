@@ -1,16 +1,7 @@
 <template>
-  <MarginWrapper>
-    <pre>{{ selectedCompany }}</pre>
-    <p>
-
-      Query: {{ route.query }}
-      Selected Company: {{ selectedCompany }}
-      Presence: {{ presence }}
-      Scrolling: {{ scrolled }}
-    </p>
+  <MarginWrapper bgClass="fixed d-header col-12">
     <div class="grid">
       <div class="col-8 text-left" v-if="!scrolled">
-
         <span class="p-fluid" >
           <span class="p-input-icon-left p-input-icon-right ">
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
@@ -33,13 +24,14 @@
           </span>
         </span>
       </div>
-      <div class="col-8 align-items-center grid" v-if="scrolled">
-        <span class="mr-3 font-semibold">Search EU Taxonomy data</span> <Button class="p-button-rounded surface-ground border-none"><i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/></Button>
+      <div class="col-12 align-items-center grid mt-3 bg-white" v-if="scrolled">
+        <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
+        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar"><i class="pi pi-search" aria-hidden="true"
+                                                                       style="z-index:20; color:#958D7C"/>
+          <ScrollTop/>
+        </Button>
       </div>
-      <div class="col-4">
-
       </div>
-    </div>
 
   </MarginWrapper>
   <MarginWrapper>
@@ -84,6 +76,7 @@ import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 import IndexTabs from "@/components/pages/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
+
 
 export default {
   name: "EuTaxoSearchBar",
@@ -143,11 +136,12 @@ export default {
   methods: {
     handleScroll() {
       this.scrolled = true
-      if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 25) {
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
         this.scrolled = true
       } else {
         this.scrolled = false
       }
+      this.$emit('scrolling', this.scrolled)
     },
     focused(){
       this.$emit('autocomplete-focus', true)
@@ -171,6 +165,15 @@ export default {
     },
     close() {
       this.$refs.cac.hideOverlay()
+    },
+    activateSearchBar() {
+      window.addEventListener('scroll', ()=>{
+        if (document.body.scrollTop < 100 || document.documentElement.scrollTop < 100){
+          this.$refs.cac.focus()
+        }
+      });
+      window.scrollTo({top: 0, behavior: 'smooth'})
+
     },
     async searchCompany(event) {
       try {

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid surface-900 align-items-center h-4rem">
+  <div class="d-header grid fixed top-0 col-12 surface-900 align-items-center h-4rem">
     <div class="col-1 ">
       <router-link to="/">
 
@@ -11,28 +11,30 @@
       <i class="material-icons text-white" aria-hidden="true">help_outline</i>
     </div>
   </div>
-  <div>
-    <NavbarTop />
+  <div class="d-content">
     <br>
     <router-view />
-
   </div>
+
 </template>
 
 <script>
-import NavbarTop from "@/components/menus/NavbarTop";
 
 
 
 export default {
   name: 'app',
-  components: {
-    NavbarTop
-  }
 }
 </script>
 
 <style lang="scss">
+.d-header {
+  z-index: 100;
+}
+
+.d-header + .d-content {
+  padding-top: 10px;
+}
 @import "./assets/css/main.css";
 @import "./assets/css/forms.css";
 @import "./assets/css/variables";
