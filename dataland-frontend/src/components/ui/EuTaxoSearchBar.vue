@@ -43,7 +43,7 @@
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index"/>
+    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>

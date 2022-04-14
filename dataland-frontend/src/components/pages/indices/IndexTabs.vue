@@ -1,14 +1,13 @@
 <template>
-  <TabMenu :model="Object.keys(stockIndexObject).map(e => {
-  return {
-    label: stockIndexObject[e],
-    command: (event) => {
-      tab(event.item.label)
-    }
-  }})"
-
-           v-model:activeIndex="activeIndex">
-
+  <TabMenu :model="Object.keys(stockIndexObject)
+        .map(e => {
+          return {
+            label: stockIndexObject[e],
+            command: () => {
+              handleIndexTabClick(e)
+            }
+          }
+        })"  v-model:activeIndex="activeIndex">
   </TabMenu>
 </template>
 
@@ -28,9 +27,10 @@ export default {
     }
   },
   methods: {
-    tab(element){
+    handleIndexTabClick(element){
       console.log("Tab function executed:")
       console.dir(element)
+      this.$emit("tab-click", this.activeIndex, element)
     },
     change(index){
       this.activeIndex = index
