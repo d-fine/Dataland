@@ -1,19 +1,15 @@
 package org.dataland.e2etests
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
-class EuTaxonomyControllerTest(@Autowired val objectMapper: ObjectMapper) {
+class EuTaxonomyControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
