@@ -26,7 +26,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
     implementation("org.dataland:skyminder-client:0.1.2")
     implementation("org.dataland:dataland-edc-client:0.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
@@ -77,4 +77,8 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
