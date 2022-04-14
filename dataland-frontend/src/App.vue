@@ -32,8 +32,13 @@ export default {
   z-index: 100;
 }
 
+.d-search-toggle {
+  z-index: 99;
+  top: 4em;
+}
+
 .d-header + .d-content {
-  padding-top: 10px;
+  padding-top: 3em;
 }
 @import "./assets/css/main.css";
 @import "./assets/css/forms.css";
