@@ -43,7 +43,7 @@
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs"/>
+    <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
@@ -151,6 +151,8 @@ export default {
     },
     focused(){
       this.$emit('autocomplete-focus', true)
+      this.$refs.indexTabs.activeIndex = null
+
     },
     unfocused(){
       this.$emit('autocomplete-focus', false)

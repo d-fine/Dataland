@@ -40,6 +40,8 @@ export default {
     getAutoCompleteFocus(focus){
       this.autocompletefocus = focus
       this.showIndexPanel = false
+      this.$refs.euTaxoSearchBar.showIndexTabs = true
+
     },
     handleIndex(stockIndex, index){
       console.log(index)
