@@ -67,6 +67,7 @@ services:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   edc-dummyserver:
+    restart: always
     profiles: ["testing", "development"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
     networks:
@@ -79,6 +80,7 @@ services:
     ports:
       - "8095:8080"
   dataland-edc:
+    restart: always
     profiles: ["production"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
     networks:
