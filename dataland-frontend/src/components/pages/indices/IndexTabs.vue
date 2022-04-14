@@ -9,11 +9,11 @@ import TabMenu from 'primevue/tabmenu';
 export default {
   name: "IndexTabs",
   components: {TabMenu},
-  props: ['indexArray', 'initIndex'],
+  props: ['indexObject', 'initIndex'],
   data(){
     return {
       activeIndex: null,
-      items: this.indexArray.map(e => {
+      items: Object.values(this.indexObject).map(e => {
         return {
           label: e,
           command: this.tab

@@ -4,7 +4,7 @@
     <template #content>
       <div class="grid align-items-center">
         <div class="col-12 text-left pb-0">
-        <strong>{{ index }}</strong>
+        <strong>{{ indexObject[index] }}</strong>
         </div>
         <div class="col-5 text-left pt-0 text-gray-800">
           <p>Green asset ratio</p>
@@ -23,13 +23,19 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
+import {indexObject} from "@/utils/indexMapper";
 
 export default {
   name: "IndexCard",
   components: {Card, ProgressBar},
+  data(){
+    return {
+      indexObject: indexObject()
+    }
+  },
   props: {
     index: {
-      default: "DAX",
+      default: "Dax",
       type: String
     },
     green_asset_ratio: {

@@ -43,7 +43,7 @@
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs" :indexArray="indexArray" :initIndex="index"/>
+    <IndexTabs v-if="showIndexTabs"  :indexObject="indexObject" :initIndex="index"/>
   </MarginWrapper>
   <template v-if="processed && table">
     <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
@@ -112,8 +112,8 @@ export default {
     }
   },
   props: {
-    indexArray: {
-      type: Array,
+    indexObject: {
+      type: Object,
     },
     paramsSelection: {
       type: String,

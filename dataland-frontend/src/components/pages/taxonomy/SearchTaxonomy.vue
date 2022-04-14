@@ -10,9 +10,9 @@
 
     </div>
   </MarginWrapper>
-    <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :indexArray="indexArray" ref="euTaxoSearchBar"/>
+    <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :indexObject="indexObject" ref="euTaxoSearchBar"/>
   <MarginWrapper bgClass="surface-800" v-if="showIndexPanel">
-    <IndexPanel :indexArray="indexArray" @index-click="handleIndex"/>
+    <IndexPanel :indexObject="indexObject" @index-click="handleIndex"/>
   </MarginWrapper>
   <p>Auto: {{autocompletefocus}}</p>
 </template>
@@ -22,19 +22,8 @@
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
+import {indexObject} from "@/utils/indexMapper";
 
-const indexArray = [
-  "CDAX",
-  "DAX",
-  "General Standards",
-  "GEX",
-  "MDAX",
-  "Prime Standards",
-  "SDAX",
-  "TecDAX",
-  "ScaleHDAX",
-  "DAX 50 ESG"
-]
 export default {
   name: "SearchTaxonomy",
   components: { IndexPanel, MarginWrapper, EuTaxoSearchBar},
@@ -42,8 +31,8 @@ export default {
     return {
       autocompletefocus: null,
       showIndexPanel: true,
-      indexArray: indexArray,
-      index: null
+      index: null,
+      indexObject: indexObject()
     }
   },
   methods: {

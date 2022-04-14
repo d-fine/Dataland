@@ -4,7 +4,7 @@
     <div class="col-12 text-left">
     <h4 class="mb-0">Choose by stock market index</h4>
     </div>
-    <div class="col-3" v-for="(item, index) in indexArray" :key="index" @click="handleIndexCardClick(item, index)">
+    <div class="col-3" v-for="(item, index) in indices" :key="index" @click="handleIndexCardClick(item, index)">
       <IndexCard  :index="item"/>
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     handleIndexCardClick(item, index){
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: item}})
+      this.$router.push({name: 'Search Eu Taxonomy', query: {index: item}})
       this.$emit("index-click", index)
     }
   }
