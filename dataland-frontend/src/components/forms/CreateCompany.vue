@@ -42,20 +42,23 @@
 </template>
 
 <script>
-import {FormKit, FormKitSchema} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/../build/clients/backend";
-import SuccessUpload from "@/components/ui/SuccessUpload";
-import {DataStore} from "@/services/DataStore";
-import backend from "@/../build/clients/backend/backendOpenApi.json";
-import FailedUpload from "@/components/ui/FailedUpload";
-import Card from 'primevue/card';
-import Button from "primevue/button";
-import Message from 'primevue/message';
-const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.CompanyInformation
+import {FormKit, FormKitSchema} from "@formkit/vue"
+import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
+import SuccessUpload from "@/components/ui/SuccessUpload"
+import {SchemaGenerator} from "@/services/SchemaGenerator"
+import {ApiWrapper} from "@/services/ApiWrapper"
+import backend from "@/../build/clients/backend/backendOpenApi.json"
+import FailedUpload from "@/components/ui/FailedUpload"
+import Card from 'primevue/card'
+import Button from "primevue/button"
+import Message from 'primevue/message'
+
+const companyDataControllerApi = new CompanyDataControllerApi()
+const companyInformation = backend.components.schemas.CompanyInformation
 const companyIdentifier = backend.components.schemas.CompanyIdentifier
-const dataStore = new DataStore(api.postCompany, contactSchema)
-const companyIdentifierDataStore = new DataStore(api.postCompany, companyIdentifier)
+const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation)
+const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier)
+const postCompanyWrapper = new ApiWrapper(companyDataControllerApi.postCompany)
 
 const createCompany = {
   name: "CreateCompany",
@@ -64,8 +67,8 @@ const createCompany = {
   data: () => ({
     processed: false,
     model: {},
-    companyInformationSchema: dataStore.getSchema(),
-    companyIdentifierSchema: companyIdentifierDataStore.getSchema(),
+    companyInformationSchema: companyInformationSchemaGenerator.generate(),
+    companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
     response: null,
     messageCount: 0,
     identifierListSize: 1
@@ -79,7 +82,7 @@ const createCompany = {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await dataStore.perform(this.model)
+        this.response = await postCompanyWrapper.perform(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {
         console.error(error)

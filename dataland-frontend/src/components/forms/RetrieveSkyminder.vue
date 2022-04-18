@@ -13,13 +13,13 @@
           @submit="getSkyminderByName">
         <FormKit
             type="text"
-            name="code"
+            name="countryCode"
             validation="required"
             label="messageCountry Code"
         />
         <FormKit
             type="text"
-            name="name"
+            name="companyName"
             validation="required"
             label="Company Name"
         />
@@ -36,21 +36,20 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {SkyminderControllerApi} from "@/../build/clients/backend";
-import {DataStore} from "@/services/DataStore";
+import {SkyminderControllerApi} from "@/../build/clients/backend/api";
+import {ApiWrapper} from "@/services/ApiWrapper"
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import SkyminderTable from "@/components/ui/SkyminderTable";
 
-const api = new SkyminderControllerApi()
-const dataStore = new DataStore(api.getDataSkyminderRequest)
+const skyminderControllerApi = new SkyminderControllerApi()
+const getDataSkyminderRequestWrapper = new ApiWrapper(skyminderControllerApi.getDataSkyminderRequest)
 
 export default {
   name: "RetrieveSkyminder",
   components: {Card, Button, FormKit, SkyminderTable},
 
   data: () => ({
-    schema: dataStore.getSchema(),
     model: {},
     response: null
   }),
@@ -62,8 +61,7 @@ export default {
 
     async getSkyminderByName() {
       try {
-        const inputArgs = Object.values(this.model)
-        this.response = await dataStore.perform(...inputArgs)
+        this.response = await getDataSkyminderRequestWrapper.perform(this.model)
       } catch (error) {
         console.error(error)
       }

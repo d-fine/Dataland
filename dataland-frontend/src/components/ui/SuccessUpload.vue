@@ -12,8 +12,10 @@
 </template>
 
 <script>
-import {humanizeString} from "@/utils/stringHumanizer"
+import {StringHumanizer} from "@/utils/StringHumanizer"
 import Message from 'primevue/message';
+
+const stringHumanizer = new StringHumanizer()
 
 export default {
   name: "SuccessUpload",
@@ -24,7 +26,7 @@ export default {
   },
   methods: {
     humanize(text) {
-      if (typeof text == "string") return humanizeString(text)
+      if (typeof text == "string") return stringHumanizer.humanize(text)
       else return null
     }
   }

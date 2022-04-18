@@ -173,24 +173,25 @@
   </Card>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend";
-import SuccessUpload from "@/components/ui/SuccessUpload";
-import {FormKit} from "@formkit/vue";
-import {DataStore} from "@/services/DataStore";
-import FailedUpload from "@/components/ui/FailedUpload";
-import Card from 'primevue/card';
-const api = new EuTaxonomyDataControllerApi()
-const dataStore = new DataStore(api.postCompanyAssociatedData)
-const companyApi = new CompanyDataControllerApi()
-const companyStore = new DataStore(companyApi.getCompanies)
+import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend/api"
+import SuccessUpload from "@/components/ui/SuccessUpload"
+import {FormKit} from "@formkit/vue"
+import FailedUpload from "@/components/ui/FailedUpload"
+import Card from 'primevue/card'
+import {ApiWrapper} from "@/services/ApiWrapper"
+
+const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
+const postCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.postCompanyAssociatedData)
+const companyDataControllerApi = new CompanyDataControllerApi()
+const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CustomEUTaxonomy",
   components: {FailedUpload, Card, FormKit, SuccessUpload},
 
   data: () => ({
     innerClass: {
-      'formkit-inner':false,
-      'p-inputwrapper':true
+      'formkit-inner': false,
+      'p-inputwrapper': true
     },
     inputClass: {
       'formkit-input':false,
@@ -206,7 +207,7 @@ export default {
   methods: {
     async getCompanyIDs(){
       try {
-        const companyList = await companyStore.perform("", "", true)
+        const companyList = await getCompaniesWrapper.perform("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = [0]
@@ -217,7 +218,7 @@ export default {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await dataStore.perform(this.model)
+        this.response = await postCompanyAssociatedDataWrapper.perform(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null

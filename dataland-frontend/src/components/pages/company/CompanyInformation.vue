@@ -26,16 +26,16 @@
 
 <script>
 
-import {CompanyDataControllerApi} from "@/../build/clients/backend";
+import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
 import Button from "primevue/button";
-import {DataStore} from "@/services/DataStore";
+import {ApiWrapper} from "@/services/ApiWrapper"
 import {numberFormatter} from "@/utils/currencyMagnitude";
 
-const companyApi = new CompanyDataControllerApi()
-const companyStore = new DataStore(companyApi.getCompanyById)
+const companyDataControllerApi = new CompanyDataControllerApi()
+const getCompanyByIdWrapper = new ApiWrapper(companyDataControllerApi.getCompanyById)
 export default {
   name: "CompanyInformation",
-  components: { Button},
+  components: {Button},
   data() {
     return {
       response: null,
@@ -59,7 +59,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.company = await companyStore.perform(this.companyID)
+        this.company = await getCompanyByIdWrapper.perform(this.companyID)
         this.companyInformation = this.company.data.companyInformation
       } catch (error) {
         console.error(error)

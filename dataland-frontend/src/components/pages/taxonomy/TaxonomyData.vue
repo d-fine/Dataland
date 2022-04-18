@@ -47,12 +47,12 @@
 <script>
 import Button from "primevue/button";
 
-import {DataStore} from "@/services/DataStore";
-import {MetaDataControllerApi} from "@/../build/clients/backend";
+import {ApiWrapper} from "@/services/ApiWrapper"
+import {MetaDataControllerApi} from "@/../build/clients/backend/api";
 import TaxonomyPanel from "@/components/pages/taxonomy/TaxonomyPanel";
 
-const metaApi = new MetaDataControllerApi()
-const metaStore = new DataStore(metaApi.getListOfDataMetaInfo)
+const metaDataControllerApi = new MetaDataControllerApi()
+const getListOfDataMetaInfoWrapper = new ApiWrapper(metaDataControllerApi.getListOfDataMetaInfo)
 
 export default {
   name: "TaxonomyData",
@@ -79,7 +79,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.metaDataInfo = await metaStore.perform(this.companyID, "EuTaxonomyData")
+        this.metaDataInfo = await getListOfDataMetaInfoWrapper.perform(this.companyID, "EuTaxonomyData")
       } catch (error) {
         console.error(error)
         this.metaDataInfo = null

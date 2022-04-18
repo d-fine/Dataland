@@ -3,10 +3,11 @@
 </template>
 
 <script>
-import {MetaDataControllerApi} from "@/../build/clients/backend";
-import {DataStore} from "@/services/DataStore";
-const api = new MetaDataControllerApi()
-const dataStore = new DataStore(api.getListOfDataMetaInfo)
+import {MetaDataControllerApi} from "@/../build/clients/backend/api";
+import {ApiWrapper} from "@/services/ApiWrapper"
+
+const metaDataControllerApi = new MetaDataControllerApi()
+const getListOfDataMetaInfoWrapper = new ApiWrapper(metaDataControllerApi.getListOfDataMetaInfo)
 
 export default {
   name: "DataList",
@@ -28,7 +29,7 @@ export default {
   },
   methods: {
     async getData() {
-      this.response = await dataStore.perform([""])
+      this.response = await getListOfDataMetaInfoWrapper.perform("")
     }
   }
 }

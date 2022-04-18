@@ -1,41 +1,12 @@
-import {humanizeString} from "@/utils/stringHumanizer"
+import {StringHumanizer} from "@/utils/StringHumanizer"
 
-export class DataStore {
-    axiosFunction: any
-    rawSchema: any
+export class SchemaGenerator {
+    private readonly rawSchema: any
+    private stringHumanizer: StringHumanizer;
 
-    constructor(axiosFunction: any, rawSchema?: any) {
-        this.axiosFunction = axiosFunction
+    constructor(rawSchema: any) {
         this.rawSchema = rawSchema
-    }
-
-    getSchema(): object {
-        if (this.rawSchema) {
-            return this.processRawSchema()
-        } else {
-            return this.getSchemaFromFunction()
-        }
-    }
-
-    private getSchemaFromFunction(): object {
-        const getAllParams = require('get-parameter-names')
-        const params = getAllParams(this.axiosFunction)
-        const schema = []
-
-        for (const index in params) {
-            const value = params[index]
-            if (value != "options") {
-                schema.push({
-                        $formkit: 'text',
-                        label: humanizeString(value),
-                        placeholder: humanizeString(value),
-                        name: value,
-                        validation: "required"
-                    }
-                )
-            }
-        }
-        return schema
+        this.stringHumanizer = new StringHumanizer()
     }
 
     private getType(param: string): string {
@@ -55,7 +26,7 @@ export class DataStore {
     private processEnum(rawEnumProperties: any): any {
         const enumProperties: any = {}
         for (const enumItem of rawEnumProperties) {
-            enumProperties[enumItem] = humanizeString(enumItem)
+            enumProperties[enumItem] = this.stringHumanizer.humanize(enumItem)
         }
         return enumProperties
     }
@@ -66,7 +37,7 @@ export class DataStore {
         return `${required}|${type}`
     }
 
-    private processRawSchema(): object {
+    generate(): object {
         const propertiesSchema = this.rawSchema.properties
         const schema = []
         for (const index in propertiesSchema) {
@@ -78,7 +49,7 @@ export class DataStore {
                     /* create a select form */
                     schema.push({
                             $formkit: 'select',
-                            label: humanizeString(index),
+                            label: this.stringHumanizer.humanize(index),
                             placeholder: "Please Choose",
                             name: index,
                             validation: validation,
@@ -89,7 +60,7 @@ export class DataStore {
                     /* create a radio form */
                     schema.push({
                             $formkit: 'radio',
-                            label: humanizeString(index),
+                            label: this.stringHumanizer.humanize(index),
                             name: index,
                             validation: validation,
                             classes: {
@@ -105,7 +76,7 @@ export class DataStore {
                 /* create a date form */
                 schema.push({
                         $formkit: "date",
-                        label: humanizeString(index),
+                        label: this.stringHumanizer.humanize(index),
                         name: index,
                         validation: validation,
                         classes: {
@@ -120,8 +91,8 @@ export class DataStore {
                     const enumProperties = this.processEnum(propertiesSchema[index].items.enum)
                     schema.push({
                             $formkit: "checkbox",
-                            label: humanizeString(index),
-                            placeholder: humanizeString(index),
+                            label: this.stringHumanizer.humanize(index),
+                            placeholder: this.stringHumanizer.humanize(index),
                             name: index,
                             validation: validation,
                             options: enumProperties,
@@ -138,8 +109,8 @@ export class DataStore {
                     /* create a text form */
                     schema.push({
                             $formkit: "text",
-                            label: humanizeString(index),
-                            placeholder: humanizeString(index),
+                            label: this.stringHumanizer.humanize(index),
+                            placeholder: this.stringHumanizer.humanize(index),
                             name: index,
                             validation: validation,
                             classes: {
@@ -152,9 +123,5 @@ export class DataStore {
             }
         }
         return schema
-    }
-
-    perform(...args: any): any {
-        return this.axiosFunction(...args, {baseURL: process.env.VUE_APP_BASE_API_URL})
     }
 }

@@ -61,14 +61,9 @@
 </template>
 
 <script>
-import {CompanyDataControllerApi} from "@/../build/clients/backend";
-import {DataStore} from "@/services/DataStore";
-import backend from "@/../build/clients/backend/backendOpenApi.json";
+import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
+import {ApiWrapper} from "@/services/ApiWrapper"
 import AutoComplete from 'primevue/autocomplete';
-
-const api = new CompanyDataControllerApi()
-const contactSchema = backend.components.schemas.ContactInformation
-const dataStore = new DataStore(api.getCompanies, contactSchema)
 import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import CompanyInformation from "@/components/pages/company/CompanyInformation";
@@ -76,6 +71,9 @@ import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 import IndexTabs from "@/components/pages/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
+
+const companyDataControllerApi = new CompanyDataControllerApi()
+const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 
 
 export default {
@@ -179,7 +177,7 @@ export default {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform(event.query, "", true).then(this.responseMapper)
+        this.responseArray = await getCompaniesWrapper.perform(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
@@ -194,7 +192,7 @@ export default {
         this.processed = false
         this.showIndexTabs = true
         this.loading = true
-        this.responseArray = await dataStore.perform(this.selectedCompany, "", false).then(this.responseMapper)
+        this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
@@ -209,7 +207,7 @@ export default {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await dataStore.perform("", stockIndex, false).then(this.responseMapper)
+        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
