@@ -10,7 +10,7 @@ export class StringHumanizer {
      */
     private convertCamelCaseToSentenceCase(rawText: string): string {
         // Split the sting to words
-        const processedText = rawText.replace(/([A-Z])/g, " $1")
+        const processedText = rawText.replace(/((?!^)[A-Z])/g, " $1")
         // uppercase the first letter of the first word
         return processedText.charAt(0).toUpperCase() + processedText.slice(1)
     }
