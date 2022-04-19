@@ -6,7 +6,7 @@
       </div>
       <div class="col-3" v-for="(stockIndex, index) in Object.keys(stockIndexObject)" :key="index"
            @click="handleIndexCardClick(stockIndex, index)">
-        <IndexCard :stockIndex="stockIndex"/>
+        <IndexCard :stockIndex="stockIndex" :stockIndexObject="stockIndexObject"/>
       </div>
     </div>
   </MarginWrapper>

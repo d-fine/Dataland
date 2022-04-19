@@ -14,7 +14,7 @@ describe.only('Search Taxonomy', function () {
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
-            .click()
+            .click({force:true})
             .type(inputValue)
             .should('have.value', inputValue)
             .invoke('attr', 'placeholder').should('contain', placeholder)

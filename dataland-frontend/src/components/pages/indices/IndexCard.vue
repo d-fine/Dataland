@@ -23,19 +23,15 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
-import {stockIndexObject} from "@/utils/indexMapper";
 
 export default {
   name: "IndexCard",
   components: {Card, ProgressBar},
-  data(){
-    return {
-      stockIndexObject: stockIndexObject()
-    }
-  },
   props: {
+    stockIndexObject: {
+      type: Object
+    },
     stockIndex: {
-      default: "Dax",
       type: String
     },
     green_asset_ratio: {
