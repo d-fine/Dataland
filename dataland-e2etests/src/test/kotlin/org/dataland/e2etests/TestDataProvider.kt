@@ -66,7 +66,7 @@ class TestDataProvider {
         return data.map { it.data!! }
     }
 
-    fun getCompaniesWithData(requiredCompanyNumber: Int, dataSetsPerCompany: Int):
+    fun getCompaniesWithData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<EuTaxonomyData>> {
         if (dataSetsPerCompany > testData.size) {
             throw(
@@ -76,7 +76,7 @@ class TestDataProvider {
                 )
                 )
         }
-        val companies = getCompanyInformation(requiredCompanyNumber)
+        val companies = getCompanyInformation(requiredNumberOfCompanies)
 
         return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
     }
