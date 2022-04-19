@@ -66,7 +66,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `search for identifiers and check if it can find the one`() {
+    fun `search for all identifier values and check if all results contain the looked for value`() {
         addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
