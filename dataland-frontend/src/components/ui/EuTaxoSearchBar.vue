@@ -7,13 +7,12 @@
               <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
                     <i v-else aria-hidden="true"/>
-              <AutoComplete v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
-                            @complete="searchCompany($event)" placeholder="Search a company by name"
-                            inputClass="h-3rem" ref="cac"
-                            field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
-                            @keyup.enter="filter=true; table=true; $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}}); queryCompany(); close();"
-
-                            @item-select="filter=false; singleton=true; table=false; $router.push(`/companies/${selectedCompany.companyId}/eutaxonomies`)">
+              <AutoComplete
+                  v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
+                  @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="cac"
+                  field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
+                  @keyup.enter="handleEnter"
+                  @item-select="handleItemSelect">
                 <template #footer>
                   <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
                     <li class="p-autocomplete-item text-primary font-semibold"
@@ -26,8 +25,8 @@
       </div>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar"><i class="pi pi-search" aria-hidden="true"
-                                                                       style="z-index:20; color:#958D7C"/>
+        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar">
+          <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
         <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
@@ -133,19 +132,27 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    handleItemSelect(){
+      this.filter=false;
+      this.singleton=true;
+      this.table=false;
+      this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
+    },
+    handleEnter() {
+      this.filter=true;
+      this.table=true;
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
+      this.queryCompany();
+      this.close();
+    },
     handleScroll() {
       this.scrolled = true
-      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        this.scrolled = true
-      } else {
-        this.scrolled = false
-      }
+      this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
       this.$emit('scrolling', this.scrolled)
     },
     focused(){
       this.$emit('autocomplete-focus', true)
       this.$refs.indexTabs.activeIndex = null
-
     },
     unfocused(){
       this.$emit('autocomplete-focus', false)
@@ -192,8 +199,8 @@ export default {
     async queryCompany() {
       try {
         this.processed = false
-        this.showIndexTabs = true
         this.loading = true
+        this.showIndexTabs = true
         this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
         this.additionalCompanies = this.responseArray.slice(0)
