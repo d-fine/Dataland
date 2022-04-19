@@ -27,7 +27,7 @@ class DataManager(
     var companyDataPerCompanyId = mutableMapOf<String, StoredCompany>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
     private var companyCounter = 0
-    private val greenAssetRatio = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
+    private val greenAssetRatios = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -186,7 +186,7 @@ class DataManager(
             }
             updateGreenAssetRatioOnIndexLevel(index, filteredCompanies)
         }
-        return greenAssetRatio
+        return greenAssetRatios
     }
 
     private fun updateGreenAssetRatioOnIndexLevel(
@@ -205,6 +205,6 @@ class DataManager(
             totalSum += data.opex?.total ?: BigDecimal(0.0)
             totalSum += data.revenue?.total ?: BigDecimal(0.0)
         }
-        greenAssetRatio[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
+        greenAssetRatios[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
     }
 }
