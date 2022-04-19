@@ -82,7 +82,8 @@ class DataManagerTest(
                 }
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
-                    "The posted company could not be retrieved by searching for its identifier."
+                    "The search by identifier returns at least one company that does not contain the looked" +
+                            "for value $identifier."
                 )
             }
         }
@@ -100,7 +101,8 @@ class DataManagerTest(
             val searchResponse = testManager.searchCompaniesByIndex(stockIndex)
             assertTrue(
                 searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
-                "The posted company could not be retrieved by searching for its stock indices."
+                "The search result for the stock index $stockIndex contains at least one company " +
+                        "that does not have $stockIndex as index attribute."
             )
         }
     }
