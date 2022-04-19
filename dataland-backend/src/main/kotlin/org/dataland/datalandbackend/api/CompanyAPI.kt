@@ -45,8 +45,8 @@ interface CompanyAPI {
     @Operation(
         summary = "Retrieve specific companies by name/identifier/index or just all companies from the data store.",
         description = "Companies identified via the provided company name/identifier/index are retrieved. " +
-            "If an empty string is passed as search argument, all companies in the data store will be returned." +
-            "If selectedIndex is not null, all companies with the given stock index will be returned."
+            "If only an empty string is passed as search argument, all companies in the data store are returned." +
+            "If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned."
     )
     @ApiResponses(
         value = [
@@ -58,8 +58,8 @@ interface CompanyAPI {
     )
     /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
-     * If an empty string is passed as search argument, all companies in the data store will be returned.
-     * If selectedIndex is not null, all companies with the given stock index will be returned.
+     * If only an empty string is passed as search argument, all companies in the data store are returned.
+     * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
      * @param searchString string used for substring matching
      * @param selectedIndex StockIndex Enum used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
