@@ -1,13 +1,26 @@
+/**
+ * Class to convert string to a human-readable text
+ */
 export class StringHumanizer {
 
-    private convertCamelCaseToSentenceCase(text: string): string {
+    /**
+     * convert camel case string to sentence case string using regex
+     *
+     * @param  {string} rawText      is the string to be converted to a human-readable string
+     */
+    private convertCamelCaseToSentenceCase(rawText: string): string {
         // Split the sting to words
-        const processedText = text.replace(/((?!^)[A-Z][a-z]+|([A-Z]+)$|[0-9]+)/g, " $1")
+        const processedText = rawText.replace(/([A-Z])/g, " $1")
         // uppercase the first letter of the first word
         return processedText.charAt(0).toUpperCase() + processedText.slice(1)
     }
 
-    humanize(text: string): string {
+    /**
+     * get the representable text from the mapping object
+     *
+     * @param  {string} rawText      is the string to be converted to a human-readable string
+     */
+    private getStringFromMapper(rawText: string): string {
         const mappingObject: { [key: string]: string } = {
             cdax: "CDAX",
             dax: "DAX",
@@ -21,10 +34,18 @@ export class StringHumanizer {
             permid: "PERM Id",
             lei: "LEI"
         }
+        const lowerCaseText = rawText.toLowerCase()
+        return (lowerCaseText in mappingObject) ? mappingObject[lowerCaseText] : ""
+    }
 
-        if (text.toLowerCase() in mappingObject) {
-            return mappingObject[text.toLowerCase()]
-        }
-        return this.convertCamelCaseToSentenceCase(text)
+    /**
+     * convert string to a human-readable text
+     *
+     * @param  {string} rawText      is the string to be converted to a human-readable string
+     */
+    humanize(rawText: string): string {
+
+        const valueFromMapping = this.getStringFromMapper(rawText)
+        return (valueFromMapping == "") ? this.convertCamelCaseToSentenceCase(rawText) : valueFromMapping
     }
 }
