@@ -8,19 +8,18 @@ export class StringHumanizer {
     }
 
     humanize(text: string): string {
-        const mappingObject = {
-            "cdax": "CDAX",
-            "dax": "DAX",
-            "gex": "GEX",
-            "mdax": "MDAX",
-            "sdax": "SDAX",
-            "tecdax": "TecDAX",
-            "scalehdax": "ScaleHDAX",
-            "dax50esg": "DAX 50 ESG"
+        const mappingObject: { [key: string]: string } = {
+            cdax: "CDAX",
+            dax: "DAX",
+            gex: "GEX",
+            mdax: "MDAX",
+            sdax: "SDAX",
+            tecdax: "TecDAX",
+            scalehdax: "ScaleHDAX",
+            dax50esg: "DAX 50 ESG"
         }
 
         if (text.toLowerCase() in mappingObject) {
-            // @ts-ignore
             return mappingObject[text.toLowerCase()]
         }
         return this.convertCamelCaseToSentenceCase(text)
