@@ -14,9 +14,9 @@
                   @keyup.enter="handleEnter"
                   @item-select="handleItemSelect">
                 <template #footer>
-                  <ul v-if="responseArray && responseArray.length > 0" class="p-autocomplete-items pt-0">
+                  <ul v-if="autocompleteArray && autocompleteArray.length > 0" class="p-autocomplete-items pt-0">
                     <li class="p-autocomplete-item text-primary font-semibold"
-                        @click="filter=true; table=true;singleton=false; close(); $router.push({name: 'Search Eu Taxonomy', query: {input: selectedCompany}})">View all results. </li>
+                        @click="handleEnter">View all results. </li>
                   </ul>
                 </template>
               </AutoComplete>
@@ -37,8 +37,8 @@
 <!-- TODO: index prop inside IndexTabs should be watched for updates    -->
     <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
-  <template v-if="processed && table">
-    <EuTaxoSearchResults :data="responseArray" :processed="processed"/>
+  <template v-if="collection">
+    <EuTaxoSearchResults :data="responseArray"/>
   </template>
   <template v-if="processed && singleton">
     <MarginWrapper>
@@ -89,8 +89,9 @@ export default {
       route: useRoute(),
       singleton: false,
       processed: false,
-      table: false,
-      responseArray: this.paramsArray,
+      collection: false,
+      responseArray: [],
+      autocompleteArray: [],
       filter: false,
       loading: false,
       model: {},
@@ -110,14 +111,6 @@ export default {
       type: String,
       default: ""
     },
-    paramsArray: {
-      type: Array,
-      default() {
-        return [
-          {}
-        ]
-      }
-    }
   },
   mounted() {
     if (this.route.query.input) {
@@ -135,12 +128,12 @@ export default {
     handleItemSelect(){
       this.filter=false;
       this.singleton=true;
-      this.table=false;
+      this.collection=false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleEnter() {
       this.filter=true;
-      this.table=true;
+      this.collection=true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
@@ -185,9 +178,8 @@ export default {
       try {
         this.processed = false
         this.loading = true
-        this.responseArray = await getCompaniesWrapper.perform(event.query, "", true).then(this.responseMapper)
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-        this.additionalCompanies = this.responseArray.slice(0)
+        this.autocompleteArray = await getCompaniesWrapper.perform(event.query, "", true).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.autocompleteArray.slice(0, 3)
       } catch (error) {
         console.error(error)
       } finally {
@@ -198,18 +190,16 @@ export default {
     },
     async queryCompany() {
       try {
-        this.processed = false
         this.loading = true
         this.showIndexTabs = true
         this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-        this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
         console.error(error)
       } finally {
         this.loading = false
         this.processed = true
-        this.table = true
+        this.collection = true
         this.index = null
       }
     },
@@ -219,13 +209,12 @@ export default {
         this.loading = true
         this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-        this.additionalCompanies = this.responseArray.slice(0)
       } catch (error) {
         console.error(error)
       } finally {
         this.loading = false
         this.processed = true
-        this.table = true
+        this.collection = true
       }
     }
   }
