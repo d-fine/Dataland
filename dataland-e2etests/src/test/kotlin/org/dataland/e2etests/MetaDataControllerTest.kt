@@ -55,11 +55,16 @@ class MetaDataControllerTest {
         val numberOfCompanies = 5
         val numberOfDataSetsToPostPerCompany = 3
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
-        val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
+        val initialSizeOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "").size
         val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
-        assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoComplete.size)
+        val expectedSizeOfDataMetaInfoComplete = initialSizeOfDataMetaInfoComplete + totalNumberOfDataSets
+        assertEquals(
+            expectedSizeOfDataMetaInfoComplete, listOfDataMetaInfoComplete.size,
+            "The list with all data meta info is expected to increase by $totalNumberOfDataSets to " +
+                "$expectedSizeOfDataMetaInfoComplete, but has the size ${listOfDataMetaInfoComplete.size}."
+        )
     }
 
     @Test
@@ -70,7 +75,11 @@ class MetaDataControllerTest {
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
-        assertEquals(numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyId.size)
+        assertEquals(
+            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyId.size,
+            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+                "data sets, but has meta info about ${listOfDataMetaInfoPerCompanyId.size} data sets."
+        )
     }
 
     @Test
@@ -82,7 +91,12 @@ class MetaDataControllerTest {
         val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerDataType = metaDataControllerApi.getListOfDataMetaInfo("", "EuTaxonomyData")
-        assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoPerDataType.size)
+        val expectedSizeOfDataMetaInfoList = initialSizeOfDataMetaInfoList + totalNumberOfDataSets
+        assertEquals(
+            expectedSizeOfDataMetaInfoList, listOfDataMetaInfoPerDataType.size,
+            "The list with all data meta info is expected to increase by $totalNumberOfDataSets to " +
+                "$expectedSizeOfDataMetaInfoList, but has the size ${listOfDataMetaInfoPerDataType.size}."
+        )
     }
 
     @Test
@@ -93,7 +107,11 @@ class MetaDataControllerTest {
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyIdAndDataType =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyData")
-        assertEquals(numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size)
+        assertEquals(
+            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size,
+            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+                "data sets, but has meta info about ${listOfDataMetaInfoPerCompanyIdAndDataType.size} data sets."
+        )
     }
 
     @Test
