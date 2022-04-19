@@ -83,6 +83,10 @@ ktlint {
     }
 }
 
+tasks.bootJar {
+    enabled = false
+}
+
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
     into("$projectDir/src/test/resources")

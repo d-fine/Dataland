@@ -119,20 +119,16 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsUnitTests
-          if: always()
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsE2ETest
-          if: always()
       - uses: actions/download-artifact@v2
         with:
           name: lcovResultsUnit
-          if: always()
           path: fe-coverage/unit
       - uses: actions/download-artifact@v2
         with:
           name: lcovResultsE2E
-          if: always()
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
