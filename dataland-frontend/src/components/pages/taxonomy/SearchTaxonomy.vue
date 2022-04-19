@@ -16,7 +16,6 @@ export default {
   components: {SearchTaxonomyHeader, IndexPanel, EuTaxoSearchBar},
   data(){
     return {
-      autocompletefocus: null,
       showIndexPanel: true,
       scrolled: false,
       index: null,
@@ -25,9 +24,9 @@ export default {
     }
   },
   methods: {
-    getAutoCompleteFocus(focus){
-      this.autocompletefocus = focus
+    getAutoCompleteFocus(){
       this.showIndexPanel = false
+      this.index = null
       this.$refs.euTaxoSearchBar.showIndexTabs = true
 
     },
