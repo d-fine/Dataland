@@ -134,7 +134,7 @@ export default {
       this.filter=true;
       this.collection=true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
-      this.$emit('query-action', null, null)
+      this.$emit('query-action')
       this.queryCompany();
       this.close();
     },
@@ -167,7 +167,7 @@ export default {
     },
     activateSearchBar() {
       window.addEventListener('scroll', ()=>{
-        if (document.body.scrollTop < 100 || document.documentElement.scrollTop < 100){
+        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150){
           this.$refs.cac.focus()
         }
       });

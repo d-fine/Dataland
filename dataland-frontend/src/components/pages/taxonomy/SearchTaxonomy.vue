@@ -1,9 +1,11 @@
 <template>
   <SearchTaxonomyHeader :scrolled="scrolled"/>
-  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling" @query-action="handleIndex"/>
+  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling" @query-action="handleQuery"/>
   <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel"/>
+<p>
+IndexPanel: {{showIndexPanel}}
+</p>
 </template>
-
 <script>
 
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
@@ -39,6 +41,9 @@ export default {
     },
     handleScrolling(scrolled){
       this.scrolled = scrolled
+    },
+    handleQuery(){
+      this.showIndexPanel = false
     }
   }
 }
