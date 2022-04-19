@@ -83,7 +83,7 @@ class DataManagerTest(
                 assertTrue(
                     searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
                     "The search by identifier returns at least one company that does not contain the looked" +
-                            "for value $identifier."
+                        "for value $identifier."
                 )
             }
         }
@@ -102,7 +102,7 @@ class DataManagerTest(
             assertTrue(
                 searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
                 "The search result for the stock index $stockIndex contains at least one company " +
-                        "that does not have $stockIndex as index attribute."
+                    "that does not have $stockIndex as index attribute."
             )
         }
     }
