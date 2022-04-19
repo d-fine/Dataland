@@ -26,7 +26,7 @@ describe('routerTest', () => {
             history: createWebHistory(),
             routes: routes,
         })
-        router.push('/')
+        await router.push('/')
         await router.isReady()
         const wrapper = mount(App, {
             global: {
@@ -41,7 +41,7 @@ describe('routerTest', () => {
             history: createWebHistory(),
             routes: routes,
         })
-        router.push('/searchtaxonomy')
+        await router.push('/searchtaxonomy')
         await router.isReady()
         const wrapper = mount(App, {
             global: {

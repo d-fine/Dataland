@@ -12,9 +12,7 @@ describe('CompanyInformation', () => {
     })
 
     it('checks getCompanyInformation()', async () => {
-        expect.assertions(2)
         jest.spyOn(console, 'error');
-        wrapper.setData({model: {"something": "none"}})
         expect(wrapper.vm.getCompanyInformation()).toBeDefined()
         await wrapper.vm.getCompanyInformation();
         expect(console.error).toHaveBeenCalled();
