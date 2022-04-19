@@ -11,12 +11,11 @@
                   v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
                   @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="cac"
                   field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
-                  @keyup.enter="handleEnter"
-                  @item-select="handleItemSelect">
+                  @keyup.enter="handleQuery" @item-select="handleItemSelect">
                 <template #footer>
                   <ul v-if="autocompleteArray && autocompleteArray.length > 0" class="p-autocomplete-items pt-0">
                     <li class="p-autocomplete-item text-primary font-semibold"
-                        @click="handleEnter">View all results. </li>
+                        @click="handleQuery">View all results. </li>
                   </ul>
                 </template>
               </AutoComplete>
@@ -131,10 +130,11 @@ export default {
       this.collection=false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
-    handleEnter() {
+    handleQuery() {
       this.filter=true;
       this.collection=true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
+      this.$emit('query-action', null, null)
       this.queryCompany();
       this.close();
     },

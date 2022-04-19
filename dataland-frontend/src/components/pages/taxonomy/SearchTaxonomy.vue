@@ -1,6 +1,6 @@
 <template>
   <SearchTaxonomyHeader :scrolled="scrolled"/>
-  <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
+  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling" @query-action="handleIndex"/>
   <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel"/>
 </template>
 
@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    getAutoCompleteFocus(){
+    handleAutoCompleteFocus(){
       this.showIndexPanel = false
       this.$refs.euTaxoSearchBar.showIndexTabs = true
 
