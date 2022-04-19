@@ -16,7 +16,10 @@ export class StringHumanizer {
             sdax: "SDAX",
             tecdax: "TecDAX",
             scalehdax: "ScaleHDAX",
-            dax50esg: "DAX 50 ESG"
+            dax50esg: "DAX 50 ESG",
+            isin: "ISIN",
+            permid: "PERM Id",
+            lei: "LEI"
         }
 
         if (text.toLowerCase() in mappingObject) {
