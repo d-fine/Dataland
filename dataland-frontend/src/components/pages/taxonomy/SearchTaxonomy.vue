@@ -1,30 +1,19 @@
 <template>
-  <MarginWrapper>
-    <div class="grid align-items-center" v-if="!scrolled">
-      <div class="col-8 text-left">
-        <h1 class="mb-0">Search EU Taxonomy data</h1>
-      </div>
-      <div class="col-4 text-right font-semibold">
-        <span title="login message">Welcome to Dataland, Roger</span>
-      </div>
-    </div>
-  </MarginWrapper>
-    <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
-  <MarginWrapper bgClass="surface-800" v-if="showIndexPanel">
-    <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex"/>
-  </MarginWrapper>
+  <SearchTaxonomyHeader :scrolled="scrolled"/>
+  <EuTaxoSearchBar @autocomplete-focus="getAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
+  <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel"/>
 </template>
 
 <script>
 
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
 import {stockIndexObject} from "@/utils/indexMapper";
+import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
 
 export default {
   name: "SearchTaxonomy",
-  components: { IndexPanel, MarginWrapper, EuTaxoSearchBar},
+  components: {SearchTaxonomyHeader, IndexPanel, EuTaxoSearchBar},
   data(){
     return {
       autocompletefocus: null,

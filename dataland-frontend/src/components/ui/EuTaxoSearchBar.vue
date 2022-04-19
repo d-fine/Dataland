@@ -35,6 +35,7 @@
 
   </MarginWrapper>
   <MarginWrapper>
+<!-- TODO: index prop inside IndexTabs should be watched for updates    -->
     <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <template v-if="processed && table">
@@ -185,6 +186,7 @@ export default {
       } finally {
         this.loading = false
         this.processed = true
+        this.index = null
       }
     },
     async queryCompany() {
@@ -201,6 +203,7 @@ export default {
         this.loading = false
         this.processed = true
         this.table = true
+        this.index = null
       }
     },
     async filterByIndex(stockIndex) {
