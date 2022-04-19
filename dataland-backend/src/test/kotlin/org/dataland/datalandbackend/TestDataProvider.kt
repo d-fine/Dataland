@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 
 class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
-    private val jsonFile = ClassPathResource("/companies.json").file
+    private val jsonFile = ClassPathResource("/CompanyInformation.json").file
     private val type: JavaType = objectMapper.typeFactory.constructParametricType(
         List::class.java, CompanyInformation::class.java
     )

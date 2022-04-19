@@ -96,8 +96,8 @@ function generateTaxonomies() {
 function main() {
     let companiesObj = generateCompanies();
     let taxonomiesObj = generateTaxonomies();
-    fs.writeFileSync('./tests/e2e/fixtures/companies.json', JSON.stringify(companiesObj, null, '\t'));
-    fs.writeFileSync('./tests/e2e/fixtures/eutaxonomies.json', JSON.stringify(taxonomiesObj, null, '\t'));
+    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.json', JSON.stringify(companiesObj, null, '\t'));
+    fs.writeFileSync('./tests/e2e/fixtures/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(taxonomiesObj, null, '\t'));
 }
 
 main()

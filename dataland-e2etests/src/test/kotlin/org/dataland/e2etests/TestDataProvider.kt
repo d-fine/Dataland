@@ -33,8 +33,8 @@ object LocalDateAdapter {
 class TestDataProvider {
     private var dataCounter = 0
 
-    private val companyJson = ClassPathResource("/companies.json").file
-    private val dataJson = ClassPathResource("/eutaxonomies.json").file
+    private val companyJson = ClassPathResource("/CompanyInformation.json").file
+    private val dataJson = ClassPathResource("/CompanyAssociatedEuTaxonomyData.json").file
     private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
     private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
 
