@@ -18,7 +18,6 @@ export default {
     return {
       showIndexPanel: true,
       scrolled: false,
-      index: null,
       stockIndexObject: stockIndexObject(),
       stockIndex: null
     }
@@ -26,15 +25,12 @@ export default {
   methods: {
     getAutoCompleteFocus(){
       this.showIndexPanel = false
-      this.index = null
       this.$refs.euTaxoSearchBar.showIndexTabs = true
 
     },
     handleIndex(stockIndex, index){
-      console.log(index)
       this.showIndexPanel = false
       this.$refs.euTaxoSearchBar.toggleIndexTabs(index, stockIndex)
-      this.index = index
       this.stockIndex = stockIndex
     },
     handleScrolling(scrolled){
