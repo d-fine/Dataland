@@ -134,7 +134,6 @@ export default {
       this.filter=true;
       this.collection=true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
-      this.$emit('query-action')
       this.queryCompany();
       this.close();
     },

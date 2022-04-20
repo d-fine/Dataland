@@ -14,23 +14,30 @@
 <script>
 
 import TabMenu from 'primevue/tabmenu';
-import {stockIndexObject} from "@/utils/indexMapper";
-
+import {StringHumanizer} from "@/utils/StringHumanizer"
+const stringHumanizer = new StringHumanizer()
+import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
+const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
+    .items.enum.reduce((a, v) => ({ ...a, [v]: stringHumanizer.humanize(v)}), {})
 export default {
   name: "IndexTabs",
   components: {TabMenu},
-  props: ['initIndex'],
+  props: {
+  stockIndexObject: {
+    type: Object,
+    default: stockIndexObject
+  },
+    initIndex:{
+     type: Number
+    }
+  },
   data(){
     return {
       activeIndex: null,
-      stockIndexObject: stockIndexObject(),
     }
   },
   methods: {
     handleIndexTabClick(element, currentIndex){
-      console.log("Tab function executed:")
-      console.dir(element)
-      console.dir(currentIndex)
       this.$emit("tab-click", currentIndex, element)
     },
     change(index){
