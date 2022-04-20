@@ -102,18 +102,13 @@ class CompanyDataControllerTest {
                 indexFound = true
             }
         }
-        companyDataControllerApi.getCompanies(
-            searchString = "",
-            selectedIndex = CompanyDataControllerApi.SelectedIndex_getCompanies.valueOf("dax"),
-            onlyCompanyNames = false
-        )
-        val testIndex = testCompanyInformation.indices!!.first().toString()
-        val newName = testIndex[0].lowercase() + testIndex.substring(1)
+
+        val testIndex = testCompanyInformation.indices!!.first().name
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         assertTrue(
             companyDataControllerApi.getCompanies(
                 searchString = "",
-                selectedIndex = CompanyDataControllerApi.SelectedIndex_getCompanies.valueOf(newName),
+                selectedIndex = CompanyDataControllerApi.SelectedIndex_getCompanies.valueOf(testIndex),
                 onlyCompanyNames = false
             )
                 .any { it.companyId == testCompanyId }
