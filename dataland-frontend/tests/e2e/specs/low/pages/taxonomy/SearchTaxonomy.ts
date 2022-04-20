@@ -1,6 +1,6 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length
-describe.only('Search Taxonomy', function () {
+describe('Search Taxonomy', function () {
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")

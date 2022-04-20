@@ -1,16 +1,14 @@
 <template>
   <SearchTaxonomyHeader :scrolled="scrolled"/>
-  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling" @query-action="handleQuery"/>
+  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
   <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel"/>
-<p>
-IndexPanel: {{showIndexPanel}}
-</p>
 </template>
 <script>
 
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
+import {useRoute} from "vue-router"
 import {StringHumanizer} from "@/utils/StringHumanizer"
 const stringHumanizer = new StringHumanizer()
 const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
@@ -25,7 +23,8 @@ export default {
       showIndexPanel: true,
       scrolled: false,
       stockIndexObject: stockIndexObject,
-      stockIndex: null
+      stockIndex: null,
+      route: useRoute(),
     }
   },
   methods: {
@@ -42,9 +41,11 @@ export default {
     handleScrolling(scrolled){
       this.scrolled = scrolled
     },
-    handleQuery(){
+  },
+  beforeMount() {
+    if (this.route.query.input) {
       this.showIndexPanel = false
     }
-  }
+  },
 }
 </script>
