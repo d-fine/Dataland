@@ -1,5 +1,3 @@
-import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length
 describe('Search Taxonomy', function () {
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
@@ -21,28 +19,6 @@ describe('Search Taxonomy', function () {
     });
 
 
-    it('Index tabmenu should be present', () => {
-        cy.visit("/searchtaxonomy")
-        cy.get('.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem').should('not.exist')
-        cy.get('.p-card > .p-card-body > .p-card-content')
-            .eq(0).click()
-        cy.get('.grid')
-            .should('not.contain','Choose by stock market index')
-        cy.get('.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem')
-            .should('have.length', numberOfStockIndices)
-            .eq(2).click()
-        cy.get('h2')
-            .should('contain', "Results")
-        cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
-            .contains('a', 'VIEW')
-            .click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
-    })
 
     it('Search Input field should be present after index filter', () => {
         const placeholder = "Search a company by name"

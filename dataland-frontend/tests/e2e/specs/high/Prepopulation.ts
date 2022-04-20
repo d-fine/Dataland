@@ -12,6 +12,7 @@ describe('Population Test', () => {
 
     });
 
+
     it('Populate Companies', function (){
         for (const index in companiesData) {
             cy.request('POST', `${Cypress.env("API")}/companies`, companiesData[index]).its('status').should("equal", 200)
@@ -34,6 +35,16 @@ describe('Population Test', () => {
             })
         })
     });
+
+    it.only('Fixture Test', () => {
+        cy.visit('/searchtaxonomy')
+        const inputValue = companiesData[0].companyName
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click({force:true})
+            .type(inputValue)
+            .should('have.value', inputValue)
+    })
 });
 
 describe('EU Taxonomy Data', () => {
@@ -60,6 +71,7 @@ describe('Company EU Taxonomy Data', () => {
         cy.get('button.p-button.p-component').contains('Financial and sustainability')
         cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
+
 });
 
 describe('Company Data', () => {
