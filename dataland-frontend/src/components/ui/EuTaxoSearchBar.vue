@@ -2,7 +2,7 @@
   <MarginWrapper>
     <div class="grid">
       <div class="col-8 text-left" v-if="!scrolled">
-        <span class="p-fluid" >
+        <span class="p-fluid">
           <span class="p-input-icon-left p-input-icon-right ">
             <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
@@ -25,16 +25,18 @@
       </div>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar">
+        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
-        <IndexTabs v-if="showIndexTabs"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+        <IndexTabs v-if="showIndexTabs" :stockIndexObject="stockIndexObject" :initIndex="index"
+                   @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
-      </div>
+    </div>
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+    <IndexTabs v-if="showIndexTabs && !scrolled" :stockIndexObject="stockIndexObject" :initIndex="index"
+               @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <EuTaxoSearchResults v-if="collection" :data="responseArray"/>
 </template>
@@ -67,7 +69,6 @@ export default {
   },
   data() {
     return {
-      componentKey: 0,
       showIndexTabs: false,
       index: null,
       scrolled: false,
@@ -90,7 +91,7 @@ export default {
       additionalCompanies: null
     }
   },
-  created () {
+  created() {
     window.addEventListener('scroll', this.handleScroll);
   },
   mounted() {
@@ -101,8 +102,8 @@ export default {
   },
   methods: {
     activateSearchBar() {
-      window.addEventListener('scroll', ()=>{
-        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150){
+      window.addEventListener('scroll', () => {
+        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150) {
           this.$refs.cac.focus()
         }
       });
@@ -112,22 +113,21 @@ export default {
     close() {
       this.$refs.cac.hideOverlay()
     },
-    focused(){
+    focused() {
       this.$emit('autocomplete-focus', true)
       if (this.$refs.indexTabs) {
         this.$refs.indexTabs.activeIndex = null
       }
     },
-    handleItemSelect(){
-      this.filter=false;
-      this.singleton=true;
-      this.collection=false;
-      this.componentKey += 1;
+    handleItemSelect() {
+      this.filter = false;
+      this.singleton = true;
+      this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
-      this.filter=true;
-      this.collection=true;
+      this.filter = true;
+      this.collection = true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
@@ -138,7 +138,7 @@ export default {
       this.$emit('scrolling', this.scrolled)
     },
 
-    responseMapper(response){
+    responseMapper(response) {
       return response.data.map(e => ({
         "companyName": e.companyInformation.companyName,
         "companyInformation": e.companyInformation,
@@ -150,7 +150,7 @@ export default {
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
     },
-    unfocused(){
+    unfocused() {
       this.$emit('autocomplete-focus', false)
     },
     async filterByIndex(stockIndex) {
@@ -194,8 +194,8 @@ export default {
       }
     }
   },
-  emits:['autocomplete-focus', 'scrolling'],
-  unmounted () {
+  emits: ['autocomplete-focus', 'scrolling'],
+  unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
   }
 }

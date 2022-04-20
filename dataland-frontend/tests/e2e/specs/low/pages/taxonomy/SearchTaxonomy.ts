@@ -91,7 +91,24 @@ describe('Search Taxonomy', function () {
             .url().should('include', '/companies/')
             .url().should('include', '/eutaxonomies')
 
-    })
+    });
+
+    it('Scroll functionality', () => {
+        cy.visit('/searchtaxonomy')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .click()
+            .type('a')
+            .type('{enter}')
+        cy.scrollTo(0, 500)
+        cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
+        cy.get('button[name=search_bar_collapse]').should('exist')
+
+        cy.scrollTo(0, 0)
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
+
+    });
 
 
 
