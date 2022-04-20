@@ -1,4 +1,4 @@
-describe.only('User interactive tests for Data Search', () => {
+describe('User interactive tests for Data Search', () => {
 
     beforeEach(() => {
         cy.visit("/search")

@@ -13,13 +13,13 @@
           @submit="getSkyminderByName">
         <FormKit
             type="text"
-            name="countryCode"
+            name="code"
             validation="required"
             label="messageCountry Code"
         />
         <FormKit
             type="text"
-            name="companyName"
+            name="name"
             validation="required"
             label="Company Name"
         />
