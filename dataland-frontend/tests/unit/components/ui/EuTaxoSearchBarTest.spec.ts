@@ -19,9 +19,16 @@ import {routes} from '@/router'
         })
 
         it('checks field properties', () => {
-            expect(wrapper.vm.model).toBeDefined()
-            expect(wrapper.vm.response).toBeDefined()
-            expect(wrapper.vm.processed).toBeDefined()
+            expect(wrapper.vm.showIndexTabs).toBeDefined()
+            expect(wrapper.vm.index).toBeDefined()
+            expect(wrapper.vm.scrolled).toBeDefined()
+            expect(wrapper.vm.responseArray).toBeDefined()
+            expect(wrapper.vm.collection).toBeDefined()
+            expect(wrapper.vm.autocompleteArray).toBeDefined()
+            expect(wrapper.vm.loading).toBeDefined()
+            expect(wrapper.vm.selectedCompany).toBeDefined()
+            expect(wrapper.vm.filteredCompaniesBasic).toBeDefined()
+            expect(wrapper.vm.route).toBeDefined()
         })
 
         it('checks getCompanyByName()', async () => {
