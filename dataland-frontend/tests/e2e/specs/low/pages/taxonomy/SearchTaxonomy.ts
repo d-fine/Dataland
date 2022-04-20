@@ -46,7 +46,7 @@ describe('Search Taxonomy', function () {
             .url().should('include', '/companies/')
             .url().should('include', '/eutaxonomies')
         cy.get('h1').contains(inputValue)
-    })
+    });
 
     it('Search Input field should be always present', () => {
         const placeholder = "Search a company by name"
@@ -58,6 +58,18 @@ describe('Search Taxonomy', function () {
             .should('have.value', inputValue)
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
+
+    it('Autocomplete functionality', () => {
+        cy.visit('/searchtaxonomy')
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .click()
+            .type('b')
+        cy.get('.p-autocomplete-items')
+            .eq(0).click()
+            .url().should('include', '/companies/')
+            .url().should('include', '/eutaxonomies')
+
+    })
 
 
 
