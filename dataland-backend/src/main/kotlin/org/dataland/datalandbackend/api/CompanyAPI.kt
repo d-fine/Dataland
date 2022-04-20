@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -67,7 +68,7 @@ interface CompanyAPI {
      */
     fun getCompanies(
         @RequestParam searchString: String? = null,
-        @RequestParam selectedIndex: CompanyInformation.StockIndex? = null,
+        @RequestParam selectedIndex: StockIndex? = null,
         @RequestParam onlyCompanyNames: Boolean = false
     ):
         ResponseEntity<List<StoredCompany>>

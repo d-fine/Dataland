@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
@@ -27,7 +28,7 @@ class DataManager(
     var companyDataPerCompanyId = mutableMapOf<String, StoredCompany>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
     private var companyCounter = 0
-    private val greenAssetRatios = mutableMapOf<CompanyInformation.StockIndex, BigDecimal>()
+    private val greenAssetRatios = mutableMapOf<StockIndex, BigDecimal>()
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -155,7 +156,7 @@ class DataManager(
         }
     }
 
-    override fun searchCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex): List<StoredCompany> {
+    override fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany> {
         return companyDataPerCompanyId.values.filter {
             it.companyInformation.indices.any { index -> index == selectedIndex }
         }
@@ -167,11 +168,10 @@ class DataManager(
         return companyDataPerCompanyId[companyId]!!
     }
 
-    override fun getGreenAssetRatio(selectedIndex: CompanyInformation.StockIndex?):
-        Map<CompanyInformation.StockIndex, BigDecimal> {
+    override fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal> {
 
         val indices = if (selectedIndex == null) {
-            CompanyInformation.StockIndex.values().toList()
+            StockIndex.values().toList()
         } else {
             listOf(selectedIndex)
         }
@@ -189,10 +189,7 @@ class DataManager(
         return greenAssetRatios
     }
 
-    private fun updateGreenAssetRatioOnIndexLevel(
-        index: CompanyInformation.StockIndex,
-        companies: List<StoredCompany>
-    ) {
+    private fun updateGreenAssetRatioOnIndexLevel(index: StockIndex, companies: List<StoredCompany>) {
         var eligibleSum = BigDecimal(0.0)
         var totalSum = BigDecimal(0.0)
         for (company in companies) {

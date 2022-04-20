@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import java.math.BigDecimal
 
 /**
@@ -62,7 +63,7 @@ interface DataManagerInterface {
      * @param selectedIndex string used to filter against a stock index
      * @return list of all matching companies in Dataland
      */
-    fun searchCompaniesByIndex(selectedIndex: CompanyInformation.StockIndex): List<StoredCompany>
+    fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany>
 
     /**
      * Method to retrieve information about a specific company
@@ -76,6 +77,5 @@ interface DataManagerInterface {
      * @param selectedIndex index for which the green asset ratio is to be retrieved (all indices are retrieved if null)
      * @return green asset ratio in a map form
      */
-    fun getGreenAssetRatio(selectedIndex: CompanyInformation.StockIndex?):
-        Map<CompanyInformation.StockIndex, BigDecimal>
+    fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal>
 }
