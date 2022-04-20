@@ -61,7 +61,8 @@ export default {
 
     async getSkyminderByName() {
       try {
-        this.response = await getDataSkyminderRequestWrapper.perform(this.model)
+        const inputArgs = Object.values(this.model)
+        this.response = await getDataSkyminderRequestWrapper.perform(...inputArgs)
       } catch (error) {
         console.error(error)
       }
