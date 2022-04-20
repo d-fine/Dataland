@@ -36,9 +36,7 @@
   <MarginWrapper>
     <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
-  <template v-if="collection">
-    <EuTaxoSearchResults :data="responseArray"/>
-  </template>
+  <EuTaxoSearchResults v-if="collection" :data="responseArray"/>
 </template>
 
 <script>
