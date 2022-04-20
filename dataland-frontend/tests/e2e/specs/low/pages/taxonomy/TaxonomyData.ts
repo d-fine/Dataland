@@ -15,26 +15,9 @@ describe('EU Taxonomy Page', function () {
         cy.get('h2').should("contain", "EU Taxonomy Data")
     });
     it('Search Input field should be present', () => {
-        const placeholder = "Search by company name"
+        const placeholder = "Search a company by name"
         cy.get('input[name=eu_taxonomy_search_input]')
-            .should('be.disabled')
-            .invoke('attr', 'placeholder').should('contain', placeholder)
-    });
-    it('Should have button to search all entries', () => {
-        cy.get('#eu_taxonomy_search_button')
             .should('not.be.disabled')
-            .click({force: true})
-
-        cy.get('h2')
-            .should('contain', "Results")
-        cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
-            .contains('a', 'VIEW')
-            .click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
+            .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 });

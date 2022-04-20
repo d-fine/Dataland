@@ -4,21 +4,22 @@
       <div class="col-8 text-left" v-if="!scrolled">
         <span class="p-fluid" >
           <span class="p-input-icon-left p-input-icon-right ">
-              <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
-                    <i v-if="loading" class="pi pi-spinner spin" aria-hidden="true" style="z-index:20; color:#958D7C"/>
-                    <i v-else aria-hidden="true"/>
-              <AutoComplete
-                  v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
-                  @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="cac"
-                  field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
-                  @keyup.enter="handleQuery" @item-select="handleItemSelect">
-                <template #footer>
-                  <ul v-if="autocompleteArray && autocompleteArray.length > 0" class="p-autocomplete-items pt-0">
-                    <li class="p-autocomplete-item text-primary font-semibold"
-                        @click="handleQuery">View all results. </li>
-                  </ul>
-                </template>
-              </AutoComplete>
+            <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
+            <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
+            <i v-else aria-hidden="true"/>
+            <AutoComplete
+                v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
+                @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="cac"
+                field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
+                @keyup.enter="handleQuery" @item-select="handleItemSelect">
+              <template #footer>
+                <ul v-if="autocompleteArray && autocompleteArray.length > 0" class="p-autocomplete-items pt-0">
+                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleQuery">
+                    View all results.
+                  </li>
+                </ul>
+              </template>
+            </AutoComplete>
           </span>
         </span>
       </div>
@@ -199,14 +200,12 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.processed = true
         this.collection = true
         this.index = null
       }
     },
     async filterByIndex(stockIndex) {
       try {
-        this.processed = false
         this.loading = true
         this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
@@ -214,7 +213,6 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.processed = true
         this.collection = true
       }
     }

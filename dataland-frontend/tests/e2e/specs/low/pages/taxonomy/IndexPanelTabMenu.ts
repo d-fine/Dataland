@@ -14,7 +14,7 @@ describe('Index Panel behavior', function () {
         cy.get(indexPanel).should('not.exist')
         cy.get(indexTabMenu)
             .should('exist')
-            .eq(1)
+            .eq(1).parent('.p-tabmenuitem')
             .should('have.css', 'color', 'rgb(27, 27, 27)')
         cy.get('h2')
             .should('contain', "Results")
@@ -39,15 +39,19 @@ describe('Index Panel behavior', function () {
         cy.get(indexPanel).should('not.exist')
         cy.get(indexTabMenu).should('exist')
     });
-    //TODO
+
     it('Index panel should not be present with params', () => {
         cy.visit("/searchtaxonomy/?input=ag")
         cy.get(indexTabMenu)
             .eq(1)
-            .click()
-            .parent()
+            .click({force: true})
+        cy.get(indexTabMenu)
+            .parent('.p-tabmenuitem')
             .should('have.css', 'color', 'rgb(27, 27, 27)')
-
+        cy.get(indexTabMenu).each(($el) => {
+            cy.wrap($el).click({force: true})
+            cy.wrap($el).parent('.p-tabmenuitem').should('have.css', 'color', 'rgb(27, 27, 27)')
+        })
         cy.get(indexPanel).should('not.exist')
     });
 
@@ -56,13 +60,9 @@ describe('Index Panel behavior', function () {
         cy.visit("/searchtaxonomy")
         cy.get(indexTabMenu).should('not.exist')
         cy.get(indexPanel)
-            .eq(0).click()
+            .eq(0).click({force: true})
         cy.get('.grid')
             .should('not.contain','Choose by stock market index')
-        cy.get(indexTabMenu)
-            .should('have.length', numberOfStockIndices)
-            .eq(2)
-            .click()
         cy.get('h2')
             .should('contain', "Results")
         cy.get('table.p-datatable-table').should('exist')
