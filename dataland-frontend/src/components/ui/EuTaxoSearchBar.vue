@@ -39,24 +39,6 @@
   <template v-if="collection">
     <EuTaxoSearchResults :data="responseArray"/>
   </template>
-  <template v-if="processed && singleton">
-    <MarginWrapper>
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformation :companyID="parseInt(selectedCompany.companyId)"/>
-        </div>
-        <div class="col-3 pb-4 text-right">
-          <Button label="Get Report" class="uppercase p-button">Get Report
-            <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
-          </Button>
-        </div>
-      </div>
-    </MarginWrapper>
-    <MarginWrapper bgClass="surface-800">
-      <TaxonomyData :companyID="parseInt(selectedCompany.companyId)"/>
-    </MarginWrapper>
-
-  </template>
 </template>
 
 <script>
@@ -65,8 +47,6 @@ import {ApiWrapper} from "@/services/ApiWrapper"
 import AutoComplete from 'primevue/autocomplete';
 import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import CompanyInformation from "@/components/pages/company/CompanyInformation";
-import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
 import IndexTabs from "@/components/pages/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
@@ -77,7 +57,7 @@ const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies
 
 export default {
   name: "EuTaxoSearchBar",
-  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button, IndexTabs},
+  components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, Button, IndexTabs},
   props: {
     paramsSelection: {
       type: String,
@@ -89,6 +69,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       showIndexTabs: false,
       index: null,
       scrolled: false,
@@ -133,18 +114,6 @@ export default {
     close() {
       this.$refs.cac.hideOverlay()
     },
-    async filterByIndex(stockIndex) {
-      try {
-        this.loading = true
-        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.loading = false
-        this.collection = true
-      }
-    },
     focused(){
       this.$emit('autocomplete-focus', true)
       if (this.$refs.indexTabs) {
@@ -155,6 +124,7 @@ export default {
       this.filter=false;
       this.singleton=true;
       this.collection=false;
+      this.componentKey += 1;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
@@ -168,6 +138,34 @@ export default {
       this.scrolled = true
       this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
       this.$emit('scrolling', this.scrolled)
+    },
+
+    responseMapper(response){
+      return response.data.map(e => ({
+        "companyName": e.companyInformation.companyName,
+        "companyInformation": e.companyInformation,
+        "companyId": e.companyId
+      }))
+    },
+    toggleIndexTabs(index, stockIndex) {
+      this.index = index
+      this.showIndexTabs = true
+      this.filterByIndex(stockIndex)
+    },
+    unfocused(){
+      this.$emit('autocomplete-focus', false)
+    },
+    async filterByIndex(stockIndex) {
+      try {
+        this.loading = true
+        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.collection = true
+      }
     },
     async queryCompany() {
       try {
@@ -183,13 +181,6 @@ export default {
         this.index = null
       }
     },
-    responseMapper(response){
-      return response.data.map(e => ({
-        "companyName": e.companyInformation.companyName,
-        "companyInformation": e.companyInformation,
-        "companyId": e.companyId
-      }))
-    },
     async searchCompany(event) {
       try {
         this.processed = false
@@ -203,14 +194,6 @@ export default {
         this.processed = true
         this.index = null
       }
-    },
-    toggleIndexTabs(index, stockIndex) {
-      this.index = index
-      this.showIndexTabs = true
-      this.filterByIndex(stockIndex)
-    },
-    unfocused(){
-      this.$emit('autocomplete-focus', false)
     }
   },
   emits:['autocomplete-focus', 'scrolling'],
