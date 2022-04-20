@@ -78,7 +78,15 @@ const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies
 export default {
   name: "EuTaxoSearchBar",
   components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button, IndexTabs},
-  emits:['autocomplete-focus', 'scrolling'],
+  props: {
+    paramsSelection: {
+      type: String,
+      default: ""
+    },
+    stockIndexObject: {
+      type: Object,
+    },
+  },
   data() {
     return {
       showIndexTabs: false,
@@ -103,28 +111,46 @@ export default {
       additionalCompanies: null
     }
   },
-  props: {
-    stockIndexObject: {
-      type: Object,
-    },
-    paramsSelection: {
-      type: String,
-      default: ""
-    },
+  created () {
+    window.addEventListener('scroll', this.handleScroll);
   },
   mounted() {
-    if (this.route.query.input) {
+    if (this.route.query && this.route.query.input) {
       this.selectedCompany = this.route.query.input
       this.queryCompany()
     }
   },
-  created () {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  unmounted () {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
   methods: {
+    activateSearchBar() {
+      window.addEventListener('scroll', ()=>{
+        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150){
+          this.$refs.cac.focus()
+        }
+      });
+      window.scrollTo({top: 0, behavior: 'smooth'})
+
+    },
+    close() {
+      this.$refs.cac.hideOverlay()
+    },
+    async filterByIndex(stockIndex) {
+      try {
+        this.loading = true
+        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.collection = true
+      }
+    },
+    focused(){
+      this.$emit('autocomplete-focus', true)
+      if (this.$refs.indexTabs) {
+        this.$refs.indexTabs.activeIndex = null
+      }
+    },
     handleItemSelect(){
       this.filter=false;
       this.singleton=true;
@@ -143,14 +169,19 @@ export default {
       this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
       this.$emit('scrolling', this.scrolled)
     },
-    focused(){
-      this.$emit('autocomplete-focus', true)
-      if (this.$refs.indexTabs) {
-        this.$refs.indexTabs.activeIndex = null
+    async queryCompany() {
+      try {
+        this.loading = true
+        this.showIndexTabs = true
+        this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.collection = true
+        this.index = null
       }
-    },
-    unfocused(){
-      this.$emit('autocomplete-focus', false)
     },
     responseMapper(response){
       return response.data.map(e => ({
@@ -158,23 +189,6 @@ export default {
         "companyInformation": e.companyInformation,
         "companyId": e.companyId
       }))
-    },
-    toggleIndexTabs(index, stockIndex) {
-      this.index = index
-      this.showIndexTabs = true
-      this.filterByIndex(stockIndex)
-    },
-    close() {
-      this.$refs.cac.hideOverlay()
-    },
-    activateSearchBar() {
-      window.addEventListener('scroll', ()=>{
-        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150){
-          this.$refs.cac.focus()
-        }
-      });
-      window.scrollTo({top: 0, behavior: 'smooth'})
-
     },
     async searchCompany(event) {
       try {
@@ -190,32 +204,18 @@ export default {
         this.index = null
       }
     },
-    async queryCompany() {
-      try {
-        this.loading = true
-        this.showIndexTabs = true
-        this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.loading = false
-        this.collection = true
-        this.index = null
-      }
+    toggleIndexTabs(index, stockIndex) {
+      this.index = index
+      this.showIndexTabs = true
+      this.filterByIndex(stockIndex)
     },
-    async filterByIndex(stockIndex) {
-      try {
-        this.loading = true
-        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.loading = false
-        this.collection = true
-      }
+    unfocused(){
+      this.$emit('autocomplete-focus', false)
     }
+  },
+  emits:['autocomplete-focus', 'scrolling'],
+  unmounted () {
+    window.removeEventListener('scroll', this.handleScroll);
   }
 }
 </script>
