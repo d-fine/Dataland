@@ -33,7 +33,6 @@
 
   </MarginWrapper>
   <MarginWrapper>
-<!-- TODO: index prop inside IndexTabs should be watched for updates    -->
     <IndexTabs v-if="showIndexTabs && !scrolled"  :stockIndexObject="stockIndexObject" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <template v-if="collection">
@@ -78,6 +77,7 @@ const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies
 export default {
   name: "EuTaxoSearchBar",
   components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, TaxonomyData, CompanyInformation, Button, IndexTabs},
+  emits:['autocomplete-focus', 'scrolling'],
   data() {
     return {
       showIndexTabs: false,
@@ -145,7 +145,9 @@ export default {
     },
     focused(){
       this.$emit('autocomplete-focus', true)
-      this.$refs.indexTabs.activeIndex = null
+      if (this.$refs.indexTabs) {
+        this.$refs.indexTabs.activeIndex = null
+      }
     },
     unfocused(){
       this.$emit('autocomplete-focus', false)
