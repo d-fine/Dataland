@@ -69,26 +69,17 @@ export default {
   },
   data() {
     return {
+      route: useRoute(),
       showIndexTabs: false,
       index: null,
       scrolled: false,
       focus: false,
-      presence: "No",
-      route: useRoute(),
-      singleton: false,
-      processed: false,
       collection: false,
       responseArray: [],
       autocompleteArray: [],
-      filter: false,
       loading: false,
-      model: {},
-      response: null,
-      companyInformation: null,
       selectedCompany: null,
-      filteredCompanies: null,
-      filteredCompaniesBasic: null,
-      additionalCompanies: null
+      filteredCompaniesBasic: null
     }
   },
   created() {
@@ -120,20 +111,16 @@ export default {
       }
     },
     handleItemSelect() {
-      this.filter = false;
-      this.singleton = true;
       this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
-      this.filter = true;
       this.collection = true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
     },
     handleScroll() {
-      this.scrolled = true
       this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
       this.$emit('scrolling', this.scrolled)
     },
@@ -181,7 +168,6 @@ export default {
     },
     async searchCompany(event) {
       try {
-        this.processed = false
         this.loading = true
         this.autocompleteArray = await getCompaniesWrapper.perform(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.autocompleteArray.slice(0, 3)
@@ -189,7 +175,6 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.processed = true
         this.index = null
       }
     }
