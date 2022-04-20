@@ -91,7 +91,7 @@ class CompanyDataControllerTest {
         )
     }
 
-    @Test
+    /*@Test
     fun `post a dummy company and check if it can be searched for by index`() {
         var testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         var indexFound = false
@@ -113,7 +113,7 @@ class CompanyDataControllerTest {
             )
                 .any { it.companyId == testCompanyId }
         )
-    }
+    }*/
 
     @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
