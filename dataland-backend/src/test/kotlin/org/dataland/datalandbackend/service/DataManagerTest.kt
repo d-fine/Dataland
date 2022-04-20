@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.TestDataProvider
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -91,7 +92,7 @@ class DataManagerTest(
 
     @Test
     fun `add all companies and verify that searching for stock indices returns correct results`() {
-        val stockIndiciesInTestData = mutableSetOf<CompanyInformation.StockIndex>()
+        val stockIndiciesInTestData = mutableSetOf<StockIndex>()
         for (company in testCompanyList) {
             testManager.addCompany(company)
             stockIndiciesInTestData += company.indices
@@ -130,7 +131,7 @@ class DataManagerTest(
     @Test
     fun `add all companies and check that the number of results when searching for DAX index is as expected`() {
         var expectedResult = 0
-        val testIndex = CompanyInformation.StockIndex.Dax
+        val testIndex = StockIndex.Dax
         for (company in testCompanyList) {
             testManager.addCompany(company)
             if (company.indices.contains(testIndex)) {
