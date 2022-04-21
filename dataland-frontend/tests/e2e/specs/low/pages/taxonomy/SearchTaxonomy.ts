@@ -15,7 +15,7 @@ describe('Search Taxonomy', function () {
     });
 
     it('Search Input field should be present before index filter', () => {
-        const placeholder = "Search a company by name"
+        const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
@@ -71,7 +71,7 @@ describe('Search Taxonomy', function () {
     });
 
     it('Search Input field should be always present', () => {
-        const placeholder = "Search a company by name"
+        const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
