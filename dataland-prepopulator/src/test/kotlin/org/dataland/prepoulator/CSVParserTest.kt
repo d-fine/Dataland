@@ -10,7 +10,7 @@ class CSVParserTest {
     private val csvParser = CSVParser("C:\\Users\\d92432\\Documents\\Projekte\\02-Dataland\\Fachlich\\dataland_data.csv")
 
     @Test
-    fun `aaa`() {
+    fun `aaaa`() {
         val map = csvParser.readCsv()
         println(map)
     }
