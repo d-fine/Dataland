@@ -210,7 +210,7 @@ export default {
         const companyList = await getCompaniesWrapper.perform("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
-        this.idList = [0]
+        this.idList = []
       }
     },
 

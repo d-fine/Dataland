@@ -4,7 +4,7 @@ const fs = require('fs')
 // sets locale to de
 faker.locale = 'de';
 
-function generateCompanies() {
+function generateCompanyInformation() {
     const companies = []
 
     for (let id = 1; id <= 100; id++) {
@@ -46,7 +46,7 @@ function generateCompanies() {
     return companies
 }
 
-function generateTaxonomies() {
+function generateCompanyAssociatedEuTaxonomyData() {
     const taxonomies = []
 
     for (let id = 1; id <= 100; id++) {
@@ -94,10 +94,10 @@ function generateTaxonomies() {
 }
 
 function main() {
-    const companiesObj = generateCompanies();
-    const taxonomiesObj = generateTaxonomies();
-    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(companiesObj, null, '\t'));
-    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(taxonomiesObj, null, '\t'));
+    const CompanyInformation = generateCompanyInformation();
+    const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
+    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
 }
 
 main()

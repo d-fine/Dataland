@@ -42,7 +42,6 @@ export class SchemaGenerator {
             const validation = this.getValidationStatus(index)
             if ("enum" in propertiesSchema[index]) {
                 const enumProperties = this.processEnum(propertiesSchema[index].enum)
-                console.log(enumProperties)
                 if (Object.keys(enumProperties).length > 2) {
                     /* create a select form */
                     schema.push({
