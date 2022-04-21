@@ -1,13 +1,5 @@
 <template>
-  <TabMenu :model="Object.keys(stockIndexObject)
-        .map(e => {
-          return {
-            label: stockIndexObject[e],
-            command: () => {
-              handleIndexTabClick(e, Object.keys(stockIndexObject).indexOf(e))
-            }
-          }
-        })"  v-model:activeIndex="activeIndex" >
+  <TabMenu :model="model" v-model:activeIndex="activeIndex" >
   </TabMenu>
 </template>
 
@@ -16,19 +8,32 @@
 import TabMenu from 'primevue/tabmenu';
 import {humanize} from "@/utils/StringHumanizer"
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
-    .items.enum.reduce((a, v) => ({ ...a, [v]: humanize(v)}), {})
 export default {
   name: "IndexTabs",
   components: {TabMenu},
+  emits: ['tab-click'],
   props: {
-  stockIndexObject: {
-    type: Object,
-    default: stockIndexObject
-  },
+    indices: {
+      type: Array,
+      default (){
+        return apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
+      }
+    },
     initIndex:{
      type: Number
     }
+  },
+  computed: {
+      model() {
+        return this.indices.map((e, index) => {
+          return {
+            label: this.humanize(e),
+            command: () => {
+             this.handleIndexTabClick(e, index)
+            }
+          }
+        })
+      }
   },
   data(){
     return {
@@ -41,6 +46,9 @@ export default {
     },
     change(index){
       this.activeIndex = index
+    },
+    humanize(text) {
+      return humanize(text)
     }
   },
   mounted() {
