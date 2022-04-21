@@ -11,6 +11,7 @@ import IndexPanel from "@/components/pages/indices/IndexPanel";
 import {useRoute} from "vue-router"
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 
+
 export default {
   name: "SearchTaxonomy",
   components: {SearchTaxonomyHeader, IndexPanel, EuTaxoSearchBar},
@@ -26,11 +27,10 @@ export default {
     handleAutoCompleteFocus(){
       this.showIndexPanel = false
       this.$refs.euTaxoSearchBar.showIndexTabs = true
-
     },
     handleIndex(stockIndex, index){
       this.showIndexPanel = false
-      this.$refs.euTaxoSearchBar.toggleIndexTabs(index, stockIndex)
+      this.$refs.euTaxoSearchBar.toggleIndexTabs(stockIndex, index)
     },
     handleScrolling(scrolled){
       this.scrolled = scrolled

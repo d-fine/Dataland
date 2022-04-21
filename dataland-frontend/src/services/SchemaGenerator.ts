@@ -2,11 +2,9 @@ import {humanize} from "@/utils/StringHumanizer"
 
 export class SchemaGenerator {
     private readonly rawSchema: any
-    private humanize:any
     
     constructor(rawSchema: any) {
         this.rawSchema = rawSchema
-        this.humanize = humanize
     }
 
     private getType(param: string): string {
@@ -26,7 +24,7 @@ export class SchemaGenerator {
     private processEnum(rawEnumProperties: any): any {
         const enumProperties: any = {}
         for (const enumItem of rawEnumProperties) {
-            enumProperties[enumItem] = this.humanize(enumItem)
+            enumProperties[enumItem] = humanize(enumItem)
         }
         return enumProperties
     }
@@ -49,7 +47,7 @@ export class SchemaGenerator {
                     /* create a select form */
                     schema.push({
                             $formkit: 'select',
-                            label: this.humanize(index),
+                            label: humanize(index),
                             placeholder: "Please Choose",
                             name: index,
                             validation: validation,
@@ -60,7 +58,7 @@ export class SchemaGenerator {
                     /* create a radio form */
                     schema.push({
                             $formkit: 'radio',
-                            label: this.humanize(index),
+                            label: humanize(index),
                             name: index,
                             validation: validation,
                             classes: {
@@ -76,7 +74,7 @@ export class SchemaGenerator {
                 /* create a date form */
                 schema.push({
                         $formkit: "date",
-                        label: this.humanize(index),
+                        label: humanize(index),
                         name: index,
                         validation: validation,
                         classes: {
@@ -91,8 +89,8 @@ export class SchemaGenerator {
                     const enumProperties = this.processEnum(propertiesSchema[index].items.enum)
                     schema.push({
                             $formkit: "checkbox",
-                            label: this.humanize(index),
-                            placeholder: this.humanize(index),
+                            label: humanize(index),
+                            placeholder: humanize(index),
                             name: index,
                             validation: validation,
                             options: enumProperties,
@@ -109,8 +107,8 @@ export class SchemaGenerator {
                     /* create a text form */
                     schema.push({
                             $formkit: "text",
-                            label: this.humanize(index),
-                            placeholder: this.humanize(index),
+                            label: humanize(index),
+                            placeholder: humanize(index),
                             name: index,
                             validation: validation,
                             classes: {

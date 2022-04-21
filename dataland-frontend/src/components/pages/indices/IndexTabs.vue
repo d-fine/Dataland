@@ -8,28 +8,24 @@
 import TabMenu from 'primevue/tabmenu';
 import {humanize} from "@/utils/StringHumanizer"
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
+const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
+
 export default {
   name: "IndexTabs",
   components: {TabMenu},
   emits: ['tab-click'],
   props: {
-    stockIndices: {
-      type: Array,
-      default (){
-        return apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
-      }
-    },
     initIndex:{
      type: Number
     }
   },
   computed: {
       model() {
-        return this.stockIndices.map((e, index) => {
+        return stockIndices.map((stockIndex, index) => {
           return {
-            label: this.humanize(e),
+            label: humanize(stockIndex),
             command: () => {
-             this.handleIndexTabClick(e, index)
+              this.$emit("tab-click", stockIndex, index)
             }
           }
         })
@@ -38,17 +34,6 @@ export default {
   data(){
     return {
       activeIndex: null,
-    }
-  },
-  methods: {
-    handleIndexTabClick(element, currentIndex){
-      this.$emit("tab-click", currentIndex, element)
-    },
-    change(index){
-      this.activeIndex = index
-    },
-    humanize(text) {
-      return humanize(text)
     }
   },
   mounted() {

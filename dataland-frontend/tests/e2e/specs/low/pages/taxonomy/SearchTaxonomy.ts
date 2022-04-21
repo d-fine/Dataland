@@ -1,7 +1,7 @@
 describe('Search Taxonomy', function () {
     let companiesData:any
     before(function(){
-        cy.fixture('companies').then(function(companies){
+        cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
 

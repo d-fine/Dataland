@@ -68,7 +68,7 @@ describe('Company EU Taxonomy Data', () => {
 describe('Company Data', () => {
     let companiesData:any
     before(function(){
-        cy.fixture('companies').then(function(companies){
+        cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
 

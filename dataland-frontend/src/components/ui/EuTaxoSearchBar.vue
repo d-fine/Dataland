@@ -1,5 +1,5 @@
 <template>
-  <MarginWrapper>
+  <MarginWrapper >
     <div class="grid">
       <div class="col-8 text-left" v-if="!scrolled">
         <span class="p-fluid">
@@ -9,7 +9,7 @@
             <i v-else aria-hidden="true"/>
             <AutoComplete
                 v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
-                @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="cac"
+                @complete="searchCompany($event)" placeholder="Search a company by name" inputClass="h-3rem" ref="autocomplete"
                 field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect">
               <template #footer>
@@ -28,15 +28,12 @@
         <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
-        <IndexTabs v-if="showIndexTabs" :stockIndices="stockIndices" :initIndex="index"
-                   @tab-click="toggleIndexTabs" ref="indexTabs"/>
+        <IndexTabs v-if="showIndexTabs" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
     </div>
-
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs && !scrolled" :stockIndices="stockIndices" :initIndex="index"
-               @tab-click="toggleIndexTabs" ref="indexTabs"/>
+    <IndexTabs v-if="showIndexTabs && !scrolled" :initIndex="index"  @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <EuTaxoSearchResults v-if="collection" :data="responseArray"/>
 </template>
@@ -95,14 +92,14 @@ export default {
     activateSearchBar() {
       window.addEventListener('scroll', () => {
         if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150) {
-          this.$refs.cac.focus()
+          this.$refs.autocomplete.focus()
         }
       });
       window.scrollTo({top: 0, behavior: 'smooth'})
 
     },
     close() {
-      this.$refs.cac.hideOverlay()
+      this.$refs.autocomplete.hideOverlay()
     },
     focused() {
       this.$emit('autocomplete-focus', true)
@@ -132,7 +129,7 @@ export default {
         "companyId": e.companyId
       }))
     },
-    toggleIndexTabs(index, stockIndex) {
+    toggleIndexTabs(stockIndex, index) {
       this.index = index
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
