@@ -4,7 +4,7 @@
     <template #content>
       <div class="grid align-items-center">
         <div class="col-12 text-left pb-0">
-        <strong>{{ stockIndexObject[stockIndex] }}</strong>
+        <strong>{{ stockIndices[index] }}</strong>
         </div>
         <div class="col-5 md:col-7 text-left pt-0 text-gray-800">
           <p>Green asset ratio</p>
@@ -31,8 +31,11 @@ export default {
     stockIndexObject: {
       type: Object
     },
-    stockIndex: {
-      type: String
+    stockIndices: {
+      type: Array
+    },
+    index: {
+      type: Number
     },
     green_asset_ratio: {
       default: 50,

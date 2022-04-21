@@ -13,7 +13,7 @@ export default {
   components: {TabMenu},
   emits: ['tab-click'],
   props: {
-    indices: {
+    stockIndices: {
       type: Array,
       default (){
         return apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
       model() {
-        return this.indices.map((e, index) => {
+        return this.stockIndices.map((e, index) => {
           return {
             label: this.humanize(e),
             command: () => {

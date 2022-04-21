@@ -1,7 +1,7 @@
 <template>
   <SearchTaxonomyHeader :scrolled="scrolled"/>
   <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
-  <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel"/>
+  <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel" :stockIndices="stockIndices"/>
 </template>
 <script>
 
@@ -12,6 +12,7 @@ import {useRoute} from "vue-router"
 import {humanize} from "@/utils/StringHumanizer"
 const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
                         .items.enum.reduce((a, v) => ({ ...a, [v]: humanize(v)}), {})
+const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
 import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
 
 export default {
@@ -22,6 +23,7 @@ export default {
       showIndexPanel: true,
       scrolled: false,
       stockIndexObject: stockIndexObject,
+      stockIndices: stockIndices,
       stockIndex: null,
       route: useRoute(),
     }
