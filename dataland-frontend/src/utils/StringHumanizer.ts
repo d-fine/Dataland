@@ -1,14 +1,13 @@
 /**
- * Class to convert string to a human-readable text
+ * Module to convert string to a human-readable text
  */
-export class StringHumanizer {
 
     /**
      * convert camel case string to sentence case string using regex
      *
      * @param  {string} rawText      is the string to be converted to a human-readable string
      */
-    private convertCamelCaseToSentenceCase(rawText: string): string {
+    function convertCamelCaseToSentenceCase(rawText: string): string {
         // Split the sting to words
         const processedText = rawText.replace(/((?!^)[A-Z])/g, " $1")
         // uppercase the first letter of the first word
@@ -20,7 +19,7 @@ export class StringHumanizer {
      *
      * @param  {string} rawText      is the string to be converted to a human-readable string
      */
-    private getStringFromMapper(rawText: string): string {
+    function getStringFromMapper(rawText: string): string {
         const mappingObject: { [key: string]: string } = {
             cdax: "CDAX",
             dax: "DAX",
@@ -43,9 +42,8 @@ export class StringHumanizer {
      *
      * @param  {string} rawText      is the string to be converted to a human-readable string
      */
-    humanize(rawText: string): string {
+    export function humanize(rawText: string): string {
 
-        const valueFromMapping = this.getStringFromMapper(rawText)
-        return (valueFromMapping == "") ? this.convertCamelCaseToSentenceCase(rawText) : valueFromMapping
+        const valueFromMapping = getStringFromMapper(rawText)
+        return (valueFromMapping == "") ? convertCamelCaseToSentenceCase(rawText) : valueFromMapping
     }
-}

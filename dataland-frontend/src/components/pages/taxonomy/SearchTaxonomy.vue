@@ -9,10 +9,9 @@ import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 import {useRoute} from "vue-router"
-import {StringHumanizer} from "@/utils/StringHumanizer"
-const stringHumanizer = new StringHumanizer()
+import {humanize} from "@/utils/StringHumanizer"
 const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
-                        .items.enum.reduce((a, v) => ({ ...a, [v]: stringHumanizer.humanize(v)}), {})
+                        .items.enum.reduce((a, v) => ({ ...a, [v]: humanize(v)}), {})
 import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
 
 export default {

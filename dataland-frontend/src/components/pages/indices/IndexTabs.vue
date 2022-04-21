@@ -14,11 +14,10 @@
 <script>
 
 import TabMenu from 'primevue/tabmenu';
-import {StringHumanizer} from "@/utils/StringHumanizer"
-const stringHumanizer = new StringHumanizer()
+import {humanize} from "@/utils/StringHumanizer"
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
-    .items.enum.reduce((a, v) => ({ ...a, [v]: stringHumanizer.humanize(v)}), {})
+    .items.enum.reduce((a, v) => ({ ...a, [v]: humanize(v)}), {})
 export default {
   name: "IndexTabs",
   components: {TabMenu},
