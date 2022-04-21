@@ -116,18 +116,14 @@ class DataManagerTest(
         for (companyInformation in testCompanyList) {
             if (companyInformation.companyName.contains(searchString)) {
                 throw IllegalArgumentException(
-                    "The company ${companyInformation.companyName} happens to include the " +
-                        "searchString $searchString in its company name."
+                    "The company name ${companyInformation.companyName} includes the searchString $searchString."
                 )
             }
             for (identifier in companyInformation.identifiers) {
-                if (identifier.identifierValue.contains(searchString)) {
-                    occurencesOfSearchString += 1
-                }
+                if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
         val searchResponse = testDataManager.searchCompanies(searchString, false)
-        // This statement only holds because the current test data all have the same value for every identifier
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
