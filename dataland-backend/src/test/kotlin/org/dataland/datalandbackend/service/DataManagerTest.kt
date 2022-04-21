@@ -112,11 +112,25 @@ class DataManagerTest(
     fun `upload all companies and search for identifier substring to verify substring matching in company search`() {
         addAllCompanies(testCompanyList)
         val searchString = testCompanyList.first().identifiers.first().identifierValue.drop(1).dropLast(1)
+        var occurencesOfSearchString = 0
+        for (companyInformation in testCompanyList) {
+            if (companyInformation.companyName.contains(searchString)) {
+                throw IllegalArgumentException(
+                    "The company ${companyInformation.companyName} happens to include the " +
+                        "searchString $searchString in its company name."
+                )
+            }
+            for (identifier in companyInformation.identifiers) {
+                if (identifier.identifierValue.contains(searchString)) {
+                    occurencesOfSearchString += 1
+                }
+            }
+        }
         val searchResponse = testDataManager.searchCompanies(searchString, false)
-        //This statement only holds because the current test data all have the same value for every identifier
+        // This statement only holds because the current test data all have the same value for every identifier
         assertEquals(
-            testCompanyList.size, searchResponse.size,
-            "There are ${testCompanyList.size} expected matches but found ${searchResponse.size}."
+            occurencesOfSearchString, searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
         )
     }
 
@@ -124,10 +138,16 @@ class DataManagerTest(
     fun `upload all companies and search for name substring to verify substring matching in company search`() {
         addAllCompanies(testCompanyList)
         val searchString = testCompanyList.first().companyName.drop(1).dropLast(1)
+        var occurencesOfSearchString = 0
+        for (companyInformation in testCompanyList) {
+            if (companyInformation.companyName.contains(searchString)) {
+                occurencesOfSearchString += 1
+            }
+        }
         val searchResponse = testDataManager.searchCompanies(searchString, true)
         assertEquals(
-            1, searchResponse.size,
-            "There is 1 expected match but found ${searchResponse.size}."
+            occurencesOfSearchString, searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
         )
     }
 
@@ -136,15 +156,20 @@ class DataManagerTest(
         addAllCompanies(testCompanyList)
         val searchString = testCompanyList.first().companyName.take(1)
         val searchResponse = testDataManager.searchCompanies(searchString, true)
-        val responsesStartingWith = searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
+        val responsesStartingWith =
+            searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
         val otherResponses = searchResponse.dropWhile { it.companyInformation.companyName.startsWith(searchString) }
-        assertTrue(otherResponses.none { it.companyInformation.companyName.startsWith(searchString) },
+        assertTrue(
+            otherResponses.none { it.companyInformation.companyName.startsWith(searchString) },
             "Expected to have matches ordered by starting with search string followed by all other results." +
-                    "However, at least one of the matches in the other results starts with the search string " +
-                    "($searchString)."
+                "However, at least one of the matches in the other results starts with the search string " +
+                "($searchString)."
         )
-        assertTrue(responsesStartingWith.isNotEmpty(), "No matches starting with the search string " +
-                "$searchString were returned. At least one was expected.")
+        assertTrue(
+            responsesStartingWith.isNotEmpty(),
+            "No matches starting with the search string " +
+                "$searchString were returned. At least one was expected."
+        )
     }
 
     @Test

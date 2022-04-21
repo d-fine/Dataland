@@ -9,7 +9,9 @@ class DataTypesExtractorTest {
     fun `check if extracting data types works as expected`() {
         val expectedTypes = listOf("EuTaxonomyData")
         val dataTypes = DataTypesExtractor().getAllDataTypes()
-        Assertions.assertTrue(dataTypes == expectedTypes,
-            "Found $dataTypes instead of the expected $expectedTypes")
+        Assertions.assertTrue(
+            dataTypes == expectedTypes,
+            "Found $dataTypes instead of the expected $expectedTypes"
+        )
     }
 }
