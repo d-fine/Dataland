@@ -1,22 +1,15 @@
 package org.dataland.prepoulator
 
-import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinFeature
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDetailsPerCashFlowType
-import org.dataland.datalandbackend.openApiClient.model.Identifier
 import java.io.FileReader
-import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.*
-
 
 class CSVParser(val filePath: String) {
+
+    private val notAvailableString = "n/a"
 
     val inputList: List<Map<String, String>> = readCsvFile(filePath)
 
@@ -34,64 +27,51 @@ class CSVParser(val filePath: String) {
 
     fun getValue(key: String, mapObject: Map<String, String>): String {
         return mapObject[key]!!.ifBlank {
-            "n/a"
+            notAvailableString
         }
     }
 
-    fun getStockIndicies(mapObject: Map<String, String>): List<CompanyInformation.Indices> {
-        val nameMapping = mapOf(
-            CompanyInformation.Indices.primeStandards to "Prime Standard",
-            CompanyInformation.Indices.generalStandards to "General Standard",
-            CompanyInformation.Indices.scaleHdax to "Scale",
-            CompanyInformation.Indices.cdax to "CDAX",
-            CompanyInformation.Indices.gex to "GEX",
-            CompanyInformation.Indices.dax to "DAX",
-            CompanyInformation.Indices.mdax to "MDAX",
-            CompanyInformation.Indices.sdax to "SDAX",
-            CompanyInformation.Indices.tecDax to "TecDAX",
-            CompanyInformation.Indices.dax50Esg to "DAX 50 ESG"
-        )
-        val foundIndices = mutableListOf<CompanyInformation.Indices>()
-        for (index in nameMapping.keys) {
-            if (mapObject[nameMapping[index]]!!.isNotBlank()) {
-                foundIndices.add(index)
-            }
-        }
-        return foundIndices
+    private val stockIndexMapping = mapOf(
+        CompanyInformation.Indices.primeStandards to "Prime Standard",
+        CompanyInformation.Indices.generalStandards to "General Standard",
+        CompanyInformation.Indices.scaleHdax to "Scale",
+        CompanyInformation.Indices.cdax to "CDAX",
+        CompanyInformation.Indices.gex to "GEX",
+        CompanyInformation.Indices.dax to "DAX",
+        CompanyInformation.Indices.mdax to "MDAX",
+        CompanyInformation.Indices.sdax to "SDAX",
+        CompanyInformation.Indices.tecDax to "TecDAX",
+        CompanyInformation.Indices.dax50Esg to "DAX 50 ESG"
+    )
+
+    private val identifierMapping = mapOf(
+        CompanyIdentifier.IdentifierType.permId to "PermId",
+        CompanyIdentifier.IdentifierType.isin to "ISIN"
+    )
+
+    private fun getStockIndices(mapObject: Map<String, String>): List<CompanyInformation.Indices> {
+        return stockIndexMapping.keys.filter { mapObject[stockIndexMapping[it]]!!.isNotBlank() }
     }
 
-    fun getIdentifiers(mapObject: Map<String, String>): List<CompanyIdentifier> {
-        val nameMapping = mapOf(
-            CompanyIdentifier.IdentifierType.permId to "PermId",
-            CompanyIdentifier.IdentifierType.isin to "ISIN"
-        )
-        val foundIdentifiers = mutableListOf<CompanyIdentifier>()
-        for (identifier in nameMapping.keys) {
-            val identifierValue = getValue(nameMapping[identifier]!!, mapObject)
-            if (identifierValue != "n/a") {
-                foundIdentifiers.add(CompanyIdentifier(identifierValue = identifierValue, identifierType = identifier))
-            }
+    private fun getIdentifiers(mapObject: Map<String, String>): List<CompanyIdentifier> {
+        val identifiers = identifierMapping.keys.map {
+            CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, mapObject), identifierType = it)
         }
-
-        return foundIdentifiers
+        return identifiers.filter { it.identifierValue != notAvailableString }
     }
 
     fun buildListOfCompanyInformation(): List<CompanyInformation> {
-        val outputListOfCompanyInformation: MutableList<CompanyInformation> = mutableListOf()
-        for (map in inputList) {
-            outputListOfCompanyInformation.add(
-                CompanyInformation(
-                    companyName = getValue("Unternehmensname", map),
-                    headquarters = getValue("Hauptsitz", map),
-                    sector = getValue("Sektor", map),
-                    marketCap = getValue("Market Capitalization", map).toBigDecimal(),
-                    reportingDateOfMarketCap = LocalDate.parse(getValue("MarketDate", map)),
-                    identifiers = getIdentifiers(map),
-                    indices = getStockIndicies(map)
-                )
+        return inputList.map {
+            CompanyInformation(
+                companyName = getValue("Unternehmensname", it),
+                headquarters = getValue("Hauptsitz", it),
+                sector = getValue("Sektor", it),
+                marketCap = getValue("Market Capitalization", it).toBigDecimal(),
+                reportingDateOfMarketCap = LocalDate.parse(getValue("MarketDate", it)),
+                identifiers = getIdentifiers(it),
+                indices = getStockIndices(it)
             )
         }
-        return outputListOfCompanyInformation
     }
 
     /*
@@ -129,7 +109,6 @@ class CSVParser(val filePath: String) {
         return outputListOfEuTaxonomyData
     }
     */
-
 
     /*
     Plan:

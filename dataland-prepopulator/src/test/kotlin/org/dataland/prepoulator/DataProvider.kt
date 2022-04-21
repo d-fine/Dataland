@@ -7,5 +7,4 @@ class DataProvider {
     fun getFile(): String {
         return dataFile.path
     }
-
 }
