@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
+import {CompanyDataControllerApi} from "../../../../../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
 import AutoComplete from 'primevue/autocomplete';
-import EuTaxoSearchResults from "@/components/ui/EuTaxoSearchResults";
+import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import IndexTabs from "@/components/pages/indices/IndexTabs";
+import IndexTabs from "@/components/resources/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
 

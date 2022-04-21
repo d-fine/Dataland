@@ -5,11 +5,11 @@
 </template>
 <script>
 
-import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
-import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
-import IndexPanel from "@/components/pages/indices/IndexPanel";
+import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchTaxonomyHeader";
+import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
+import IndexPanel from "@/components/resources/indices/IndexPanel";
 import {useRoute} from "vue-router"
-import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
+import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 
 export default {

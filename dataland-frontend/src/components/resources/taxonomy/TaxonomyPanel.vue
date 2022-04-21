@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi} from "@/../build/clients/backend/api";
+import {EuTaxonomyDataControllerApi} from "../../../../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
-import TaxoCard from "@/components/pages/taxonomy/TaxoCard";
+import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
 
 const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
 const getCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.getCompanyAssociatedData)

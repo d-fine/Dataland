@@ -44,11 +44,11 @@
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue"
 import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
-import SuccessUpload from "@/components/ui/SuccessUpload"
+import SuccessUpload from "@/components/messages/SuccessUpload"
 import {SchemaGenerator} from "@/services/SchemaGenerator"
 import {ApiWrapper} from "@/services/ApiWrapper"
 import backend from "@/../build/clients/backend/backendOpenApi.json"
-import FailedUpload from "@/components/ui/FailedUpload"
+import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
 import Button from "primevue/button"
 import Message from 'primevue/message'

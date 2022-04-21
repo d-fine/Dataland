@@ -48,8 +48,8 @@
 import Button from "primevue/button";
 
 import {ApiWrapper} from "@/services/ApiWrapper"
-import {MetaDataControllerApi} from "@/../build/clients/backend/api";
-import TaxonomyPanel from "@/components/pages/taxonomy/TaxonomyPanel";
+import {MetaDataControllerApi} from "../../../../build/clients/backend/api";
+import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel";
 
 const metaDataControllerApi = new MetaDataControllerApi()
 const getListOfDataMetaInfoWrapper = new ApiWrapper(metaDataControllerApi.getListOfDataMetaInfo)

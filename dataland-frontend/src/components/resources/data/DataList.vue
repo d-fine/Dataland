@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {MetaDataControllerApi} from "@/../build/clients/backend/api";
+import {MetaDataControllerApi} from "../../../../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
 
 const metaDataControllerApi = new MetaDataControllerApi()

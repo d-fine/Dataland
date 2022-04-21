@@ -174,9 +174,9 @@
 </template>
 <script>
 import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend/api"
-import SuccessUpload from "@/components/ui/SuccessUpload"
+import SuccessUpload from "@/components/messages/SuccessUpload"
 import {FormKit} from "@formkit/vue"
-import FailedUpload from "@/components/ui/FailedUpload"
+import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
 import {ApiWrapper} from "@/services/ApiWrapper"
 
