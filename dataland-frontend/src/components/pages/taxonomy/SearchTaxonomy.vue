@@ -1,19 +1,15 @@
 <template>
   <SearchTaxonomyHeader :scrolled="scrolled"/>
-  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndexObject="stockIndexObject" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
-  <IndexPanel :stockIndexObject="stockIndexObject" @index-click="handleIndex" :showIndexPanel="showIndexPanel" :stockIndices="stockIndices"/>
+  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndices="stockIndices" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
+  <IndexPanel @index-click="handleIndex" :showIndexPanel="showIndexPanel" :stockIndices="stockIndices"/>
 </template>
 <script>
 
+import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
 import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
 import IndexPanel from "@/components/pages/indices/IndexPanel";
-import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 import {useRoute} from "vue-router"
-import {humanize} from "@/utils/StringHumanizer"
-const stockIndexObject = apiSpecs.components.schemas.CompanyInformation.properties["indices"]
-                        .items.enum.reduce((a, v) => ({ ...a, [v]: humanize(v)}), {})
-const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
-import SearchTaxonomyHeader from "@/components/pages/taxonomy/SearchTaxonomyHeader";
+import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 
 export default {
   name: "SearchTaxonomy",
@@ -22,8 +18,7 @@ export default {
     return {
       showIndexPanel: true,
       scrolled: false,
-      stockIndexObject: stockIndexObject,
-      stockIndices: stockIndices,
+      stockIndices: apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum,
       stockIndex: null,
       route: useRoute(),
     }

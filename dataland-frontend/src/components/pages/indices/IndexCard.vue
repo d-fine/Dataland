@@ -4,7 +4,7 @@
     <template #content>
       <div class="grid align-items-center">
         <div class="col-12 text-left pb-0">
-        <strong>{{ stockIndices[index] }}</strong>
+        <strong>{{ indexName }}</strong>
         </div>
         <div class="col-5 md:col-7 text-left pt-0 text-gray-800">
           <p>Green asset ratio</p>
@@ -23,14 +23,17 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
+import {humanize} from "@/utils/StringHumanizer"
 
 export default {
   name: "IndexCard",
   components: {Card, ProgressBar},
+  computed: {
+    indexName(){
+      return humanize(this.stockIndices[this.index])
+    }
+  },
   props: {
-    stockIndexObject: {
-      type: Object
-    },
     stockIndices: {
       type: Array
     },

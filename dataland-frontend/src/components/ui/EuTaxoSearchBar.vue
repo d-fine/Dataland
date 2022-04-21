@@ -28,14 +28,14 @@
         <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
-        <IndexTabs v-if="showIndexTabs" :stockIndexObject="stockIndexObject" :initIndex="index"
+        <IndexTabs v-if="showIndexTabs" :stockIndices="stockIndices" :initIndex="index"
                    @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
     </div>
 
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs && !scrolled" :stockIndexObject="stockIndexObject" :initIndex="index"
+    <IndexTabs v-if="showIndexTabs && !scrolled" :stockIndices="stockIndices" :initIndex="index"
                @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
   <EuTaxoSearchResults v-if="collection" :data="responseArray"/>
@@ -63,8 +63,8 @@ export default {
       type: String,
       default: ""
     },
-    stockIndexObject: {
-      type: Object,
+    stockIndices: {
+      type: Array,
     },
   },
   data() {
