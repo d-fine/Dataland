@@ -1,6 +1,6 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length
-describe.only('Index Panel behavior', function () {
+describe('Index Panel behavior', function () {
     const indexPanel = '.p-card > .p-card-body > .p-card-content'
     const indexTabMenu = '.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link'
     it('Index panel should be present on first visit and disappear', () => {

@@ -19,7 +19,6 @@ export default {
       showIndexPanel: true,
       scrolled: false,
       stockIndices: apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum,
-      stockIndex: null,
       route: useRoute(),
     }
   },
@@ -32,7 +31,6 @@ export default {
     handleIndex(stockIndex, index){
       this.showIndexPanel = false
       this.$refs.euTaxoSearchBar.toggleIndexTabs(index, stockIndex)
-      this.stockIndex = stockIndex
     },
     handleScrolling(scrolled){
       this.scrolled = scrolled
