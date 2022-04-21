@@ -3,10 +3,10 @@ describe('Population Test', () => {
     let eutaxonomiesData:any
     let companiesData:any
     before(function(){
-        cy.fixture('eutaxonomies').then(function(eutaxonomies){
+        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function(eutaxonomies){
             eutaxonomiesData=eutaxonomies
         });
-        cy.fixture('companies').then(function(companies){
+        cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
 

@@ -17,15 +17,15 @@ function generateCompanies() {
         const identifiers = faker.random.arrayElements([
             {
                 "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[0],
-                "identifierValue": "529900W18LQJJN6SJ336"
+                "identifierValue": faker.random.alphaNumeric(12)
             },
             {
                 "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[1],
-                "identifierValue": "529900W18LQJJN6SJ336"
+                "identifierValue": faker.random.alphaNumeric(12)
             },
             {
                 "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[2],
-                "identifierValue": "529900W18LQJJN6SJ336"
+                "identifierValue": faker.random.alphaNumeric(12)
             }
         ]);
 
@@ -96,8 +96,8 @@ function generateTaxonomies() {
 function main() {
     const companiesObj = generateCompanies();
     const taxonomiesObj = generateTaxonomies();
-    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.json', JSON.stringify(companiesObj, null, '\t'));
-    fs.writeFileSync('./tests/e2e/fixtures/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(taxonomiesObj, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(companiesObj, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(taxonomiesObj, null, '\t'));
 }
 
 main()
