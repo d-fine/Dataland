@@ -72,8 +72,3 @@ export default {
 }
 
 </script>
-
-<style lang="css">
-@import "../../assets/css/buttons.css";
-@import "../../assets/css/forms.css";
-</style>

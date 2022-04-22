@@ -98,7 +98,3 @@ const createCompany = {
 export default createCompany
 
 </script>
-
-<style lang="scss">
-@import "../../assets/css/forms.css";
-</style>
