@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'WelcomeDataland',
+  name: 'WelcomeDataland'
 }
 </script>
 

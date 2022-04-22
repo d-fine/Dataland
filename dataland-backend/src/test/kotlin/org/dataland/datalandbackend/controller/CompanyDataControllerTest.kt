@@ -28,18 +28,6 @@ internal class CompanyDataControllerTest(
     }
 
     @Test
-    fun `company can be retrieved by name`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
-
-        mockMvc.perform(
-            get("/companies?companyName=${testCompanyInformation.companyName}")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpectAll(status().isOk, content().contentType(MediaType.APPLICATION_JSON))
-    }
-
-    @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
         CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
 

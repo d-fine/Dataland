@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -79,6 +79,6 @@ interface MetaDataApi {
      * @param selectedIndex determines which index the green asset ratio is retrieved for
      * @return a map of indices and the corresponding green asset ratios
      */
-    fun getGreenAssetRatio(@RequestParam selectedIndex: CompanyInformation.StockIndex? = null):
-        ResponseEntity<Map<CompanyInformation.StockIndex, BigDecimal>>
+    fun getGreenAssetRatio(@RequestParam selectedIndex: StockIndex? = null):
+        ResponseEntity<Map<StockIndex, BigDecimal>>
 }

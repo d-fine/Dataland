@@ -19,7 +19,7 @@ describe('routerTest', () => {
                 plugins: [router]
             }
         })
-        expect(wrapper.html()).toContain('p-menubar')
+        expect(wrapper.html()).toContain('d-header')
     });
     it('home', async () => {
         const router = createRouter({

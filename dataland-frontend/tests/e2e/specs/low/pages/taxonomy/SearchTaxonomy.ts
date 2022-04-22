@@ -1,6 +1,11 @@
-import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length
-describe.only('Search Taxonomy', function () {
+describe('Search Taxonomy', function () {
+    let companiesData:any
+    before(function(){
+        cy.fixture('CompanyInformation').then(function(companies){
+            companiesData=companies
+        });
+
+    });
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
@@ -10,23 +15,48 @@ describe.only('Search Taxonomy', function () {
     });
 
     it('Search Input field should be present before index filter', () => {
-        const placeholder = "Search a company by name"
+        const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
-            .click()
+            .click({force:true})
             .type(inputValue)
             .should('have.value', inputValue)
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 
-    it('Index panel should be present', () => {
-        cy.visit("/searchtaxonomy")
-        cy.get('.grid')
-            .contains('Choose by stock market index')
-        cy.get('.p-card > .p-card-body > .p-card-content')
-            .should('have.length', numberOfStockIndices)
-            .eq(1).click()
+    it('Company Search by Name', () => {
+        cy.visit('/searchtaxonomy')
+        const inputValue = companiesData[0].companyName
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click({force:true})
+            .type(inputValue)
+            .type('{enter}')
+            .should('have.value', inputValue)
+        cy.get('h2')
+            .should('contain', "Results")
+        cy.get('table.p-datatable-table').should('exist')
+        cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','SECTOR')
+        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('td','VIEW')
+            .contains('a', 'VIEW')
+            .click()
+            .url().should('include', '/companies/')
+            .url().should('include', '/eutaxonomies')
+        cy.get('h1').contains(inputValue)
+    });
+
+    it('Company Search by Identifier', () => {
+        cy.visit('/searchtaxonomy')
+        const inputValue = companiesData[1].identifiers[0].identifierValue
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click({force:true})
+            .type(inputValue)
+            .type('{enter}')
+            .should('have.value', inputValue)
         cy.get('h2')
             .should('contain', "Results")
         cy.get('table.p-datatable-table').should('exist')
@@ -40,37 +70,44 @@ describe.only('Search Taxonomy', function () {
             .url().should('include', '/eutaxonomies')
     });
 
-    it('Index tabmenu should be present', () => {
-        cy.visit("/searchtaxonomy")
-        cy.get('.p-card > .p-card-body > .p-card-content')
+    it('Search Input field should be always present', () => {
+        const placeholder = "Search a company by name, ISIN, PermID or LEI"
+        const inputValue = "A company name"
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click()
+            .type(inputValue)
+            .should('have.value', inputValue)
+            .invoke('attr', 'placeholder').should('contain', placeholder)
+    });
+
+    it('Autocomplete functionality', () => {
+        cy.visit('/searchtaxonomy')
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .click()
+            .type('b')
+        cy.get('.p-autocomplete-items')
             .eq(0).click()
-        cy.get('.grid')
-            .should('not.contain','Choose by stock market index')
-        cy.get('.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem')
-            .should('have.length', numberOfStockIndices)
-            .eq(2).click()
-        cy.get('h2')
-            .should('contain', "Results")
-        cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
-            .contains('a', 'VIEW')
-            .click()
             .url().should('include', '/companies/')
             .url().should('include', '/eutaxonomies')
-    })
 
-    it('Search Input field should be present after index filter', () => {
-        const placeholder = "Search a company by name"
-        const inputValue = "A company name"
+    });
+
+    it('Scroll functionality', () => {
+        cy.visit('/searchtaxonomy')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
         cy.get('input[name=eu_taxonomy_search_input]')
-            .should('not.be.disabled')
             .click()
-            .type(inputValue)
-            .should('have.value', inputValue)
-            .invoke('attr', 'placeholder').should('contain', placeholder)
+            .type('a')
+            .type('{enter}')
+        cy.scrollTo(0, 500)
+        cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
+        cy.get('button[name=search_bar_collapse]').should('exist')
+
+        cy.scrollTo(0, 0)
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
+
     });
 
 

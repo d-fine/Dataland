@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi} from "@/../build/clients/backend/api";
+import {EuTaxonomyDataControllerApi} from "../../../../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
 import DataTable from "primevue/datatable";
 

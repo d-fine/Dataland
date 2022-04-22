@@ -26,7 +26,7 @@
 
 <script>
 
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
+import {CompanyDataControllerApi} from "../../../../build/clients/backend/api";
 import Button from "primevue/button";
 import {ApiWrapper} from "@/services/ApiWrapper"
 import {numberFormatter} from "@/utils/currencyMagnitude";

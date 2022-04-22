@@ -17,7 +17,6 @@
       </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <template v-if="processed">
           <DataTable v-if="data" :value="data" responsive-layout="scroll">
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3 d-datatable-column-left">
             </Column>
@@ -39,7 +38,6 @@
           <p v-else>The resource you requested does not exist yet. You can create it:
             <router-link to="/upload">Create Data</router-link>
           </p>
-        </template>
       </div>
     </div>
   </MarginWrapper>

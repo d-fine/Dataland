@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
+import org.dataland.datalandbackend.model.enums.AttestationOptions
+import org.dataland.datalandbackend.model.enums.YesNo
 
 /**
  * --- API model ---
@@ -14,14 +16,4 @@ data class EuTaxonomyData(
     @field:JsonProperty("Revenue") val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
     @field:JsonProperty("Reporting Obligation", required = true) val reportObligation: YesNo? = null,
     @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions? = null
-) {
-    /**
-     * Possible options to specify if obligation to report exists
-     */
-    enum class YesNo { Yes, No }
-
-    /**
-     * Possible options to specify how the report figures were attested
-     */
-    enum class AttestationOptions { None, LimitedAssurance, ReasonableAssurance }
-}
+)

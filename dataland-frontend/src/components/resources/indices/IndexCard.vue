@@ -4,7 +4,7 @@
     <template #content>
       <div class="grid align-items-center">
         <div class="col-12 text-left pb-0">
-        <strong>{{ stockIndexObject[stockIndex] }}</strong>
+        <strong>{{ indexName }}</strong>
         </div>
         <div class="col-5 md:col-7 text-left pt-0 text-gray-800">
           <p>Green asset ratio</p>
@@ -23,20 +23,22 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
-import {stockIndexObject} from "@/utils/indexMapper";
+import {humanize} from "@/utils/StringHumanizer"
 
 export default {
   name: "IndexCard",
   components: {Card, ProgressBar},
-  data(){
-    return {
-      stockIndexObject: stockIndexObject()
+  computed: {
+    indexName(){
+      return humanize(this.stockIndices[this.index])
     }
   },
   props: {
-    stockIndex: {
-      default: "Dax",
-      type: String
+    stockIndices: {
+      type: Array
+    },
+    index: {
+      type: Number
     },
     green_asset_ratio: {
       default: 50,
@@ -55,10 +57,6 @@ export default {
 .d-card {
   border-radius: 0.5rem;
   box-shadow: 0 0 32px 8px rgba(30, 30, 31, 0.08);
-}
-
-.d-card > .p-card-body {
-  /*padding: 0.25rem 0.5rem 0.25rem 0.5rem;*/
 }
 
 .d-card > .p-card-body > .p-card-content {

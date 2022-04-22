@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.StockIndex
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -21,20 +22,4 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
     @field:JsonProperty(required = false) val indices: List<StockIndex>,
     @field:JsonProperty(required = true) val identifiers: List<CompanyIdentifier>
-) {
-    /**
-     * A class that holds Stock Index Types that a company can be listed in
-     */
-    enum class StockIndex {
-        Cdax,
-        Dax,
-        GeneralStandards,
-        Gex,
-        Mdax,
-        PrimeStandards,
-        Sdax,
-        TecDax,
-        ScaleHdax,
-        Dax50Esg
-    }
-}
+)

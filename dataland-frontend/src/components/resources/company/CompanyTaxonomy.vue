@@ -19,9 +19,9 @@
 
 <script>
 import Button from "primevue/button";
-import CompanyInformation from "@/components/pages/company/CompanyInformation";
-import TaxonomyData from "@/components/pages/taxonomy/TaxonomyData";
-import EuTaxoSearchBar from "@/components/ui/EuTaxoSearchBar";
+import CompanyInformation from "@/components/resources/company/CompanyInformation";
+import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
+import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 export default {
