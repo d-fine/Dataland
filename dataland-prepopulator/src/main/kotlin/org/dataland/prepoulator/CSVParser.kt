@@ -11,9 +11,7 @@ class CSVParser(val filePath: String) {
 
     private val notAvailableString = "n/a"
 
-    val inputList: List<Map<String, String>> = readCsvFile(filePath)
-
-    inline fun <reified T> readCsvFile(fileName: String): List<T> {
+    private inline fun <reified T> readCsvFile(fileName: String): List<T> {
         val csvMapper = CsvMapper()
         FileReader(fileName).use { reader ->
             return csvMapper
@@ -25,7 +23,9 @@ class CSVParser(val filePath: String) {
         }
     }
 
-    fun getValue(key: String, mapObject: Map<String, String>): String {
+    private val inputList: List<Map<String, String>> = readCsvFile(filePath)
+
+    private fun getValue(key: String, mapObject: Map<String, String>): String {
         return mapObject[key]!!.ifBlank {
             notAvailableString
         }
