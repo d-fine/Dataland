@@ -36,6 +36,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.10.0")
+    implementation(project(":dataland-backend"))
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
 }
 
