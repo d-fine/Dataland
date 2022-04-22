@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
+import java.math.BigDecimal
 
 /**
  * Defines the required functionalities for the Dataland data manager
@@ -49,11 +51,19 @@ interface DataManagerInterface {
     fun addCompany(companyInformation: CompanyInformation): StoredCompany
 
     /**
-     * Method to list matching companies in Dataland by searching for a company name
-     * @param companyName string used for substring matching against the companyNames of all entries
+     * Method to search for companies matching the company name or identifier
+     * @param searchString string used for substring matching against the company name and/or identifiers
+     * @param onlyCompanyNames boolean determining if the search should be solely against the company names
      * @return list of all matching companies in Dataland
      */
-    fun listCompaniesByName(companyName: String): List<StoredCompany>
+    fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany>
+
+    /**
+     * Method to search for companies in Dataland that are contained in the specified stock index
+     * @param selectedIndex string used to filter against a stock index
+     * @return list of all matching companies in Dataland
+     */
+    fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany>
 
     /**
      * Method to retrieve information about a specific company
@@ -61,4 +71,11 @@ interface DataManagerInterface {
      * @return information about the retrieved company
      */
     fun getCompanyById(companyId: String): StoredCompany
+
+    /**
+     * Method to retrieve the green asset ratio of one or all indices
+     * @param selectedIndex index for which the green asset ratio is to be retrieved (all indices are retrieved if null)
+     * @return green asset ratio in a map form
+     */
+    fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal>
 }

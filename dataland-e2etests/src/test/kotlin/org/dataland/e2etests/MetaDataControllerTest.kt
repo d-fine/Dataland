@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class MetaDataControllerTest {
@@ -15,22 +16,7 @@ class MetaDataControllerTest {
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val dummyDataCreator = DummyDataCreator()
-
-    private fun generateTestData(
-        numberOfCompanies: Int,
-        numberOfDataPerCompany: Int,
-        companyMarker: Int,
-        dataMarker: Int
-    ):
-        Map<CompanyInformation, List<EuTaxonomyData>> {
-        val testData = mutableMapOf<CompanyInformation, List<EuTaxonomyData>>()
-        for (companyCounter in companyMarker until companyMarker + numberOfCompanies) {
-            testData[dummyDataCreator.createCompanyTestInformation(companyCounter.toString())] =
-                List(numberOfDataPerCompany) { dummyDataCreator.createEuTaxonomyTestData(it + dataMarker) }
-        }
-        return testData
-    }
+    private val testDataProvider = TestDataProvider()
 
     private fun postCompaniesAndEuTaxonomyData(testData: Map<CompanyInformation, List<EuTaxonomyData>>): List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
@@ -47,9 +33,9 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company dummy taxonomy data for it and check if meta info about that data can be retrieved`() {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("new_2")
-        val testData = dummyDataCreator.createEuTaxonomyTestData(990714200)
+    fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
@@ -69,22 +55,31 @@ class MetaDataControllerTest {
         val numberOfCompanies = 5
         val numberOfDataSetsToPostPerCompany = 3
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
-        val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 1000, 200000000)
+        val initialSizeOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "").size
+        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
-        assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoComplete.size)
+        val expectedSizeOfDataMetaInfoComplete = initialSizeOfDataMetaInfoComplete + totalNumberOfDataSets
+        assertEquals(
+            expectedSizeOfDataMetaInfoComplete, listOfDataMetaInfoComplete.size,
+            "The list with all data meta info is expected to increase by $totalNumberOfDataSets to " +
+                "$expectedSizeOfDataMetaInfoComplete, but has the size ${listOfDataMetaInfoComplete.size}."
+        )
     }
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
         val numberOfCompanies = 3
         val numberOfDataSetsToPostPerCompany = 4
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 2000, 300000000)
+        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
-        assertEquals(numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyId.size)
+        assertEquals(
+            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyId.size,
+            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+                "data sets, but has meta info about ${listOfDataMetaInfoPerCompanyId.size} data sets."
+        )
     }
 
     @Test
@@ -93,20 +88,39 @@ class MetaDataControllerTest {
         val numberOfDataSetsToPostPerCompany = 5
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 3000, 400000000)
+        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerDataType = metaDataControllerApi.getListOfDataMetaInfo("", "EuTaxonomyData")
-        assertEquals(initialSizeOfDataMetaInfoList + totalNumberOfDataSets, listOfDataMetaInfoPerDataType.size)
+        val expectedSizeOfDataMetaInfoList = initialSizeOfDataMetaInfoList + totalNumberOfDataSets
+        assertEquals(
+            expectedSizeOfDataMetaInfoList, listOfDataMetaInfoPerDataType.size,
+            "The list with all data meta info is expected to increase by $totalNumberOfDataSets to " +
+                "$expectedSizeOfDataMetaInfoList, but has the size ${listOfDataMetaInfoPerDataType.size}."
+        )
     }
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
-        val testData = generateTestData(numberOfCompanies, numberOfDataSetsToPostPerCompany, 4000, 500000000)
+        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyIdAndDataType =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyData")
-        assertEquals(numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size)
+        assertEquals(
+            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size,
+            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+                "data sets, but has meta info about ${listOfDataMetaInfoPerCompanyIdAndDataType.size} data sets."
+        )
+    }
+
+    @Test
+    fun `post companies and eu taxonomy data and check if green asset ratio is in expected range`() {
+        val numberOfCompanies = 2
+        val numberOfDataSetsToPostPerCompany = 6
+        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        postCompaniesAndEuTaxonomyData(testData)
+        val greenAssetRatio = metaDataControllerApi.getGreenAssetRatio(null)
+        assertTrue(greenAssetRatio.all { it.value.toDouble() in 0.0..1.0 })
     }
 }

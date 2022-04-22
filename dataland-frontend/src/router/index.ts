@@ -1,12 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
-import CreateData from "@/components/forms/CreateData.vue";
-import SearchData from "@/components/forms/SearchData.vue";
-import WelcomeDataland from "@/components/WelcomeDataland.vue";
-import CompanyEU from "@/components/pages/taxonomy/TaxonomyPanel.vue";
-import CompanyInformation from "@/components/pages/company/CompanyInformation.vue";
-import DataList from "@/components/pages/data/DataList.vue";
-import SearchTaxonomy from "@/components/pages/taxonomy/SearchTaxonomy.vue";
-import CompanyTaxonomy from "@/components/pages/company/CompanyTaxonomy.vue";
+import UploadData from "@/components/pages/UploadData.vue";
+import SearchData from "@/components/pages/SearchData.vue";
+import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
+import CompanyEU from "@/components/resources/taxonomy/TaxonomyPanel.vue";
+import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
+import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
+import CompanyTaxonomy from "@/components/resources/company/CompanyTaxonomy.vue";
 
 const routes = [
     {
@@ -17,17 +16,12 @@ const routes = [
     {
         path: "/upload",
         name: "Create Data",
-        component: CreateData,
+        component: UploadData,
     },
     {
         path: "/search",
         name: "Search Data",
         component: SearchData,
-    },
-    {
-        path: "/data",
-        name: "List Data",
-        component: DataList,
     },
     {
         path: "/searchtaxonomy",

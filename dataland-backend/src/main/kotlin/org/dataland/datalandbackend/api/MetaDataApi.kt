@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.math.BigDecimal
 
 /**
  * Defines the restful dataland-backend API regarding meta data searches.
@@ -58,4 +60,25 @@ interface MetaDataApi {
      * @return the DataMetaInformation for the specified data set
      */
     fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
+
+    @Operation(
+        summary = "Look up the green asset ratio according to EU taxonomy.",
+        description = "The green asset ratio of a single or all indices in Dataland is returned."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved green asset ratio.")
+        ]
+    )
+    @GetMapping(
+        value = ["/greenAssetRatio"],
+        produces = ["application/json"]
+    )
+    /**
+     * A method to retrieve the green asset ratio of a specific index or for all indices (if none is selected)
+     * @param selectedIndex determines which index the green asset ratio is retrieved for
+     * @return a map of indices and the corresponding green asset ratios
+     */
+    fun getGreenAssetRatio(@RequestParam selectedIndex: StockIndex? = null):
+        ResponseEntity<Map<StockIndex, BigDecimal>>
 }

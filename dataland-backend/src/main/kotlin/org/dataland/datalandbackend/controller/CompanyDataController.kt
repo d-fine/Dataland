@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -23,8 +24,16 @@ class CompanyDataController(
         return ResponseEntity.ok(dataManager.addCompany(companyInformation))
     }
 
-    override fun getCompaniesByName(companyName: String?): ResponseEntity<List<StoredCompany>> {
-        return ResponseEntity.ok(dataManager.listCompaniesByName(companyName ?: ""))
+    override fun getCompanies(
+        searchString: String?,
+        selectedIndex: StockIndex?,
+        onlyCompanyNames: Boolean
+    ): ResponseEntity<List<StoredCompany>> {
+        return if (selectedIndex == null) {
+            ResponseEntity.ok(dataManager.searchCompanies(searchString ?: "", onlyCompanyNames))
+        } else {
+            ResponseEntity.ok(dataManager.searchCompaniesByIndex(selectedIndex))
+        }
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {

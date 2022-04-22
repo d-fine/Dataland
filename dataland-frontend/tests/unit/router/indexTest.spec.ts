@@ -19,14 +19,14 @@ describe('routerTest', () => {
                 plugins: [router]
             }
         })
-        expect(wrapper.html()).toContain('p-menubar')
+        expect(wrapper.html()).toContain('d-header')
     });
     it('home', async () => {
         const router = createRouter({
             history: createWebHistory(),
             routes: routes,
         })
-        router.push('/')
+        await router.push('/')
         await router.isReady()
         const wrapper = mount(App, {
             global: {
@@ -41,7 +41,7 @@ describe('routerTest', () => {
             history: createWebHistory(),
             routes: routes,
         })
-        router.push('/searchtaxonomy')
+        await router.push('/searchtaxonomy')
         await router.isReady()
         const wrapper = mount(App, {
             global: {

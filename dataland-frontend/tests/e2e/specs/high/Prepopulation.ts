@@ -3,14 +3,15 @@ describe('Population Test', () => {
     let eutaxonomiesData:any
     let companiesData:any
     before(function(){
-        cy.fixture('eutaxonomies').then(function(eutaxonomies){
+        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function(eutaxonomies){
             eutaxonomiesData=eutaxonomies
         });
-        cy.fixture('companies').then(function(companies){
+        cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
 
     });
+
 
     it('Populate Companies', function (){
         for (const index in companiesData) {
@@ -34,11 +35,12 @@ describe('Population Test', () => {
             })
         })
     });
+
+
 });
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-
         cy.visit("/data/eutaxonomies/"+idList[0])
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
@@ -60,12 +62,13 @@ describe('Company EU Taxonomy Data', () => {
         cy.get('button.p-button.p-component').contains('Financial and sustainability')
         cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
+
 });
 
 describe('Company Data', () => {
     let companiesData:any
     before(function(){
-        cy.fixture('companies').then(function(companies){
+        cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
 

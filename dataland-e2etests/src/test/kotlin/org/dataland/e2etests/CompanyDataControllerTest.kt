@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,11 +15,11 @@ class CompanyDataControllerTest {
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val dummyDataCreator = DummyDataCreator()
+    private val testDataProvider = TestDataProvider()
 
     @Test
     fun `post a dummy company and check if post was successful`() {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("A")
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
 
         val postCompanyResponse =
             companyDataControllerApi.postCompany(testCompanyInformation)
@@ -38,9 +37,11 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("B")
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
-        val getCompaniesByNameResponse = companyDataControllerApi.getCompaniesByName(testCompanyInformation.companyName)
+        val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
+            testCompanyInformation.companyName, null, true
+        )
         assertTrue(
             getCompaniesByNameResponse.contains(
                 StoredCompany(
@@ -55,16 +56,13 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
-        val listOfTestCompanyInformation = listOf<CompanyInformation>(
-            dummyDataCreator.createCompanyTestInformation("C"),
-            dummyDataCreator.createCompanyTestInformation("D"),
-            dummyDataCreator.createCompanyTestInformation("E")
-        )
-        val allCompaniesListSizeBefore = companyDataControllerApi.getCompaniesByName("").size
+        val listOfTestCompanyInformation = testDataProvider.getCompanyInformation(3)
+        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies("", null, true).size
         for (companyInformation in listOfTestCompanyInformation) {
             companyDataControllerApi.postCompany(companyInformation)
         }
-        val allCompaniesListSizeAfter = companyDataControllerApi.getCompaniesByName("").size
+        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies("", null, true).size
+
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${listOfTestCompanyInformation.size}."
@@ -73,8 +71,8 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("F")
-        val testData = dummyDataCreator.createEuTaxonomyTestData(1200500350)
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
 
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
@@ -90,6 +88,19 @@ class CompanyDataControllerTest {
                 DataMetaInformation(testDataId, testDataType, testCompanyId)
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if it can be searched for by identifier`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        assertTrue(
+            companyDataControllerApi.getCompanies(
+                searchString = testCompanyInformation.identifiers.first().identifierValue,
+                selectedIndex = null,
+                onlyCompanyNames = false
+            ).any { it.companyId == testCompanyId }
         )
     }
 }

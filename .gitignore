@@ -28,3 +28,6 @@ hs_err_pid*
 !/gradle/wrapper/gradle-wrapper.jar
 **/build/
 **/node_modules/
+/dataland-backend/src/test/resources/CompanyInformation.json
+/dataland-e2etests/src/test/resources/CompanyAssociatedEuTaxonomyData.json
+/dataland-e2etests/src/test/resources/CompanyInformation.json

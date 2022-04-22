@@ -1,17 +1,33 @@
-const { faker } = require('@faker-js/faker');
+const {faker} = require('@faker-js/faker');
+const apiSpecs = require( "../../../build/clients/backend/backendOpenApi.json")
 const fs = require('fs')
 // sets locale to de
 faker.locale = 'de';
 
-function generateCompanies() {
-    let companies = []
+function generateCompanyInformation() {
+    const companies = []
 
-    for (let id=1; id <= 100; id++) {
-        let companyName = faker.company.companyName();
-        let headquarters = faker.address.city();
-        let sector = faker.company.bsNoun();
-        let marketCap = faker.mersenne.rand(50000, 10000000);
-        let reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
+    for (let id = 1; id <= 100; id++) {
+        const companyName = faker.company.companyName();
+        const headquarters = faker.address.city();
+        const sector = faker.company.bsNoun();
+        const marketCap = faker.mersenne.rand(50000, 10000000);
+        const reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
+        const indices = faker.random.arrayElements( apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum );
+        const identifiers = faker.random.arrayElements([
+            {
+                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[0],
+                "identifierValue": faker.random.alphaNumeric(12)
+            },
+            {
+                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[1],
+                "identifierValue": faker.random.alphaNumeric(12)
+            },
+            {
+                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[2],
+                "identifierValue": faker.random.alphaNumeric(12)
+            }
+        ]);
 
         companies.push(
             {
@@ -19,7 +35,9 @@ function generateCompanies() {
                 "headquarters": headquarters,
                 "sector": sector,
                 "marketCap": marketCap,
-                "reportingDateOfMarketCap": reportingDateOfMarketCap
+                "reportingDateOfMarketCap": reportingDateOfMarketCap,
+                "indices": indices,
+                "identifiers": identifiers
             }
         )
 
@@ -28,21 +46,21 @@ function generateCompanies() {
     return companies
 }
 
-function generateTaxonomies() {
-    let taxonomies = []
+function generateCompanyAssociatedEuTaxonomyData() {
+    const taxonomies = []
 
-    for (let id=1; id <= 100; id++) {
-        let attestation = faker.random.arrayElement(['None', 'Limited_Assurance', 'Reasonable_Assurance']);
-        let reportingObligation = faker.random.arrayElement(['Yes', 'No']);
-        let capexTotal = faker.mersenne.rand(50000, 10000000);
-        let capexEligible = faker.mersenne.rand(50000, capexTotal);
-        let capexAligned = faker.mersenne.rand(50000, capexTotal);
-        let opexTotal = faker.mersenne.rand(50000, 10000000);
-        let opexEligible = faker.mersenne.rand(50000, opexTotal);
-        let opexAligned = faker.mersenne.rand(50000, opexTotal);
-        let revenueTotal = faker.mersenne.rand(50000, 10000000);
-        let revenueEligible = faker.mersenne.rand(50000, revenueTotal);
-        let revenueAligned = faker.mersenne.rand(50000, revenueTotal);
+    for (let id = 1; id <= 100; id++) {
+        const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
+        const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
+        const capexTotal = faker.mersenne.rand(50000, 10000000);
+        const capexEligible = faker.mersenne.rand(50000, capexTotal);
+        const capexAligned = faker.mersenne.rand(50000, capexEligible);
+        const opexTotal = faker.mersenne.rand(50000, 10000000);
+        const opexEligible = faker.mersenne.rand(50000, opexTotal);
+        const opexAligned = faker.mersenne.rand(50000, opexEligible);
+        const revenueTotal = faker.mersenne.rand(50000, 10000000);
+        const revenueEligible = faker.mersenne.rand(50000, revenueTotal);
+        const revenueAligned = faker.mersenne.rand(50000, revenueEligible);
 
 
         taxonomies.push(
@@ -76,10 +94,10 @@ function generateTaxonomies() {
 }
 
 function main() {
-    let companiesObj = generateCompanies();
-    let taxonomiesObj = generateTaxonomies();
-    fs.writeFileSync('./tests/e2e/fixtures/companies.json', JSON.stringify(companiesObj, null, '\t'));
-    fs.writeFileSync('./tests/e2e/fixtures/eutaxonomies.json', JSON.stringify(taxonomiesObj, null, '\t'));
+    const CompanyInformation = generateCompanyInformation();
+    const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
+    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
 }
 
 main()

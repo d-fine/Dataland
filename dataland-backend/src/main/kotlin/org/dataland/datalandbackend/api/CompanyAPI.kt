@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -43,9 +44,10 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name or just all companies from the data store.",
-        description = "Companies identified via the provided company name are retrieved. " +
-            "If company name is an empty string, all companies in the data store are returned."
+        summary = "Retrieve specific companies by name/identifier/index or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier/index are retrieved. " +
+            "If only an empty string is passed as search argument, all companies in the data store are returned." +
+            "If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned."
     )
     @ApiResponses(
         value = [
@@ -56,12 +58,19 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     /**
-     * A method to retrieve specific companies identified by their company names
-     * If an empty string is passed as company name, all companies in the data store will be returned.
-     * @param companyName identifier used to search for companies in the data store (can also be an empty string)
+     * A method to retrieve specific companies identified by their company names identifier or stock index
+     * If only an empty string is passed as search argument, all companies in the data store are returned.
+     * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
+     * @param searchString string used for substring matching
+     * @param selectedIndex StockIndex Enum used to filter against stock indices
+     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @return information about all companies matching the search criteria
      */
-    fun getCompaniesByName(@RequestParam companyName: String? = null):
+    fun getCompanies(
+        @RequestParam searchString: String? = null,
+        @RequestParam selectedIndex: StockIndex? = null,
+        @RequestParam onlyCompanyNames: Boolean = false
+    ):
         ResponseEntity<List<StoredCompany>>
 
     @Operation(

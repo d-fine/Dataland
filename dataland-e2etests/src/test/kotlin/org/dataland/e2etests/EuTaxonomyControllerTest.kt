@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test
 class EuTaxonomyControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val dummyDataCreator = DummyDataCreator()
+    private val testDataProvider = TestDataProvider()
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyInformation = dummyDataCreator.createCompanyTestInformation("10")
-        val testData = dummyDataCreator.createEuTaxonomyTestData(425136010)
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)

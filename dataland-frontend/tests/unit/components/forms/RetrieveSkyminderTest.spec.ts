@@ -7,7 +7,6 @@ describe('RetrieveSkyminderTest', () => {
 
     it('checks field properties', () => {
         expect(wrapper.vm.model).toBeDefined()
-        expect(wrapper.vm.schema).toBeDefined()
     })
 
     it('checks postCompanyData()', async () => {

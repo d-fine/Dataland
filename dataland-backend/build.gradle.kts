@@ -70,6 +70,15 @@ jacoco {
     applyTo(tasks.bootRun.get())
 }
 
+tasks.register<Copy>("getTestData") {
+    from("$rootDir/testing/data/CompanyInformation.json")
+    into("$projectDir/src/test/resources")
+}
+
+tasks.getByName("processTestResources") {
+    dependsOn("getTestData")
+}
+
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

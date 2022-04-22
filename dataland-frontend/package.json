@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "teste2e": "vue-cli-service test:e2e --mode development --url http://localhost:8090",
-    "testheadless": "vue-cli-service test:e2e --mode development --url http://localhost:8090 --headless ",
+    "testheadless": "vue-cli-service test:e2e --mode development --url http://localhost:8090 --headless",
     "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
     "testpreview": "vue-cli-service test:e2e --url http://3.71.162.94/ --headless",
     "testremote": "vue-cli-service test:e2e --url http://localhost",

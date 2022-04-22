@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.StockIndex
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -19,4 +20,6 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val sector: String,
     @field:JsonProperty(required = true) val marketCap: BigDecimal,
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
+    @field:JsonProperty(required = false) val indices: List<StockIndex>,
+    @field:JsonProperty(required = true) val identifiers: List<CompanyIdentifier>
 )

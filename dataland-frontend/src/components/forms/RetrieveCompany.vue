@@ -23,7 +23,7 @@
       </FormKit>
       <Button @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
       <br>
-      <template v-if="processed">
+      <template v-if="loading">
         <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0" >
           </Column>
@@ -43,11 +43,11 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/../build/clients/backend";
-import {DataStore} from "@/services/DataStore";
+import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
+import {ApiWrapper} from "@/services/ApiWrapper"
 
-const api = new CompanyDataControllerApi()
-const dataStore = new DataStore(api.getCompaniesByName)
+const companyDataControllerApi = new CompanyDataControllerApi()
+const dataStore = new ApiWrapper(companyDataControllerApi.getCompanies)
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
@@ -55,29 +55,36 @@ import Column from 'primevue/column';
 
 export default {
   name: "RetrieveCompany",
-  components: {Card, Button, DataTable, Column , FormKit},
+  components: {Card, Button, DataTable, Column, FormKit},
 
   data: () => ({
+    table:false,
+    responseArray: null,
+    filter: false,
+    loading: false,
     model: {},
     response: null,
     companyInformation: null,
-    processed: false
+    selectedCompany: null,
+    filteredCompanies: null,
+    filteredCompaniesBasic: null,
+    additionalCompanies: null,
   }),
   methods: {
     async getCompanyByName(all = false) {
       try {
-        this.processed = false
+        this.loading = false
         if (all) {
           this.model.companyName = ""
         }
-        this.response = await dataStore.perform(this.model.companyName)
+        this.response = await dataStore.perform(this.model.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null
       } finally {
-        this.processed = true
+        this.loading = true
       }
-    }
+    },
   },
 }
 </script>
