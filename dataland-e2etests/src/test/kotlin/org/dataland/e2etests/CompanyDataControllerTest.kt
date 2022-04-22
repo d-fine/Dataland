@@ -91,30 +91,6 @@ class CompanyDataControllerTest {
         )
     }
 
-    /*@Test
-    fun `post a dummy company and check if it can be searched for by index`() {
-        var testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        var indexFound = false
-        while (! indexFound) {
-            if (testCompanyInformation.indices == null || testCompanyInformation.indices!!.isEmpty()) {
-                testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-            } else {
-                indexFound = true
-            }
-        }
-
-        val testIndex = testCompanyInformation.indices!!.first().name
-        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        assertTrue(
-            companyDataControllerApi.getCompanies(
-                searchString = "",
-                selectedIndex = CompanyDataControllerApi.SelectedIndex_getCompanies.valueOf(testIndex),
-                onlyCompanyNames = false
-            )
-                .any { it.companyId == testCompanyId }
-        )
-    }*/
-
     @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
