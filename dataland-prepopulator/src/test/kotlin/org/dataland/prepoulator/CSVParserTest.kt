@@ -12,7 +12,7 @@ class CSVParserTest {
     fun `aaaa`() {
         val csvParser = CSVParser(dataProvider.getFile())
         csvParser.buildJson()
-        csvParser.readJson()
+        //csvParser.readJson()
 
         //val map = csvParser.buildListOfCompanyInformation()
         //println(map)

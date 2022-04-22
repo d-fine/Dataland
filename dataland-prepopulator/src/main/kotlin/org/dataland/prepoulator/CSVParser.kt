@@ -1,18 +1,26 @@
 package org.dataland.prepoulator
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.enums.IdentifierType
+import org.dataland.datalandbackend.model.enums.StockIndex
 import java.io.File
 import java.io.FileReader
+import java.math.BigDecimal
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class CSVParser(val filePath: String) {
 
-    private val objectMapper = jacksonObjectMapper()
+    //private val objectMapper = ObjectMapper().setDefaultPrettyPrinter().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    private val objectMapper = ObjectMapper().registerModule(JavaTimeModule()).configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
@@ -36,21 +44,21 @@ class CSVParser(val filePath: String) {
     }
 
     private val stockIndexMapping = mapOf(
-        CompanyInformation.Indices.primeStandards to "Prime Standard",
-        CompanyInformation.Indices.generalStandards to "General Standard",
-        CompanyInformation.Indices.scaleHdax to "Scale",
-        CompanyInformation.Indices.cdax to "CDAX",
-        CompanyInformation.Indices.gex to "GEX",
-        CompanyInformation.Indices.dax to "DAX",
-        CompanyInformation.Indices.mdax to "MDAX",
-        CompanyInformation.Indices.sdax to "SDAX",
-        CompanyInformation.Indices.tecDax to "TecDAX",
-        CompanyInformation.Indices.dax50Esg to "DAX 50 ESG"
+        StockIndex.PrimeStandards to "Prime Standard",
+        StockIndex.GeneralStandards to "General Standard",
+        StockIndex.ScaleHdax to "Scale",
+        StockIndex.Cdax to "CDAX",
+        StockIndex.Gex to "GEX",
+        StockIndex.Dax to "DAX",
+        StockIndex.Mdax to "MDAX",
+        StockIndex.Sdax to "SDAX",
+        StockIndex.TecDax to "TecDAX",
+        StockIndex.Dax50Esg to "DAX 50 ESG"
     )
 
     private val identifierMapping = mapOf(
-        CompanyIdentifier.IdentifierType.permId to "PermID",
-        CompanyIdentifier.IdentifierType.isin to "ISIN"
+        IdentifierType.PermId to "PermID",
+        IdentifierType.Isin to "ISIN"
     )
 
     private val columnMapping = mapOf(
@@ -61,7 +69,7 @@ class CSVParser(val filePath: String) {
         "reportingDateOfMarketCap" to "2021-12-31"
     )
 
-    private fun getStockIndices(mapObject: Map<String, String>): List<CompanyInformation.Indices> {
+    private fun getStockIndices(mapObject: Map<String, String>): List<StockIndex> {
         return stockIndexMapping.keys.filter { mapObject[stockIndexMapping[it]]!!.isNotBlank() }
     }
 
@@ -72,13 +80,19 @@ class CSVParser(val filePath: String) {
         return identifiers.filter { it.identifierValue != notAvailableString }
     }
 
+    private fun getMarketCap(columnHeader: String, mapObject: Map<String, String>): BigDecimal {
+        println(getValue(columnHeader, mapObject))
+        return getValue(columnHeader, mapObject).replace(".","").replace(",",".")
+            .toBigDecimal().multiply("1000000".toBigDecimal())
+    }
+
     fun buildListOfCompanyInformation(): List<CompanyInformation> {
         return inputList.map {
             CompanyInformation(
                 companyName = getValue(columnMapping["companyName"]!!, it),
                 headquarters = getValue(columnMapping["headquarters"]!!, it),
                 sector = getValue(columnMapping["sector"]!!, it),
-                marketCap = getValue(columnMapping["marketCap"]!!, it).replace(".","").replace(",",".").toBigDecimal(),
+                marketCap = getMarketCap(columnMapping["marketCap"]!!, it),
                 reportingDateOfMarketCap = LocalDate.parse(columnMapping["reportingDateOfMarketCap"]),
                 identifiers = getIdentifiers(it),
                 indices = getStockIndices(it)
