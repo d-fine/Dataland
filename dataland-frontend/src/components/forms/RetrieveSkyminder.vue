@@ -40,7 +40,7 @@ import {SkyminderControllerApi} from "@/../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
 import Card from 'primevue/card';
 import Button from 'primevue/button';
-import SkyminderTable from "@/components/ui/SkyminderTable";
+import SkyminderTable from "@/components/tables/SkyminderTable";
 
 const skyminderControllerApi = new SkyminderControllerApi()
 const getDataSkyminderRequestWrapper = new ApiWrapper(skyminderControllerApi.getDataSkyminderRequest)

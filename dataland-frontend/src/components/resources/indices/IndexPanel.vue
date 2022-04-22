@@ -15,7 +15,7 @@
 <script>
 
 
-import IndexCard from "@/components/pages/indices/IndexCard";
+import IndexCard from "@/components/resources/indices/IndexCard";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 export default {
