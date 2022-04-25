@@ -1,4 +1,7 @@
 <template>
+  <MarginWrapper class="text-left">
+    <BackButton/>
+  </MarginWrapper>
   <EuTaxoSearchBar/>
   <MarginWrapper>
     <div class="grid align-items-end">
@@ -23,15 +26,15 @@ import CompanyInformation from "@/components/resources/company/CompanyInformatio
 import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import BackButton from "@/components/general/BackButton";
 
 export default {
   name: "CompanyTaxonomy",
-  components: {MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
+  components: {BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
   props: {
     companyID: {
       type: Number
     }
   }
-
 }
 </script>
