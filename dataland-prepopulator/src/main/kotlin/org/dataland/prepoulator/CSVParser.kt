@@ -38,8 +38,8 @@ class CSVParser(val filePath: String) {
 
     private val inputList: List<Map<String, String>> = readCsvFile(filePath)
 
-    private fun getValue(key: String, mapObject: Map<String, String>): String {
-        return mapObject[key]!!.ifBlank {
+    private fun getValue(header: String, csvData: Map<String, String>): String {
+        return csvData[header]!!.ifBlank {
             notAvailableString
         }
     }
@@ -70,8 +70,8 @@ class CSVParser(val filePath: String) {
         "reportingDateOfMarketCap" to "2021-12-31"
     )
 
-    private fun getStockIndices(mapObject: Map<String, String>): List<StockIndex> {
-        return stockIndexMapping.keys.filter { mapObject[stockIndexMapping[it]]!!.isNotBlank() }
+    private fun getStockIndices(csvData: Map<String, String>): List<StockIndex> {
+        return stockIndexMapping.keys.filter { csvData[stockIndexMapping[it]]!!.isNotBlank() }
     }
 
     private fun getIdentifiers(mapObject: Map<String, String>): List<CompanyIdentifier> {
@@ -88,8 +88,21 @@ class CSVParser(val filePath: String) {
             .toBigDecimal().multiply("1000000".toBigDecimal())
     }
 
+    private fun validateLine(csvData: Map<String, String>): Boolean {
+        /*var lineValid = true
+        if (getValue("IS/FS", csvData) == "FS") {
+            lineValid = false
+        }
+        if (getValue(columnMapping["marketCap"]!!, csvData) == notAvailableString) {
+            lineValid = false
+        }
+        return lineValid*/
+        return getValue(columnMapping["marketCap"]!!, csvData) != notAvailableString
+
+    }
+
     private fun buildListOfCompanyInformation(): List<CompanyInformation> {
-        return inputList.map {
+        return  inputList.filter { validateLine(it) }.map {
             CompanyInformation(
                 companyName = getValue(columnMapping["companyName"]!!, it),
                 headquarters = getValue(columnMapping["headquarters"]!!, it),
