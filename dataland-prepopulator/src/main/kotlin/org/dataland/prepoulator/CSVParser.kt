@@ -66,7 +66,7 @@ class CSVParser(val filePath: String) {
         "companyName" to "Company name",
         "headquarters" to "Headquarter",
         "sector" to "Sektor",
-        "marketCap" to "Market Capitalization",
+        "marketCap" to "Market Capitalization  [12/31/2021] (€EURmm, Historical rate)",
         "reportingDateOfMarketCap" to "2021-12-31"
     )
 
@@ -84,25 +84,19 @@ class CSVParser(val filePath: String) {
     private fun getMarketCap(columnHeader: String, mapObject: Map<String, String>): BigDecimal {
         // The market cap conversion assumes the figures to be provided in millions using german notation
         // , hence, "," as decimal separator and "." to separate thousands
-        return getValue(columnHeader, mapObject).replace(".", "").replace(",", ".")
+        return getValue(columnHeader, mapObject).trim().replace(".", "").replace(",", ".")
             .toBigDecimal().multiply("1000000".toBigDecimal())
     }
 
     private fun validateLine(csvData: Map<String, String>): Boolean {
-        /*var lineValid = true
-        if (getValue("IS/FS", csvData) == "FS") {
-            lineValid = false
-        }
-        if (getValue(columnMapping["marketCap"]!!, csvData) == notAvailableString) {
-            lineValid = false
-        }
-        return lineValid*/
-        return getValue(columnMapping["marketCap"]!!, csvData) != notAvailableString
-
+       return !(
+            getValue("IS/FS", csvData) in listOf("FS",notAvailableString) ||
+                getValue(columnMapping["marketCap"]!!, csvData) == notAvailableString
+            )
     }
 
     private fun buildListOfCompanyInformation(): List<CompanyInformation> {
-        return  inputList.filter { validateLine(it) }.map {
+        return inputList.filter { validateLine(it) }.map {
             CompanyInformation(
                 companyName = getValue(columnMapping["companyName"]!!, it),
                 headquarters = getValue(columnMapping["headquarters"]!!, it),
