@@ -4,7 +4,7 @@
       <div class="col-1 text-left">
         <h2>Results</h2>
       </div>
-      <div class="col-4 col-offset-7 surface-0 d-card" v-tooltip.top="eligibleRevenueTooltip">
+      <div v-if="false" class="col-4 col-offset-7 surface-0 d-card" v-tooltip.top="eligibleRevenueTooltip">
         <div class="grid align-items-center h-3rem ">
           <div class="col-9 text-left">
             <span class="font-semibold">Avg. EU Taxonomy Eligible Revenue </span>
@@ -17,7 +17,9 @@
       </div>
     <div class="grid">
       <div class="col-12 text-left">
-          <DataTable v-if="data" :value="data" responsive-layout="scroll">
+          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
+                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          >
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3 d-datatable-column-left">
             </Column>
             <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-3">
@@ -82,3 +84,8 @@ export default {
     }
 }
 </script>
+
+<style>
+
+
+</style>
