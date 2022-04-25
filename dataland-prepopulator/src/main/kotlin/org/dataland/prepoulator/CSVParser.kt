@@ -7,12 +7,17 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
+import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
 import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.model.enums.YesNo
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * Class to transform company information and EU Taxonomy data delivered by csv into json format
@@ -66,8 +71,8 @@ class CSVParser(val filePath: String) {
         "companyName" to "Company name",
         "headquarters" to "Headquarter",
         "sector" to "Sektor",
-        "marketCap" to "Market Capitalization  [12/31/2021] (€EURmm, Historical rate)",
-        "reportingDateOfMarketCap" to "2021-12-31"
+        "marketCap" to "Market Capitalization (EURmm)",
+        "reportingDateOfMarketCap" to "Market Capitalization Date"
     )
 
     private fun getStockIndices(csvData: Map<String, String>): List<StockIndex> {
@@ -89,8 +94,8 @@ class CSVParser(val filePath: String) {
     }
 
     private fun validateLine(csvData: Map<String, String>): Boolean {
-       return !(
-            getValue("IS/FS", csvData) in listOf("FS",notAvailableString) ||
+        return !(
+            getValue("IS/FS", csvData) in listOf("FS", notAvailableString) ||
                 getValue(columnMapping["marketCap"]!!, csvData) == notAvailableString
             )
     }
@@ -102,7 +107,8 @@ class CSVParser(val filePath: String) {
                 headquarters = getValue(columnMapping["headquarters"]!!, it),
                 sector = getValue(columnMapping["sector"]!!, it),
                 marketCap = getMarketCap(columnMapping["marketCap"]!!, it),
-                reportingDateOfMarketCap = LocalDate.parse(columnMapping["reportingDateOfMarketCap"]),
+                reportingDateOfMarketCap = LocalDate.parse(getValue(columnMapping["reportingDateOfMarketCap"]!!, it),
+                    DateTimeFormatter.ofPattern("MM.dd.yyyy")),
                 identifiers = getIdentifiers(it),
                 indices = getStockIndices(it)
             )
@@ -113,35 +119,92 @@ class CSVParser(val filePath: String) {
      * Method to write the transformed data into json
      */
     fun writeJson() {
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(File("./Output.json"), buildListOfCompanyInformation())
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(File("./CompanyAssociatedEuTaxonomyData.json"), buildListOfEuTaxonomyData())
     }
 
-    /* ToDo as soon as all needed info in Excel file is available
-    fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
+    private fun getReportingObligation(csvData: Map<String, String>): YesNo {
+        return if (getValue("NFRD Pflicht" ,csvData) == "Ja") {
+            YesNo.Yes
+        } else {
+            YesNo.No
+        }
+    }
+
+    private fun getAttestation(csvData: Map<String, String>): AttestationOptions {
+        val assurance = getValue("Assurance" ,csvData)
+        return if (assurance == "reasonable") {
+            AttestationOptions.ReasonableAssurance
+        } else if (assurance == "limited") {
+            AttestationOptions.LimitedAssurance
+        } else {
+            AttestationOptions.None
+        }
+    }
+
+    private fun getCashFlowData(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
+        return getNumericValue(columnHeader, csvData)
+    }
+
+    private fun getNumericValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
+        return if (getValue(columnHeader, csvData).contains("%")) {
+            getPercentageValue(columnHeader, csvData)
+        } else {
+            getAbsoluteValue(columnHeader, csvData)
+        }
+    }
+
+    private fun getAbsoluteValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
+        // The numeric value conversion assumes the figures to be provided in millions using german notation
+        // , hence, "," as decimal separator and "." to separate thousands
+        return getValue(columnHeader, csvData).trim().replace(".", "").replace(",", ".")
+            .toBigDecimalOrNull()?.multiply("1000000".toBigDecimal())
+    }
+
+    private fun getPercentageValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
+        return getValue(columnHeader, csvData).trim().replace(".", "").replace(",", ".").replace("%","").toBigDecimalOrNull()
+    }
+
+    private val cashFlowMapping = mapOf(
+        "totalRevenue" to "Total Revenue in EURmio",
+        "totalCapex" to "Total CapEx EURmio",
+        "totalOpex" to "Total OpEx EURmio",
+        "eligibleRevenue" to "Eligible Revenue",
+        "eligibleCapex" to "Eligible CapEx",
+        "eligibleOpex" to "Eligible OpEx",
+        "alignedRevenue" to "Aligned Revenue",
+        "alignedCapex" to "Aligned CapEx",
+        "alignedOpex" to "Aligned OpEx"
+    )
+
+    private fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
         val outputListOfEuTaxonomyData: MutableList<EuTaxonomyData> = mutableListOf()
-        for (map in inputList) {
+        for (csvData in inputList) {
+            if (!validateLine(csvData)) {
+                continue
+            }
             outputListOfEuTaxonomyData.add(
                 EuTaxonomyData(
-                    reportingObligation = EuTaxonomyData.ReportingObligation.yes, //todo
-                    attestation = EuTaxonomyData.Attestation.none, //todo
+                    reportObligation = getReportingObligation(csvData),
+                    attestation = getAttestation(csvData),
                     capex = EuTaxonomyDetailsPerCashFlowType(
-                        total = BigDecimal(2),
-                        aligned = BigDecimal(2),
-                        eligible = BigDecimal(2)
-                    ), //todo
+                        total = getCashFlowData(cashFlowMapping["totalCapex"]!!, csvData),
+                        aligned = getCashFlowData(cashFlowMapping["alignedCapex"]!!, csvData),
+                        eligible = getCashFlowData(cashFlowMapping["eligibleCapex"]!!, csvData)
+                    ),
                     opex = EuTaxonomyDetailsPerCashFlowType(
-                        total = BigDecimal(2),
-                        aligned = BigDecimal(2),
-                        eligible = BigDecimal(2)
-                    ), //todo
+                        total = getCashFlowData(cashFlowMapping["totalOpex"]!!, csvData),
+                        aligned = getCashFlowData(cashFlowMapping["alignedOpex"]!!, csvData),
+                        eligible = getCashFlowData(cashFlowMapping["eligibleOpex"]!!, csvData)
+                    ),
                     revenue = EuTaxonomyDetailsPerCashFlowType(
-                        total = BigDecimal(2),
-                        aligned = BigDecimal(2),
-                        eligible = BigDecimal(2)
-                    ), //todo
+                        total = getCashFlowData(cashFlowMapping["totalRevenue"]!!, csvData),
+                        aligned = getCashFlowData(cashFlowMapping["alignedRevenue"]!!, csvData),
+                        eligible = getCashFlowData(cashFlowMapping["eligibleRevenue"]!!, csvData)
+                    ),
                 )
             )
         }
         return outputListOfEuTaxonomyData
-    } */
+    }
 }
