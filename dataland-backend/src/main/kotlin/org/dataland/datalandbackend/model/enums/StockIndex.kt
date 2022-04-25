@@ -6,10 +6,10 @@ package org.dataland.datalandbackend.model.enums
 enum class StockIndex {
     Cdax,
     Dax,
-    GeneralStandards,
+    GeneralStandard,
     Gex,
     Mdax,
-    PrimeStandards,
+    PrimeStandard,
     Sdax,
     TecDax,
     ScaleHdax,

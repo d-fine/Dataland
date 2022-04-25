@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.IdentifierType
@@ -14,7 +13,6 @@ import org.dataland.datalandbackend.model.enums.StockIndex
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class CSVParser(val filePath: String) {
@@ -44,8 +42,8 @@ class CSVParser(val filePath: String) {
     }
 
     private val stockIndexMapping = mapOf(
-        StockIndex.PrimeStandards to "Prime Standard",
-        StockIndex.GeneralStandards to "General Standard",
+        StockIndex.PrimeStandard to "Prime Standard",
+        StockIndex.GeneralStandard to "General Standard",
         StockIndex.ScaleHdax to "Scale",
         StockIndex.Cdax to "CDAX",
         StockIndex.Gex to "GEX",

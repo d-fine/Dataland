@@ -8,7 +8,7 @@
 		"indices": [
 			"Dax50Esg",
 			"ScaleHdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax"
 		],
 		"identifiers": [
@@ -25,12 +25,12 @@
 		"marketCap": 9682877,
 		"reportingDateOfMarketCap": "2022-03-22",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"Cdax",
 			"ScaleHdax",
 			"Sdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Mdax"
 		],
 		"identifiers": [
@@ -51,7 +51,7 @@
 		"marketCap": 736416,
 		"reportingDateOfMarketCap": "2021-12-27",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax50Esg",
 			"Dax",
 			"ScaleHdax",
@@ -100,7 +100,7 @@
 			"ScaleHdax",
 			"Mdax",
 			"Dax50Esg",
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
 			"Cdax",
 			"Dax"
@@ -126,8 +126,8 @@
 			"Cdax",
 			"Dax50Esg",
 			"Sdax",
-			"PrimeStandards",
-			"GeneralStandards"
+			"PrimeStandard",
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -153,14 +153,14 @@
 		"indices": [
 			"ScaleHdax",
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"Mdax",
 			"Cdax",
 			"Dax",
 			"Dax50Esg",
 			"Gex",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -182,9 +182,9 @@
 		"indices": [
 			"Cdax",
 			"Gex",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Sdax"
 		],
 		"identifiers": [
@@ -211,7 +211,7 @@
 		"indices": [
 			"Cdax",
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"Mdax"
 		],
@@ -251,13 +251,13 @@
 		"reportingDateOfMarketCap": "2022-03-10",
 		"indices": [
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax",
 			"Gex",
 			"ScaleHdax",
 			"Sdax",
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
 			"Cdax"
 		],
@@ -279,8 +279,8 @@
 			"Dax",
 			"TecDax",
 			"ScaleHdax",
-			"PrimeStandards",
-			"GeneralStandards",
+			"PrimeStandard",
+			"GeneralStandard",
 			"Sdax",
 			"Gex",
 			"Cdax",
@@ -310,7 +310,7 @@
 		"indices": [
 			"Gex",
 			"Cdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
 			"ScaleHdax",
 			"TecDax"
@@ -384,8 +384,8 @@
 		"reportingDateOfMarketCap": "2022-03-22",
 		"indices": [
 			"Sdax",
-			"PrimeStandards",
-			"GeneralStandards",
+			"PrimeStandard",
+			"GeneralStandard",
 			"Gex",
 			"Dax50Esg",
 			"Dax",
@@ -412,7 +412,7 @@
 		"marketCap": 9432500,
 		"reportingDateOfMarketCap": "2021-12-16",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"Cdax",
 			"Gex",
 			"Dax",
@@ -438,7 +438,7 @@
 		"reportingDateOfMarketCap": "2021-07-26",
 		"indices": [
 			"Gex",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Cdax",
 			"Dax"
 		],
@@ -485,8 +485,8 @@
 			"Dax",
 			"Cdax",
 			"TecDax",
-			"PrimeStandards",
-			"GeneralStandards"
+			"PrimeStandard",
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -510,7 +510,7 @@
 		"marketCap": 5258712,
 		"reportingDateOfMarketCap": "2021-04-23",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex",
 			"Cdax",
 			"Dax",
@@ -531,13 +531,13 @@
 		"reportingDateOfMarketCap": "2021-10-01",
 		"indices": [
 			"TecDax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Mdax",
 			"Dax50Esg",
 			"Gex",
 			"Sdax",
 			"Dax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"ScaleHdax",
 			"Cdax"
 		],
@@ -561,7 +561,7 @@
 		"indices": [
 			"TecDax",
 			"ScaleHdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax"
 		],
 		"identifiers": [
@@ -621,7 +621,7 @@
 		"reportingDateOfMarketCap": "2021-08-04",
 		"indices": [
 			"Dax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Gex",
 			"Dax50Esg",
 			"TecDax"
@@ -653,8 +653,8 @@
 			"Dax50Esg",
 			"Cdax",
 			"TecDax",
-			"GeneralStandards",
-			"PrimeStandards"
+			"GeneralStandard",
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -673,11 +673,11 @@
 			"Sdax",
 			"Dax50Esg",
 			"Cdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex",
 			"Mdax",
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"ScaleHdax"
 		],
 		"identifiers": [
@@ -702,8 +702,8 @@
 			"Sdax",
 			"Cdax",
 			"Gex",
-			"GeneralStandards",
-			"PrimeStandards",
+			"GeneralStandard",
+			"PrimeStandard",
 			"Dax50Esg"
 		],
 		"identifiers": [
@@ -720,9 +720,9 @@
 		"marketCap": 8119914,
 		"reportingDateOfMarketCap": "2022-01-04",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"ScaleHdax",
 			"Cdax",
 			"Mdax",
@@ -751,8 +751,8 @@
 			"Sdax",
 			"Dax50Esg",
 			"Dax",
-			"GeneralStandards",
-			"PrimeStandards"
+			"GeneralStandard",
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -777,10 +777,10 @@
 		"reportingDateOfMarketCap": "2022-02-21",
 		"indices": [
 			"Sdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"ScaleHdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Cdax"
 		],
 		"identifiers": [
@@ -802,7 +802,7 @@
 		"reportingDateOfMarketCap": "2022-04-05",
 		"indices": [
 			"Gex",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Sdax",
 			"Dax"
 		],
@@ -828,14 +828,14 @@
 		"marketCap": 4866848,
 		"reportingDateOfMarketCap": "2021-12-26",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"TecDax",
 			"ScaleHdax",
 			"Dax",
 			"Gex",
 			"Mdax",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -860,7 +860,7 @@
 			"Sdax",
 			"Mdax",
 			"Cdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Gex"
 		],
 		"identifiers": [
@@ -885,8 +885,8 @@
 			"Gex",
 			"Mdax",
 			"Sdax",
-			"PrimeStandards",
-			"GeneralStandards"
+			"PrimeStandard",
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -906,7 +906,7 @@
 		"marketCap": 447785,
 		"reportingDateOfMarketCap": "2022-02-12",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
 			"Dax50Esg",
 			"Gex",
@@ -932,9 +932,9 @@
 		"indices": [
 			"TecDax",
 			"Gex",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"Dax",
 			"Cdax",
@@ -964,7 +964,7 @@
 			"Mdax",
 			"Dax",
 			"ScaleHdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax50Esg"
 		],
 		"identifiers": [
@@ -989,7 +989,7 @@
 		"marketCap": 6622811,
 		"reportingDateOfMarketCap": "2021-09-18",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax"
 		],
 		"identifiers": [
@@ -1026,7 +1026,7 @@
 		"marketCap": 8027238,
 		"reportingDateOfMarketCap": "2021-08-25",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Mdax"
 		],
 		"identifiers": [
@@ -1078,7 +1078,7 @@
 			"Gex",
 			"Cdax",
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"Dax",
 			"Sdax"
@@ -1107,7 +1107,7 @@
 		"indices": [
 			"Mdax",
 			"ScaleHdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"Dax50Esg"
 		],
@@ -1159,7 +1159,7 @@
 			"Dax",
 			"Dax50Esg",
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex"
 		],
 		"identifiers": [
@@ -1197,7 +1197,7 @@
 		"reportingDateOfMarketCap": "2021-12-29",
 		"indices": [
 			"Gex",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax",
 			"Mdax",
 			"Cdax"
@@ -1218,10 +1218,10 @@
 		"indices": [
 			"Cdax",
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax",
 			"Gex",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"ScaleHdax",
 			"TecDax"
@@ -1246,11 +1246,11 @@
 		"indices": [
 			"Dax50Esg",
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax",
 			"ScaleHdax",
 			"Sdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Cdax"
 		],
 		"identifiers": [
@@ -1272,13 +1272,13 @@
 		"reportingDateOfMarketCap": "2021-10-26",
 		"indices": [
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"ScaleHdax",
 			"Sdax",
 			"Mdax",
 			"Gex",
 			"Dax",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -1302,12 +1302,12 @@
 		"marketCap": 3617158,
 		"reportingDateOfMarketCap": "2021-05-13",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
 			"Gex",
 			"Sdax",
 			"Dax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -1328,7 +1328,7 @@
 			"Sdax",
 			"Gex",
 			"Cdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
 			"ScaleHdax"
 		],
@@ -1356,8 +1356,8 @@
 		"indices": [
 			"Mdax",
 			"Dax",
-			"PrimeStandards",
-			"GeneralStandards",
+			"PrimeStandard",
+			"GeneralStandard",
 			"Sdax",
 			"Cdax",
 			"Dax50Esg"
@@ -1378,12 +1378,12 @@
 		"indices": [
 			"ScaleHdax",
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
 			"Sdax",
 			"Cdax",
 			"Dax50Esg",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -1399,7 +1399,7 @@
 		"marketCap": 6997843,
 		"reportingDateOfMarketCap": "2021-05-28",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"Gex",
 			"Mdax",
 			"Sdax",
@@ -1430,7 +1430,7 @@
 		"indices": [
 			"ScaleHdax",
 			"Cdax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -1447,7 +1447,7 @@
 		"reportingDateOfMarketCap": "2021-12-18",
 		"indices": [
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Cdax",
 			"Sdax",
 			"ScaleHdax",
@@ -1488,13 +1488,13 @@
 		"marketCap": 4551133,
 		"reportingDateOfMarketCap": "2022-02-13",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax",
 			"TecDax",
 			"ScaleHdax",
 			"Cdax",
 			"Gex",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
 			"Sdax",
 			"Dax50Esg"
@@ -1518,7 +1518,7 @@
 		"reportingDateOfMarketCap": "2021-05-11",
 		"indices": [
 			"ScaleHdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Cdax",
 			"Dax",
 			"Dax50Esg",
@@ -1567,12 +1567,12 @@
 		"marketCap": 6709326,
 		"reportingDateOfMarketCap": "2021-07-12",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"ScaleHdax",
 			"TecDax",
 			"Gex",
 			"Sdax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -1592,7 +1592,7 @@
 		"marketCap": 3812569,
 		"reportingDateOfMarketCap": "2021-11-04",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
 			"ScaleHdax",
 			"Gex",
@@ -1670,7 +1670,7 @@
 		"indices": [
 			"ScaleHdax",
 			"Cdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax"
 		],
 		"identifiers": [
@@ -1695,7 +1695,7 @@
 			"ScaleHdax",
 			"Cdax",
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
 			"Dax",
 			"TecDax"
@@ -1741,10 +1741,10 @@
 		"reportingDateOfMarketCap": "2022-02-05",
 		"indices": [
 			"TecDax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex",
 			"Sdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax",
 			"Mdax",
 			"ScaleHdax",
@@ -1764,9 +1764,9 @@
 		"marketCap": 628149,
 		"reportingDateOfMarketCap": "2021-10-17",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"Cdax"
 		],
@@ -1864,7 +1864,7 @@
 		"reportingDateOfMarketCap": "2021-08-03",
 		"indices": [
 			"Dax50Esg",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex"
 		],
 		"identifiers": [
@@ -1889,7 +1889,7 @@
 		"marketCap": 3009129,
 		"reportingDateOfMarketCap": "2021-06-10",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax",
 			"Dax50Esg",
 			"Mdax"
@@ -1912,11 +1912,11 @@
 			"Gex",
 			"TecDax",
 			"Mdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax50Esg",
 			"Sdax",
 			"ScaleHdax",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -1940,9 +1940,9 @@
 		"marketCap": 3887951,
 		"reportingDateOfMarketCap": "2021-06-01",
 		"indices": [
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Cdax",
 			"Dax50Esg",
 			"Dax",
@@ -2062,9 +2062,9 @@
 		"marketCap": 555480,
 		"reportingDateOfMarketCap": "2021-08-16",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"ScaleHdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
 			"Gex",
 			"TecDax",
@@ -2088,11 +2088,11 @@
 			"ScaleHdax",
 			"Dax50Esg",
 			"Dax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Sdax",
 			"Cdax",
 			"TecDax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -2115,7 +2115,7 @@
 			"ScaleHdax",
 			"Mdax",
 			"Gex",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -2137,7 +2137,7 @@
 		"indices": [
 			"TecDax",
 			"Dax",
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -2157,7 +2157,7 @@
 		"marketCap": 6363326,
 		"reportingDateOfMarketCap": "2022-02-08",
 		"indices": [
-			"GeneralStandards",
+			"GeneralStandard",
 			"TecDax",
 			"Sdax",
 			"Gex"
@@ -2178,8 +2178,8 @@
 		"indices": [
 			"Mdax",
 			"Dax",
-			"GeneralStandards",
-			"PrimeStandards",
+			"GeneralStandard",
+			"PrimeStandard",
 			"TecDax",
 			"Sdax",
 			"ScaleHdax",
@@ -2202,7 +2202,7 @@
 			"Gex",
 			"Dax50Esg",
 			"Mdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Sdax",
 			"TecDax",
 			"ScaleHdax",
@@ -2231,13 +2231,13 @@
 		"reportingDateOfMarketCap": "2022-01-26",
 		"indices": [
 			"TecDax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax50Esg",
 			"Gex",
 			"ScaleHdax",
 			"Cdax",
 			"Dax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax",
 			"Sdax"
 		],
@@ -2260,7 +2260,7 @@
 		"reportingDateOfMarketCap": "2021-11-14",
 		"indices": [
 			"Sdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Mdax"
 		],
 		"identifiers": [
@@ -2279,13 +2279,13 @@
 		"indices": [
 			"Mdax",
 			"ScaleHdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"TecDax",
 			"Gex",
 			"Dax",
 			"Cdax",
 			"Sdax",
-			"GeneralStandards",
+			"GeneralStandard",
 			"Dax50Esg"
 		],
 		"identifiers": [
@@ -2302,7 +2302,7 @@
 		"marketCap": 230204,
 		"reportingDateOfMarketCap": "2022-04-16",
 		"indices": [
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -2326,7 +2326,7 @@
 		"marketCap": 5060739,
 		"reportingDateOfMarketCap": "2022-01-03",
 		"indices": [
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -2342,7 +2342,7 @@
 		"marketCap": 3193084,
 		"reportingDateOfMarketCap": "2021-08-08",
 		"indices": [
-			"PrimeStandards"
+			"PrimeStandard"
 		],
 		"identifiers": [
 			{
@@ -2365,10 +2365,10 @@
 			"Dax50Esg",
 			"Dax",
 			"TecDax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Gex",
 			"Mdax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -2391,9 +2391,9 @@
 			"Sdax",
 			"Gex",
 			"Mdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Cdax",
-			"GeneralStandards"
+			"GeneralStandard"
 		],
 		"identifiers": [
 			{
@@ -2437,7 +2437,7 @@
 		"indices": [
 			"Dax50Esg",
 			"ScaleHdax",
-			"PrimeStandards",
+			"PrimeStandard",
 			"Dax",
 			"Mdax"
 		],
