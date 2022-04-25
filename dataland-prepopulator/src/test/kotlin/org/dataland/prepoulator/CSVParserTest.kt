@@ -1,8 +1,8 @@
 package org.dataland.prepoulator
 
-//import com.fasterxml.jackson.databind.ObjectMapper
+// import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
-//import org.springframework.beans.factory.annotation.Autowired
+// import org.springframework.beans.factory.annotation.Autowired
 
 class CSVParserTest {
 
@@ -11,10 +11,10 @@ class CSVParserTest {
     @Test
     fun `aaaa`() {
         val csvParser = CSVParser(dataProvider.getFile())
-        csvParser.buildJson()
-        //csvParser.readJson()
+        csvParser.writeJson()
+        // csvParser.readJson()
 
-        //val map = csvParser.buildListOfCompanyInformation()
-        //println(map)
+        // val map = csvParser.buildListOfCompanyInformation()
+        // println(map)
     }
 }

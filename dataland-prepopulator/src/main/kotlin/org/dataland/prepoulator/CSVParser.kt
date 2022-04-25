@@ -1,6 +1,5 @@
 package org.dataland.prepoulator
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
@@ -15,10 +14,14 @@ import java.io.FileReader
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * Class to transform company information and EU Taxonomy data delivered by csv into json format
+ * @param filePath location of the csv file to be transformed
+ */
 class CSVParser(val filePath: String) {
 
-    //private val objectMapper = ObjectMapper().setDefaultPrettyPrinter().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
-    private val objectMapper = ObjectMapper().registerModule(JavaTimeModule()).configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
+        .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
@@ -79,12 +82,13 @@ class CSVParser(val filePath: String) {
     }
 
     private fun getMarketCap(columnHeader: String, mapObject: Map<String, String>): BigDecimal {
-        println(getValue(columnHeader, mapObject))
-        return getValue(columnHeader, mapObject).replace(".","").replace(",",".")
+        // The market cap conversion assumes the figures to be provided in millions using german notation
+        // , hence, "," as decimal separator and "." to separate thousands
+        return getValue(columnHeader, mapObject).replace(".", "").replace(",", ".")
             .toBigDecimal().multiply("1000000".toBigDecimal())
     }
 
-    fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    private fun buildListOfCompanyInformation(): List<CompanyInformation> {
         return inputList.map {
             CompanyInformation(
                 companyName = getValue(columnMapping["companyName"]!!, it),
@@ -98,29 +102,12 @@ class CSVParser(val filePath: String) {
         }
     }
 
-
-    fun buildJson() {
-        val allCompanies = buildListOfCompanyInformation()
-        println(allCompanies)
-        println(objectMapper.writeValueAsString(allCompanies))
-        //private val outFile = ClassPathResource("/Output.json").file
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(File("./Output.json"), allCompanies)
-        //objectMapper.writeValue(outFile, allCompanies)
-        //use object mapper to write companyInformation.json from output of buildListOfCompanyInformation()
+    /**
+     * Method to write the transformed data into json
+     */
+    fun writeJson() {
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(File("./Output.json"), buildListOfCompanyInformation())
     }
-
-    fun readJson() {
-        //val companyType: ParameterizedType = Types
-        //    .newParameterizedType(List::class.java, CompanyInformation::class.java)
-        val test: List<CompanyInformation> = objectMapper.readValue(File("./Output.json"), object : TypeReference<List<CompanyInformation>>() {})
-        //val test = objectMapper.readValue(File("./Output.json"))
-
-        println(test)
-    }
-
-    //data class CompanyInformationList: List<CompanyInformation>()
-
-
 
     /* ToDo as soon as all needed info in Excel file is available
     fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
@@ -149,21 +136,5 @@ class CSVParser(val filePath: String) {
             )
         }
         return outputListOfEuTaxonomyData
-    }
-    */
-
-    /*
-    Plan:
-
-    counter=0
-    listOfMaps
-    currentDataMap = listOfMaps[counter]
-
-    companyInformation = CompanyInformation(currentDataMap[Unternehmensname] = companyName ...)
-    euTaxonomyData = EutaxonomyData( ...)
-
-    to List<companyInformation>        List<exuTaxonomyData>
-
-    List => jsons bauen => in reosurces verschieben
-*/
+    } */
 }
