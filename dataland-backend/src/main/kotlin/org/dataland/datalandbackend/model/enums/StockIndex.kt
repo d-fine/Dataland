@@ -12,6 +12,7 @@ enum class StockIndex {
     PrimeStandard,
     Sdax,
     TecDax,
-    ScaleHdax,
+    Hdax,
+    Scale,
     Dax50Esg
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
@@ -53,7 +54,8 @@ class CsvToJsonConverter(private val filePath: String) {
     private val stockIndexMapping = mapOf(
         StockIndex.PrimeStandard to "Prime Standard",
         StockIndex.GeneralStandard to "General Standard",
-        StockIndex.ScaleHdax to "Scale",
+        StockIndex.Hdax to "HDAX",
+        StockIndex.Scale to "Scale",
         StockIndex.Cdax to "CDAX",
         StockIndex.Gex to "GEX",
         StockIndex.Dax to "DAX",
@@ -92,10 +94,9 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun getIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
-        val identifiers = identifierMapping.keys.map {
+        return identifierMapping.keys.map {
             CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
-        }
-        return identifiers.filter { it.identifierValue != notAvailableString }
+        }.filter { it.identifierValue != notAvailableString }
     }
 
     private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
@@ -110,7 +111,10 @@ class CsvToJsonConverter(private val filePath: String) {
             )
     }
 
-    private fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    /**
+     * Method to get a list of CompanyInformation objects generated from the csv file
+     */
+    fun buildListOfCompanyInformation(): List<CompanyInformation> {
         return rawCsvData.filter { validateLine(it) }.map {
             CompanyInformation(
                 companyName = getValue(columnMapping["companyName"]!!, it),
@@ -119,7 +123,7 @@ class CsvToJsonConverter(private val filePath: String) {
                 marketCap = getMarketCap(columnMapping["marketCap"]!!, it),
                 reportingDateOfMarketCap = LocalDate.parse(
                     getValue(columnMapping["reportingDateOfMarketCap"]!!, it),
-                    DateTimeFormatter.ofPattern("MM.dd.yyyy")
+                    DateTimeFormatter.ofPattern("dd.M.yyyy")
                 ),
                 identifiers = getIdentifiers(it),
                 indices = getStockIndices(it)
@@ -173,26 +177,32 @@ class CsvToJsonConverter(private val filePath: String) {
             .replace("%", "").toBigDecimalOrNull()?.multiply("0.01".toBigDecimal())
     }
 
-    private fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
-        return rawCsvData.filter { validateLine(it) }.map { csvLineData ->
-            EuTaxonomyData(
-                reportObligation = getReportingObligation(csvLineData),
-                attestation = getAttestation(csvLineData),
-                capex = EuTaxonomyDetailsPerCashFlowType(
-                    total = getNumericValue(columnMapping["totalCapex"]!!, csvLineData),
-                    aligned = getNumericValue(columnMapping["alignedCapex"]!!, csvLineData),
-                    eligible = getNumericValue(columnMapping["eligibleCapex"]!!, csvLineData)
-                ),
-                opex = EuTaxonomyDetailsPerCashFlowType(
-                    total = getNumericValue(columnMapping["totalOpex"]!!, csvLineData),
-                    aligned = getNumericValue(columnMapping["alignedOpex"]!!, csvLineData),
-                    eligible = getNumericValue(columnMapping["eligibleOpex"]!!, csvLineData)
-                ),
-                revenue = EuTaxonomyDetailsPerCashFlowType(
-                    total = getNumericValue(columnMapping["totalRevenue"]!!, csvLineData),
-                    aligned = getNumericValue(columnMapping["alignedRevenue"]!!, csvLineData),
-                    eligible = getNumericValue(columnMapping["eligibleRevenue"]!!, csvLineData)
-                ),
+    /**
+     * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
+     */
+    fun buildListOfEuTaxonomyData(): List<CompanyAssociatedData<EuTaxonomyData>> {
+        return rawCsvData.filter { validateLine(it) }.withIndex().map { (index, csvLineData) ->
+            CompanyAssociatedData(
+                companyId = "${index + 1}",
+                EuTaxonomyData(
+                    reportObligation = getReportingObligation(csvLineData),
+                    attestation = getAttestation(csvLineData),
+                    capex = EuTaxonomyDetailsPerCashFlowType(
+                        total = getNumericValue(columnMapping["totalCapex"]!!, csvLineData),
+                        aligned = getNumericValue(columnMapping["alignedCapex"]!!, csvLineData),
+                        eligible = getNumericValue(columnMapping["eligibleCapex"]!!, csvLineData)
+                    ),
+                    opex = EuTaxonomyDetailsPerCashFlowType(
+                        total = getNumericValue(columnMapping["totalOpex"]!!, csvLineData),
+                        aligned = getNumericValue(columnMapping["alignedOpex"]!!, csvLineData),
+                        eligible = getNumericValue(columnMapping["eligibleOpex"]!!, csvLineData)
+                    ),
+                    revenue = EuTaxonomyDetailsPerCashFlowType(
+                        total = getNumericValue(columnMapping["totalRevenue"]!!, csvLineData),
+                        aligned = getNumericValue(columnMapping["alignedRevenue"]!!, csvLineData),
+                        eligible = getNumericValue(columnMapping["eligibleRevenue"]!!, csvLineData)
+                    ),
+                )
             )
         }
     }

@@ -15,8 +15,7 @@ val jacocoClasses by extra(
 plugins {
     kotlin("jvm")
     application
-    // kotlin("plugin.spring")
-    // id("org.openapi.generator") version "5.4.0"
+    kotlin("plugin.spring")
     id("org.springframework.boot")
 }
 
@@ -34,8 +33,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j:2.17.2")
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
-    // testImplementation("org.springframework.boot:spring-boot-starter-test")
-    // implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
@@ -48,7 +47,7 @@ tasks.withType<Test> {
 }
 
 tasks.register<Copy>("getTestData") {
-    from("$rootDir/testing/data/DatalandTestDaten.csv")
+    from("$rootDir/testing/data")
     into("$projectDir/src/test/resources")
 }
 
