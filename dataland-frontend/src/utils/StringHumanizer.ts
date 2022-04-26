@@ -30,7 +30,7 @@
             scalehdax: "ScaleHDAX",
             dax50esg: "DAX 50 ESG",
             isin: "ISIN",
-            permid: "PERM Id",
+            permid: "PermID",
             lei: "LEI"
         }
         const lowerCaseText = rawText.toLowerCase()

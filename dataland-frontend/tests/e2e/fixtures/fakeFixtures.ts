@@ -1,5 +1,5 @@
 import faker from "@faker-js/faker";
-import {humanize} from "@/utils/StringHumanizer";
+import {humanize} from '../../../src/utils/StringHumanizer';
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
 const identifierTypeArray = apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum
@@ -101,28 +101,49 @@ function generateCompanyAssociatedEuTaxonomyData() {
     return taxonomies
 }
 
-function customValue(array:Array<string>, stockIndex:string){
-    return array.includes(stockIndex) ? "x" : ""
+function stockIndexValue(stockIndexList:Array<string>, stockIndex:string){
+    return stockIndexList.includes(stockIndex) ? "x" : ""
+}
+
+function identifierValue(identifierArray:Array<Object>, identifierType:string){
+    const identifierObject:any = identifierArray.find( (identifier:any) => {
+        return identifier.identifierType === identifierType
+    })
+    return identifierObject ? identifierObject.identifierValue : ""
 }
 
 function generateCSVData(companyInformation:Array<Object>, companyAssociatedEuTaxonomyData:Array<Object>){
     const mergedData = companyInformation.map((element, index) => {
         return {...element, ...companyAssociatedEuTaxonomyData[index]}
     })
-
+    const dateOptions:any = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const dateLocale = 'de-DE';
 
     const fields = [
-        { label: 'Company Name', value: 'companyName' },
+        { label: 'Company name', value: 'companyName' },
         { label: 'Headquarter', value: 'headquarters' },
         { label: 'Sektor', value: 'sector' },
         { label: 'Market Capitalization (EURmm)', value: 'marketCap' },
-        { label: 'Market Capitalization Date', value: 'reportingDateOfMarketCap' },
-        { label: 'Total Revenue in EURmio', value: 'data[Revenue][total]' },
+        { label: 'Market Capitalization Date', value: (row:any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
+        { label: 'Total Revenue in EURmio', value: 'data.Revenue.total' },
+        { label: 'Total CapEx EURmio', value: 'data.Capex.total' },
+        { label: 'Total OpEx EURmio', value: 'data.Opex.total' },
+        { label: 'Eligible Revenue', value: 'data.Revenue.eligible' },
+        { label: 'Eligible CapEx', value: 'data.Capex.eligible' },
+        { label: 'Eligible OpEx', value: 'data.Opex.eligible' },
+        { label: 'Aligned Revenue', value: 'data.Revenue.aligned' },
+        { label: 'Aligned CapEx', value: 'data.Capex.aligned' },
+        { label: 'Aligned OpEx', value: 'data.Opex.aligned' },
+        { label: 'IS/FS', value: 'companyType', default: 'IS' },
+        { label: 'NFRD Pflicht', value: 'data[Reporting Obligation]' },
+        { label: 'Assurance', value: 'data.Attestation' },
         ...stockIndexArray.map((e:any) => {
-        return {label:humanize(e), value: (row:any) => customValue(row.indices, e)}
+        return {label:humanize(e), value: (row:any) => stockIndexValue(row.indices, e)}
+        }),
+        ...identifierTypeArray.map((e:any) => {
+        return {label:humanize(e), value: (row:any) => identifierValue(row.identifiers, e)}
         }),
     ];
-    console.log(fields)
     return parse(mergedData, {fields});
 }
 
@@ -130,12 +151,11 @@ function generateCSVData(companyInformation:Array<Object>, companyAssociatedEuTa
 function main() {
     const CompanyInformation = generateCompanyInformation();
     const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
-
     const csv = generateCSVData(CompanyInformation, CompanyAssociatedEuTaxonomyData)
-    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
-    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.csv', csv);
-    // fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
-    // fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
+
+    fs.writeFileSync('../testing/data/csvTestData.csv', csv);
+    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
 }
 
 main()
