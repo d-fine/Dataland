@@ -9,7 +9,7 @@
         <CompanyInformation :companyID="companyID"/>
       </div>
       <div class="col-3 pb-4 text-right">
-        <Button label="Get Report" class="uppercase p-button">Get Report
+        <Button label="Export Data" class="uppercase p-button">Export Data
           <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
         </Button>
       </div>

@@ -27,7 +27,7 @@
             mdax: "MDAX",
             sdax: "SDAX",
             tecdax: "TecDAX",
-            scalehdax: "ScaleHDAX",
+            hdax: "HDAX",
             dax50esg: "DAX 50 ESG",
             isin: "ISIN",
             permid: "PERM Id",
