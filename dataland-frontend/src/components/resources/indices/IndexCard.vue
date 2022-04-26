@@ -6,15 +6,17 @@
         <div class="col-12 text-left pb-0">
         <strong>{{ indexName }}</strong>
         </div>
-        <div class="col-5 md:col-7 text-left pt-0 text-gray-800">
-          <p>Green asset ratio</p>
-        </div>
-        <div class="col-6 md:col-5 text-right text-green-500 pt-0">
-          <span class="font-semibold text-xl">{{ green_asset_ratio }}</span>
-          <span>%</span>
-        </div>
+        <template v-if="false">
+          <div class="col-5 md:col-7 text-left pt-0 text-gray-800">
+            <p>Green asset ratio</p>
+          </div>
+          <div class="col-6 md:col-5 text-right text-green-500 pt-0">
+            <span class="font-semibold text-xl">{{ green_asset_ratio }}</span>
+            <span>%</span>
+          </div>
+        </template>
       </div>
-        <ProgressBar :value="green_asset_ratio" :showValue="false" class="bg-black-alpha-20 d-progressbar">
+        <ProgressBar v-if="false" :value="green_asset_ratio" :showValue="false" class="bg-black-alpha-20 d-progressbar">
         </ProgressBar>
     </template>
   </Card>

@@ -1,6 +1,17 @@
 <template>
   <div v-if="response">
     <div class="grid">
+      <div class="col-6">
+        <TaxoInfoCard title="NFRD required" :value="dataSet['Reporting Obligation']"
+                  tooltipText='The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover.'></TaxoInfoCard>
+      </div>
+      <div class="col-6">
+        <TaxoInfoCard title="Level of Assurance" :value="dataSet['Attestation']"
+                  tooltipText='The Level of Assurance specifies the confidence level of the data reported.
+                  Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
+                  Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
+                  None: low level of comfort that the subject matter is not materially misstated.'></TaxoInfoCard>
+      </div>
       <div class="col-12 text-left pb-0">
         <h3>Revenue</h3>
       </div>
@@ -47,13 +58,14 @@
 import {EuTaxonomyDataControllerApi} from "../../../../build/clients/backend/api";
 import {ApiWrapper} from "@/services/ApiWrapper"
 import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
+import TaxoInfoCard from "@/components/resources/taxonomy/TaxoInfoCard";
 
 const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
 const getCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.getCompanyAssociatedData)
 
 export default {
   name: "TaxonomyPanel",
-  components: {TaxoCard},
+  components: {TaxoCard, TaxoInfoCard},
   data() {
     return {
       response: null,

@@ -24,7 +24,6 @@
 
           <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix(total) }}</strong></p>
         </div>
-
       </div>
       </template>
     </template>

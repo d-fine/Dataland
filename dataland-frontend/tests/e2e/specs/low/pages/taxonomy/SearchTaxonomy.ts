@@ -86,6 +86,7 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]')
             .click()
             .type('b')
+        cy.wait(1000)
         cy.get('.p-autocomplete-items')
             .eq(0).click()
             .url().should('include', '/companies/')
