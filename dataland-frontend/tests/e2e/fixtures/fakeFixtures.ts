@@ -1,7 +1,11 @@
 const {faker} = require('@faker-js/faker');
+const { parse } = require('json2csv');
 const apiSpecs = require( "../../../build/clients/backend/backendOpenApi.json")
 const fs = require('fs')
+const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
+const identifierTypeArray = apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum
 // sets locale to de
+
 faker.locale = 'de';
 
 function generateCompanyInformation() {
@@ -13,18 +17,18 @@ function generateCompanyInformation() {
         const sector = faker.company.bsNoun();
         const marketCap = faker.mersenne.rand(50000, 10000000);
         const reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
-        const indices = faker.random.arrayElements( apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum );
+        const indices = faker.random.arrayElements( stockIndexArray );
         const identifiers = faker.random.arrayElements([
             {
-                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[0],
+                "identifierType": identifierTypeArray[0],
                 "identifierValue": faker.random.alphaNumeric(12)
             },
             {
-                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[1],
+                "identifierType": identifierTypeArray[1],
                 "identifierValue": faker.random.alphaNumeric(12)
             },
             {
-                "identifierType": apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum[2],
+                "identifierType": identifierTypeArray[2],
                 "identifierValue": faker.random.alphaNumeric(12)
             }
         ]);
@@ -45,6 +49,7 @@ function generateCompanyInformation() {
 
     return companies
 }
+
 
 function generateCompanyAssociatedEuTaxonomyData() {
     const taxonomies = []
@@ -93,11 +98,41 @@ function generateCompanyAssociatedEuTaxonomyData() {
     return taxonomies
 }
 
+function customValue(array:Array<String>, stockIndex:String){
+    return array.includes(stockIndex) ? "x" : ""
+}
+
+function generateCSVData(companyInformation:Array<Object>, companyAssociatedEuTaxonomyData:Array<Object>){
+    const mergedData = companyInformation.map((element, index) => {
+        return {...element, ...companyAssociatedEuTaxonomyData[index]}
+    })
+
+
+    const fields = [
+        { label: 'Company Name', value: 'companyName' },
+        { label: 'Headquarter', value: 'headquarters' },
+        { label: 'Sektor', value: 'sector' },
+        { label: 'Market Capitalization (EURmm)', value: 'marketCap' },
+        { label: 'Market Capitalization Date', value: 'reportingDateOfMarketCap' },
+        { label: 'Total Revenue in EURmio', value: 'data[Revenue][total]' },
+            ...stockIndexArray.map((e:any) => {
+            return {label:e, value: (row:any) => customValue(row.indices, e)}
+        }),
+    ];
+    console.log(fields)
+    return parse(mergedData, {fields});
+}
+
+
 function main() {
     const CompanyInformation = generateCompanyInformation();
     const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
-    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
-    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
+
+    const csv = generateCSVData(CompanyInformation, CompanyAssociatedEuTaxonomyData)
+    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
+    fs.writeFileSync('./tests/e2e/fixtures/CompanyInformation.csv', csv);
+    // fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
+    // fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
 }
 
 main()
