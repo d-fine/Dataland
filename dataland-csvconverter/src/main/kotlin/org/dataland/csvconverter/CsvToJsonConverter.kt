@@ -174,35 +174,29 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
-        val outputListOfEuTaxonomyData: MutableList<EuTaxonomyData> = mutableListOf()
-        for (csvData in rawCsvData) {
-            if (!validateLine(csvData)) {
-                continue
-            }
-            outputListOfEuTaxonomyData.add(
-                EuTaxonomyData(
-                    reportObligation = getReportingObligation(csvData),
-                    attestation = getAttestation(csvData),
-                    capex = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalCapex"]!!, csvData),
-                        aligned = getNumericValue(columnMapping["alignedCapex"]!!, csvData),
-                        eligible = getNumericValue(columnMapping["eligibleCapex"]!!, csvData)
-                    ),
-                    opex = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalOpex"]!!, csvData),
-                        aligned = getNumericValue(columnMapping["alignedOpex"]!!, csvData),
-                        eligible = getNumericValue(columnMapping["eligibleOpex"]!!, csvData)
-                    ),
-                    revenue = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalRevenue"]!!, csvData),
-                        aligned = getNumericValue(columnMapping["alignedRevenue"]!!, csvData),
-                        eligible = getNumericValue(columnMapping["eligibleRevenue"]!!, csvData)
-                    ),
-                )
+        return rawCsvData.filter { validateLine(it) }.map { csvLineData ->
+            EuTaxonomyData(
+                reportObligation = getReportingObligation(csvLineData),
+                attestation = getAttestation(csvLineData),
+                capex = EuTaxonomyDetailsPerCashFlowType(
+                    total = getNumericValue(columnMapping["totalCapex"]!!, csvLineData),
+                    aligned = getNumericValue(columnMapping["alignedCapex"]!!, csvLineData),
+                    eligible = getNumericValue(columnMapping["eligibleCapex"]!!, csvLineData)
+                ),
+                opex = EuTaxonomyDetailsPerCashFlowType(
+                    total = getNumericValue(columnMapping["totalOpex"]!!, csvLineData),
+                    aligned = getNumericValue(columnMapping["alignedOpex"]!!, csvLineData),
+                    eligible = getNumericValue(columnMapping["eligibleOpex"]!!, csvLineData)
+                ),
+                revenue = EuTaxonomyDetailsPerCashFlowType(
+                    total = getNumericValue(columnMapping["totalRevenue"]!!, csvLineData),
+                    aligned = getNumericValue(columnMapping["alignedRevenue"]!!, csvLineData),
+                    eligible = getNumericValue(columnMapping["eligibleRevenue"]!!, csvLineData)
+                ),
             )
         }
-        return outputListOfEuTaxonomyData
     }
+
     companion object {
         /**
          * The corresponding main class to run the CSV converter. Execute by running:
