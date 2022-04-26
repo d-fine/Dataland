@@ -137,7 +137,7 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Aligned CapEx', value: 'data.Capex.aligned'},
             {label: 'Aligned OpEx', value: 'data.Opex.aligned'},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
-            {label: 'NFRD Pflicht', value: 'data[Reporting Obligation]'},
+            {label: 'NFRD Pflicht', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
             {label: 'Assurance', value: 'data.Attestation'},
             ...stockIndexArray.map((e: any) => {
                 return {label: humanize(e), value: (row: any) => stockIndexValue(row.indices, e)}
