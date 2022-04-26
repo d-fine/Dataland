@@ -21,7 +21,7 @@ plugins {
 }
 
 application {
-    mainClass.set("org.dataland.csvconverter.CSVParser")
+    mainClass.set("org.dataland.csvconverter.CsvToJsonConverter")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
