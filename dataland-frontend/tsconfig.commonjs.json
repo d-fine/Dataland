@@ -1,0 +1,9 @@
+// This file is needed to execute fake fixtures with modules and keep the functionality of the Vue App alive.
+// For fake fixtures commonjs is needed, for the VUE App esnext.
+
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs"
+  }
+}

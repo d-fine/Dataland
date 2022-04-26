@@ -1,9 +1,12 @@
-const {faker} = require('@faker-js/faker');
-const { parse } = require('json2csv');
-const apiSpecs = require( "../../../build/clients/backend/backendOpenApi.json")
-const fs = require('fs')
+import faker from "@faker-js/faker";
+import {humanize} from "@/utils/StringHumanizer";
+import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
 const identifierTypeArray = apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum
+
+const { parse } = require('json2csv');
+const fs = require('fs')
+// import StringHumanizer from('../../../src/utils/StringHumanizer');
 // sets locale to de
 
 faker.locale = 'de';
@@ -98,7 +101,7 @@ function generateCompanyAssociatedEuTaxonomyData() {
     return taxonomies
 }
 
-function customValue(array:Array<String>, stockIndex:String){
+function customValue(array:Array<string>, stockIndex:string){
     return array.includes(stockIndex) ? "x" : ""
 }
 
@@ -115,8 +118,8 @@ function generateCSVData(companyInformation:Array<Object>, companyAssociatedEuTa
         { label: 'Market Capitalization (EURmm)', value: 'marketCap' },
         { label: 'Market Capitalization Date', value: 'reportingDateOfMarketCap' },
         { label: 'Total Revenue in EURmio', value: 'data[Revenue][total]' },
-            ...stockIndexArray.map((e:any) => {
-            return {label:e, value: (row:any) => customValue(row.indices, e)}
+        ...stockIndexArray.map((e:any) => {
+        return {label:humanize(e), value: (row:any) => customValue(row.indices, e)}
         }),
     ];
     console.log(fields)
