@@ -31,3 +31,6 @@ hs_err_pid*
 /dataland-backend/src/test/resources/CompanyInformation.json
 /dataland-e2etests/src/test/resources/CompanyAssociatedEuTaxonomyData.json
 /dataland-e2etests/src/test/resources/CompanyInformation.json
+/dataland-csvconverter/src/test/resources/CompanyAssociatedEuTaxonomyData.json
+/dataland-csvconverter/src/test/resources/CompanyInformation.json
+/dataland-csvconverter/src/test/resources/csvTestData.csv
