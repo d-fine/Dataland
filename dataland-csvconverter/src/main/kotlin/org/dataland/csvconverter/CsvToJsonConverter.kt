@@ -29,7 +29,7 @@ class CsvToJsonConverter(private val filePath: String) {
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
-    private val euroUnitConverter = "1000000"
+    var euroUnitConverter = "1000000"
 
     private val columnMapping = mapOf(
         "companyName" to "Company name",
@@ -67,6 +67,7 @@ class CsvToJsonConverter(private val filePath: String) {
 
     private val identifierMapping = mapOf(
         IdentifierType.PermId to "PermID",
+        IdentifierType.Lei to "LEI",
         IdentifierType.Isin to "ISIN"
     )
 
@@ -89,14 +90,14 @@ class CsvToJsonConverter(private val filePath: String) {
         }
     }
 
-    private fun getStockIndices(csvLineData: Map<String, String>): List<StockIndex> {
-        return stockIndexMapping.keys.filter { csvLineData[stockIndexMapping[it]]!!.isNotBlank() }
+    private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
+        return stockIndexMapping.keys.filter { csvLineData[stockIndexMapping[it]]!!.isNotBlank() }.toSet()
     }
 
-    private fun getIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
+    private fun getIdentifiers(csvLineData: Map<String, String>): Set<CompanyIdentifier> {
         return identifierMapping.keys.map {
             CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
-        }.filter { it.identifierValue != notAvailableString }
+        }.filter { it.identifierValue != notAvailableString }.toSet()
     }
 
     private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
@@ -123,7 +124,7 @@ class CsvToJsonConverter(private val filePath: String) {
                 marketCap = getMarketCap(columnMapping["marketCap"]!!, it),
                 reportingDateOfMarketCap = LocalDate.parse(
                     getValue(columnMapping["reportingDateOfMarketCap"]!!, it),
-                    DateTimeFormatter.ofPattern("dd.M.yyyy")
+                    DateTimeFormatter.ofPattern("d.M.yyyy")
                 ),
                 identifiers = getIdentifiers(it),
                 indices = getStockIndices(it)

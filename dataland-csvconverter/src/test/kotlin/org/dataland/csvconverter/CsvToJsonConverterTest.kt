@@ -13,6 +13,7 @@ class CsvToJsonConverterTest {
     @Test
     fun `Read csv and check that the generated objects are as expected`() {
         val csvParser = CsvToJsonConverter(File("./src/test/resources/csvTestData.csv").path)
+        csvParser.euroUnitConverter = "1"
         val parsedCompanies = csvParser.buildListOfCompanyInformation()
         val parsedEuTaxonomyData = csvParser.buildListOfEuTaxonomyData()
         val readCompanies = testDataProvider.getAllCompanies()

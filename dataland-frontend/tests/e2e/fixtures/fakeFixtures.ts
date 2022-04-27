@@ -138,7 +138,14 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Aligned OpEx', value: 'data.Opex.aligned'},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
             {label: 'NFRD Pflicht', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
-            {label: 'Assurance', value: 'data.Attestation'},
+            {label: 'Assurance', value: (row: any) => {if(row.data["Attestation"] === "LimitedAssurance"){
+                    return "limited"
+                }  else if (row.data["Attestation"] === "ReasonableAssurance") {
+                    return "reasonable"
+                } else {
+                    return "none"
+                }
+            }},
             ...stockIndexArray.map((e: any) => {
                 return {label: humanize(e), value: (row: any) => stockIndexValue(row.indices, e)}
             }),
