@@ -14,6 +14,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
+    id("com.github.johnrengelman.processes") version "0.5.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
     id("com.gorylenko.gradle-git-properties") version "2.4.0"
     id("org.springframework.boot")
@@ -25,7 +26,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.8")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
     implementation("org.dataland:skyminder-client:0.1.2")
     implementation("org.dataland:dataland-edc-client:0.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
