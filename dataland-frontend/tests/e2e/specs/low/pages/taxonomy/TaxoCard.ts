@@ -23,14 +23,14 @@ describe.only('EU Taxonomy Data and Cards', function () {
     });
 
     it('Create EU Taxonomy Datasets all data present', () => {
+        const eligible=0.67
+        const total="15422154"
         cy.visit("/upload")
         cy.get('input[name="companyId"]').type(companyIdList[0], {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
-            const eligible="0.67"
-            const total="15422154"
-            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible)
+            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible.toString())
             cy.get(`div[title=${argument}] input[name=total]`).type(total)
         }
         cy.get('button[name="postEUData"]').click({force: true})
@@ -39,19 +39,21 @@ describe.only('EU Taxonomy Data and Cards', function () {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "NaN")
+                cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
+                cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100*eligible}%`)
+                cy.get('.font-semibold.text-lg').should('contain', '€')
             })
         })
     });
 
     it('Create EU Taxonomy Datasets only percentages', () => {
+        const eligible=0.67
         cy.visit("/upload")
         cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
-            const eligible="0.67"
-            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible)
+            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible.toString())
         }
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
@@ -59,7 +61,9 @@ describe.only('EU Taxonomy Data and Cards', function () {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "NaN")
+                cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100*eligible}%`)
+                cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
+                cy.get('.font-semibold.text-lg').should('not.exist')
             })
         })
     });
