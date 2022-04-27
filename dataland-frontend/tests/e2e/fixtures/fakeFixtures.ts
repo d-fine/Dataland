@@ -19,7 +19,7 @@ function generateCompanyInformation() {
         const companyName = faker.company.companyName();
         const headquarters = faker.address.city();
         const sector = faker.company.bsNoun();
-        const marketCap = faker.mersenne.rand(50000, 10000000);
+        const marketCap = faker.mersenne.rand(10000000, 50000);
         const reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
         const indices = faker.random.arrayElements(stockIndexArray);
         const identifiers = faker.random.arrayElements([
@@ -61,15 +61,15 @@ function generateCompanyAssociatedEuTaxonomyData() {
     for (let id = 1; id <= 100; id++) {
         const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
         const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
-        const capexTotal = faker.mersenne.rand(50000, 10000000);
-        const capexEligible = faker.mersenne.rand(50000, capexTotal);
-        const capexAligned = faker.mersenne.rand(50000, capexEligible);
-        const opexTotal = faker.mersenne.rand(50000, 10000000);
-        const opexEligible = faker.mersenne.rand(50000, opexTotal);
-        const opexAligned = faker.mersenne.rand(50000, opexEligible);
-        const revenueTotal = faker.mersenne.rand(50000, 10000000);
-        const revenueEligible = faker.mersenne.rand(50000, revenueTotal);
-        const revenueAligned = faker.mersenne.rand(50000, revenueEligible);
+        const capexTotal = faker.mersenne.rand(10000000,50000);
+        const capexEligible = faker.mersenne.rand(1, 0);
+        const capexAligned = faker.mersenne.rand(capexEligible, 0);
+        const opexTotal = faker.mersenne.rand(10000000,50000);
+        const opexEligible = faker.mersenne.rand(1, 0);
+        const opexAligned = faker.mersenne.rand(capexEligible, 0);
+        const revenueTotal = faker.mersenne.rand(10000000,50000);
+        const revenueEligible = faker.mersenne.rand(1, 0);
+        const revenueAligned = faker.mersenne.rand(capexEligible, 0);
 
 
         taxonomies.push(
