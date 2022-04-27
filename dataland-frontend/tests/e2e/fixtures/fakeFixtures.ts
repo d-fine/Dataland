@@ -61,15 +61,15 @@ function generateCompanyAssociatedEuTaxonomyData() {
     for (let id = 1; id <= 100; id++) {
         const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
         const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
-        const capexTotal = faker.mersenne.rand(10000000,50000);
-        const capexEligible = faker.mersenne.rand(1, 0);
-        const capexAligned = faker.mersenne.rand(capexEligible, 0);
-        const opexTotal = faker.mersenne.rand(10000000,50000);
-        const opexEligible = faker.mersenne.rand(1, 0);
-        const opexAligned = faker.mersenne.rand(capexEligible, 0);
-        const revenueTotal = faker.mersenne.rand(10000000,50000);
-        const revenueEligible = faker.mersenne.rand(1, 0);
-        const revenueAligned = faker.mersenne.rand(capexEligible, 0);
+        const capexTotal = faker.finance.amount(50000, 10000000, 2);
+        const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
+        const capexAligned = faker.datatype.float({ min: 0, max: capexEligible, precision: 0.0001 })
+        const opexTotal = faker.finance.amount(50000, 10000000, 2);
+        const opexEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
+        const opexAligned = faker.datatype.float({ min: 0, max: opexEligible, precision: 0.0001 })
+        const revenueTotal = faker.finance.amount(50000, 10000000, 2);
+        const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
+        const revenueAligned = faker.datatype.float({ min: 0, max: revenueEligible, precision: 0.0001 })
 
 
         taxonomies.push(
@@ -113,6 +113,10 @@ function identifierValue(identifierArray: Array<Object>, identifierType: string)
     return identifierObject ? identifierObject.identifierValue : ""
 }
 
+function percentageGenerator(value:number){
+    return (Math.round(value * 100 * 100) / 100).toString() + "%"
+}
+
 function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuTaxonomyData: Array<Object>) {
     const mergedData = companyInformation.map((element, index) => {
         return {...element, ...companyAssociatedEuTaxonomyData[index]}
@@ -130,12 +134,12 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Total Revenue in EURmio', value: 'data.Revenue.total'},
             {label: 'Total CapEx EURmio', value: 'data.Capex.total'},
             {label: 'Total OpEx EURmio', value: 'data.Opex.total'},
-            {label: 'Eligible Revenue', value: 'data.Revenue.eligible'},
-            {label: 'Eligible CapEx', value: 'data.Capex.eligible'},
-            {label: 'Eligible OpEx', value: 'data.Opex.eligible'},
-            {label: 'Aligned Revenue', value: 'data.Revenue.aligned'},
-            {label: 'Aligned CapEx', value: 'data.Capex.aligned'},
-            {label: 'Aligned OpEx', value: 'data.Opex.aligned'},
+            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligible)},
+            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligible)},
+            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligible)},
+            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.aligned)},
+            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.data.Capex.aligned)},
+            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.data.Opex.aligned)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
             {label: 'NFRD Pflicht', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
             {label: 'Assurance', value: (row: any) => {if(row.data["Attestation"] === "LimitedAssurance"){

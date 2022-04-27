@@ -5,11 +5,11 @@
         <h3>Revenue</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible Revenue" :amount='dataSet.Revenue.eligible'
+        <TaxoCard title="Eligible Revenue" :percent='dataSet.Revenue.eligible'
                   :total='dataSet.Revenue.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned Revenue" :amount='dataSet.Revenue.aligned'
+        <TaxoCard title="Aligned Revenue" :percent='dataSet.Revenue.aligned'
                   :total='dataSet.Revenue.total'></TaxoCard>
       </div>
 
@@ -19,11 +19,11 @@
         <h3>CapEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible CapEx" :amount='dataSet.Capex.eligible'
+        <TaxoCard title="Eligible CapEx" :percent='dataSet.Capex.eligible'
                   :total='dataSet.Capex.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned CapEx" :amount='dataSet.Capex.aligned'
+        <TaxoCard title="Aligned CapEx" :percent='dataSet.Capex.aligned'
                   :total='dataSet.Capex.total'></TaxoCard>
       </div>
     </div>
@@ -32,11 +32,11 @@
         <h3>OpEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible OpEx" :amount='dataSet.Opex.eligible'
+        <TaxoCard title="Eligible OpEx" :percent='dataSet.Opex.eligible'
                   :total='dataSet.Opex.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned OpEx" :amount='dataSet.Opex.aligned'
+        <TaxoCard title="Aligned OpEx" :percent='dataSet.Opex.aligned'
                   :total='dataSet.Opex.total'></TaxoCard>
       </div>
     </div>
