@@ -70,6 +70,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .d-progressbar {
   height: 0.25rem;
@@ -79,10 +80,6 @@ export default {
 .d-card {
   border-radius: 0.5rem;
   box-shadow: 0 0 32px 8px rgba(30, 30, 31, 0.08);
-}
-
-.d-card > .p-card-body {
-  /*padding: 0.25rem 0.5rem 0.25rem 0.5rem;*/
 }
 
 .d-card > .p-card-body > .p-card-content {
