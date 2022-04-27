@@ -52,9 +52,9 @@ class CsvToJsonConverterTest {
                 "The list of read and parsed company information did not match."
             )
         }
-        //assertEquals(
+        // assertEquals(
         //    readEuTaxonomyData, parsedEuTaxonomyData,
         //    "The list of read and parsed EU Taxonomy data did not match."
-        //)
+        // )
     }
 }
