@@ -43,9 +43,18 @@ class CsvToJsonConverterTest {
             "Size mismatch: the parsed list contains" +
                 " ${parsedEuTaxonomyData.size} and the read list contains ${readEuTaxonomyData.size} elements."
         )
-        assertEquals(
-            readEuTaxonomyData, parsedEuTaxonomyData,
-            "The list of read and parsed EU Taxonomy data did not match."
-        )
+        for (index in parsedEuTaxonomyData.indices) {
+            println(index)
+            println(readEuTaxonomyData[index])
+            println(parsedEuTaxonomyData[index])
+            assertEquals(
+                readEuTaxonomyData[index], parsedEuTaxonomyData[index],
+                "The list of read and parsed company information did not match."
+            )
+        }
+        //assertEquals(
+        //    readEuTaxonomyData, parsedEuTaxonomyData,
+        //    "The list of read and parsed EU Taxonomy data did not match."
+        //)
     }
 }
