@@ -5,11 +5,11 @@
         <h3>Revenue</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible Revenue" :percent='dataSet.Revenue.eligible'
+        <TaxoCard taxonomyKind="Revenue" taxonomyType="eligible" :percent='dataSet.Revenue.eligible'
                   :total='dataSet.Revenue.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned Revenue" :percent='dataSet.Revenue.aligned'
+        <TaxoCard taxonomyKind="Revenue" taxonomyType="aligned" :percent='dataSet.Revenue.aligned'
                   :total='dataSet.Revenue.total'></TaxoCard>
       </div>
 
@@ -19,11 +19,11 @@
         <h3>CapEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible CapEx" :percent='dataSet.Capex.eligible'
+        <TaxoCard taxonomyKind="CapEx" taxonomyType="eligible" :percent='dataSet.Capex.eligible'
                   :total='dataSet.Capex.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned CapEx" :percent='dataSet.Capex.aligned'
+        <TaxoCard taxonomyKind="CapEx" taxonomyType="aligned" :percent='dataSet.Capex.aligned'
                   :total='dataSet.Capex.total'></TaxoCard>
       </div>
     </div>
@@ -32,11 +32,11 @@
         <h3>OpEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible OpEx" :percent='dataSet.Opex.eligible'
+        <TaxoCard taxonomyKind="OpEx" taxonomyType="eligible" :percent='dataSet.Opex.eligible'
                   :total='dataSet.Opex.total'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned OpEx" :percent='dataSet.Opex.aligned'
+        <TaxoCard taxonomyKind="OpEx" taxonomyType="aligned" :percent='dataSet.Opex.aligned'
                   :total='dataSet.Opex.total'></TaxoCard>
       </div>
     </div>
