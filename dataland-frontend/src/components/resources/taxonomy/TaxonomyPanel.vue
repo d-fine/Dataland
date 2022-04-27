@@ -7,7 +7,7 @@
       </div>
       <div class="col-6">
         <TaxoInfoCard title="Level of Assurance" :value="dataSet['Attestation']"
-                  tooltipText='The Level of Assurance specifies the confidence level of the data reported.
+                      tooltipText='The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
                   None: low level of comfort that the subject matter is not materially misstated.'></TaxoInfoCard>

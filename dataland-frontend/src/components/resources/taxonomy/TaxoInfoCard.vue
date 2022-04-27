@@ -2,10 +2,10 @@
   <Card class="bg-white d-infocard d-card mr-2" >
     <template #title></template>
     <template #content>
-      <div class="grid " v-tooltip.top="{
+      <div class="grid " v-tooltip.top="tooltipText ? {
               value: tooltipText,
               class: 'd-tooltip-mw25'
-            }">
+            } : '' ">
         <div class="col-12 text-left">
           <strong>{{ title }}</strong>
         </div>
@@ -23,7 +23,7 @@ import Card from "primevue/card";
 import Tooltip from 'primevue/tooltip';
 
 export default {
-  name: "TaxoCard",
+  name: "TaxoInfoCard",
   components: {Card},
   directives: {
     'tooltip': Tooltip
@@ -37,16 +37,8 @@ export default {
     },
     tooltipText: {
       type: String,
-      default: "Information about to come"
+      default: ""
     },
   },
 }
 </script>
-<style>
-
-.d-card > .p-card-body {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-}
-
-</style>
