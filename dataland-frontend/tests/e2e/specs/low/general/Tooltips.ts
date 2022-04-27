@@ -1,4 +1,4 @@
-describe.only('Tooltips test suite', () => {
+describe('Tooltips test suite', () => {
     let idList:any
     it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
@@ -7,6 +7,7 @@ describe.only('Tooltips test suite', () => {
             })
         })
     });
+
     it('tooltips are present and contain text as expected', function () {
         const NFRDText = "Non financial disclosure directive"
         const AssuranceText = "Level of Assurance specifies the confidence level"
@@ -23,8 +24,6 @@ describe.only('Tooltips test suite', () => {
             .contains('Level of Assurance')
             .trigger('mouseenter', "center")
         cy.get('.p-tooltip').contains(AssuranceText)
-
-
     });
 })
 
