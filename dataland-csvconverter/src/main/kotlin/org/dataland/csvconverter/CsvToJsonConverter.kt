@@ -185,6 +185,7 @@ class CsvToJsonConverter(private val filePath: String) {
     private fun getPercentageValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
         return getValue(columnHeader, csvData).trim().replace(".", "").replace(",", ".")
             .replace("%", "").toBigDecimalOrNull()?.multiply("0.01".toBigDecimal())
+            .toString().trim('0').toBigDecimal()
     }
 
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
