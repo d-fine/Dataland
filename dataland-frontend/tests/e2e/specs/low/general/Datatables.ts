@@ -1,4 +1,4 @@
-describe.only('Datables test suite', () => {
+describe('Datables test suite', () => {
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = "a"
