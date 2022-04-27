@@ -81,16 +81,19 @@ describe('Search Taxonomy', function () {
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 
+
     it('Autocomplete functionality', () => {
+        cy.intercept('**/api/companies*').as('searchCompany')
         cy.visit('/searchtaxonomy')
         cy.get('input[name=eu_taxonomy_search_input]')
             .click()
             .type('b')
-        cy.wait(1000)
-        cy.get('.p-autocomplete-items')
-            .eq(0).click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
+        cy.wait('@searchCompany', {timeout: 1000}).then((interception) => {
+            cy.get('.p-autocomplete-items')
+                .eq(0).click()
+                .url().should('include', '/companies/')
+                .url().should('include', '/eutaxonomies')
+        })
 
     });
 
