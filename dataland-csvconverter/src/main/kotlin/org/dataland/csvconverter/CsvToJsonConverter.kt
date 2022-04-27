@@ -29,7 +29,7 @@ class CsvToJsonConverter(private val filePath: String) {
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
-    var euroUnitConverter = "1000000"
+    private var euroUnitConverter = "1000000"
 
     private val columnMapping = mapOf(
         "companyName" to "Company name",
@@ -80,6 +80,15 @@ class CsvToJsonConverter(private val filePath: String) {
                 .readAll()
                 .toList()
         }
+    }
+
+    /**
+     * Method to define the conversion factor for absolute euro amounts
+     * The default is 1000000 (meaning a number of 1 in the csv is interpreted as 1 million)
+     */
+    fun setEuroUnitConverter(conversionFactor: String): CsvToJsonConverter {
+        euroUnitConverter = conversionFactor
+        return this
     }
 
     private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
@@ -178,6 +187,15 @@ class CsvToJsonConverter(private val filePath: String) {
             .replace("%", "").toBigDecimalOrNull()?.multiply("0.01".toBigDecimal())
     }
 
+    private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
+        EuTaxonomyDetailsPerCashFlowType {
+        return EuTaxonomyDetailsPerCashFlowType(
+            total = getNumericValue(columnMapping["total$type"]!!, csvLineData),
+            aligned = getNumericValue(columnMapping["aligned$type"]!!, csvLineData),
+            eligible = getNumericValue(columnMapping["eligible$type"]!!, csvLineData)
+        )
+    }
+
     /**
      * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
      */
@@ -188,21 +206,9 @@ class CsvToJsonConverter(private val filePath: String) {
                 EuTaxonomyData(
                     reportObligation = getReportingObligation(csvLineData),
                     attestation = getAttestation(csvLineData),
-                    capex = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalCapex"]!!, csvLineData),
-                        aligned = getNumericValue(columnMapping["alignedCapex"]!!, csvLineData),
-                        eligible = getNumericValue(columnMapping["eligibleCapex"]!!, csvLineData)
-                    ),
-                    opex = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalOpex"]!!, csvLineData),
-                        aligned = getNumericValue(columnMapping["alignedOpex"]!!, csvLineData),
-                        eligible = getNumericValue(columnMapping["eligibleOpex"]!!, csvLineData)
-                    ),
-                    revenue = EuTaxonomyDetailsPerCashFlowType(
-                        total = getNumericValue(columnMapping["totalRevenue"]!!, csvLineData),
-                        aligned = getNumericValue(columnMapping["alignedRevenue"]!!, csvLineData),
-                        eligible = getNumericValue(columnMapping["eligibleRevenue"]!!, csvLineData)
-                    ),
+                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", csvLineData),
+                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", csvLineData),
+                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", csvLineData)
                 )
             )
         }

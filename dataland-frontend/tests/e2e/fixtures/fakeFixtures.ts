@@ -114,7 +114,7 @@ function identifierValue(identifierArray: Array<Object>, identifierType: string)
 }
 
 function percentageGenerator(value:number){
-    return (Math.round(value * 100 * 100) / 100).toString() + "%"
+    return (Math.round(value * 100 * 100) / 100).toString().replace(".",",") + "%"
 }
 
 function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuTaxonomyData: Array<Object>) {
@@ -131,9 +131,9 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Sektor', value: 'sector'},
             {label: 'Market Capitalization (EURmm)', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue in EURmio', value: 'data.Revenue.total'},
-            {label: 'Total CapEx EURmio', value: 'data.Capex.total'},
-            {label: 'Total OpEx EURmio', value: 'data.Opex.total'},
+            {label: 'Total Revenue in EURmio', value: (row: any) => row.data.Revenue.total.toString().replace(".",",")},
+            {label: 'Total CapEx EURmio', value: (row: any) => row.data.Capex.total.toString().replace(".",",")},
+            {label: 'Total OpEx EURmio', value: (row: any) => row.data.Opex.total.toString().replace(".",",")},
             {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligible)},
             {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligible)},
             {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligible)},
