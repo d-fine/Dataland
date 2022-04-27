@@ -168,7 +168,7 @@ function main() {
     const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
     const csv = generateCSVData(CompanyInformation, CompanyAssociatedEuTaxonomyData)
 
-    fs.writeFileSync('../testing/data/csvTestData.csv', csv, "ascii");
+    fs.writeFileSync('../testing/data/csvTestData.csv', csv);
     fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
     fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
 }
