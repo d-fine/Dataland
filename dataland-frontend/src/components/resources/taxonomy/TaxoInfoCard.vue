@@ -1,5 +1,5 @@
 <template>
-  <Card class="bg-white d-infocard d-card mr-2">
+  <Card class="bg-white d-infocard d-card mr-2" >
     <template #title></template>
     <template #content>
       <div class="grid " v-tooltip.top="{
@@ -20,7 +20,6 @@
 <script>
 
 import Card from "primevue/card";
-import {numberFormatter} from "@/utils/currencyMagnitude";
 import Tooltip from 'primevue/tooltip';
 
 export default {
@@ -40,18 +39,7 @@ export default {
       type: String,
       default: "Information about to come"
     },
-
   },
-  computed: {
-    percentCalculation() {
-      return Math.round((this.amount / this.total) * 100 * 100) / 100
-    }
-  },
-  methods: {
-    orderOfMagnitudeSuffix(value){
-      return numberFormatter(value,2)
-    }
-  }
 }
 </script>
 <style>
