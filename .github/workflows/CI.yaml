@@ -31,7 +31,7 @@ jobs:
           -e DATALAND_EDC_TOKEN \
           -e DATALAND_EDC_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
-          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
+          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
