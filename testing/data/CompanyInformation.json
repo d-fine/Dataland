@@ -1,2477 +1,2537 @@
 [
 	{
-		"companyName": "Leiwesmeier, Zimmermann and Nerius",
-		"headquarters": "Smyrna",
-		"sector": "blockchains",
-		"marketCap": 1398610,
-		"reportingDateOfMarketCap": "2022-02-06",
-		"indices": [
-			"Cdax",
-			"Gex",
-			"Sdax",
-			"PrimeStandard",
-			"Scale",
-			"Hdax",
-			"GeneralStandard",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "1exn0ygowjra"
-			}
-		]
-	},
-	{
-		"companyName": "Madubuko GmbH",
-		"headquarters": "Nord Lindsay",
-		"sector": "platforms",
-		"marketCap": 773526,
-		"reportingDateOfMarketCap": "2021-08-10",
-		"indices": [
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "eg8c05c354r3"
-			}
-		]
-	},
-	{
-		"companyName": "Kuprion - Beele",
-		"headquarters": "Lauxscheid",
-		"sector": "networks",
-		"marketCap": 9714507,
-		"reportingDateOfMarketCap": "2022-02-17",
-		"indices": [
-			"PrimeStandard",
-			"Hdax",
-			"Scale",
-			"Gex",
-			"Cdax",
-			"Sdax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "o1rpa4cgmu9t"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "br4w9fqj7374"
-			}
-		]
-	},
-	{
-		"companyName": "Reinelt Gruppe",
-		"headquarters": "Gruberstadt",
-		"sector": "web services",
-		"marketCap": 6553663,
-		"reportingDateOfMarketCap": "2022-02-03",
-		"indices": [
-			"GeneralStandard",
-			"Dax50Esg",
-			"PrimeStandard",
-			"Hdax",
-			"TecDax",
-			"Dax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "6ulqjwitmiiw"
-			}
-		]
-	},
-	{
-		"companyName": "Mensing OHG",
-		"headquarters": "Bad Jamie",
-		"sector": "mindshare",
-		"marketCap": 222920,
-		"reportingDateOfMarketCap": "2022-01-26",
-		"indices": [
-			"Dax50Esg",
-			"TecDax",
-			"Mdax",
-			"Sdax",
-			"Scale",
-			"Hdax",
-			"GeneralStandard",
-			"Cdax",
-			"Gex",
-			"PrimeStandard",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "w3zdsw2h3n2d"
-			}
-		]
-	},
-	{
-		"companyName": "Geisler, Flore and Uibel",
-		"headquarters": "Diekmannscheid",
-		"sector": "paradigms",
-		"marketCap": 7864416,
-		"reportingDateOfMarketCap": "2022-04-14",
-		"indices": [
-			"PrimeStandard",
-			"Scale",
-			"Dax",
-			"Mdax",
-			"Cdax",
-			"GeneralStandard",
-			"Sdax",
-			"TecDax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "xbjvbbx8kyzk"
-			}
-		]
-	},
-	{
-		"companyName": "Möhsner GmbH & Co. KG",
-		"headquarters": "South Valley",
-		"sector": "technologies",
-		"marketCap": 3112173,
-		"reportingDateOfMarketCap": "2022-02-15",
-		"indices": [
-			"Gex",
-			"GeneralStandard",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "1wbs0lqnwojv"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "oxnm9a85n3nd"
-			}
-		]
-	},
-	{
-		"companyName": "Grasse KG",
-		"headquarters": "Kennyscheid",
-		"sector": "web-readiness",
-		"marketCap": 1151738,
-		"reportingDateOfMarketCap": "2022-04-16",
-		"indices": [
-			"GeneralStandard",
-			"Scale",
-			"Mdax",
-			"Cdax",
-			"Sdax",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "jn81yvxvu7bt"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "4mgnvwje1wxj"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "g78601ynywb4"
-			}
-		]
-	},
-	{
-		"companyName": "Kass Gruppe",
-		"headquarters": "Nashua",
-		"sector": "partnerships",
-		"marketCap": 1601965,
-		"reportingDateOfMarketCap": "2021-10-25",
-		"indices": [
-			"TecDax",
-			"Sdax",
-			"GeneralStandard",
-			"Hdax",
-			"Dax",
-			"Gex",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "m16ymt3ubn0i"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "qhvjt7x7uj9f"
-			}
-		]
-	},
-	{
-		"companyName": "Kleinsteuber - Van",
-		"headquarters": "Jeremyscheid",
-		"sector": "vortals",
-		"marketCap": 7069332,
-		"reportingDateOfMarketCap": "2021-08-04",
-		"indices": [
-			"Dax50Esg",
-			"Hdax",
-			"Scale",
-			"PrimeStandard",
-			"Dax",
-			"Gex",
-			"Sdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "g74bgaxwjttf"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "qw8f9dy4d4ba"
-			}
-		]
-	},
-	{
-		"companyName": "Ihly, Malek and Möcks",
-		"headquarters": "Lawton",
-		"sector": "interfaces",
-		"marketCap": 9473548,
-		"reportingDateOfMarketCap": "2022-01-01",
-		"indices": [
-			"PrimeStandard",
-			"TecDax",
-			"Dax50Esg",
-			"Mdax",
-			"Gex",
-			"Cdax",
-			"GeneralStandard",
-			"Hdax",
-			"Scale",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "l5mphudh8sje"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "oq8j5g53b7gr"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "8zepee5iduex"
-			}
-		]
-	},
-	{
-		"companyName": "Hadwich - Heiser",
-		"headquarters": "Seeligdorf",
-		"sector": "infomediaries",
-		"marketCap": 480344,
-		"reportingDateOfMarketCap": "2022-04-13",
-		"indices": [
-			"Cdax",
-			"PrimeStandard",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "qlzdrpsxk0sx"
-			}
-		]
-	},
-	{
-		"companyName": "Schwuchow - Gröss",
-		"headquarters": "Somssichburg",
-		"sector": "relationships",
-		"marketCap": 2584993,
-		"reportingDateOfMarketCap": "2021-12-03",
-		"indices": [
-			"Dax50Esg",
-			"Hdax",
-			"PrimeStandard",
-			"Mdax",
-			"Sdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "hn852y81vdr3"
-			}
-		]
-	},
-	{
-		"companyName": "Nieklauson - Hertel",
-		"headquarters": "Süd Hanna",
-		"sector": "bandwidth",
-		"marketCap": 2158546,
-		"reportingDateOfMarketCap": "2022-01-25",
-		"indices": [
-			"Gex",
-			"Sdax",
-			"Mdax",
-			"GeneralStandard",
-			"Hdax",
-			"Dax",
-			"TecDax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "lhmbps4voj3r"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "ke1wgvaaqtfy"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "be8sfdvxmvjt"
-			}
-		]
-	},
-	{
-		"companyName": "Hajek, Marxen and Amberg",
-		"headquarters": "Naumannstadt",
-		"sector": "channels",
-		"marketCap": 3736958,
-		"reportingDateOfMarketCap": "2021-05-24",
-		"indices": [
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "gb9clpkrs2je"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "jq55drvoorxy"
-			}
-		]
-	},
-	{
-		"companyName": "Storl - Alexander",
-		"headquarters": "Pfingstenland",
-		"sector": "bandwidth",
-		"marketCap": 3090781,
-		"reportingDateOfMarketCap": "2021-12-08",
-		"indices": [
-			"Dax50Esg",
-			"Scale",
-			"Sdax",
-			"Hdax",
-			"TecDax",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Gex",
-			"Cdax",
-			"Dax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "oy6wv1bkj8pu"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "ktsbod0jdpip"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "tksydlcrtyc5"
-			}
-		]
-	},
-	{
-		"companyName": "Bräutigam, Pfennig and Welz",
-		"headquarters": "West Felina",
-		"sector": "schemas",
-		"marketCap": 6062957,
-		"reportingDateOfMarketCap": "2021-07-25",
-		"indices": [
-			"PrimeStandard",
-			"Mdax",
-			"GeneralStandard",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "wm89x2tsjq90"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "tapdi4misdzl"
-			}
-		]
-	},
-	{
-		"companyName": "Kobs UG",
-		"headquarters": "Rossbergland",
-		"sector": "web-readiness",
-		"marketCap": 3440120,
-		"reportingDateOfMarketCap": "2021-07-27",
-		"indices": [
-			"TecDax",
-			"Dax50Esg",
-			"Cdax",
-			"Gex",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "jxpywdnduat5"
-			}
-		]
-	},
-	{
-		"companyName": "Stenzel - Hiebl",
-		"headquarters": "Süd Aaron",
-		"sector": "relationships",
-		"marketCap": 3981727,
-		"reportingDateOfMarketCap": "2021-08-29",
-		"indices": [
-			"Mdax",
-			"GeneralStandard",
-			"Dax50Esg",
-			"Cdax",
-			"Scale",
-			"Sdax",
-			"Dax",
-			"PrimeStandard",
-			"TecDax",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "uwfg0l8h23yu"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "c2zm6iaimaj0"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "n4wul5bbilip"
-			}
-		]
-	},
-	{
-		"companyName": "Wilhelm UG",
-		"headquarters": "Süd Jamie",
-		"sector": "e-business",
-		"marketCap": 2695534,
-		"reportingDateOfMarketCap": "2021-05-20",
-		"indices": [
-			"Mdax",
-			"GeneralStandard",
-			"Gex",
-			"Hdax",
-			"Dax50Esg",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "odqp51qglbbr"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "v93hmk86rdqz"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "h6mjwhmrysyw"
-			}
-		]
-	},
-	{
-		"companyName": "Bürger, Kühnert and Ritter",
-		"headquarters": "Nord Lorenzostadt",
-		"sector": "ROI",
-		"marketCap": 4196552,
-		"reportingDateOfMarketCap": "2021-10-12",
-		"indices": [
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "ddn2c8r6lcnx"
-			}
-		]
-	},
-	{
-		"companyName": "Hajek - Schwuchow",
-		"headquarters": "Haferkampstadt",
-		"sector": "e-services",
-		"marketCap": 2744058,
-		"reportingDateOfMarketCap": "2021-11-12",
-		"indices": [
-			"Dax",
-			"Gex",
-			"Hdax",
-			"GeneralStandard",
-			"TecDax",
-			"Sdax",
-			"Dax50Esg",
-			"Mdax",
-			"PrimeStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "8ntpaaa8yjlb"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "lwke6uornizz"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "1s6hneoya0h2"
-			}
-		]
-	},
-	{
-		"companyName": "Kappler - Fietz",
-		"headquarters": "Yaraburg",
-		"sector": "mindshare",
-		"marketCap": 4338831,
-		"reportingDateOfMarketCap": "2022-02-15",
-		"indices": [
-			"Dax",
-			"Sdax",
-			"Mdax",
-			"Hdax",
-			"Gex",
-			"Cdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "yinwqsuw7681"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "9kgennfrm80f"
-			}
-		]
-	},
-	{
-		"companyName": "Treff - Bremser",
-		"headquarters": "Ost Ismaelscheid",
-		"sector": "eyeballs",
-		"marketCap": 9799127,
-		"reportingDateOfMarketCap": "2021-09-21",
-		"indices": [
-			"Scale",
-			"PrimeStandard",
-			"Hdax",
-			"Dax50Esg",
-			"Cdax",
-			"Mdax",
-			"GeneralStandard",
-			"Dax",
-			"Gex",
-			"Sdax",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "ut6qfz9h8vpl"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "wfz1wmvmtsoy"
-			}
-		]
-	},
-	{
-		"companyName": "Da KG",
-		"headquarters": "Saskiastadt",
-		"sector": "users",
-		"marketCap": 637458,
-		"reportingDateOfMarketCap": "2021-12-06",
-		"indices": [
-			"Sdax",
-			"Scale",
-			"Dax",
-			"Dax50Esg",
-			"TecDax",
-			"PrimeStandard",
-			"Cdax",
-			"Gex",
-			"Hdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "j6pud64dbqrd"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "bh6m12655o8k"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "xmiaz3yrvb9c"
-			}
-		]
-	},
-	{
-		"companyName": "Richards - Kral",
-		"headquarters": "Süd Youssefland",
-		"sector": "communities",
-		"marketCap": 5737775,
-		"reportingDateOfMarketCap": "2021-08-06",
-		"indices": [
-			"Mdax",
-			"Hdax",
-			"Dax",
-			"Sdax",
-			"Dax50Esg",
-			"Cdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "cghx3mo6h9jm"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "dihh2sz1babb"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "i2a9rezq9trf"
-			}
-		]
-	},
-	{
-		"companyName": "Dix - Camara",
-		"headquarters": "Pittsfield",
-		"sector": "solutions",
-		"marketCap": 4016004,
-		"reportingDateOfMarketCap": "2021-08-30",
-		"indices": [
-			"Dax",
-			"Scale",
-			"PrimeStandard",
-			"GeneralStandard",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "g3y03q8k21kb"
-			}
-		]
-	},
-	{
-		"companyName": "Straub, Krol and Hillard",
-		"headquarters": "Clarascheid",
-		"sector": "e-commerce",
-		"marketCap": 5782663,
-		"reportingDateOfMarketCap": "2021-08-13",
-		"indices": [
-			"Cdax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "gkgxfla9a7s6"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "ewk0tvnke4fr"
-			}
-		]
-	},
-	{
-		"companyName": "Montag - Ganzmann",
-		"headquarters": "West Seneca",
-		"sector": "e-business",
-		"marketCap": 5179279,
-		"reportingDateOfMarketCap": "2022-04-25",
-		"indices": [
-			"Dax",
-			"GeneralStandard",
-			"Mdax",
-			"TecDax",
-			"Cdax",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "05263giefiht"
-			}
-		]
-	},
-	{
-		"companyName": "Pöche - Mebold",
-		"headquarters": "Süd Marek",
-		"sector": "infomediaries",
-		"marketCap": 7749978,
-		"reportingDateOfMarketCap": "2021-09-19",
-		"indices": [
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "8aosy7g6sum3"
-			}
-		]
-	},
-	{
-		"companyName": "Hauke, Löser and Kinzy",
-		"headquarters": "Rio Rancho",
-		"sector": "convergence",
-		"marketCap": 8271778,
-		"reportingDateOfMarketCap": "2021-07-01",
-		"indices": [
-			"Sdax",
-			"TecDax",
-			"Dax50Esg",
-			"Cdax",
-			"Hdax",
-			"Mdax",
-			"Scale",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "6837qu94puz5"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "j5z4ocqjy04y"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "coc5em6i2wr6"
-			}
-		]
-	},
-	{
-		"companyName": "Frisch GmbH",
-		"headquarters": "Fort Lauderdale",
-		"sector": "models",
-		"marketCap": 6225790,
-		"reportingDateOfMarketCap": "2022-02-20",
-		"indices": [
-			"Dax50Esg",
-			"Hdax",
-			"Scale",
-			"Dax",
-			"Cdax",
-			"PrimeStandard",
-			"Sdax",
-			"Mdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "57ciusyylk4s"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "szct4ibte4pl"
-			}
-		]
-	},
-	{
-		"companyName": "Felke AG",
-		"headquarters": "Josiestadt",
-		"sector": "bandwidth",
-		"marketCap": 6300906,
-		"reportingDateOfMarketCap": "2022-04-24",
-		"indices": [
-			"Dax",
-			"Gex",
-			"Cdax",
-			"Dax50Esg",
-			"Hdax",
-			"Scale",
-			"Sdax",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "gnokx0p1w56l"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "js5b82lqggvm"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "r0yipuyt0bi4"
-			}
-		]
-	},
-	{
-		"companyName": "Schottmann, Humbert and Heck",
-		"headquarters": "Modesto",
-		"sector": "convergence",
-		"marketCap": 8828158,
-		"reportingDateOfMarketCap": "2021-08-30",
-		"indices": [
-			"Hdax",
-			"Cdax",
-			"PrimeStandard",
-			"Sdax",
-			"Mdax",
-			"Dax50Esg",
-			"Scale",
-			"TecDax",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "azjvwrmwwvmm"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "9op86q3dm96h"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "xehm188knw3k"
-			}
-		]
-	},
-	{
-		"companyName": "Döring - Hasler",
-		"headquarters": "Nord Aimee",
-		"sector": "relationships",
-		"marketCap": 3515134,
-		"reportingDateOfMarketCap": "2022-03-02",
-		"indices": [
-			"Cdax",
-			"Hdax",
-			"TecDax",
-			"Mdax",
-			"Sdax",
-			"Dax50Esg",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "fi1x56fdo7js"
-			}
-		]
-	},
-	{
-		"companyName": "Baganz GmbH & Co. KG",
-		"headquarters": "Encinitas",
-		"sector": "e-business",
-		"marketCap": 8416460,
-		"reportingDateOfMarketCap": "2021-06-05",
-		"indices": [
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "q3nyy19s6yqe"
-			}
-		]
-	},
-	{
-		"companyName": "Holzdeppe AG",
-		"headquarters": "Nord Monastadt",
-		"sector": "experiences",
-		"marketCap": 7843428,
-		"reportingDateOfMarketCap": "2021-10-20",
-		"indices": [
-			"Mdax",
-			"Hdax",
-			"Dax50Esg",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "vxq8pnbei4sa"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "fwifihc4fhd5"
-			}
-		]
-	},
-	{
-		"companyName": "Manns, Schuermann and Hoppe",
-		"headquarters": "Ost Linaburg",
-		"sector": "methodologies",
-		"marketCap": 452716,
-		"reportingDateOfMarketCap": "2021-08-26",
-		"indices": [
-			"PrimeStandard",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "268bylkmrixx"
-			}
-		]
-	},
-	{
-		"companyName": "Salzer OHG",
-		"headquarters": "Grand Junction",
-		"sector": "communities",
-		"marketCap": 58785,
-		"reportingDateOfMarketCap": "2021-05-09",
-		"indices": [
-			"GeneralStandard",
-			"Sdax",
-			"Hdax",
-			"Gex",
-			"Scale",
-			"TecDax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "5kty0lrrbp2g"
-			}
-		]
-	},
-	{
-		"companyName": "Heinig, Lauinger and Ladewig",
-		"headquarters": "Neu Alessandro",
-		"sector": "technologies",
-		"marketCap": 8445768,
-		"reportingDateOfMarketCap": "2021-12-25",
-		"indices": [
-			"Dax",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "1ph243d9ooc9"
-			}
-		]
-	},
-	{
-		"companyName": "Conrad GmbH",
-		"headquarters": "West Siennaburg",
-		"sector": "metrics",
-		"marketCap": 5434201,
-		"reportingDateOfMarketCap": "2022-03-16",
-		"indices": [
-			"Dax50Esg",
-			"TecDax",
-			"Sdax",
-			"Gex",
-			"Scale",
-			"Dax",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Cdax",
-			"Mdax",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "2qzud12lzfrw"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "2g8jm673dvtv"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "iznjzrc5s8dp"
-			}
-		]
-	},
-	{
-		"companyName": "Schötz - Hertel",
-		"headquarters": "Gebhardtdorf",
-		"sector": "relationships",
-		"marketCap": 5169140,
-		"reportingDateOfMarketCap": "2021-11-13",
-		"indices": [
-			"Sdax",
-			"Dax50Esg",
-			"Dax",
-			"TecDax",
-			"Hdax",
-			"Mdax",
-			"Cdax",
-			"Scale",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "z92wuh2q7ru6"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "zxx65uc0dd83"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "c2h5aszclqp7"
-			}
-		]
-	},
-	{
-		"companyName": "Kolb, Howard and Strieder",
-		"headquarters": "Neu Korinnascheid",
-		"sector": "synergies",
-		"marketCap": 1417860,
-		"reportingDateOfMarketCap": "2021-08-25",
-		"indices": [
-			"Scale",
-			"Gex",
-			"TecDax",
-			"Sdax",
-			"Dax",
-			"Cdax",
-			"Dax50Esg",
-			"Hdax",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "a2658fnl7c21"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "jha6y4ihm501"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "upm2nl26xt57"
-			}
-		]
-	},
-	{
-		"companyName": "Frisch KG",
-		"headquarters": "Madetzkydorf",
-		"sector": "e-business",
-		"marketCap": 4244743,
-		"reportingDateOfMarketCap": "2021-11-28",
-		"indices": [
-			"TecDax",
-			"Mdax",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Scale",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "mi19w3yfwn2u"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "j7wm0k1e8pbf"
-			}
-		]
-	},
-	{
-		"companyName": "Hessek, Burghagen and Liebach",
-		"headquarters": "Bad Corinnascheid",
-		"sector": "technologies",
-		"marketCap": 4685147,
-		"reportingDateOfMarketCap": "2021-06-05",
-		"indices": [
-			"Mdax",
-			"Gex",
-			"Cdax",
-			"Dax",
-			"Dax50Esg",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "u8ywtftlvufd"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "z1es0mmh7ywh"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "jk1eg5q4k3dj"
-			}
-		]
-	},
-	{
-		"companyName": "Greger, Strogies and Karst",
-		"headquarters": "Volkerland",
-		"sector": "synergies",
-		"marketCap": 5677126,
-		"reportingDateOfMarketCap": "2022-04-27",
-		"indices": [
-			"Gex",
-			"GeneralStandard",
-			"Sdax",
-			"PrimeStandard",
-			"Mdax",
-			"TecDax",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "6vx6no2jg903"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "kmtpplj1r5l9"
-			}
-		]
-	},
-	{
-		"companyName": "Kleininger, Pohland and Lehner",
-		"headquarters": "Grand Island",
-		"sector": "metrics",
-		"marketCap": 1324192,
-		"reportingDateOfMarketCap": "2021-10-17",
-		"indices": [
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "wozsq7td0i1s"
-			}
-		]
-	},
-	{
-		"companyName": "Wassiluk - Morgenstern",
-		"headquarters": "Kinadeterdorf",
-		"sector": "methodologies",
-		"marketCap": 7502298,
-		"reportingDateOfMarketCap": "2022-04-06",
-		"indices": [
-			"Gex",
-			"Scale",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "zdyuk2vabehw"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "2gqqvkqpmya2"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "u1giv1pv7h92"
-			}
-		]
-	},
-	{
-		"companyName": "Schimmer, Herwig and Kiessling",
-		"headquarters": "Korbiniandorf",
-		"sector": "methodologies",
-		"marketCap": 2208960,
-		"reportingDateOfMarketCap": "2021-09-04",
-		"indices": [
-			"Hdax",
-			"Mdax",
-			"Sdax",
-			"TecDax",
-			"GeneralStandard",
-			"Gex",
-			"Dax",
-			"Dax50Esg",
-			"Cdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "afi1m60p16f6"
-			}
-		]
-	},
-	{
-		"companyName": "Kiessling, Riermeier and Balcer",
-		"headquarters": "Neu Cindyland",
-		"sector": "niches",
-		"marketCap": 6854218,
-		"reportingDateOfMarketCap": "2021-08-22",
-		"indices": [
-			"Sdax",
-			"Dax50Esg",
-			"GeneralStandard",
-			"Cdax",
-			"Dax",
-			"Gex",
-			"Mdax",
-			"Scale",
-			"TecDax",
-			"PrimeStandard",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "7949xao1skk6"
-			}
-		]
-	},
-	{
-		"companyName": "Schwirkschlies - Ehrig",
-		"headquarters": "Süd Kimberlystadt",
-		"sector": "content",
-		"marketCap": 3627619,
-		"reportingDateOfMarketCap": "2021-07-18",
-		"indices": [
-			"GeneralStandard",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "llwtgxbko3ys"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "rtlidexwm6jg"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "6u3dgkhigo15"
-			}
-		]
-	},
-	{
-		"companyName": "Hallmann, Dohring and Günz",
-		"headquarters": "Hoboken",
-		"sector": "methodologies",
-		"marketCap": 232616,
-		"reportingDateOfMarketCap": "2021-08-15",
-		"indices": [
-			"Dax",
-			"TecDax",
-			"Dax50Esg",
-			"Cdax",
-			"Scale",
-			"Hdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "a4ksebjsssck"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "haizaqqxtjng"
-			}
-		]
-	},
-	{
-		"companyName": "Northoff - Konig",
-		"headquarters": "Weston",
-		"sector": "methodologies",
-		"marketCap": 9488909,
-		"reportingDateOfMarketCap": "2021-05-14",
-		"indices": [
-			"Hdax",
-			"GeneralStandard",
-			"Sdax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "3omp6ao2jm93"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "65dtfgl5me2g"
-			}
-		]
-	},
-	{
-		"companyName": "Kazmarek - Welsch",
-		"headquarters": "Visalia",
-		"sector": "platforms",
-		"marketCap": 1334110,
-		"reportingDateOfMarketCap": "2021-07-17",
-		"indices": [
-			"Cdax",
-			"TecDax",
-			"Mdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "85f5ntgfvsa5"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "g2n2papki4ft"
-			}
-		]
-	},
-	{
-		"companyName": "Kähler - Dyett",
-		"headquarters": "West Justineburg",
-		"sector": "users",
-		"marketCap": 7207819,
-		"reportingDateOfMarketCap": "2021-12-17",
-		"indices": [
-			"Hdax",
-			"GeneralStandard",
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "qxsvq52dvtwc"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "gz3n81w58yt4"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "9bv3x0n7gj5f"
-			}
-		]
-	},
-	{
-		"companyName": "Dressler, Zimmermann and Boyde",
-		"headquarters": "Alt Medina",
-		"sector": "users",
-		"marketCap": 4050590,
-		"reportingDateOfMarketCap": "2021-11-30",
-		"indices": [
-			"GeneralStandard",
-			"Sdax",
-			"Cdax",
-			"Dax",
-			"Scale",
-			"PrimeStandard",
-			"Gex",
-			"Hdax",
-			"Mdax",
-			"Dax50Esg",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "r6u34lqc27ha"
-			}
-		]
-	},
-	{
-		"companyName": "Konig, Höcke and Seiler",
-		"headquarters": "Kalledorf",
-		"sector": "mindshare",
-		"marketCap": 6361363,
-		"reportingDateOfMarketCap": "2021-12-18",
-		"indices": [
-			"Sdax",
-			"Gex",
-			"Mdax",
-			"GeneralStandard",
-			"TecDax",
-			"PrimeStandard",
-			"Scale",
-			"Hdax",
-			"Dax",
-			"Cdax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "vk88c5aawf2o"
-			}
-		]
-	},
-	{
-		"companyName": "Köhre, Faller and Tress",
-		"headquarters": "Ost Meike",
-		"sector": "e-business",
-		"marketCap": 6581415,
-		"reportingDateOfMarketCap": "2022-01-24",
-		"indices": [
-			"Cdax",
-			"Sdax",
-			"Scale",
-			"Hdax",
-			"PrimeStandard",
-			"Gex",
-			"GeneralStandard",
-			"Dax",
-			"TecDax",
-			"Mdax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "n6hg40fie6mp"
-			}
-		]
-	},
-	{
-		"companyName": "Tittman GmbH & Co. KG",
-		"headquarters": "Süd Bryan",
-		"sector": "communities",
-		"marketCap": 9074735,
-		"reportingDateOfMarketCap": "2022-03-04",
-		"indices": [
-			"Scale",
-			"Dax50Esg",
-			"PrimeStandard",
-			"GeneralStandard",
-			"Mdax",
-			"Gex",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "kmbuajhslmje"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "mnfvooppcc8d"
-			}
-		]
-	},
-	{
-		"companyName": "Doskoczynski OHG",
-		"headquarters": "Woytkowskascheid",
-		"sector": "architectures",
-		"marketCap": 6628621,
-		"reportingDateOfMarketCap": "2021-12-23",
-		"indices": [
-			"TecDax",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "ns144oyy7noc"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "n67fo8x6fhol"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "icc1sxq0omhy"
-			}
-		]
-	},
-	{
-		"companyName": "Mockenhaupt Gruppe",
-		"headquarters": "Ost Thomas",
-		"sector": "users",
-		"marketCap": 3829327,
-		"reportingDateOfMarketCap": "2021-12-20",
-		"indices": [
-			"Gex",
-			"TecDax",
-			"PrimeStandard",
-			"Mdax",
-			"GeneralStandard",
-			"Hdax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "45ulbmbx7qki"
-			}
-		]
-	},
-	{
-		"companyName": "Schnelting, Wissing and Rupprecht",
-		"headquarters": "Heringscheid",
-		"sector": "metrics",
-		"marketCap": 6641432,
-		"reportingDateOfMarketCap": "2022-04-12",
-		"indices": [
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "d882qneim3av"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "fqvl56rkvd2u"
-			}
-		]
-	},
-	{
-		"companyName": "Koenig - Schwarzer",
-		"headquarters": "Heinigstadt",
-		"sector": "vortals",
-		"marketCap": 6925611,
-		"reportingDateOfMarketCap": "2021-10-05",
-		"indices": [
-			"Dax",
-			"Mdax",
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "il4woaz8a9l4"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "1nsaznfb978h"
-			}
-		]
-	},
-	{
-		"companyName": "Tietze, Daimer and Franz",
-		"headquarters": "La Crosse",
+		"companyName": "Burghagen - Evers",
+		"headquarters": "Ost Carinascheid",
 		"sector": "systems",
-		"marketCap": 9135304,
-		"reportingDateOfMarketCap": "2021-11-09",
-		"indices": [
-			"PrimeStandard",
-			"TecDax",
-			"Dax",
-			"Cdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "g2h67im8p9w8"
-			}
-		]
-	},
-	{
-		"companyName": "Osei GmbH & Co. KG",
-		"headquarters": "Süd Mertstadt",
-		"sector": "channels",
-		"marketCap": 7360929,
-		"reportingDateOfMarketCap": "2021-07-02",
-		"indices": [
-			"Hdax",
-			"Scale",
-			"Sdax",
-			"PrimeStandard",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "lvncqkau7x4o"
-			}
-		]
-	},
-	{
-		"companyName": "Schuri, Norris and Mensah",
-		"headquarters": "Leipoldstadt",
-		"sector": "interfaces",
-		"marketCap": 5443542,
-		"reportingDateOfMarketCap": "2021-09-02",
-		"indices": [
-			"Cdax",
-			"Hdax",
-			"Dax50Esg",
-			"PrimeStandard",
-			"Gex",
-			"GeneralStandard",
-			"Mdax",
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "ot3kh9ed4d06"
-			}
-		]
-	},
-	{
-		"companyName": "Stahl - Preuss",
-		"headquarters": "Robinland",
-		"sector": "e-business",
-		"marketCap": 2752174,
-		"reportingDateOfMarketCap": "2022-01-04",
-		"indices": [
-			"GeneralStandard",
-			"Dax",
-			"Dax50Esg",
-			"PrimeStandard",
-			"Hdax",
-			"TecDax",
-			"Mdax",
-			"Cdax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "0s25rwprgpnv"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "b6j020uz3lhz"
-			}
-		]
-	},
-	{
-		"companyName": "Ghosh, Nabein and Hellmann",
-		"headquarters": "Ost Alyssadorf",
-		"sector": "partnerships",
-		"marketCap": 1120405,
-		"reportingDateOfMarketCap": "2021-10-08",
-		"indices": [
-			"Mdax",
-			"Dax50Esg",
-			"TecDax",
-			"Scale",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "i15yr6ctj23m"
-			}
-		]
-	},
-	{
-		"companyName": "Mathiszik OHG",
-		"headquarters": "Henderson",
-		"sector": "infomediaries",
-		"marketCap": 3749374,
-		"reportingDateOfMarketCap": "2021-08-13",
-		"indices": [
-			"Cdax",
-			"Dax50Esg",
-			"TecDax",
-			"Scale",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "wngit8wahmuu"
-			}
-		]
-	},
-	{
-		"companyName": "Lischka, Preuss and Büngener",
-		"headquarters": "Neu Aliyah",
-		"sector": "functionalities",
-		"marketCap": 1244703,
-		"reportingDateOfMarketCap": "2022-01-07",
-		"indices": [
-			"Dax50Esg",
-			"Gex",
-			"TecDax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "035w9og6yw2x"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "tu7kdpf3d70m"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "p0fshu7pgi85"
-			}
-		]
-	},
-	{
-		"companyName": "Bruns, Riethmüller and Reif",
-		"headquarters": "Bad Allegra",
-		"sector": "e-business",
-		"marketCap": 7807921,
-		"reportingDateOfMarketCap": "2021-06-06",
-		"indices": [
-			"GeneralStandard",
-			"Mdax",
-			"Dax",
-			"PrimeStandard",
-			"Cdax",
-			"TecDax",
-			"Dax50Esg",
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "fnycacqdgbr1"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "6rrph7ea0f7o"
-			}
-		]
-	},
-	{
-		"companyName": "Vogel - Bertenbreiter",
-		"headquarters": "Süd Morten",
-		"sector": "e-services",
-		"marketCap": 8168781,
-		"reportingDateOfMarketCap": "2022-01-21",
-		"indices": [
-			"Dax50Esg",
-			"Sdax",
-			"Cdax",
-			"Scale",
-			"Gex",
-			"GeneralStandard",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "ycgf1kl5jagb"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "zk0sl5j3ylal"
-			}
-		]
-	},
-	{
-		"companyName": "Striezel - Soboll",
-		"headquarters": "Neu Alessiodorf",
-		"sector": "synergies",
-		"marketCap": 6529629,
-		"reportingDateOfMarketCap": "2022-04-05",
-		"indices": [
-			"Gex",
-			"GeneralStandard",
-			"Cdax",
-			"Dax50Esg",
-			"TecDax",
-			"Dax",
-			"Sdax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "pijtuqcpxzic"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "5tzcgzjjrfc6"
-			}
-		]
-	},
-	{
-		"companyName": "Salow, Schimmer and Steidl",
-		"headquarters": "Maxburg",
-		"sector": "channels",
-		"marketCap": 8550138,
-		"reportingDateOfMarketCap": "2021-06-23",
-		"indices": [
-			"Mdax",
-			"Cdax",
-			"Scale",
-			"Dax",
-			"PrimeStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "hltla3fsredl"
-			}
-		]
-	},
-	{
-		"companyName": "Busemann OHG",
-		"headquarters": "Pogorzelskidorf",
-		"sector": "markets",
-		"marketCap": 1045094,
-		"reportingDateOfMarketCap": "2022-02-04",
-		"indices": [
-			"Mdax",
-			"Scale",
-			"TecDax",
-			"Gex",
-			"Cdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "ntbj2uyr8ecs"
-			}
-		]
-	},
-	{
-		"companyName": "Pichlmaier, Mikitenko and Eckhardt",
-		"headquarters": "Jessedorf",
-		"sector": "interfaces",
-		"marketCap": 8613702,
-		"reportingDateOfMarketCap": "2021-05-28",
-		"indices": [
-			"Dax50Esg",
-			"Gex",
-			"Scale",
-			"Dax",
-			"GeneralStandard",
-			"TecDax",
-			"Mdax",
-			"Cdax",
-			"Hdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "l2ql7m967eiw"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "bsr133gng87o"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "yfkql5csblxw"
-			}
-		]
-	},
-	{
-		"companyName": "Knorr GmbH",
-		"headquarters": "Alt Tarja",
-		"sector": "channels",
-		"marketCap": 9727254,
-		"reportingDateOfMarketCap": "2021-07-26",
-		"indices": [
-			"Dax50Esg",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Sdax",
-			"Cdax",
-			"Mdax",
-			"TecDax",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "o9g0ws504kzy"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "k71euag78ble"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "mvpfulp46qxj"
-			}
-		]
-	},
-	{
-		"companyName": "Menga - Weis",
-		"headquarters": "Nord Kayra",
-		"sector": "e-services",
-		"marketCap": 5568377,
-		"reportingDateOfMarketCap": "2022-01-15",
-		"indices": [
-			"Dax50Esg",
-			"TecDax",
-			"Gex",
-			"Hdax",
-			"Sdax",
-			"Dax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "tym4p18nzhjf"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "sjsx724tny05"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "qqqygmyu3gun"
-			}
-		]
-	},
-	{
-		"companyName": "Krauspe GmbH",
-		"headquarters": "Alt Leonidasburg",
-		"sector": "synergies",
-		"marketCap": 8254529,
-		"reportingDateOfMarketCap": "2021-08-17",
-		"indices": [
-			"TecDax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "t93azxrdbqtr"
-			}
-		]
-	},
-	{
-		"companyName": "Förster - Hasse",
-		"headquarters": "Alt Linneascheid",
-		"sector": "methodologies",
-		"marketCap": 1858681,
-		"reportingDateOfMarketCap": "2021-05-02",
-		"indices": [
-			"GeneralStandard",
-			"PrimeStandard",
-			"Dax",
-			"Hdax",
-			"Gex",
-			"Cdax",
-			"Scale",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "qdi9z5qgeuvu"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "85n46ryn4qql"
-			}
-		]
-	},
-	{
-		"companyName": "Schaefer UG",
-		"headquarters": "Ost Piascheid",
-		"sector": "functionalities",
-		"marketCap": 5275380,
-		"reportingDateOfMarketCap": "2021-06-12",
-		"indices": [
-			"TecDax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "1z3hbbeu3p6s"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "rzluzhipb9rs"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "wb5n0ox5zlsl"
-			}
-		]
-	},
-	{
-		"companyName": "Köhler Gruppe",
-		"headquarters": "Davideland",
-		"sector": "metrics",
-		"marketCap": 8457954,
-		"reportingDateOfMarketCap": "2022-01-04",
-		"indices": [
-			"Scale",
-			"GeneralStandard",
-			"Cdax",
-			"Hdax",
-			"Gex",
-			"Dax50Esg",
-			"Mdax",
-			"PrimeStandard",
-			"TecDax",
-			"Sdax",
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "le1bh0b9py05"
-			}
-		]
-	},
-	{
-		"companyName": "Carlowitz OHG",
-		"headquarters": "Brinkmanndorf",
-		"sector": "deliverables",
-		"marketCap": 449490,
-		"reportingDateOfMarketCap": "2022-02-03",
-		"indices": [
-			"Dax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "83vwg38l0qrg"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "j2wdhbymgref"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "j5qtl9t1yvg2"
-			}
-		]
-	},
-	{
-		"companyName": "Smieja, Apitz and Haug",
-		"headquarters": "Annandale",
-		"sector": "applications",
-		"marketCap": 8402029,
-		"reportingDateOfMarketCap": "2021-09-30",
-		"indices": [
-			"PrimeStandard",
-			"TecDax",
-			"Gex",
-			"Scale",
-			"Dax50Esg",
-			"Cdax",
-			"Hdax",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "376ia7e6hknr"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "jd1fsnlezpnb"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "jkxdq066qynr"
-			}
-		]
-	},
-	{
-		"companyName": "Harting Gruppe",
-		"headquarters": "Philadelphia",
-		"sector": "users",
-		"marketCap": 8183696,
-		"reportingDateOfMarketCap": "2021-11-11",
-		"indices": [
-			"Dax",
-			"PrimeStandard",
-			"Mdax",
-			"GeneralStandard",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "3ko5w4pynm9k"
-			}
-		]
-	},
-	{
-		"companyName": "Mohr OHG",
-		"headquarters": "Burien",
-		"sector": "technologies",
-		"marketCap": 3906107,
-		"reportingDateOfMarketCap": "2022-02-27",
-		"indices": [
-			"Cdax",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "h0d8jtbdspsd"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "elcrxfo1nlw1"
-			}
-		]
-	},
-	{
-		"companyName": "Stube, Sauerland and Metzner",
-		"headquarters": "Madetzkyland",
-		"sector": "networks",
-		"marketCap": 5795741,
-		"reportingDateOfMarketCap": "2022-02-17",
-		"indices": [
-			"Dax50Esg",
-			"Hdax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "hsqjii5j0hi0"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "8r26uzjay78r"
-			}
-		]
-	},
-	{
-		"companyName": "Lack - Dippl",
-		"headquarters": "Centennial",
-		"sector": "portals",
-		"marketCap": 691702,
-		"reportingDateOfMarketCap": "2021-06-10",
-		"indices": [
-			"PrimeStandard",
-			"Sdax",
-			"Cdax",
-			"GeneralStandard",
-			"Dax",
-			"Scale"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "5dx7g1go9n4z"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "2vf0jh3zuxxd"
-			}
-		]
-	},
-	{
-		"companyName": "Piesker OHG",
-		"headquarters": "Hermannland",
-		"sector": "initiatives",
-		"marketCap": 3483961,
-		"reportingDateOfMarketCap": "2021-06-25",
-		"indices": [
-			"Dax",
-			"Hdax",
-			"GeneralStandard",
-			"Gex",
-			"TecDax",
-			"Sdax",
-			"Mdax",
-			"Cdax",
-			"Scale",
-			"PrimeStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "a37w7poepcd0"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "u4jg4ct8flfg"
-			}
-		]
-	},
-	{
-		"companyName": "Kuschewitz, Streese and Sahner",
-		"headquarters": "Hicksville",
-		"sector": "channels",
-		"marketCap": 4845383,
-		"reportingDateOfMarketCap": "2021-08-30",
-		"indices": [
-			"Hdax",
-			"Sdax",
-			"Gex",
-			"Dax50Esg",
-			"Dax",
-			"Scale",
-			"TecDax",
-			"GeneralStandard",
-			"Cdax",
-			"Mdax",
-			"PrimeStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "4unjle3ausaf"
-			}
-		]
-	},
-	{
-		"companyName": "Bork GmbH & Co. KG",
-		"headquarters": "Rohnert Park",
-		"sector": "metrics",
-		"marketCap": 6052772,
-		"reportingDateOfMarketCap": "2021-08-20",
-		"indices": [
-			"Sdax",
-			"Gex",
-			"Cdax",
-			"Dax",
-			"Dax50Esg",
-			"GeneralStandard",
-			"PrimeStandard",
-			"Mdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "h9i6cdilv3s5"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "p207qffbfzjf"
-			}
-		]
-	},
-	{
-		"companyName": "Rhoden Gruppe",
-		"headquarters": "Hassanscheid",
-		"sector": "niches",
-		"marketCap": 4707905,
-		"reportingDateOfMarketCap": "2021-07-20",
-		"indices": [
-			"Dax50Esg",
-			"Dax",
-			"Cdax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "lbd0fjc0olny"
-			}
-		]
-	},
-	{
-		"companyName": "Weber OHG",
-		"headquarters": "West Romeodorf",
-		"sector": "interfaces",
-		"marketCap": 4727864,
-		"reportingDateOfMarketCap": "2022-03-02",
-		"indices": [
-			"Dax",
-			"Scale",
-			"Sdax",
-			"Hdax",
-			"GeneralStandard",
-			"Dax50Esg",
-			"Gex",
-			"PrimeStandard",
-			"Mdax",
-			"Cdax",
-			"TecDax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "308jqccmg5rj"
-			},
-			{
-				"identifierType": "Isin",
-				"identifierValue": "oac6jy4p7mou"
-			}
-		]
-	},
-	{
-		"companyName": "Rose, Kuhlee and Paukner",
-		"headquarters": "Gerhardtland",
-		"sector": "eyeballs",
-		"marketCap": 215676,
-		"reportingDateOfMarketCap": "2022-04-10",
-		"indices": [
-			"Dax50Esg",
-			"Gex"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "nm9dnypfvq9p"
-			}
-		]
-	},
-	{
-		"companyName": "Ullmann - Margis",
-		"headquarters": "Brianland",
-		"sector": "e-business",
-		"marketCap": 1408602,
-		"reportingDateOfMarketCap": "2021-07-11",
-		"indices": [
-			"Dax",
-			"Sdax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "nioserh6euma"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "trtrxxkr9v23"
-			}
-		]
-	},
-	{
-		"companyName": "Frauendorf, Menne and Sören",
-		"headquarters": "Süd Leonie",
-		"sector": "experiences",
-		"marketCap": 1999206,
-		"reportingDateOfMarketCap": "2021-12-01",
-		"indices": [
-			"Dax",
-			"TecDax",
-			"Gex",
-			"Hdax",
-			"GeneralStandard",
-			"Scale",
-			"Mdax",
-			"Cdax",
-			"Dax50Esg"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Lei",
-				"identifierValue": "mtzg0q3pslth"
-			}
-		]
-	},
-	{
-		"companyName": "Jambor, Wilky and Gabler",
-		"headquarters": "Kesselringburg",
-		"sector": "e-commerce",
-		"marketCap": 5341378,
-		"reportingDateOfMarketCap": "2021-09-05",
-		"indices": [
-			"Gex",
-			"Sdax",
-			"Cdax",
-			"Hdax",
-			"PrimeStandard",
-			"Dax50Esg",
-			"GeneralStandard"
-		],
-		"identifiers": [
-			{
-				"identifierType": "Isin",
-				"identifierValue": "snw2r7av0lq8"
-			},
-			{
-				"identifierType": "PermId",
-				"identifierValue": "5dgudeakzp7b"
-			},
-			{
-				"identifierType": "Lei",
-				"identifierValue": "9t6o9d3oq0a3"
-			}
-		]
-	},
-	{
-		"companyName": "Schuster - Albert",
-		"headquarters": "Portage",
-		"sector": "action-items",
-		"marketCap": 7370494,
-		"reportingDateOfMarketCap": "2021-08-26",
-		"indices": [
-			"Dax"
-		],
-		"identifiers": [
-			{
-				"identifierType": "PermId",
-				"identifierValue": "phuugstiorei"
-			}
-		]
-	},
-	{
-		"companyName": "Herbrand - Just",
-		"headquarters": "Pfennigstadt",
-		"sector": "e-markets",
-		"marketCap": 9244135,
+		"marketCap": 396473,
 		"reportingDateOfMarketCap": "2022-01-29",
 		"indices": [
-			"PrimeStandard"
+			"Cdax",
+			"PrimeStandard",
+			"Dax50Esg",
+			"Scale",
+			"Dax",
+			"Mdax",
+			"TecDax"
 		],
 		"identifiers": [
 			{
 				"identifierType": "Isin",
-				"identifierValue": "eyp8cpb0a1xv"
+				"identifierValue": "8capum3f9dtx"
 			},
 			{
 				"identifierType": "PermId",
-				"identifierValue": "h98r7d839ng3"
+				"identifierValue": "057qbl92ar6d"
 			},
 			{
 				"identifierType": "Lei",
-				"identifierValue": "6ivvin4bknpc"
+				"identifierValue": "1h9x0cdx40hv"
 			}
 		]
 	},
 	{
-		"companyName": "Schütze, Teufel and Dietz",
-		"headquarters": "Ost Yasinscheid",
-		"sector": "communities",
-		"marketCap": 1949318,
-		"reportingDateOfMarketCap": "2021-10-01",
+		"companyName": "Schindzielorz, Kloss and Kleinmann",
+		"headquarters": "Margate",
+		"sector": "e-tailers",
+		"marketCap": 2952591,
+		"reportingDateOfMarketCap": "2022-02-14",
+		"indices": [
+			"GeneralStandard",
+			"Dax",
+			"Scale",
+			"Mdax",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "hczsn5yt8d8j"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "gsu8anurzv5x"
+			}
+		]
+	},
+	{
+		"companyName": "Da - Mielke",
+		"headquarters": "Heckland",
+		"sector": "supply-chains",
+		"marketCap": 5572550,
+		"reportingDateOfMarketCap": "2021-10-15",
+		"indices": [
+			"Dax50Esg",
+			"Scale",
+			"Dax",
+			"GeneralStandard",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "t6dssz4gtoz0"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "z1632mzv5cpm"
+			}
+		]
+	},
+	{
+		"companyName": "Hujo, Schwarthoff and Meloni",
+		"headquarters": "Pawtucket",
+		"sector": "models",
+		"marketCap": 2075292,
+		"reportingDateOfMarketCap": "2021-09-04",
 		"indices": [
 			"PrimeStandard",
+			"Sdax",
+			"GeneralStandard",
+			"Mdax",
+			"Hdax",
+			"TecDax",
+			"Cdax",
+			"Dax50Esg",
+			"Scale",
+			"Gex",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "g9cpgblhy2yd"
+			}
+		]
+	},
+	{
+		"companyName": "Gadschiew - Wachtel",
+		"headquarters": "Pawtucket",
+		"sector": "synergies",
+		"marketCap": 9935054,
+		"reportingDateOfMarketCap": "2022-03-23",
+		"indices": [
+			"Gex",
+			"TecDax",
+			"Scale",
+			"Hdax",
+			"Cdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "khve2wgbcqj1"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ctn8coxt979s"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "pgmjs65dk48s"
+			}
+		]
+	},
+	{
+		"companyName": "Burkhardt Gruppe",
+		"headquarters": "Nord Sophie",
+		"sector": "bandwidth",
+		"marketCap": 6778658,
+		"reportingDateOfMarketCap": "2021-09-21",
+		"indices": [
+			"TecDax",
+			"Gex",
+			"Mdax",
+			"GeneralStandard",
+			"Hdax",
+			"Dax50Esg",
+			"Scale",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ixd8w7jk22u1"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "eti2jk5f54cv"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "303o1e67vlvr"
+			}
+		]
+	},
+	{
+		"companyName": "Kuprion GmbH & Co. KG",
+		"headquarters": "Hetzlerdorf",
+		"sector": "supply-chains",
+		"marketCap": 9089413,
+		"reportingDateOfMarketCap": "2021-12-06",
+		"indices": [
+			"Scale",
+			"Gex",
+			"Dax50Esg",
+			"Hdax",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "7k0p2d7npowu"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ij8056bwknb7"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "f3bd429uglu9"
+			}
+		]
+	},
+	{
+		"companyName": "Schenk - Dilla",
+		"headquarters": "Süd Emreland",
+		"sector": "experiences",
+		"marketCap": 1884436,
+		"reportingDateOfMarketCap": "2021-07-08",
+		"indices": [
+			"Hdax",
+			"Scale",
+			"Dax",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "3ps1vsgjcmn4"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "xog66cvjvec3"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "648uab2kyozj"
+			}
+		]
+	},
+	{
+		"companyName": "Lohre - Huneke",
+		"headquarters": "Wagnerburg",
+		"sector": "methodologies",
+		"marketCap": 9154318,
+		"reportingDateOfMarketCap": "2022-04-13",
+		"indices": [
+			"Mdax",
+			"Gex",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "1f7zj1zb413y"
+			}
+		]
+	},
+	{
+		"companyName": "Wickert Gruppe",
+		"headquarters": "Nord Valerie",
+		"sector": "models",
+		"marketCap": 4966750,
+		"reportingDateOfMarketCap": "2021-08-21",
+		"indices": [
+			"Sdax",
+			"TecDax",
+			"PrimeStandard",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "gyrmegts75de"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "1c8dh8f0x5jd"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "jlg3mo4bsfwp"
+			}
+		]
+	},
+	{
+		"companyName": "Schottmann, Lubina and Dächert",
+		"headquarters": "Leneland",
+		"sector": "e-commerce",
+		"marketCap": 5767763,
+		"reportingDateOfMarketCap": "2022-03-14",
+		"indices": [
+			"Hdax",
+			"Gex",
+			"GeneralStandard",
+			"Dax50Esg",
+			"Cdax",
+			"Scale",
+			"Dax",
+			"TecDax",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "d8v1tfxz21u2"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "wv92tdsout29"
+			}
+		]
+	},
+	{
+		"companyName": "Schouren, Bertenbreiter and Kausemann",
+		"headquarters": "Möllenbeckdorf",
+		"sector": "initiatives",
+		"marketCap": 743088,
+		"reportingDateOfMarketCap": "2021-06-24",
+		"indices": [
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "uorvxpppxe81"
+			}
+		]
+	},
+	{
+		"companyName": "Mai, Jess and Ranftl",
+		"headquarters": "Bad Stella",
+		"sector": "interfaces",
+		"marketCap": 7692205,
+		"reportingDateOfMarketCap": "2022-02-05",
+		"indices": [
+			"Gex",
+			"GeneralStandard",
+			"Cdax",
+			"PrimeStandard",
+			"Sdax",
+			"Dax",
+			"Mdax",
+			"Dax50Esg",
 			"Scale",
 			"Hdax"
 		],
 		"identifiers": [
 			{
 				"identifierType": "PermId",
-				"identifierValue": "xfsy4lxxl2yg"
+				"identifierValue": "ntqsrjyi94xf"
+			}
+		]
+	},
+	{
+		"companyName": "Emert - Dolch",
+		"headquarters": "Ost Luk",
+		"sector": "relationships",
+		"marketCap": 7164686,
+		"reportingDateOfMarketCap": "2021-12-14",
+		"indices": [
+			"Cdax",
+			"PrimeStandard",
+			"TecDax",
+			"Gex",
+			"Dax50Esg",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "q2pqx3n0jn3l"
+			}
+		]
+	},
+	{
+		"companyName": "Bogdashin, Gabler and Ney",
+		"headquarters": "Alt Nicolas",
+		"sector": "solutions",
+		"marketCap": 6488639,
+		"reportingDateOfMarketCap": "2022-03-25",
+		"indices": [
+			"Gex",
+			"Scale",
+			"Cdax",
+			"GeneralStandard",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "z12nasugmd2f"
 			},
 			{
 				"identifierType": "Isin",
-				"identifierValue": "gn3nxh3z313f"
+				"identifierValue": "41c4ozybrzfb"
+			}
+		]
+	},
+	{
+		"companyName": "Fleischmann - Ibe",
+		"headquarters": "Florescheid",
+		"sector": "infomediaries",
+		"marketCap": 167619,
+		"reportingDateOfMarketCap": "2021-10-09",
+		"indices": [
+			"Gex",
+			"Dax50Esg",
+			"Dax",
+			"Hdax",
+			"Mdax",
+			"TecDax",
+			"GeneralStandard",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "gvqnfhm5j6wl"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "rxwiodv6dn9u"
+			}
+		]
+	},
+	{
+		"companyName": "Otte, Hansen and Möllinger",
+		"headquarters": "Nord Lorenaland",
+		"sector": "users",
+		"marketCap": 6809208,
+		"reportingDateOfMarketCap": "2021-07-13",
+		"indices": [
+			"Scale",
+			"Mdax",
+			"Gex",
+			"Cdax",
+			"TecDax",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "cojv27fz0m5x"
 			},
 			{
 				"identifierType": "Lei",
-				"identifierValue": "n5rxozg8vbhr"
+				"identifierValue": "4hvayhfbqeku"
+			}
+		]
+	},
+	{
+		"companyName": "Nabein - Frauen",
+		"headquarters": "Nagelstadt",
+		"sector": "blockchains",
+		"marketCap": 4138400,
+		"reportingDateOfMarketCap": "2021-11-17",
+		"indices": [
+			"Dax",
+			"Mdax",
+			"Hdax",
+			"Scale",
+			"Cdax",
+			"Gex",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "8mqkcxm8jvux"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "8xxw29vjnlc1"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "t76c6j74sc0u"
+			}
+		]
+	},
+	{
+		"companyName": "Kock - Schellenbeck",
+		"headquarters": "Hackensack",
+		"sector": "infrastructures",
+		"marketCap": 7175538,
+		"reportingDateOfMarketCap": "2021-07-10",
+		"indices": [
+			"Scale",
+			"Mdax",
+			"Gex",
+			"Dax50Esg",
+			"GeneralStandard",
+			"Sdax",
+			"PrimeStandard",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "41muzispmmkv"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "qxnnavvhbdwu"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "v105ymy2rt82"
+			}
+		]
+	},
+	{
+		"companyName": "Sinnhuber AG",
+		"headquarters": "Trenton",
+		"sector": "web services",
+		"marketCap": 8215928,
+		"reportingDateOfMarketCap": "2021-08-31",
+		"indices": [
+			"GeneralStandard",
+			"PrimeStandard",
+			"Sdax",
+			"Cdax",
+			"Gex",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "r3bbepnbn04s"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "1gibauem9hfs"
+			}
+		]
+	},
+	{
+		"companyName": "Kruschinski, Kass and Klose",
+		"headquarters": "Nord Raphaelscheid",
+		"sector": "applications",
+		"marketCap": 6455173,
+		"reportingDateOfMarketCap": "2021-11-23",
+		"indices": [
+			"Hdax",
+			"GeneralStandard",
+			"Mdax",
+			"Cdax",
+			"Sdax",
+			"Scale",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "bgkp2et04gx6"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "20yhq5b6033m"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "8ighxh2dmin2"
+			}
+		]
+	},
+	{
+		"companyName": "Tischmann - Crews",
+		"headquarters": "Matsstadt",
+		"sector": "e-commerce",
+		"marketCap": 4997330,
+		"reportingDateOfMarketCap": "2021-05-24",
+		"indices": [
+			"GeneralStandard",
+			"Dax50Esg",
+			"Sdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "n3e3rzr4h5yb"
+			}
+		]
+	},
+	{
+		"companyName": "Reusse - Karst",
+		"headquarters": "Binghamton",
+		"sector": "channels",
+		"marketCap": 3409427,
+		"reportingDateOfMarketCap": "2022-03-31",
+		"indices": [
+			"Dax50Esg",
+			"TecDax",
+			"GeneralStandard",
+			"Hdax",
+			"Gex",
+			"Sdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "xz9cb79dy8hj"
+			}
+		]
+	},
+	{
+		"companyName": "Salow AG",
+		"headquarters": "Mariamdorf",
+		"sector": "web-readiness",
+		"marketCap": 4363625,
+		"reportingDateOfMarketCap": "2021-05-07",
+		"indices": [
+			"Mdax",
+			"Sdax",
+			"Dax50Esg",
+			"Dax",
+			"Hdax",
+			"GeneralStandard",
+			"Gex",
+			"PrimeStandard",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "y6fu9objsxrb"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "h3o8h3g51js0"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "b686uwi9yg0e"
+			}
+		]
+	},
+	{
+		"companyName": "Lutz, Balcer and Kettenis",
+		"headquarters": "Klugeburg",
+		"sector": "content",
+		"marketCap": 3053322,
+		"reportingDateOfMarketCap": "2021-04-28",
+		"indices": [
+			"Hdax",
+			"Gex",
+			"TecDax",
+			"Dax",
+			"Cdax",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "z5778wmtkse4"
+			}
+		]
+	},
+	{
+		"companyName": "Gerdel, Marschek and Schottmann",
+		"headquarters": "Larissastadt",
+		"sector": "bandwidth",
+		"marketCap": 7295141,
+		"reportingDateOfMarketCap": "2021-12-02",
+		"indices": [
+			"PrimeStandard",
+			"Scale",
+			"Mdax",
+			"Cdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "6nc2ga8se05e"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "16fq2hjn8ile"
+			}
+		]
+	},
+	{
+		"companyName": "Weight - Leiwesmeier",
+		"headquarters": "West Melekdorf",
+		"sector": "interfaces",
+		"marketCap": 2776409,
+		"reportingDateOfMarketCap": "2021-09-19",
+		"indices": [
+			"Sdax",
+			"Dax",
+			"Dax50Esg",
+			"Gex",
+			"Cdax",
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "fwdd76twxarh"
+			}
+		]
+	},
+	{
+		"companyName": "Neumann KG",
+		"headquarters": "Wessinghageland",
+		"sector": "blockchains",
+		"marketCap": 1111627,
+		"reportingDateOfMarketCap": "2021-09-24",
+		"indices": [
+			"Scale",
+			"PrimeStandard",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "ly4oczgk3uwl"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "mqru57mvhuxv"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "1ijs56suy540"
+			}
+		]
+	},
+	{
+		"companyName": "Barr - Richards",
+		"headquarters": "Nord Corvinscheid",
+		"sector": "networks",
+		"marketCap": 8721633,
+		"reportingDateOfMarketCap": "2022-01-16",
+		"indices": [
+			"Cdax",
+			"Dax50Esg",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "4rr6zk4qm9is"
+			}
+		]
+	},
+	{
+		"companyName": "Honz AG",
+		"headquarters": "Janinstadt",
+		"sector": "initiatives",
+		"marketCap": 6277159,
+		"reportingDateOfMarketCap": "2021-12-19",
+		"indices": [
+			"Dax50Esg",
+			"Scale",
+			"Mdax",
+			"GeneralStandard",
+			"Sdax",
+			"TecDax",
+			"PrimeStandard",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "dv3hbrznjut5"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "wbv2mldu02ba"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "84yvyrsemnwj"
+			}
+		]
+	},
+	{
+		"companyName": "Gabler AG",
+		"headquarters": "Nord Hannastadt",
+		"sector": "vortals",
+		"marketCap": 7753854,
+		"reportingDateOfMarketCap": "2021-08-02",
+		"indices": [
+			"Cdax",
+			"Hdax",
+			"TecDax",
+			"Scale",
+			"GeneralStandard",
+			"Dax",
+			"Dax50Esg",
+			"Gex",
+			"Sdax",
+			"Mdax",
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "zx92lfsibb46"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "la8icuzrip6o"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "emfdww6t0sjf"
+			}
+		]
+	},
+	{
+		"companyName": "Betz - Herweg",
+		"headquarters": "Asheville",
+		"sector": "blockchains",
+		"marketCap": 6189439,
+		"reportingDateOfMarketCap": "2021-11-02",
+		"indices": [
+			"GeneralStandard",
+			"Dax",
+			"TecDax",
+			"Gex",
+			"Hdax",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "bg5nea7h3spi"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "jd46z2s5sly3"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "a8s0vt6b3pfx"
+			}
+		]
+	},
+	{
+		"companyName": "Kwadwo - Huneke",
+		"headquarters": "Euless",
+		"sector": "infomediaries",
+		"marketCap": 546559,
+		"reportingDateOfMarketCap": "2021-08-13",
+		"indices": [
+			"Dax",
+			"Hdax",
+			"Sdax",
+			"Scale",
+			"PrimeStandard",
+			"Mdax",
+			"Dax50Esg",
+			"Gex",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "3hyrlwl501f4"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "6mvukgtpqs2q"
+			}
+		]
+	},
+	{
+		"companyName": "Sutschet - Bethke",
+		"headquarters": "Lexington-Fayette",
+		"sector": "partnerships",
+		"marketCap": 3558956,
+		"reportingDateOfMarketCap": "2022-02-05",
+		"indices": [
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "2yp1w5gh4jth"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "5iywb2aptxeo"
+			}
+		]
+	},
+	{
+		"companyName": "Tang, Walter and Walther",
+		"headquarters": "New York",
+		"sector": "experiences",
+		"marketCap": 4978446,
+		"reportingDateOfMarketCap": "2021-12-22",
+		"indices": [
+			"TecDax",
+			"Cdax",
+			"Gex",
+			"Hdax",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "dv15klvs68jy"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "vyu9n45q5kpe"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "1alh4xm2j7go"
+			}
+		]
+	},
+	{
+		"companyName": "Liebe GmbH",
+		"headquarters": "Neu Mickstadt",
+		"sector": "markets",
+		"marketCap": 9282482,
+		"reportingDateOfMarketCap": "2021-05-10",
+		"indices": [
+			"PrimeStandard",
+			"Dax50Esg",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "vki4o3agj0x3"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "jo77ixgqydjz"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "m8z37wnciop5"
+			}
+		]
+	},
+	{
+		"companyName": "Maier - Abraham",
+		"headquarters": "Redding",
+		"sector": "deliverables",
+		"marketCap": 7969244,
+		"reportingDateOfMarketCap": "2022-04-21",
+		"indices": [
+			"Cdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "u79zhk9m5ahu"
+			}
+		]
+	},
+	{
+		"companyName": "Franzmann, Möhsner and Stengl",
+		"headquarters": "Ost Loreen",
+		"sector": "partnerships",
+		"marketCap": 9726278,
+		"reportingDateOfMarketCap": "2022-03-13",
+		"indices": [
+			"TecDax",
+			"Cdax",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "ce4nzxffwub3"
+			}
+		]
+	},
+	{
+		"companyName": "Benecke KG",
+		"headquarters": "Lewisburg",
+		"sector": "technologies",
+		"marketCap": 2507373,
+		"reportingDateOfMarketCap": "2021-12-27",
+		"indices": [
+			"TecDax",
+			"Cdax",
+			"Dax",
+			"Hdax",
+			"Mdax",
+			"Gex",
+			"GeneralStandard",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "ugdb07rxnd4b"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "q2s1frect172"
+			}
+		]
+	},
+	{
+		"companyName": "Mensah KG",
+		"headquarters": "Taylerstadt",
+		"sector": "applications",
+		"marketCap": 2192422,
+		"reportingDateOfMarketCap": "2021-07-24",
+		"indices": [
+			"Dax",
+			"PrimeStandard",
+			"Gex",
+			"Scale",
+			"TecDax",
+			"GeneralStandard",
+			"Hdax",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "nl4pohzd3rks"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "ovelu1owpmk3"
+			}
+		]
+	},
+	{
+		"companyName": "Marx GmbH",
+		"headquarters": "Columbia",
+		"sector": "infrastructures",
+		"marketCap": 5788847,
+		"reportingDateOfMarketCap": "2021-05-31",
+		"indices": [
+			"Gex",
+			"Sdax",
+			"GeneralStandard",
+			"Mdax",
+			"Scale",
+			"Dax50Esg",
+			"PrimeStandard",
+			"TecDax",
+			"Dax",
+			"Hdax",
+			"Cdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "pdjcd1qckepc"
+			}
+		]
+	},
+	{
+		"companyName": "Kolokas - Poser",
+		"headquarters": "Süd Diana",
+		"sector": "networks",
+		"marketCap": 5644476,
+		"reportingDateOfMarketCap": "2022-03-01",
+		"indices": [
+			"Gex",
+			"Mdax",
+			"Sdax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "nvbq18ir6c83"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "dcjdbudwae0v"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "if6mgfd7cyuo"
+			}
+		]
+	},
+	{
+		"companyName": "Mordhorst AG",
+		"headquarters": "Colleenland",
+		"sector": "e-business",
+		"marketCap": 685912,
+		"reportingDateOfMarketCap": "2022-03-15",
+		"indices": [
+			"Gex",
+			"Dax50Esg",
+			"Mdax",
+			"TecDax",
+			"Scale",
+			"Sdax",
+			"Cdax",
+			"GeneralStandard",
+			"PrimeStandard",
+			"Dax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "mhld5es002ew"
+			}
+		]
+	},
+	{
+		"companyName": "Hohenberger, Mertens and Humbert",
+		"headquarters": "Neu Jessy",
+		"sector": "architectures",
+		"marketCap": 3114894,
+		"reportingDateOfMarketCap": "2021-07-11",
+		"indices": [
+			"GeneralStandard",
+			"Scale",
+			"Gex",
+			"Mdax",
+			"Sdax",
+			"PrimeStandard",
+			"Dax50Esg",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "w5ahtoobnq67"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "fi8edwf86h8g"
+			}
+		]
+	},
+	{
+		"companyName": "Blum - Verzi",
+		"headquarters": "Cedrikdorf",
+		"sector": "action-items",
+		"marketCap": 8758688,
+		"reportingDateOfMarketCap": "2021-05-14",
+		"indices": [
+			"TecDax",
+			"Scale",
+			"GeneralStandard",
+			"PrimeStandard",
+			"Dax",
+			"Cdax",
+			"Dax50Esg",
+			"Gex",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "e5yqo2353ynv"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "87qlqw5cy23v"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "69vptsy0bunr"
+			}
+		]
+	},
+	{
+		"companyName": "Poeschl GmbH & Co. KG",
+		"headquarters": "Bad Alicascheid",
+		"sector": "ROI",
+		"marketCap": 4532517,
+		"reportingDateOfMarketCap": "2021-06-19",
+		"indices": [
+			"PrimeStandard",
+			"Scale",
+			"Dax50Esg",
+			"GeneralStandard",
+			"Dax",
+			"Cdax",
+			"Mdax",
+			"Sdax",
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "5ue1e4ed7uxh"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ibunpxy38dgy"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "l26avex162xw"
+			}
+		]
+	},
+	{
+		"companyName": "Lenfers - Streese",
+		"headquarters": "Nord Tiagoland",
+		"sector": "niches",
+		"marketCap": 3249672,
+		"reportingDateOfMarketCap": "2022-01-24",
+		"indices": [
+			"PrimeStandard",
+			"Sdax",
+			"TecDax",
+			"Cdax",
+			"GeneralStandard",
+			"Scale",
+			"Dax50Esg",
+			"Hdax",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "3p7l3vxvjqw5"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "18m376gw0re8"
+			}
+		]
+	},
+	{
+		"companyName": "Jucken AG",
+		"headquarters": "Annieburg",
+		"sector": "supply-chains",
+		"marketCap": 5659584,
+		"reportingDateOfMarketCap": "2021-12-01",
+		"indices": [
+			"Hdax",
+			"Mdax",
+			"Dax",
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "vku5iqoz1yux"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "wep2ltj9z1v4"
+			}
+		]
+	},
+	{
+		"companyName": "Rentz, Cotthardt and Grosskopf",
+		"headquarters": "West Frieda",
+		"sector": "experiences",
+		"marketCap": 5125767,
+		"reportingDateOfMarketCap": "2021-06-19",
+		"indices": [
+			"TecDax",
+			"Dax",
+			"Dax50Esg",
+			"PrimeStandard",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "7wy7qdzrf554"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "9opg3gmmjixh"
+			}
+		]
+	},
+	{
+		"companyName": "Gierisch AG",
+		"headquarters": "North Lauderdale",
+		"sector": "relationships",
+		"marketCap": 5736514,
+		"reportingDateOfMarketCap": "2021-05-10",
+		"indices": [
+			"Cdax",
+			"Scale",
+			"Mdax",
+			"Dax50Esg",
+			"Gex",
+			"Hdax",
+			"PrimeStandard",
+			"Dax",
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "s4cgvrci48gu"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "hidjv0gmo5in"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "cux7jsjfrm48"
+			}
+		]
+	},
+	{
+		"companyName": "Blaschek, Erhardt and Eckhardt",
+		"headquarters": "Tyler",
+		"sector": "niches",
+		"marketCap": 6614085,
+		"reportingDateOfMarketCap": "2021-05-14",
+		"indices": [
+			"Sdax",
+			"Dax50Esg",
+			"Gex",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "fhfl1xe57rup"
+			}
+		]
+	},
+	{
+		"companyName": "Möhsner - Nwachukwu",
+		"headquarters": "Bad Mertstadt",
+		"sector": "metrics",
+		"marketCap": 8110818,
+		"reportingDateOfMarketCap": "2021-08-13",
+		"indices": [
+			"Hdax",
+			"Sdax",
+			"Cdax",
+			"TecDax",
+			"Dax50Esg",
+			"PrimeStandard",
+			"Gex",
+			"Dax",
+			"GeneralStandard",
+			"Mdax",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "phhrjsu3uxow"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "k5m32mo6drmz"
+			}
+		]
+	},
+	{
+		"companyName": "Itt, Abt and Reusse",
+		"headquarters": "Sammamish",
+		"sector": "e-tailers",
+		"marketCap": 3105794,
+		"reportingDateOfMarketCap": "2021-08-14",
+		"indices": [
+			"PrimeStandard",
+			"Dax",
+			"TecDax",
+			"Mdax",
+			"Gex",
+			"Scale",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "cjfgl3bdhecp"
+			}
+		]
+	},
+	{
+		"companyName": "Bormann OHG",
+		"headquarters": "Nord Luciaburg",
+		"sector": "channels",
+		"marketCap": 2673809,
+		"reportingDateOfMarketCap": "2022-01-29",
+		"indices": [
+			"GeneralStandard",
+			"Mdax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "j4sl2ewwceb0"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "58qnx6py17r7"
+			}
+		]
+	},
+	{
+		"companyName": "Gröss UG",
+		"headquarters": "Holdscheid",
+		"sector": "content",
+		"marketCap": 203318,
+		"reportingDateOfMarketCap": "2021-11-02",
+		"indices": [
+			"Sdax",
+			"PrimeStandard",
+			"GeneralStandard",
+			"Scale",
+			"TecDax",
+			"Dax50Esg",
+			"Cdax",
+			"Gex",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "a1c9cv2o31cw"
+			}
+		]
+	},
+	{
+		"companyName": "Hingsen, Rau and Eplinius",
+		"headquarters": "Ost Yves",
+		"sector": "supply-chains",
+		"marketCap": 9948105,
+		"reportingDateOfMarketCap": "2021-10-03",
+		"indices": [
+			"PrimeStandard",
+			"Gex",
+			"TecDax",
+			"Hdax",
+			"Dax",
+			"Sdax",
+			"Scale",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "216k86rp7k08"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "blqw21id3wf4"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "ufgronuicbfl"
+			}
+		]
+	},
+	{
+		"companyName": "Wezel, Buder and Tress",
+		"headquarters": "Ost Ruben",
+		"sector": "partnerships",
+		"marketCap": 7801264,
+		"reportingDateOfMarketCap": "2021-09-06",
+		"indices": [
+			"PrimeStandard",
+			"Cdax",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "buz8whsavlwo"
+			}
+		]
+	},
+	{
+		"companyName": "Dyett, Klaus and Hartlieb",
+		"headquarters": "West Mia",
+		"sector": "partnerships",
+		"marketCap": 3763160,
+		"reportingDateOfMarketCap": "2022-03-08",
+		"indices": [
+			"Hdax",
+			"Dax",
+			"Dax50Esg",
+			"Mdax",
+			"PrimeStandard",
+			"TecDax",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "2nrt04l8nvjm"
+			}
+		]
+	},
+	{
+		"companyName": "Franzmann OHG",
+		"headquarters": "West Maik",
+		"sector": "deliverables",
+		"marketCap": 2691654,
+		"reportingDateOfMarketCap": "2022-01-29",
+		"indices": [
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "lc3k778o07we"
+			}
+		]
+	},
+	{
+		"companyName": "Falter UG",
+		"headquarters": "Ost Malin",
+		"sector": "eyeballs",
+		"marketCap": 130809,
+		"reportingDateOfMarketCap": "2021-10-25",
+		"indices": [
+			"Sdax",
+			"Dax50Esg",
+			"Hdax",
+			"Scale",
+			"Mdax",
+			"GeneralStandard",
+			"Cdax",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "vgqs8maicjib"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "b73k0apn3c1a"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "xld3zz11lroz"
+			}
+		]
+	},
+	{
+		"companyName": "Marschek, Dahmen and Blume",
+		"headquarters": "Cupertino",
+		"sector": "e-markets",
+		"marketCap": 3129943,
+		"reportingDateOfMarketCap": "2022-01-18",
+		"indices": [
+			"Cdax",
+			"PrimeStandard",
+			"GeneralStandard",
+			"TecDax",
+			"Mdax",
+			"Hdax",
+			"Gex",
+			"Scale",
+			"Dax50Esg",
+			"Dax",
+			"Sdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "9xvynp8rcmyx"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "5w5hwelos6bh"
+			}
+		]
+	},
+	{
+		"companyName": "Muckenthaler - Krauel",
+		"headquarters": "Neu Merle",
+		"sector": "e-services",
+		"marketCap": 1325484,
+		"reportingDateOfMarketCap": "2022-01-13",
+		"indices": [
+			"TecDax",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "st58uhyqdy85"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "duh5pmvdupkd"
+			}
+		]
+	},
+	{
+		"companyName": "Sagonas, Tudow and Zeyhle",
+		"headquarters": "Ost Leonhard",
+		"sector": "partnerships",
+		"marketCap": 993481,
+		"reportingDateOfMarketCap": "2022-01-03",
+		"indices": [
+			"Cdax",
+			"Dax",
+			"Hdax",
+			"Mdax",
+			"PrimeStandard",
+			"GeneralStandard",
+			"Dax50Esg",
+			"Scale",
+			"Gex",
+			"TecDax",
+			"Sdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "6141djrxytem"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "1ow8la8tqrv3"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "rd0p6t462d79"
+			}
+		]
+	},
+	{
+		"companyName": "Lenfers - Ehmann",
+		"headquarters": "Ost Jara",
+		"sector": "architectures",
+		"marketCap": 5662968,
+		"reportingDateOfMarketCap": "2021-09-08",
+		"indices": [
+			"Sdax",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "7y7yjqx064c3"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "s7bmuel9sobv"
+			}
+		]
+	},
+	{
+		"companyName": "Bogenrieder - Schirrmeister",
+		"headquarters": "Ardastadt",
+		"sector": "channels",
+		"marketCap": 5543181,
+		"reportingDateOfMarketCap": "2021-12-24",
+		"indices": [
+			"Cdax",
+			"Sdax",
+			"Gex",
+			"PrimeStandard",
+			"Hdax",
+			"Dax50Esg",
+			"GeneralStandard",
+			"TecDax",
+			"Scale",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "h0tphvwy14ns"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "qrui66b4ryou"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "doiw6q6r8tjd"
+			}
+		]
+	},
+	{
+		"companyName": "Schönfeld, Schötz and Heinze",
+		"headquarters": "Sihlerburg",
+		"sector": "blockchains",
+		"marketCap": 8075300,
+		"reportingDateOfMarketCap": "2021-11-10",
+		"indices": [
+			"Mdax",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "e9ne2hsv8af7"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "t18kkotrohwr"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "3zszbp24xyrq"
+			}
+		]
+	},
+	{
+		"companyName": "Ehmann GmbH",
+		"headquarters": "West Kilianstadt",
+		"sector": "experiences",
+		"marketCap": 9028279,
+		"reportingDateOfMarketCap": "2021-05-20",
+		"indices": [
+			"Scale",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "fbiqjx84489t"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "7aelg65g1yjs"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "ifmmzspwkuf6"
+			}
+		]
+	},
+	{
+		"companyName": "Brettschneider, Schildhauer and Splinter",
+		"headquarters": "Wheaton",
+		"sector": "systems",
+		"marketCap": 6953755,
+		"reportingDateOfMarketCap": "2021-10-27",
+		"indices": [
+			"Sdax",
+			"PrimeStandard",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "9m63thks40nl"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "s4ukklisz7xc"
+			}
+		]
+	},
+	{
+		"companyName": "Moritz - Ochs",
+		"headquarters": "West Tarik",
+		"sector": "architectures",
+		"marketCap": 6702381,
+		"reportingDateOfMarketCap": "2022-04-07",
+		"indices": [
+			"Dax50Esg",
+			"Scale",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "37tpoxfq5x3p"
+			}
+		]
+	},
+	{
+		"companyName": "Tang GmbH & Co. KG",
+		"headquarters": "Downey",
+		"sector": "infomediaries",
+		"marketCap": 1383237,
+		"reportingDateOfMarketCap": "2021-08-04",
+		"indices": [
+			"Scale",
+			"Cdax",
+			"Dax50Esg",
+			"PrimeStandard",
+			"GeneralStandard",
+			"Dax",
+			"Mdax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "hmokkxvzonq8"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "lpnc9bobus2r"
+			}
+		]
+	},
+	{
+		"companyName": "Giesche - Dauer",
+		"headquarters": "Tamiami",
+		"sector": "e-markets",
+		"marketCap": 1709743,
+		"reportingDateOfMarketCap": "2021-05-23",
+		"indices": [
+			"Gex",
+			"Cdax",
+			"Dax",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "kh0h40v5kxe8"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "gzbs9qqzp5r6"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "3qqvjerbe3ri"
+			}
+		]
+	},
+	{
+		"companyName": "Volkmann OHG",
+		"headquarters": "Rachdorf",
+		"sector": "synergies",
+		"marketCap": 9081013,
+		"reportingDateOfMarketCap": "2021-05-06",
+		"indices": [
+			"Dax50Esg",
+			"Gex",
+			"GeneralStandard",
+			"TecDax",
+			"Sdax",
+			"Scale",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "baxijw9pvwrf"
+			}
+		]
+	},
+	{
+		"companyName": "Assmus, Böhm and Schuermann",
+		"headquarters": "Süd Melina",
+		"sector": "applications",
+		"marketCap": 4576833,
+		"reportingDateOfMarketCap": "2022-01-25",
+		"indices": [
+			"Cdax",
+			"TecDax",
+			"GeneralStandard",
+			"Sdax",
+			"Dax50Esg",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ye9i5cpyl5g0"
+			}
+		]
+	},
+	{
+		"companyName": "Borrmann - Fust",
+		"headquarters": "Curtstadt",
+		"sector": "users",
+		"marketCap": 3978258,
+		"reportingDateOfMarketCap": "2021-12-17",
+		"indices": [
+			"PrimeStandard",
+			"Gex",
+			"Dax",
+			"Dax50Esg",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "n40n6s14h4oj"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "ooukxqqxt2ei"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "87c54ydhu514"
+			}
+		]
+	},
+	{
+		"companyName": "Bos - Badane",
+		"headquarters": "Urbandale",
+		"sector": "relationships",
+		"marketCap": 447545,
+		"reportingDateOfMarketCap": "2022-01-16",
+		"indices": [
+			"PrimeStandard",
+			"Sdax",
+			"Gex",
+			"Mdax",
+			"GeneralStandard",
+			"TecDax",
+			"Dax",
+			"Hdax",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "sk3lteoqpmrs"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "55x4d5jkhvea"
+			}
+		]
+	},
+	{
+		"companyName": "Engelen OHG",
+		"headquarters": "Neu Marlene",
+		"sector": "eyeballs",
+		"marketCap": 8376269,
+		"reportingDateOfMarketCap": "2022-02-13",
+		"indices": [
+			"Dax",
+			"Sdax",
+			"PrimeStandard",
+			"Scale",
+			"TecDax",
+			"Hdax",
+			"Cdax",
+			"Dax50Esg",
+			"Gex"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "b0vhqaxia9px"
+			}
+		]
+	},
+	{
+		"companyName": "Albrecht KG",
+		"headquarters": "Palm Harbor",
+		"sector": "paradigms",
+		"marketCap": 9388896,
+		"reportingDateOfMarketCap": "2021-08-16",
+		"indices": [
+			"Scale",
+			"Sdax",
+			"Hdax",
+			"Cdax",
+			"Gex",
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Lei",
+				"identifierValue": "tw929jgj31en"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "ja6vekq8nh85"
+			}
+		]
+	},
+	{
+		"companyName": "Flore, Prey and Becker",
+		"headquarters": "Miramar",
+		"sector": "users",
+		"marketCap": 9777634,
+		"reportingDateOfMarketCap": "2021-07-10",
+		"indices": [
+			"PrimeStandard",
+			"TecDax",
+			"GeneralStandard",
+			"Mdax",
+			"Sdax",
+			"Cdax",
+			"Hdax",
+			"Dax",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "hsvws3ivxudf"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "03ej6ndf6iac"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "fe3u3lwbigis"
+			}
+		]
+	},
+	{
+		"companyName": "Gerbennow, Bormann and Roggatz",
+		"headquarters": "Susanneland",
+		"sector": "functionalities",
+		"marketCap": 8699578,
+		"reportingDateOfMarketCap": "2021-08-16",
+		"indices": [
+			"PrimeStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "s27gzlymp0d0"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "eg18wdjbz6ch"
+			}
+		]
+	},
+	{
+		"companyName": "Waschbüsch - Blum",
+		"headquarters": "Alt Melinastadt",
+		"sector": "e-commerce",
+		"marketCap": 6744679,
+		"reportingDateOfMarketCap": "2021-04-30",
+		"indices": [
+			"Cdax",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "bdfi3flsrf4a"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "yz87h9ozjkip"
+			}
+		]
+	},
+	{
+		"companyName": "Simon - Rietscher",
+		"headquarters": "Brandtland",
+		"sector": "deliverables",
+		"marketCap": 8784221,
+		"reportingDateOfMarketCap": "2022-03-23",
+		"indices": [
+			"Gex",
+			"Dax50Esg",
+			"PrimeStandard",
+			"Scale",
+			"GeneralStandard",
+			"TecDax",
+			"Cdax",
+			"Dax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "7c1l0q8xv44e"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "cnzpj0ea1zm2"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "5qrzhpxkzylz"
+			}
+		]
+	},
+	{
+		"companyName": "Griem - Crews",
+		"headquarters": "Minot",
+		"sector": "solutions",
+		"marketCap": 8736632,
+		"reportingDateOfMarketCap": "2021-10-15",
+		"indices": [
+			"Scale",
+			"PrimeStandard",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "uisnzj45j0pr"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "6vq24j1i0i7j"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "y3shngtg4463"
+			}
+		]
+	},
+	{
+		"companyName": "Holtfreter - Benecke",
+		"headquarters": "West Malikstadt",
+		"sector": "experiences",
+		"marketCap": 3556030,
+		"reportingDateOfMarketCap": "2021-07-03",
+		"indices": [
+			"TecDax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "xdy6hr2jnqvi"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "0sl5frkphs9q"
+			}
+		]
+	},
+	{
+		"companyName": "Schersing GmbH",
+		"headquarters": "Hillardland",
+		"sector": "paradigms",
+		"marketCap": 7837467,
+		"reportingDateOfMarketCap": "2021-08-02",
+		"indices": [
+			"Dax",
+			"PrimeStandard",
+			"TecDax",
+			"Cdax",
+			"Hdax",
+			"Sdax",
+			"Gex",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "6a0kohrc7lzj"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "xbiugwqla6zi"
+			}
+		]
+	},
+	{
+		"companyName": "Steidl - Sachse",
+		"headquarters": "Alt Malindorf",
+		"sector": "markets",
+		"marketCap": 8902927,
+		"reportingDateOfMarketCap": "2021-11-01",
+		"indices": [
+			"TecDax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "59bdm8s4qjv7"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "10ktjpy0g2f2"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "noc4gijj8ruu"
+			}
+		]
+	},
+	{
+		"companyName": "Kupprion, Gehrke and Rach",
+		"headquarters": "West Cheyennestadt",
+		"sector": "vortals",
+		"marketCap": 7446611,
+		"reportingDateOfMarketCap": "2021-07-28",
+		"indices": [
+			"Sdax",
+			"Hdax",
+			"Scale",
+			"PrimeStandard",
+			"Gex",
+			"TecDax",
+			"Dax",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "lqsaho6ht512"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "idla1v08wrql"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "4p6nftvbj9em"
+			}
+		]
+	},
+	{
+		"companyName": "Weniger KG",
+		"headquarters": "Bad Johannaburg",
+		"sector": "methodologies",
+		"marketCap": 4204433,
+		"reportingDateOfMarketCap": "2022-02-19",
+		"indices": [
+			"Mdax",
+			"PrimeStandard",
+			"Dax50Esg",
+			"TecDax",
+			"Cdax",
+			"Hdax",
+			"Scale",
+			"Sdax",
+			"GeneralStandard",
+			"Gex",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "typrm3b2glpy"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "nzlqdarwk01j"
+			}
+		]
+	},
+	{
+		"companyName": "Kraft OHG",
+		"headquarters": "Delongestadt",
+		"sector": "infrastructures",
+		"marketCap": 4260888,
+		"reportingDateOfMarketCap": "2021-09-11",
+		"indices": [
+			"Cdax",
+			"Mdax",
+			"Gex",
+			"Dax50Esg",
+			"GeneralStandard",
+			"Dax",
+			"PrimeStandard",
+			"Sdax",
+			"TecDax",
+			"Hdax",
+			"Scale"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "xk4frd442e74"
+			}
+		]
+	},
+	{
+		"companyName": "Brehmer - Schmid",
+		"headquarters": "Bad Robin",
+		"sector": "channels",
+		"marketCap": 2450611,
+		"reportingDateOfMarketCap": "2021-10-18",
+		"indices": [
+			"Dax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "axehc8777m2n"
+			}
+		]
+	},
+	{
+		"companyName": "Schorr, Bürklein and Knabe",
+		"headquarters": "Bad Emirhan",
+		"sector": "functionalities",
+		"marketCap": 2297004,
+		"reportingDateOfMarketCap": "2022-02-21",
+		"indices": [
+			"Dax50Esg",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "fxwhrowsbr6q"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "2rbuzsws9dpy"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "zlop4z8q9s8h"
+			}
+		]
+	},
+	{
+		"companyName": "Edorh - Bachmann",
+		"headquarters": "San Bernardino",
+		"sector": "applications",
+		"marketCap": 6670604,
+		"reportingDateOfMarketCap": "2022-02-21",
+		"indices": [
+			"Hdax",
+			"Scale",
+			"GeneralStandard",
+			"PrimeStandard",
+			"Dax50Esg",
+			"Sdax",
+			"Cdax",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "6btu6a976rkn"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "aij9rtk8c8qs"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "uq727yxylzrv"
+			}
+		]
+	},
+	{
+		"companyName": "Schirmer GmbH & Co. KG",
+		"headquarters": "Marleendorf",
+		"sector": "web services",
+		"marketCap": 1903238,
+		"reportingDateOfMarketCap": "2021-10-07",
+		"indices": [
+			"Dax",
+			"Sdax",
+			"Dax50Esg",
+			"Mdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "v81nn3pgpktv"
+			}
+		]
+	},
+	{
+		"companyName": "Emmelmann, Vogelgsang and Leiter",
+		"headquarters": "Tidowstadt",
+		"sector": "blockchains",
+		"marketCap": 376384,
+		"reportingDateOfMarketCap": "2021-10-26",
+		"indices": [
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "y6cpvklhzn34"
+			}
+		]
+	},
+	{
+		"companyName": "Laack, Pressler and Salzer",
+		"headquarters": "Mayerburg",
+		"sector": "action-items",
+		"marketCap": 9765815,
+		"reportingDateOfMarketCap": "2021-07-24",
+		"indices": [
+			"Dax",
+			"Sdax",
+			"Cdax",
+			"PrimeStandard",
+			"GeneralStandard",
+			"Scale",
+			"Dax50Esg"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "3c0sxzwxrcgi"
+			}
+		]
+	},
+	{
+		"companyName": "Leimbach OHG",
+		"headquarters": "Süd Ellen",
+		"sector": "experiences",
+		"marketCap": 8459162,
+		"reportingDateOfMarketCap": "2021-09-11",
+		"indices": [
+			"Dax50Esg",
+			"Cdax",
+			"Gex",
+			"Mdax",
+			"Hdax",
+			"Sdax",
+			"PrimeStandard",
+			"Scale",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "dy9jbdgn63sx"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "4w09yahsavyo"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "bwoc8fbjr6o3"
+			}
+		]
+	},
+	{
+		"companyName": "Krohn, Göckeritz and Fink",
+		"headquarters": "Vitoburg",
+		"sector": "systems",
+		"marketCap": 5739806,
+		"reportingDateOfMarketCap": "2021-12-19",
+		"indices": [
+			"Cdax",
+			"Sdax",
+			"Hdax",
+			"TecDax",
+			"Scale",
+			"Dax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "dfkwuvb1pigs"
+			}
+		]
+	},
+	{
+		"companyName": "Stengel - Bruckmann",
+		"headquarters": "Nord Simonstadt",
+		"sector": "e-tailers",
+		"marketCap": 1341420,
+		"reportingDateOfMarketCap": "2022-02-23",
+		"indices": [
+			"Scale",
+			"Cdax",
+			"Mdax",
+			"PrimeStandard",
+			"Dax",
+			"Dax50Esg",
+			"Sdax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "rboo14ug5pgx"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "64wbpfi5edm4"
+			}
+		]
+	},
+	{
+		"companyName": "Jarets - Bremer",
+		"headquarters": "Wühnburg",
+		"sector": "e-tailers",
+		"marketCap": 2950716,
+		"reportingDateOfMarketCap": "2021-06-20",
+		"indices": [
+			"Dax50Esg",
+			"Dax",
+			"TecDax",
+			"Sdax",
+			"Hdax",
+			"Mdax",
+			"PrimeStandard",
+			"Scale",
+			"Cdax",
+			"GeneralStandard"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "996zbgskyby8"
+			},
+			{
+				"identifierType": "Isin",
+				"identifierValue": "skkytjd7pjhj"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "44cvdfz854ml"
+			}
+		]
+	},
+	{
+		"companyName": "Gesell UG",
+		"headquarters": "West Justus",
+		"sector": "methodologies",
+		"marketCap": 5845579,
+		"reportingDateOfMarketCap": "2021-07-11",
+		"indices": [
+			"TecDax",
+			"Cdax",
+			"PrimeStandard",
+			"GeneralStandard",
+			"Sdax",
+			"Dax",
+			"Mdax",
+			"Hdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "Isin",
+				"identifierValue": "6tdx4zgyjmnc"
+			},
+			{
+				"identifierType": "Lei",
+				"identifierValue": "96darors3won"
+			},
+			{
+				"identifierType": "PermId",
+				"identifierValue": "uqpff7tiiknh"
+			}
+		]
+	},
+	{
+		"companyName": "Bremer OHG",
+		"headquarters": "West Baranburg",
+		"sector": "initiatives",
+		"marketCap": 8578610,
+		"reportingDateOfMarketCap": "2021-07-11",
+		"indices": [
+			"Gex",
+			"GeneralStandard",
+			"Cdax",
+			"Dax",
+			"Sdax"
+		],
+		"identifiers": [
+			{
+				"identifierType": "PermId",
+				"identifierValue": "t8fl7i0sr318"
 			}
 		]
 	}
