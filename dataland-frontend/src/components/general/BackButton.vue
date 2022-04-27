@@ -1,7 +1,11 @@
 <template>
-  <div class="grid align-items-center col-12 cursor-pointer" @click="goBack">
-    <span class="material-icons text-primary">arrow_back_ios</span>
-    <span class="text-primary font-semibold" >BACK</span>
+  <div class="col-12" >
+    <div class="inline-block">
+      <div @click="goBack" class="cursor-pointer grid align-items-center">
+        <span class="material-icons text-primary">arrow_back_ios</span>
+        <span class="text-primary font-semibold" title="back_button">BACK</span>
+      </div>
+    </div>
   </div>
 </template>
 <script>

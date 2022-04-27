@@ -6,7 +6,6 @@ faker.locale = 'de';
 
 function generateCompanyInformation() {
     const companies = []
-
     for (let id = 1; id <= 100; id++) {
         const companyName = faker.company.companyName();
         const headquarters = faker.address.city();
