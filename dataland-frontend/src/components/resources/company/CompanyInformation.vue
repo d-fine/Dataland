@@ -15,10 +15,10 @@
     </div>
 
     <div class="col-4">
-      Company Reports: <a href="#" class="text-primary font-semibold">Financial Data 2021</a>
+      Company Reports: <span class="cursor-pointer underline text-primary font-semibold">Financial Data 2021</span>
     </div>
     <div class="col-4">
-      <a href="#" class="text-primary font-semibold">Sustainability Data 2021</a>
+      <span  class="cursor-pointer underline text-primary font-semibold">Sustainability Data 2021</span>
     </div>
   </div>
 </template>
