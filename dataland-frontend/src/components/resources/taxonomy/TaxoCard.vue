@@ -69,7 +69,7 @@ export default {
       return numberFormatter(this.total, 2)
     },
     amount() {
-      return numberFormatter(Math.round(this.total * this.percent * 100 * 100) / 100, 2)
+      return numberFormatter(Math.round(this.total * this.percent * 100) / 100, 2)
     }
   },
 }
