@@ -11,22 +11,23 @@
           <span>%</span>
         </div>
         <div v-else class="col-6 col-offset-1 grid align-items-center text-right">
-          <i class="material-icons" aria-hidden="true"> error </i> <span class="pl-4 font-semibold">No data available</span>
+          <i class="material-icons" aria-hidden="true"> error </i> <span
+            class="pl-4 font-semibold">No data available</span>
         </div>
       </div>
-      <template v-if="amount">
       <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar">
       </ProgressBar>
       <div class="grid mt-4 ">
         <div class="col-6 text-left p-0 pl-2">
-          <span class="font-semibold text-lg">€ </span>
-          <span class="font-bold text-2xl">{{ orderOfMagnitudeSuffix(amount) }}</span>
+          <template v-if="amount">
+            <span class="font-semibold text-lg">€ </span>
+            <span class="font-bold text-2xl">{{ amount }}</span>
+          </template>
 
-          <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix(total) }}</strong></p>
+          <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix }}</strong></p>
         </div>
 
       </div>
-      </template>
     </template>
   </Card>
 </template>
@@ -44,15 +45,10 @@ export default {
       default: "Eligible Revenue",
       type: String
     },
-    amount: {
-      default: 100,
-      type: Number
-    },
     total: {
       default: 1000,
       type: Number
-    }
-    ,
+    },
     percent: {
       default: 10,
       type: Number
@@ -61,14 +57,15 @@ export default {
   },
   computed: {
     percentCalculation() {
-      return Math.round((this.amount / this.total) * 100 * 100) / 100
+      return Math.round(this.percent * 100 * 100) / 100
+    },
+    orderOfMagnitudeSuffix() {
+      return numberFormatter(this.total, 2)
+    },
+    amount() {
+      return numberFormatter(Math.round(this.total * this.percent * 100 * 100) / 100, 2)
     }
   },
-  methods: {
-    orderOfMagnitudeSuffix(value){
-      return numberFormatter(value,2)
-    }
-  }
 }
 </script>
 <style>
