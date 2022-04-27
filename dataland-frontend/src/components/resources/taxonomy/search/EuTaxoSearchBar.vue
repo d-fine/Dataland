@@ -90,13 +90,7 @@ export default {
   },
   methods: {
     activateSearchBar() {
-      window.addEventListener('scroll', () => {
-        if (document.body.scrollTop < 50 || document.documentElement.scrollTop < 50) {
-          this.$refs.autocomplete.focus()
-        }
-      });
       window.scrollTo({top: 0, behavior: 'smooth'})
-
     },
     close() {
       this.$refs.autocomplete.hideOverlay()
@@ -120,6 +114,9 @@ export default {
     handleScroll() {
       this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
       this.$emit('scrolling', this.scrolled)
+      if (!this.scrolled && this.$refs.autocomplete) {
+        this.$refs.autocomplete.focus()
+      }
     },
 
     responseMapper(response) {
