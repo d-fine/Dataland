@@ -1,4 +1,4 @@
-describe.only('EU Taxonomy Data and Cards', function () {
+describe('EU Taxonomy Data and Cards', function () {
     let companyIdList:Array<string> = []
     const companyNames:Array<string>  = ["eligible & total", "eligible"]
     it('Create a Companies when everything is fine', () => {
