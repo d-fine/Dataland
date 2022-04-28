@@ -76,7 +76,8 @@ export default {
       autocompleteArray: [],
       loading: false,
       selectedCompany: null,
-      filteredCompaniesBasic: null
+      filteredCompaniesBasic: null,
+      currentScrollPosition: 0
     }
   },
   created() {
@@ -112,7 +113,16 @@ export default {
       this.close();
     },
     handleScroll() {
-      this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
+      const scrolled = window.scrollY;
+      if(this.currentScrollPosition > scrolled){
+        //ScrollUP event
+        this.currentScrollPosition = scrolled;
+        this.scrolled = document.documentElement.scrollTop >= 50;
+      } else{
+        //ScrollDOWN event
+        this.scrolled = document.documentElement.scrollTop > 150;
+        this.currentScrollPosition = scrolled;
+      }
       this.$emit('scrolling', this.scrolled)
       if (!this.scrolled && this.$refs.autocomplete) {
         this.$refs.autocomplete.focus()
