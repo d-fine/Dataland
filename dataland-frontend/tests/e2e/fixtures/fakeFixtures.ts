@@ -6,8 +6,7 @@ faker.locale = 'de';
 
 function generateCompanyInformation() {
     const companies = []
-
-    for (let id = 1; id <= 100; id++) {
+    for (let id = 1; id <= 250; id++) {
         const companyName = faker.company.companyName();
         const headquarters = faker.address.city();
         const sector = faker.company.bsNoun();
@@ -49,7 +48,7 @@ function generateCompanyInformation() {
 function generateCompanyAssociatedEuTaxonomyData() {
     const taxonomies = []
 
-    for (let id = 1; id <= 100; id++) {
+    for (let id = 1; id <= 250; id++) {
         const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
         const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
         const capexTotal = faker.mersenne.rand(50000, 10000000);

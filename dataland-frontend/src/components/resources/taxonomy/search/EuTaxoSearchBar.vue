@@ -76,7 +76,8 @@ export default {
       autocompleteArray: [],
       loading: false,
       selectedCompany: null,
-      filteredCompaniesBasic: null
+      filteredCompaniesBasic: null,
+      currentScrollPosition: 0
     }
   },
   created() {
@@ -90,13 +91,7 @@ export default {
   },
   methods: {
     activateSearchBar() {
-      window.addEventListener('scroll', () => {
-        if (document.body.scrollTop < 150 || document.documentElement.scrollTop < 150) {
-          this.$refs.autocomplete.focus()
-        }
-      });
       window.scrollTo({top: 0, behavior: 'smooth'})
-
     },
     close() {
       this.$refs.autocomplete.hideOverlay()
@@ -118,8 +113,20 @@ export default {
       this.close();
     },
     handleScroll() {
-      this.scrolled = document.body.scrollTop > 150 || document.documentElement.scrollTop > 150;
+      const scrolled = window.scrollY;
+      if(this.currentScrollPosition > scrolled){
+        //ScrollUP event
+        this.currentScrollPosition = scrolled;
+        this.scrolled = document.documentElement.scrollTop >= 50;
+      } else{
+        //ScrollDOWN event
+        this.scrolled = document.documentElement.scrollTop > 150;
+        this.currentScrollPosition = scrolled;
+      }
       this.$emit('scrolling', this.scrolled)
+      if (!this.scrolled && this.$refs.autocomplete) {
+        this.$refs.autocomplete.focus()
+      }
     },
 
     responseMapper(response) {
@@ -182,18 +189,3 @@ export default {
   }
 }
 </script>
-<style>
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(-20px);
-  opacity: 0;
-}
-</style>

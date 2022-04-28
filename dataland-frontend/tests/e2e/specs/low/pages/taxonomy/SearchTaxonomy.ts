@@ -1,10 +1,19 @@
 describe('Search Taxonomy', function () {
     let companiesData:any
+    let idList:any
+
     before(function(){
         cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
+    });
 
+    it('Retrieve data ID list', () => {
+        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
+            idList = response.body.map(function (e:string){
+                return parseInt(Object.values(e)[2])
+            })
+        })
     });
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
@@ -73,23 +82,28 @@ describe('Search Taxonomy', function () {
     it('Search Input field should be always present', () => {
         const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
+        cy.visit("/companies/"+idList[7]+"/eutaxonomies")
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
-            .click()
+            .click({force:true})
             .type(inputValue)
             .should('have.value', inputValue)
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 
+
     it('Autocomplete functionality', () => {
+        cy.intercept('**/api/companies*').as('searchCompany')
         cy.visit('/searchtaxonomy')
         cy.get('input[name=eu_taxonomy_search_input]')
             .click()
             .type('b')
-        cy.get('.p-autocomplete-items')
-            .eq(0).click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
+        cy.wait('@searchCompany', {timeout: 1000}).then(() => {
+            cy.get('.p-autocomplete-items')
+                .eq(0).click()
+                .url().should('include', '/companies/')
+                .url().should('include', '/eutaxonomies')
+        })
 
     });
 
@@ -108,6 +122,12 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]').should('exist')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
 
+        cy.scrollTo(0, 500)
+        cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
+        cy.get('button[name=search_bar_collapse]').should('exist')
+            .click()
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
     });
 
 
