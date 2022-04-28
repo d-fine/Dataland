@@ -38,8 +38,6 @@ jobs:
         env:
           REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/setup-java@v2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
           distribution: temurin
           java-version: 17
@@ -52,6 +50,8 @@ jobs:
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - name: Deploy to Preview
         run: ./deployment/deploy_to_preview.sh
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon
       - name: Upload FE E2E Cypress Results
