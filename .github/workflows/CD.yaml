@@ -31,13 +31,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Get GitHub real data image on demand
         run: |
-          ls -hartl ./testing/data
-          echo $REALDATA
           if [[ $REALDATA == true ]]; then
-          echo "entering if condition"
+          echo "Retrieving real data"
           docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
           fi
-          ls -hartl ./testing/data
         env:
           REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/setup-java@v2
@@ -47,19 +44,19 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-#      - name: Build backend and Assemble boot jar
-#        run: ./gradlew dataland-backend:bootJar --no-daemon
-#      - name: Build frontend
-#        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
-#      - name: Start Preview Server
-#        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-#      - name: Deploy to Preview
-#        run: ./deployment/deploy_to_preview.sh
-#      - name: check deployment
-#        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon
-#      - name: Upload FE E2E Cypress Results
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: cypress
-#          path: ./dataland-frontend/cypress/
+      - name: Build backend and Assemble boot jar
+        run: ./gradlew dataland-backend:bootJar --no-daemon
+      - name: Build frontend
+        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
+      - name: Start Preview Server
+        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
+      - name: Deploy to Preview
+        run: ./deployment/deploy_to_preview.sh
+      - name: check deployment
+        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon
+      - name: Upload FE E2E Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress
+          path: ./dataland-frontend/cypress/
