@@ -24,8 +24,11 @@ jobs:
     steps:
       - name: Check for input variable
         run: |
-          echo "realData: $REALDATA"
-          [[ $REALDATA ]] && echo "Use real Data" || echo "Use fake data"
+          if [ $REALDATA ]; then
+          echo "realdata var is $REALDATA; CD will use real Data"
+          else
+          echo "realdata var is $REALDATA; CD will use real Data"
+          fi
         env:
           REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/checkout@v2
