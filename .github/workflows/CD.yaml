@@ -12,7 +12,7 @@ on:
       - 'main'
   workflow_dispatch:
     inputs:
-      tags:
+      realData:
         description: 'Use real data'
         required: false
         type: boolean
@@ -24,9 +24,10 @@ jobs:
     steps:
       - name: Check for input variable
         run: |
-          echo "tags: $TAGS"
+          echo "realData: $REALDATA"
+          [[ $REALDATA ]] && echo "Use real Data" || echo "Use fake data"
         env:
-          TAGS: ${{ github.event.inputs.tags }}
+          REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
         env:
