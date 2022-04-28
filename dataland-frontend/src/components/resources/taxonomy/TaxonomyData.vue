@@ -5,9 +5,12 @@
         <h2 class="mb-0">EU Taxonomy Data</h2>
       </div>
       <div class="col-6 text-left">
-      <span class="font-semibold text-gray-800">Complete dataset for reporting according
-        to EU Taxonomy Regulation, Article 8. For 2022 requirements.
-      </span>
+        <p class="font-semibold m-0">
+          2021
+        </p>
+        <p class="font-semibold text-gray-800 mt-0">
+          Data from company report. Disclosures in accordance with EU Taxonomy Regulation, Article 8.
+        </p>
       </div>
     </div>
     <div class="grid">
@@ -18,19 +21,9 @@
           <span class="uppercase ml-4 text-primary font-semibold">
             SHARE
           </span>
-            <i class="material-icons ml-2 text-primary " aria-hidden="true">share</i>
+          <i class="material-icons ml-2 text-primary " aria-hidden="true">share</i>
 
         </Button>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-2 text-left">
-        <span class="font-semibold">NFRD required: </span>
-        <span>No</span>
-      </div>
-      <div class="col-2 text-left">
-        <span class="font-semibold">Level of Assurance: </span>
-        <span>Reasonable</span>
       </div>
     </div>
     <div class="grid">

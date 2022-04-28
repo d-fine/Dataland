@@ -59,7 +59,8 @@ describe('Company EU Taxonomy Data', () => {
         cy.get('body').contains("Market Cap:")
         cy.get('body').contains("Headquarter:")
         cy.get('body').contains("Sector:")
-        cy.get('button.p-button.p-component').contains('Financial and sustainability')
+        cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
+        cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
         cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
 

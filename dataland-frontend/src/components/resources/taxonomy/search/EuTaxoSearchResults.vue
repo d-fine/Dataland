@@ -4,20 +4,12 @@
       <div class="col-1 text-left">
         <h2>Results</h2>
       </div>
-      <div class="col-3 col-offset-8 surface-0 d-card">
-        <div class="grid align-items-center h-3rem ">
-          <div class="col-6 text-left">
-            <span class="font-semibold">Avg Green asset ratio </span>
-          </div>
-          <div class="col-6 text-right text-green-500">
-            <span class="font-semibold text-xl">78</span> <span> % </span>
-          </div>
-        </div>
-      </div>
-      </div>
+    </div>
     <div class="grid">
       <div class="col-12 text-left">
-          <DataTable v-if="data" :value="data" responsive-layout="scroll">
+          <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
+                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          >
             <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0 w-3 d-datatable-column-left">
             </Column>
             <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-3">
@@ -68,13 +60,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.p-datatable-thead .d-datatable-column-left {
-  border-top-left-radius: 8px;
-}
-
-.p-datatable-thead .d-datatable-column-right {
-  border-top-right-radius: 8px;
-}
-</style>
