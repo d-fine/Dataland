@@ -33,9 +33,8 @@ jobs:
         run: |
           ls -hartl ./testing/data
           echo $REALDATA
-          if [ $REALDATA ]; then
+          if [[ $REALDATA == true ]]; then
           echo "entering if condition"
-          docker login e
           docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
           fi
           ls -hartl ./testing/data
