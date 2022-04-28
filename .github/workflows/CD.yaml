@@ -10,12 +10,12 @@ on:
   push:
     branches:
       - 'main'
-    workflow_dispatch:
-      inputs:
-        realData:
-          description: 'Use real data'
-          required: false
-          type: boolean
+  workflow_dispatch:
+    inputs:
+      realData:
+        description: 'Use real data'
+        required: false
+        type: boolean
 
 
 jobs:
