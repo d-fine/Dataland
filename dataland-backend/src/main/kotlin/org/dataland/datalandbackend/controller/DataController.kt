@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity
 abstract class DataController<T>(
     var dataManager: DataManagerInterface,
     var objectMapper: ObjectMapper,
-    val clazz: Class<T>
+    private val clazz: Class<T>
 ) : DataAPI<T> {
     private val dataType = clazz.simpleName
 
