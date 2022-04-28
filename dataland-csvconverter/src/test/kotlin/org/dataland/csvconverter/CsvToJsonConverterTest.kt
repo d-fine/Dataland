@@ -21,8 +21,10 @@ class CsvToJsonConverterTest {
             "Size mismatch: the parsed list contains ${parsedCompanies.size} and the read list " +
                 "contains ${readCompanies.size} elements."
         )
-        assertEquals(readCompanies, parsedCompanies,
-         "The list of read and parsed company information did not match.")
+        assertEquals(
+            readCompanies, parsedCompanies,
+            "The list of read and parsed company information did not match."
+        )
     }
 
     @Test

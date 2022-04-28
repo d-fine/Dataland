@@ -94,7 +94,7 @@ class CsvToJsonConverter(private val filePath: String) {
     private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
 
     private fun getValue(header: String, csvData: Map<String, String>): String {
-        return csvData[header]!!.ifBlank {
+        return csvData[header]!!.trim().ifBlank {
             notAvailableString
         }
     }
