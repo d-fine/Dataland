@@ -11,6 +11,10 @@ on:
     branches:
       - 'main'
   workflow_dispatch:
+    inputs:
+      description: 'Test scenario tags'
+      required: false
+      type: boolean
 
 jobs:
   build-prod-and-deploy:
