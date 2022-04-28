@@ -6,13 +6,14 @@ set -e
 csv_file="$1"
 workdir=$(dirname $0)
 
-cd "$workdir"
+cd $workdir
 
-if [[ ! -f "$csvFile" ]]; then
+if [[ ! -f "$csv_file" ]]; then
   echo "Error: Expected file $workdir/$csv_file not found."
+  exit 1
 fi
 
-./../gradlew dataland-csvconverter:run --args="$csv_file"
+./../gradlew :dataland-csvconverter:run --args="$csv_file"
 
 docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
 docker build -t ghcr.io/d-fine/dataland/datacontainer:latest .
