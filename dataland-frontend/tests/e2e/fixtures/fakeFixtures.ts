@@ -7,10 +7,12 @@ const identifierTypeArray = apiSpecs.components.schemas.CompanyIdentifier.proper
 
 const {parse} = require('json2csv');
 const fs = require('fs')
-// import StringHumanizer from('../../../src/utils/StringHumanizer');
-// sets locale to de
 
 faker.locale = 'de';
+
+const maxEuro=1000000
+const minEuro=50000
+const resolution=0.0001
 
 function generateCompanyInformation() {
     const companies = []
@@ -61,15 +63,15 @@ function generateCompanyAssociatedEuTaxonomyData() {
     for (let id = 1; id <= 100; id++) {
         const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
         const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
-        const capexTotal = faker.finance.amount(50000, 10000000, 2);
-        const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
-        const capexAligned = faker.datatype.float({ min: 0, max: capexEligible, precision: 0.0001 })
-        const opexTotal = faker.finance.amount(50000, 10000000, 2);
-        const opexEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
-        const opexAligned = faker.datatype.float({ min: 0, max: opexEligible, precision: 0.0001 })
-        const revenueTotal = faker.finance.amount(50000, 10000000, 2);
-        const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: 0.0001 })
-        const revenueAligned = faker.datatype.float({ min: 0, max: revenueEligible, precision: 0.0001 })
+        const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
+        const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4)
+        const capexAligned = faker.datatype.float({ min: 0, max: parseFloat(capexEligible), precision: resolution }).toFixed(4)
+        const opexTotal = faker.finance.amount(minEuro, maxEuro, 2);
+        const opexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4)
+        const opexAligned = faker.datatype.float({ min: 0, max: parseFloat(opexEligible), precision: resolution }).toFixed(4)
+        const revenueTotal = faker.finance.amount(minEuro, maxEuro, 2);
+        const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4)
+        const revenueAligned = faker.datatype.float({ min: 0, max: parseFloat(revenueEligible), precision: resolution }).toFixed(4)
 
 
         taxonomies.push(
@@ -114,7 +116,11 @@ function identifierValue(identifierArray: Array<Object>, identifierType: string)
 }
 
 function percentageGenerator(value:number){
-    return (Math.round(value * 100 * 100) / 100).toString().replace(".",",") + "%"
+    return (Math.round(value * 100 * 100) / 100).toFixed(2).replace(".",",") + "%"
+}
+
+function euroGenerator(value:number){
+    return value.toString().replace(".",",")
 }
 
 function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuTaxonomyData: Array<Object>) {
@@ -131,9 +137,9 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Sektor', value: 'sector'},
             {label: 'Market Capitalization (EURmm)', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue in EURmio', value: (row: any) => row.data.Revenue.total.toString().replace(".",",")},
-            {label: 'Total CapEx EURmio', value: (row: any) => row.data.Capex.total.toString().replace(".",",")},
-            {label: 'Total OpEx EURmio', value: (row: any) => row.data.Opex.total.toString().replace(".",",")},
+            {label: 'Total Revenue in EURmio', value: (row: any) => euroGenerator(row.data.Revenue.total)},
+            {label: 'Total CapEx EURmio', value: (row: any) => euroGenerator(row.data.Capex.total)},
+            {label: 'Total OpEx EURmio', value: (row: any) => euroGenerator(row.data.Opex.total)},
             {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligible)},
             {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligible)},
             {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligible)},

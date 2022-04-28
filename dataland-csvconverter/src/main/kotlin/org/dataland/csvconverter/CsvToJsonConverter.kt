@@ -110,7 +110,7 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
-        return getAbsoluteValue(columnHeader, csvLineData)!!
+        return getScaledValue(columnHeader, csvLineData, euroUnitConverter)!!
     }
 
     private fun validateLine(csvLineData: Map<String, String>): Boolean {
@@ -169,23 +169,16 @@ class CsvToJsonConverter(private val filePath: String) {
 
     private fun getNumericValue(columnHeader: String, csvLineData: Map<String, String>): BigDecimal? {
         return if (getValue(columnHeader, csvLineData).contains("%")) {
-            getPercentageValue(columnHeader, csvLineData)
+            getScaledValue(columnHeader, csvLineData, "0.01")
         } else {
-            getAbsoluteValue(columnHeader, csvLineData)
+            getScaledValue(columnHeader, csvLineData, euroUnitConverter)
         }
     }
 
-    private fun getAbsoluteValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
-        // The numeric value conversion assumes the figures to be provided in millions using german notation
-        // , hence, "," as decimal separator and "." to separate thousands
-        return getValue(columnHeader, csvData).trim().replace(".", "").replace(",", ".")
-            .toBigDecimalOrNull()?.multiply(euroUnitConverter.toBigDecimal())
-    }
-
-    private fun getPercentageValue(columnHeader: String, csvData: Map<String, String>): BigDecimal? {
-        return getValue(columnHeader, csvData).trim().replace(".", "").replace(",", ".")
-            .replace("%", "").toBigDecimalOrNull()?.multiply("0.01".toBigDecimal())
-            .toString().trim('0').toBigDecimal()
+    private fun getScaledValue(columnHeader: String, csvData: Map<String, String>, scaleFactor: String): BigDecimal? {
+        // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
+        return getValue(columnHeader, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
+            .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())
     }
 
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
