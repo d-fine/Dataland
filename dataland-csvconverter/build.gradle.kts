@@ -13,6 +13,7 @@ val jacocoClasses by extra(
 plugins {
     kotlin("jvm")
     application
+    jacoco
     id("org.springframework.boot")
 }
 

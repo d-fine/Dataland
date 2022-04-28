@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.model.enums.YesNo
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -30,6 +31,7 @@ class CsvToJsonConverter(private val filePath: String) {
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
     private var euroUnitConverter = "1000000"
+    private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
 
     private val columnMapping = mapOf(
         "companyName" to "Company name",
@@ -72,7 +74,7 @@ class CsvToJsonConverter(private val filePath: String) {
     )
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
-        FileReader(fileName).use { reader ->
+        FileReader(fileName, StandardCharsets.UTF_8).use { reader ->
             return CsvMapper()
                 .readerFor(T::class.java)
                 .with(CsvSchema.emptySchema().withHeader().withColumnSeparator(';'))
@@ -89,36 +91,6 @@ class CsvToJsonConverter(private val filePath: String) {
     fun setEuroUnitConverter(conversionFactor: String): CsvToJsonConverter {
         euroUnitConverter = conversionFactor
         return this
-    }
-
-    private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
-
-    private fun getValue(header: String, csvData: Map<String, String>): String {
-        return csvData[header]!!.trim().ifBlank {
-            notAvailableString
-        }
-    }
-
-    private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return stockIndexMapping.keys.filter { csvLineData[stockIndexMapping[it]]!!.isNotBlank() }.toSet()
-    }
-
-    private fun getIdentifiers(csvLineData: Map<String, String>): Set<CompanyIdentifier> {
-        return identifierMapping.keys.map {
-            CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
-        }.filter { it.identifierValue != notAvailableString }.toSet()
-    }
-
-    private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
-        return getScaledValue(columnHeader, csvLineData, euroUnitConverter)!!
-    }
-
-    private fun validateLine(csvLineData: Map<String, String>): Boolean {
-        // Skip all lines with financial companies or without market cap
-        return !(
-            getValue(columnMapping["companyType"]!!, csvLineData) in listOf("FS", notAvailableString) ||
-                getValue(columnMapping["marketCap"]!!, csvLineData) == notAvailableString
-            )
     }
 
     /**
@@ -141,38 +113,22 @@ class CsvToJsonConverter(private val filePath: String) {
         }
     }
 
-    /**
-     * Method to write the transformed data into json
-     */
-    fun writeJson() {
-        objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
-        objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyAssociatedEuTaxonomyData.json"), buildListOfEuTaxonomyData())
+    private fun validateLine(csvLineData: Map<String, String>): Boolean {
+        // Skip all lines with financial companies or without market cap
+        return !(
+            getValue(columnMapping["companyType"]!!, csvLineData) in listOf("FS", notAvailableString) ||
+                getValue(columnMapping["marketCap"]!!, csvLineData) == notAvailableString
+            )
     }
 
-    private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
-        return if (getValue(columnMapping["reportObligation"]!!, csvLineData) == "Ja") {
-            YesNo.Yes
-        } else {
-            YesNo.No
+    private fun getValue(columnName: String, csvData: Map<String, String>): String {
+        return csvData[columnName]!!.trim().ifBlank {
+            notAvailableString
         }
     }
 
-    private fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
-        return when (getValue(columnMapping["attestation"]!!, csvLineData)) {
-            "reasonable" -> AttestationOptions.ReasonableAssurance
-            "limited" -> AttestationOptions.LimitedAssurance
-            else -> AttestationOptions.None
-        }
-    }
-
-    private fun getNumericValue(columnHeader: String, csvLineData: Map<String, String>): BigDecimal? {
-        return if (getValue(columnHeader, csvLineData).contains("%")) {
-            getScaledValue(columnHeader, csvLineData, "0.01")
-        } else {
-            getScaledValue(columnHeader, csvLineData, euroUnitConverter)
-        }
+    private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
+        return getScaledValue(columnHeader, csvLineData, euroUnitConverter)!!
     }
 
     private fun getScaledValue(columnHeader: String, csvData: Map<String, String>, scaleFactor: String): BigDecimal? {
@@ -181,13 +137,14 @@ class CsvToJsonConverter(private val filePath: String) {
             .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())
     }
 
-    private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
-        EuTaxonomyDetailsPerCashFlowType {
-        return EuTaxonomyDetailsPerCashFlowType(
-            total = getNumericValue(columnMapping["total$type"]!!, csvLineData),
-            aligned = getNumericValue(columnMapping["aligned$type"]!!, csvLineData),
-            eligible = getNumericValue(columnMapping["eligible$type"]!!, csvLineData)
-        )
+    private fun getIdentifiers(csvLineData: Map<String, String>): Set<CompanyIdentifier> {
+        return identifierMapping.keys.map {
+            CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
+        }.filter { it.identifierValue != notAvailableString }.toSet()
+    }
+
+    private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
+        return stockIndexMapping.keys.filter { csvLineData[stockIndexMapping[it]]!!.isNotBlank() }.toSet()
     }
 
     /**
@@ -206,6 +163,49 @@ class CsvToJsonConverter(private val filePath: String) {
                 )
             )
         }
+    }
+
+    private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
+        return if (getValue(columnMapping["reportObligation"]!!, csvLineData) == "Ja") {
+            YesNo.Yes
+        } else {
+            YesNo.No
+        }
+    }
+
+    private fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
+        return when (getValue(columnMapping["attestation"]!!, csvLineData)) {
+            "reasonable" -> AttestationOptions.ReasonableAssurance
+            "limited" -> AttestationOptions.LimitedAssurance
+            else -> AttestationOptions.None
+        }
+    }
+
+    private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
+        EuTaxonomyDetailsPerCashFlowType {
+        return EuTaxonomyDetailsPerCashFlowType(
+            total = getNumericValue(columnMapping["total$type"]!!, csvLineData),
+            aligned = getNumericValue(columnMapping["aligned$type"]!!, csvLineData),
+            eligible = getNumericValue(columnMapping["eligible$type"]!!, csvLineData)
+        )
+    }
+
+    private fun getNumericValue(columnHeader: String, csvLineData: Map<String, String>): BigDecimal? {
+        return if (getValue(columnHeader, csvLineData).contains("%")) {
+            getScaledValue(columnHeader, csvLineData, "0.01")
+        } else {
+            getScaledValue(columnHeader, csvLineData, euroUnitConverter)
+        }
+    }
+
+    /**
+     * Method to write the transformed data into json
+     */
+    fun writeJson() {
+        objectMapper.writerWithDefaultPrettyPrinter()
+            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
+        objectMapper.writerWithDefaultPrettyPrinter()
+            .writeValue(File("./CompanyAssociatedEuTaxonomyData.json"), buildListOfEuTaxonomyData())
     }
 
     companion object {
