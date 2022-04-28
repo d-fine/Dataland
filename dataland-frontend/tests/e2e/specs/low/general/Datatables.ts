@@ -1,5 +1,5 @@
 describe('Datables test suite', () => {
-    it('Company Search by Name', () => {
+    it('Search for all companies containing a and verify that results are paginated, only first 100 are shown', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = "a"
         cy.get('input[name=eu_taxonomy_search_input]')
