@@ -37,7 +37,7 @@ function generateCompanyInformation() {
                 "identifierType": identifierTypeArray[2],
                 "identifierValue": faker.random.alphaNumeric(12)
             }
-        ]);
+        ]).sort((a,b) => {return a.identifierType.localeCompare(b.identifierType)});
 
         companies.push(
             {

@@ -68,9 +68,9 @@ class CsvToJsonConverter(private val filePath: String) {
     )
 
     private val identifierMapping = mapOf(
-        IdentifierType.PermId to "PermID",
+        IdentifierType.Isin to "ISIN",
         IdentifierType.Lei to "LEI",
-        IdentifierType.Isin to "ISIN"
+        IdentifierType.PermId to "PermID"
     )
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
@@ -137,10 +137,10 @@ class CsvToJsonConverter(private val filePath: String) {
             .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())
     }
 
-    private fun getIdentifiers(csvLineData: Map<String, String>): Set<CompanyIdentifier> {
+    private fun getIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return identifierMapping.keys.map {
             CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
-        }.filter { it.identifierValue != notAvailableString }.toSet()
+        }.filter { it.identifierValue != notAvailableString }
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {

@@ -21,5 +21,5 @@ data class CompanyInformation(
     @field:JsonProperty(required = true) val marketCap: BigDecimal,
     @field:JsonProperty(required = true) val reportingDateOfMarketCap: LocalDate,
     @field:JsonProperty(required = false) val indices: Set<StockIndex>,
-    @field:JsonProperty(required = true) val identifiers: Set<CompanyIdentifier>
+    @field:JsonProperty(required = true) val identifiers: List<CompanyIdentifier>
 )
