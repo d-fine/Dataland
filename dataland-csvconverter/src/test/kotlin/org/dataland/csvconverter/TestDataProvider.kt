@@ -13,7 +13,7 @@ class TestDataProvider(private val objectMapper: ObjectMapper) {
         objectMapper.readValue(companyJsonFile, object : TypeReference<List<CompanyInformation>>() {})
 
     private val dataJsonFile = File("./src/test/resources/CompanyAssociatedEuTaxonomyData.json")
-    private val testCompanyAssociatedEuTaxonomyData: List<CompanyAssociatedData<EuTaxonomyData>> =
+    private val testCompanyAssociatedEuTaxonomyData =
         objectMapper.readValue(dataJsonFile, object : TypeReference<List<CompanyAssociatedData<EuTaxonomyData>>>() {})
 
     fun getAllCompanies(): List<CompanyInformation> {

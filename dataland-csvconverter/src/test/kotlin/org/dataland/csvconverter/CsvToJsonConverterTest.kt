@@ -13,33 +13,30 @@ class CsvToJsonConverterTest {
 
     @Test
     fun `read csv and check that the company information objects are as expected`() {
-        val parsedCompanies = csvParser.buildListOfCompanyInformation()
-        val readCompanies = testDataProvider.getAllCompanies()
+        val actualCompanies = csvParser.buildListOfCompanyInformation()
+        val expectedCompanies = testDataProvider.getAllCompanies()
         assertTrue(
-            parsedCompanies.size == readCompanies.size,
-            "Size mismatch: the parsed list contains ${parsedCompanies.size} and the read list " +
-                "contains ${readCompanies.size} elements."
+            actualCompanies.size == expectedCompanies.size,
+            "Size mismatch: the parsed list contains ${actualCompanies.size} and the read list " +
+                "contains ${expectedCompanies.size} elements."
         )
         assertEquals(
-            readCompanies, parsedCompanies,
+            expectedCompanies, actualCompanies,
             "The list of read and parsed company information did not match."
         )
     }
 
     @Test
     fun `read csv and check that the generated EU Taxonomy objects are as expected`() {
-        val parsedEuTaxonomyData = csvParser.buildListOfEuTaxonomyData()
-        val readEuTaxonomyData = testDataProvider.getAllData()
+        val actualEuTaxonomyData = csvParser.buildListOfEuTaxonomyData()
+        val expectedEuTaxonomyData = testDataProvider.getAllData()
         assertTrue(
-            parsedEuTaxonomyData.size == readEuTaxonomyData.size,
+            actualEuTaxonomyData.size == expectedEuTaxonomyData.size,
             "Size mismatch: the parsed list contains" +
-                " ${parsedEuTaxonomyData.size} and the read list contains ${readEuTaxonomyData.size} elements."
+                " ${actualEuTaxonomyData.size} and the read list contains ${expectedEuTaxonomyData.size} elements."
         )
-        for (index in parsedEuTaxonomyData.indices) {
-            assertEquals(readEuTaxonomyData[index], parsedEuTaxonomyData[index])
-        }
         assertEquals(
-            readEuTaxonomyData, parsedEuTaxonomyData,
+            expectedEuTaxonomyData, actualEuTaxonomyData,
             "The list of read and parsed EU Taxonomy data did not match."
         )
     }

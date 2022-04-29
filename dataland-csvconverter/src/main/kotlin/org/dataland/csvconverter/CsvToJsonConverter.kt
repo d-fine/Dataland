@@ -74,11 +74,11 @@ class CsvToJsonConverter(private val filePath: String) {
     )
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
-        FileReader(fileName, StandardCharsets.UTF_8).use { reader ->
+        FileReader(fileName, StandardCharsets.UTF_8).use {
             return CsvMapper()
                 .readerFor(T::class.java)
                 .with(CsvSchema.emptySchema().withHeader().withColumnSeparator(';'))
-                .readValues<T>(reader)
+                .readValues<T>(it)
                 .readAll()
                 .toList()
         }
