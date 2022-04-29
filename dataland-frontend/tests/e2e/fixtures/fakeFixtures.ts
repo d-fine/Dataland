@@ -126,7 +126,7 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
     const mergedData = companyInformation.map((element, index) => {
         return {...element, ...companyAssociatedEuTaxonomyData[index]}
     })
-    const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric', };
+    const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric'};
     const dateLocale = 'de-DE';
 
     const options = {
