@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * Figures to be filled out for some of the EU-Taxonomy questionnaire fields
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    @field:JsonProperty("total") val total: BigDecimal? = null,
-    @field:JsonProperty("aligned") val aligned: BigDecimal? = null,
-    @field:JsonProperty("eligible") val eligible: BigDecimal? = null
+    @field:JsonProperty("totalAmount") val totalAmount: BigDecimal? = null,
+    @field:JsonProperty("alignedPercentage") val alignedPercentage: BigDecimal? = null,
+    @field:JsonProperty("eligiblePercentage") val eligiblePercentage: BigDecimal? = null
 )

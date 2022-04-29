@@ -195,12 +195,12 @@ class DataManager(
         for (company in companies) {
             val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
             val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
-            eligibleSum += data.capex?.eligible ?: BigDecimal(0.0)
-            eligibleSum += data.opex?.eligible ?: BigDecimal(0.0)
-            eligibleSum += data.revenue?.eligible ?: BigDecimal(0.0)
-            totalSum += data.capex?.total ?: BigDecimal(0.0)
-            totalSum += data.opex?.total ?: BigDecimal(0.0)
-            totalSum += data.revenue?.total ?: BigDecimal(0.0)
+            eligibleSum += data.capex?.eligiblePercentage ?: BigDecimal(0.0)
+            eligibleSum += data.opex?.eligiblePercentage ?: BigDecimal(0.0)
+            eligibleSum += data.revenue?.eligiblePercentage ?: BigDecimal(0.0)
+            totalSum += data.capex?.totalAmount ?: BigDecimal(0.0)
+            totalSum += data.opex?.totalAmount ?: BigDecimal(0.0)
+            totalSum += data.revenue?.totalAmount ?: BigDecimal(0.0)
         }
         greenAssetRatios[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
     }

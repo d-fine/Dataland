@@ -174,9 +174,9 @@ class CsvToJsonConverter(private val filePath: String) {
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
-            total = getNumericValue("total$type", csvLineData),
-            aligned = getNumericValue("aligned$type", csvLineData),
-            eligible = getNumericValue("eligible$type", csvLineData)
+            totalAmount = getNumericValue("total$type", csvLineData),
+            alignedPercentage = getNumericValue("aligned$type", csvLineData),
+            eligiblePercentage = getNumericValue("eligible$type", csvLineData)
         )
     }
 
