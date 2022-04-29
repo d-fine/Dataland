@@ -115,7 +115,7 @@ class CsvToJsonConverter {
     private fun validateLine(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
         return getValue("companyType", csvLineData) !in listOf("FS", notAvailableString) &&
-                getValue("marketCap", csvLineData) != notAvailableString
+            getValue("marketCap", csvLineData) != notAvailableString
     }
 
     private fun getValue(property: String, csvData: Map<String, String>): String {
