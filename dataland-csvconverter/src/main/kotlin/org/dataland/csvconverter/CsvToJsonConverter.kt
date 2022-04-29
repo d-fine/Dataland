@@ -29,7 +29,7 @@ class CsvToJsonConverter {
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
-    private var euroUnitConverter = "1"
+    private var euroUnitConversionFactor = "1"
     private var rawCsvData: List<Map<String, String>> = listOf()
 
     private val columnMapping = mapOf(
@@ -88,8 +88,8 @@ class CsvToJsonConverter {
      * Method to define the conversion factor for absolute euro amounts.
      * For example if all euro amounts are reported in millions set the value to "1000000"
      */
-    fun setEuroUnitConverter(conversionFactor: String) {
-        euroUnitConverter = conversionFactor
+    fun setEuroUnitConversionFactor(conversionFactor: String) {
+        euroUnitConversionFactor = conversionFactor
     }
 
     /**
@@ -101,7 +101,7 @@ class CsvToJsonConverter {
                 companyName = getValue("companyName", it),
                 headquarters = getValue("headquarters", it),
                 sector = getValue("sector", it),
-                marketCap = getScaledValue("marketCap", it, euroUnitConverter)!!,
+                marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
                 reportingDateOfMarketCap = LocalDate.parse(
                     getValue("reportingDateOfMarketCap", it),
                     DateTimeFormatter.ofPattern("d.M.yyyy")
@@ -114,14 +114,12 @@ class CsvToJsonConverter {
 
     private fun validateLine(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
-        return (
-            getValue("companyType", csvLineData) !in listOf("FS", notAvailableString) &&
+        return getValue("companyType", csvLineData) !in listOf("FS", notAvailableString) &&
                 getValue("marketCap", csvLineData) != notAvailableString
-            )
     }
 
     private fun getValue(property: String, csvData: Map<String, String>): String {
-        return csvData[columnMapping[property]]!!.trim().ifBlank {
+        return csvData[columnMapping[property]!!]!!.trim().ifBlank {
             notAvailableString
         }
     }
@@ -189,7 +187,7 @@ class CsvToJsonConverter {
         return if (getValue(property, csvLineData).contains("%")) {
             getScaledValue(property, csvLineData, "0.01")
         } else {
-            getScaledValue(property, csvLineData, euroUnitConverter)
+            getScaledValue(property, csvLineData, euroUnitConversionFactor)
         }
     }
 
@@ -213,7 +211,7 @@ class CsvToJsonConverter {
         fun main(args: Array<String>) {
             val converter = CsvToJsonConverter()
             // euro amounts in real data csv is expected to be in units of millions
-            converter.setEuroUnitConverter("1000000")
+            converter.setEuroUnitConversionFactor("1000000")
             converter.parseCsvFile(File(args.first()).path)
             converter.writeJson()
         }
