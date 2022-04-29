@@ -50,27 +50,21 @@ class CsvToJsonConverter(private val filePath: String) {
         "alignedOpex" to "Aligned OpEx",
         "companyType" to "IS/FS",
         "reportObligation" to "NFRD mandatory",
-        "attestation" to "Assurance"
-    )
-
-    private val stockIndexMapping = mapOf(
-        StockIndex.PrimeStandard to "Prime Standard",
-        StockIndex.GeneralStandard to "General Standard",
-        StockIndex.Hdax to "HDAX",
-        StockIndex.Scale to "Scale",
-        StockIndex.Cdax to "CDAX",
-        StockIndex.Gex to "GEX",
-        StockIndex.Dax to "DAX",
-        StockIndex.Mdax to "MDAX",
-        StockIndex.Sdax to "SDAX",
-        StockIndex.TecDax to "TecDAX",
-        StockIndex.Dax50Esg to "DAX 50 ESG"
-    )
-
-    private val identifierMapping = mapOf(
-        IdentifierType.Isin to "ISIN",
-        IdentifierType.Lei to "LEI",
-        IdentifierType.PermId to "PermID"
+        "attestation" to "Assurance",
+        IdentifierType.Isin.name to "ISIN",
+        IdentifierType.Lei.name to "LEI",
+        IdentifierType.PermId.name to "PermID",
+        StockIndex.PrimeStandard.name to "Prime Standard",
+        StockIndex.GeneralStandard.name to "General Standard",
+        StockIndex.Hdax.name to "HDAX",
+        StockIndex.Scale.name to "Scale",
+        StockIndex.Cdax.name to "CDAX",
+        StockIndex.Gex.name to "GEX",
+        StockIndex.Dax.name to "DAX",
+        StockIndex.Mdax.name to "MDAX",
+        StockIndex.Sdax.name to "SDAX",
+        StockIndex.TecDax.name to "TecDAX",
+        StockIndex.Dax50Esg.name to "DAX 50 ESG"
     )
 
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
@@ -99,15 +93,15 @@ class CsvToJsonConverter(private val filePath: String) {
     fun buildListOfCompanyInformation(): List<CompanyInformation> {
         return rawCsvData.filter { validateLine(it) }.map {
             CompanyInformation(
-                companyName = getValue(columnMapping["companyName"]!!, it),
-                headquarters = getValue(columnMapping["headquarters"]!!, it),
-                sector = getValue(columnMapping["sector"]!!, it),
-                marketCap = getMarketCap(columnMapping["marketCap"]!!, it),
+                companyName = getValue("companyName", it),
+                headquarters = getValue("headquarters", it),
+                sector = getValue("sector", it),
+                marketCap = getScaledValue("marketCap", it, euroUnitConverter)!!,
                 reportingDateOfMarketCap = LocalDate.parse(
-                    getValue(columnMapping["reportingDateOfMarketCap"]!!, it),
+                    getValue("reportingDateOfMarketCap", it),
                     DateTimeFormatter.ofPattern("d.M.yyyy")
                 ),
-                identifiers = getIdentifiers(it),
+                identifiers = getCompanyIdentifiers(it),
                 indices = getStockIndices(it)
             )
         }
@@ -115,38 +109,32 @@ class CsvToJsonConverter(private val filePath: String) {
 
     private fun validateLine(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
-        return !(
-            getValue(columnMapping["companyType"]!!, csvLineData) in listOf("FS", notAvailableString) ||
-                getValue(columnMapping["marketCap"]!!, csvLineData) == notAvailableString
+        return (
+            getValue("companyType", csvLineData) !in listOf("FS", notAvailableString) &&
+                getValue("marketCap", csvLineData) != notAvailableString
             )
     }
 
-    private fun getValue(columnName: String, csvData: Map<String, String>): String {
-        println(columnName)
-        println(csvData[columnName])
-        return csvData[columnName]!!.trim().ifBlank {
+    private fun getValue(property: String, csvData: Map<String, String>): String {
+        return csvData[columnMapping[property]]!!.trim().ifBlank {
             notAvailableString
         }
     }
 
-    private fun getMarketCap(columnHeader: String, csvLineData: Map<String, String>): BigDecimal {
-        return getScaledValue(columnHeader, csvLineData, euroUnitConverter)!!
-    }
-
-    private fun getScaledValue(columnHeader: String, csvData: Map<String, String>, scaleFactor: String): BigDecimal? {
+    private fun getScaledValue(property: String, csvData: Map<String, String>, scaleFactor: String): BigDecimal? {
         // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
-        return getValue(columnHeader, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
+        return getValue(property, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
             .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())
     }
 
-    private fun getIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
-        return identifierMapping.keys.map {
-            CompanyIdentifier(identifierValue = getValue(identifierMapping[it]!!, csvLineData), identifierType = it)
+    private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
+        return IdentifierType.values().sortedBy { it.name }.map {
+            CompanyIdentifier(identifierValue = getValue(it.name, csvLineData), identifierType = it)
         }.filter { it.identifierValue != notAvailableString }
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return stockIndexMapping.keys.filter { csvLineData[stockIndexMapping[it]]!!.isNotBlank() }.toSet()
+        return StockIndex.values().filter { csvLineData[columnMapping[it.name]]!!.isNotBlank() }.toSet()
     }
 
     /**
@@ -168,7 +156,7 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
-        return if (getValue(columnMapping["reportObligation"]!!, csvLineData) == "Ja") {
+        return if (getValue("reportObligation", csvLineData) == "Ja") {
             YesNo.Yes
         } else {
             YesNo.No
@@ -176,7 +164,7 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
-        return when (getValue(columnMapping["attestation"]!!, csvLineData)) {
+        return when (getValue("attestation", csvLineData)) {
             "reasonable" -> AttestationOptions.ReasonableAssurance
             "limited" -> AttestationOptions.LimitedAssurance
             else -> AttestationOptions.None
@@ -186,17 +174,17 @@ class CsvToJsonConverter(private val filePath: String) {
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
-            total = getNumericValue(columnMapping["total$type"]!!, csvLineData),
-            aligned = getNumericValue(columnMapping["aligned$type"]!!, csvLineData),
-            eligible = getNumericValue(columnMapping["eligible$type"]!!, csvLineData)
+            total = getNumericValue("total$type", csvLineData),
+            aligned = getNumericValue("aligned$type", csvLineData),
+            eligible = getNumericValue("eligible$type", csvLineData)
         )
     }
 
-    private fun getNumericValue(columnHeader: String, csvLineData: Map<String, String>): BigDecimal? {
-        return if (getValue(columnHeader, csvLineData).contains("%")) {
-            getScaledValue(columnHeader, csvLineData, "0.01")
+    private fun getNumericValue(property: String, csvLineData: Map<String, String>): BigDecimal? {
+        return if (getValue(property, csvLineData).contains("%")) {
+            getScaledValue(property, csvLineData, "0.01")
         } else {
-            getScaledValue(columnHeader, csvLineData, euroUnitConverter)
+            getScaledValue(property, csvLineData, euroUnitConverter)
         }
     }
 
