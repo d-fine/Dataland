@@ -32,8 +32,8 @@ jobs:
       - name: Get GitHub real data image on demand
         run: |
           if [[ $REALDATA == true ]]; then
-          echo "Retrieving real data"
-          docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
+            echo "Retrieving real data"
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
           fi
         env:
           REALDATA: ${{ github.event.inputs.realData }}
