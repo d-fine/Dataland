@@ -9,11 +9,17 @@ import java.io.File
 class CsvToJsonConverterTest {
     private val objectMapper = ObjectMapper().findAndRegisterModules()
     private val testDataProvider = TestDataProvider(objectMapper)
-    private val csvParser = CsvToJsonConverter(File("./build/resources/csvTestData.csv").path)
+
+    private fun getConverter(): CsvToJsonConverter {
+        val converter = CsvToJsonConverter()
+        converter.setEuroUnitConverter("1")
+        converter.parseCsvFile(File("./build/resources/csvTestData.csv").path)
+        return converter
+    }
 
     @Test
     fun `read csv and check that the company information objects are as expected`() {
-        val actualCompanies = csvParser.buildListOfCompanyInformation()
+        val actualCompanies = getConverter().buildListOfCompanyInformation()
         val expectedCompanies = testDataProvider.getAllCompanies()
         assertTrue(
             actualCompanies.size == expectedCompanies.size,
@@ -28,7 +34,7 @@ class CsvToJsonConverterTest {
 
     @Test
     fun `read csv and check that the generated EU Taxonomy objects are as expected`() {
-        val actualEuTaxonomyData = csvParser.buildListOfEuTaxonomyData()
+        val actualEuTaxonomyData = getConverter().buildListOfEuTaxonomyData()
         val expectedEuTaxonomyData = testDataProvider.getAllData()
         assertTrue(
             actualEuTaxonomyData.size == expectedEuTaxonomyData.size,

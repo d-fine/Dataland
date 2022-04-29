@@ -78,19 +78,19 @@ function generateCompanyAssociatedEuTaxonomyData() {
                 "companyId": id,
                 "data": {
                     "Capex": {
-                        "total": capexTotal,
-                        "aligned": capexAligned,
-                        "eligible": capexEligible
+                        "totalAmount": capexTotal,
+                        "alignedPercentage": capexAligned,
+                        "eligiblePercentage": capexEligible
                     },
                     "Opex": {
-                        "total": opexTotal,
-                        "aligned": opexAligned,
-                        "eligible": opexEligible
+                        "totalAmount": opexTotal,
+                        "alignedPercentage": opexAligned,
+                        "eligiblePercentage": opexEligible
                     },
                     "Revenue": {
-                        "total": revenueTotal,
-                        "aligned": revenueAligned,
-                        "eligible": revenueEligible
+                        "totalAmount": revenueTotal,
+                        "alignedPercentage": revenueAligned,
+                        "eligiblePercentage": revenueEligible
                     },
                     "Reporting Obligation": reportingObligation,
                     "Attestation": attestation
@@ -136,15 +136,15 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Sector', value: 'sector'},
             {label: 'Market Capitalization EUR', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.data.Revenue.total)},
-            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.data.Capex.total)},
-            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.data.Opex.total)},
-            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligible)},
-            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligible)},
-            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligible)},
-            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.aligned)},
-            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.data.Capex.aligned)},
-            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.data.Opex.aligned)},
+            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.data.Revenue.totalAmount)},
+            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.data.Capex.totalAmount)},
+            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.data.Opex.totalAmount)},
+            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligiblePercentage)},
+            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligiblePercentage)},
+            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligiblePercentage)},
+            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.alignedPercentage)},
+            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.data.Capex.alignedPercentage)},
+            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.data.Opex.alignedPercentage)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
             {label: 'NFRD mandatory', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
             {label: 'Assurance', value: (row: any) => {if(row.data["Attestation"] === "LimitedAssurance"){

@@ -23,15 +23,14 @@ import java.time.format.DateTimeFormatter
 
 /**
  * Class to transform company information and EU Taxonomy data delivered by csv into json format
- * @param filePath location of the csv file to be transformed
  */
-class CsvToJsonConverter(private val filePath: String) {
+class CsvToJsonConverter {
 
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
     private var euroUnitConverter = "1"
-    private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
+    private var rawCsvData: List<Map<String, String>> = listOf()
 
     private val columnMapping = mapOf(
         "companyName" to "Company name",
@@ -79,12 +78,18 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     /**
+     * Method to read a given csv file
+     */
+    fun parseCsvFile(filePath: String) {
+        rawCsvData = readCsvFile(filePath)
+    }
+
+    /**
      * Method to define the conversion factor for absolute euro amounts.
      * For example if all euro amounts are reported in millions set the value to "1000000"
      */
-    fun setEuroUnitConverter(conversionFactor: String): CsvToJsonConverter {
+    fun setEuroUnitConverter(conversionFactor: String) {
         euroUnitConverter = conversionFactor
-        return this
     }
 
     /**
@@ -206,7 +211,9 @@ class CsvToJsonConverter(private val filePath: String) {
          */
         @JvmStatic
         fun main(args: Array<String>) {
-            CsvToJsonConverter(File(args.first()).path).writeJson()
+            val converter = CsvToJsonConverter()
+            converter.parseCsvFile(File(args.first()).path)
+            converter.writeJson()
         }
     }
 }
