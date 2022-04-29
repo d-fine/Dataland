@@ -26,7 +26,9 @@ export default {
   methods: {
     handleAutoCompleteFocus(){
       this.showIndexPanel = false
-      this.$refs.euTaxoSearchBar.showIndexTabs = true
+      if (this.$refs.euTaxoSearchBar) {
+        this.$refs.euTaxoSearchBar.showIndexTabs = true
+      }
     },
     handleIndex(stockIndex, index){
       this.showIndexPanel = false

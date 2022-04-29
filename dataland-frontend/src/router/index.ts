@@ -5,7 +5,7 @@ import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
 import CompanyEU from "@/components/resources/taxonomy/TaxonomyPanel.vue";
 import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
-import CompanyTaxonomy from "@/components/resources/company/CompanyTaxonomy.vue";
+import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 
 const routes = [
     {
