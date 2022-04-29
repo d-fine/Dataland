@@ -96,10 +96,10 @@ describe('Search Taxonomy', function () {
         cy.intercept('**/api/companies*').as('searchCompany')
         cy.visit('/searchtaxonomy')
         cy.get('input[name=eu_taxonomy_search_input]')
-            .click()
+            .click({force:true})
             .type('b')
         cy.wait('@searchCompany', {timeout: 1000}).then(() => {
-            cy.get('.p-autocomplete-items')
+            cy.get('.p-autocomplete-item')
                 .eq(0).click()
                 .url().should('include', '/companies/')
                 .url().should('include', '/eutaxonomies')
