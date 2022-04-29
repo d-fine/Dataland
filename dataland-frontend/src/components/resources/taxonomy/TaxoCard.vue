@@ -50,16 +50,10 @@ export default {
     taxonomyKind: {
       type: String
     },
-    amount: {
-      default: 100,
-      type: Number
-    },
     total: {
-      default: 1000,
       type: Number
     },
     percent: {
-      default: 10,
       type: Number
     }
 
