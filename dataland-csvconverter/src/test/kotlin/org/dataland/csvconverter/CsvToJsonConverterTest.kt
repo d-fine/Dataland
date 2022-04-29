@@ -10,7 +10,6 @@ class CsvToJsonConverterTest {
     private val objectMapper = ObjectMapper().findAndRegisterModules()
     private val testDataProvider = TestDataProvider(objectMapper)
     private val csvParser = CsvToJsonConverter(File("./src/test/resources/csvTestData.csv").path)
-        .setEuroUnitConverter("1")
 
     @Test
     fun `read csv and check that the company information objects are as expected`() {
