@@ -89,7 +89,7 @@ tasks.bootJar {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
-    into("$projectDir/src/test/resources")
+    into("$buildDir/resources")
 }
 
 tasks.getByName("processTestResources") {
