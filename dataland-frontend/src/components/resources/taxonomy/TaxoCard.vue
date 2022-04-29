@@ -51,10 +51,10 @@ export default {
       type: String
     },
     total: {
-      type: Number
+      type: String
     },
     percent: {
-      type: Number
+      type: String
     }
 
   },
@@ -63,13 +63,13 @@ export default {
       return humanize(this.taxonomyType + this.taxonomyKind)
     },
     percentCalculation() {
-      return Math.round(this.percent * 100 * 100) / 100
+      return Math.round(parseFloat(this.percent) * 100 * 100) / 100
     },
     orderOfMagnitudeSuffix() {
-      return numberFormatter(this.total, 2)
+      return numberFormatter(parseFloat(this.total), 2)
     },
     amount() {
-      return numberFormatter(Math.round(this.total * this.percent * 100) / 100, 2)
+      return numberFormatter(Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100, 2)
     }
   },
 }

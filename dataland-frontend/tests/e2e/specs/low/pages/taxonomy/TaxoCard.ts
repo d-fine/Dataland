@@ -30,8 +30,8 @@ describe('EU Taxonomy Data and Cards', function () {
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible.toString())
-            cy.get(`div[title=${argument}] input[name=total]`).type(total)
+            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
+            cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total)
         }
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
@@ -53,7 +53,7 @@ describe('EU Taxonomy Data and Cards', function () {
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(`div[title=${argument}] input[name=eligible]`).type(eligible.toString())
+            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
         }
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")

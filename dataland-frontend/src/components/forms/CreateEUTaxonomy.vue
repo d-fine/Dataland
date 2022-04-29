@@ -71,7 +71,7 @@
             >
               <FormKit
                   type="text"
-                  name="aligned"
+                  name="alignedPercentage"
                   validation="number"
                   label="Aligned / €"
                   :inner-class="innerClass"
@@ -79,7 +79,7 @@
               />
               <FormKit
                   type="text"
-                  name="eligible"
+                  name="eligiblePercentage"
                   validation="number"
                   label="Eligible / €"
                   :inner-class="innerClass"
@@ -87,7 +87,7 @@
               />
               <FormKit
                   type="text"
-                  name="total"
+                  name="totalAmount"
                   validation="number"
                   label="Total / €"
                   :inner-class="innerClass"
@@ -105,7 +105,7 @@
             >
               <FormKit
                   type="text"
-                  name="aligned"
+                  name="alignedPercentage"
                   validation="number"
                   label="Aligned / €"
                   :inner-class="innerClass"
@@ -113,7 +113,7 @@
               />
               <FormKit
                   type="text"
-                  name="eligible"
+                  name="eligiblePercentage"
                   validation="number"
                   label="Eligible / €"
                   :inner-class="innerClass"
@@ -121,7 +121,7 @@
               />
               <FormKit
                   type="text"
-                  name="total"
+                  name="totalAmount"
                   validation="number"
                   label="Total / €"
                   :inner-class="innerClass"
@@ -138,7 +138,7 @@
             >
               <FormKit
                   type="text"
-                  name="aligned"
+                  name="alignedPercentage"
                   validation="number"
                   label="Aligned / €"
                   :inner-class="innerClass"
@@ -146,7 +146,7 @@
               />
               <FormKit
                   type="text"
-                  name="eligible"
+                  name="eligiblePercentage"
                   validation="number"
                   label="Eligible / €"
                   :inner-class="innerClass"
@@ -154,7 +154,7 @@
               />
               <FormKit
                   type="text"
-                  name="total"
+                  name="totalAmount"
                   validation="number"
                   label="Total / €"
                   :inner-class="innerClass"
