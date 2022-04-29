@@ -126,19 +126,19 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
     const mergedData = companyInformation.map((element, index) => {
         return {...element, ...companyAssociatedEuTaxonomyData[index]}
     })
-    const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric'};
+    const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric', };
     const dateLocale = 'de-DE';
 
     const options = {
         fields: [
             {label: 'Company name', value: 'companyName'},
             {label: 'Headquarter', value: 'headquarters'},
-            {label: 'Sektor', value: 'sector'},
-            {label: 'Market Capitalization (EURmm)', value: 'marketCap'},
+            {label: 'Sector', value: 'sector'},
+            {label: 'Market Capitalization EUR', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue in EURmio', value: (row: any) => euroGenerator(row.data.Revenue.total)},
-            {label: 'Total CapEx EURmio', value: (row: any) => euroGenerator(row.data.Capex.total)},
-            {label: 'Total OpEx EURmio', value: (row: any) => euroGenerator(row.data.Opex.total)},
+            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.data.Revenue.total)},
+            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.data.Capex.total)},
+            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.data.Opex.total)},
             {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligible)},
             {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligible)},
             {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligible)},
@@ -146,7 +146,7 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.data.Capex.aligned)},
             {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.data.Opex.aligned)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
-            {label: 'NFRD Pflicht', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
+            {label: 'NFRD mandatory', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
             {label: 'Assurance', value: (row: any) => {if(row.data["Attestation"] === "LimitedAssurance"){
                     return "limited"
                 }  else if (row.data["Attestation"] === "ReasonableAssurance") {

@@ -30,18 +30,18 @@ class CsvToJsonConverter(private val filePath: String) {
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private val notAvailableString = "n/a"
-    private var euroUnitConverter = "1000000"
+    private var euroUnitConverter = "1"
     private val rawCsvData: List<Map<String, String>> = readCsvFile(filePath)
 
     private val columnMapping = mapOf(
         "companyName" to "Company name",
         "headquarters" to "Headquarter",
-        "sector" to "Sektor",
-        "marketCap" to "Market Capitalization (EURmm)",
+        "sector" to "Sector",
+        "marketCap" to "Market Capitalization EUR",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
-        "totalRevenue" to "Total Revenue in EURmio",
-        "totalCapex" to "Total CapEx EURmio",
-        "totalOpex" to "Total OpEx EURmio",
+        "totalRevenue" to "Total Revenue EUR",
+        "totalCapex" to "Total CapEx EUR",
+        "totalOpex" to "Total OpEx EUR",
         "eligibleRevenue" to "Eligible Revenue",
         "eligibleCapex" to "Eligible CapEx",
         "eligibleOpex" to "Eligible OpEx",
@@ -49,7 +49,7 @@ class CsvToJsonConverter(private val filePath: String) {
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
         "companyType" to "IS/FS",
-        "reportObligation" to "NFRD Pflicht",
+        "reportObligation" to "NFRD mandatory",
         "attestation" to "Assurance"
     )
 
@@ -85,8 +85,8 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     /**
-     * Method to define the conversion factor for absolute euro amounts
-     * The default is 1000000 (meaning a number of 1 in the csv is interpreted as 1 million)
+     * Method to define the conversion factor for absolute euro amounts.
+     * For example if all euro amounts are reported in millions set the value to "1000000"
      */
     fun setEuroUnitConverter(conversionFactor: String): CsvToJsonConverter {
         euroUnitConverter = conversionFactor
@@ -122,6 +122,8 @@ class CsvToJsonConverter(private val filePath: String) {
     }
 
     private fun getValue(columnName: String, csvData: Map<String, String>): String {
+        println(columnName)
+        println(csvData[columnName])
         return csvData[columnName]!!.trim().ifBlank {
             notAvailableString
         }
