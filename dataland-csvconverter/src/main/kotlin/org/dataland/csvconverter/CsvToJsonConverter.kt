@@ -212,6 +212,8 @@ class CsvToJsonConverter {
         @JvmStatic
         fun main(args: Array<String>) {
             val converter = CsvToJsonConverter()
+            // euro amounts in real data csv is expected to be in units of millions
+            converter.setEuroUnitConverter("1000000")
             converter.parseCsvFile(File(args.first()).path)
             converter.writeJson()
         }

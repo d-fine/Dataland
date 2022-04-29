@@ -12,7 +12,6 @@ class CsvToJsonConverterTest {
 
     private fun getConverter(): CsvToJsonConverter {
         val converter = CsvToJsonConverter()
-        converter.setEuroUnitConverter("1")
         converter.parseCsvFile(File("./build/resources/csvTestData.csv").path)
         return converter
     }
