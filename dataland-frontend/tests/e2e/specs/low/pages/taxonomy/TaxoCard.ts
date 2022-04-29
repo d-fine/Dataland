@@ -1,7 +1,7 @@
 describe('EU Taxonomy Data and Cards', function () {
     let companyIdList:Array<string> = []
     const companyNames:Array<string>  = ["eligible & total", "eligible"]
-    it('Create a Companies when everything is fine', () => {
+    it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {
             cy.visit("/upload")
             cy.get('input[name=companyName]').type(companyName, {force: true})
@@ -22,7 +22,7 @@ describe('EU Taxonomy Data and Cards', function () {
         })
     });
 
-    it('Create EU Taxonomy Datasets all data present', () => {
+    it('Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers', () => {
         const eligible=0.67
         const total="15422154"
         cy.visit("/upload")
@@ -46,7 +46,7 @@ describe('EU Taxonomy Data and Cards', function () {
         })
     });
 
-    it('Create EU Taxonomy Datasets only percentages', () => {
+    it('Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers', () => {
         const eligible=0.67
         cy.visit("/upload")
         cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
