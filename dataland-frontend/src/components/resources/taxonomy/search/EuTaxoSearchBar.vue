@@ -55,15 +55,6 @@ const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies
 export default {
   name: "EuTaxoSearchBar",
   components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, Button, IndexTabs},
-  props: {
-    paramsSelection: {
-      type: String,
-      default: ""
-    },
-    stockIndices: {
-      type: Array,
-    },
-  },
   data() {
     return {
       route: useRoute(),

@@ -11,12 +11,32 @@ on:
     branches:
       - 'main'
   workflow_dispatch:
+    inputs:
+      realData:
+        description: 'Use real data'
+        required: false
+        type: boolean
+
 
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get GitHub real data image on demand
+        run: |
+          if [[ $REALDATA == true ]]; then
+            echo "Retrieving real data"
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
+          fi
+        env:
+          REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin

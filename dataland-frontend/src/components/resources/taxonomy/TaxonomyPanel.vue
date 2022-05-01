@@ -16,12 +16,12 @@
         <h3>Revenue</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible Revenue" :amount='dataSet.Revenue.eligible'
-                  :total='dataSet.Revenue.total'></TaxoCard>
+        <TaxoCard taxonomyKind="Revenue" taxonomyType="eligible" :percent='dataSet.Revenue.eligiblePercentage'
+                  :total='dataSet.Revenue.totalAmount'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned Revenue" :amount='dataSet.Revenue.aligned'
-                  :total='dataSet.Revenue.total'></TaxoCard>
+        <TaxoCard taxonomyKind="Revenue" taxonomyType="aligned" :percent='dataSet.Revenue.alignedPercentage'
+                  :total='dataSet.Revenue.totalAmount'></TaxoCard>
       </div>
 
     </div>
@@ -30,12 +30,12 @@
         <h3>CapEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible CapEx" :amount='dataSet.Capex.eligible'
-                  :total='dataSet.Capex.total'></TaxoCard>
+        <TaxoCard taxonomyKind="CapEx" taxonomyType="eligible" :percent='dataSet.Capex.eligiblePercentage'
+                  :total='dataSet.Capex.totalAmount'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned CapEx" :amount='dataSet.Capex.aligned'
-                  :total='dataSet.Capex.total'></TaxoCard>
+        <TaxoCard taxonomyKind="CapEx" taxonomyType="aligned" :percent='dataSet.Capex.alignedPercentage'
+                  :total='dataSet.Capex.totalAmount'></TaxoCard>
       </div>
     </div>
     <div class="grid">
@@ -43,12 +43,12 @@
         <h3>OpEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible OpEx" :amount='dataSet.Opex.eligible'
-                  :total='dataSet.Opex.total'></TaxoCard>
+        <TaxoCard taxonomyKind="OpEx" taxonomyType="eligible" :percent='dataSet.Opex.eligiblePercentage'
+                  :total='dataSet.Opex.totalAmount'></TaxoCard>
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned OpEx" :amount='dataSet.Opex.aligned'
-                  :total='dataSet.Opex.total'></TaxoCard>
+        <TaxoCard taxonomyKind="OpEx" taxonomyType="aligned" :percent='dataSet.Opex.alignedPercentage'
+                  :total='dataSet.Opex.totalAmount'></TaxoCard>
       </div>
     </div>
   </div>

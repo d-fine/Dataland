@@ -39,14 +39,14 @@ subprojects {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.19.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.21")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.19.0")
+    id("io.gitlab.arturbosch.detekt").version("1.20.0")
     id("org.springframework.boot") version "2.6.6" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     kotlin("jvm") version "1.6.10"

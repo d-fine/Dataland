@@ -30,8 +30,12 @@
             hdax: "HDAX",
             dax50esg: "DAX 50 ESG",
             isin: "ISIN",
-            permid: "PERM Id",
-            lei: "LEI"
+            permid: "PermID",
+            lei: "LEI",
+            eligiblecapex: "Eligible CapEx",
+            eligibleopex: "Eligible OpEx",
+            alignedcapex: "Aligned CapEx",
+            alignedopex: "Aligned OpEx"
         }
         const lowerCaseText = rawText.toLowerCase()
         return (lowerCaseText in mappingObject) ? mappingObject[lowerCaseText] : ""

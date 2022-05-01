@@ -3,85 +3,85 @@
 		"companyId": 1,
 		"data": {
 			"Capex": {
-				"total": 4866480,
-				"aligned": 136553,
-				"eligible": 4007606
+				"totalAmount": "664439.07",
+				"alignedPercentage": "0.0839",
+				"eligiblePercentage": "0.1755"
 			},
 			"Opex": {
-				"total": 3255720,
-				"aligned": 388015,
-				"eligible": 3152876
+				"totalAmount": "994003.64",
+				"alignedPercentage": "0.1681",
+				"eligiblePercentage": "0.8527"
 			},
 			"Revenue": {
-				"total": 9409611,
-				"aligned": 1230285,
-				"eligible": 1629219
+				"totalAmount": "760912.29",
+				"alignedPercentage": "0.1418",
+				"eligiblePercentage": "0.1813"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 2,
 		"data": {
 			"Capex": {
-				"total": 3764963,
-				"aligned": 351649,
-				"eligible": 2617515
+				"totalAmount": "974273.26",
+				"alignedPercentage": "0.0400",
+				"eligiblePercentage": "0.0667"
 			},
 			"Opex": {
-				"total": 4003365,
-				"aligned": 766231,
-				"eligible": 818684
+				"totalAmount": "329032.06",
+				"alignedPercentage": "0.0229",
+				"eligiblePercentage": "0.3319"
 			},
 			"Revenue": {
-				"total": 2932251,
-				"aligned": 1060565,
-				"eligible": 2355191
+				"totalAmount": "424710.72",
+				"alignedPercentage": "0.4470",
+				"eligiblePercentage": "0.6190"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 3,
 		"data": {
 			"Capex": {
-				"total": 830774,
-				"aligned": 270229,
-				"eligible": 442780
+				"totalAmount": "864819.78",
+				"alignedPercentage": "0.0168",
+				"eligiblePercentage": "0.0514"
 			},
 			"Opex": {
-				"total": 7277058,
-				"aligned": 1062567,
-				"eligible": 6411831
+				"totalAmount": "990147.33",
+				"alignedPercentage": "0.5607",
+				"eligiblePercentage": "0.6798"
 			},
 			"Revenue": {
-				"total": 7726293,
-				"aligned": 5297045,
-				"eligible": 6087040
+				"totalAmount": "579421.90",
+				"alignedPercentage": "0.5718",
+				"eligiblePercentage": "0.9517"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 4,
 		"data": {
 			"Capex": {
-				"total": 6594040,
-				"aligned": 1427524,
-				"eligible": 6380820
+				"totalAmount": "604660.68",
+				"alignedPercentage": "0.1620",
+				"eligiblePercentage": "0.3838"
 			},
 			"Opex": {
-				"total": 2801211,
-				"aligned": 1735475,
-				"eligible": 2280501
+				"totalAmount": "90061.11",
+				"alignedPercentage": "0.0007",
+				"eligiblePercentage": "0.0624"
 			},
 			"Revenue": {
-				"total": 3798029,
-				"aligned": 65374,
-				"eligible": 186037
+				"totalAmount": "266010.44",
+				"alignedPercentage": "0.0071",
+				"eligiblePercentage": "0.1114"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -91,19 +91,19 @@
 		"companyId": 5,
 		"data": {
 			"Capex": {
-				"total": 5071519,
-				"aligned": 822750,
-				"eligible": 2865448
+				"totalAmount": "415845.72",
+				"alignedPercentage": "0.0730",
+				"eligiblePercentage": "0.1149"
 			},
 			"Opex": {
-				"total": 8298263,
-				"aligned": 508113,
-				"eligible": 7880053
+				"totalAmount": "705516.61",
+				"alignedPercentage": "0.1046",
+				"eligiblePercentage": "0.2395"
 			},
 			"Revenue": {
-				"total": 4249794,
-				"aligned": 913437,
-				"eligible": 2652930
+				"totalAmount": "207748.05",
+				"alignedPercentage": "0.0160",
+				"eligiblePercentage": "0.1094"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -113,197 +113,197 @@
 		"companyId": 6,
 		"data": {
 			"Capex": {
-				"total": 8024899,
-				"aligned": 4298079,
-				"eligible": 6034611
+				"totalAmount": "81960.34",
+				"alignedPercentage": "0.4027",
+				"eligiblePercentage": "0.4338"
 			},
 			"Opex": {
-				"total": 7872582,
-				"aligned": 460437,
-				"eligible": 6896669
+				"totalAmount": "323966.67",
+				"alignedPercentage": "0.4282",
+				"eligiblePercentage": "0.5698"
 			},
 			"Revenue": {
-				"total": 5178367,
-				"aligned": 270579,
-				"eligible": 356867
+				"totalAmount": "269399.91",
+				"alignedPercentage": "0.0121",
+				"eligiblePercentage": "0.1145"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 7,
 		"data": {
 			"Capex": {
-				"total": 8980163,
-				"aligned": 283131,
-				"eligible": 5293193
+				"totalAmount": "278385.19",
+				"alignedPercentage": "0.0637",
+				"eligiblePercentage": "0.3625"
 			},
 			"Opex": {
-				"total": 54869,
-				"aligned": 52824,
-				"eligible": 54043
+				"totalAmount": "565802.70",
+				"alignedPercentage": "0.0087",
+				"eligiblePercentage": "0.2414"
 			},
 			"Revenue": {
-				"total": 6654640,
-				"aligned": 422559,
-				"eligible": 5617718
+				"totalAmount": "462486.44",
+				"alignedPercentage": "0.5912",
+				"eligiblePercentage": "0.7580"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 8,
 		"data": {
 			"Capex": {
-				"total": 4688361,
-				"aligned": 776912,
-				"eligible": 1176189
+				"totalAmount": "801336.54",
+				"alignedPercentage": "0.0911",
+				"eligiblePercentage": "0.1702"
 			},
 			"Opex": {
-				"total": 202894,
-				"aligned": 73268,
-				"eligible": 91579
+				"totalAmount": "52746.56",
+				"alignedPercentage": "0.1153",
+				"eligiblePercentage": "0.4936"
 			},
 			"Revenue": {
-				"total": 5693424,
-				"aligned": 3197330,
-				"eligible": 4787932
+				"totalAmount": "315730.34",
+				"alignedPercentage": "0.1714",
+				"eligiblePercentage": "0.9735"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 9,
 		"data": {
 			"Capex": {
-				"total": 6810484,
-				"aligned": 691360,
-				"eligible": 1805005
+				"totalAmount": "284972.44",
+				"alignedPercentage": "0.0831",
+				"eligiblePercentage": "0.1441"
 			},
 			"Opex": {
-				"total": 4036096,
-				"aligned": 448973,
-				"eligible": 853736
+				"totalAmount": "235774.38",
+				"alignedPercentage": "0.1689",
+				"eligiblePercentage": "0.4238"
 			},
 			"Revenue": {
-				"total": 7608887,
-				"aligned": 952062,
-				"eligible": 2345733
+				"totalAmount": "245640.11",
+				"alignedPercentage": "0.0850",
+				"eligiblePercentage": "0.4066"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 10,
 		"data": {
 			"Capex": {
-				"total": 297432,
-				"aligned": 150721,
-				"eligible": 197171
+				"totalAmount": "218429.57",
+				"alignedPercentage": "0.0202",
+				"eligiblePercentage": "0.4485"
 			},
 			"Opex": {
-				"total": 4986836,
-				"aligned": 2000788,
-				"eligible": 2034139
+				"totalAmount": "823547.40",
+				"alignedPercentage": "0.0557",
+				"eligiblePercentage": "0.1733"
 			},
 			"Revenue": {
-				"total": 2615389,
-				"aligned": 385091,
-				"eligible": 1452820
+				"totalAmount": "298141.12",
+				"alignedPercentage": "0.1307",
+				"eligiblePercentage": "0.4750"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 11,
 		"data": {
 			"Capex": {
-				"total": 8758896,
-				"aligned": 620708,
-				"eligible": 5170211
+				"totalAmount": "177283.79",
+				"alignedPercentage": "0.2328",
+				"eligiblePercentage": "0.5663"
 			},
 			"Opex": {
-				"total": 6763088,
-				"aligned": 4214138,
-				"eligible": 4962524
+				"totalAmount": "424564.27",
+				"alignedPercentage": "0.1524",
+				"eligiblePercentage": "0.3460"
 			},
 			"Revenue": {
-				"total": 4197421,
-				"aligned": 1188828,
-				"eligible": 3783055
+				"totalAmount": "98840.39",
+				"alignedPercentage": "0.0482",
+				"eligiblePercentage": "0.9849"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 12,
 		"data": {
 			"Capex": {
-				"total": 7862042,
-				"aligned": 4975587,
-				"eligible": 6892434
+				"totalAmount": "813777.60",
+				"alignedPercentage": "0.5929",
+				"eligiblePercentage": "0.7269"
 			},
 			"Opex": {
-				"total": 4690563,
-				"aligned": 1680322,
-				"eligible": 3957514
+				"totalAmount": "546206.62",
+				"alignedPercentage": "0.1304",
+				"eligiblePercentage": "0.3314"
 			},
 			"Revenue": {
-				"total": 3296688,
-				"aligned": 435172,
-				"eligible": 924848
+				"totalAmount": "494875.96",
+				"alignedPercentage": "0.0975",
+				"eligiblePercentage": "0.1373"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 13,
 		"data": {
 			"Capex": {
-				"total": 1146125,
-				"aligned": 575728,
-				"eligible": 895183
+				"totalAmount": "246696.26",
+				"alignedPercentage": "0.0854",
+				"eligiblePercentage": "0.1875"
 			},
 			"Opex": {
-				"total": 8249008,
-				"aligned": 3081563,
-				"eligible": 3166436
+				"totalAmount": "224650.33",
+				"alignedPercentage": "0.2528",
+				"eligiblePercentage": "0.5137"
 			},
 			"Revenue": {
-				"total": 6697186,
-				"aligned": 860458,
-				"eligible": 1649410
+				"totalAmount": "905796.91",
+				"alignedPercentage": "0.1351",
+				"eligiblePercentage": "0.8719"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 14,
 		"data": {
 			"Capex": {
-				"total": 9465698,
-				"aligned": 517397,
-				"eligible": 1164040
+				"totalAmount": "505773.69",
+				"alignedPercentage": "0.0183",
+				"eligiblePercentage": "0.2674"
 			},
 			"Opex": {
-				"total": 965914,
-				"aligned": 259255,
-				"eligible": 535457
+				"totalAmount": "151395.78",
+				"alignedPercentage": "0.0365",
+				"eligiblePercentage": "0.0484"
 			},
 			"Revenue": {
-				"total": 6458063,
-				"aligned": 3569834,
-				"eligible": 3783419
+				"totalAmount": "820676.85",
+				"alignedPercentage": "0.1930",
+				"eligiblePercentage": "0.3892"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -311,21 +311,21 @@
 		"companyId": 15,
 		"data": {
 			"Capex": {
-				"total": 8684581,
-				"aligned": 2378410,
-				"eligible": 6089598
+				"totalAmount": "301277.59",
+				"alignedPercentage": "0.5639",
+				"eligiblePercentage": "0.9297"
 			},
 			"Opex": {
-				"total": 3603429,
-				"aligned": 278392,
-				"eligible": 918746
+				"totalAmount": "425117.04",
+				"alignedPercentage": "0.0746",
+				"eligiblePercentage": "0.0998"
 			},
 			"Revenue": {
-				"total": 8454756,
-				"aligned": 3372994,
-				"eligible": 5421888
+				"totalAmount": "123794.12",
+				"alignedPercentage": "0.0147",
+				"eligiblePercentage": "0.1138"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -333,107 +333,107 @@
 		"companyId": 16,
 		"data": {
 			"Capex": {
-				"total": 50516,
-				"aligned": 50164,
-				"eligible": 50449
+				"totalAmount": "418965.48",
+				"alignedPercentage": "0.0414",
+				"eligiblePercentage": "0.1652"
 			},
 			"Opex": {
-				"total": 5626788,
-				"aligned": 4180212,
-				"eligible": 5110552
+				"totalAmount": "213416.73",
+				"alignedPercentage": "0.0610",
+				"eligiblePercentage": "0.1613"
 			},
 			"Revenue": {
-				"total": 9215477,
-				"aligned": 227766,
-				"eligible": 563163
+				"totalAmount": "352317.45",
+				"alignedPercentage": "0.3393",
+				"eligiblePercentage": "0.7956"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 17,
 		"data": {
 			"Capex": {
-				"total": 5264785,
-				"aligned": 1082036,
-				"eligible": 2172103
+				"totalAmount": "566957.10",
+				"alignedPercentage": "0.1972",
+				"eligiblePercentage": "0.3667"
 			},
 			"Opex": {
-				"total": 4152380,
-				"aligned": 411037,
-				"eligible": 1213552
+				"totalAmount": "393260.09",
+				"alignedPercentage": "0.0102",
+				"eligiblePercentage": "0.1059"
 			},
 			"Revenue": {
-				"total": 8492955,
-				"aligned": 138335,
-				"eligible": 5661452
+				"totalAmount": "909628.61",
+				"alignedPercentage": "0.1611",
+				"eligiblePercentage": "0.2981"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 18,
 		"data": {
 			"Capex": {
-				"total": 8439853,
-				"aligned": 6434442,
-				"eligible": 8434807
+				"totalAmount": "684603.80",
+				"alignedPercentage": "0.0055",
+				"eligiblePercentage": "0.0171"
 			},
 			"Opex": {
-				"total": 3632155,
-				"aligned": 132228,
-				"eligible": 467324
+				"totalAmount": "446893.80",
+				"alignedPercentage": "0.0083",
+				"eligiblePercentage": "0.3545"
 			},
 			"Revenue": {
-				"total": 6655291,
-				"aligned": 2995287,
-				"eligible": 6223554
+				"totalAmount": "214273.93",
+				"alignedPercentage": "0.5368",
+				"eligiblePercentage": "0.9931"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 19,
 		"data": {
 			"Capex": {
-				"total": 5862706,
-				"aligned": 1505668,
-				"eligible": 3701605
+				"totalAmount": "368171.57",
+				"alignedPercentage": "0.0265",
+				"eligiblePercentage": "0.0377"
 			},
 			"Opex": {
-				"total": 5888872,
-				"aligned": 2946783,
-				"eligible": 3592816
+				"totalAmount": "989816.98",
+				"alignedPercentage": "0.5541",
+				"eligiblePercentage": "0.8799"
 			},
 			"Revenue": {
-				"total": 5227593,
-				"aligned": 3134624,
-				"eligible": 4994595
+				"totalAmount": "568514.39",
+				"alignedPercentage": "0.3185",
+				"eligiblePercentage": "0.8423"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 20,
 		"data": {
 			"Capex": {
-				"total": 864196,
-				"aligned": 55837,
-				"eligible": 153744
+				"totalAmount": "373389.07",
+				"alignedPercentage": "0.1415",
+				"eligiblePercentage": "0.1748"
 			},
 			"Opex": {
-				"total": 6673460,
-				"aligned": 4389366,
-				"eligible": 4875258
+				"totalAmount": "802977.86",
+				"alignedPercentage": "0.0666",
+				"eligiblePercentage": "0.9956"
 			},
 			"Revenue": {
-				"total": 2709983,
-				"aligned": 558522,
-				"eligible": 1507298
+				"totalAmount": "888514.30",
+				"alignedPercentage": "0.1648",
+				"eligiblePercentage": "0.4018"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -443,19 +443,19 @@
 		"companyId": 21,
 		"data": {
 			"Capex": {
-				"total": 3820197,
-				"aligned": 711615,
-				"eligible": 966520
+				"totalAmount": "348652.70",
+				"alignedPercentage": "0.0012",
+				"eligiblePercentage": "0.0033"
 			},
 			"Opex": {
-				"total": 4575964,
-				"aligned": 3057735,
-				"eligible": 3810821
+				"totalAmount": "658704.75",
+				"alignedPercentage": "0.0041",
+				"eligiblePercentage": "0.1997"
 			},
 			"Revenue": {
-				"total": 2556950,
-				"aligned": 106670,
-				"eligible": 485810
+				"totalAmount": "89431.22",
+				"alignedPercentage": "0.3764",
+				"eligiblePercentage": "0.9386"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -465,85 +465,85 @@
 		"companyId": 22,
 		"data": {
 			"Capex": {
-				"total": 4438567,
-				"aligned": 263492,
-				"eligible": 2591629
+				"totalAmount": "265159.19",
+				"alignedPercentage": "0.1016",
+				"eligiblePercentage": "0.2777"
 			},
 			"Opex": {
-				"total": 9604303,
-				"aligned": 6687342,
-				"eligible": 7489103
+				"totalAmount": "808795.27",
+				"alignedPercentage": "0.5995",
+				"eligiblePercentage": "0.9427"
 			},
 			"Revenue": {
-				"total": 4279367,
-				"aligned": 183320,
-				"eligible": 4043345
+				"totalAmount": "353781.38",
+				"alignedPercentage": "0.0817",
+				"eligiblePercentage": "0.1121"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 23,
 		"data": {
 			"Capex": {
-				"total": 3268524,
-				"aligned": 1715140,
-				"eligible": 3150967
+				"totalAmount": "727822.63",
+				"alignedPercentage": "0.1668",
+				"eligiblePercentage": "0.5204"
 			},
 			"Opex": {
-				"total": 9388213,
-				"aligned": 4818906,
-				"eligible": 6858014
+				"totalAmount": "894409.42",
+				"alignedPercentage": "0.1951",
+				"eligiblePercentage": "0.5701"
 			},
 			"Revenue": {
-				"total": 2916595,
-				"aligned": 100061,
-				"eligible": 219029
+				"totalAmount": "286603.08",
+				"alignedPercentage": "0.1453",
+				"eligiblePercentage": "0.7163"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 24,
 		"data": {
 			"Capex": {
-				"total": 9087961,
-				"aligned": 6030612,
-				"eligible": 6710125
+				"totalAmount": "422779.34",
+				"alignedPercentage": "0.0709",
+				"eligiblePercentage": "0.2173"
 			},
 			"Opex": {
-				"total": 2237947,
-				"aligned": 54456,
-				"eligible": 80651
+				"totalAmount": "143219.24",
+				"alignedPercentage": "0.1617",
+				"eligiblePercentage": "0.2726"
 			},
 			"Revenue": {
-				"total": 4689370,
-				"aligned": 108601,
-				"eligible": 161174
+				"totalAmount": "951783.60",
+				"alignedPercentage": "0.0345",
+				"eligiblePercentage": "0.2125"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 25,
 		"data": {
 			"Capex": {
-				"total": 9566190,
-				"aligned": 8240966,
-				"eligible": 8523896
+				"totalAmount": "680455.96",
+				"alignedPercentage": "0.0318",
+				"eligiblePercentage": "0.0648"
 			},
 			"Opex": {
-				"total": 6028669,
-				"aligned": 3441677,
-				"eligible": 4937838
+				"totalAmount": "219718.16",
+				"alignedPercentage": "0.1143",
+				"eligiblePercentage": "0.9817"
 			},
 			"Revenue": {
-				"total": 7555861,
-				"aligned": 269663,
-				"eligible": 592318
+				"totalAmount": "956578.97",
+				"alignedPercentage": "0.4780",
+				"eligiblePercentage": "0.6221"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -553,19 +553,19 @@
 		"companyId": 26,
 		"data": {
 			"Capex": {
-				"total": 7674573,
-				"aligned": 301021,
-				"eligible": 3799443
+				"totalAmount": "569791.60",
+				"alignedPercentage": "0.1770",
+				"eligiblePercentage": "0.4121"
 			},
 			"Opex": {
-				"total": 2496777,
-				"aligned": 372171,
-				"eligible": 402941
+				"totalAmount": "637412.25",
+				"alignedPercentage": "0.4353",
+				"eligiblePercentage": "0.5598"
 			},
 			"Revenue": {
-				"total": 4410711,
-				"aligned": 877730,
-				"eligible": 1394263
+				"totalAmount": "755820.34",
+				"alignedPercentage": "0.0354",
+				"eligiblePercentage": "0.1315"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -575,19 +575,19 @@
 		"companyId": 27,
 		"data": {
 			"Capex": {
-				"total": 1562071,
-				"aligned": 1121584,
-				"eligible": 1403040
+				"totalAmount": "520092.44",
+				"alignedPercentage": "0.0243",
+				"eligiblePercentage": "0.1192"
 			},
 			"Opex": {
-				"total": 5734869,
-				"aligned": 1146498,
-				"eligible": 3981041
+				"totalAmount": "126099.22",
+				"alignedPercentage": "0.3402",
+				"eligiblePercentage": "0.9607"
 			},
 			"Revenue": {
-				"total": 8184438,
-				"aligned": 647509,
-				"eligible": 8076555
+				"totalAmount": "826794.86",
+				"alignedPercentage": "0.2068",
+				"eligiblePercentage": "0.2921"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
@@ -597,43 +597,43 @@
 		"companyId": 28,
 		"data": {
 			"Capex": {
-				"total": 9807670,
-				"aligned": 1639908,
-				"eligible": 7512177
+				"totalAmount": "899189.86",
+				"alignedPercentage": "0.0718",
+				"eligiblePercentage": "0.1181"
 			},
 			"Opex": {
-				"total": 3946761,
-				"aligned": 659205,
-				"eligible": 1602071
+				"totalAmount": "973968.59",
+				"alignedPercentage": "0.2211",
+				"eligiblePercentage": "0.3714"
 			},
 			"Revenue": {
-				"total": 6306569,
-				"aligned": 1580783,
-				"eligible": 2777519
+				"totalAmount": "83809.86",
+				"alignedPercentage": "0.3387",
+				"eligiblePercentage": "0.4160"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 29,
 		"data": {
 			"Capex": {
-				"total": 6381893,
-				"aligned": 743201,
-				"eligible": 2416769
+				"totalAmount": "783353.57",
+				"alignedPercentage": "0.1317",
+				"eligiblePercentage": "0.1486"
 			},
 			"Opex": {
-				"total": 6095983,
-				"aligned": 2081209,
-				"eligible": 2903567
+				"totalAmount": "98355.60",
+				"alignedPercentage": "0.6503",
+				"eligiblePercentage": "0.6998"
 			},
 			"Revenue": {
-				"total": 7226966,
-				"aligned": 82224,
-				"eligible": 190667
+				"totalAmount": "953102.90",
+				"alignedPercentage": "0.0538",
+				"eligiblePercentage": "0.8815"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -641,21 +641,21 @@
 		"companyId": 30,
 		"data": {
 			"Capex": {
-				"total": 1938297,
-				"aligned": 160279,
-				"eligible": 527561
+				"totalAmount": "210460.16",
+				"alignedPercentage": "0.1770",
+				"eligiblePercentage": "0.3725"
 			},
 			"Opex": {
-				"total": 7355999,
-				"aligned": 5835203,
-				"eligible": 6104198
+				"totalAmount": "326897.72",
+				"alignedPercentage": "0.2000",
+				"eligiblePercentage": "0.3010"
 			},
 			"Revenue": {
-				"total": 8802319,
-				"aligned": 5000220,
-				"eligible": 6499440
+				"totalAmount": "66160.02",
+				"alignedPercentage": "0.1125",
+				"eligiblePercentage": "0.3229"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -663,41 +663,41 @@
 		"companyId": 31,
 		"data": {
 			"Capex": {
-				"total": 789006,
-				"aligned": 72458,
-				"eligible": 106152
+				"totalAmount": "450441.01",
+				"alignedPercentage": "0.0448",
+				"eligiblePercentage": "0.0561"
 			},
 			"Opex": {
-				"total": 3715501,
-				"aligned": 185138,
-				"eligible": 370771
+				"totalAmount": "380746.12",
+				"alignedPercentage": "0.2329",
+				"eligiblePercentage": "0.4205"
 			},
 			"Revenue": {
-				"total": 5065884,
-				"aligned": 3371856,
-				"eligible": 4827586
+				"totalAmount": "335436.19",
+				"alignedPercentage": "0.3013",
+				"eligiblePercentage": "0.3339"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 32,
 		"data": {
 			"Capex": {
-				"total": 5377337,
-				"aligned": 2826543,
-				"eligible": 3887167
+				"totalAmount": "529742.56",
+				"alignedPercentage": "0.6880",
+				"eligiblePercentage": "0.7001"
 			},
 			"Opex": {
-				"total": 1175634,
-				"aligned": 222595,
-				"eligible": 266798
+				"totalAmount": "767502.41",
+				"alignedPercentage": "0.0579",
+				"eligiblePercentage": "0.4093"
 			},
 			"Revenue": {
-				"total": 5709121,
-				"aligned": 2672741,
-				"eligible": 4459794
+				"totalAmount": "60773.63",
+				"alignedPercentage": "0.3088",
+				"eligiblePercentage": "0.6647"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -707,41 +707,41 @@
 		"companyId": 33,
 		"data": {
 			"Capex": {
-				"total": 6097163,
-				"aligned": 748300,
-				"eligible": 1070718
+				"totalAmount": "830205.15",
+				"alignedPercentage": "0.0144",
+				"eligiblePercentage": "0.1846"
 			},
 			"Opex": {
-				"total": 2249694,
-				"aligned": 262895,
-				"eligible": 340341
+				"totalAmount": "436163.87",
+				"alignedPercentage": "0.0071",
+				"eligiblePercentage": "0.1159"
 			},
 			"Revenue": {
-				"total": 8504649,
-				"aligned": 6593543,
-				"eligible": 8264798
+				"totalAmount": "452887.73",
+				"alignedPercentage": "0.1316",
+				"eligiblePercentage": "0.3431"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 34,
 		"data": {
 			"Capex": {
-				"total": 7929679,
-				"aligned": 2291404,
-				"eligible": 6123030
+				"totalAmount": "408760.87",
+				"alignedPercentage": "0.0136",
+				"eligiblePercentage": "0.5574"
 			},
 			"Opex": {
-				"total": 3216665,
-				"aligned": 695625,
-				"eligible": 798946
+				"totalAmount": "553489.79",
+				"alignedPercentage": "0.0433",
+				"eligiblePercentage": "0.1221"
 			},
 			"Revenue": {
-				"total": 6155654,
-				"aligned": 2701584,
-				"eligible": 3880410
+				"totalAmount": "445658.00",
+				"alignedPercentage": "0.0846",
+				"eligiblePercentage": "0.3542"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -751,19 +751,19 @@
 		"companyId": 35,
 		"data": {
 			"Capex": {
-				"total": 4544385,
-				"aligned": 236947,
-				"eligible": 297875
+				"totalAmount": "148329.59",
+				"alignedPercentage": "0.3792",
+				"eligiblePercentage": "0.7120"
 			},
 			"Opex": {
-				"total": 781801,
-				"aligned": 59020,
-				"eligible": 60112
+				"totalAmount": "101346.12",
+				"alignedPercentage": "0.2237",
+				"eligiblePercentage": "0.4231"
 			},
 			"Revenue": {
-				"total": 2010975,
-				"aligned": 127810,
-				"eligible": 269841
+				"totalAmount": "535931.26",
+				"alignedPercentage": "0.0713",
+				"eligiblePercentage": "0.0957"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -773,21 +773,21 @@
 		"companyId": 36,
 		"data": {
 			"Capex": {
-				"total": 6390339,
-				"aligned": 512070,
-				"eligible": 1054578
+				"totalAmount": "452860.15",
+				"alignedPercentage": "0.2802",
+				"eligiblePercentage": "0.8822"
 			},
 			"Opex": {
-				"total": 9755643,
-				"aligned": 4939933,
-				"eligible": 9293855
+				"totalAmount": "245660.08",
+				"alignedPercentage": "0.1581",
+				"eligiblePercentage": "0.2627"
 			},
 			"Revenue": {
-				"total": 9622461,
-				"aligned": 4980416,
-				"eligible": 8241333
+				"totalAmount": "313286.72",
+				"alignedPercentage": "0.0764",
+				"eligiblePercentage": "0.6496"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -795,43 +795,43 @@
 		"companyId": 37,
 		"data": {
 			"Capex": {
-				"total": 6551698,
-				"aligned": 1341306,
-				"eligible": 4135918
+				"totalAmount": "447213.29",
+				"alignedPercentage": "0.0777",
+				"eligiblePercentage": "0.3829"
 			},
 			"Opex": {
-				"total": 9773088,
-				"aligned": 4723113,
-				"eligible": 4949027
+				"totalAmount": "928944.75",
+				"alignedPercentage": "0.3443",
+				"eligiblePercentage": "0.7521"
 			},
 			"Revenue": {
-				"total": 5110058,
-				"aligned": 1858001,
-				"eligible": 3551937
+				"totalAmount": "206467.66",
+				"alignedPercentage": "0.0559",
+				"eligiblePercentage": "0.7299"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 38,
 		"data": {
 			"Capex": {
-				"total": 7470003,
-				"aligned": 5909100,
-				"eligible": 6191046
+				"totalAmount": "697717.22",
+				"alignedPercentage": "0.1955",
+				"eligiblePercentage": "0.9172"
 			},
 			"Opex": {
-				"total": 3026603,
-				"aligned": 742108,
-				"eligible": 1704715
+				"totalAmount": "727980.62",
+				"alignedPercentage": "0.0510",
+				"eligiblePercentage": "0.0739"
 			},
 			"Revenue": {
-				"total": 4537743,
-				"aligned": 336693,
-				"eligible": 364866
+				"totalAmount": "304684.87",
+				"alignedPercentage": "0.3689",
+				"eligiblePercentage": "0.4354"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -839,285 +839,285 @@
 		"companyId": 39,
 		"data": {
 			"Capex": {
-				"total": 1083068,
-				"aligned": 196474,
-				"eligible": 213561
+				"totalAmount": "494793.30",
+				"alignedPercentage": "0.0306",
+				"eligiblePercentage": "0.1622"
 			},
 			"Opex": {
-				"total": 7421302,
-				"aligned": 2708610,
-				"eligible": 4406828
+				"totalAmount": "518904.40",
+				"alignedPercentage": "0.1438",
+				"eligiblePercentage": "0.3754"
 			},
 			"Revenue": {
-				"total": 7070412,
-				"aligned": 1898596,
-				"eligible": 1962400
+				"totalAmount": "250101.01",
+				"alignedPercentage": "0.2291",
+				"eligiblePercentage": "0.3183"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 40,
 		"data": {
 			"Capex": {
-				"total": 8689091,
-				"aligned": 5547044,
-				"eligible": 5876858
+				"totalAmount": "497802.88",
+				"alignedPercentage": "0.2719",
+				"eligiblePercentage": "0.5615"
 			},
 			"Opex": {
-				"total": 2281341,
-				"aligned": 89282,
-				"eligible": 1653324
+				"totalAmount": "639118.83",
+				"alignedPercentage": "0.2159",
+				"eligiblePercentage": "0.3384"
 			},
 			"Revenue": {
-				"total": 9662511,
-				"aligned": 1172981,
-				"eligible": 3133257
+				"totalAmount": "281977.28",
+				"alignedPercentage": "0.0040",
+				"eligiblePercentage": "0.0486"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 41,
 		"data": {
 			"Capex": {
-				"total": 1048637,
-				"aligned": 315101,
-				"eligible": 735174
+				"totalAmount": "158447.22",
+				"alignedPercentage": "0.8800",
+				"eligiblePercentage": "0.9835"
 			},
 			"Opex": {
-				"total": 3080588,
-				"aligned": 1838091,
-				"eligible": 2447441
+				"totalAmount": "718021.08",
+				"alignedPercentage": "0.1462",
+				"eligiblePercentage": "0.1854"
 			},
 			"Revenue": {
-				"total": 4531703,
-				"aligned": 2726186,
-				"eligible": 3883848
+				"totalAmount": "740781.91",
+				"alignedPercentage": "0.3777",
+				"eligiblePercentage": "0.5281"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 42,
 		"data": {
 			"Capex": {
-				"total": 5364125,
-				"aligned": 1562158,
-				"eligible": 2983147
+				"totalAmount": "795642.50",
+				"alignedPercentage": "0.1265",
+				"eligiblePercentage": "0.8587"
 			},
 			"Opex": {
-				"total": 1756927,
-				"aligned": 704139,
-				"eligible": 1304676
+				"totalAmount": "622625.25",
+				"alignedPercentage": "0.2302",
+				"eligiblePercentage": "0.2428"
 			},
 			"Revenue": {
-				"total": 6526454,
-				"aligned": 2681911,
-				"eligible": 5610987
+				"totalAmount": "290009.74",
+				"alignedPercentage": "0.0940",
+				"eligiblePercentage": "0.3180"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 43,
 		"data": {
 			"Capex": {
-				"total": 6625570,
-				"aligned": 210443,
-				"eligible": 249469
+				"totalAmount": "153050.50",
+				"alignedPercentage": "0.7308",
+				"eligiblePercentage": "0.7733"
 			},
 			"Opex": {
-				"total": 8077321,
-				"aligned": 267803,
-				"eligible": 718770
+				"totalAmount": "445181.95",
+				"alignedPercentage": "0.1629",
+				"eligiblePercentage": "0.1815"
 			},
 			"Revenue": {
-				"total": 3188754,
-				"aligned": 435665,
-				"eligible": 1130503
+				"totalAmount": "682321.91",
+				"alignedPercentage": "0.1649",
+				"eligiblePercentage": "0.9621"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 44,
 		"data": {
 			"Capex": {
-				"total": 1421951,
-				"aligned": 159582,
-				"eligible": 368331
+				"totalAmount": "702344.52",
+				"alignedPercentage": "0.1914",
+				"eligiblePercentage": "0.3703"
 			},
 			"Opex": {
-				"total": 4113024,
-				"aligned": 336588,
-				"eligible": 1730545
+				"totalAmount": "122491.94",
+				"alignedPercentage": "0.1228",
+				"eligiblePercentage": "0.2022"
 			},
 			"Revenue": {
-				"total": 9210887,
-				"aligned": 792441,
-				"eligible": 5276327
+				"totalAmount": "105317.50",
+				"alignedPercentage": "0.1945",
+				"eligiblePercentage": "0.8613"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 45,
 		"data": {
 			"Capex": {
-				"total": 7268444,
-				"aligned": 273953,
-				"eligible": 313869
+				"totalAmount": "760850.91",
+				"alignedPercentage": "0.8705",
+				"eligiblePercentage": "0.8988"
 			},
 			"Opex": {
-				"total": 9410621,
-				"aligned": 1599785,
-				"eligible": 5370502
+				"totalAmount": "790207.16",
+				"alignedPercentage": "0.2905",
+				"eligiblePercentage": "0.6083"
 			},
 			"Revenue": {
-				"total": 3652866,
-				"aligned": 1828724,
-				"eligible": 2518142
+				"totalAmount": "741806.37",
+				"alignedPercentage": "0.2220",
+				"eligiblePercentage": "0.3244"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 46,
 		"data": {
 			"Capex": {
-				"total": 7693394,
-				"aligned": 2372871,
-				"eligible": 3427114
+				"totalAmount": "790497.81",
+				"alignedPercentage": "0.1711",
+				"eligiblePercentage": "0.1801"
 			},
 			"Opex": {
-				"total": 2008758,
-				"aligned": 619398,
-				"eligible": 758339
+				"totalAmount": "58165.17",
+				"alignedPercentage": "0.1885",
+				"eligiblePercentage": "0.3912"
 			},
 			"Revenue": {
-				"total": 8561162,
-				"aligned": 2475133,
-				"eligible": 4681476
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 47,
-		"data": {
-			"Capex": {
-				"total": 5202772,
-				"aligned": 635999,
-				"eligible": 4352152
-			},
-			"Opex": {
-				"total": 1058844,
-				"aligned": 119486,
-				"eligible": 811135
-			},
-			"Revenue": {
-				"total": 7057441,
-				"aligned": 82376,
-				"eligible": 1723607
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 48,
-		"data": {
-			"Capex": {
-				"total": 5231853,
-				"aligned": 1719929,
-				"eligible": 2478226
-			},
-			"Opex": {
-				"total": 8550088,
-				"aligned": 3336284,
-				"eligible": 4935497
-			},
-			"Revenue": {
-				"total": 899299,
-				"aligned": 175835,
-				"eligible": 208927
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 49,
-		"data": {
-			"Capex": {
-				"total": 7067472,
-				"aligned": 1832547,
-				"eligible": 1846924
-			},
-			"Opex": {
-				"total": 5640467,
-				"aligned": 313048,
-				"eligible": 665094
-			},
-			"Revenue": {
-				"total": 5050561,
-				"aligned": 1777831,
-				"eligible": 1899570
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 50,
-		"data": {
-			"Capex": {
-				"total": 2962737,
-				"aligned": 1885517,
-				"eligible": 2459923
-			},
-			"Opex": {
-				"total": 9774105,
-				"aligned": 1209773,
-				"eligible": 2624578
-			},
-			"Revenue": {
-				"total": 243538,
-				"aligned": 53371,
-				"eligible": 53647
+				"totalAmount": "450110.42",
+				"alignedPercentage": "0.2314",
+				"eligiblePercentage": "0.3757"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
+		"companyId": 47,
+		"data": {
+			"Capex": {
+				"totalAmount": "392756.59",
+				"alignedPercentage": "0.0159",
+				"eligiblePercentage": "0.0203"
+			},
+			"Opex": {
+				"totalAmount": "364385.61",
+				"alignedPercentage": "0.4265",
+				"eligiblePercentage": "0.5827"
+			},
+			"Revenue": {
+				"totalAmount": "268290.79",
+				"alignedPercentage": "0.2024",
+				"eligiblePercentage": "0.2120"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "None"
+		}
+	},
+	{
+		"companyId": 48,
+		"data": {
+			"Capex": {
+				"totalAmount": "234852.92",
+				"alignedPercentage": "0.3003",
+				"eligiblePercentage": "0.7313"
+			},
+			"Opex": {
+				"totalAmount": "563453.75",
+				"alignedPercentage": "0.6181",
+				"eligiblePercentage": "0.9830"
+			},
+			"Revenue": {
+				"totalAmount": "695950.71",
+				"alignedPercentage": "0.9144",
+				"eligiblePercentage": "0.9428"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
+		"companyId": 49,
+		"data": {
+			"Capex": {
+				"totalAmount": "620135.23",
+				"alignedPercentage": "0.0448",
+				"eligiblePercentage": "0.0841"
+			},
+			"Opex": {
+				"totalAmount": "451693.75",
+				"alignedPercentage": "0.3399",
+				"eligiblePercentage": "0.6013"
+			},
+			"Revenue": {
+				"totalAmount": "437455.12",
+				"alignedPercentage": "0.0385",
+				"eligiblePercentage": "0.1857"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
+		}
+	},
+	{
+		"companyId": 50,
+		"data": {
+			"Capex": {
+				"totalAmount": "116410.94",
+				"alignedPercentage": "0.1193",
+				"eligiblePercentage": "0.5335"
+			},
+			"Opex": {
+				"totalAmount": "104853.38",
+				"alignedPercentage": "0.0962",
+				"eligiblePercentage": "0.3302"
+			},
+			"Revenue": {
+				"totalAmount": "191560.13",
+				"alignedPercentage": "0.0003",
+				"eligiblePercentage": "0.0199"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
 		"companyId": 51,
 		"data": {
 			"Capex": {
-				"total": 2837036,
-				"aligned": 961108,
-				"eligible": 2509317
+				"totalAmount": "441219.69",
+				"alignedPercentage": "0.0304",
+				"eligiblePercentage": "0.2823"
 			},
 			"Opex": {
-				"total": 8705393,
-				"aligned": 6594361,
-				"eligible": 7118762
+				"totalAmount": "317261.95",
+				"alignedPercentage": "0.0503",
+				"eligiblePercentage": "0.2075"
 			},
 			"Revenue": {
-				"total": 9082061,
-				"aligned": 1126284,
-				"eligible": 8003627
+				"totalAmount": "699502.90",
+				"alignedPercentage": "0.2397",
+				"eligiblePercentage": "0.3131"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -1125,21 +1125,21 @@
 		"companyId": 52,
 		"data": {
 			"Capex": {
-				"total": 2713201,
-				"aligned": 1456423,
-				"eligible": 2547895
+				"totalAmount": "436806.49",
+				"alignedPercentage": "0.4109",
+				"eligiblePercentage": "0.9924"
 			},
 			"Opex": {
-				"total": 8259920,
-				"aligned": 770547,
-				"eligible": 1579789
+				"totalAmount": "747087.69",
+				"alignedPercentage": "0.2130",
+				"eligiblePercentage": "0.6300"
 			},
 			"Revenue": {
-				"total": 5370556,
-				"aligned": 1174395,
-				"eligible": 3793867
+				"totalAmount": "714245.69",
+				"alignedPercentage": "0.0670",
+				"eligiblePercentage": "0.5626"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -1147,41 +1147,41 @@
 		"companyId": 53,
 		"data": {
 			"Capex": {
-				"total": 8512420,
-				"aligned": 1354299,
-				"eligible": 5169727
+				"totalAmount": "391738.41",
+				"alignedPercentage": "0.0066",
+				"eligiblePercentage": "0.1719"
 			},
 			"Opex": {
-				"total": 9469046,
-				"aligned": 3621842,
-				"eligible": 8255157
+				"totalAmount": "83936.37",
+				"alignedPercentage": "0.2352",
+				"eligiblePercentage": "0.2849"
 			},
 			"Revenue": {
-				"total": 4481986,
-				"aligned": 1238704,
-				"eligible": 1639420
+				"totalAmount": "932355.71",
+				"alignedPercentage": "0.1962",
+				"eligiblePercentage": "0.5099"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 54,
 		"data": {
 			"Capex": {
-				"total": 9767654,
-				"aligned": 2224011,
-				"eligible": 4532664
+				"totalAmount": "673883.77",
+				"alignedPercentage": "0.0643",
+				"eligiblePercentage": "0.2029"
 			},
 			"Opex": {
-				"total": 9032490,
-				"aligned": 8773266,
-				"eligible": 8812642
+				"totalAmount": "445915.39",
+				"alignedPercentage": "0.4247",
+				"eligiblePercentage": "0.9123"
 			},
 			"Revenue": {
-				"total": 7138652,
-				"aligned": 139307,
-				"eligible": 185909
+				"totalAmount": "209800.60",
+				"alignedPercentage": "0.0168",
+				"eligiblePercentage": "0.0648"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -1191,19 +1191,19 @@
 		"companyId": 55,
 		"data": {
 			"Capex": {
-				"total": 3909267,
-				"aligned": 75227,
-				"eligible": 84712
+				"totalAmount": "886910.54",
+				"alignedPercentage": "0.3421",
+				"eligiblePercentage": "0.3576"
 			},
 			"Opex": {
-				"total": 7102147,
-				"aligned": 1222892,
-				"eligible": 1922490
+				"totalAmount": "239584.09",
+				"alignedPercentage": "0.1029",
+				"eligiblePercentage": "0.3833"
 			},
 			"Revenue": {
-				"total": 7149967,
-				"aligned": 710594,
-				"eligible": 1266712
+				"totalAmount": "404206.22",
+				"alignedPercentage": "0.1087",
+				"eligiblePercentage": "0.2027"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -1213,87 +1213,87 @@
 		"companyId": 56,
 		"data": {
 			"Capex": {
-				"total": 6865636,
-				"aligned": 588316,
-				"eligible": 4873921
+				"totalAmount": "795447.71",
+				"alignedPercentage": "0.7485",
+				"eligiblePercentage": "0.9440"
 			},
 			"Opex": {
-				"total": 9349121,
-				"aligned": 652212,
-				"eligible": 767541
+				"totalAmount": "352391.50",
+				"alignedPercentage": "0.3755",
+				"eligiblePercentage": "0.5973"
 			},
 			"Revenue": {
-				"total": 7703696,
-				"aligned": 1544629,
-				"eligible": 3037197
+				"totalAmount": "583796.27",
+				"alignedPercentage": "0.2020",
+				"eligiblePercentage": "0.2602"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 57,
 		"data": {
 			"Capex": {
-				"total": 8579901,
-				"aligned": 2026840,
-				"eligible": 2040532
+				"totalAmount": "319921.83",
+				"alignedPercentage": "0.0589",
+				"eligiblePercentage": "0.1037"
 			},
 			"Opex": {
-				"total": 6158700,
-				"aligned": 3663695,
-				"eligible": 4681914
+				"totalAmount": "747381.18",
+				"alignedPercentage": "0.2614",
+				"eligiblePercentage": "0.3728"
 			},
 			"Revenue": {
-				"total": 890047,
-				"aligned": 331585,
-				"eligible": 590175
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
-		}
-	},
-	{
-		"companyId": 58,
-		"data": {
-			"Capex": {
-				"total": 5475697,
-				"aligned": 1015336,
-				"eligible": 1434172
-			},
-			"Opex": {
-				"total": 828547,
-				"aligned": 377545,
-				"eligible": 782459
-			},
-			"Revenue": {
-				"total": 2648508,
-				"aligned": 901344,
-				"eligible": 1522780
+				"totalAmount": "599902.81",
+				"alignedPercentage": "0.2015",
+				"eligiblePercentage": "0.8463"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
+		"companyId": 58,
+		"data": {
+			"Capex": {
+				"totalAmount": "505871.86",
+				"alignedPercentage": "0.5957",
+				"eligiblePercentage": "0.7494"
+			},
+			"Opex": {
+				"totalAmount": "684840.41",
+				"alignedPercentage": "0.0282",
+				"eligiblePercentage": "0.8835"
+			},
+			"Revenue": {
+				"totalAmount": "668406.13",
+				"alignedPercentage": "0.7488",
+				"eligiblePercentage": "0.8834"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
 		"companyId": 59,
 		"data": {
 			"Capex": {
-				"total": 5309020,
-				"aligned": 2193688,
-				"eligible": 3297674
+				"totalAmount": "178319.24",
+				"alignedPercentage": "0.1157",
+				"eligiblePercentage": "0.2549"
 			},
 			"Opex": {
-				"total": 3093819,
-				"aligned": 693902,
-				"eligible": 1897529
+				"totalAmount": "570051.95",
+				"alignedPercentage": "0.4434",
+				"eligiblePercentage": "0.7788"
 			},
 			"Revenue": {
-				"total": 9319758,
-				"aligned": 7081787,
-				"eligible": 7251635
+				"totalAmount": "726758.30",
+				"alignedPercentage": "0.0823",
+				"eligiblePercentage": "0.1266"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -1301,19 +1301,19 @@
 		"companyId": 60,
 		"data": {
 			"Capex": {
-				"total": 2504099,
-				"aligned": 288541,
-				"eligible": 898813
+				"totalAmount": "67964.49",
+				"alignedPercentage": "0.1634",
+				"eligiblePercentage": "0.2189"
 			},
 			"Opex": {
-				"total": 4610083,
-				"aligned": 596645,
-				"eligible": 920272
+				"totalAmount": "373585.10",
+				"alignedPercentage": "0.2615",
+				"eligiblePercentage": "0.3960"
 			},
 			"Revenue": {
-				"total": 5058960,
-				"aligned": 59118,
-				"eligible": 71114
+				"totalAmount": "921839.48",
+				"alignedPercentage": "0.4050",
+				"eligiblePercentage": "0.8209"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -1323,21 +1323,21 @@
 		"companyId": 61,
 		"data": {
 			"Capex": {
-				"total": 4585529,
-				"aligned": 72949,
-				"eligible": 792602
+				"totalAmount": "525358.11",
+				"alignedPercentage": "0.1081",
+				"eligiblePercentage": "0.1452"
 			},
 			"Opex": {
-				"total": 5140408,
-				"aligned": 425660,
-				"eligible": 3660189
+				"totalAmount": "240514.25",
+				"alignedPercentage": "0.0844",
+				"eligiblePercentage": "0.5458"
 			},
 			"Revenue": {
-				"total": 1136068,
-				"aligned": 472810,
-				"eligible": 628351
+				"totalAmount": "315226.50",
+				"alignedPercentage": "0.3698",
+				"eligiblePercentage": "0.7124"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -1345,21 +1345,21 @@
 		"companyId": 62,
 		"data": {
 			"Capex": {
-				"total": 2527540,
-				"aligned": 51148,
-				"eligible": 713546
+				"totalAmount": "989066.81",
+				"alignedPercentage": "0.1090",
+				"eligiblePercentage": "0.2853"
 			},
 			"Opex": {
-				"total": 8274892,
-				"aligned": 2492481,
-				"eligible": 5569263
+				"totalAmount": "483606.12",
+				"alignedPercentage": "0.2863",
+				"eligiblePercentage": "0.2975"
 			},
 			"Revenue": {
-				"total": 4859515,
-				"aligned": 596542,
-				"eligible": 4444800
+				"totalAmount": "716983.19",
+				"alignedPercentage": "0.4320",
+				"eligiblePercentage": "0.7428"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -1367,19 +1367,19 @@
 		"companyId": 63,
 		"data": {
 			"Capex": {
-				"total": 7856332,
-				"aligned": 1935626,
-				"eligible": 2917943
+				"totalAmount": "438803.50",
+				"alignedPercentage": "0.1557",
+				"eligiblePercentage": "0.4498"
 			},
 			"Opex": {
-				"total": 4773147,
-				"aligned": 2487586,
-				"eligible": 4524043
+				"totalAmount": "980592.61",
+				"alignedPercentage": "0.3561",
+				"eligiblePercentage": "0.8922"
 			},
 			"Revenue": {
-				"total": 9889473,
-				"aligned": 2860735,
-				"eligible": 8193357
+				"totalAmount": "370428.07",
+				"alignedPercentage": "0.4243",
+				"eligiblePercentage": "0.6636"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -1389,19 +1389,19 @@
 		"companyId": 64,
 		"data": {
 			"Capex": {
-				"total": 1718975,
-				"aligned": 214531,
-				"eligible": 970299
+				"totalAmount": "358196.37",
+				"alignedPercentage": "0.0195",
+				"eligiblePercentage": "0.0244"
 			},
 			"Opex": {
-				"total": 5781932,
-				"aligned": 408231,
-				"eligible": 1937347
+				"totalAmount": "988848.18",
+				"alignedPercentage": "0.0489",
+				"eligiblePercentage": "0.1051"
 			},
 			"Revenue": {
-				"total": 9448911,
-				"aligned": 4297453,
-				"eligible": 6047584
+				"totalAmount": "104125.03",
+				"alignedPercentage": "0.0234",
+				"eligiblePercentage": "0.0312"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -1411,19 +1411,19 @@
 		"companyId": 65,
 		"data": {
 			"Capex": {
-				"total": 7227190,
-				"aligned": 3915884,
-				"eligible": 4977039
+				"totalAmount": "634898.11",
+				"alignedPercentage": "0.1836",
+				"eligiblePercentage": "0.3648"
 			},
 			"Opex": {
-				"total": 3487091,
-				"aligned": 1569898,
-				"eligible": 1659868
+				"totalAmount": "889560.25",
+				"alignedPercentage": "0.3512",
+				"eligiblePercentage": "0.8750"
 			},
 			"Revenue": {
-				"total": 689455,
-				"aligned": 76299,
-				"eligible": 569593
+				"totalAmount": "328814.94",
+				"alignedPercentage": "0.3776",
+				"eligiblePercentage": "0.5635"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -1433,19 +1433,19 @@
 		"companyId": 66,
 		"data": {
 			"Capex": {
-				"total": 364510,
-				"aligned": 54060,
-				"eligible": 59230
+				"totalAmount": "417596.92",
+				"alignedPercentage": "0.4194",
+				"eligiblePercentage": "0.9434"
 			},
 			"Opex": {
-				"total": 6954100,
-				"aligned": 2760367,
-				"eligible": 2879947
+				"totalAmount": "898430.31",
+				"alignedPercentage": "0.7358",
+				"eligiblePercentage": "0.9199"
 			},
 			"Revenue": {
-				"total": 1002775,
-				"aligned": 129525,
-				"eligible": 342210
+				"totalAmount": "619062.22",
+				"alignedPercentage": "0.0859",
+				"eligiblePercentage": "0.3327"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -1455,41 +1455,41 @@
 		"companyId": 67,
 		"data": {
 			"Capex": {
-				"total": 9785938,
-				"aligned": 3458937,
-				"eligible": 4739780
+				"totalAmount": "509533.60",
+				"alignedPercentage": "0.3010",
+				"eligiblePercentage": "0.8738"
 			},
 			"Opex": {
-				"total": 5994421,
-				"aligned": 211834,
-				"eligible": 760691
+				"totalAmount": "222521.32",
+				"alignedPercentage": "0.6436",
+				"eligiblePercentage": "0.8292"
 			},
 			"Revenue": {
-				"total": 7080722,
-				"aligned": 3529050,
-				"eligible": 5896676
+				"totalAmount": "885942.31",
+				"alignedPercentage": "0.1565",
+				"eligiblePercentage": "0.3782"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 68,
 		"data": {
 			"Capex": {
-				"total": 7708897,
-				"aligned": 1374212,
-				"eligible": 1927541
+				"totalAmount": "111044.24",
+				"alignedPercentage": "0.0103",
+				"eligiblePercentage": "0.1454"
 			},
 			"Opex": {
-				"total": 4052376,
-				"aligned": 204606,
-				"eligible": 251959
+				"totalAmount": "148931.25",
+				"alignedPercentage": "0.0721",
+				"eligiblePercentage": "0.2510"
 			},
 			"Revenue": {
-				"total": 8314315,
-				"aligned": 1372211,
-				"eligible": 2819743
+				"totalAmount": "435538.00",
+				"alignedPercentage": "0.1346",
+				"eligiblePercentage": "0.2221"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -1499,131 +1499,131 @@
 		"companyId": 69,
 		"data": {
 			"Capex": {
-				"total": 6531435,
-				"aligned": 723230,
-				"eligible": 748242
+				"totalAmount": "261860.90",
+				"alignedPercentage": "0.4063",
+				"eligiblePercentage": "0.7477"
 			},
 			"Opex": {
-				"total": 3838996,
-				"aligned": 582802,
-				"eligible": 1751200
+				"totalAmount": "880472.36",
+				"alignedPercentage": "0.0505",
+				"eligiblePercentage": "0.5036"
 			},
 			"Revenue": {
-				"total": 1162108,
-				"aligned": 69951,
-				"eligible": 71962
+				"totalAmount": "420803.51",
+				"alignedPercentage": "0.3794",
+				"eligiblePercentage": "0.6926"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 70,
 		"data": {
 			"Capex": {
-				"total": 1230249,
-				"aligned": 181833,
-				"eligible": 325551
+				"totalAmount": "132513.22",
+				"alignedPercentage": "0.0067",
+				"eligiblePercentage": "0.0095"
 			},
 			"Opex": {
-				"total": 3436241,
-				"aligned": 1204799,
-				"eligible": 2485183
+				"totalAmount": "311761.03",
+				"alignedPercentage": "0.2263",
+				"eligiblePercentage": "0.7585"
 			},
 			"Revenue": {
-				"total": 3971625,
-				"aligned": 3304614,
-				"eligible": 3360682
+				"totalAmount": "883224.70",
+				"alignedPercentage": "0.6314",
+				"eligiblePercentage": "0.7557"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 71,
 		"data": {
 			"Capex": {
-				"total": 9781410,
-				"aligned": 5718995,
-				"eligible": 7280542
+				"totalAmount": "812630.98",
+				"alignedPercentage": "0.1978",
+				"eligiblePercentage": "0.3352"
 			},
 			"Opex": {
-				"total": 5436747,
-				"aligned": 406136,
-				"eligible": 1179775
+				"totalAmount": "76409.09",
+				"alignedPercentage": "0.1327",
+				"eligiblePercentage": "0.8998"
 			},
 			"Revenue": {
-				"total": 9966406,
-				"aligned": 3690594,
-				"eligible": 4688289
+				"totalAmount": "337931.12",
+				"alignedPercentage": "0.7103",
+				"eligiblePercentage": "0.8830"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 72,
 		"data": {
 			"Capex": {
-				"total": 9337254,
-				"aligned": 1090987,
-				"eligible": 1296113
+				"totalAmount": "494165.63",
+				"alignedPercentage": "0.0293",
+				"eligiblePercentage": "0.0393"
 			},
 			"Opex": {
-				"total": 7401433,
-				"aligned": 1153404,
-				"eligible": 3134844
+				"totalAmount": "785349.87",
+				"alignedPercentage": "0.3386",
+				"eligiblePercentage": "0.4105"
 			},
 			"Revenue": {
-				"total": 1894208,
-				"aligned": 239607,
-				"eligible": 246782
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 73,
-		"data": {
-			"Capex": {
-				"total": 9979927,
-				"aligned": 4744720,
-				"eligible": 7751452
-			},
-			"Opex": {
-				"total": 4686828,
-				"aligned": 634550,
-				"eligible": 755724
-			},
-			"Revenue": {
-				"total": 4409267,
-				"aligned": 153976,
-				"eligible": 625390
+				"totalAmount": "745404.26",
+				"alignedPercentage": "0.0517",
+				"eligiblePercentage": "0.6776"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
+		"companyId": 73,
+		"data": {
+			"Capex": {
+				"totalAmount": "332824.49",
+				"alignedPercentage": "0.0299",
+				"eligiblePercentage": "0.0307"
+			},
+			"Opex": {
+				"totalAmount": "918522.92",
+				"alignedPercentage": "0.1009",
+				"eligiblePercentage": "0.2026"
+			},
+			"Revenue": {
+				"totalAmount": "848978.18",
+				"alignedPercentage": "0.6574",
+				"eligiblePercentage": "0.7273"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "None"
+		}
+	},
+	{
 		"companyId": 74,
 		"data": {
 			"Capex": {
-				"total": 5140441,
-				"aligned": 232418,
-				"eligible": 4173655
+				"totalAmount": "140146.88",
+				"alignedPercentage": "0.0138",
+				"eligiblePercentage": "0.2797"
 			},
 			"Opex": {
-				"total": 4247371,
-				"aligned": 1072121,
-				"eligible": 3649740
+				"totalAmount": "280595.61",
+				"alignedPercentage": "0.4215",
+				"eligiblePercentage": "0.7324"
 			},
 			"Revenue": {
-				"total": 2030665,
-				"aligned": 119089,
-				"eligible": 1946987
+				"totalAmount": "479018.13",
+				"alignedPercentage": "0.2430",
+				"eligiblePercentage": "0.5797"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -1631,65 +1631,65 @@
 		"companyId": 75,
 		"data": {
 			"Capex": {
-				"total": 9957140,
-				"aligned": 58067,
-				"eligible": 5634552
+				"totalAmount": "226171.75",
+				"alignedPercentage": "0.3213",
+				"eligiblePercentage": "0.4662"
 			},
 			"Opex": {
-				"total": 4268475,
-				"aligned": 385655,
-				"eligible": 508699
+				"totalAmount": "691917.18",
+				"alignedPercentage": "0.1084",
+				"eligiblePercentage": "0.6070"
 			},
 			"Revenue": {
-				"total": 5913842,
-				"aligned": 1010838,
-				"eligible": 2332146
+				"totalAmount": "915324.59",
+				"alignedPercentage": "0.1269",
+				"eligiblePercentage": "0.1409"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 76,
 		"data": {
 			"Capex": {
-				"total": 8000737,
-				"aligned": 3498142,
-				"eligible": 5657251
+				"totalAmount": "560704.03",
+				"alignedPercentage": "0.3619",
+				"eligiblePercentage": "0.8960"
 			},
 			"Opex": {
-				"total": 6480084,
-				"aligned": 545080,
-				"eligible": 3600982
+				"totalAmount": "802739.81",
+				"alignedPercentage": "0.3007",
+				"eligiblePercentage": "0.9509"
 			},
 			"Revenue": {
-				"total": 6230466,
-				"aligned": 2247134,
-				"eligible": 4788600
+				"totalAmount": "671899.17",
+				"alignedPercentage": "0.0571",
+				"eligiblePercentage": "0.5488"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 77,
 		"data": {
 			"Capex": {
-				"total": 2872669,
-				"aligned": 228101,
-				"eligible": 364958
+				"totalAmount": "116439.36",
+				"alignedPercentage": "0.4959",
+				"eligiblePercentage": "0.6438"
 			},
 			"Opex": {
-				"total": 277492,
-				"aligned": 82591,
-				"eligible": 202755
+				"totalAmount": "400853.67",
+				"alignedPercentage": "0.3761",
+				"eligiblePercentage": "0.5015"
 			},
 			"Revenue": {
-				"total": 7264609,
-				"aligned": 243214,
-				"eligible": 5038632
+				"totalAmount": "359073.43",
+				"alignedPercentage": "0.3492",
+				"eligiblePercentage": "0.8275"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -1697,41 +1697,41 @@
 		"companyId": 78,
 		"data": {
 			"Capex": {
-				"total": 4611850,
-				"aligned": 248105,
-				"eligible": 278690
+				"totalAmount": "155685.10",
+				"alignedPercentage": "0.1649",
+				"eligiblePercentage": "0.6569"
 			},
 			"Opex": {
-				"total": 6413115,
-				"aligned": 3074596,
-				"eligible": 5648137
+				"totalAmount": "443141.00",
+				"alignedPercentage": "0.7691",
+				"eligiblePercentage": "0.7836"
 			},
 			"Revenue": {
-				"total": 3721860,
-				"aligned": 125994,
-				"eligible": 1191757
+				"totalAmount": "808398.14",
+				"alignedPercentage": "0.1144",
+				"eligiblePercentage": "0.9369"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 79,
 		"data": {
 			"Capex": {
-				"total": 2823155,
-				"aligned": 753892,
-				"eligible": 1161627
+				"totalAmount": "306305.62",
+				"alignedPercentage": "0.5834",
+				"eligiblePercentage": "0.7840"
 			},
 			"Opex": {
-				"total": 460225,
-				"aligned": 56500,
-				"eligible": 96128
+				"totalAmount": "392084.36",
+				"alignedPercentage": "0.3992",
+				"eligiblePercentage": "0.6787"
 			},
 			"Revenue": {
-				"total": 6141953,
-				"aligned": 652235,
-				"eligible": 1125438
+				"totalAmount": "993032.02",
+				"alignedPercentage": "0.4518",
+				"eligiblePercentage": "0.6538"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -1741,21 +1741,21 @@
 		"companyId": 80,
 		"data": {
 			"Capex": {
-				"total": 2901750,
-				"aligned": 922881,
-				"eligible": 1029910
+				"totalAmount": "611389.78",
+				"alignedPercentage": "0.0000",
+				"eligiblePercentage": "0.0364"
 			},
 			"Opex": {
-				"total": 3757051,
-				"aligned": 300108,
-				"eligible": 817034
+				"totalAmount": "528674.21",
+				"alignedPercentage": "0.0812",
+				"eligiblePercentage": "0.3149"
 			},
 			"Revenue": {
-				"total": 7016308,
-				"aligned": 2843119,
-				"eligible": 6383687
+				"totalAmount": "291268.60",
+				"alignedPercentage": "0.1582",
+				"eligiblePercentage": "0.9243"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -1763,19 +1763,19 @@
 		"companyId": 81,
 		"data": {
 			"Capex": {
-				"total": 1275864,
-				"aligned": 151385,
-				"eligible": 249505
+				"totalAmount": "233181.79",
+				"alignedPercentage": "0.4832",
+				"eligiblePercentage": "0.9594"
 			},
 			"Opex": {
-				"total": 1949048,
-				"aligned": 335427,
-				"eligible": 1087123
+				"totalAmount": "768625.91",
+				"alignedPercentage": "0.3116",
+				"eligiblePercentage": "0.6981"
 			},
 			"Revenue": {
-				"total": 6839070,
-				"aligned": 597046,
-				"eligible": 805420
+				"totalAmount": "505956.65",
+				"alignedPercentage": "0.1705",
+				"eligiblePercentage": "0.2660"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -1785,21 +1785,21 @@
 		"companyId": 82,
 		"data": {
 			"Capex": {
-				"total": 316349,
-				"aligned": 131598,
-				"eligible": 243788
+				"totalAmount": "852301.08",
+				"alignedPercentage": "0.4933",
+				"eligiblePercentage": "0.6003"
 			},
 			"Opex": {
-				"total": 4704037,
-				"aligned": 1622644,
-				"eligible": 2125521
+				"totalAmount": "851342.42",
+				"alignedPercentage": "0.0114",
+				"eligiblePercentage": "0.0220"
 			},
 			"Revenue": {
-				"total": 7506130,
-				"aligned": 353026,
-				"eligible": 4986934
+				"totalAmount": "101346.10",
+				"alignedPercentage": "0.4812",
+				"eligiblePercentage": "0.7005"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -1807,19 +1807,19 @@
 		"companyId": 83,
 		"data": {
 			"Capex": {
-				"total": 6972875,
-				"aligned": 1549660,
-				"eligible": 2120302
+				"totalAmount": "933017.17",
+				"alignedPercentage": "0.0522",
+				"eligiblePercentage": "0.5824"
 			},
 			"Opex": {
-				"total": 4183106,
-				"aligned": 1028898,
-				"eligible": 1109288
+				"totalAmount": "663493.14",
+				"alignedPercentage": "0.1055",
+				"eligiblePercentage": "0.6813"
 			},
 			"Revenue": {
-				"total": 6294298,
-				"aligned": 1243375,
-				"eligible": 5065610
+				"totalAmount": "578375.98",
+				"alignedPercentage": "0.1592",
+				"eligiblePercentage": "0.5693"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -1829,19 +1829,19 @@
 		"companyId": 84,
 		"data": {
 			"Capex": {
-				"total": 5499855,
-				"aligned": 141051,
-				"eligible": 1335658
+				"totalAmount": "903947.19",
+				"alignedPercentage": "0.0112",
+				"eligiblePercentage": "0.3438"
 			},
 			"Opex": {
-				"total": 8152128,
-				"aligned": 6267693,
-				"eligible": 7100266
+				"totalAmount": "868524.18",
+				"alignedPercentage": "0.1060",
+				"eligiblePercentage": "0.7832"
 			},
 			"Revenue": {
-				"total": 2657269,
-				"aligned": 366225,
-				"eligible": 1030320
+				"totalAmount": "843139.41",
+				"alignedPercentage": "0.6799",
+				"eligiblePercentage": "0.9029"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -1851,87 +1851,87 @@
 		"companyId": 85,
 		"data": {
 			"Capex": {
-				"total": 2891694,
-				"aligned": 385996,
-				"eligible": 554273
+				"totalAmount": "347149.46",
+				"alignedPercentage": "0.1211",
+				"eligiblePercentage": "0.8078"
 			},
 			"Opex": {
-				"total": 5119331,
-				"aligned": 652424,
-				"eligible": 1096307
+				"totalAmount": "519190.14",
+				"alignedPercentage": "0.0608",
+				"eligiblePercentage": "0.1158"
 			},
 			"Revenue": {
-				"total": 1266565,
-				"aligned": 134347,
-				"eligible": 153437
+				"totalAmount": "728162.99",
+				"alignedPercentage": "0.7191",
+				"eligiblePercentage": "0.9701"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 86,
 		"data": {
 			"Capex": {
-				"total": 1796582,
-				"aligned": 74642,
-				"eligible": 1707459
+				"totalAmount": "276087.17",
+				"alignedPercentage": "0.7015",
+				"eligiblePercentage": "0.9940"
 			},
 			"Opex": {
-				"total": 1391484,
-				"aligned": 699570,
-				"eligible": 1159250
+				"totalAmount": "198609.82",
+				"alignedPercentage": "0.3111",
+				"eligiblePercentage": "0.9154"
 			},
 			"Revenue": {
-				"total": 3491152,
-				"aligned": 1203754,
-				"eligible": 2045409
+				"totalAmount": "698311.15",
+				"alignedPercentage": "0.0442",
+				"eligiblePercentage": "0.4096"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 87,
 		"data": {
 			"Capex": {
-				"total": 292664,
-				"aligned": 187927,
-				"eligible": 276992
+				"totalAmount": "185136.93",
+				"alignedPercentage": "0.4058",
+				"eligiblePercentage": "0.4326"
 			},
 			"Opex": {
-				"total": 6037849,
-				"aligned": 415204,
-				"eligible": 567229
+				"totalAmount": "569485.56",
+				"alignedPercentage": "0.0290",
+				"eligiblePercentage": "0.2565"
 			},
 			"Revenue": {
-				"total": 2540716,
-				"aligned": 415825,
-				"eligible": 909562
+				"totalAmount": "700794.63",
+				"alignedPercentage": "0.0925",
+				"eligiblePercentage": "0.0933"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 88,
 		"data": {
 			"Capex": {
-				"total": 2252720,
-				"aligned": 1548773,
-				"eligible": 1624748
+				"totalAmount": "457665.45",
+				"alignedPercentage": "0.0669",
+				"eligiblePercentage": "0.1163"
 			},
 			"Opex": {
-				"total": 560552,
-				"aligned": 118159,
-				"eligible": 309767
+				"totalAmount": "194303.47",
+				"alignedPercentage": "0.4509",
+				"eligiblePercentage": "0.6080"
 			},
 			"Revenue": {
-				"total": 2519909,
-				"aligned": 1398239,
-				"eligible": 1680176
+				"totalAmount": "777851.43",
+				"alignedPercentage": "0.1010",
+				"eligiblePercentage": "0.3894"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -1939,65 +1939,65 @@
 		"companyId": 89,
 		"data": {
 			"Capex": {
-				"total": 6312033,
-				"aligned": 1299237,
-				"eligible": 1463119
+				"totalAmount": "837804.58",
+				"alignedPercentage": "0.2086",
+				"eligiblePercentage": "0.7067"
 			},
 			"Opex": {
-				"total": 1189338,
-				"aligned": 229079,
-				"eligible": 830247
+				"totalAmount": "903143.38",
+				"alignedPercentage": "0.0204",
+				"eligiblePercentage": "0.9586"
 			},
 			"Revenue": {
-				"total": 2563187,
-				"aligned": 258207,
-				"eligible": 1060946
+				"totalAmount": "469551.93",
+				"alignedPercentage": "0.0285",
+				"eligiblePercentage": "0.4770"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 90,
 		"data": {
 			"Capex": {
-				"total": 8058967,
-				"aligned": 1575852,
-				"eligible": 7993212
+				"totalAmount": "166432.31",
+				"alignedPercentage": "0.2986",
+				"eligiblePercentage": "0.3031"
 			},
 			"Opex": {
-				"total": 5390179,
-				"aligned": 2022937,
-				"eligible": 4759335
+				"totalAmount": "882524.63",
+				"alignedPercentage": "0.0463",
+				"eligiblePercentage": "0.0572"
 			},
 			"Revenue": {
-				"total": 484218,
-				"aligned": 115134,
-				"eligible": 299673
+				"totalAmount": "316114.20",
+				"alignedPercentage": "0.0238",
+				"eligiblePercentage": "0.3622"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 91,
 		"data": {
 			"Capex": {
-				"total": 7215209,
-				"aligned": 844543,
-				"eligible": 916723
+				"totalAmount": "131078.71",
+				"alignedPercentage": "0.4130",
+				"eligiblePercentage": "0.8823"
 			},
 			"Opex": {
-				"total": 5311479,
-				"aligned": 2103431,
-				"eligible": 4927177
+				"totalAmount": "689071.19",
+				"alignedPercentage": "0.1365",
+				"eligiblePercentage": "0.3275"
 			},
 			"Revenue": {
-				"total": 6781415,
-				"aligned": 2707462,
-				"eligible": 5474131
+				"totalAmount": "831050.46",
+				"alignedPercentage": "0.3282",
+				"eligiblePercentage": "0.7071"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2005,43 +2005,43 @@
 		"companyId": 92,
 		"data": {
 			"Capex": {
-				"total": 2340175,
-				"aligned": 1830850,
-				"eligible": 2271188
+				"totalAmount": "782731.56",
+				"alignedPercentage": "0.2879",
+				"eligiblePercentage": "0.9084"
 			},
 			"Opex": {
-				"total": 4168964,
-				"aligned": 2482427,
-				"eligible": 3259619
+				"totalAmount": "425057.16",
+				"alignedPercentage": "0.0940",
+				"eligiblePercentage": "0.4446"
 			},
 			"Revenue": {
-				"total": 377211,
-				"aligned": 110749,
-				"eligible": 158407
+				"totalAmount": "698454.02",
+				"alignedPercentage": "0.2035",
+				"eligiblePercentage": "0.2696"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 93,
 		"data": {
 			"Capex": {
-				"total": 3495868,
-				"aligned": 577732,
-				"eligible": 1887312
+				"totalAmount": "336556.54",
+				"alignedPercentage": "0.1294",
+				"eligiblePercentage": "0.6244"
 			},
 			"Opex": {
-				"total": 2523056,
-				"aligned": 1235749,
-				"eligible": 1770563
+				"totalAmount": "154211.25",
+				"alignedPercentage": "0.2983",
+				"eligiblePercentage": "0.7710"
 			},
 			"Revenue": {
-				"total": 5442422,
-				"aligned": 1092192,
-				"eligible": 1475850
+				"totalAmount": "463976.31",
+				"alignedPercentage": "0.1541",
+				"eligiblePercentage": "0.5699"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2049,63 +2049,63 @@
 		"companyId": 94,
 		"data": {
 			"Capex": {
-				"total": 5251612,
-				"aligned": 655300,
-				"eligible": 1178652
+				"totalAmount": "952439.47",
+				"alignedPercentage": "0.5882",
+				"eligiblePercentage": "0.9309"
 			},
 			"Opex": {
-				"total": 959180,
-				"aligned": 386223,
-				"eligible": 951387
+				"totalAmount": "720504.97",
+				"alignedPercentage": "0.1683",
+				"eligiblePercentage": "0.3417"
 			},
 			"Revenue": {
-				"total": 1871536,
-				"aligned": 213503,
-				"eligible": 312185
+				"totalAmount": "350523.39",
+				"alignedPercentage": "0.2172",
+				"eligiblePercentage": "0.2276"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 95,
 		"data": {
 			"Capex": {
-				"total": 6149366,
-				"aligned": 1706392,
-				"eligible": 2526571
+				"totalAmount": "533888.88",
+				"alignedPercentage": "0.0086",
+				"eligiblePercentage": "0.0137"
 			},
 			"Opex": {
-				"total": 9512085,
-				"aligned": 556536,
-				"eligible": 5984864
+				"totalAmount": "543782.59",
+				"alignedPercentage": "0.1335",
+				"eligiblePercentage": "0.3454"
 			},
 			"Revenue": {
-				"total": 5656569,
-				"aligned": 2069607,
-				"eligible": 3523894
+				"totalAmount": "983245.27",
+				"alignedPercentage": "0.0691",
+				"eligiblePercentage": "0.6857"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 96,
 		"data": {
 			"Capex": {
-				"total": 7092452,
-				"aligned": 1577526,
-				"eligible": 1596063
+				"totalAmount": "578026.95",
+				"alignedPercentage": "0.6517",
+				"eligiblePercentage": "0.9998"
 			},
 			"Opex": {
-				"total": 6081532,
-				"aligned": 1128893,
-				"eligible": 4530921
+				"totalAmount": "457007.33",
+				"alignedPercentage": "0.1308",
+				"eligiblePercentage": "0.1545"
 			},
 			"Revenue": {
-				"total": 3556916,
-				"aligned": 430771,
-				"eligible": 1183926
+				"totalAmount": "83097.98",
+				"alignedPercentage": "0.3939",
+				"eligiblePercentage": "0.4934"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -2115,63 +2115,63 @@
 		"companyId": 97,
 		"data": {
 			"Capex": {
-				"total": 6476417,
-				"aligned": 481932,
-				"eligible": 1746086
+				"totalAmount": "699464.13",
+				"alignedPercentage": "0.1260",
+				"eligiblePercentage": "0.4850"
 			},
 			"Opex": {
-				"total": 9325323,
-				"aligned": 1200938,
-				"eligible": 5371661
+				"totalAmount": "513652.96",
+				"alignedPercentage": "0.2412",
+				"eligiblePercentage": "0.5039"
 			},
 			"Revenue": {
-				"total": 9485396,
-				"aligned": 327893,
-				"eligible": 1034179
+				"totalAmount": "579844.09",
+				"alignedPercentage": "0.4399",
+				"eligiblePercentage": "0.9378"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 98,
 		"data": {
 			"Capex": {
-				"total": 2461927,
-				"aligned": 185308,
-				"eligible": 1274005
+				"totalAmount": "101485.11",
+				"alignedPercentage": "0.0435",
+				"eligiblePercentage": "0.0974"
 			},
 			"Opex": {
-				"total": 5520953,
-				"aligned": 484607,
-				"eligible": 3014179
+				"totalAmount": "436027.53",
+				"alignedPercentage": "0.5349",
+				"eligiblePercentage": "0.9806"
 			},
 			"Revenue": {
-				"total": 4249846,
-				"aligned": 1703111,
-				"eligible": 4198304
+				"totalAmount": "343481.49",
+				"alignedPercentage": "0.7192",
+				"eligiblePercentage": "0.9594"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 99,
 		"data": {
 			"Capex": {
-				"total": 7601681,
-				"aligned": 4088187,
-				"eligible": 5433987
+				"totalAmount": "491874.40",
+				"alignedPercentage": "0.0136",
+				"eligiblePercentage": "0.3525"
 			},
 			"Opex": {
-				"total": 2369088,
-				"aligned": 280730,
-				"eligible": 1262242
+				"totalAmount": "635801.13",
+				"alignedPercentage": "0.1063",
+				"eligiblePercentage": "0.1277"
 			},
 			"Revenue": {
-				"total": 354127,
-				"aligned": 90056,
-				"eligible": 113038
+				"totalAmount": "545538.60",
+				"alignedPercentage": "0.2193",
+				"eligiblePercentage": "0.5166"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -2181,63 +2181,63 @@
 		"companyId": 100,
 		"data": {
 			"Capex": {
-				"total": 3416068,
-				"aligned": 1817988,
-				"eligible": 2798707
+				"totalAmount": "907704.07",
+				"alignedPercentage": "0.2581",
+				"eligiblePercentage": "0.6334"
 			},
 			"Opex": {
-				"total": 924927,
-				"aligned": 569692,
-				"eligible": 638742
+				"totalAmount": "55900.09",
+				"alignedPercentage": "0.3971",
+				"eligiblePercentage": "0.6586"
 			},
 			"Revenue": {
-				"total": 8398351,
-				"aligned": 4113826,
-				"eligible": 7913264
+				"totalAmount": "885051.72",
+				"alignedPercentage": "0.3566",
+				"eligiblePercentage": "0.3831"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 101,
 		"data": {
 			"Capex": {
-				"total": 3440232,
-				"aligned": 810666,
-				"eligible": 1361458
+				"totalAmount": "639016.89",
+				"alignedPercentage": "0.4390",
+				"eligiblePercentage": "0.6816"
 			},
 			"Opex": {
-				"total": 6259576,
-				"aligned": 442792,
-				"eligible": 1065937
+				"totalAmount": "823457.45",
+				"alignedPercentage": "0.1554",
+				"eligiblePercentage": "0.3131"
 			},
 			"Revenue": {
-				"total": 4967877,
-				"aligned": 1127928,
-				"eligible": 1962538
+				"totalAmount": "216324.47",
+				"alignedPercentage": "0.5725",
+				"eligiblePercentage": "0.7493"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 102,
 		"data": {
 			"Capex": {
-				"total": 7329397,
-				"aligned": 1699008,
-				"eligible": 2126489
+				"totalAmount": "347614.30",
+				"alignedPercentage": "0.0034",
+				"eligiblePercentage": "0.0069"
 			},
 			"Opex": {
-				"total": 5887903,
-				"aligned": 1202367,
-				"eligible": 3199604
+				"totalAmount": "542267.07",
+				"alignedPercentage": "0.5287",
+				"eligiblePercentage": "0.7337"
 			},
 			"Revenue": {
-				"total": 1182248,
-				"aligned": 72968,
-				"eligible": 169193
+				"totalAmount": "73788.80",
+				"alignedPercentage": "0.1415",
+				"eligiblePercentage": "0.3757"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -2247,129 +2247,129 @@
 		"companyId": 103,
 		"data": {
 			"Capex": {
-				"total": 6386798,
-				"aligned": 3509100,
-				"eligible": 5788901
+				"totalAmount": "596210.81",
+				"alignedPercentage": "0.3936",
+				"eligiblePercentage": "0.4349"
 			},
 			"Opex": {
-				"total": 5872676,
-				"aligned": 3730408,
-				"eligible": 4099912
+				"totalAmount": "630218.08",
+				"alignedPercentage": "0.5635",
+				"eligiblePercentage": "0.6189"
 			},
 			"Revenue": {
-				"total": 7664332,
-				"aligned": 58090,
-				"eligible": 2650585
+				"totalAmount": "216602.79",
+				"alignedPercentage": "0.1811",
+				"eligiblePercentage": "0.3263"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 104,
 		"data": {
 			"Capex": {
-				"total": 1349344,
-				"aligned": 139844,
-				"eligible": 279563
+				"totalAmount": "690224.70",
+				"alignedPercentage": "0.0114",
+				"eligiblePercentage": "0.0771"
 			},
 			"Opex": {
-				"total": 731269,
-				"aligned": 327806,
-				"eligible": 644832
+				"totalAmount": "445573.01",
+				"alignedPercentage": "0.0157",
+				"eligiblePercentage": "0.5270"
 			},
 			"Revenue": {
-				"total": 3002426,
-				"aligned": 609936,
-				"eligible": 1246378
+				"totalAmount": "896037.62",
+				"alignedPercentage": "0.0073",
+				"eligiblePercentage": "0.0082"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 105,
 		"data": {
 			"Capex": {
-				"total": 7408443,
-				"aligned": 447066,
-				"eligible": 6360398
+				"totalAmount": "613877.33",
+				"alignedPercentage": "0.4184",
+				"eligiblePercentage": "0.5992"
 			},
 			"Opex": {
-				"total": 8387175,
-				"aligned": 67620,
-				"eligible": 1891766
+				"totalAmount": "982651.15",
+				"alignedPercentage": "0.1537",
+				"eligiblePercentage": "0.1543"
 			},
 			"Revenue": {
-				"total": 2631482,
-				"aligned": 1376586,
-				"eligible": 1529430
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 106,
-		"data": {
-			"Capex": {
-				"total": 5332902,
-				"aligned": 3182851,
-				"eligible": 4841856
-			},
-			"Opex": {
-				"total": 1928499,
-				"aligned": 984152,
-				"eligible": 1253575
-			},
-			"Revenue": {
-				"total": 943828,
-				"aligned": 54597,
-				"eligible": 89566
+				"totalAmount": "833769.90",
+				"alignedPercentage": "0.0079",
+				"eligiblePercentage": "0.0381"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
+		"companyId": 106,
+		"data": {
+			"Capex": {
+				"totalAmount": "508966.95",
+				"alignedPercentage": "0.2125",
+				"eligiblePercentage": "0.2717"
+			},
+			"Opex": {
+				"totalAmount": "226927.11",
+				"alignedPercentage": "0.7547",
+				"eligiblePercentage": "0.8526"
+			},
+			"Revenue": {
+				"totalAmount": "223629.97",
+				"alignedPercentage": "0.0004",
+				"eligiblePercentage": "0.0022"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
 		"companyId": 107,
 		"data": {
 			"Capex": {
-				"total": 5063774,
-				"aligned": 3183891,
-				"eligible": 3282163
+				"totalAmount": "245161.81",
+				"alignedPercentage": "0.3775",
+				"eligiblePercentage": "0.8105"
 			},
 			"Opex": {
-				"total": 2279508,
-				"aligned": 205273,
-				"eligible": 2209138
+				"totalAmount": "99568.99",
+				"alignedPercentage": "0.1761",
+				"eligiblePercentage": "0.2994"
 			},
 			"Revenue": {
-				"total": 9995960,
-				"aligned": 2379055,
-				"eligible": 9297940
+				"totalAmount": "93822.46",
+				"alignedPercentage": "0.2394",
+				"eligiblePercentage": "0.2964"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 108,
 		"data": {
 			"Capex": {
-				"total": 1735363,
-				"aligned": 407763,
-				"eligible": 539723
+				"totalAmount": "714241.16",
+				"alignedPercentage": "0.2761",
+				"eligiblePercentage": "0.3169"
 			},
 			"Opex": {
-				"total": 6606725,
-				"aligned": 4287575,
-				"eligible": 5586249
+				"totalAmount": "177455.67",
+				"alignedPercentage": "0.2600",
+				"eligiblePercentage": "0.4935"
 			},
 			"Revenue": {
-				"total": 5668123,
-				"aligned": 993362,
-				"eligible": 2419776
+				"totalAmount": "419145.79",
+				"alignedPercentage": "0.3289",
+				"eligiblePercentage": "0.4411"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -2379,19 +2379,19 @@
 		"companyId": 109,
 		"data": {
 			"Capex": {
-				"total": 6500689,
-				"aligned": 481692,
-				"eligible": 834339
+				"totalAmount": "817517.74",
+				"alignedPercentage": "0.4742",
+				"eligiblePercentage": "0.5461"
 			},
 			"Opex": {
-				"total": 8099962,
-				"aligned": 5068377,
-				"eligible": 6644319
+				"totalAmount": "238794.93",
+				"alignedPercentage": "0.0738",
+				"eligiblePercentage": "0.2815"
 			},
 			"Revenue": {
-				"total": 1509097,
-				"aligned": 435998,
-				"eligible": 565215
+				"totalAmount": "969203.88",
+				"alignedPercentage": "0.1412",
+				"eligiblePercentage": "0.5115"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -2401,21 +2401,21 @@
 		"companyId": 110,
 		"data": {
 			"Capex": {
-				"total": 6276739,
-				"aligned": 457051,
-				"eligible": 2229432
+				"totalAmount": "899337.23",
+				"alignedPercentage": "0.2845",
+				"eligiblePercentage": "0.5463"
 			},
 			"Opex": {
-				"total": 2250451,
-				"aligned": 644089,
-				"eligible": 2238004
+				"totalAmount": "702906.85",
+				"alignedPercentage": "0.1751",
+				"eligiblePercentage": "0.3186"
 			},
 			"Revenue": {
-				"total": 7588562,
-				"aligned": 3208068,
-				"eligible": 6826462
+				"totalAmount": "850604.57",
+				"alignedPercentage": "0.0273",
+				"eligiblePercentage": "0.0442"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -2423,21 +2423,21 @@
 		"companyId": 111,
 		"data": {
 			"Capex": {
-				"total": 4044947,
-				"aligned": 1060257,
-				"eligible": 2273515
+				"totalAmount": "707461.02",
+				"alignedPercentage": "0.1774",
+				"eligiblePercentage": "0.5911"
 			},
 			"Opex": {
-				"total": 3173893,
-				"aligned": 223060,
-				"eligible": 963482
+				"totalAmount": "444120.87",
+				"alignedPercentage": "0.3335",
+				"eligiblePercentage": "0.7494"
 			},
 			"Revenue": {
-				"total": 1326228,
-				"aligned": 254658,
-				"eligible": 1094895
+				"totalAmount": "587803.89",
+				"alignedPercentage": "0.1938",
+				"eligiblePercentage": "0.4434"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -2445,21 +2445,21 @@
 		"companyId": 112,
 		"data": {
 			"Capex": {
-				"total": 5459833,
-				"aligned": 519949,
-				"eligible": 3064396
+				"totalAmount": "439301.65",
+				"alignedPercentage": "0.1205",
+				"eligiblePercentage": "0.3497"
 			},
 			"Opex": {
-				"total": 3746666,
-				"aligned": 1147318,
-				"eligible": 1426367
+				"totalAmount": "179539.08",
+				"alignedPercentage": "0.2057",
+				"eligiblePercentage": "0.2295"
 			},
 			"Revenue": {
-				"total": 3082603,
-				"aligned": 1007154,
-				"eligible": 1842188
+				"totalAmount": "938112.51",
+				"alignedPercentage": "0.2130",
+				"eligiblePercentage": "0.8526"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2467,43 +2467,43 @@
 		"companyId": 113,
 		"data": {
 			"Capex": {
-				"total": 5603442,
-				"aligned": 338483,
-				"eligible": 5110534
+				"totalAmount": "155458.55",
+				"alignedPercentage": "0.0469",
+				"eligiblePercentage": "0.3704"
 			},
 			"Opex": {
-				"total": 4847030,
-				"aligned": 817023,
-				"eligible": 2154261
+				"totalAmount": "414170.70",
+				"alignedPercentage": "0.0309",
+				"eligiblePercentage": "0.0707"
 			},
 			"Revenue": {
-				"total": 9442868,
-				"aligned": 961723,
-				"eligible": 1194091
+				"totalAmount": "591286.46",
+				"alignedPercentage": "0.0719",
+				"eligiblePercentage": "0.5113"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 114,
 		"data": {
 			"Capex": {
-				"total": 5667706,
-				"aligned": 69415,
-				"eligible": 109202
+				"totalAmount": "618495.62",
+				"alignedPercentage": "0.9101",
+				"eligiblePercentage": "0.9874"
 			},
 			"Opex": {
-				"total": 8391140,
-				"aligned": 2250472,
-				"eligible": 5188025
+				"totalAmount": "309203.19",
+				"alignedPercentage": "0.2600",
+				"eligiblePercentage": "0.9387"
 			},
 			"Revenue": {
-				"total": 9631758,
-				"aligned": 609217,
-				"eligible": 1454776
+				"totalAmount": "570358.02",
+				"alignedPercentage": "0.1476",
+				"eligiblePercentage": "0.2484"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -2511,65 +2511,65 @@
 		"companyId": 115,
 		"data": {
 			"Capex": {
-				"total": 4771556,
-				"aligned": 572498,
-				"eligible": 733461
+				"totalAmount": "297295.36",
+				"alignedPercentage": "0.0315",
+				"eligiblePercentage": "0.0407"
 			},
 			"Opex": {
-				"total": 3064611,
-				"aligned": 276386,
-				"eligible": 2240060
+				"totalAmount": "906322.68",
+				"alignedPercentage": "0.5663",
+				"eligiblePercentage": "0.5668"
 			},
 			"Revenue": {
-				"total": 2936872,
-				"aligned": 636287,
-				"eligible": 2161288
+				"totalAmount": "290691.02",
+				"alignedPercentage": "0.6811",
+				"eligiblePercentage": "0.9145"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 116,
 		"data": {
 			"Capex": {
-				"total": 6843508,
-				"aligned": 2769415,
-				"eligible": 6670926
+				"totalAmount": "910676.12",
+				"alignedPercentage": "0.5027",
+				"eligiblePercentage": "0.9032"
 			},
 			"Opex": {
-				"total": 7628696,
-				"aligned": 5959956,
-				"eligible": 6337741
+				"totalAmount": "645275.82",
+				"alignedPercentage": "0.5056",
+				"eligiblePercentage": "0.6719"
 			},
 			"Revenue": {
-				"total": 1802317,
-				"aligned": 1382748,
-				"eligible": 1739682
+				"totalAmount": "654368.41",
+				"alignedPercentage": "0.2746",
+				"eligiblePercentage": "0.8091"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 117,
 		"data": {
 			"Capex": {
-				"total": 7584353,
-				"aligned": 537350,
-				"eligible": 575690
+				"totalAmount": "587145.76",
+				"alignedPercentage": "0.2891",
+				"eligiblePercentage": "0.3322"
 			},
 			"Opex": {
-				"total": 8030142,
-				"aligned": 2641284,
-				"eligible": 5460308
+				"totalAmount": "923438.15",
+				"alignedPercentage": "0.1806",
+				"eligiblePercentage": "0.3616"
 			},
 			"Revenue": {
-				"total": 1714795,
-				"aligned": 125655,
-				"eligible": 1580521
+				"totalAmount": "333274.10",
+				"alignedPercentage": "0.1360",
+				"eligiblePercentage": "0.8160"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -2577,87 +2577,87 @@
 		"companyId": 118,
 		"data": {
 			"Capex": {
-				"total": 7206503,
-				"aligned": 135824,
-				"eligible": 345841
+				"totalAmount": "950260.90",
+				"alignedPercentage": "0.4384",
+				"eligiblePercentage": "0.5625"
 			},
 			"Opex": {
-				"total": 6747339,
-				"aligned": 835654,
-				"eligible": 1434548
+				"totalAmount": "230711.76",
+				"alignedPercentage": "0.0837",
+				"eligiblePercentage": "0.7045"
 			},
 			"Revenue": {
-				"total": 9093811,
-				"aligned": 1112306,
-				"eligible": 5122365
+				"totalAmount": "240726.86",
+				"alignedPercentage": "0.0183",
+				"eligiblePercentage": "0.3319"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 119,
 		"data": {
 			"Capex": {
-				"total": 1255997,
-				"aligned": 565548,
-				"eligible": 1063610
+				"totalAmount": "168285.22",
+				"alignedPercentage": "0.1892",
+				"eligiblePercentage": "0.5173"
 			},
 			"Opex": {
-				"total": 6438576,
-				"aligned": 1385520,
-				"eligible": 1633736
+				"totalAmount": "721360.32",
+				"alignedPercentage": "0.0943",
+				"eligiblePercentage": "0.9503"
 			},
 			"Revenue": {
-				"total": 8877691,
-				"aligned": 101713,
-				"eligible": 123321
+				"totalAmount": "555074.97",
+				"alignedPercentage": "0.0133",
+				"eligiblePercentage": "0.6214"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 120,
 		"data": {
 			"Capex": {
-				"total": 9257773,
-				"aligned": 885240,
-				"eligible": 1679432
+				"totalAmount": "206528.20",
+				"alignedPercentage": "0.2339",
+				"eligiblePercentage": "0.7533"
 			},
 			"Opex": {
-				"total": 4428555,
-				"aligned": 189762,
-				"eligible": 2822283
+				"totalAmount": "247350.78",
+				"alignedPercentage": "0.2801",
+				"eligiblePercentage": "0.3281"
 			},
 			"Revenue": {
-				"total": 2475934,
-				"aligned": 120380,
-				"eligible": 690755
+				"totalAmount": "337267.54",
+				"alignedPercentage": "0.0688",
+				"eligiblePercentage": "0.0880"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 121,
 		"data": {
 			"Capex": {
-				"total": 4828461,
-				"aligned": 176765,
-				"eligible": 276192
+				"totalAmount": "684345.60",
+				"alignedPercentage": "0.2368",
+				"eligiblePercentage": "0.7640"
 			},
 			"Opex": {
-				"total": 8969328,
-				"aligned": 1145109,
-				"eligible": 4002018
+				"totalAmount": "314077.18",
+				"alignedPercentage": "0.4800",
+				"eligiblePercentage": "0.9249"
 			},
 			"Revenue": {
-				"total": 1047201,
-				"aligned": 112503,
-				"eligible": 798763
+				"totalAmount": "57810.12",
+				"alignedPercentage": "0.1837",
+				"eligiblePercentage": "0.4175"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2665,131 +2665,131 @@
 		"companyId": 122,
 		"data": {
 			"Capex": {
-				"total": 6789364,
-				"aligned": 228094,
-				"eligible": 264783
+				"totalAmount": "507854.57",
+				"alignedPercentage": "0.1595",
+				"eligiblePercentage": "0.2099"
 			},
 			"Opex": {
-				"total": 3725663,
-				"aligned": 80595,
-				"eligible": 2096066
+				"totalAmount": "345417.86",
+				"alignedPercentage": "0.1754",
+				"eligiblePercentage": "0.6014"
 			},
 			"Revenue": {
-				"total": 7273245,
-				"aligned": 585021,
-				"eligible": 4450928
+				"totalAmount": "213869.17",
+				"alignedPercentage": "0.3514",
+				"eligiblePercentage": "0.4843"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 123,
 		"data": {
 			"Capex": {
-				"total": 1381896,
-				"aligned": 1010655,
-				"eligible": 1062970
+				"totalAmount": "676561.03",
+				"alignedPercentage": "0.4299",
+				"eligiblePercentage": "0.5587"
 			},
 			"Opex": {
-				"total": 1736606,
-				"aligned": 480021,
-				"eligible": 614739
+				"totalAmount": "822236.84",
+				"alignedPercentage": "0.3214",
+				"eligiblePercentage": "0.4048"
 			},
 			"Revenue": {
-				"total": 4760725,
-				"aligned": 777441,
-				"eligible": 2818472
+				"totalAmount": "755583.62",
+				"alignedPercentage": "0.2646",
+				"eligiblePercentage": "0.8586"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 124,
 		"data": {
 			"Capex": {
-				"total": 4654873,
-				"aligned": 802893,
-				"eligible": 1293987
+				"totalAmount": "206660.02",
+				"alignedPercentage": "0.1127",
+				"eligiblePercentage": "0.7608"
 			},
 			"Opex": {
-				"total": 7055988,
-				"aligned": 459528,
-				"eligible": 2162064
+				"totalAmount": "277518.31",
+				"alignedPercentage": "0.5166",
+				"eligiblePercentage": "0.5312"
 			},
 			"Revenue": {
-				"total": 9783159,
-				"aligned": 1126060,
-				"eligible": 1477193
+				"totalAmount": "565141.27",
+				"alignedPercentage": "0.0244",
+				"eligiblePercentage": "0.1636"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 125,
 		"data": {
 			"Capex": {
-				"total": 1316004,
-				"aligned": 77520,
-				"eligible": 251449
+				"totalAmount": "75381.76",
+				"alignedPercentage": "0.0061",
+				"eligiblePercentage": "0.0220"
 			},
 			"Opex": {
-				"total": 9871807,
-				"aligned": 5865212,
-				"eligible": 8461352
+				"totalAmount": "670586.88",
+				"alignedPercentage": "0.3465",
+				"eligiblePercentage": "0.3491"
 			},
 			"Revenue": {
-				"total": 8212480,
-				"aligned": 2013373,
-				"eligible": 5096300
+				"totalAmount": "137810.29",
+				"alignedPercentage": "0.7633",
+				"eligiblePercentage": "0.8442"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 126,
 		"data": {
 			"Capex": {
-				"total": 6059823,
-				"aligned": 321765,
-				"eligible": 443266
+				"totalAmount": "971471.61",
+				"alignedPercentage": "0.0133",
+				"eligiblePercentage": "0.0518"
 			},
 			"Opex": {
-				"total": 3781825,
-				"aligned": 756505,
-				"eligible": 1255611
+				"totalAmount": "284998.27",
+				"alignedPercentage": "0.1880",
+				"eligiblePercentage": "0.3534"
 			},
 			"Revenue": {
-				"total": 4690636,
-				"aligned": 1852305,
-				"eligible": 3827344
+				"totalAmount": "657304.29",
+				"alignedPercentage": "0.0457",
+				"eligiblePercentage": "0.5110"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 127,
 		"data": {
 			"Capex": {
-				"total": 164125,
-				"aligned": 79451,
-				"eligible": 139219
+				"totalAmount": "256071.68",
+				"alignedPercentage": "0.1006",
+				"eligiblePercentage": "0.3014"
 			},
 			"Opex": {
-				"total": 2586970,
-				"aligned": 250576,
-				"eligible": 306027
+				"totalAmount": "929904.21",
+				"alignedPercentage": "0.6293",
+				"eligiblePercentage": "0.7789"
 			},
 			"Revenue": {
-				"total": 491360,
-				"aligned": 60607,
-				"eligible": 181180
+				"totalAmount": "325683.61",
+				"alignedPercentage": "0.0386",
+				"eligiblePercentage": "0.1586"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2797,43 +2797,43 @@
 		"companyId": 128,
 		"data": {
 			"Capex": {
-				"total": 9762474,
-				"aligned": 4368263,
-				"eligible": 5118937
+				"totalAmount": "437168.93",
+				"alignedPercentage": "0.2748",
+				"eligiblePercentage": "0.7050"
 			},
 			"Opex": {
-				"total": 7662406,
-				"aligned": 3125551,
-				"eligible": 6578092
+				"totalAmount": "269647.05",
+				"alignedPercentage": "0.0467",
+				"eligiblePercentage": "0.0547"
 			},
 			"Revenue": {
-				"total": 3122517,
-				"aligned": 75034,
-				"eligible": 284457
+				"totalAmount": "467426.31",
+				"alignedPercentage": "0.4767",
+				"eligiblePercentage": "0.5768"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 129,
 		"data": {
 			"Capex": {
-				"total": 9388110,
-				"aligned": 116887,
-				"eligible": 796803
+				"totalAmount": "489862.33",
+				"alignedPercentage": "0.2496",
+				"eligiblePercentage": "0.6583"
 			},
 			"Opex": {
-				"total": 199402,
-				"aligned": 68555,
-				"eligible": 136740
+				"totalAmount": "212479.91",
+				"alignedPercentage": "0.0010",
+				"eligiblePercentage": "0.0122"
 			},
 			"Revenue": {
-				"total": 2628770,
-				"aligned": 729447,
-				"eligible": 1593805
+				"totalAmount": "469318.92",
+				"alignedPercentage": "0.1689",
+				"eligiblePercentage": "0.3558"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
@@ -2841,21 +2841,21 @@
 		"companyId": 130,
 		"data": {
 			"Capex": {
-				"total": 9903264,
-				"aligned": 7661218,
-				"eligible": 8195713
+				"totalAmount": "962398.85",
+				"alignedPercentage": "0.1335",
+				"eligiblePercentage": "0.5599"
 			},
 			"Opex": {
-				"total": 2210906,
-				"aligned": 900816,
-				"eligible": 1893981
+				"totalAmount": "566539.75",
+				"alignedPercentage": "0.2962",
+				"eligiblePercentage": "0.9040"
 			},
 			"Revenue": {
-				"total": 2035568,
-				"aligned": 168972,
-				"eligible": 1405171
+				"totalAmount": "201530.52",
+				"alignedPercentage": "0.3058",
+				"eligiblePercentage": "0.7800"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -2863,41 +2863,41 @@
 		"companyId": 131,
 		"data": {
 			"Capex": {
-				"total": 1893217,
-				"aligned": 1165950,
-				"eligible": 1604294
+				"totalAmount": "373963.80",
+				"alignedPercentage": "0.8382",
+				"eligiblePercentage": "0.9482"
 			},
 			"Opex": {
-				"total": 1091162,
-				"aligned": 68147,
-				"eligible": 539448
+				"totalAmount": "929919.47",
+				"alignedPercentage": "0.2553",
+				"eligiblePercentage": "0.8216"
 			},
 			"Revenue": {
-				"total": 5988166,
-				"aligned": 447565,
-				"eligible": 1785358
+				"totalAmount": "939676.45",
+				"alignedPercentage": "0.2800",
+				"eligiblePercentage": "0.5515"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 132,
 		"data": {
 			"Capex": {
-				"total": 3916076,
-				"aligned": 798917,
-				"eligible": 1879175
+				"totalAmount": "371759.40",
+				"alignedPercentage": "0.9052",
+				"eligiblePercentage": "0.9433"
 			},
 			"Opex": {
-				"total": 2250805,
-				"aligned": 902054,
-				"eligible": 1057545
+				"totalAmount": "392931.45",
+				"alignedPercentage": "0.4892",
+				"eligiblePercentage": "0.6937"
 			},
 			"Revenue": {
-				"total": 2868389,
-				"aligned": 144333,
-				"eligible": 254951
+				"totalAmount": "825393.97",
+				"alignedPercentage": "0.5413",
+				"eligiblePercentage": "0.7889"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
@@ -2907,19 +2907,19 @@
 		"companyId": 133,
 		"data": {
 			"Capex": {
-				"total": 3008943,
-				"aligned": 1278677,
-				"eligible": 2331154
+				"totalAmount": "53904.73",
+				"alignedPercentage": "0.6638",
+				"eligiblePercentage": "0.6684"
 			},
 			"Opex": {
-				"total": 9385540,
-				"aligned": 250823,
-				"eligible": 7120229
+				"totalAmount": "270391.58",
+				"alignedPercentage": "0.6020",
+				"eligiblePercentage": "0.7570"
 			},
 			"Revenue": {
-				"total": 9450314,
-				"aligned": 4861292,
-				"eligible": 6865523
+				"totalAmount": "434969.83",
+				"alignedPercentage": "0.0276",
+				"eligiblePercentage": "0.0668"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -2929,65 +2929,65 @@
 		"companyId": 134,
 		"data": {
 			"Capex": {
-				"total": 9356664,
-				"aligned": 1958921,
-				"eligible": 8242323
+				"totalAmount": "230724.90",
+				"alignedPercentage": "0.3746",
+				"eligiblePercentage": "0.5451"
 			},
 			"Opex": {
-				"total": 6081745,
-				"aligned": 2240358,
-				"eligible": 5498242
+				"totalAmount": "705005.04",
+				"alignedPercentage": "0.2822",
+				"eligiblePercentage": "0.3110"
 			},
 			"Revenue": {
-				"total": 6431451,
-				"aligned": 1978349,
-				"eligible": 2111607
+				"totalAmount": "128221.89",
+				"alignedPercentage": "0.0228",
+				"eligiblePercentage": "0.0340"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 135,
 		"data": {
 			"Capex": {
-				"total": 5599985,
-				"aligned": 114252,
-				"eligible": 317007
+				"totalAmount": "582442.20",
+				"alignedPercentage": "0.5558",
+				"eligiblePercentage": "0.5906"
 			},
 			"Opex": {
-				"total": 2650938,
-				"aligned": 201533,
-				"eligible": 633890
+				"totalAmount": "338725.35",
+				"alignedPercentage": "0.0011",
+				"eligiblePercentage": "0.5712"
 			},
 			"Revenue": {
-				"total": 5522952,
-				"aligned": 278456,
-				"eligible": 2666549
+				"totalAmount": "787677.27",
+				"alignedPercentage": "0.2959",
+				"eligiblePercentage": "0.3272"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 136,
 		"data": {
 			"Capex": {
-				"total": 2001974,
-				"aligned": 801690,
-				"eligible": 1848847
+				"totalAmount": "88209.62",
+				"alignedPercentage": "0.1395",
+				"eligiblePercentage": "0.1672"
 			},
 			"Opex": {
-				"total": 2792703,
-				"aligned": 388132,
-				"eligible": 515428
+				"totalAmount": "363471.57",
+				"alignedPercentage": "0.0776",
+				"eligiblePercentage": "0.9131"
 			},
 			"Revenue": {
-				"total": 182615,
-				"aligned": 89001,
-				"eligible": 99720
+				"totalAmount": "577080.92",
+				"alignedPercentage": "0.0018",
+				"eligiblePercentage": "0.1660"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -2995,19 +2995,19 @@
 		"companyId": 137,
 		"data": {
 			"Capex": {
-				"total": 5241233,
-				"aligned": 142733,
-				"eligible": 1906524
+				"totalAmount": "592776.64",
+				"alignedPercentage": "0.1070",
+				"eligiblePercentage": "0.2761"
 			},
 			"Opex": {
-				"total": 6723539,
-				"aligned": 2002240,
-				"eligible": 3564552
+				"totalAmount": "128921.14",
+				"alignedPercentage": "0.2496",
+				"eligiblePercentage": "0.4359"
 			},
 			"Revenue": {
-				"total": 8039875,
-				"aligned": 1407824,
-				"eligible": 3239635
+				"totalAmount": "375590.55",
+				"alignedPercentage": "0.5137",
+				"eligiblePercentage": "0.7509"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -3017,63 +3017,63 @@
 		"companyId": 138,
 		"data": {
 			"Capex": {
-				"total": 6610510,
-				"aligned": 3353275,
-				"eligible": 4076966
+				"totalAmount": "759573.47",
+				"alignedPercentage": "0.3819",
+				"eligiblePercentage": "0.4221"
 			},
 			"Opex": {
-				"total": 583029,
-				"aligned": 155570,
-				"eligible": 448682
+				"totalAmount": "401394.27",
+				"alignedPercentage": "0.6823",
+				"eligiblePercentage": "0.6913"
 			},
 			"Revenue": {
-				"total": 4870013,
-				"aligned": 58383,
-				"eligible": 66838
+				"totalAmount": "269552.57",
+				"alignedPercentage": "0.4504",
+				"eligiblePercentage": "0.8631"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 139,
 		"data": {
 			"Capex": {
-				"total": 1146190,
-				"aligned": 265186,
-				"eligible": 614634
+				"totalAmount": "562455.98",
+				"alignedPercentage": "0.3575",
+				"eligiblePercentage": "0.5188"
 			},
 			"Opex": {
-				"total": 4860360,
-				"aligned": 3761186,
-				"eligible": 3874968
+				"totalAmount": "486663.88",
+				"alignedPercentage": "0.1705",
+				"eligiblePercentage": "0.4943"
 			},
 			"Revenue": {
-				"total": 5821996,
-				"aligned": 288740,
-				"eligible": 718494
+				"totalAmount": "356954.65",
+				"alignedPercentage": "0.1494",
+				"eligiblePercentage": "0.3138"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 140,
 		"data": {
 			"Capex": {
-				"total": 5152952,
-				"aligned": 1391893,
-				"eligible": 1953088
+				"totalAmount": "611677.98",
+				"alignedPercentage": "0.4114",
+				"eligiblePercentage": "0.9892"
 			},
 			"Opex": {
-				"total": 354919,
-				"aligned": 214145,
-				"eligible": 303669
+				"totalAmount": "472123.38",
+				"alignedPercentage": "0.3358",
+				"eligiblePercentage": "0.7677"
 			},
 			"Revenue": {
-				"total": 6276699,
-				"aligned": 1186013,
-				"eligible": 2654241
+				"totalAmount": "347889.28",
+				"alignedPercentage": "0.0202",
+				"eligiblePercentage": "0.3902"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
@@ -3083,19 +3083,19 @@
 		"companyId": 141,
 		"data": {
 			"Capex": {
-				"total": 8065349,
-				"aligned": 162722,
-				"eligible": 575329
+				"totalAmount": "469003.48",
+				"alignedPercentage": "0.0005",
+				"eligiblePercentage": "0.0008"
 			},
 			"Opex": {
-				"total": 3373935,
-				"aligned": 2180814,
-				"eligible": 3349202
+				"totalAmount": "752042.12",
+				"alignedPercentage": "0.1507",
+				"eligiblePercentage": "0.7397"
 			},
 			"Revenue": {
-				"total": 5545228,
-				"aligned": 1591521,
-				"eligible": 3100147
+				"totalAmount": "92096.89",
+				"alignedPercentage": "0.1619",
+				"eligiblePercentage": "0.2239"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -3105,63 +3105,63 @@
 		"companyId": 142,
 		"data": {
 			"Capex": {
-				"total": 7845910,
-				"aligned": 1032929,
-				"eligible": 4966561
+				"totalAmount": "694617.43",
+				"alignedPercentage": "0.3001",
+				"eligiblePercentage": "0.5020"
 			},
 			"Opex": {
-				"total": 9265527,
-				"aligned": 4226364,
-				"eligible": 4513009
+				"totalAmount": "124275.68",
+				"alignedPercentage": "0.0678",
+				"eligiblePercentage": "0.0886"
 			},
 			"Revenue": {
-				"total": 8196858,
-				"aligned": 85977,
-				"eligible": 983334
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 143,
-		"data": {
-			"Capex": {
-				"total": 2927148,
-				"aligned": 414391,
-				"eligible": 2371593
-			},
-			"Opex": {
-				"total": 5338578,
-				"aligned": 1925215,
-				"eligible": 2727394
-			},
-			"Revenue": {
-				"total": 9089168,
-				"aligned": 4061333,
-				"eligible": 8017549
+				"totalAmount": "976136.30",
+				"alignedPercentage": "0.2281",
+				"eligiblePercentage": "0.9825"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
 	{
+		"companyId": 143,
+		"data": {
+			"Capex": {
+				"totalAmount": "302608.59",
+				"alignedPercentage": "0.1025",
+				"eligiblePercentage": "0.6704"
+			},
+			"Opex": {
+				"totalAmount": "976193.43",
+				"alignedPercentage": "0.3828",
+				"eligiblePercentage": "0.5153"
+			},
+			"Revenue": {
+				"totalAmount": "827619.91",
+				"alignedPercentage": "0.6997",
+				"eligiblePercentage": "0.8100"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
 		"companyId": 144,
 		"data": {
 			"Capex": {
-				"total": 2151904,
-				"aligned": 1196170,
-				"eligible": 1694831
+				"totalAmount": "709372.17",
+				"alignedPercentage": "0.2837",
+				"eligiblePercentage": "0.4526"
 			},
 			"Opex": {
-				"total": 1303683,
-				"aligned": 285213,
-				"eligible": 497562
+				"totalAmount": "734146.59",
+				"alignedPercentage": "0.2982",
+				"eligiblePercentage": "0.8641"
 			},
 			"Revenue": {
-				"total": 2554313,
-				"aligned": 187671,
-				"eligible": 312902
+				"totalAmount": "554377.30",
+				"alignedPercentage": "0.1757",
+				"eligiblePercentage": "0.9115"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -3171,41 +3171,41 @@
 		"companyId": 145,
 		"data": {
 			"Capex": {
-				"total": 1091691,
-				"aligned": 74081,
-				"eligible": 605683
+				"totalAmount": "413594.61",
+				"alignedPercentage": "0.4386",
+				"eligiblePercentage": "0.4617"
 			},
 			"Opex": {
-				"total": 3831635,
-				"aligned": 479172,
-				"eligible": 929162
+				"totalAmount": "251781.83",
+				"alignedPercentage": "0.2140",
+				"eligiblePercentage": "0.9225"
 			},
 			"Revenue": {
-				"total": 5553659,
-				"aligned": 1311503,
-				"eligible": 3514820
+				"totalAmount": "250415.93",
+				"alignedPercentage": "0.0037",
+				"eligiblePercentage": "0.1932"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 146,
 		"data": {
 			"Capex": {
-				"total": 1457297,
-				"aligned": 161050,
-				"eligible": 698101
+				"totalAmount": "743520.69",
+				"alignedPercentage": "0.2367",
+				"eligiblePercentage": "0.2938"
 			},
 			"Opex": {
-				"total": 5533087,
-				"aligned": 928657,
-				"eligible": 3833725
+				"totalAmount": "656156.54",
+				"alignedPercentage": "0.3094",
+				"eligiblePercentage": "0.5580"
 			},
 			"Revenue": {
-				"total": 5246907,
-				"aligned": 1605078,
-				"eligible": 1806584
+				"totalAmount": "572507.45",
+				"alignedPercentage": "0.7260",
+				"eligiblePercentage": "0.7445"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
@@ -3215,87 +3215,87 @@
 		"companyId": 147,
 		"data": {
 			"Capex": {
-				"total": 4313574,
-				"aligned": 1778658,
-				"eligible": 2814620
+				"totalAmount": "694761.15",
+				"alignedPercentage": "0.5410",
+				"eligiblePercentage": "0.6776"
 			},
 			"Opex": {
-				"total": 5533643,
-				"aligned": 982859,
-				"eligible": 3258582
+				"totalAmount": "220147.25",
+				"alignedPercentage": "0.6121",
+				"eligiblePercentage": "0.8457"
 			},
 			"Revenue": {
-				"total": 6962429,
-				"aligned": 2700766,
-				"eligible": 3131007
+				"totalAmount": "976834.71",
+				"alignedPercentage": "0.7945",
+				"eligiblePercentage": "0.8782"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 148,
 		"data": {
 			"Capex": {
-				"total": 8313461,
-				"aligned": 4084579,
-				"eligible": 4334754
+				"totalAmount": "192452.06",
+				"alignedPercentage": "0.1160",
+				"eligiblePercentage": "0.8027"
 			},
 			"Opex": {
-				"total": 2714571,
-				"aligned": 299877,
-				"eligible": 1542249
+				"totalAmount": "150217.33",
+				"alignedPercentage": "0.0379",
+				"eligiblePercentage": "0.9816"
 			},
 			"Revenue": {
-				"total": 3233536,
-				"aligned": 1635448,
-				"eligible": 3108190
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 149,
-		"data": {
-			"Capex": {
-				"total": 4648675,
-				"aligned": 1154998,
-				"eligible": 1664788
-			},
-			"Opex": {
-				"total": 5946687,
-				"aligned": 161511,
-				"eligible": 805393
-			},
-			"Revenue": {
-				"total": 3586958,
-				"aligned": 531534,
-				"eligible": 1616720
+				"totalAmount": "518449.58",
+				"alignedPercentage": "0.1430",
+				"eligiblePercentage": "0.7135"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
+		"companyId": 149,
+		"data": {
+			"Capex": {
+				"totalAmount": "518410.77",
+				"alignedPercentage": "0.6397",
+				"eligiblePercentage": "0.7306"
+			},
+			"Opex": {
+				"totalAmount": "584162.91",
+				"alignedPercentage": "0.0836",
+				"eligiblePercentage": "0.1753"
+			},
+			"Revenue": {
+				"totalAmount": "900917.76",
+				"alignedPercentage": "0.3090",
+				"eligiblePercentage": "0.5094"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
+		}
+	},
+	{
 		"companyId": 150,
 		"data": {
 			"Capex": {
-				"total": 4632958,
-				"aligned": 830973,
-				"eligible": 915015
+				"totalAmount": "61520.27",
+				"alignedPercentage": "0.1227",
+				"eligiblePercentage": "0.1476"
 			},
 			"Opex": {
-				"total": 5450532,
-				"aligned": 2959652,
-				"eligible": 3964861
+				"totalAmount": "500121.02",
+				"alignedPercentage": "0.0031",
+				"eligiblePercentage": "0.0065"
 			},
 			"Revenue": {
-				"total": 1896941,
-				"aligned": 64764,
-				"eligible": 98317
+				"totalAmount": "412226.92",
+				"alignedPercentage": "0.7962",
+				"eligiblePercentage": "0.8749"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -3303,19 +3303,19 @@
 		"companyId": 151,
 		"data": {
 			"Capex": {
-				"total": 87890,
-				"aligned": 51810,
-				"eligible": 61270
+				"totalAmount": "645946.91",
+				"alignedPercentage": "0.0016",
+				"eligiblePercentage": "0.0431"
 			},
 			"Opex": {
-				"total": 8482791,
-				"aligned": 1897035,
-				"eligible": 5237324
+				"totalAmount": "970671.20",
+				"alignedPercentage": "0.2544",
+				"eligiblePercentage": "0.9181"
 			},
 			"Revenue": {
-				"total": 5278848,
-				"aligned": 515292,
-				"eligible": 4032870
+				"totalAmount": "780384.77",
+				"alignedPercentage": "0.1148",
+				"eligiblePercentage": "0.1198"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -3325,109 +3325,109 @@
 		"companyId": 152,
 		"data": {
 			"Capex": {
-				"total": 3348293,
-				"aligned": 328576,
-				"eligible": 1149955
+				"totalAmount": "386681.44",
+				"alignedPercentage": "0.1065",
+				"eligiblePercentage": "0.1574"
 			},
 			"Opex": {
-				"total": 6661254,
-				"aligned": 1133429,
-				"eligible": 2660920
+				"totalAmount": "515486.63",
+				"alignedPercentage": "0.6605",
+				"eligiblePercentage": "0.7182"
 			},
 			"Revenue": {
-				"total": 4323362,
-				"aligned": 1982633,
-				"eligible": 3686739
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 153,
-		"data": {
-			"Capex": {
-				"total": 9073664,
-				"aligned": 2044925,
-				"eligible": 2600511
-			},
-			"Opex": {
-				"total": 3329700,
-				"aligned": 669180,
-				"eligible": 1657818
-			},
-			"Revenue": {
-				"total": 5453790,
-				"aligned": 2452479,
-				"eligible": 3681296
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 154,
-		"data": {
-			"Capex": {
-				"total": 4262213,
-				"aligned": 1181192,
-				"eligible": 2669400
-			},
-			"Opex": {
-				"total": 7344711,
-				"aligned": 3428845,
-				"eligible": 4102085
-			},
-			"Revenue": {
-				"total": 7579942,
-				"aligned": 853340,
-				"eligible": 935447
+				"totalAmount": "497314.48",
+				"alignedPercentage": "0.4008",
+				"eligiblePercentage": "0.4772"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
 		}
 	},
 	{
+		"companyId": 153,
+		"data": {
+			"Capex": {
+				"totalAmount": "866937.46",
+				"alignedPercentage": "0.0742",
+				"eligiblePercentage": "0.2243"
+			},
+			"Opex": {
+				"totalAmount": "764882.38",
+				"alignedPercentage": "0.3118",
+				"eligiblePercentage": "0.3536"
+			},
+			"Revenue": {
+				"totalAmount": "617672.69",
+				"alignedPercentage": "0.4661",
+				"eligiblePercentage": "0.7233"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
+		"companyId": 154,
+		"data": {
+			"Capex": {
+				"totalAmount": "902290.96",
+				"alignedPercentage": "0.1718",
+				"eligiblePercentage": "0.2180"
+			},
+			"Opex": {
+				"totalAmount": "622175.68",
+				"alignedPercentage": "0.3456",
+				"eligiblePercentage": "0.9042"
+			},
+			"Revenue": {
+				"totalAmount": "708581.19",
+				"alignedPercentage": "0.5672",
+				"eligiblePercentage": "0.9024"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
 		"companyId": 155,
 		"data": {
 			"Capex": {
-				"total": 1098601,
-				"aligned": 105135,
-				"eligible": 476140
+				"totalAmount": "411811.12",
+				"alignedPercentage": "0.3543",
+				"eligiblePercentage": "0.5346"
 			},
 			"Opex": {
-				"total": 9486567,
-				"aligned": 528623,
-				"eligible": 6262647
+				"totalAmount": "850752.21",
+				"alignedPercentage": "0.0302",
+				"eligiblePercentage": "0.2295"
 			},
 			"Revenue": {
-				"total": 9028830,
-				"aligned": 1883179,
-				"eligible": 3961281
+				"totalAmount": "242005.84",
+				"alignedPercentage": "0.7520",
+				"eligiblePercentage": "0.8213"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 156,
 		"data": {
 			"Capex": {
-				"total": 3251106,
-				"aligned": 1387123,
-				"eligible": 1731195
+				"totalAmount": "553622.80",
+				"alignedPercentage": "0.0625",
+				"eligiblePercentage": "0.1225"
 			},
 			"Opex": {
-				"total": 3655487,
-				"aligned": 400366,
-				"eligible": 2940531
+				"totalAmount": "583697.20",
+				"alignedPercentage": "0.4282",
+				"eligiblePercentage": "0.5195"
 			},
 			"Revenue": {
-				"total": 8480976,
-				"aligned": 580434,
-				"eligible": 1000695
+				"totalAmount": "166469.22",
+				"alignedPercentage": "0.5270",
+				"eligiblePercentage": "0.5614"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -3435,85 +3435,85 @@
 		"companyId": 157,
 		"data": {
 			"Capex": {
-				"total": 4421861,
-				"aligned": 1159473,
-				"eligible": 1473115
+				"totalAmount": "291784.50",
+				"alignedPercentage": "0.5234",
+				"eligiblePercentage": "0.7452"
 			},
 			"Opex": {
-				"total": 1436128,
-				"aligned": 571565,
-				"eligible": 1185702
+				"totalAmount": "807726.93",
+				"alignedPercentage": "0.2704",
+				"eligiblePercentage": "0.5174"
 			},
 			"Revenue": {
-				"total": 8531557,
-				"aligned": 2106615,
-				"eligible": 5975594
+				"totalAmount": "99906.19",
+				"alignedPercentage": "0.0001",
+				"eligiblePercentage": "0.9902"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 158,
 		"data": {
 			"Capex": {
-				"total": 3736446,
-				"aligned": 121695,
-				"eligible": 1848712
+				"totalAmount": "493445.26",
+				"alignedPercentage": "0.0941",
+				"eligiblePercentage": "0.1604"
 			},
 			"Opex": {
-				"total": 5240652,
-				"aligned": 55562,
-				"eligible": 56665
+				"totalAmount": "663299.47",
+				"alignedPercentage": "0.4347",
+				"eligiblePercentage": "0.4937"
 			},
 			"Revenue": {
-				"total": 4136265,
-				"aligned": 2743553,
-				"eligible": 3565783
+				"totalAmount": "885516.37",
+				"alignedPercentage": "0.4853",
+				"eligiblePercentage": "0.5855"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 159,
 		"data": {
 			"Capex": {
-				"total": 4281216,
-				"aligned": 1867711,
-				"eligible": 3407303
+				"totalAmount": "727429.79",
+				"alignedPercentage": "0.1254",
+				"eligiblePercentage": "0.6791"
 			},
 			"Opex": {
-				"total": 878875,
-				"aligned": 68735,
-				"eligible": 614698
+				"totalAmount": "927824.91",
+				"alignedPercentage": "0.0502",
+				"eligiblePercentage": "0.9738"
 			},
 			"Revenue": {
-				"total": 2976963,
-				"aligned": 796541,
-				"eligible": 1165240
+				"totalAmount": "570605.30",
+				"alignedPercentage": "0.0382",
+				"eligiblePercentage": "0.0640"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 160,
 		"data": {
 			"Capex": {
-				"total": 8342636,
-				"aligned": 5575907,
-				"eligible": 6596473
+				"totalAmount": "911459.78",
+				"alignedPercentage": "0.6088",
+				"eligiblePercentage": "0.6739"
 			},
 			"Opex": {
-				"total": 7613139,
-				"aligned": 1323480,
-				"eligible": 2414694
+				"totalAmount": "620449.06",
+				"alignedPercentage": "0.1890",
+				"eligiblePercentage": "0.2313"
 			},
 			"Revenue": {
-				"total": 8081153,
-				"aligned": 280819,
-				"eligible": 5105457
+				"totalAmount": "176381.36",
+				"alignedPercentage": "0.0083",
+				"eligiblePercentage": "0.6490"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -3523,63 +3523,63 @@
 		"companyId": 161,
 		"data": {
 			"Capex": {
-				"total": 6763265,
-				"aligned": 1330556,
-				"eligible": 2509678
+				"totalAmount": "595240.33",
+				"alignedPercentage": "0.0600",
+				"eligiblePercentage": "0.2401"
 			},
 			"Opex": {
-				"total": 9429187,
-				"aligned": 6069272,
-				"eligible": 7656291
+				"totalAmount": "936806.54",
+				"alignedPercentage": "0.0299",
+				"eligiblePercentage": "0.7986"
 			},
 			"Revenue": {
-				"total": 2409018,
-				"aligned": 319629,
-				"eligible": 405557
+				"totalAmount": "633506.79",
+				"alignedPercentage": "0.2303",
+				"eligiblePercentage": "0.3177"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 162,
 		"data": {
 			"Capex": {
-				"total": 9647628,
-				"aligned": 174211,
-				"eligible": 1707915
+				"totalAmount": "991172.60",
+				"alignedPercentage": "0.0345",
+				"eligiblePercentage": "0.0886"
 			},
 			"Opex": {
-				"total": 7621996,
-				"aligned": 2377094,
-				"eligible": 2575487
+				"totalAmount": "697902.98",
+				"alignedPercentage": "0.0525",
+				"eligiblePercentage": "0.2981"
 			},
 			"Revenue": {
-				"total": 762434,
-				"aligned": 128670,
-				"eligible": 745364
+				"totalAmount": "916691.08",
+				"alignedPercentage": "0.7503",
+				"eligiblePercentage": "0.9992"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 163,
 		"data": {
 			"Capex": {
-				"total": 2596883,
-				"aligned": 402389,
-				"eligible": 671965
+				"totalAmount": "412513.35",
+				"alignedPercentage": "0.2024",
+				"eligiblePercentage": "0.2943"
 			},
 			"Opex": {
-				"total": 3309003,
-				"aligned": 1405522,
-				"eligible": 2772081
+				"totalAmount": "789706.46",
+				"alignedPercentage": "0.2586",
+				"eligiblePercentage": "0.3496"
 			},
 			"Revenue": {
-				"total": 3784042,
-				"aligned": 150794,
-				"eligible": 994107
+				"totalAmount": "971585.12",
+				"alignedPercentage": "0.1106",
+				"eligiblePercentage": "0.5910"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
@@ -3589,85 +3589,85 @@
 		"companyId": 164,
 		"data": {
 			"Capex": {
-				"total": 8602914,
-				"aligned": 1011811,
-				"eligible": 4234737
+				"totalAmount": "601340.64",
+				"alignedPercentage": "0.5299",
+				"eligiblePercentage": "0.5648"
 			},
 			"Opex": {
-				"total": 231430,
-				"aligned": 69986,
-				"eligible": 97942
+				"totalAmount": "457377.02",
+				"alignedPercentage": "0.2461",
+				"eligiblePercentage": "0.7040"
 			},
 			"Revenue": {
-				"total": 6403806,
-				"aligned": 92756,
-				"eligible": 98597
+				"totalAmount": "700475.78",
+				"alignedPercentage": "0.1867",
+				"eligiblePercentage": "0.9599"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 165,
 		"data": {
 			"Capex": {
-				"total": 9981257,
-				"aligned": 6304994,
-				"eligible": 8057107
+				"totalAmount": "634961.66",
+				"alignedPercentage": "0.1183",
+				"eligiblePercentage": "0.7353"
 			},
 			"Opex": {
-				"total": 1158397,
-				"aligned": 161854,
-				"eligible": 548371
+				"totalAmount": "772522.26",
+				"alignedPercentage": "0.5450",
+				"eligiblePercentage": "0.7243"
 			},
 			"Revenue": {
-				"total": 8720005,
-				"aligned": 5376452,
-				"eligible": 5638766
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 166,
-		"data": {
-			"Capex": {
-				"total": 9029710,
-				"aligned": 6012676,
-				"eligible": 6749382
-			},
-			"Opex": {
-				"total": 9276996,
-				"aligned": 1205053,
-				"eligible": 1456667
-			},
-			"Revenue": {
-				"total": 2457014,
-				"aligned": 412602,
-				"eligible": 1022209
+				"totalAmount": "735927.85",
+				"alignedPercentage": "0.0210",
+				"eligiblePercentage": "0.0244"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
 	{
+		"companyId": 166,
+		"data": {
+			"Capex": {
+				"totalAmount": "734701.58",
+				"alignedPercentage": "0.8504",
+				"eligiblePercentage": "0.8924"
+			},
+			"Opex": {
+				"totalAmount": "965535.60",
+				"alignedPercentage": "0.1255",
+				"eligiblePercentage": "0.5366"
+			},
+			"Revenue": {
+				"totalAmount": "978743.65",
+				"alignedPercentage": "0.0093",
+				"eligiblePercentage": "0.0334"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
 		"companyId": 167,
 		"data": {
 			"Capex": {
-				"total": 6635841,
-				"aligned": 567444,
-				"eligible": 1743734
+				"totalAmount": "891621.46",
+				"alignedPercentage": "0.0036",
+				"eligiblePercentage": "0.0102"
 			},
 			"Opex": {
-				"total": 7235919,
-				"aligned": 79860,
-				"eligible": 4920833
+				"totalAmount": "565318.32",
+				"alignedPercentage": "0.4820",
+				"eligiblePercentage": "0.8524"
 			},
 			"Revenue": {
-				"total": 3288699,
-				"aligned": 1590236,
-				"eligible": 2478338
+				"totalAmount": "379968.06",
+				"alignedPercentage": "0.1109",
+				"eligiblePercentage": "0.1695"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -3677,107 +3677,107 @@
 		"companyId": 168,
 		"data": {
 			"Capex": {
-				"total": 2068219,
-				"aligned": 135981,
-				"eligible": 278229
+				"totalAmount": "415116.50",
+				"alignedPercentage": "0.6905",
+				"eligiblePercentage": "0.8829"
 			},
 			"Opex": {
-				"total": 3385575,
-				"aligned": 1321390,
-				"eligible": 3098035
+				"totalAmount": "783791.77",
+				"alignedPercentage": "0.0170",
+				"eligiblePercentage": "0.8955"
 			},
 			"Revenue": {
-				"total": 2720808,
-				"aligned": 1505011,
-				"eligible": 2692808
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 169,
-		"data": {
-			"Capex": {
-				"total": 3550444,
-				"aligned": 913442,
-				"eligible": 2287343
-			},
-			"Opex": {
-				"total": 7597420,
-				"aligned": 354518,
-				"eligible": 3475249
-			},
-			"Revenue": {
-				"total": 866211,
-				"aligned": 175047,
-				"eligible": 228409
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
-		}
-	},
-	{
-		"companyId": 170,
-		"data": {
-			"Capex": {
-				"total": 940308,
-				"aligned": 372241,
-				"eligible": 657190
-			},
-			"Opex": {
-				"total": 3769893,
-				"aligned": 1657597,
-				"eligible": 3082250
-			},
-			"Revenue": {
-				"total": 1616469,
-				"aligned": 939439,
-				"eligible": 1334425
+				"totalAmount": "288713.35",
+				"alignedPercentage": "0.1162",
+				"eligiblePercentage": "0.4628"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
+		"companyId": 169,
+		"data": {
+			"Capex": {
+				"totalAmount": "56989.31",
+				"alignedPercentage": "0.0874",
+				"eligiblePercentage": "0.3785"
+			},
+			"Opex": {
+				"totalAmount": "89416.00",
+				"alignedPercentage": "0.3290",
+				"eligiblePercentage": "0.8356"
+			},
+			"Revenue": {
+				"totalAmount": "301642.33",
+				"alignedPercentage": "0.7261",
+				"eligiblePercentage": "0.7718"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "None"
+		}
+	},
+	{
+		"companyId": 170,
+		"data": {
+			"Capex": {
+				"totalAmount": "566482.66",
+				"alignedPercentage": "0.8557",
+				"eligiblePercentage": "0.9352"
+			},
+			"Opex": {
+				"totalAmount": "709750.85",
+				"alignedPercentage": "0.4026",
+				"eligiblePercentage": "0.5879"
+			},
+			"Revenue": {
+				"totalAmount": "580023.31",
+				"alignedPercentage": "0.0931",
+				"eligiblePercentage": "0.1069"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "None"
+		}
+	},
+	{
 		"companyId": 171,
 		"data": {
 			"Capex": {
-				"total": 7442441,
-				"aligned": 278473,
-				"eligible": 2406444
+				"totalAmount": "682147.93",
+				"alignedPercentage": "0.4078",
+				"eligiblePercentage": "0.4491"
 			},
 			"Opex": {
-				"total": 6862259,
-				"aligned": 811050,
-				"eligible": 5052432
+				"totalAmount": "443781.62",
+				"alignedPercentage": "0.9369",
+				"eligiblePercentage": "0.9705"
 			},
 			"Revenue": {
-				"total": 4047298,
-				"aligned": 1071292,
-				"eligible": 2429804
+				"totalAmount": "871582.77",
+				"alignedPercentage": "0.1523",
+				"eligiblePercentage": "0.3334"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 172,
 		"data": {
 			"Capex": {
-				"total": 7079215,
-				"aligned": 2003007,
-				"eligible": 2433818
+				"totalAmount": "469143.89",
+				"alignedPercentage": "0.0441",
+				"eligiblePercentage": "0.0867"
 			},
 			"Opex": {
-				"total": 6735555,
-				"aligned": 84328,
-				"eligible": 356869
+				"totalAmount": "89007.52",
+				"alignedPercentage": "0.2706",
+				"eligiblePercentage": "0.4283"
 			},
 			"Revenue": {
-				"total": 3231401,
-				"aligned": 481496,
-				"eligible": 1317751
+				"totalAmount": "216429.96",
+				"alignedPercentage": "0.0168",
+				"eligiblePercentage": "0.4081"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -3787,63 +3787,63 @@
 		"companyId": 173,
 		"data": {
 			"Capex": {
-				"total": 1308408,
-				"aligned": 537929,
-				"eligible": 1191779
+				"totalAmount": "249617.82",
+				"alignedPercentage": "0.0205",
+				"eligiblePercentage": "0.1006"
 			},
 			"Opex": {
-				"total": 6043386,
-				"aligned": 2157175,
-				"eligible": 3047940
+				"totalAmount": "681338.41",
+				"alignedPercentage": "0.4485",
+				"eligiblePercentage": "0.5182"
 			},
 			"Revenue": {
-				"total": 6528678,
-				"aligned": 2503069,
-				"eligible": 6199862
+				"totalAmount": "632645.36",
+				"alignedPercentage": "0.1170",
+				"eligiblePercentage": "0.4198"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 174,
 		"data": {
 			"Capex": {
-				"total": 7496517,
-				"aligned": 1396953,
-				"eligible": 3168307
+				"totalAmount": "67177.26",
+				"alignedPercentage": "0.1005",
+				"eligiblePercentage": "0.2814"
 			},
 			"Opex": {
-				"total": 2160659,
-				"aligned": 59479,
-				"eligible": 473694
+				"totalAmount": "834571.03",
+				"alignedPercentage": "0.2641",
+				"eligiblePercentage": "0.3436"
 			},
 			"Revenue": {
-				"total": 62738,
-				"aligned": 50561,
-				"eligible": 51469
+				"totalAmount": "200625.60",
+				"alignedPercentage": "0.1105",
+				"eligiblePercentage": "0.4392"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 175,
 		"data": {
 			"Capex": {
-				"total": 510888,
-				"aligned": 50137,
-				"eligible": 50279
+				"totalAmount": "925671.42",
+				"alignedPercentage": "0.0077",
+				"eligiblePercentage": "0.2303"
 			},
 			"Opex": {
-				"total": 796007,
-				"aligned": 73670,
-				"eligible": 111760
+				"totalAmount": "268789.32",
+				"alignedPercentage": "0.0916",
+				"eligiblePercentage": "0.8197"
 			},
 			"Revenue": {
-				"total": 2487299,
-				"aligned": 564264,
-				"eligible": 577800
+				"totalAmount": "823221.45",
+				"alignedPercentage": "0.1064",
+				"eligiblePercentage": "0.1304"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -3853,107 +3853,107 @@
 		"companyId": 176,
 		"data": {
 			"Capex": {
-				"total": 9612188,
-				"aligned": 4201754,
-				"eligible": 7935702
+				"totalAmount": "733581.69",
+				"alignedPercentage": "0.0279",
+				"eligiblePercentage": "0.0303"
 			},
 			"Opex": {
-				"total": 9341015,
-				"aligned": 2063465,
-				"eligible": 3107992
+				"totalAmount": "515302.16",
+				"alignedPercentage": "0.0250",
+				"eligiblePercentage": "0.0478"
 			},
 			"Revenue": {
-				"total": 1351100,
-				"aligned": 290290,
-				"eligible": 1177082
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
-		}
-	},
-	{
-		"companyId": 177,
-		"data": {
-			"Capex": {
-				"total": 6662835,
-				"aligned": 2457582,
-				"eligible": 2990358
-			},
-			"Opex": {
-				"total": 6806170,
-				"aligned": 3354769,
-				"eligible": 4985905
-			},
-			"Revenue": {
-				"total": 7109122,
-				"aligned": 55087,
-				"eligible": 86073
+				"totalAmount": "216890.75",
+				"alignedPercentage": "0.0618",
+				"eligiblePercentage": "0.7274"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
-		"companyId": 178,
+		"companyId": 177,
 		"data": {
 			"Capex": {
-				"total": 5525823,
-				"aligned": 201236,
-				"eligible": 2117410
+				"totalAmount": "956599.99",
+				"alignedPercentage": "0.2487",
+				"eligiblePercentage": "0.5379"
 			},
 			"Opex": {
-				"total": 9881014,
-				"aligned": 1230267,
-				"eligible": 2496018
+				"totalAmount": "810347.57",
+				"alignedPercentage": "0.0450",
+				"eligiblePercentage": "0.3980"
 			},
 			"Revenue": {
-				"total": 2092385,
-				"aligned": 371000,
-				"eligible": 408910
+				"totalAmount": "115046.57",
+				"alignedPercentage": "0.6722",
+				"eligiblePercentage": "0.8032"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
+		"companyId": 178,
+		"data": {
+			"Capex": {
+				"totalAmount": "554150.44",
+				"alignedPercentage": "0.5128",
+				"eligiblePercentage": "0.5724"
+			},
+			"Opex": {
+				"totalAmount": "820900.55",
+				"alignedPercentage": "0.0534",
+				"eligiblePercentage": "0.9333"
+			},
+			"Revenue": {
+				"totalAmount": "231194.47",
+				"alignedPercentage": "0.4382",
+				"eligiblePercentage": "0.6934"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
 		"companyId": 179,
 		"data": {
 			"Capex": {
-				"total": 9510549,
-				"aligned": 6368249,
-				"eligible": 6891147
+				"totalAmount": "562728.64",
+				"alignedPercentage": "0.2710",
+				"eligiblePercentage": "0.8988"
 			},
 			"Opex": {
-				"total": 5737474,
-				"aligned": 3474680,
-				"eligible": 4496351
+				"totalAmount": "801133.95",
+				"alignedPercentage": "0.3286",
+				"eligiblePercentage": "0.8420"
 			},
 			"Revenue": {
-				"total": 7445429,
-				"aligned": 1149077,
-				"eligible": 2089803
+				"totalAmount": "872069.62",
+				"alignedPercentage": "0.2476",
+				"eligiblePercentage": "0.8229"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 180,
 		"data": {
 			"Capex": {
-				"total": 2537441,
-				"aligned": 2179083,
-				"eligible": 2420863
+				"totalAmount": "257170.00",
+				"alignedPercentage": "0.2150",
+				"eligiblePercentage": "0.5616"
 			},
 			"Opex": {
-				"total": 2683069,
-				"aligned": 297090,
-				"eligible": 338887
+				"totalAmount": "506192.56",
+				"alignedPercentage": "0.1842",
+				"eligiblePercentage": "0.1844"
 			},
 			"Revenue": {
-				"total": 7251435,
-				"aligned": 3316475,
-				"eligible": 6247345
+				"totalAmount": "826371.66",
+				"alignedPercentage": "0.0855",
+				"eligiblePercentage": "0.3279"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -3963,87 +3963,87 @@
 		"companyId": 181,
 		"data": {
 			"Capex": {
-				"total": 4016944,
-				"aligned": 747978,
-				"eligible": 1967459
+				"totalAmount": "325964.72",
+				"alignedPercentage": "0.0072",
+				"eligiblePercentage": "0.0188"
 			},
 			"Opex": {
-				"total": 6997571,
-				"aligned": 392446,
-				"eligible": 899401
+				"totalAmount": "123126.44",
+				"alignedPercentage": "0.0429",
+				"eligiblePercentage": "0.0529"
 			},
 			"Revenue": {
-				"total": 1339432,
-				"aligned": 81916,
-				"eligible": 189172
+				"totalAmount": "520714.74",
+				"alignedPercentage": "0.2533",
+				"eligiblePercentage": "0.5718"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 182,
 		"data": {
 			"Capex": {
-				"total": 6836554,
-				"aligned": 329321,
-				"eligible": 5750246
+				"totalAmount": "99376.68",
+				"alignedPercentage": "0.1896",
+				"eligiblePercentage": "0.2269"
 			},
 			"Opex": {
-				"total": 3401707,
-				"aligned": 322968,
-				"eligible": 1239386
+				"totalAmount": "170885.38",
+				"alignedPercentage": "0.4240",
+				"eligiblePercentage": "0.5099"
 			},
 			"Revenue": {
-				"total": 3244988,
-				"aligned": 1821516,
-				"eligible": 1874712
+				"totalAmount": "891768.22",
+				"alignedPercentage": "0.3320",
+				"eligiblePercentage": "0.5286"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 183,
 		"data": {
 			"Capex": {
-				"total": 4567731,
-				"aligned": 3341762,
-				"eligible": 3388313
+				"totalAmount": "232389.07",
+				"alignedPercentage": "0.3897",
+				"eligiblePercentage": "0.4782"
 			},
 			"Opex": {
-				"total": 2370268,
-				"aligned": 1823643,
-				"eligible": 2205978
+				"totalAmount": "847148.99",
+				"alignedPercentage": "0.3407",
+				"eligiblePercentage": "0.6980"
 			},
 			"Revenue": {
-				"total": 8810405,
-				"aligned": 1014510,
-				"eligible": 3091665
+				"totalAmount": "555423.04",
+				"alignedPercentage": "0.0230",
+				"eligiblePercentage": "0.4962"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 184,
 		"data": {
 			"Capex": {
-				"total": 8525330,
-				"aligned": 3416557,
-				"eligible": 6105872
+				"totalAmount": "318374.85",
+				"alignedPercentage": "0.2127",
+				"eligiblePercentage": "0.7771"
 			},
 			"Opex": {
-				"total": 7220781,
-				"aligned": 3010733,
-				"eligible": 6992139
+				"totalAmount": "716412.61",
+				"alignedPercentage": "0.0116",
+				"eligiblePercentage": "0.1048"
 			},
 			"Revenue": {
-				"total": 3051954,
-				"aligned": 754180,
-				"eligible": 1303227
+				"totalAmount": "70036.38",
+				"alignedPercentage": "0.5009",
+				"eligiblePercentage": "0.7433"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -4051,21 +4051,21 @@
 		"companyId": 185,
 		"data": {
 			"Capex": {
-				"total": 1509124,
-				"aligned": 664958,
-				"eligible": 1108318
+				"totalAmount": "817911.87",
+				"alignedPercentage": "0.0175",
+				"eligiblePercentage": "0.0202"
 			},
 			"Opex": {
-				"total": 5985219,
-				"aligned": 2905044,
-				"eligible": 3503700
+				"totalAmount": "680134.64",
+				"alignedPercentage": "0.4065",
+				"eligiblePercentage": "0.4140"
 			},
 			"Revenue": {
-				"total": 4099169,
-				"aligned": 1482941,
-				"eligible": 2058463
+				"totalAmount": "475916.35",
+				"alignedPercentage": "0.4366",
+				"eligiblePercentage": "0.9656"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -4073,43 +4073,43 @@
 		"companyId": 186,
 		"data": {
 			"Capex": {
-				"total": 166193,
-				"aligned": 67967,
-				"eligible": 113758
+				"totalAmount": "749635.65",
+				"alignedPercentage": "0.1515",
+				"eligiblePercentage": "0.3621"
 			},
 			"Opex": {
-				"total": 4059901,
-				"aligned": 553015,
-				"eligible": 2507618
+				"totalAmount": "855410.03",
+				"alignedPercentage": "0.2562",
+				"eligiblePercentage": "0.7477"
 			},
 			"Revenue": {
-				"total": 1502573,
-				"aligned": 133514,
-				"eligible": 866251
+				"totalAmount": "861127.23",
+				"alignedPercentage": "0.2374",
+				"eligiblePercentage": "0.3433"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 187,
 		"data": {
 			"Capex": {
-				"total": 6804681,
-				"aligned": 3246647,
-				"eligible": 6007994
+				"totalAmount": "337465.23",
+				"alignedPercentage": "0.1023",
+				"eligiblePercentage": "0.1722"
 			},
 			"Opex": {
-				"total": 1540306,
-				"aligned": 489085,
-				"eligible": 602715
+				"totalAmount": "570467.28",
+				"alignedPercentage": "0.5194",
+				"eligiblePercentage": "0.8321"
 			},
 			"Revenue": {
-				"total": 7207085,
-				"aligned": 1934086,
-				"eligible": 4275070
+				"totalAmount": "689026.56",
+				"alignedPercentage": "0.0846",
+				"eligiblePercentage": "0.3630"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -4117,43 +4117,43 @@
 		"companyId": 188,
 		"data": {
 			"Capex": {
-				"total": 6268369,
-				"aligned": 950005,
-				"eligible": 6234109
+				"totalAmount": "442543.29",
+				"alignedPercentage": "0.0211",
+				"eligiblePercentage": "0.2283"
 			},
 			"Opex": {
-				"total": 5189977,
-				"aligned": 805924,
-				"eligible": 1183030
+				"totalAmount": "621982.13",
+				"alignedPercentage": "0.2805",
+				"eligiblePercentage": "0.7532"
 			},
 			"Revenue": {
-				"total": 2495114,
-				"aligned": 133507,
-				"eligible": 272371
+				"totalAmount": "610637.47",
+				"alignedPercentage": "0.1687",
+				"eligiblePercentage": "0.2116"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 189,
 		"data": {
 			"Capex": {
-				"total": 4115980,
-				"aligned": 196634,
-				"eligible": 760185
+				"totalAmount": "552471.03",
+				"alignedPercentage": "0.0869",
+				"eligiblePercentage": "0.2686"
 			},
 			"Opex": {
-				"total": 1678718,
-				"aligned": 331530,
-				"eligible": 560799
+				"totalAmount": "143143.40",
+				"alignedPercentage": "0.5220",
+				"eligiblePercentage": "0.5466"
 			},
 			"Revenue": {
-				"total": 326797,
-				"aligned": 146485,
-				"eligible": 159612
+				"totalAmount": "937142.90",
+				"alignedPercentage": "0.3760",
+				"eligiblePercentage": "0.4600"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -4161,19 +4161,19 @@
 		"companyId": 190,
 		"data": {
 			"Capex": {
-				"total": 4324162,
-				"aligned": 967251,
-				"eligible": 4315268
+				"totalAmount": "631586.15",
+				"alignedPercentage": "0.4018",
+				"eligiblePercentage": "0.6589"
 			},
 			"Opex": {
-				"total": 8419050,
-				"aligned": 2761057,
-				"eligible": 5552176
+				"totalAmount": "380215.05",
+				"alignedPercentage": "0.1884",
+				"eligiblePercentage": "0.8180"
 			},
 			"Revenue": {
-				"total": 6339603,
-				"aligned": 3653688,
-				"eligible": 4099562
+				"totalAmount": "890132.02",
+				"alignedPercentage": "0.0575",
+				"eligiblePercentage": "0.1076"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
@@ -4183,63 +4183,63 @@
 		"companyId": 191,
 		"data": {
 			"Capex": {
-				"total": 8548327,
-				"aligned": 4474152,
-				"eligible": 7144390
+				"totalAmount": "221132.54",
+				"alignedPercentage": "0.0151",
+				"eligiblePercentage": "0.0226"
 			},
 			"Opex": {
-				"total": 4355337,
-				"aligned": 1834517,
-				"eligible": 2658888
+				"totalAmount": "663506.56",
+				"alignedPercentage": "0.0719",
+				"eligiblePercentage": "0.1070"
 			},
 			"Revenue": {
-				"total": 3887277,
-				"aligned": 298107,
-				"eligible": 1314656
+				"totalAmount": "78911.97",
+				"alignedPercentage": "0.5263",
+				"eligiblePercentage": "0.7057"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 192,
 		"data": {
 			"Capex": {
-				"total": 8580671,
-				"aligned": 223859,
-				"eligible": 1605406
+				"totalAmount": "372897.42",
+				"alignedPercentage": "0.5055",
+				"eligiblePercentage": "0.7039"
 			},
 			"Opex": {
-				"total": 9257271,
-				"aligned": 181483,
-				"eligible": 753459
+				"totalAmount": "545683.68",
+				"alignedPercentage": "0.0046",
+				"eligiblePercentage": "0.2828"
 			},
 			"Revenue": {
-				"total": 583895,
-				"aligned": 241961,
-				"eligible": 262579
+				"totalAmount": "357227.02",
+				"alignedPercentage": "0.1277",
+				"eligiblePercentage": "0.2283"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 193,
 		"data": {
 			"Capex": {
-				"total": 4730431,
-				"aligned": 1161051,
-				"eligible": 3645775
+				"totalAmount": "335846.95",
+				"alignedPercentage": "0.2008",
+				"eligiblePercentage": "0.2262"
 			},
 			"Opex": {
-				"total": 2913016,
-				"aligned": 190210,
-				"eligible": 1607519
+				"totalAmount": "602226.90",
+				"alignedPercentage": "0.1484",
+				"eligiblePercentage": "0.2956"
 			},
 			"Revenue": {
-				"total": 917171,
-				"aligned": 66496,
-				"eligible": 131936
+				"totalAmount": "84419.20",
+				"alignedPercentage": "0.0614",
+				"eligiblePercentage": "0.0658"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "None"
@@ -4249,19 +4249,19 @@
 		"companyId": 194,
 		"data": {
 			"Capex": {
-				"total": 5025058,
-				"aligned": 1169961,
-				"eligible": 1662211
+				"totalAmount": "757189.51",
+				"alignedPercentage": "0.0018",
+				"eligiblePercentage": "0.0039"
 			},
 			"Opex": {
-				"total": 2002360,
-				"aligned": 187539,
-				"eligible": 341702
+				"totalAmount": "345838.07",
+				"alignedPercentage": "0.3666",
+				"eligiblePercentage": "0.9685"
 			},
 			"Revenue": {
-				"total": 5346779,
-				"aligned": 3491453,
-				"eligible": 3685357
+				"totalAmount": "739599.22",
+				"alignedPercentage": "0.0562",
+				"eligiblePercentage": "0.2381"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -4271,131 +4271,131 @@
 		"companyId": 195,
 		"data": {
 			"Capex": {
-				"total": 2340161,
-				"aligned": 1565270,
-				"eligible": 1967350
+				"totalAmount": "460773.09",
+				"alignedPercentage": "0.7025",
+				"eligiblePercentage": "0.7193"
 			},
 			"Opex": {
-				"total": 9352746,
-				"aligned": 2451735,
-				"eligible": 8690500
+				"totalAmount": "708234.37",
+				"alignedPercentage": "0.0161",
+				"eligiblePercentage": "0.4224"
 			},
 			"Revenue": {
-				"total": 2467483,
-				"aligned": 1031972,
-				"eligible": 1161756
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 196,
-		"data": {
-			"Capex": {
-				"total": 4208825,
-				"aligned": 3229486,
-				"eligible": 3321854
-			},
-			"Opex": {
-				"total": 6698700,
-				"aligned": 3958957,
-				"eligible": 6369486
-			},
-			"Revenue": {
-				"total": 1207743,
-				"aligned": 245185,
-				"eligible": 684918
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 197,
-		"data": {
-			"Capex": {
-				"total": 5803390,
-				"aligned": 2289122,
-				"eligible": 5434160
-			},
-			"Opex": {
-				"total": 6520352,
-				"aligned": 2987162,
-				"eligible": 4623133
-			},
-			"Revenue": {
-				"total": 5713674,
-				"aligned": 85751,
-				"eligible": 403863
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
-		}
-	},
-	{
-		"companyId": 198,
-		"data": {
-			"Capex": {
-				"total": 573191,
-				"aligned": 526550,
-				"eligible": 568706
-			},
-			"Opex": {
-				"total": 7975926,
-				"aligned": 1990837,
-				"eligible": 2121490
-			},
-			"Revenue": {
-				"total": 4545461,
-				"aligned": 2283959,
-				"eligible": 2581940
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 199,
-		"data": {
-			"Capex": {
-				"total": 1362191,
-				"aligned": 123277,
-				"eligible": 300657
-			},
-			"Opex": {
-				"total": 699709,
-				"aligned": 349211,
-				"eligible": 563605
-			},
-			"Revenue": {
-				"total": 8371340,
-				"aligned": 863186,
-				"eligible": 5008094
+				"totalAmount": "217171.88",
+				"alignedPercentage": "0.6046",
+				"eligiblePercentage": "0.9610"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
+		"companyId": 196,
+		"data": {
+			"Capex": {
+				"totalAmount": "819215.00",
+				"alignedPercentage": "0.0691",
+				"eligiblePercentage": "0.5093"
+			},
+			"Opex": {
+				"totalAmount": "439996.30",
+				"alignedPercentage": "0.0544",
+				"eligiblePercentage": "0.1047"
+			},
+			"Revenue": {
+				"totalAmount": "131098.73",
+				"alignedPercentage": "0.9452",
+				"eligiblePercentage": "0.9685"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
+		"companyId": 197,
+		"data": {
+			"Capex": {
+				"totalAmount": "143793.67",
+				"alignedPercentage": "0.0562",
+				"eligiblePercentage": "0.0757"
+			},
+			"Opex": {
+				"totalAmount": "646093.07",
+				"alignedPercentage": "0.1086",
+				"eligiblePercentage": "0.3089"
+			},
+			"Revenue": {
+				"totalAmount": "584207.67",
+				"alignedPercentage": "0.0275",
+				"eligiblePercentage": "0.0276"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
+		"companyId": 198,
+		"data": {
+			"Capex": {
+				"totalAmount": "368396.58",
+				"alignedPercentage": "0.0302",
+				"eligiblePercentage": "0.5363"
+			},
+			"Opex": {
+				"totalAmount": "715248.25",
+				"alignedPercentage": "0.0361",
+				"eligiblePercentage": "0.1734"
+			},
+			"Revenue": {
+				"totalAmount": "211800.36",
+				"alignedPercentage": "0.0916",
+				"eligiblePercentage": "0.2276"
+			},
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
+		"companyId": 199,
+		"data": {
+			"Capex": {
+				"totalAmount": "859934.87",
+				"alignedPercentage": "0.5841",
+				"eligiblePercentage": "0.8472"
+			},
+			"Opex": {
+				"totalAmount": "98483.02",
+				"alignedPercentage": "0.0978",
+				"eligiblePercentage": "0.1394"
+			},
+			"Revenue": {
+				"totalAmount": "843909.31",
+				"alignedPercentage": "0.2518",
+				"eligiblePercentage": "0.7412"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "None"
+		}
+	},
+	{
 		"companyId": 200,
 		"data": {
 			"Capex": {
-				"total": 8089311,
-				"aligned": 2734855,
-				"eligible": 5614194
+				"totalAmount": "581956.10",
+				"alignedPercentage": "0.1422",
+				"eligiblePercentage": "0.4304"
 			},
 			"Opex": {
-				"total": 5970975,
-				"aligned": 397853,
-				"eligible": 1489580
+				"totalAmount": "244632.40",
+				"alignedPercentage": "0.3576",
+				"eligiblePercentage": "0.5771"
 			},
 			"Revenue": {
-				"total": 9330958,
-				"aligned": 93514,
-				"eligible": 144432
+				"totalAmount": "158700.51",
+				"alignedPercentage": "0.1905",
+				"eligiblePercentage": "0.2331"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4403,43 +4403,43 @@
 		"companyId": 201,
 		"data": {
 			"Capex": {
-				"total": 6985801,
-				"aligned": 285145,
-				"eligible": 1051269
+				"totalAmount": "264802.45",
+				"alignedPercentage": "0.7085",
+				"eligiblePercentage": "0.7257"
 			},
 			"Opex": {
-				"total": 2811707,
-				"aligned": 839838,
-				"eligible": 1137675
+				"totalAmount": "408712.18",
+				"alignedPercentage": "0.2295",
+				"eligiblePercentage": "0.2517"
 			},
 			"Revenue": {
-				"total": 9307019,
-				"aligned": 629924,
-				"eligible": 7599167
+				"totalAmount": "174556.86",
+				"alignedPercentage": "0.0393",
+				"eligiblePercentage": "0.1033"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 202,
 		"data": {
 			"Capex": {
-				"total": 9579737,
-				"aligned": 152452,
-				"eligible": 3694093
+				"totalAmount": "664732.88",
+				"alignedPercentage": "0.2084",
+				"eligiblePercentage": "0.4073"
 			},
 			"Opex": {
-				"total": 488471,
-				"aligned": 126907,
-				"eligible": 285890
+				"totalAmount": "133156.95",
+				"alignedPercentage": "0.4319",
+				"eligiblePercentage": "0.5455"
 			},
 			"Revenue": {
-				"total": 2628514,
-				"aligned": 2104052,
-				"eligible": 2313536
+				"totalAmount": "376754.00",
+				"alignedPercentage": "0.1224",
+				"eligiblePercentage": "0.4647"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4447,19 +4447,19 @@
 		"companyId": 203,
 		"data": {
 			"Capex": {
-				"total": 6898621,
-				"aligned": 3743629,
-				"eligible": 5193063
+				"totalAmount": "154851.09",
+				"alignedPercentage": "0.4520",
+				"eligiblePercentage": "0.5793"
 			},
 			"Opex": {
-				"total": 1484044,
-				"aligned": 90170,
-				"eligible": 192459
+				"totalAmount": "877981.52",
+				"alignedPercentage": "0.0357",
+				"eligiblePercentage": "0.1385"
 			},
 			"Revenue": {
-				"total": 9116339,
-				"aligned": 1930823,
-				"eligible": 2035116
+				"totalAmount": "596724.88",
+				"alignedPercentage": "0.5124",
+				"eligiblePercentage": "0.6623"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
@@ -4469,19 +4469,19 @@
 		"companyId": 204,
 		"data": {
 			"Capex": {
-				"total": 6502895,
-				"aligned": 918907,
-				"eligible": 1032256
+				"totalAmount": "589276.46",
+				"alignedPercentage": "0.0385",
+				"eligiblePercentage": "0.7684"
 			},
 			"Opex": {
-				"total": 8885789,
-				"aligned": 3364993,
-				"eligible": 7335078
+				"totalAmount": "397539.50",
+				"alignedPercentage": "0.0816",
+				"eligiblePercentage": "0.4451"
 			},
 			"Revenue": {
-				"total": 4209014,
-				"aligned": 218679,
-				"eligible": 742289
+				"totalAmount": "440111.03",
+				"alignedPercentage": "0.1792",
+				"eligiblePercentage": "0.7322"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -4491,87 +4491,87 @@
 		"companyId": 205,
 		"data": {
 			"Capex": {
-				"total": 4032506,
-				"aligned": 1238032,
-				"eligible": 3764605
+				"totalAmount": "705072.15",
+				"alignedPercentage": "0.0596",
+				"eligiblePercentage": "0.9963"
 			},
 			"Opex": {
-				"total": 3903842,
-				"aligned": 2332096,
-				"eligible": 3057058
+				"totalAmount": "138587.70",
+				"alignedPercentage": "0.0815",
+				"eligiblePercentage": "0.2511"
 			},
 			"Revenue": {
-				"total": 4378885,
-				"aligned": 1862258,
-				"eligible": 3793298
+				"totalAmount": "603461.43",
+				"alignedPercentage": "0.0767",
+				"eligiblePercentage": "0.5585"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 206,
 		"data": {
 			"Capex": {
-				"total": 8346901,
-				"aligned": 2641702,
-				"eligible": 5907473
+				"totalAmount": "730137.06",
+				"alignedPercentage": "0.2723",
+				"eligiblePercentage": "0.5524"
 			},
 			"Opex": {
-				"total": 1490768,
-				"aligned": 1303430,
-				"eligible": 1423932
+				"totalAmount": "996002.38",
+				"alignedPercentage": "0.4114",
+				"eligiblePercentage": "0.6182"
 			},
 			"Revenue": {
-				"total": 2675602,
-				"aligned": 1463249,
-				"eligible": 2395240
+				"totalAmount": "374958.70",
+				"alignedPercentage": "0.3997",
+				"eligiblePercentage": "0.5135"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 207,
 		"data": {
 			"Capex": {
-				"total": 9461976,
-				"aligned": 5600428,
-				"eligible": 6443530
+				"totalAmount": "791436.46",
+				"alignedPercentage": "0.1146",
+				"eligiblePercentage": "0.5363"
 			},
 			"Opex": {
-				"total": 8535615,
-				"aligned": 615012,
-				"eligible": 862664
+				"totalAmount": "254712.79",
+				"alignedPercentage": "0.0157",
+				"eligiblePercentage": "0.0369"
 			},
 			"Revenue": {
-				"total": 3386060,
-				"aligned": 662395,
-				"eligible": 1040536
+				"totalAmount": "701589.34",
+				"alignedPercentage": "0.3142",
+				"eligiblePercentage": "0.5672"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 208,
 		"data": {
 			"Capex": {
-				"total": 3497605,
-				"aligned": 241334,
-				"eligible": 275708
+				"totalAmount": "398552.31",
+				"alignedPercentage": "0.4380",
+				"eligiblePercentage": "0.9048"
 			},
 			"Opex": {
-				"total": 7786919,
-				"aligned": 1896136,
-				"eligible": 3654472
+				"totalAmount": "646201.77",
+				"alignedPercentage": "0.4208",
+				"eligiblePercentage": "0.8322"
 			},
 			"Revenue": {
-				"total": 3725705,
-				"aligned": 432056,
-				"eligible": 720532
+				"totalAmount": "377727.34",
+				"alignedPercentage": "0.2162",
+				"eligiblePercentage": "0.9641"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4579,65 +4579,65 @@
 		"companyId": 209,
 		"data": {
 			"Capex": {
-				"total": 6997050,
-				"aligned": 757044,
-				"eligible": 6580370
+				"totalAmount": "700199.11",
+				"alignedPercentage": "0.5367",
+				"eligiblePercentage": "0.7097"
 			},
 			"Opex": {
-				"total": 4004333,
-				"aligned": 272346,
-				"eligible": 876097
+				"totalAmount": "481463.71",
+				"alignedPercentage": "0.0212",
+				"eligiblePercentage": "0.7670"
 			},
 			"Revenue": {
-				"total": 4924315,
-				"aligned": 1985089,
-				"eligible": 2293037
+				"totalAmount": "965741.00",
+				"alignedPercentage": "0.3477",
+				"eligiblePercentage": "0.3665"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 210,
 		"data": {
 			"Capex": {
-				"total": 9980348,
-				"aligned": 2201730,
-				"eligible": 5763782
+				"totalAmount": "785371.67",
+				"alignedPercentage": "0.0991",
+				"eligiblePercentage": "0.9196"
 			},
 			"Opex": {
-				"total": 452403,
-				"aligned": 315001,
-				"eligible": 316310
+				"totalAmount": "101524.32",
+				"alignedPercentage": "0.1808",
+				"eligiblePercentage": "0.5973"
 			},
 			"Revenue": {
-				"total": 5588958,
-				"aligned": 499488,
-				"eligible": 1200733
+				"totalAmount": "679611.54",
+				"alignedPercentage": "0.0663",
+				"eligiblePercentage": "0.5415"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 211,
 		"data": {
 			"Capex": {
-				"total": 8217321,
-				"aligned": 5894494,
-				"eligible": 6152430
+				"totalAmount": "973057.93",
+				"alignedPercentage": "0.1257",
+				"eligiblePercentage": "0.5241"
 			},
 			"Opex": {
-				"total": 5598395,
-				"aligned": 520083,
-				"eligible": 2736714
+				"totalAmount": "865968.82",
+				"alignedPercentage": "0.1787",
+				"eligiblePercentage": "0.2552"
 			},
 			"Revenue": {
-				"total": 8031382,
-				"aligned": 3613620,
-				"eligible": 3761374
+				"totalAmount": "804309.80",
+				"alignedPercentage": "0.1678",
+				"eligiblePercentage": "0.8942"
 			},
-			"Reporting Obligation": "No",
+			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4645,19 +4645,19 @@
 		"companyId": 212,
 		"data": {
 			"Capex": {
-				"total": 5209566,
-				"aligned": 661221,
-				"eligible": 2420751
+				"totalAmount": "493268.87",
+				"alignedPercentage": "0.4684",
+				"eligiblePercentage": "0.7326"
 			},
 			"Opex": {
-				"total": 1074996,
-				"aligned": 390116,
-				"eligible": 710703
+				"totalAmount": "629527.39",
+				"alignedPercentage": "0.1363",
+				"eligiblePercentage": "0.2926"
 			},
 			"Revenue": {
-				"total": 2683285,
-				"aligned": 54109,
-				"eligible": 60802
+				"totalAmount": "988268.48",
+				"alignedPercentage": "0.1735",
+				"eligiblePercentage": "0.2540"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
@@ -4667,263 +4667,263 @@
 		"companyId": 213,
 		"data": {
 			"Capex": {
-				"total": 5462903,
-				"aligned": 1460522,
-				"eligible": 2682587
+				"totalAmount": "298487.39",
+				"alignedPercentage": "0.5798",
+				"eligiblePercentage": "0.9375"
 			},
 			"Opex": {
-				"total": 5169506,
-				"aligned": 1393804,
-				"eligible": 1416602
+				"totalAmount": "135514.62",
+				"alignedPercentage": "0.6040",
+				"eligiblePercentage": "0.8125"
 			},
 			"Revenue": {
-				"total": 7597879,
-				"aligned": 2937749,
-				"eligible": 7270800
+				"totalAmount": "356553.44",
+				"alignedPercentage": "0.0478",
+				"eligiblePercentage": "0.7344"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 214,
 		"data": {
 			"Capex": {
-				"total": 3657737,
-				"aligned": 830854,
-				"eligible": 1359494
+				"totalAmount": "329561.43",
+				"alignedPercentage": "0.0469",
+				"eligiblePercentage": "0.1507"
 			},
 			"Opex": {
-				"total": 70411,
-				"aligned": 54823,
-				"eligible": 54912
+				"totalAmount": "379207.79",
+				"alignedPercentage": "0.5920",
+				"eligiblePercentage": "0.8535"
 			},
 			"Revenue": {
-				"total": 5490703,
-				"aligned": 4697762,
-				"eligible": 4771222
+				"totalAmount": "337155.20",
+				"alignedPercentage": "0.0210",
+				"eligiblePercentage": "0.1474"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 215,
 		"data": {
 			"Capex": {
-				"total": 5751403,
-				"aligned": 816265,
-				"eligible": 969994
+				"totalAmount": "871156.16",
+				"alignedPercentage": "0.3291",
+				"eligiblePercentage": "0.6839"
 			},
 			"Opex": {
-				"total": 1529495,
-				"aligned": 76412,
-				"eligible": 141414
+				"totalAmount": "693293.32",
+				"alignedPercentage": "0.8451",
+				"eligiblePercentage": "0.8941"
 			},
 			"Revenue": {
-				"total": 3653113,
-				"aligned": 671293,
-				"eligible": 2007702
+				"totalAmount": "730690.19",
+				"alignedPercentage": "0.4242",
+				"eligiblePercentage": "0.4695"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 216,
 		"data": {
 			"Capex": {
-				"total": 1162953,
-				"aligned": 391426,
-				"eligible": 565819
+				"totalAmount": "126288.01",
+				"alignedPercentage": "0.2131",
+				"eligiblePercentage": "0.3639"
 			},
 			"Opex": {
-				"total": 7651524,
-				"aligned": 1739121,
-				"eligible": 4462251
+				"totalAmount": "590557.30",
+				"alignedPercentage": "0.1440",
+				"eligiblePercentage": "0.3314"
 			},
 			"Revenue": {
-				"total": 5713210,
-				"aligned": 1501098,
-				"eligible": 1543688
+				"totalAmount": "82274.21",
+				"alignedPercentage": "0.4024",
+				"eligiblePercentage": "0.5949"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 217,
 		"data": {
 			"Capex": {
-				"total": 5801546,
-				"aligned": 651742,
-				"eligible": 929505
+				"totalAmount": "688063.59",
+				"alignedPercentage": "0.7115",
+				"eligiblePercentage": "0.9721"
 			},
 			"Opex": {
-				"total": 1399888,
-				"aligned": 620664,
-				"eligible": 678860
+				"totalAmount": "828202.91",
+				"alignedPercentage": "0.3798",
+				"eligiblePercentage": "0.4135"
 			},
 			"Revenue": {
-				"total": 5922630,
-				"aligned": 227928,
-				"eligible": 2413194
+				"totalAmount": "977527.31",
+				"alignedPercentage": "0.2334",
+				"eligiblePercentage": "0.3612"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 218,
 		"data": {
 			"Capex": {
-				"total": 7366566,
-				"aligned": 1608478,
-				"eligible": 4408657
+				"totalAmount": "334958.76",
+				"alignedPercentage": "0.0543",
+				"eligiblePercentage": "0.0909"
 			},
 			"Opex": {
-				"total": 9099235,
-				"aligned": 2969375,
-				"eligible": 5396394
+				"totalAmount": "718469.78",
+				"alignedPercentage": "0.0597",
+				"eligiblePercentage": "0.2263"
 			},
 			"Revenue": {
-				"total": 3214909,
-				"aligned": 2406253,
-				"eligible": 2890706
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
-		}
-	},
-	{
-		"companyId": 219,
-		"data": {
-			"Capex": {
-				"total": 7852335,
-				"aligned": 1311794,
-				"eligible": 6928620
-			},
-			"Opex": {
-				"total": 3896416,
-				"aligned": 762953,
-				"eligible": 1307460
-			},
-			"Revenue": {
-				"total": 4043241,
-				"aligned": 169576,
-				"eligible": 196662
+				"totalAmount": "388596.84",
+				"alignedPercentage": "0.4382",
+				"eligiblePercentage": "0.7945"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
 	{
+		"companyId": 219,
+		"data": {
+			"Capex": {
+				"totalAmount": "147187.20",
+				"alignedPercentage": "0.0016",
+				"eligiblePercentage": "0.0036"
+			},
+			"Opex": {
+				"totalAmount": "990553.16",
+				"alignedPercentage": "0.1720",
+				"eligiblePercentage": "0.2430"
+			},
+			"Revenue": {
+				"totalAmount": "539700.10",
+				"alignedPercentage": "0.0986",
+				"eligiblePercentage": "0.9279"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
+		}
+	},
+	{
 		"companyId": 220,
 		"data": {
 			"Capex": {
-				"total": 3069426,
-				"aligned": 164534,
-				"eligible": 388500
+				"totalAmount": "180328.82",
+				"alignedPercentage": "0.5066",
+				"eligiblePercentage": "0.7073"
 			},
 			"Opex": {
-				"total": 4315493,
-				"aligned": 993296,
-				"eligible": 2416975
+				"totalAmount": "883607.95",
+				"alignedPercentage": "0.0918",
+				"eligiblePercentage": "0.1089"
 			},
 			"Revenue": {
-				"total": 2963558,
-				"aligned": 1061812,
-				"eligible": 1179672
+				"totalAmount": "68959.37",
+				"alignedPercentage": "0.0188",
+				"eligiblePercentage": "0.5694"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 221,
 		"data": {
 			"Capex": {
-				"total": 3453917,
-				"aligned": 91167,
-				"eligible": 935632
+				"totalAmount": "433444.39",
+				"alignedPercentage": "0.3320",
+				"eligiblePercentage": "0.9624"
 			},
 			"Opex": {
-				"total": 1790920,
-				"aligned": 648846,
-				"eligible": 1352104
+				"totalAmount": "864498.61",
+				"alignedPercentage": "0.2477",
+				"eligiblePercentage": "0.8318"
 			},
 			"Revenue": {
-				"total": 3687924,
-				"aligned": 351368,
-				"eligible": 697515
+				"totalAmount": "174522.65",
+				"alignedPercentage": "0.5457",
+				"eligiblePercentage": "0.8542"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 222,
 		"data": {
 			"Capex": {
-				"total": 2666395,
-				"aligned": 428308,
-				"eligible": 2385026
+				"totalAmount": "983345.38",
+				"alignedPercentage": "0.2363",
+				"eligiblePercentage": "0.2976"
 			},
 			"Opex": {
-				"total": 5098507,
-				"aligned": 695885,
-				"eligible": 1481949
+				"totalAmount": "259988.90",
+				"alignedPercentage": "0.3177",
+				"eligiblePercentage": "0.4666"
 			},
 			"Revenue": {
-				"total": 7819624,
-				"aligned": 2477667,
-				"eligible": 7552594
+				"totalAmount": "622718.07",
+				"alignedPercentage": "0.2563",
+				"eligiblePercentage": "0.2974"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 223,
 		"data": {
 			"Capex": {
-				"total": 6369516,
-				"aligned": 1557079,
-				"eligible": 2388921
+				"totalAmount": "193387.95",
+				"alignedPercentage": "0.0357",
+				"eligiblePercentage": "0.2189"
 			},
 			"Opex": {
-				"total": 6143720,
-				"aligned": 2355395,
-				"eligible": 4040661
+				"totalAmount": "974314.23",
+				"alignedPercentage": "0.3654",
+				"eligiblePercentage": "0.7805"
 			},
 			"Revenue": {
-				"total": 3740057,
-				"aligned": 1518825,
-				"eligible": 2048191
+				"totalAmount": "725536.68",
+				"alignedPercentage": "0.0009",
+				"eligiblePercentage": "0.0157"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 224,
 		"data": {
 			"Capex": {
-				"total": 7258216,
-				"aligned": 2006720,
-				"eligible": 6905550
+				"totalAmount": "908751.38",
+				"alignedPercentage": "0.1995",
+				"eligiblePercentage": "0.6268"
 			},
 			"Opex": {
-				"total": 6896307,
-				"aligned": 195743,
-				"eligible": 1058267
+				"totalAmount": "794184.31",
+				"alignedPercentage": "0.1140",
+				"eligiblePercentage": "0.1262"
 			},
 			"Revenue": {
-				"total": 5639825,
-				"aligned": 53237,
-				"eligible": 248689
+				"totalAmount": "439689.51",
+				"alignedPercentage": "0.6919",
+				"eligiblePercentage": "0.8857"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4931,43 +4931,43 @@
 		"companyId": 225,
 		"data": {
 			"Capex": {
-				"total": 8136820,
-				"aligned": 330493,
-				"eligible": 7435765
+				"totalAmount": "86431.07",
+				"alignedPercentage": "0.1577",
+				"eligiblePercentage": "0.4784"
 			},
 			"Opex": {
-				"total": 1843354,
-				"aligned": 685718,
-				"eligible": 1832618
+				"totalAmount": "574315.66",
+				"alignedPercentage": "0.2602",
+				"eligiblePercentage": "0.8032"
 			},
 			"Revenue": {
-				"total": 678088,
-				"aligned": 51680,
-				"eligible": 52397
+				"totalAmount": "336554.20",
+				"alignedPercentage": "0.2810",
+				"eligiblePercentage": "0.5003"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 226,
 		"data": {
 			"Capex": {
-				"total": 9693638,
-				"aligned": 3184579,
-				"eligible": 3965881
+				"totalAmount": "847290.81",
+				"alignedPercentage": "0.1801",
+				"eligiblePercentage": "0.2753"
 			},
 			"Opex": {
-				"total": 5919186,
-				"aligned": 1664489,
-				"eligible": 3209693
+				"totalAmount": "588829.35",
+				"alignedPercentage": "0.5152",
+				"eligiblePercentage": "0.7054"
 			},
 			"Revenue": {
-				"total": 1291252,
-				"aligned": 920338,
-				"eligible": 1250326
+				"totalAmount": "594134.60",
+				"alignedPercentage": "0.0289",
+				"eligiblePercentage": "0.0345"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -4975,21 +4975,21 @@
 		"companyId": 227,
 		"data": {
 			"Capex": {
-				"total": 4402475,
-				"aligned": 1133798,
-				"eligible": 1161025
+				"totalAmount": "356987.73",
+				"alignedPercentage": "0.1397",
+				"eligiblePercentage": "0.8100"
 			},
 			"Opex": {
-				"total": 1023808,
-				"aligned": 98833,
-				"eligible": 101643
+				"totalAmount": "959893.27",
+				"alignedPercentage": "0.4100",
+				"eligiblePercentage": "0.4687"
 			},
 			"Revenue": {
-				"total": 2845002,
-				"aligned": 282898,
-				"eligible": 1463533
+				"totalAmount": "926734.24",
+				"alignedPercentage": "0.0829",
+				"eligiblePercentage": "0.2440"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
@@ -4997,197 +4997,197 @@
 		"companyId": 228,
 		"data": {
 			"Capex": {
-				"total": 8361735,
-				"aligned": 449190,
-				"eligible": 673454
+				"totalAmount": "79361.33",
+				"alignedPercentage": "0.2890",
+				"eligiblePercentage": "0.3339"
 			},
 			"Opex": {
-				"total": 8218080,
-				"aligned": 1104869,
-				"eligible": 3215669
+				"totalAmount": "228794.19",
+				"alignedPercentage": "0.5343",
+				"eligiblePercentage": "0.6491"
 			},
 			"Revenue": {
-				"total": 8760904,
-				"aligned": 260723,
-				"eligible": 1458215
+				"totalAmount": "709320.38",
+				"alignedPercentage": "0.2350",
+				"eligiblePercentage": "0.5846"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 229,
 		"data": {
 			"Capex": {
-				"total": 1288666,
-				"aligned": 666383,
-				"eligible": 885440
+				"totalAmount": "252135.62",
+				"alignedPercentage": "0.0004",
+				"eligiblePercentage": "0.0062"
 			},
 			"Opex": {
-				"total": 9011627,
-				"aligned": 5895017,
-				"eligible": 7839512
+				"totalAmount": "631091.28",
+				"alignedPercentage": "0.2964",
+				"eligiblePercentage": "0.6692"
 			},
 			"Revenue": {
-				"total": 4870486,
-				"aligned": 3140743,
-				"eligible": 4627619
+				"totalAmount": "875214.18",
+				"alignedPercentage": "0.1844",
+				"eligiblePercentage": "0.2489"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 230,
 		"data": {
 			"Capex": {
-				"total": 5601789,
-				"aligned": 3515337,
-				"eligible": 4088904
+				"totalAmount": "283095.62",
+				"alignedPercentage": "0.1522",
+				"eligiblePercentage": "0.1902"
 			},
 			"Opex": {
-				"total": 2678770,
-				"aligned": 1892825,
-				"eligible": 2416021
+				"totalAmount": "352582.16",
+				"alignedPercentage": "0.2390",
+				"eligiblePercentage": "0.9252"
 			},
 			"Revenue": {
-				"total": 7588478,
-				"aligned": 215722,
-				"eligible": 2430975
+				"totalAmount": "764209.64",
+				"alignedPercentage": "0.0759",
+				"eligiblePercentage": "0.4535"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 231,
 		"data": {
 			"Capex": {
-				"total": 8038696,
-				"aligned": 4265737,
-				"eligible": 7779067
+				"totalAmount": "307208.47",
+				"alignedPercentage": "0.5580",
+				"eligiblePercentage": "0.9865"
 			},
 			"Opex": {
-				"total": 2541829,
-				"aligned": 199989,
-				"eligible": 216028
+				"totalAmount": "956315.41",
+				"alignedPercentage": "0.0556",
+				"eligiblePercentage": "0.0967"
 			},
 			"Revenue": {
-				"total": 9294750,
-				"aligned": 6245005,
-				"eligible": 6537154
+				"totalAmount": "352404.01",
+				"alignedPercentage": "0.4366",
+				"eligiblePercentage": "0.8523"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 232,
 		"data": {
 			"Capex": {
-				"total": 1740309,
-				"aligned": 668915,
-				"eligible": 1187092
+				"totalAmount": "570406.15",
+				"alignedPercentage": "0.0128",
+				"eligiblePercentage": "0.0795"
 			},
 			"Opex": {
-				"total": 3886762,
-				"aligned": 132709,
-				"eligible": 243101
+				"totalAmount": "61168.14",
+				"alignedPercentage": "0.4952",
+				"eligiblePercentage": "0.6368"
 			},
 			"Revenue": {
-				"total": 4417707,
-				"aligned": 1230644,
-				"eligible": 3755752
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 233,
-		"data": {
-			"Capex": {
-				"total": 4372165,
-				"aligned": 3380877,
-				"eligible": 4156153
-			},
-			"Opex": {
-				"total": 2745037,
-				"aligned": 145919,
-				"eligible": 655305
-			},
-			"Revenue": {
-				"total": 1729335,
-				"aligned": 818723,
-				"eligible": 1142210
+				"totalAmount": "692735.44",
+				"alignedPercentage": "0.3839",
+				"eligiblePercentage": "0.6054"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
+		"companyId": 233,
+		"data": {
+			"Capex": {
+				"totalAmount": "585235.70",
+				"alignedPercentage": "0.0234",
+				"eligiblePercentage": "0.5215"
+			},
+			"Opex": {
+				"totalAmount": "814098.26",
+				"alignedPercentage": "0.2981",
+				"eligiblePercentage": "0.6647"
+			},
+			"Revenue": {
+				"totalAmount": "288172.62",
+				"alignedPercentage": "0.8684",
+				"eligiblePercentage": "0.9850"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
 		"companyId": 234,
 		"data": {
 			"Capex": {
-				"total": 4309503,
-				"aligned": 1007988,
-				"eligible": 1008733
+				"totalAmount": "393649.67",
+				"alignedPercentage": "0.0330",
+				"eligiblePercentage": "0.0890"
 			},
 			"Opex": {
-				"total": 172750,
-				"aligned": 97347,
-				"eligible": 141881
+				"totalAmount": "443239.77",
+				"alignedPercentage": "0.0298",
+				"eligiblePercentage": "0.5667"
 			},
 			"Revenue": {
-				"total": 9965671,
-				"aligned": 865853,
-				"eligible": 1037400
+				"totalAmount": "679290.92",
+				"alignedPercentage": "0.0956",
+				"eligiblePercentage": "0.0984"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 235,
 		"data": {
 			"Capex": {
-				"total": 727745,
-				"aligned": 180617,
-				"eligible": 396225
+				"totalAmount": "294978.53",
+				"alignedPercentage": "0.3945",
+				"eligiblePercentage": "0.3998"
 			},
 			"Opex": {
-				"total": 1541127,
-				"aligned": 480964,
-				"eligible": 1111253
+				"totalAmount": "633760.96",
+				"alignedPercentage": "0.0848",
+				"eligiblePercentage": "0.5315"
 			},
 			"Revenue": {
-				"total": 1225844,
-				"aligned": 88412,
-				"eligible": 126926
+				"totalAmount": "413221.20",
+				"alignedPercentage": "0.0654",
+				"eligiblePercentage": "0.7522"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 236,
 		"data": {
 			"Capex": {
-				"total": 376164,
-				"aligned": 226509,
-				"eligible": 318303
+				"totalAmount": "364338.64",
+				"alignedPercentage": "0.0829",
+				"eligiblePercentage": "0.1670"
 			},
 			"Opex": {
-				"total": 206724,
-				"aligned": 96636,
-				"eligible": 131872
+				"totalAmount": "50344.79",
+				"alignedPercentage": "0.3211",
+				"eligiblePercentage": "0.5087"
 			},
 			"Revenue": {
-				"total": 3757235,
-				"aligned": 613091,
-				"eligible": 1113463
+				"totalAmount": "716280.92",
+				"alignedPercentage": "0.3432",
+				"eligiblePercentage": "0.7206"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -5195,131 +5195,131 @@
 		"companyId": 237,
 		"data": {
 			"Capex": {
-				"total": 2618084,
-				"aligned": 266209,
-				"eligible": 415411
+				"totalAmount": "124073.06",
+				"alignedPercentage": "0.0375",
+				"eligiblePercentage": "0.4151"
 			},
 			"Opex": {
-				"total": 6674473,
-				"aligned": 471344,
-				"eligible": 996220
+				"totalAmount": "949068.82",
+				"alignedPercentage": "0.1226",
+				"eligiblePercentage": "0.5846"
 			},
 			"Revenue": {
-				"total": 8358878,
-				"aligned": 2969919,
-				"eligible": 5682169
+				"totalAmount": "468802.09",
+				"alignedPercentage": "0.1585",
+				"eligiblePercentage": "0.6348"
 			},
 			"Reporting Obligation": "No",
-			"Attestation": "LimitedAssurance"
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 238,
 		"data": {
 			"Capex": {
-				"total": 6009021,
-				"aligned": 4193668,
-				"eligible": 4553751
+				"totalAmount": "625786.56",
+				"alignedPercentage": "0.5834",
+				"eligiblePercentage": "0.8713"
 			},
 			"Opex": {
-				"total": 7145815,
-				"aligned": 3375010,
-				"eligible": 4027671
+				"totalAmount": "138908.34",
+				"alignedPercentage": "0.5048",
+				"eligiblePercentage": "0.6545"
 			},
 			"Revenue": {
-				"total": 6738537,
-				"aligned": 1767997,
-				"eligible": 3039680
+				"totalAmount": "631695.31",
+				"alignedPercentage": "0.2361",
+				"eligiblePercentage": "0.3428"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "ReasonableAssurance"
+			"Reporting Obligation": "Yes",
+			"Attestation": "None"
 		}
 	},
 	{
 		"companyId": 239,
 		"data": {
 			"Capex": {
-				"total": 2333724,
-				"aligned": 514427,
-				"eligible": 1153413
+				"totalAmount": "956141.88",
+				"alignedPercentage": "0.4772",
+				"eligiblePercentage": "0.7694"
 			},
 			"Opex": {
-				"total": 3179359,
-				"aligned": 972071,
-				"eligible": 1880357
+				"totalAmount": "832931.59",
+				"alignedPercentage": "0.2092",
+				"eligiblePercentage": "0.2612"
 			},
 			"Revenue": {
-				"total": 554506,
-				"aligned": 439565,
-				"eligible": 494894
+				"totalAmount": "310681.56",
+				"alignedPercentage": "0.2737",
+				"eligiblePercentage": "0.2936"
 			},
 			"Reporting Obligation": "Yes",
-			"Attestation": "ReasonableAssurance"
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 240,
 		"data": {
 			"Capex": {
-				"total": 640894,
-				"aligned": 424321,
-				"eligible": 458545
+				"totalAmount": "801426.97",
+				"alignedPercentage": "0.2290",
+				"eligiblePercentage": "0.4759"
 			},
 			"Opex": {
-				"total": 6930001,
-				"aligned": 1011636,
-				"eligible": 5765019
+				"totalAmount": "156023.92",
+				"alignedPercentage": "0.3903",
+				"eligiblePercentage": "0.6010"
 			},
 			"Revenue": {
-				"total": 2360127,
-				"aligned": 743740,
-				"eligible": 856495
+				"totalAmount": "184776.71",
+				"alignedPercentage": "0.1074",
+				"eligiblePercentage": "0.9088"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 241,
 		"data": {
 			"Capex": {
-				"total": 5426242,
-				"aligned": 241101,
-				"eligible": 4987013
+				"totalAmount": "814706.49",
+				"alignedPercentage": "0.0704",
+				"eligiblePercentage": "0.2109"
 			},
 			"Opex": {
-				"total": 2878293,
-				"aligned": 353236,
-				"eligible": 1393047
+				"totalAmount": "169993.00",
+				"alignedPercentage": "0.5072",
+				"eligiblePercentage": "0.9456"
 			},
 			"Revenue": {
-				"total": 2974243,
-				"aligned": 1927134,
-				"eligible": 2662215
+				"totalAmount": "992497.35",
+				"alignedPercentage": "0.3169",
+				"eligiblePercentage": "0.4099"
 			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
+			"Reporting Obligation": "Yes",
+			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
 		"companyId": 242,
 		"data": {
 			"Capex": {
-				"total": 7773785,
-				"aligned": 781741,
-				"eligible": 6430164
+				"totalAmount": "446897.41",
+				"alignedPercentage": "0.0454",
+				"eligiblePercentage": "0.9414"
 			},
 			"Opex": {
-				"total": 7109334,
-				"aligned": 2703037,
-				"eligible": 6031771
+				"totalAmount": "901756.17",
+				"alignedPercentage": "0.0875",
+				"eligiblePercentage": "0.8430"
 			},
 			"Revenue": {
-				"total": 9280675,
-				"aligned": 5245974,
-				"eligible": 6716200
+				"totalAmount": "920679.41",
+				"alignedPercentage": "0.1577",
+				"eligiblePercentage": "0.3692"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "None"
 		}
 	},
@@ -5327,41 +5327,41 @@
 		"companyId": 243,
 		"data": {
 			"Capex": {
-				"total": 5655922,
-				"aligned": 247632,
-				"eligible": 289340
+				"totalAmount": "475569.08",
+				"alignedPercentage": "0.5614",
+				"eligiblePercentage": "0.8748"
 			},
 			"Opex": {
-				"total": 2171979,
-				"aligned": 316482,
-				"eligible": 386351
+				"totalAmount": "73463.34",
+				"alignedPercentage": "0.0992",
+				"eligiblePercentage": "0.4932"
 			},
 			"Revenue": {
-				"total": 2836276,
-				"aligned": 785111,
-				"eligible": 1052468
+				"totalAmount": "410532.67",
+				"alignedPercentage": "0.2477",
+				"eligiblePercentage": "0.2692"
 			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "LimitedAssurance"
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
 		"companyId": 244,
 		"data": {
 			"Capex": {
-				"total": 3494999,
-				"aligned": 518384,
-				"eligible": 1348685
+				"totalAmount": "359193.36",
+				"alignedPercentage": "0.5049",
+				"eligiblePercentage": "0.5517"
 			},
 			"Opex": {
-				"total": 7282397,
-				"aligned": 572547,
-				"eligible": 936621
+				"totalAmount": "967909.12",
+				"alignedPercentage": "0.4275",
+				"eligiblePercentage": "0.7104"
 			},
 			"Revenue": {
-				"total": 4333567,
-				"aligned": 3132563,
-				"eligible": 3944043
+				"totalAmount": "110696.56",
+				"alignedPercentage": "0.1375",
+				"eligiblePercentage": "0.2267"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
@@ -5371,65 +5371,65 @@
 		"companyId": 245,
 		"data": {
 			"Capex": {
-				"total": 6828939,
-				"aligned": 244255,
-				"eligible": 246657
+				"totalAmount": "637583.36",
+				"alignedPercentage": "0.0642",
+				"eligiblePercentage": "0.0822"
 			},
 			"Opex": {
-				"total": 5434385,
-				"aligned": 4530885,
-				"eligible": 5203122
+				"totalAmount": "53058.60",
+				"alignedPercentage": "0.2283",
+				"eligiblePercentage": "0.9002"
 			},
 			"Revenue": {
-				"total": 4677151,
-				"aligned": 1711127,
-				"eligible": 2126835
-			},
-			"Reporting Obligation": "No",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 246,
-		"data": {
-			"Capex": {
-				"total": 9115537,
-				"aligned": 550027,
-				"eligible": 2403623
-			},
-			"Opex": {
-				"total": 2228262,
-				"aligned": 419766,
-				"eligible": 668196
-			},
-			"Revenue": {
-				"total": 5423408,
-				"aligned": 487461,
-				"eligible": 1213096
+				"totalAmount": "196478.23",
+				"alignedPercentage": "0.1659",
+				"eligiblePercentage": "0.2546"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "LimitedAssurance"
 		}
 	},
 	{
+		"companyId": 246,
+		"data": {
+			"Capex": {
+				"totalAmount": "992812.97",
+				"alignedPercentage": "0.0284",
+				"eligiblePercentage": "0.7527"
+			},
+			"Opex": {
+				"totalAmount": "629367.82",
+				"alignedPercentage": "0.6124",
+				"eligiblePercentage": "0.6495"
+			},
+			"Revenue": {
+				"totalAmount": "276365.25",
+				"alignedPercentage": "0.0367",
+				"eligiblePercentage": "0.8380"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "ReasonableAssurance"
+		}
+	},
+	{
 		"companyId": 247,
 		"data": {
 			"Capex": {
-				"total": 5042070,
-				"aligned": 409767,
-				"eligible": 3375065
+				"totalAmount": "623431.88",
+				"alignedPercentage": "0.0453",
+				"eligiblePercentage": "0.2595"
 			},
 			"Opex": {
-				"total": 4751413,
-				"aligned": 520876,
-				"eligible": 786337
+				"totalAmount": "901010.45",
+				"alignedPercentage": "0.0728",
+				"eligiblePercentage": "0.0746"
 			},
 			"Revenue": {
-				"total": 6618755,
-				"aligned": 2734220,
-				"eligible": 5390407
+				"totalAmount": "805118.26",
+				"alignedPercentage": "0.0826",
+				"eligiblePercentage": "0.4935"
 			},
-			"Reporting Obligation": "Yes",
+			"Reporting Obligation": "No",
 			"Attestation": "LimitedAssurance"
 		}
 	},
@@ -5437,66 +5437,66 @@
 		"companyId": 248,
 		"data": {
 			"Capex": {
-				"total": 5750916,
-				"aligned": 2245875,
-				"eligible": 3360994
+				"totalAmount": "179661.74",
+				"alignedPercentage": "0.7248",
+				"eligiblePercentage": "0.9977"
 			},
 			"Opex": {
-				"total": 2209513,
-				"aligned": 749722,
-				"eligible": 1687330
+				"totalAmount": "752686.48",
+				"alignedPercentage": "0.6696",
+				"eligiblePercentage": "0.8093"
 			},
 			"Revenue": {
-				"total": 9543614,
-				"aligned": 3178045,
-				"eligible": 4802119
-			},
-			"Reporting Obligation": "Yes",
-			"Attestation": "None"
-		}
-	},
-	{
-		"companyId": 249,
-		"data": {
-			"Capex": {
-				"total": 8469897,
-				"aligned": 131633,
-				"eligible": 401730
-			},
-			"Opex": {
-				"total": 7383185,
-				"aligned": 5943421,
-				"eligible": 6616479
-			},
-			"Revenue": {
-				"total": 8758574,
-				"aligned": 234633,
-				"eligible": 299975
+				"totalAmount": "437652.30",
+				"alignedPercentage": "0.0770",
+				"eligiblePercentage": "0.1229"
 			},
 			"Reporting Obligation": "Yes",
 			"Attestation": "ReasonableAssurance"
 		}
 	},
 	{
-		"companyId": 250,
+		"companyId": 249,
 		"data": {
 			"Capex": {
-				"total": 2025934,
-				"aligned": 61230,
-				"eligible": 734417
+				"totalAmount": "954344.35",
+				"alignedPercentage": "0.0918",
+				"eligiblePercentage": "0.1290"
 			},
 			"Opex": {
-				"total": 5001924,
-				"aligned": 1511568,
-				"eligible": 2648025
+				"totalAmount": "79105.37",
+				"alignedPercentage": "0.2048",
+				"eligiblePercentage": "0.4364"
 			},
 			"Revenue": {
-				"total": 6959914,
-				"aligned": 765432,
-				"eligible": 782647
+				"totalAmount": "328184.74",
+				"alignedPercentage": "0.2748",
+				"eligiblePercentage": "0.2847"
 			},
 			"Reporting Obligation": "No",
 			"Attestation": "None"
+		}
+	},
+	{
+		"companyId": 250,
+		"data": {
+			"Capex": {
+				"totalAmount": "383740.34",
+				"alignedPercentage": "0.5445",
+				"eligiblePercentage": "0.7114"
+			},
+			"Opex": {
+				"totalAmount": "933146.59",
+				"alignedPercentage": "0.4675",
+				"eligiblePercentage": "0.5910"
+			},
+			"Revenue": {
+				"totalAmount": "534741.67",
+				"alignedPercentage": "0.1839",
+				"eligiblePercentage": "0.3853"
+			},
+			"Reporting Obligation": "No",
+			"Attestation": "LimitedAssurance"
 		}
 	}
 ]

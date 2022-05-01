@@ -31,19 +31,25 @@ jobs:
           -e DATALAND_EDC_TOKEN \
           -e DATALAND_EDC_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
-          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test --no-daemon
+          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: TestReport
           path: ./**/build/reports
-      - name: Upload JaCoCo Exec Results
+      - name: Upload JaCoCo Exec Results for backend
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsBackendUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
+      - name: Upload JaCoCo Exec Results for csv converter
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JaCoCoResultsCsvConverterUnitTests
+          path: ./dataland-csvconverter/build/jacoco/*.exec
 
   unit-tests-frontend:
     runs-on: ubuntu-latest
@@ -118,7 +124,10 @@ jobs:
         run: ./gradlew assemble --no-daemon
       - uses: actions/download-artifact@v2
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsBackendUnitTests
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsCsvConverterUnitTests
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsE2ETest

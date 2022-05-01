@@ -9,7 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
-import org.springframework.core.io.ClassPathResource
+import java.io.File
 import java.lang.reflect.ParameterizedType
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -33,8 +33,8 @@ object LocalDateAdapter {
 class TestDataProvider {
     private var dataCounter = 0
 
-    private val companyJson = ClassPathResource("/CompanyInformation.json").file
-    private val dataJson = ClassPathResource("/CompanyAssociatedEuTaxonomyData.json").file
+    private val companyJson = File("./build/resources/CompanyInformation.json")
+    private val dataJson = File("./build/resources/CompanyAssociatedEuTaxonomyData.json")
     private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
     private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
 
