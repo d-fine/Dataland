@@ -39,3 +39,12 @@ Some environment variables are used within the project. Find attached the variab
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
 * start the frontend - using `npm run serve`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
 * start the E2E cypress tests using `npm run teste2e`
+
+## Dependency Management
+we try to keep our dependencies up to date. Therefore, every two sprints we update dependency versions in a seperate PR.
+To do so:
+* Check `settings.gradle.kts` whether there are new versions and update if applicable
+* Check the main `build.gradle.kts` for updates in used plugins
+* Do so also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
+* Update Fronted packages: run `npm outdated` to show outdated packages.
+ Run `npm update --save` to apply updates to the package.json file
