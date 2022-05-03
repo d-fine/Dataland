@@ -46,5 +46,5 @@ To do so:
 * Check `settings.gradle.kts` whether there are new versions and update if applicable
 * Check the main `build.gradle.kts` for updates in used plugins
 * Do so also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
-* Update Fronted packages: run `npm outdated` to show outdated packages.
- Run `npm update --save` to apply updates to the package.json file
+* Update Fronted packages: run `npm i npm-check-updates` to install npm-check-updates.
+ Run `npx npm-check-updates -u` to apply updates to the `package.json` file. Run `npm update --save` to `update package-lock.json`
