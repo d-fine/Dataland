@@ -13,7 +13,7 @@ val jacocoClasses by extra(
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
-    id("org.openapi.generator") version "5.4.0"
+    id("org.openapi.generator")
     id("org.springframework.boot")
 }
 
@@ -25,13 +25,13 @@ val backendOpenApiSpecConfig by configurations.creating {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
-    implementation("com.squareup.moshi:moshi-adapters:1.13.0")
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.apache.logging.log4j:log4j:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
+    implementation(libs.junit.jupiter)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    implementation(libs.okhttp)
+    implementation(libs.log4j)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.to.slf4j)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-web")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))

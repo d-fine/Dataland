@@ -24,10 +24,10 @@ application {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
+    implementation(libs.junit.jupiter)
+    implementation(libs.jackson.dataformat.csv)
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.datatype.jsr310)
     implementation(project(":dataland-backend"))
 }
 

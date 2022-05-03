@@ -53,6 +53,9 @@ plugins {
     kotlin("plugin.spring") version "1.6.20" apply false
     id("org.sonarqube") version "3.3"
     jacoco
+    id("org.springdoc.openapi-gradle-plugin") version "1.3.4" apply false
+    id("com.gorylenko.gradle-git-properties") version "2.4.0" apply false
+    id("org.openapi.generator") version "5.4.0" apply false
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
