@@ -9,6 +9,7 @@ val jacocoClasses by extra(
         }
     }
 )
+val jacocoVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -65,7 +66,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())
 }
 

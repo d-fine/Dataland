@@ -1,5 +1,6 @@
 // main
 
+val jacocoVersion: String by project
 allprojects {
     repositories {
         mavenCentral()
@@ -25,6 +26,8 @@ allprojects {
 subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "com.github.ben-manes.versions")
+
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -47,15 +50,16 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
     id("io.gitlab.arturbosch.detekt").version("1.20.0")
-    id("org.springframework.boot") version "2.6.6" apply false
+    id("org.springframework.boot") version "2.6.7" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.20" apply false
     id("org.sonarqube") version "3.3"
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.0" apply false
     id("org.openapi.generator") version "5.4.0" apply false
+    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
@@ -84,7 +88,7 @@ sonarqube {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = jacocoVersion
 }
 
 tasks.jacocoTestReport {
