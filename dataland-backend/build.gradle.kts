@@ -23,8 +23,6 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.skyminder.client)
     implementation(libs.dataland.edc.client)
@@ -32,11 +30,13 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
