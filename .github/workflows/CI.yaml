@@ -70,7 +70,7 @@ jobs:
           name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
       - name: Execute Frontend Scripts Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend
+        run: ./gradlew :dataland-frontend:npm_run_fakefixtures
 
 
   e2e-tests:
