@@ -14,7 +14,7 @@
     "testunit": "vue-cli-service test:unit",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/fakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
-    "updatepackagelock": "npm update --save && npm audit fix"
+    "updatepackagelock": "npm update --save --dev && npm audit fix"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.6",
