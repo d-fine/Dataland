@@ -47,5 +47,7 @@ To do so:
 * update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 * Do so also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
-* Update Fronted packages: run `npm i npm-check-updates` to install npm-check-updates.
- Run `npx npm-check-updates -u` to apply updates to the `package.json` file. Run `npm update --save` to `update package-lock.json`
+* Update Fronted packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
+  Run `npm update --save` to update `package-lock.json`
+* Update Docker Images. Publish new versions of docker images in CI by running CypressImage and TemurinImage Jobs
+* update node version in `dataland-frontend/build.gradle.kts`
