@@ -9,6 +9,7 @@ val jacocoClasses by extra(
         }
     }
 )
+val jacocoVersion:String by project
 
 plugins {
     kotlin("jvm")
@@ -42,4 +43,8 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+jacoco {
+    toolVersion = jacocoVersion
 }

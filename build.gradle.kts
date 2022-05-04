@@ -51,13 +51,13 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 plugins {
     id("io.gitlab.arturbosch.detekt").version("1.20.0")
     id("org.springframework.boot") version "2.6.7" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.20" apply false
+    kotlin("plugin.spring") version "1.6.21" apply false
     id("org.sonarqube") version "3.3"
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4" apply false
-    id("com.gorylenko.gradle-git-properties") version "2.4.0" apply false
+    id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "5.4.0" apply false
     id("com.github.ben-manes.versions") version "0.42.0"
 }

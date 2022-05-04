@@ -43,8 +43,9 @@ Some environment variables are used within the project. Find attached the variab
 ## Dependency Management
 we try to keep our dependencies up to date. Therefore, every two sprints we update dependency versions in a seperate PR.
 To do so:
-* Check `settings.gradle.kts` whether there are new versions and update if applicable
-* Check the main `build.gradle.kts` for updates in used plugins
+* Execute gradlew dependencyUpdates to get a report on Dependencies with updates
+* update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
+* update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 * Do so also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
 * Update Fronted packages: run `npm i npm-check-updates` to install npm-check-updates.
  Run `npx npm-check-updates -u` to apply updates to the `package.json` file. Run `npm update --save` to `update package-lock.json`
