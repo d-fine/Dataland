@@ -9,14 +9,14 @@ val jacocoClasses by extra(
         }
     }
 )
+val jacocoVersion: String by project
 
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("com.github.johnrengelman.processes") version "0.5.0"
-    id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
-    id("com.gorylenko.gradle-git-properties") version "2.4.0"
+    id("org.springdoc.openapi-gradle-plugin")
+    id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
 }
@@ -24,20 +24,20 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.skyminder.client)
+    implementation(libs.dataland.edc.client)
+    implementation(libs.okhttp)
+    implementation(libs.log4j)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.to.slf4j)
+    implementation(libs.logback.classic)
+    implementation(libs.logback.core)
+    implementation(libs.slf4j.api)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
-    implementation("org.dataland:skyminder-client:0.1.2")
-    implementation("org.dataland:dataland-edc-client:0.0.2")
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.apache.logging.log4j:log4j:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("ch.qos.logback:logback-classic:1.2.11")
-    implementation("ch.qos.logback:logback-core:1.2.11")
-    implementation("org.slf4j:slf4j-api:1.7.36")
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
@@ -66,7 +66,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())
 }
 

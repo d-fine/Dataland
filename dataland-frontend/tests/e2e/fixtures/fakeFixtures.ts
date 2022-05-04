@@ -22,8 +22,8 @@ function generateCompanyInformation() {
         const sector = faker.company.bsNoun();
         const marketCap = faker.mersenne.rand(10000000, 50000);
         const reportingDateOfMarketCap = faker.date.past().toISOString().split('T')[0]
-        const indices = faker.random.arrayElements(stockIndexArray);
-        const identifiers = faker.random.arrayElements([
+        const indices =faker.helpers.arrayElements(stockIndexArray);
+        const identifiers =faker.helpers.arrayElements([
             {
                 "identifierType": identifierTypeArray[0],
                 "identifierValue": faker.random.alphaNumeric(12)
@@ -60,8 +60,8 @@ function generateCompanyAssociatedEuTaxonomyData() {
     const taxonomies = []
 
     for (let id = 1; id <= 250; id++) {
-        const attestation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
-        const reportingObligation = faker.random.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
+        const attestation =faker.helpers.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
+        const reportingObligation =faker.helpers.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
         const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
         const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4)
         const capexAligned = faker.datatype.float({ min: 0, max: parseFloat(capexEligible), precision: resolution }).toFixed(4)
