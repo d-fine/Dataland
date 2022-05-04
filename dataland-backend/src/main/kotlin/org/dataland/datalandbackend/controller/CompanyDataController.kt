@@ -23,7 +23,7 @@ class CompanyDataController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
-        logger.info("Request received")
+        logger.info("Received a request to post company")
         return ResponseEntity.ok(dataManager.addCompany(companyInformation))
     }
 

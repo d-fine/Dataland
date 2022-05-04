@@ -6,20 +6,21 @@ describe('Population Test', () => {
         defaultCommandTimeout: 0
     })
 
-    async function uploadData(dataArray:Array<any>, endpoint:string){
+    async function uploadData(dataArray:Array<object>, endpoint:string){
         const start = Date.now()
-        const chunkSize = 10;
+        const chunkSize = 8;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
-            await Promise.all(chunk.map(async (element:any) => {
+            await Promise.all(chunk.map(async (element:object) => {
                     await fetch(`${Cypress.env("API")}/${endpoint}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(element)
-                    }).then(data => {
-                        assert(data.status.toString() === "200" )
+                    }).then(response => {
+                        console.log(response.json())
+                        assert(response.status.toString() === "200" )
                     })
                 })
             )
