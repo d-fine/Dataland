@@ -82,6 +82,7 @@ describe('EU Taxonomy Data', () => {
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
+        cy.wait(1000)
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
         cy.get('h3').contains("OpEx")

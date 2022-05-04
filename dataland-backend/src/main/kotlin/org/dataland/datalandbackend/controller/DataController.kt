@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity
  * @param dataManager implementation of the DataManagerInterface that defines how
  * Dataland handles data */
 
-abstract class DataController<T>(
+open class DataController<T>(
     var dataManager: DataManagerInterface,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>
@@ -37,6 +37,7 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        logger.info("Received a request to get company data")
         return ResponseEntity.ok(
             CompanyAssociatedData(
                 companyId = dataManager.getDataMetaInfo(dataId).companyId,

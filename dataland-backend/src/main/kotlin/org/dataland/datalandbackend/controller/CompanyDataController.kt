@@ -33,8 +33,10 @@ class CompanyDataController(
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
         return if (selectedIndex == null) {
+            logger.info("Received a request to get companies")
             ResponseEntity.ok(dataManager.searchCompanies(searchString ?: "", onlyCompanyNames))
         } else {
+            logger.info("Received a request to get companies by the stock index")
             ResponseEntity.ok(dataManager.searchCompaniesByIndex(selectedIndex))
         }
     }
