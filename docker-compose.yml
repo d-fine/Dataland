@@ -82,7 +82,7 @@ services:
   dataland-edc:
     restart: always
     profiles: ["production"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.0.2
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
     networks:
      - internal
     expose:
