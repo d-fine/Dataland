@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController
 class CompanyDataController(
     @Autowired var dataManager: DataManagerInterface,
 ) : CompanyAPI {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+        logger.info("Request received")
         return ResponseEntity.ok(dataManager.addCompany(companyInformation))
     }
 

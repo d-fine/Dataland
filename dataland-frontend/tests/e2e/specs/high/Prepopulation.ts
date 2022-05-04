@@ -1,5 +1,32 @@
-let idList: any
+let dataIdList: any
+let companyIdList:Array<string>
+
 describe('Population Test', () => {
+    Cypress.config({
+        defaultCommandTimeout: 0
+    })
+
+    async function uploadData(dataArray:Array<any>, endpoint:string){
+        const start = Date.now()
+        const chunkSize = 10;
+        for (let i = 0; i < dataArray.length; i += chunkSize) {
+            const chunk = dataArray.slice(i, i + chunkSize);
+            await Promise.all(chunk.map(async (element:any) => {
+                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(element)
+                    }).then(data => {
+                        assert(data.status.toString() === "200" )
+                    })
+                })
+            )
+        }
+        const millis = Date.now() - start
+        console.log(`seconds elapsed = ${Math.floor(millis / 1000)}`)
+    }
     let eutaxonomiesData:any
     let companiesData:any
     before(function(){
@@ -13,35 +40,35 @@ describe('Population Test', () => {
     });
 
 
-    it('Populate Companies', function (){
-        for (const index in companiesData) {
-            cy.request('POST', `${Cypress.env("API")}/companies`, companiesData[index]).its('status').should("equal", 200)
-
-        }
-        console.log(companiesData)
+    it('Populate Companies',  async() => {
+        await uploadData(companiesData, "companies")
     });
 
-    it('Populate EU Taxonomy Data', function (){
-        for (const index in eutaxonomiesData) {
-            cy.request('POST', `${Cypress.env("API")}/data/eutaxonomies`, eutaxonomiesData[index]).its('status').should("equal", 200)
-        }
-        console.log(eutaxonomiesData)
+
+    it.only('Retrieve company ID list', () => {
+        cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
+            companyIdList = response.body.map((e:any) => {
+                return e["companyId"]})
+            })
+        });
+
+    it('Populate EU Taxonomy Data',  async() => {
+        await uploadData(eutaxonomiesData, "data/eutaxonomies")
     });
 
-    it('Retrieve data ID list', () => {
+    it.only('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            idList = response.body.map(function (e:string){
+            dataIdList = response.body.map(function (e:string){
                 return parseInt(Object.values(e)[0])
             })
         })
     });
 
-
 });
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/data/eutaxonomies/"+idList[0])
+        cy.visit("/data/eutaxonomies/"+dataIdList[0])
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
         cy.get('h3').contains("OpEx")
@@ -50,9 +77,9 @@ describe('EU Taxonomy Data', () => {
     });
 });
 
-describe('Company EU Taxonomy Data', () => {
+describe.only('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit("/companies/1/eutaxonomies")
+        cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
         cy.get('h3').contains("Revenue")
         cy.get('h3').contains("CapEx")
         cy.get('h3').contains("OpEx")
