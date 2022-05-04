@@ -21,6 +21,7 @@ on:
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
+    environment: preview
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
