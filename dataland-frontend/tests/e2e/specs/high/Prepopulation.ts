@@ -45,20 +45,21 @@ describe('Population Test', () => {
     });
 
 
-    it.only('Retrieve company ID list', () => {
+    it('Retrieve company ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
-            companyIdList = response.body.map((e:any) => {
-                return e["companyId"]})
+            companyIdList = response.body.map((e: any) => {
+                return e["companyId"]
             })
-        });
+        })
+    });
 
     it('Populate EU Taxonomy Data',  async() => {
         await uploadData(eutaxonomiesData, "data/eutaxonomies")
     });
 
-    it.only('Retrieve data ID list', () => {
+    it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            dataIdList = response.body.map(function (e:string){
+            dataIdList = response.body.map(function (e: string) {
                 return parseInt(Object.values(e)[0])
             })
         })
@@ -77,7 +78,7 @@ describe('EU Taxonomy Data', () => {
     });
 });
 
-describe.only('Company EU Taxonomy Data', () => {
+describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
         cy.get('h3').contains("Revenue")
