@@ -20,7 +20,7 @@ dependencyResolutionManagement {
             library("okhttp", "com.squareup.okhttp3:okhttp:4.9.3")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
-            library("skyminder-client", "org.dataland:skyminder-client:0.1.2")
+            library("skyminder-client", "org.dataland:skyminder-client:0.1.3")
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.0.2")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.17.2")
