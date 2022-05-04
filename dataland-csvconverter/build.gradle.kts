@@ -9,7 +9,7 @@ val jacocoClasses by extra(
         }
     }
 )
-val jacocoVersion:String by project
+val jacocoVersion: String by project
 
 plugins {
     kotlin("jvm")
