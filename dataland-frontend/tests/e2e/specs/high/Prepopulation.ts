@@ -8,7 +8,7 @@ describe('Population Test', () => {
 
     async function uploadData(dataArray:Array<object>, endpoint:string){
         const start = Date.now()
-        const chunkSize = 8;
+        const chunkSize = 5;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
             await Promise.all(chunk.map(async (element:object) => {
