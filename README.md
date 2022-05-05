@@ -43,7 +43,7 @@ Some environment variables are used within the project. Find attached the variab
 ## Dependency Management
 we try to keep our dependencies up to date. Therefore, every two sprints we update dependency versions in a seperate PR.
 To do so:
-* Execute gradlew dependencyUpdates to get a report on Dependencies with updates
+* Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 * update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 * Update Fronted packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
