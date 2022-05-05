@@ -6,9 +6,22 @@ describe('Population Test', () => {
         defaultCommandTimeout: 0
     })
 
+    let eutaxonomiesData:any
+    let companiesData:any
+
+    before(function(){
+        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function(eutaxonomies){
+            eutaxonomiesData=eutaxonomies
+        });
+        cy.fixture('CompanyInformation').then(function(companies){
+            companiesData=companies
+        });
+
+    });
+
     async function uploadData(dataArray:Array<object>, endpoint:string){
         const start = Date.now()
-        const chunkSize = 5;
+        const chunkSize = 8;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
             await Promise.all(chunk.map(async (element:object) => {
@@ -28,17 +41,6 @@ describe('Population Test', () => {
         const millis = Date.now() - start
         console.log(`seconds elapsed = ${Math.floor(millis / 1000)}`)
     }
-    let eutaxonomiesData:any
-    let companiesData:any
-    before(function(){
-        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function(eutaxonomies){
-            eutaxonomiesData=eutaxonomies
-        });
-        cy.fixture('CompanyInformation').then(function(companies){
-            companiesData=companies
-        });
-
-    });
 
 
     it('Populate Companies',  async() => {
@@ -48,8 +50,9 @@ describe('Population Test', () => {
 
     it('Retrieve company ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
-            companyIdList = response.body.map((e: any) => {
-                return e["companyId"]
+            companyIdList = response.body.map((e: any, index:number) => {
+                eutaxonomiesData[index].companyId = e.companyId
+                return e.companyId
             })
         })
     });
