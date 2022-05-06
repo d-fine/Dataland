@@ -3,7 +3,7 @@ describe('Tooltips test suite', () => {
     it('Retrieve company ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
             console.log("response.body",response.body)
-            companyIdList = response.body.map((e: any, index:number) => {
+            companyIdList = response.body.map((e: any) => {
                 return e.companyId
             })
         })
