@@ -1,6 +1,6 @@
 describe('Search Taxonomy', function () {
     let companiesData:any
-    let idList:any
+    let dataIdList:any
 
     before(function(){
         cy.fixture('CompanyInformation').then(function(companies){
@@ -10,15 +10,17 @@ describe('Search Taxonomy', function () {
 
     it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            idList = response.body.map(function (e:string){
-                return parseInt(Object.values(e)[2])
+            dataIdList = response.body.map(function (e: any) {
+                return e.dataId
             })
         })
     });
+
     it('page should be present', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
     });
+
     it('Heading should be present', () => {
         cy.get('h1').should("contain", "Search EU Taxonomy data")
     });
@@ -82,7 +84,7 @@ describe('Search Taxonomy', function () {
     it('Search Input field should be always present', () => {
         const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
-        cy.visit("/companies/"+idList[7]+"/eutaxonomies")
+        cy.visit("/companies/"+dataIdList[7]+"/eutaxonomies")
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})

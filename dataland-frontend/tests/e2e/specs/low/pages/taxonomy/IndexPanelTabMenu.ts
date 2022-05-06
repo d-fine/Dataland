@@ -3,12 +3,12 @@ const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.prop
 describe('Index Panel behavior', function () {
     const indexPanel = '.p-card > .p-card-body > .p-card-content'
     const indexTabMenu = '.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link'
-    let idList:any
+    let dataIdList:any
 
     it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            idList = response.body.map(function (e:string){
-                return parseInt(Object.values(e)[2])
+            dataIdList = response.body.map(function (e: any) {
+                return e.dataId
             })
         })
     });
@@ -42,7 +42,7 @@ describe('Index Panel behavior', function () {
     });
 
     it('Index panel should not exist coming from singleton view', () => {
-        cy.visit("/companies/"+idList[7]+"/eutaxonomies")
+        cy.visit("/companies/"+dataIdList[7]+"/eutaxonomies")
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force: true})

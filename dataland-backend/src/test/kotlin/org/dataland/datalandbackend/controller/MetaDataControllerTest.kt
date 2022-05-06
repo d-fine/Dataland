@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.controller
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.TestDataProvider
+import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,10 +25,13 @@ internal class MetaDataControllerTest(
     @Test
     fun `list of meta info about data for specific company can be retrieved`() {
         val testCompanyInformation = dataProvider.getCompanyInformation(1).last()
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
-
+        val response = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
+        val result: StoredCompany = objectMapper.readValue(
+            response,
+            object : TypeReference<StoredCompany>() {}
+        )
         mockMvc.perform(
-            get("/metadata?companyId=1")
+            get("/metadata?companyId=${result.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )

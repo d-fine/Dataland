@@ -28,7 +28,7 @@
     </div>
     <div class="grid">
       <div class="col-7">
-        <TaxonomyPanel :dataID="parseInt(metaDataInfo.data[0].dataId)" v-if="metaDataInfo.data.length > 0"/>
+        <TaxonomyPanel :dataID="metaDataInfo.data[0].dataId" v-if="metaDataInfo.data.length > 0"/>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
   },
   props: {
     companyID: {
-      type: Number
+      type: String
     }
   },
   created() {

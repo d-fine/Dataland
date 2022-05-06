@@ -11,12 +11,12 @@ import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -26,11 +26,10 @@ class DataManager(
     @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper
 ) : DataManagerInterface {
-    private val logger = LoggerFactory.getLogger(javaClass)
-    var dataMetaInformationPerDataId = mutableMapOf<String, DataMetaInformation>()
-    var companyDataPerCompanyId = mutableMapOf<String, StoredCompany>()
+    var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
+    var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
-    private val greenAssetRatios = mutableMapOf<StockIndex, BigDecimal>()
+    private val greenAssetRatios = ConcurrentHashMap<StockIndex, BigDecimal>()
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -63,9 +62,7 @@ class DataManager(
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
-        logger.info("Add a dataset to a company " + Thread.currentThread().id + " Company Counter: " + storableDataSet.companyId)
-
-        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))
+        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))["dataId"]!!
 
         if (dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
@@ -121,13 +118,11 @@ class DataManager(
 
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         val companyId = UUID.randomUUID().toString()
-        logger.info("Add a company to store " + Thread.currentThread().id + " Company Counter: " + companyId + " Company Information: " + companyInformation)
         companyDataPerCompanyId[companyId] = StoredCompany(
             companyId = companyId,
             companyInformation,
             dataRegisteredByDataland = mutableListOf()
         )
-        Thread.sleep(1000)
         return companyDataPerCompanyId[companyId]!!
     }
 

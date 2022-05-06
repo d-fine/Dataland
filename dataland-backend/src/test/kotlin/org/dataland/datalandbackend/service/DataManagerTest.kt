@@ -45,13 +45,10 @@ class DataManagerTest(
     fun `add all companies then retrieve them as a list and check for each company if it can be found as expected`() {
         addAllCompanies(testCompanyList)
         val allCompaniesInStore = testDataManager.searchCompanies("", true)
-        for ((index, storedCompany) in allCompaniesInStore.withIndex()) {
-            val expectedCompanyId = (index + 1).toString()
-            assertEquals(
-                StoredCompany(expectedCompanyId, testCompanyList[index], mutableListOf()), storedCompany,
-                "The stored company does not contain the company information of the posted company."
-            )
-        }
+        assertTrue(
+            allCompaniesInStore.all { testCompanyList.contains(it.companyInformation) },
+            "Not all the companyInformation of the posted companies could be found in the stored companies."
+        )
     }
 
     @Test
