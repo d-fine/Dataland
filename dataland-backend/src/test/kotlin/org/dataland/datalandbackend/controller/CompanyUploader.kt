@@ -13,8 +13,8 @@ class CompanyUploader {
         mockMvc: MockMvc,
         objectMapper: ObjectMapper,
         companyInformation: CompanyInformation
-    ) {
-        mockMvc.perform(
+    ) : String{
+        val request = mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -23,6 +23,7 @@ class CompanyUploader {
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk,
                 MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)
-            )
+            ).andReturn()
+        return request.response.contentAsString
     }
 }
