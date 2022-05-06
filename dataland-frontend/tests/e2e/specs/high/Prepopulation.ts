@@ -50,14 +50,19 @@ describe('Population Test', () => {
 
     it('Retrieve company ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
+            console.log("response.body",response.body)
             companyIdList = response.body.map((e: any, index:number) => {
                 eutaxonomiesData[index].companyId = e.companyId
+                console.log(e.companyId)
                 return e.companyId
             })
         })
     });
 
     it('Populate EU Taxonomy Data',  async() => {
+        console.log("Company ID list",companyIdList)
+        console.log("EU TaxoData", eutaxonomiesData)
+
         await uploadData(eutaxonomiesData, "data/eutaxonomies")
     });
 
