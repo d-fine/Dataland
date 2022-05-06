@@ -32,7 +32,6 @@ describe('Population Test', () => {
                         },
                         body: JSON.stringify(element)
                     }).then(response => {
-                        console.log(response.json())
                         assert(response.status.toString() === "200" )
                     })
                 })
@@ -50,10 +49,10 @@ describe('Population Test', () => {
 
     it('Retrieve company ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
-            console.log("response.body",response.body)
             companyIdList = response.body.map((e: any, index:number) => {
-                eutaxonomiesData[index].companyId = e.companyId
-                console.log(e.companyId)
+                if (typeof eutaxonomiesData[index] == "object"){
+                    eutaxonomiesData[index].companyId = e.companyId
+                }
                 return e.companyId
             })
         })
