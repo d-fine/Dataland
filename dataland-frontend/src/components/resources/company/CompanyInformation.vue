@@ -42,7 +42,7 @@ export default {
   },
   props: {
     companyID: {
-      type: Number
+      type: String
     }
   },
   created() {

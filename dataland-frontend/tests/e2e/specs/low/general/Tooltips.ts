@@ -1,9 +1,9 @@
 describe('Tooltips test suite', () => {
-    let idList:any
+    let dataIdList:any
     it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            idList = response.body.map(function (e:string){
-                return parseInt(Object.values(e)[2])
+            dataIdList = response.body.map(function (e: any) {
+                return e.dataId
             })
         })
     });
@@ -11,7 +11,7 @@ describe('Tooltips test suite', () => {
     it('tooltips are present and contain text as expected', function () {
         const NFRDText = "Non financial disclosure directive"
         const AssuranceText = "Level of Assurance specifies the confidence level"
-        cy.visit("/companies/"+idList[8]+"/eutaxonomies")
+        cy.visit("/companies/"+dataIdList[8]+"/eutaxonomies")
         cy.get('#app').should("exist")
         cy.get('.p-card-content .col-12.text-left strong')
             .contains('NFRD required')

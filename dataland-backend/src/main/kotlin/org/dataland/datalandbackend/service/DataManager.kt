@@ -66,7 +66,7 @@ class DataManager(
         verifyCompanyIdExists(storableDataSet.companyId)
         logger.info("Add a dataset to a company " + " Company Id: " + storableDataSet.companyId)
         logger.info(objectMapper.writeValueAsString(storableDataSet))
-        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))
+        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))["dataId"]!!
 
         if (dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
@@ -128,7 +128,6 @@ class DataManager(
             companyInformation,
             dataRegisteredByDataland = mutableListOf()
         )
-        Thread.sleep(1000)
         return companyDataPerCompanyId[companyId]!!
     }
 

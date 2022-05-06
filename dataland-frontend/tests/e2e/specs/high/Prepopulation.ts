@@ -21,7 +21,7 @@ describe('Population Test', () => {
 
     async function uploadData(dataArray:Array<object>, endpoint:string){
         const start = Date.now()
-        const chunkSize = 8;
+        const chunkSize = 80;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
             await Promise.all(chunk.map(async (element:object) => {
@@ -60,16 +60,13 @@ describe('Population Test', () => {
     });
 
     it('Populate EU Taxonomy Data',  async() => {
-        console.log("Company ID list",companyIdList)
-        console.log("EU TaxoData", eutaxonomiesData)
-
         await uploadData(eutaxonomiesData, "data/eutaxonomies")
     });
 
     it('Retrieve data ID list', () => {
         cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            dataIdList = response.body.map(function (e: string) {
-                return parseInt(Object.values(e)[0])
+            dataIdList = response.body.map(function (e: any) {
+                return e.dataId
             })
         })
     });
@@ -78,28 +75,34 @@ describe('Population Test', () => {
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
+        cy.intercept('**/api/data/eutaxonomies/*').as('retrieveData')
         cy.visit("/data/eutaxonomies/"+dataIdList[0])
-        cy.get('h3').contains("Revenue")
-        cy.get('h3').contains("CapEx")
-        cy.get('h3').contains("OpEx")
-        cy.get('.d-card').should('contain', 'Eligible')
-        cy.get('.d-card .p-progressbar').should('exist')
+        cy.wait('@retrieveData', {timeout: 2000}).then(() => {
+                cy.get('h3').contains("Revenue")
+                cy.get('h3').contains("CapEx")
+                cy.get('h3').contains("OpEx")
+                cy.get('.d-card').should('contain', 'Eligible')
+                cy.get('.d-card .p-progressbar').should('exist')
+            }
+        )
     });
 });
 
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
+        cy.intercept('**/api/companies/*').as('retrieveCompany')
         cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-        cy.wait(1000)
-        cy.get('h3').contains("Revenue")
-        cy.get('h3').contains("CapEx")
-        cy.get('h3').contains("OpEx")
-        cy.get('body').contains("Market Cap:")
-        cy.get('body').contains("Headquarter:")
-        cy.get('body').contains("Sector:")
-        cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
-        cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
-        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
+            cy.get('h3').contains("Revenue")
+            cy.get('h3').contains("CapEx")
+            cy.get('h3').contains("OpEx")
+            cy.get('body').contains("Market Cap:")
+            cy.get('body').contains("Headquarter:")
+            cy.get('body').contains("Sector:")
+            cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
+            cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
+            cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        })
     });
 
 });
