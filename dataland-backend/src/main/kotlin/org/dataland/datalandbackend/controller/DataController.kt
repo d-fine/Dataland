@@ -25,7 +25,6 @@ open class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
         logger.info("Received a request to post company associated data")
-        logger.info("companyId: " + companyAssociatedData.companyId)
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
                 companyAssociatedData.companyId, dataType,
