@@ -28,24 +28,11 @@ describe('Data Search Page Skyminder', function () {
             .click()
         cy.get('input[name=code]').should("have.value", '')
         cy.get('input[name=name]').should("have.value", '')
-    });
+    })
     it('Skyminder button is present', () => {
         cy.get('button[name="getSkyminderData"]').contains('Get Skyminder Data')
             .should('not.be.disabled')
-    });
-    it('Skyminder Data Search with no input', () => {
-        cy.visit("/search")
-        cy.get('button[name="getSkyminderData"]').click()
-        cy.get('body').should("contain", "Sorry")
-    });
-
-    it('Skyminder Data Search when everything is fine', () => {
-        cy.visit("/search")
-        cy.get('input[name=code]').type("DEU", {force: true})
-        cy.get('input[name=name]').type("BMW", {force: true})
-        cy.get('button[name="getSkyminderData"]').click()
-        cy.get('table').should('exist')
-    });
+    })
 });
 
 describe('Data Search Page Company', function () {
