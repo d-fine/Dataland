@@ -1,3 +1,4 @@
+import com.github.gradle.node.npm.task.NpmTask
 
 val sources = fileTree(projectDir)
 sources.include("src/**", "public/**", "tests/**")
@@ -13,7 +14,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("16.14.0")
+    version.set("16.15.0")
 }
 
 val backendOpenApiSpecConfig by configurations.creating {
@@ -26,13 +27,17 @@ dependencies {
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val taskName = "generateAPIClientFrontend"
+val apiClientGenerationTaskName = "generateAPIClientFrontend"
 val clientOutputDir = "$buildDir/clients/backend"
 val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
 val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(taskName)
+    dependsOn(apiClientGenerationTaskName)
+}
+
+tasks.withType<NpmTask> {
+    dependsOn(apiClientGenerationTaskName)
 }
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
@@ -41,7 +46,7 @@ tasks.register<Copy>("getBackendOpenApiSpec") {
     filter({ line -> line.replace("http://localhost:8080/api", "/api") })
 }
 
-tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file(apiSpecLocation).path
     outputDir.set(clientOutputDir)
     modelPackage.set("$destinationPackage.model")
