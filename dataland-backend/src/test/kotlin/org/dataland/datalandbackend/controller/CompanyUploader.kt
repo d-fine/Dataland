@@ -13,7 +13,7 @@ class CompanyUploader {
         mockMvc: MockMvc,
         objectMapper: ObjectMapper,
         companyInformation: CompanyInformation
-    ) : String{
+    ): String {
         val request = mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
