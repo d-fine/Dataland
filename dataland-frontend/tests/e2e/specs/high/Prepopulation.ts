@@ -16,7 +16,7 @@ describe('Population Test', () => {
     });
 
     async function uploadData(dataArray: Array<object>, endpoint: string) {
-        const start = Date.now()
+        const start = performance.now()
         const chunkSize = 80;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
@@ -29,13 +29,13 @@ describe('Population Test', () => {
                         body: JSON.stringify(element)
                     }).then(response => {
                         assert(response.status.toString() === "200",
-                            `Got status code of ${response.status.toString()} for index ${i}. Expected: 200`)
+                            `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
                     })
                 })
             )
         }
-        const millis = Date.now() - start
-        console.log(`seconds elapsed = ${Math.floor(millis / 1000)}`)
+        const millis = performance.now() - start
+        console.log(`Elapsed time to upload ${dataArray.length} items for '${endpoint}': ${Math.floor(millis / 1000)} seconds`)
     }
 
 
