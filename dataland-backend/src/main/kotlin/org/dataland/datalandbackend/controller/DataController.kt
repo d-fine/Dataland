@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity
  * @param dataManager implementation of the DataManagerInterface that defines how
  * Dataland handles data */
 
-open class DataController<T>(
+abstract class DataController<T>(
     var dataManager: DataManagerInterface,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>
