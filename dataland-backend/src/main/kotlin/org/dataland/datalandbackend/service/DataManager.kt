@@ -63,7 +63,7 @@ class DataManager(
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
-        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))["dataId"]!!
+        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
 
         if (dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
