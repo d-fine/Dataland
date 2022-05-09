@@ -72,8 +72,9 @@ describe('Population Test', () => {
 
 });
 
-describe('EU Taxonomy Data', () => {
+describe.only('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
+        dataIdList = cy.foo()
         cy.visit("/data/eutaxonomies/"+dataIdList[0])
         cy.wait(1000)
         cy.get('h3').contains("Revenue")
