@@ -16,7 +16,7 @@ describe('Population Test', () => {
     });
 
     async function uploadData(dataArray: Array<object>, endpoint: string) {
-        const start = performance.now()
+        console.time(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
         const chunkSize = 80;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
@@ -34,8 +34,7 @@ describe('Population Test', () => {
                 })
             )
         }
-        const millis = performance.now() - start
-        console.log(`Elapsed time to upload ${dataArray.length} items for '${endpoint}': ${Math.floor(millis / 1000)} seconds`)
+        console.timeEnd(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
     }
 
 
