@@ -74,38 +74,30 @@ describe('Population Test', () => {
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.intercept('**/api/data/eutaxonomies/*').as('retrieveData')
         cy.visit("/data/eutaxonomies/"+dataIdList[0])
         cy.wait(1000)
-        cy.wait('@retrieveData', {timeout: 2000}).then(() => {
-                cy.get('h3').contains("Revenue")
-                cy.get('h3').contains("CapEx")
-                cy.get('h3').contains("OpEx")
-                cy.get('.d-card').should('contain', 'Eligible')
-                cy.get('.d-card .p-progressbar').should('exist')
-            }
-        )
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
+        cy.get('.d-card').should('contain', 'Eligible')
+        cy.get('.d-card .p-progressbar').should('exist')
     });
 });
 
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.intercept('**/api/companies/*').as('retrieveCompany')
         cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
         cy.wait(1000)
-        cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
-            cy.get('h3').contains("Revenue")
-            cy.get('h3').contains("CapEx")
-            cy.get('h3').contains("OpEx")
-            cy.get('body').contains("Market Cap:")
-            cy.get('body').contains("Headquarter:")
-            cy.get('body').contains("Sector:")
-            cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
-            cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
-            cy.get('input[name=eu_taxonomy_search_input]').should('exist')
-        })
+        cy.get('h3').contains("Revenue")
+        cy.get('h3').contains("CapEx")
+        cy.get('h3').contains("OpEx")
+        cy.get('body').contains("Market Cap:")
+        cy.get('body').contains("Headquarter:")
+        cy.get('body').contains("Sector:")
+        cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
+        cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
+        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
     });
-
 });
 
 describe('Company Data', () => {
