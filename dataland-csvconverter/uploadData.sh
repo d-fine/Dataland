@@ -1,20 +1,24 @@
 #!/bin/bash
 set -e
-# Utility script to update the data container image. Requires the csv file to be in the dataland-csvconverter
-# directory.
+# Utility script to update the data container image.
 
 csv_file="$1"
-workdir=$(dirname $0)
+workdir=$(dirname "$0")
+work_file=data.csv
 
-cd $workdir
+cd "$workdir"
 
 if [[ ! -f "$csv_file" ]]; then
-  echo "Error: Expected file $workdir/$csv_file not found."
+  echo "Error: Expected file $csv_file does not exist."
   exit 1
 fi
 
-./../gradlew :dataland-csvconverter:run --args="$csv_file"
+iconv -f iso-8859-1 -t UTF-8 "$csv_file" > $work_file
+
+./../gradlew :dataland-csvconverter:run --args="$work_file"
 
 docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
 docker build -t ghcr.io/d-fine/dataland/datacontainer:latest .
 docker image push ghcr.io/d-fine/dataland/datacontainer:latest
+
+rm -f $work_file
