@@ -1,9 +1,7 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.TestDataProvider
-import org.dataland.datalandbackend.model.StoredCompany
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -31,13 +29,9 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
-        val response = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
-        val result: StoredCompany = objectMapper.readValue(
-            response,
-            object : TypeReference<StoredCompany>() {}
-        )
+        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
         mockMvc.perform(
-            get("/companies/${result.companyId}")
+            get("/companies/${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )

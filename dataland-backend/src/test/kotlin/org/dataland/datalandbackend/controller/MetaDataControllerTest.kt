@@ -25,13 +25,9 @@ internal class MetaDataControllerTest(
     @Test
     fun `list of meta info about data for specific company can be retrieved`() {
         val testCompanyInformation = dataProvider.getCompanyInformation(1).last()
-        val response = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
-        val result: StoredCompany = objectMapper.readValue(
-            response,
-            object : TypeReference<StoredCompany>() {}
-        )
+        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
         mockMvc.perform(
-            get("/metadata?companyId=${result.companyId}")
+            get("/metadata?companyId=${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
