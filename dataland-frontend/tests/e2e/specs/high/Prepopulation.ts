@@ -1,39 +1,39 @@
-let dataIdList: any
-let companyIdList:Array<string>
+let companyIdList: Array<string>
 
 describe('Population Test', () => {
     Cypress.config({
         defaultCommandTimeout: 0
     })
 
-    let eutaxonomiesData:any
-    let companiesData:any
+    let eutaxonomiesData: any
+    let companiesData: any
 
-    before(function(){
-        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function(eutaxonomies){
-            eutaxonomiesData=eutaxonomies
+    before(function () {
+        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function (eutaxonomies) {
+            eutaxonomiesData = eutaxonomies
         });
-        cy.fixture('CompanyInformation').then(function(companies){
-            companiesData=companies
+        cy.fixture('CompanyInformation').then(function (companies) {
+            companiesData = companies
         });
 
     });
 
-    async function uploadData(dataArray:Array<object>, endpoint:string){
+    async function uploadData(dataArray: Array<object>, endpoint: string) {
         const start = Date.now()
         const chunkSize = 80;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
-            await Promise.all(chunk.map(async (element:object) => {
-                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(element)
-                    }).then(response => {
-                        assert(response.status.toString() === "200" )
-                    })
+            await Promise.all(chunk.map(async (element: object) => {
+                await fetch(`${Cypress.env("API")}/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(element)
+                }).then(response => {
+                    assert(response.status.toString() === "200",
+                        `Got a status code of ${response.status.toString()} instead of 200 for index ${i}`)
+                })
                 })
             )
         }
@@ -42,47 +42,39 @@ describe('Population Test', () => {
     }
 
 
-    it('Populate Companies',  async() => {
+    it('Populate Companies', async () => {
         await uploadData(companiesData, "companies")
     });
 
-
-    it('Retrieve company ID list', () => {
-        cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
-            companyIdList = response.body.map((e: any, index:number) => {
-                if (typeof eutaxonomiesData[index] == "object"){
+    it('Check if all the company ids can be retrieved', () => {
+        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+            assert(companyIdList.length >= companiesData.length) // >= to avoid problem with several runs in a row
+            companiesData.map((e: any, index: number) => {
+                if (typeof eutaxonomiesData[index] == "object") {
                     eutaxonomiesData[index].companyId = e.companyId
                 }
-                return e.companyId
             })
-        })
+        });
     });
 
-    it('Populate EU Taxonomy Data',  async() => {
+    it('Populate EU Taxonomy Data', async () => {
         await uploadData(eutaxonomiesData, "data/eutaxonomies")
-    });
-
-    it('Retrieve data ID list', () => {
-        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            dataIdList = response.body.map(function (e: any) {
-                return e.dataId
-            })
-        })
     });
 
 });
 
-describe.only('EU Taxonomy Data', () => {
+describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        dataIdList = cy.foo()
-        cy.visit("/data/eutaxonomies/"+dataIdList[0])
-        cy.wait(1000)
-        cy.get('h3').contains("Revenue")
-        cy.get('h3').contains("CapEx")
-        cy.get('h3').contains("OpEx")
-        cy.get('.d-card').should('contain', 'Eligible')
-        cy.get('.d-card .p-progressbar').should('exist')
-    });
+        cy.retrieveDataIdsList().then((dataIdList: any) => {
+            cy.visit("/data/eutaxonomies/" + dataIdList[0])
+            cy.wait(1000)
+            cy.get('h3').contains("Revenue")
+            cy.get('h3').contains("CapEx")
+            cy.get('h3').contains("OpEx")
+            cy.get('.d-card').should('contain', 'Eligible')
+            cy.get('.d-card .p-progressbar').should('exist')
+        });
+    })
 });
 
 describe('Company EU Taxonomy Data', () => {
@@ -102,10 +94,10 @@ describe('Company EU Taxonomy Data', () => {
 });
 
 describe('Company Data', () => {
-    let companiesData:any
-    before(function(){
-        cy.fixture('CompanyInformation').then(function(companies){
-            companiesData=companies
+    let companiesData: any
+    before(function () {
+        cy.fixture('CompanyInformation').then(function (companies) {
+            companiesData = companies
         });
 
     });

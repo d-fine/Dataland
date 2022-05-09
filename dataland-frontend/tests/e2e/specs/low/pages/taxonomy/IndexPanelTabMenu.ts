@@ -3,15 +3,6 @@ const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.prop
 describe('Index Panel behavior', function () {
     const indexPanel = '.p-card > .p-card-body > .p-card-content'
     const indexTabMenu = '.p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link'
-    let dataIdList:any
-
-    it('Retrieve data ID list', () => {
-        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            dataIdList = response.body.map(function (e: any) {
-                return e.dataId
-            })
-        })
-    });
 
     it('Index panel should be present on first visit and disappear', () => {
         cy.visit("/searchtaxonomy")
@@ -42,13 +33,15 @@ describe('Index Panel behavior', function () {
     });
 
     it('Index panel should not exist coming from singleton view', () => {
-        cy.visit("/companies/"+dataIdList[7]+"/eutaxonomies")
-        cy.get('input[name=eu_taxonomy_search_input]')
-            .should('not.be.disabled')
-            .click({force: true})
-            .type("ag{enter}")
-        cy.get(indexPanel).should('not.exist')
-        cy.get(indexTabMenu).should('exist')
+        cy.retrieveDataIdsList().then((dataIdList: any) => {
+            cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies")
+            cy.get('input[name=eu_taxonomy_search_input]')
+                .should('not.be.disabled')
+                .click({force: true})
+                .type("ag{enter}")
+            cy.get(indexPanel).should('not.exist')
+            cy.get(indexTabMenu).should('exist')
+        });
     });
 
     it('Index panel should not be present with params', () => {

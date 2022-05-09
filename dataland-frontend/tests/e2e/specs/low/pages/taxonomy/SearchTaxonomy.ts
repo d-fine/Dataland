@@ -1,19 +1,10 @@
 describe('Search Taxonomy', function () {
     let companiesData:any
-    let dataIdList:any
 
     before(function(){
         cy.fixture('CompanyInformation').then(function(companies){
             companiesData=companies
         });
-    });
-
-    it('Retrieve data ID list', () => {
-        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            dataIdList = response.body.map(function (e: any) {
-                return e.dataId
-            })
-        })
     });
 
     it('page should be present', function () {
@@ -84,13 +75,15 @@ describe('Search Taxonomy', function () {
     it('Search Input field should be always present', () => {
         const placeholder = "Search a company by name, ISIN, PermID or LEI"
         const inputValue = "A company name"
-        cy.visit("/companies/"+dataIdList[7]+"/eutaxonomies")
-        cy.get('input[name=eu_taxonomy_search_input]')
-            .should('not.be.disabled')
-            .click({force:true})
-            .type(inputValue)
-            .should('have.value', inputValue)
-            .invoke('attr', 'placeholder').should('contain', placeholder)
+        cy.retrieveDataIdsList().then((dataIdList: any) => {
+            cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies")
+            cy.get('input[name=eu_taxonomy_search_input]')
+                .should('not.be.disabled')
+                .click({force: true})
+                .type(inputValue)
+                .should('have.value', inputValue)
+                .invoke('attr', 'placeholder').should('contain', placeholder)
+        });
     });
 
 
