@@ -66,7 +66,7 @@ describe('Population Test', () => {
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
                 `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
-            for (const dataIdIndex of dataIdList) {
+            for (const dataIdIndex in dataIdList) {
                 assert(typeof dataIdList[dataIdIndex] !== 'undefined',
                     `Validation of data number ${dataIdIndex}`)
             }
