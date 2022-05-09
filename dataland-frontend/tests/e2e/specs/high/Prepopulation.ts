@@ -13,7 +13,6 @@ describe('Population Test', () => {
         cy.fixture('CompanyInformation').then(function (companies) {
             companiesData = companies
         });
-
     });
 
     async function uploadData(dataArray: Array<object>, endpoint: string) {
@@ -22,16 +21,16 @@ describe('Population Test', () => {
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
             await Promise.all(chunk.map(async (element: object) => {
-                await fetch(`${Cypress.env("API")}/${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(element)
-                }).then(response => {
-                    assert(response.status.toString() === "200",
-                        `Got a status code of ${response.status.toString()} instead of 200 for index ${i}`)
-                })
+                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(element)
+                    }).then(response => {
+                        assert(response.status.toString() === "200",
+                            `Got status code of ${response.status.toString()} for index ${i}. Expected: 200`)
+                    })
                 })
             )
         }
@@ -40,18 +39,18 @@ describe('Population Test', () => {
     }
 
 
-    it('Populate Companies', async () => {
+    it.skip('Populate Companies', async () => {
         await uploadData(companiesData, "companies")
     });
 
     it('Check if all the company ids can be retrieved', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-            assert(companyIdList.length >= companiesData.length// >= to avoid problem with several runs in a row
+            assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
                 `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
             for (const companyIdIndex in companyIdList) {
                 const companyId = companyIdList[companyIdIndex]
                 assert(typeof companyId !== 'undefined',
-                    `Undefined type for company number ${companyIdIndex}`)
+                    `Validation of company number ${companyIdIndex}`)
                 if (typeof eutaxonomiesData[companyIdIndex] == "object") {
                     eutaxonomiesData[companyIdIndex].companyId = companyId
                 }
@@ -69,7 +68,7 @@ describe('Population Test', () => {
                 `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
             for (const dataIdIndex of dataIdList) {
                 assert(typeof dataIdList[dataIdIndex] !== 'undefined',
-                    `Undefined type for data number ${dataIdIndex}`)
+                    `Validation of data number ${dataIdIndex}`)
             }
         })
     });
