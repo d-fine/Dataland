@@ -1,22 +1,18 @@
 <template>
   <div class="d-content">
-    <router-view />
-  </div>
+    <br>
+    <slot>
 
+    </slot>
+  </div>
 </template>
 
 <script>
-
-
-
 export default {
-  name: 'app',
+  name: "TheContent"
 }
 </script>
-<style>
 
+<style scoped>
 
-body {
-  margin: unset;
-}
 </style>
