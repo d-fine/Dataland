@@ -1,5 +1,3 @@
-let companyIdList: Array<string>
-
 describe('Population Test', () => {
     Cypress.config({
         defaultCommandTimeout: 0
@@ -48,17 +46,30 @@ describe('Population Test', () => {
 
     it('Check if all the company ids can be retrieved', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-            assert(companyIdList.length >= companiesData.length) // >= to avoid problem with several runs in a row
-            companiesData.map((e: any, index: number) => {
-                if (typeof eutaxonomiesData[index] == "object") {
-                    eutaxonomiesData[index].companyId = e.companyId
+            assert(companyIdList.length >= companiesData.length// >= to avoid problem with several runs in a row
+                `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
+            for (const companyIdIndex in companyIdList) {
+                const companyId = companyIdList[companyIdIndex]
+                assert(typeof companyId !== 'undefined')
+                if (typeof eutaxonomiesData[companyIdIndex] == "object") {
+                    eutaxonomiesData[companyIdIndex].companyId = companyId
                 }
-            })
-        });
+            }
+        })
     });
 
     it('Populate EU Taxonomy Data', async () => {
         await uploadData(eutaxonomiesData, "data/eutaxonomies")
+    });
+
+    it('Check if all the data ids can be retrieved', () => {
+        cy.retrieveDataIdsList().then((dataIdList: any) => {
+            assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
+                `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
+            for (const dataIdIndex of dataIdList) {
+                assert(typeof dataIdList[dataIdIndex] !== 'undefined', `Undefined type for data number ${dataIdIndex}`)
+            }
+        })
     });
 
 });
@@ -79,17 +90,19 @@ describe('EU Taxonomy Data', () => {
 
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-        cy.wait(1000)
-        cy.get('h3').contains("Revenue")
-        cy.get('h3').contains("CapEx")
-        cy.get('h3').contains("OpEx")
-        cy.get('body').contains("Market Cap:")
-        cy.get('body').contains("Headquarter:")
-        cy.get('body').contains("Sector:")
-        cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
-        cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
-        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+            cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
+            cy.wait(1000)
+            cy.get('h3').contains("Revenue")
+            cy.get('h3').contains("CapEx")
+            cy.get('h3').contains("OpEx")
+            cy.get('body').contains("Market Cap:")
+            cy.get('body').contains("Headquarter:")
+            cy.get('body').contains("Sector:")
+            cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
+            cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
+            cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        })
     });
 });
 
