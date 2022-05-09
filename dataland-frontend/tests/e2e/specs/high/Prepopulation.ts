@@ -50,7 +50,8 @@ describe('Population Test', () => {
                 `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
             for (const companyIdIndex in companyIdList) {
                 const companyId = companyIdList[companyIdIndex]
-                assert(typeof companyId !== 'undefined')
+                assert(typeof companyId !== 'undefined',
+                    `Undefined type for company number ${companyIdIndex}`)
                 if (typeof eutaxonomiesData[companyIdIndex] == "object") {
                     eutaxonomiesData[companyIdIndex].companyId = companyId
                 }
@@ -67,7 +68,8 @@ describe('Population Test', () => {
             assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
                 `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
             for (const dataIdIndex of dataIdList) {
-                assert(typeof dataIdList[dataIdIndex] !== 'undefined', `Undefined type for data number ${dataIdIndex}`)
+                assert(typeof dataIdList[dataIdIndex] !== 'undefined',
+                    `Undefined type for data number ${dataIdIndex}`)
             }
         })
     });
