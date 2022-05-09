@@ -39,7 +39,7 @@ describe('Population Test', () => {
     }
 
 
-    it.skip('Populate Companies', async () => {
+    it('Populate Companies', async () => {
         await uploadData(companiesData, "companies")
     });
 
