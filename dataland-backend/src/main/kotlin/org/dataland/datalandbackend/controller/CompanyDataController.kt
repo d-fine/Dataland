@@ -23,7 +23,7 @@ class CompanyDataController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
-        logger.info("Received a request to post company")
+        logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(dataManager.addCompany(companyInformation))
     }
 
@@ -33,10 +33,13 @@ class CompanyDataController(
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
         return if (selectedIndex == null) {
-            logger.info("Received a request to get companies")
+            logger.info(
+                "Received a request to get companies with " +
+                    "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames'"
+            )
             ResponseEntity.ok(dataManager.searchCompanies(searchString ?: "", onlyCompanyNames))
         } else {
-            logger.info("Received a request to get companies by the stock index")
+            logger.info("Received a request to get companies by stock index '$selectedIndex'")
             ResponseEntity.ok(dataManager.searchCompaniesByIndex(selectedIndex))
         }
     }

@@ -24,7 +24,10 @@ open class DataController<T>(
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
-        logger.info("Received a request to post company associated data")
+        logger.info(
+            "Received a request to post company associated data " +
+                "for companyId '${companyAssociatedData.companyId}'"
+        )
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
                 companyAssociatedData.companyId, dataType,
@@ -37,10 +40,11 @@ open class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        logger.info("Received a request to get company data")
+        val companyId = dataManager.getDataMetaInfo(dataId).companyId
+        logger.info("Received a request to get company data with dataId '$dataId' for companyId '$companyId'")
         return ResponseEntity.ok(
             CompanyAssociatedData(
-                companyId = dataManager.getDataMetaInfo(dataId).companyId,
+                companyId = companyId,
                 data = objectMapper.readValue(
                     dataManager.getDataSet(dataId, dataType).data,
                     clazz

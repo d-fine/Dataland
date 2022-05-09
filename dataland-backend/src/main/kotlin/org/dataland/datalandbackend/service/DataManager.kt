@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
@@ -121,7 +122,7 @@ class DataManager(
         companyDataPerCompanyId[companyId] = StoredCompany(
             companyId = companyId,
             companyInformation,
-            dataRegisteredByDataland = mutableListOf()
+            dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
         )
         return companyDataPerCompanyId[companyId]!!
     }
