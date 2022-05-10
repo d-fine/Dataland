@@ -1,4 +1,6 @@
 // add new command to the existing Cypress interface
+import Chainable = Cypress.Chainable;
+
 declare global {
     namespace Cypress {
         interface Chainable {
@@ -18,11 +20,11 @@ function retrieveIdsList(idKey: string, endpoint: string): any {
     })
 }
 
-export function retrieveDataIdsList(): any {
+export function retrieveDataIdsList(): Chainable<Response> {
     return retrieveIdsList("dataId", "metadata")
 }
 
-export function retrieveCompanyIdsList(): any {
+export function retrieveCompanyIdsList(): Chainable<Response> {
     return retrieveIdsList("companyId", "companies")
 }
 
