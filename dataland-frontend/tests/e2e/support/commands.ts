@@ -8,24 +8,22 @@ declare global {
     }
 }
 
-export function retrieveDataIdsList(): any {
-    cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-        const dataIdsList = []
-        for (const data of response.body) {
-            dataIdsList.push(data.dataId)
+function retrieveIdsList(idKey: string, endpoint: string): any {
+    cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
+        const idsList: Array<string> = []
+        for (const item of response.body) {
+            idsList.push(item[idKey])
         }
-        return dataIdsList
+        return idsList
     })
 }
 
-export function retrieveCompanyIdsList(): any {
-    cy.request('GET', `${Cypress.env("API")}/companies`).then((response) => {
-        const companyIdsList = []
-        for (const company of response.body) {
-            companyIdsList.push(company.companyId)
-        }
-        return companyIdsList
-    })
+export function retrieveDataIdsList(): Array<string> {
+    return retrieveIdsList("dataId", "metadata")
+}
+
+export function retrieveCompanyIdsList(): Array<string> {
+    return retrieveIdsList("companyId", "companies")
 }
 
 Cypress.Commands.add('retrieveDataIdsList', retrieveDataIdsList)
