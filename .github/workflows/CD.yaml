@@ -44,9 +44,9 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build backend and Assemble boot jar
-        run: ./gradlew dataland-backend:bootJar --no-daemon
+        run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
-        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon
+        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
       - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
       - name: Deploy to Preview
@@ -54,7 +54,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon
+        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2
