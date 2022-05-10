@@ -42,10 +42,13 @@
       <Card class="d-card">
         <template #title>
           <h1>Join Dataland for fun</h1>
+        </template>
+        <template #content>
           <p>Register to have fun</p>
           <input >
 
           <p>Login link</p>
+
         </template>
       </Card>
 
