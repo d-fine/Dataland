@@ -7,8 +7,8 @@
 
 <script>
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue"
-import SampleSection from "@/components/resources/landing/SampleSection";
-import MarketingSection from "@/components/resources/landing/MarketingSection";
+import SampleSection from "@/components/resources/landing/Marketing";
+import MarketingSection from "@/components/resources/landing/SampleSection";
 import LandingFooter from "@/components/resources/landing/LandingFooter";
 export default {
   name: 'WelcomeDataland',
