@@ -37,15 +37,30 @@
 
       </div>
     </div>
-  </div>
+    <div class="grid">
+      <div class="col-6 col-offset-4">
+      <Card class="d-card">
+        <template #title>
+          <h1>Join Dataland for fun</h1>
+          <p>Register to have fun</p>
+          <input >
+
+          <p>Login link</p>
+        </template>
+      </Card>
+
+      </div>
+    </div>
   <GridHelper/>
+  </div>
 </template>
 
 <script>
 import GridHelper from "@/components/helper/GridHelper";
+import Card from "primevue/card";
 export default {
   name: "LandingLogin",
-  components: {GridHelper}
+  components: {GridHelper, Card}
 
 }
 </script>
