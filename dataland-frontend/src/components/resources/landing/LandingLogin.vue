@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-offset-2 col-10">
+      <div class="col-offset-2 col-10" text-align-left>
         <img src="@/assets/images/logos/pwc_logo_black_white.svg" alt="pwc" class="small-logo pr-3"/>
         <img src="@/assets/images/logos/dfine_logo.svg" alt="d-fine GmbH" class="small-logo pr-3"/>
         <img src="@/assets/images/logos/quentic_logo.png" alt="quentic" class="small-logo"/>
@@ -41,13 +41,26 @@
       <div class="col-6 col-offset-4">
       <Card class="d-card">
         <template #title>
-          <h1>Join Dataland for fun</h1>
+          <h2 style = 'color: #013D48'>Join Dataland to access our data</h2>
         </template>
         <template #content>
-          <p>Register to have fun</p>
-          <input >
-
-          <p>Login link</p>
+          <p style = 'color:#958D7C'>Register free to access <b>EU Taxonomy</b> data from 450 Germany public companies and Sustainability Data from
+            <b>+100 German SMEs</b>. Be notified about updates</p>
+          <div class="grid align-items-end">
+            <div class = "pl-2">
+              <input v-model="message" placeholder="Email address" class="box-area">
+            </div>
+            <div >
+              <Button label="Get Started" class="uppercase p-button">Get Started
+                <i class="material-icons pl-3" aria-hidden="true">arrow_forward_ios</i>
+              </Button>
+            </div>
+          </div>
+          <p>
+            <router-link to="linkedin.de">
+              <a style = 'color:#E67F3F'>Join with Linkedin</a>
+           </router-link>
+          </p>
 
         </template>
       </Card>
@@ -70,5 +83,8 @@ export default {
 <style>
 .small-logo {
   height: 3em
+}
+.box-area{
+  height: 3.2em
 }
 </style>

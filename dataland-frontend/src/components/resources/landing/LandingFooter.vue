@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    placeholder
+  </div>
 </template>
 
 <script>
