@@ -55,13 +55,13 @@ describe('User interactive tests for Data Upload', () => {
 
     it('Create EU Taxonomy Dataset without Reporting Obligation', () => {
         cy.visit("/upload")
-        cy.reload()
         cy.get('button[name="postEUData"]', { timeout: 2000 }).should('be.visible')
         cy.get('input[name="companyId"]').type(companyId, {force: true})
         cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         cy.get('button[name="postEUData"]', { timeout: 2000 }).should('be.enabled')
-        cy.get('button[name="postEUData"]', { timeout: 2000 }).click()
+        cy.wait(1000)
+        cy.get('button[name="postEUData"]').click()
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {
             const dataId = $dataID.text()
