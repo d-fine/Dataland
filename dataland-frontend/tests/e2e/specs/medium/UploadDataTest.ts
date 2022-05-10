@@ -56,7 +56,7 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('input[name="companyId"]').type(companyId, {force: true})
         cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
-        cy.wait(1000)
+        cy.get('button[name="postEUData"]', { timeout: 2000 }).should('not.be.disabled')
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {

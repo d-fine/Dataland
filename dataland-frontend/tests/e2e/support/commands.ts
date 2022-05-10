@@ -12,11 +12,7 @@ declare global {
 
 function retrieveIdsList(idKey: string, endpoint: string): any {
     cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
-        const idsList: Array<string> = []
-        for (const item of response.body) {
-            idsList.push(item[idKey])
-        }
-        return idsList
+        return response.body.map((e:any) => e[idKey])
     })
 }
 
