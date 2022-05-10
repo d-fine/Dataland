@@ -18,11 +18,11 @@ function retrieveIdsList(idKey: string, endpoint: string): any {
     })
 }
 
-export function retrieveDataIdsList(): Array<string> {
+export function retrieveDataIdsList(): any {
     return retrieveIdsList("dataId", "metadata")
 }
 
-export function retrieveCompanyIdsList(): Array<string> {
+export function retrieveCompanyIdsList(): any {
     return retrieveIdsList("companyId", "companies")
 }
 
