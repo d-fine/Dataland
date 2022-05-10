@@ -69,7 +69,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.0.13
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.0.17
     networks:
       internal:
         aliases:
@@ -82,11 +82,23 @@ services:
   dataland-edc:
     restart: always
     profiles: ["production"]
-    image: ghcr.io/d-fine/datalandedc/edcserver:0.0.13
+    image: ghcr.io/d-fine/datalandedc/edcserver:0.0.17
     networks:
      - internal
     expose:
      - "8080"
+    environment:
+      EDC_API_AUTH_KEY: ${EDC_API_AUTH_KEY}
+      EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${EDC_API_CONTROL_AUTH_APIKEY_VALUE}
+      EDC_KEYSTORE_PASSWORD: ${EDC_KEYSTORE_PASSWORD}
+      EDC_OAUTH_PROVIDER_AUDIENCE: ${EDC_OAUTH_PROVIDER_AUDIENCE}
+      EDC_OAUTH_PROVIDER_JWKS_URL: ${EDC_OAUTH_PROVIDER_JWKS_URL}
+      EDC_OAUTH_TOKEN_URL: ${EDC_OAUTH_TOKEN_URL}
+      EDC_SERVER_URI: ${EDC_SERVER_URI}
+      IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
+      TRUSTEE_CREDENTIALS: ${TRUSTEE_CREDENTIALS}
+      TRUSTEE_IDS_URI: ${TRUSTEE_IDS_URI}
+      TRUSTEE_URI: ${TRUSTEE_URI}
   develop:
     profiles: ["devcontainer"]
     build:
