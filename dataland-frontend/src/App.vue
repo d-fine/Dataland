@@ -13,9 +13,11 @@ export default {
   name: 'app',
 }
 </script>
-<style>
 
+<style lang="scss">
 
+@import "./assets/css/main.css";
+@import "./assets/css/variables";
 body {
   margin: unset;
 }
