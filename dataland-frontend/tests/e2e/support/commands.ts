@@ -10,8 +10,8 @@ declare global {
     }
 }
 
-function retrieveIdsList(idKey: string, endpoint: string): any {
-    cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
+function retrieveIdsList(idKey: string, endpoint: string): Chainable<Response> {
+    return cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
         return response.body.map((e:any) => e[idKey])
     })
 }
