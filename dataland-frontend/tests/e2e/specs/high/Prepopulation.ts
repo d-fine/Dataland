@@ -5,9 +5,10 @@ describe('Population Test', () => {
 
     let eutaxonomiesData: any
     let companiesData: any
+    const companyAssociatedEuTaxonomyData: any = []
 
     before(function () {
-        cy.fixture('CompanyAssociatedEuTaxonomyData').then(function (eutaxonomies) {
+        cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
             eutaxonomiesData = eutaxonomies
         });
         cy.fixture('CompanyInformation').then(function (companies) {
@@ -51,7 +52,7 @@ describe('Population Test', () => {
                 assert(typeof companyId !== 'undefined',
                     `Validation of company number ${companyIdIndex}`)
                 if (typeof eutaxonomiesData[companyIdIndex] == "object") {
-                    eutaxonomiesData[companyIdIndex].companyId = companyId
+                    companyAssociatedEuTaxonomyData.push({"companyId": companyId, "data": eutaxonomiesData[companyIdIndex]})
                 }
             }
         })
