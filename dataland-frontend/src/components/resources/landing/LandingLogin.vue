@@ -1,6 +1,6 @@
 <template>
-  <div class="surface-ground">
-    <div class="grid align-items-center">
+  <div class="surface-ground pb-8">
+    <div class="grid align-items-center m-0">
       <div class="col-6 text-left">
         <router-link to="/">
           <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
@@ -78,18 +78,16 @@
 
       </div>
     </div>
-    <GridHelper/>
   </div>
 </template>
 
 <script>
-import GridHelper from "@/components/helper/GridHelper";
 import Card from "primevue/card";
 import InputText from 'primevue/inputtext';
 
 export default {
   name: "LandingLogin",
-  components: {GridHelper, Card, InputText}
+  components: {Card, InputText}
 
 }
 </script>

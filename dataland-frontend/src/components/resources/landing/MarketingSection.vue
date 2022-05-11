@@ -13,7 +13,6 @@
       </div>
     </div>
    </div>
-  <GridHelper/>
   <div class="grid align-items-center col-offset-1 col-10">
     <img src="@/assets/images/elements/video_placeholder.svg" alt="Showcase Video" class="pt-2 pb-6 w-full"/>
   </div>
@@ -33,7 +32,6 @@
       <img src="@/assets/images/elements/Data_Workflow.svg" alt="de" class="pl-0 pt-0 w-full"/>
     </div>
   </div>
-  <GridHelper/>
   <div class="text-center">
     Dataland is not for you?
     <p class="text-primary text-center underline cursor-pointer">
@@ -44,11 +42,9 @@
 </template>
 
 <script>
-import GridHelper from "@/components/helper/GridHelper";
 
 export default {
   name: "MarketingSection",
-  components: {GridHelper}
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="surface-section mt-8">
-    <div class="grid">
+    <div class="grid m-0">
       <div class="col-offset-3 col-3">
         <div class="grid">
           <div class="col-10 text-left text-gray-100">
@@ -22,7 +22,6 @@
       </div>
       <div class="col-3">
         <img src="@/assets/images/elements/eu_screenshot.png" alt="Dataland Logo" class="pl-3 pt-2"/>
-
       </div>
     </div>
   </div>
