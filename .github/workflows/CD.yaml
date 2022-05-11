@@ -62,7 +62,7 @@ jobs:
             echo "Starting dev server"
             curl ${{ secrets.DEV_STARTUP_URL }} > /dev/null
           fi
-          ./deploy_to_server.sh $DEPLOY_TO
+          ./deployment/deploy_to_server.sh $DEPLOY_TO
         env:
           DEPLOY_TO: ${{ github.event.inputs.deployTo }}
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
