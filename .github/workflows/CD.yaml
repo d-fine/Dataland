@@ -72,10 +72,10 @@ jobs:
           EDC_KEYSTORE_PASSWORD: ${{ secrets.EDC_KEYSTORE_PASSWORD }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
       - name: check deployment
-        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: cypress
-          path: ./dataland-frontend/cypress/
+        run: echo "do nothing until approved by Philip" #./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
+      #- name: Upload FE E2E Cypress Results
+      #  if: always()
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #   name: cypress
+      #   path: ./dataland-frontend/cypress/
