@@ -37,7 +37,7 @@ jobs:
           if [[ $AAA_TEST_VARIABLE == development ]]; then
            echo "Environment variable could be read"
           fi
-          if [[ $AAA_TEST_VARIABLE == Repository Variable ]]; then
+          if [[ $AAA_TEST_VARIABLE == "Repository Variable" ]]; then
            echo "Repository variable could be read"
           fi
         env:
