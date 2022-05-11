@@ -69,7 +69,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:latest
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:RELEASE-0.0.4
     networks:
       internal:
         aliases:
