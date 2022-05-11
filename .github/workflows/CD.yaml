@@ -16,7 +16,13 @@ on:
         description: 'Use real data'
         required: false
         type: boolean
-
+      deployTo:
+        description: "Deploy to server"
+        required: true
+        type: choice
+        options:
+          - preview_server
+          - dev_server
 
 jobs:
   build-prod-and-deploy:
@@ -47,11 +53,18 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
-      - name: Start Preview Server
-        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-      - name: Deploy to Preview
-        run: ./deployment/deploy_to_preview.sh
+      - name: Start server and deploy to it (either Preview or Dev)
+        run: |
+          if [[ $DEPLOY_TO == preview_server ]]; then
+            echo "Starting preview server"
+            curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
+          elif [[ $DEPLOY_TO == dev_server ]]; then
+            echo "Starting dev server"
+            curl ${{ secrets.DEV_STARTUP_URL }} > /dev/null
+          fi
+          ./deploy_to_server.sh $DEPLOY_TO
         env:
+          DEPLOY_TO: ${{ github.event.inputs.deployTo }}
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           EDC_API_AUTH_KEY: ${{ secrets.EDC_API_AUTH_KEY }}
