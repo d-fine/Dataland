@@ -59,7 +59,7 @@ describe('Population Test', () => {
     });
 
     it('Populate EU Taxonomy Data', async () => {
-        await uploadData(eutaxonomiesData, "data/eutaxonomies")
+        await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
     });
 
     it('Check if all the data ids can be retrieved', () => {

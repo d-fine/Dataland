@@ -33,7 +33,7 @@ class TestDataProvider {
     private var dataCounter = 0
 
     private val companyJson = File("./build/resources/CompanyInformation.json")
-    private val dataJson = File("./build/resources/CompanyAssociatedEuTaxonomyData.json")
+    private val dataJson = File("./build/resources/EuTaxonomyData.json")
     private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
     private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
 

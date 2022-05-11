@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
@@ -143,17 +142,14 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfEuTaxonomyData(): List<CompanyAssociatedData<EuTaxonomyData>> {
+    fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
         return rawCsvData.filter { validateLine(it) }.withIndex().map { (index, csvLineData) ->
-            CompanyAssociatedData(
-                companyId = "${index + 1}",
-                EuTaxonomyData(
-                    reportObligation = getReportingObligation(csvLineData),
-                    attestation = getAttestation(csvLineData),
-                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", csvLineData),
-                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", csvLineData),
-                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", csvLineData)
-                )
+            EuTaxonomyData(
+                reportObligation = getReportingObligation(csvLineData),
+                attestation = getAttestation(csvLineData),
+                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", csvLineData),
+                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", csvLineData),
+                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", csvLineData)
             )
         }
     }
@@ -198,7 +194,7 @@ class CsvToJsonConverter {
         objectMapper.writerWithDefaultPrettyPrinter()
             .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyAssociatedEuTaxonomyData.json"), buildListOfEuTaxonomyData())
+            .writeValue(File("./EuTaxonomyData.json"), buildListOfEuTaxonomyData())
     }
 
     companion object {
