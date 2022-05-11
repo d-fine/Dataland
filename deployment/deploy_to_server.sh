@@ -1,7 +1,7 @@
 #!/bin/bash
 set -u
 
-deployTo=$1
+environment=$1
 
 preview_server_url="preview-dataland.duckdns.org"
 preview_server_host_keys="$preview_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k="
@@ -9,11 +9,11 @@ preview_server_host_keys="$preview_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLX
 dev_server_url="dev-dataland.duckdns.org"
 dev_server_host_keys="$dev_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHcwEGUE3yhkWxJ/dwafmNrVZDMZn62o26CoNo4ScNgwEaAxfeHDddpROrghaZ/avibYmzAAU8bwR76QG01v2RI="
 
-if [[ $deployTo == preview_server ]]; then
+if [[ $environment == preview_server ]]; then
   echo "Starting deployment for preview server"
   target_server_url=$preview_server_url
   target_server_host_keys=$preview_server_host_keys
-elif [[ $deployTo == dev_server ]]; then
+elif [[ $environment == dev_server ]]; then
   echo "Starting deployment for dev server"
   target_server_url=$dev_server_url
   target_server_host_keys=$dev_server_host_keys
