@@ -79,7 +79,7 @@ describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', { timeout: 2000 }).should('be.visible')
+            cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
@@ -93,7 +93,7 @@ describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', { timeout: 2000 }).should('be.visible')
+            cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
