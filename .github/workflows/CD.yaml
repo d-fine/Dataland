@@ -30,7 +30,7 @@ on:
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{ github.event.inputs.whichEnvironment }}
     steps:
       - name: Debugging
         run: |
