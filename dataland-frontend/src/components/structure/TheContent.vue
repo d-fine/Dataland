@@ -12,7 +12,3 @@ export default {
   name: "TheContent"
 }
 </script>
-
-<style scoped>
-
-</style>

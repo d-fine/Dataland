@@ -34,7 +34,3 @@ export default {
   components: {Button}
 }
 </script>
-
-<style scoped>
-
-</style>

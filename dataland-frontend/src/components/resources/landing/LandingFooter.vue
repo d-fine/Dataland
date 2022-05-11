@@ -44,7 +44,3 @@ export default {
   name: "LandingFooter"
 }
 </script>
-
-<style scoped>
-
-</style>
