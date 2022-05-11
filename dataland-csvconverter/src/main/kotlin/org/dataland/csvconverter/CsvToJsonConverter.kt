@@ -143,13 +143,13 @@ class CsvToJsonConverter {
      * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
      */
     fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
-        return rawCsvData.filter { validateLine(it) }.withIndex().map { (index, csvLineData) ->
+        return rawCsvData.filter { validateLine(it) }.map {
             EuTaxonomyData(
-                reportObligation = getReportingObligation(csvLineData),
-                attestation = getAttestation(csvLineData),
-                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", csvLineData),
-                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", csvLineData),
-                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", csvLineData)
+                reportObligation = getReportingObligation(it),
+                attestation = getAttestation(it),
+                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
+                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
+                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
             )
         }
     }
