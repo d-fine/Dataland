@@ -72,7 +72,7 @@ services:
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.0.20
     environment:
       SERVER_PORT: 9191
-      SERVER_SERVLET_CONTEXT-PATH:/api
+      SERVER_SERVLET_CONTEXT-PATH: /api
     networks:
       internal:
         aliases:
