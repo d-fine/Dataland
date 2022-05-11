@@ -27,7 +27,7 @@ on:
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: preview
+    environment: development
     steps:
       - name: Debugging
         run: |
