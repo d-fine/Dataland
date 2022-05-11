@@ -75,7 +75,6 @@ function generateCompanyAssociatedEuTaxonomyData() {
 
         taxonomies.push(
             {
-                "companyId": id,
                 "data": {
                     "Capex": {
                         "totalAmount": capexTotal,
