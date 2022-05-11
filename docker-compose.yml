@@ -86,7 +86,8 @@ services:
     networks:
      - internal
     expose:
-     - "8080"
+      - "9191"
+      - "9292"
     environment:
       EDC_API_AUTH_KEY: ${EDC_API_AUTH_KEY}
       EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${EDC_API_CONTROL_AUTH_APIKEY_VALUE}
