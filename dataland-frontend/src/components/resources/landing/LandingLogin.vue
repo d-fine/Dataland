@@ -55,14 +55,18 @@
             <p class="text-gray-800 text-left">Register free to access <strong>EU Taxonomy</strong> data from 450 Germany public
               companies and Sustainability Data from
               <strong>+100 German SMEs</strong>. Be notified about updates</p>
-            <div class="grid align-items-end">
-              <div class="pl-2">
-                <input v-model="message" placeholder="Email address" class="box-area">
+            <div class="grid">
+              <div class="col-9 p-fluid pr-0">
+                  <InputText type="text" placeholder="Email address" class="h-2rem" />
               </div>
-              <div>
-                <Button label="Get Started" class="uppercase p-button">Get Started
-                  <i class="material-icons pl-3" aria-hidden="true">arrow_forward_ios</i>
-                </Button>
+              <div class="col-3 p-fluid pl-0">
+                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem">
+                    <span class="d-letters">
+                      Get Started
+                    </span>
+                    <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
+                  </Button>
+
               </div>
             </div>
             <p class="text-primary underline text-left">
@@ -81,10 +85,11 @@
 <script>
 import GridHelper from "@/components/helper/GridHelper";
 import Card from "primevue/card";
+import InputText from 'primevue/inputtext';
 
 export default {
   name: "LandingLogin",
-  components: {GridHelper, Card}
+  components: {GridHelper, Card, InputText}
 
 }
 </script>
@@ -93,8 +98,8 @@ export default {
   height: 1.25em;
 }
 
-
-.box-area {
-  height: 3.2em
+.d-letters {
+  letter-spacing: 0.05em;
 }
+
 </style>
