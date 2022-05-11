@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="grid">
+      <div class="grid m-0">
 
         <div class="col-offset-1 col-11 text-left ">
         <p>Copyright &#169; 2022 Dataland</p>

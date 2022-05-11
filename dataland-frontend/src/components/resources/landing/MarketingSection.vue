@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid m-0">
     <div class="col-5 col-offset-1 pt-5 text-left" >
       <h2 class="uppercase font-light d-letters">Learn about our vision</h2>
     </div>
@@ -13,8 +13,11 @@
    </div>
 
 
-  <div class="grid align-items-center col-offset-1 col-10">
+  <div class="grid align-items-center m-0">
+    <div class="col-offset-1 col-10">
+
     <img src="@/assets/images/elements/video_placeholder.svg" alt="Showcase Video" class="pt-6 pb-6 w-full"/>
+    </div>
   </div>
   <div class="grid m-0">
     <div class="col-offset-1 col-5 p-0">
@@ -55,7 +58,7 @@
       <img src="@/assets/images/elements/Data_Workflow.svg" alt="de" class="pl-0 pt-0 w-full"/>
     </div>
   </div>
-  <div class="text-center pt-6">
+  <div class="text-center pt-6  m-0">
     Dataland is not for you?
     <p class="text-primary text-center underline cursor-pointer">
       Let us know what we can do better.
