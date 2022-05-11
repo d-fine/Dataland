@@ -13,7 +13,7 @@ if [[ deployTo == preview_server ]]; then
   echo "Starting deployment for preview server"
   export target_server_url=preview_server_url
   export target_server_host_keys=preview_server_host_keys
-elif [[ $SERVER == dev_server ]]; then
+elif [[ deployTo == dev_server ]]; then
   echo "Starting deployment for dev server"
   export target_server_url=dev_server_url
   export target_server_host_keys=dev_server_host_keys
