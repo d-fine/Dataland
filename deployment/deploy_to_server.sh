@@ -9,11 +9,11 @@ preview_server_host_keys="$preview_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLX
 dev_server_url="dev-dataland.duckdns.org"
 dev_server_host_keys="$dev_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHcwEGUE3yhkWxJ/dwafmNrVZDMZn62o26CoNo4ScNgwEaAxfeHDddpROrghaZ/avibYmzAAU8bwR76QG01v2RI="
 
-if [[ $environment == preview_server ]]; then
+if [[ $environment == preview ]]; then
   echo "Starting deployment for preview server"
   target_server_url=$preview_server_url
   target_server_host_keys=$preview_server_host_keys
-elif [[ $environment == dev_server ]]; then
+elif [[ $environment == development ]]; then
   echo "Starting deployment for dev server"
   target_server_url=$dev_server_url
   target_server_host_keys=$dev_server_host_keys
