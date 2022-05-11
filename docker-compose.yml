@@ -78,7 +78,7 @@ services:
         aliases:
           - dataland-edc
     ports:
-      - "8095:8080"
+      - "9191:8080"
   dataland-edc:
     restart: always
     profiles: ["production"]
