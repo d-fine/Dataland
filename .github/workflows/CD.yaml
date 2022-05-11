@@ -52,18 +52,12 @@ jobs:
       - name: Deploy to Preview
         run: ./deployment/deploy_to_preview.sh
         env:
-          EDC_SERVER_URI: ${{ secrets.EDC_SERVER_URI }}
-          TRUSTEE_URI: ${{ secrets.TRUSTEE_URI }}
-          TRUSTEE_IDS_URI: ${{ secrets.TRUSTEE_IDS_URI }}
-          TUNNEL_STARTUP_LINK: ${{ secrets.TUNNEL_STARTUP_LINK }}
+          TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           EDC_API_AUTH_KEY: ${{ secrets.EDC_API_AUTH_KEY }}
           EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${{ secrets.EDC_API_CONTROL_AUTH_APIKEY_VALUE }}
           EDC_KEYSTORE_PASSWORD: ${{ secrets.EDC_KEYSTORE_PASSWORD }}
-          EDC_OAUTH_PROVIDER_AUDIENCE: ${{ secrets.EDC_OAUTH_PROVIDER_AUDIENCE }}
-          EDC_OAUTH_PROVIDER_JWKS_URL: ${{ secrets.EDC_OAUTH_PROVIDER_JWKS_URL }}
-          EDC_OAUTH_TOKEN_URL: ${{ secrets.EDC_OAUTH_TOKEN_URL }}
-          IDS_WEBHOOK_ADDRESS: ${{ secrets.IDS_WEBHOOK_ADDRESS }}
+          TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
       - name: Upload FE E2E Cypress Results

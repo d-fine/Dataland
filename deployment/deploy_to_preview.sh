@@ -16,11 +16,11 @@ ssh ubuntu@$server "cd $location && sudo docker-compose down"
 ssh ubuntu@$server 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 ssh ubuntu@$server "sudo rm -rf $location; mkdir -p $location/jar"
 
-./deployment/write_env.sh
+envsubst < environments/.env.preview > .env
 
-scp ./env_variables.sh ubuntu@$server:$location
+scp ./.env ubuntu@$server:$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$server:$location
 scp ./dataland-frontend/Dockerfile ubuntu@$server:$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@$server:$location/DockerfileBackend
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@$server:$location/jar/dataland-backend.jar
-ssh ubuntu@$server "cd $location; sudo docker-compose pull; source ./env_variables.sh; sudo -E docker-compose --profile production up -d --build"
+ssh ubuntu@$server "cd $location; sudo docker-compose pull; source ./.env; sudo -E docker-compose --profile production up -d --build"
