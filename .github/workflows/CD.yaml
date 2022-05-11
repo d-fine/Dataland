@@ -24,6 +24,8 @@ jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -60,15 +62,14 @@ jobs:
           fi
           ./deployment/deploy_to_server.sh $ENVIRONMENT
         env:
-          ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           EDC_API_AUTH_KEY: ${{ secrets.EDC_API_AUTH_KEY }}
           EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${{ secrets.EDC_API_CONTROL_AUTH_APIKEY_VALUE }}
           EDC_KEYSTORE_PASSWORD: ${{ secrets.EDC_KEYSTORE_PASSWORD }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
-      - name: check deployment
-        run: echo "do nothing until approved by Philip" #./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
+      #- name: check deployment
+      #  run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
       #- name: Upload FE E2E Cypress Results
       #  if: always()
       #  uses: actions/upload-artifact@v2
