@@ -31,9 +31,9 @@
     </div>
     <div class="grid">
       <div class="col-offset-2 col-10" text-align-left>
-        <img src="@/assets/images/logos/pwc_logo_black_white.svg" alt="pwc" class="small-logo pr-3"/>
-        <img src="@/assets/images/logos/dfine_logo.svg" alt="d-fine GmbH" class="small-logo pr-3"/>
-        <img src="@/assets/images/logos/quentic_logo.png" alt="quentic" class="small-logo"/>
+        <img src="@/assets/images/logos/pwc.svg" alt="pwc" class="small-logo pr-3"/>
+        <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="small-logo pr-3"/>
+        <img src="@/assets/images/logos/quentic.svg" alt="quentic" class="small-logo"/>
 
       </div>
     </div>
@@ -82,7 +82,7 @@ export default {
 </script>
 <style>
 .small-logo {
-  height: 3em
+  /*height: 3em*/
 }
 .box-area{
   height: 3.2em
