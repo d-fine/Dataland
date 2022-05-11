@@ -32,7 +32,7 @@ jobs:
       - name: Debugging
         run: |
           echo "$AAA_TEST_VARIABLE"
-          if [[ $AAA_TEST_VARIABLE == development]]; then
+          if [[ $AAA_TEST_VARIABLE == development ]]; then
            echo "Environment variable could be read"
           fi
         env:
