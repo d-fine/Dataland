@@ -69,7 +69,7 @@
 
               </div>
             </div>
-            <p class="text-primary underline text-left">
+            <p class="text-primary underline text-left cursor-pointer">
               Join with Linkedin
             </p>
 
