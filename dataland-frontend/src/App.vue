@@ -1,8 +1,5 @@
 <template>
-  <div class="d-content">
     <router-view />
-  </div>
-
 </template>
 
 <script>

@@ -6,6 +6,7 @@ import CompanyEU from "@/components/resources/taxonomy/TaxonomyPanel.vue";
 import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
+import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
 
 const routes = [
     {
@@ -27,6 +28,11 @@ const routes = [
         path: "/searchtaxonomy",
         name: "Search Eu Taxonomy",
         component: SearchTaxonomy,
+    },
+    {
+        path: "/taxonomysample",
+        name: "Eu Taxonomy Sample",
+        component: CompanyTaxonomySample,
     },
     {
         path: "/data/eutaxonomies/:dataID",

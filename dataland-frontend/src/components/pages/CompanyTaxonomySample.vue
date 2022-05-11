@@ -1,25 +1,25 @@
 <template>
-  <TheHeader/>
+  <TheHeader :sampleData="true"/>
   <TheContent>
-  <MarginWrapper class="text-left">
-    <BackButton/>
-  </MarginWrapper>
-  <EuTaxoSearchBar/>
-  <MarginWrapper>
-    <div class="grid align-items-end">
-      <div class="col-9">
-        <CompanyInformation :companyID="companyID"/>
+    <MarginWrapper class="text-left">
+      <BackButton/>
+    </MarginWrapper>
+    <EuTaxoSearchBar/>
+    <MarginWrapper>
+      <div class="grid align-items-end">
+        <div class="col-9">
+          <CompanyInformation :companyID="companyIdList[companyIndex]"/>
+        </div>
+        <div class="col-3 pb-4 text-right">
+          <Button label="Export Data" class="uppercase p-button">Export Data
+            <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
+          </Button>
+        </div>
       </div>
-      <div class="col-3 pb-4 text-right">
-        <Button label="Export Data" class="uppercase p-button">Export Data
-          <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
-        </Button>
-      </div>
-    </div>
-  </MarginWrapper>
-  <MarginWrapper bgClass="surface-800">
-    <TaxonomyData :companyID="companyID"/>
-  </MarginWrapper>
+    </MarginWrapper>
+    <MarginWrapper bgClass="surface-800">
+      <TaxonomyData :companyID="companyIdList[companyIndex]"/>
+    </MarginWrapper>
   </TheContent>
 </template>
 
@@ -32,16 +32,36 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
-
+import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
+import {ApiWrapper} from "@/services/ApiWrapper"
+const companyDataControllerApi = new CompanyDataControllerApi()
+const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CompanyTaxonomy",
   components: {
     TheContent,
-    TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
+    TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button
+  },
+  data: () => ({
+      companyIdList: []
+  }),
   props: {
-    companyID: {
+    companyIndex: {
       type: Number,
       default: 1
+    }
+  },
+  created() {
+    this.getCompanyIDs()
+  },
+  methods: {
+    async getCompanyIDs() {
+      try {
+        const companyList = await getCompaniesWrapper.perform("", "", true)
+        this.companyIdList = companyList.data.map(element => element.companyId)
+      } catch (error) {
+        this.companyIdList = []
+      }
     }
   }
 }

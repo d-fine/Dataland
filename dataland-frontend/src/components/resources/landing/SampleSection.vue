@@ -9,12 +9,14 @@
           </div>
           <div class="col-10 text-left text-gray-100"><p>Preview EU Taxonomy Data of <strong>Adidas</strong>, before joining Dataland.</p></div>
           <div class="col-10 text-left p-fluid ">
+            <router-link to="/taxonomysample" class="text-primary no-underline font-bold">
             <Button class="bg-white border-primary border-2 text-900 mt-2 mb-3 h-3rem p-0 justify-content-center">
             <span class="uppercase text-primary d-letters font-semibold">
             EU Taxonomy sample data
           </span>
               <i class="material-icons ml-2 text-primary " aria-hidden="true">chevron_right</i>
             </Button>
+            </router-link>
           </div>
         </div>
       </div>
