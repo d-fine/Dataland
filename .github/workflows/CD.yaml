@@ -29,6 +29,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: preview
     steps:
+      - name: Debugging
+        run: |
+          echo "$AAA_TEST_VARIABLE"
+          if [[ $AAA_TEST_VARIABLE == development]]; then
+           echo "Environment variable could be read"
+          fi
+        env:
+          AAA_TEST_VARIABLE: ${{ secrets.AAA_TEST_VARIABLE }}
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         uses: docker/login-action@v1
