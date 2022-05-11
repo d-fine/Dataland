@@ -23,11 +23,13 @@ on:
         options:
           - preview_server
           - dev_server
-
+      whichEnvironment:
+        description: "Choose environment"
+        required: true
+        type: environment
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: development
     steps:
       - name: Debugging
         run: |
