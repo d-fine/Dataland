@@ -72,7 +72,16 @@ describe('Population Test',  () => {
             }
         })
     });
+});
 
+describe('Visit all companies', () => {
+    it('Check Data Presence and Link route', () => {
+        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+            companyIdList.forEach( (companyId:string) => {
+                cy.visit(`/companies/${companyId}/eutaxonomies`)
+            })
+        });
+    });
 });
 
 describe('EU Taxonomy Data', () => {
