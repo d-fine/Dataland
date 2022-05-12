@@ -74,10 +74,7 @@ export default {
     }
   },
   props: {
-    dataID: {
-      default: 1,
-      type: Number
-    }
+    dataID: String
   },
   created() {
     this.getCompanyEUDataset()

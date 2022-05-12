@@ -38,10 +38,13 @@ describe('EU Taxonomy Data and Cards', function () {
         cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
+                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
-                cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100*eligible}%`)
-                cy.get('.font-semibold.text-lg').should('contain', '€')
+                cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
+                    cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
+                    cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100 * eligible}%`)
+                    cy.get('.font-semibold.text-lg').should('contain', '€')
+                })
             })
         })
     });
@@ -60,10 +63,13 @@ describe('EU Taxonomy Data and Cards', function () {
         cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
+                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100*eligible}%`)
-                cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
-                cy.get('.font-semibold.text-lg').should('not.exist')
+                cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
+                    cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100 * eligible}%`)
+                    cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
+                    cy.get('.font-semibold.text-lg').should('not.exist')
+                })
             })
         })
     });
