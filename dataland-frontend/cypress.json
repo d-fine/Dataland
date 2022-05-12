@@ -1,6 +1,6 @@
 {
   "pluginsFile": "tests/e2e/plugins/index.js",
-  "defaultCommandTimeout": 480000,
+  "defaultCommandTimeout": 90000,
   "viewportHeight": 684,
   "viewportWidth": 1536,
   "retries": {
