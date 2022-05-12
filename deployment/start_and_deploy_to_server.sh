@@ -13,13 +13,13 @@ dev_server_startup_url=$DEV_STARTUP_URL
 
 if [[ $environment == preview ]]; then
   echo "Starting preview server"
-  curl preview_server_startup_url > /dev/null
+  curl $preview_server_startup_url > /dev/null
   echo "Setting preview server as deployment target"
   target_server_url=$preview_server_url
   target_server_host_keys=$preview_server_host_keys
 elif [[ $environment == development ]]; then
   echo "Starting development server"
-  curl dev_server_startup_url > /dev/null
+  curl $dev_server_startup_url > /dev/null
   echo "Setting dev server as deployment target"
   target_server_url=$dev_server_url
   target_server_host_keys=$dev_server_host_keys
