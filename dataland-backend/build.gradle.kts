@@ -71,7 +71,7 @@ jacoco {
 }
 
 tasks.register<Copy>("getTestData") {
-    from("$rootDir/testing/data/CompanyInformation.json")
+    from("$rootDir/testing/data/CompanyInformationWithEuTaxonomyData.json")
     into("$buildDir/resources")
 }
 

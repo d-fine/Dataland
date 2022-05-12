@@ -32,19 +32,14 @@ object LocalDateAdapter {
 class TestDataProvider {
     private var dataCounter = 0
 
-    private val companyJson = File("./build/resources/CompanyInformation.json")
-    private val dataJson = File("./build/resources/EuTaxonomyData.json")
-    private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
-    private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
+    private val companyWithDataJson = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
+    private val companyJsonString = companyWithDataJson.inputStream().bufferedReader().readText()
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
-    private val companyType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, CompanyInformation::class.java)
-    private val dataType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, EuTaxonomyData::class.java)
-    private val companyJsonAdapter: JsonAdapter<List<CompanyInformation>> = moshi.adapter(companyType)
-    private val dataJsonAdapter: JsonAdapter<List<EuTaxonomyData>> = moshi.adapter(dataType)
+    private val companyWithDataType: ParameterizedType = Types
+        .newParameterizedType(List::class.java, CompanyInformation::class.java, EuTaxonomyData::class.java)
+    private val companyJsonAdapter: JsonAdapter<List<Pair<CompanyInformation, EuTaxonomyData>>> = moshi.adapter(companyWithDataType)
 
     private val testCompanyInformation: List<CompanyInformation> = companyJsonAdapter
         .fromJson(companyJsonString) ?: emptyList()

@@ -15,8 +15,6 @@ const minEuro=50000
 const resolution=0.0001
 
 function generateCompanyInformation() {
-    const companies = []
-    for (let id = 1; id <= 250; id++) {
         const companyName = faker.company.companyName();
         const headquarters = faker.address.city();
         const sector = faker.company.bsNoun();
@@ -37,29 +35,19 @@ function generateCompanyInformation() {
                 "identifierValue": faker.random.alphaNumeric(12)
             }
         ]).sort((a,b) => {return a.identifierType.localeCompare(b.identifierType)});
-
-        companies.push(
-            {
-                "companyName": companyName,
-                "headquarters": headquarters,
-                "sector": sector,
-                "marketCap": marketCap,
-                "reportingDateOfMarketCap": reportingDateOfMarketCap,
-                "indices": indices,
-                "identifiers": identifiers
-            }
-        )
-
-    }
-
-    return companies
+        return  {
+            "companyName": companyName,
+            "headquarters": headquarters,
+            "sector": sector,
+            "marketCap": marketCap,
+            "reportingDateOfMarketCap": reportingDateOfMarketCap,
+            "indices": indices,
+            "identifiers": identifiers
+        }
 }
 
 
 function generateEuTaxonomyData() {
-    const taxonomies = []
-
-    for (let id = 1; id <= 250; id++) {
         const attestation =faker.helpers.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum);
         const reportingObligation =faker.helpers.arrayElement(apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum);
         const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
@@ -72,32 +60,33 @@ function generateEuTaxonomyData() {
         const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4)
         const revenueAligned = faker.datatype.float({ min: 0, max: parseFloat(revenueEligible), precision: resolution }).toFixed(4)
 
+        return  {
+            "Capex": {
+                "totalAmount": capexTotal,
+                "alignedPercentage": capexAligned,
+                "eligiblePercentage": capexEligible
+            },
+            "Opex": {
+                "totalAmount": opexTotal,
+                "alignedPercentage": opexAligned,
+                "eligiblePercentage": opexEligible
+            },
+            "Revenue": {
+                "totalAmount": revenueTotal,
+                "alignedPercentage": revenueAligned,
+                "eligiblePercentage": revenueEligible
+            },
+            "Reporting Obligation": reportingObligation,
+            "Attestation": attestation
+        }
+}
 
-        taxonomies.push(
-            {
-                "Capex": {
-                    "totalAmount": capexTotal,
-                    "alignedPercentage": capexAligned,
-                    "eligiblePercentage": capexEligible
-                },
-                "Opex": {
-                    "totalAmount": opexTotal,
-                    "alignedPercentage": opexAligned,
-                    "eligiblePercentage": opexEligible
-                },
-                "Revenue": {
-                    "totalAmount": revenueTotal,
-                    "alignedPercentage": revenueAligned,
-                    "eligiblePercentage": revenueEligible
-                },
-                "Reporting Obligation": reportingObligation,
-                "Attestation": attestation
-            }
-        )
-
+function generateCompanyWithEuTaxonomyData() {
+    const companiesWithEuTaxonomyData = []
+    for (let id = 1; id <= 250; id++) {
+        companiesWithEuTaxonomyData.push({companyInformation: generateCompanyInformation() , euTaxonomyData: generateEuTaxonomyData()})
     }
-
-    return taxonomies
+    return companiesWithEuTaxonomyData
 }
 
 function stockIndexValue(stockIndexList: Array<string>, stockIndex: string) {
@@ -119,9 +108,9 @@ function euroGenerator(value:number){
     return value.toString().replace(".",",")
 }
 
-function generateCSVData(companyInformation: Array<Object>, euTaxonomyData: Array<Object>) {
-    const mergedData = companyInformation.map((element, index) => {
-        return {...element, ...euTaxonomyData[index]}
+function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
+    const mergedData = companyInformationWithEuTaxonomyData.map((element:any) => {
+        return {...element["companyInformation"], ...element["euTaxonomyData"]}
     })
     const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric'};
     const dateLocale = 'de-DE';
@@ -166,13 +155,11 @@ function generateCSVData(companyInformation: Array<Object>, euTaxonomyData: Arra
 
 
 function main() {
-    const CompanyInformation = generateCompanyInformation();
-    const EuTaxonomyData = generateEuTaxonomyData();
-    const csv = generateCSVData(CompanyInformation, EuTaxonomyData)
+    const companyInformationWithEuTaxonomyData = generateCompanyWithEuTaxonomyData();
+    const csv = generateCSVData(companyInformationWithEuTaxonomyData)
 
     fs.writeFileSync('../testing/data/csvTestData.csv', csv);
-    fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
-    fs.writeFileSync('../testing/data/EuTaxonomyData.json', JSON.stringify(EuTaxonomyData, null, '\t'));
+    fs.writeFileSync('../testing/data/CompanyInformationWithEuTaxonomyData.json', JSON.stringify(companyInformationWithEuTaxonomyData, null, '\t'));
 }
 
 main()

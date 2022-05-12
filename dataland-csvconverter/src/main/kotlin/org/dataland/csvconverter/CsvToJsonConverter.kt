@@ -94,9 +94,9 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyInformation objects generated from the csv file
      */
-    fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    fun buildListOfCompanyInformation(): List<Pair<CompanyInformation, EuTaxonomyData>> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformation(
+            Pair(CompanyInformation(
                 companyName = getValue("companyName", it),
                 headquarters = getValue("headquarters", it),
                 sector = getValue("sector", it),
@@ -107,7 +107,14 @@ class CsvToJsonConverter {
                 ),
                 identifiers = getCompanyIdentifiers(it),
                 indices = getStockIndices(it)
-            )
+            ),
+            EuTaxonomyData(
+                reportObligation = getReportingObligation(it),
+                attestation = getAttestation(it),
+                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
+                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
+                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
+            ))
         }
     }
 
@@ -192,9 +199,7 @@ class CsvToJsonConverter {
      */
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
-        objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./EuTaxonomyData.json"), buildListOfEuTaxonomyData())
+            .writeValue(File("./CompanyInformationWithEuTaxonomyData.json"), buildListOfCompanyInformation())
     }
 
     companion object {
