@@ -7,19 +7,21 @@
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
           </router-link>
         </div>
-        <div class="col-1 col-offset-4 p-fluid">
+        <div class="col-3 col-offset-3">
+          <router-link to="/searchtaxonomy" class="no-underline">
           <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
             <span class="d-letters">
               Join
             </span>
           </Button>
-        </div>
-        <div class="col-1 p-fluid">
-          <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem" name="login_dataland_button">
-            <span class="d-letters text-primary">
-              Login
-            </span>
-          </Button>
+          </router-link>
+          <router-link to="/searchtaxonomy" class="no-underline">
+            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button">
+              <span class="d-letters text-primary">
+                Login
+              </span>
+            </Button>
+          </router-link>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -49,9 +51,6 @@
             </div>
             <div class="col-1">
               <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="d-small-logo pr-5"/>
-            </div>
-            <div class="col-1">
-              <img src="@/assets/images/logos/quentic.svg" alt="quentic" class="d-small-logo"/>
             </div>
           </div>
 

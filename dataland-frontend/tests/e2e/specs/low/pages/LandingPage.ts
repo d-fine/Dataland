@@ -1,4 +1,4 @@
-describe.only('Login Section', () => {
+describe('Login Section', () => {
     it('Check if App is present', () => {
         cy.visit("/")
         cy.get('#app').should('exist')
@@ -53,9 +53,14 @@ describe('Sample Section', () => {
         cy.get('body').should('contain.text', 'Join Dataland with others')
         cy.get('[title=back_button').should('be.visible').click({force:true})
         cy.get('h1').should("contain.text","CREATE A DATASET")
-
     })
+})
 
+describe('Marketing Section', () => {
+    it('Checks that the marketing section works properly', () => {
+        cy.visit("/")
+        cy.get("h2").should("contain.text", "Learn about our vision")
+    })
 })
 
 

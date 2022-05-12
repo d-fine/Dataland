@@ -25,8 +25,8 @@
     </div>
     <div class="col-5 p-0 bg-primary">
       <div class="grid mt-6">
-        <div class="col-9 col-offset-1 align-content-center">
-          <h3 class="text-left d-letters">
+        <div class="col-8 col-offset-1 align-content-center">
+          <h3 class="text-left d-letters text-xl">
             Bring together who needs the data with who owns the data.
           </h3>
           <p class="text-left d-letters">
@@ -42,8 +42,8 @@
   <div class="grid m-0">
     <div class="col-5 col-offset-1 p-0 surface-700">
      <div class="grid mt-6">
-       <div class="col-9 col-offset-1 align-content-center">
-         <h3 class="text-white text-left d-letters">
+       <div class="col-8 col-offset-1 align-content-center">
+         <h3 class="text-white text-left d-letters text-xl">
            Maximize data coverage by requesting data collectively.
          </h3>
          <p class="text-white text-left d-letters">
