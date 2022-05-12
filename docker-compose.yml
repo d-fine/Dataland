@@ -105,6 +105,7 @@ services:
       EDC_SERVER_URI: ${EDC_SERVER_URI}
       IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
       TRUSTEE_CREDENTIALS: ${TRUSTEE_CREDENTIALS}
+      SERVER_TOMCAT_THREADS_MIN-SPARE: 100
   develop:
     profiles: ["devcontainer"]
     build:
