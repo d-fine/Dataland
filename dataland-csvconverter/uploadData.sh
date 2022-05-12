@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eu
 # Utility script to update the data container image.
 
 csv_file="$1"
@@ -21,4 +21,4 @@ docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
 docker build -t ghcr.io/d-fine/dataland/datacontainer:latest .
 docker image push ghcr.io/d-fine/dataland/datacontainer:latest
 
-rm -f $work_file
+rm -f "$work_file"
