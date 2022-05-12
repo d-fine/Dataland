@@ -1,6 +1,5 @@
 <template>
   <div class="surface-ground pb-8">
-
     <div class="m-0">
       <div class="grid align-items-center m-0">
         <div class="col-6 text-left">
@@ -8,8 +7,19 @@
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
           </router-link>
         </div>
-        <div class="col-1 col-offset-5">
-          <i class="material-icons text-white" aria-hidden="true">help_outline</i>
+        <div class="col-1 col-offset-4 p-fluid">
+          <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
+            <span class="d-letters">
+              Join
+            </span>
+          </Button>
+        </div>
+        <div class="col-1 p-fluid">
+          <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem" name="login_dataland_button">
+            <span class="d-letters text-primary">
+              Login
+            </span>
+          </Button>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -60,10 +70,10 @@
                 <strong>+100 German SMEs</strong>. Be notified about updates</p>
               <div class="grid">
                 <div class="col-9 p-fluid pr-0">
-                  <InputText type="text" placeholder="Email address" class="h-2rem"/>
+                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing"/>
                 </div>
                 <div class="col-3 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem">
+                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem" name="get_started_button">
                     <span class="d-letters">
                       Get Started
                     </span>

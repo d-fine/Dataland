@@ -1,4 +1,4 @@
-describe('Login Section', () => {
+describe.only('Login Section', () => {
     it('Check if App is present', () => {
         cy.visit("/")
         cy.get('#app').should('exist')
@@ -10,9 +10,35 @@ describe('Login Section', () => {
             .should('have.attr', 'src')
             .should('include','vision')
     })
+    it('Login and Join buttons are present', () => {
+        cy.get('button[name=join_dataland_button]')
+            .should('be.visible')
+            .should("contain.text","Join")
+        cy.get('button[name=login_dataland_button]')
+            .should('be.visible')
+            .should("contain.text","Login")
+    })
+    it('Company logos are present', () => {
+        cy.get('img[alt="pwc"]')
+            .should('be.visible')
+            .should('have.attr', 'src')
+        cy.get('img[alt="d-fine GmbH"]')
+            .should('be.visible')
+            .should('have.attr', 'src')
+        cy.get('img[alt="quentic"]')
+            .should('be.visible')
+            .should('have.attr', 'src')
+    })
+    it('Register text and button are present', () => {
+        cy.get('h2').should("contain.text","Join Dataland")
+        cy.get('button[name=get_started_button]')
+            .should('be.visible')
+            .should("contain.text","Get Started")
+        cy.get('input[name=email_input_landing]').type("Mustermann@muster.de", {force: true})
+    })
 
 })
-describe.only('Sample Section', () => {
+describe('Sample Section', () => {
     it('Check that the sample section works properly', () => {
         cy.visit("/")
         cy.get('h2').should("contain.text","Explore Dataland")
