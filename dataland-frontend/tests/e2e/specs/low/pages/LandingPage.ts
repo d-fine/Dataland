@@ -35,6 +35,7 @@ describe('Login Section', () => {
             .should('be.visible')
             .should("contain.text","Get Started")
         cy.get('input[name=email_input_landing]').type("Mustermann@muster.de", {force: true})
+            .should('have.value', "Mustermann@muster.de")
     })
 
 })
