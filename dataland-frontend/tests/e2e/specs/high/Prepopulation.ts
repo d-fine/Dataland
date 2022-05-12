@@ -74,14 +74,6 @@ describe('Population Test',  () => {
     });
 });
 
-describe('Visit all companies', () => {
-    it('Check Data Presence and Link route', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<String>) => {
-            companyIdList.forEach( companyId => cy.visit(`/companies/${companyId}/eutaxonomies`) )
-        });
-    });
-});
-
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<String>) => {
