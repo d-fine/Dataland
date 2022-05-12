@@ -5,16 +5,22 @@ environment=$1
 
 preview_server_url="preview-dataland.duckdns.org"
 preview_server_host_keys="$preview_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k="
+preview_server_startup_url=$PREVIEW_STARTUP_URL
 
 dev_server_url="dev-dataland.duckdns.org"
 dev_server_host_keys="$dev_server_url ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHcwEGUE3yhkWxJ/dwafmNrVZDMZn62o26CoNo4ScNgwEaAxfeHDddpROrghaZ/avibYmzAAU8bwR76QG01v2RI="
+dev_server_startup_url=$DEV_STARTUP_URL
 
 if [[ $environment == preview ]]; then
-  echo "Starting deployment for preview server"
+  echo "Starting preview server"
+  curl preview_server_startup_url > /dev/null
+  echo "Setting preview server as deployment target"
   target_server_url=$preview_server_url
   target_server_host_keys=$preview_server_host_keys
 elif [[ $environment == development ]]; then
-  echo "Starting deployment for dev server"
+  echo "Starting development server"
+  curl dev_server_startup_url > /dev/null
+  echo "Setting dev server as deployment target"
   target_server_url=$dev_server_url
   target_server_host_keys=$dev_server_host_keys
 fi

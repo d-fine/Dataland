@@ -52,15 +52,7 @@ jobs:
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
       - name: Start server and deploy to it (either Preview or Dev)
-        run: |
-          if [[ $ENVIRONMENT == preview ]]; then
-            echo "Starting preview server"
-            curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-          elif [[ $ENVIRONMENT == development ]]; then
-            echo "Starting dev server"
-            curl ${{ secrets.DEV_STARTUP_URL }} > /dev/null
-          fi
-          ./deployment/deploy_to_server.sh $ENVIRONMENT
+        run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -68,6 +60,8 @@ jobs:
           EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${{ secrets.EDC_API_CONTROL_AUTH_APIKEY_VALUE }}
           EDC_KEYSTORE_PASSWORD: ${{ secrets.EDC_KEYSTORE_PASSWORD }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
+          PREVIEW_STARTUP_URL: ${{ secrets.PREVIEW_STARTUP_URL }}
+          DEV_STARTUP_URL: ${{ secrets.DEV_STARTUP_URL }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
       - name: Upload FE E2E Cypress Results
