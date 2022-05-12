@@ -30,7 +30,7 @@ echo "$target_server_host_keys" >  ~/.ssh/known_hosts
 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 
-timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo 'target server not yet there - retrying in 1s'; sleep 1; done" || exit
+timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
 
 location=/home/ubuntu/dataland
 # shut down currently running dataland application and purge files on server
