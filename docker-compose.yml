@@ -70,9 +70,6 @@ services:
     restart: always
     profiles: ["testing", "development"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.1.0
-    environment:
-      SERVER_PORT: 9191
-      SERVER_SERVLET_CONTEXT-PATH: /api
     networks:
       internal:
         aliases:
