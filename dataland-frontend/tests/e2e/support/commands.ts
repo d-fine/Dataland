@@ -10,17 +10,17 @@ declare global {
     }
 }
 
-function retrieveIdsList(idKey: string, endpoint: string): Chainable<Response> {
+function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<String>> {
     return cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
         return response.body.map((e:any) => e[idKey])
     })
 }
 
-export function retrieveDataIdsList(): Chainable<Response> {
+export function retrieveDataIdsList(): Chainable<Array<String>> {
     return retrieveIdsList("dataId", "metadata")
 }
 
-export function retrieveCompanyIdsList(): Chainable<Response> {
+export function retrieveCompanyIdsList(): Chainable<Array<String>> {
     return retrieveIdsList("companyId", "companies")
 }
 

@@ -67,7 +67,7 @@ describe('User interactive tests for Data Upload', () => {
             const dataId = $dataID.text()
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveData')
             cy.visit(`/data/eutaxonomies/${dataId}`)
-            cy.wait('@retrieveData', {timeout: 2000}).then(() => {
+            cy.wait('@retrieveData', {timeout: 120000}).then(() => {
                 cy.get('body')
                     .should("contain", "Eligible Revenue")
                     .should("contain", "No data available")

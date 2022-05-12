@@ -1,6 +1,6 @@
-describe('Population Test', () => {
+describe('Population Test',  () => {
     Cypress.config({
-        defaultCommandTimeout: 0
+        defaultCommandTimeout: 480000
     })
 
     let eutaxonomiesData: any
@@ -72,12 +72,19 @@ describe('Population Test', () => {
             }
         })
     });
+});
 
+describe('Visit all companies', () => {
+    it('Check Data Presence and Link route', () => {
+        cy.retrieveCompanyIdsList().then((companyIdList: Array<String>) => {
+            companyIdList.forEach( companyId => cy.visit(`/companies/${companyId}/eutaxonomies`) )
+        });
+    });
 });
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.retrieveDataIdsList().then((dataIdList: any) => {
+        cy.retrieveDataIdsList().then((dataIdList: Array<String>) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
             cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")
@@ -91,7 +98,7 @@ describe('EU Taxonomy Data', () => {
 
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+        cy.retrieveCompanyIdsList().then((companyIdList: Array<String>) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
             cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")
@@ -122,10 +129,13 @@ describe('Company Data', () => {
             .should('not.be.disabled')
             .type(inputValue, {force: true})
             .should('have.value', inputValue)
+        cy.intercept('**/api/companies*').as('retrieveCompany')
         cy.get('button[name=getCompanies]').click()
-        cy.get('td').contains("VIEW")
-            .contains('a', 'VIEW')
-            .click().url().should('include', '/companies/')
+        cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
+            cy.get('td').contains("VIEW")
+                .contains('a', 'VIEW')
+                .click().url().should('include', '/companies/')
+        })
     });
 
     it('Show all companies button exists', () => {
