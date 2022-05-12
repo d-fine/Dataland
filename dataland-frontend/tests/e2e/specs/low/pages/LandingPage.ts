@@ -60,7 +60,7 @@ describe('Sample Section', () => {
     })
 })
 
-describe('Marketing Section', () => {
+describe.only('Marketing Section', () => {
     it('Checks that the marketing section works properly', () => {
         cy.visit("/")
         cy.get("h2").should("contain.text", "Learn about our vision")
@@ -75,6 +75,7 @@ describe('Marketing Section', () => {
             .should('be.visible')
             .should('have.attr', 'src')
         cy.get('h3').contains('Maximize data coverage')
+        cy.get('body').contains('Let us know what we can do better')
     })
 
 })
@@ -86,5 +87,9 @@ describe('Footer Section', () => {
             .should('be.visible')
             .should('have.attr', 'src')
             .should('include','vision')
+        cy.get('body').should("contain.text", "Legal")
+        cy.get('body').should("contain.text", "Details in our Terms and Conditions")
+        cy.get('body').should("contain.text", "Privacy Policy")
+        cy.get('body').should("contain.text", "Copyright © 2022 Dataland")
     })
 })
