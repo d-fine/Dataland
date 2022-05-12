@@ -23,4 +23,4 @@ scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ .
 scp ./dataland-frontend/Dockerfile ubuntu@$server:$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@$server:$location/DockerfileBackend
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@$server:$location/jar/dataland-backend.jar
-ssh ubuntu@$server "cd $location; sudo docker-compose pull; source ./.env; sudo -E docker-compose --profile production up -d --build"
+ssh ubuntu@$server "cd $location; sudo docker-compose pull; sudo -E docker-compose --profile production up -d --build"
