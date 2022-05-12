@@ -116,16 +116,22 @@ describe('Company Data', () => {
 
     });
     it('Company Name Input field exists and works', () => {
+
+
+
         const inputValue = companiesData[0].companyName
         cy.visit("/search")
         cy.get('input[name=companyName]')
             .should('not.be.disabled')
             .type(inputValue, {force: true})
             .should('have.value', inputValue)
+        cy.intercept('**/api/companies/*').as('retrieveCompany')
         cy.get('button[name=getCompanies]').click()
-        cy.get('td').contains("VIEW")
-            .contains('a', 'VIEW')
-            .click().url().should('include', '/companies/')
+        cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
+            cy.get('td').contains("VIEW")
+                .contains('a', 'VIEW')
+                .click().url().should('include', '/companies/')
+        })
     });
 
     it('Show all companies button exists', () => {
