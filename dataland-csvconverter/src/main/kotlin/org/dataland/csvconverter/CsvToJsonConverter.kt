@@ -94,28 +94,19 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyInformation objects generated from the csv file
      */
-    fun buildListOfCompanyInformation(): List<Pair<CompanyInformation, EuTaxonomyData>> {
+    fun buildListOfCompanyInformation(): List<CompanyInformation> {
         return rawCsvData.filter { validateLine(it) }.map {
-            Pair(
-                CompanyInformation(
-                    companyName = getValue("companyName", it),
-                    headquarters = getValue("headquarters", it),
-                    sector = getValue("sector", it),
-                    marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
-                    reportingDateOfMarketCap = LocalDate.parse(
-                        getValue("reportingDateOfMarketCap", it),
-                        DateTimeFormatter.ofPattern("d.M.yyyy")
-                    ),
-                    identifiers = getCompanyIdentifiers(it),
-                    indices = getStockIndices(it)
+            CompanyInformation(
+                companyName = getValue("companyName", it),
+                headquarters = getValue("headquarters", it),
+                sector = getValue("sector", it),
+                marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
+                reportingDateOfMarketCap = LocalDate.parse(
+                    getValue("reportingDateOfMarketCap", it),
+                    DateTimeFormatter.ofPattern("d.M.yyyy")
                 ),
-                EuTaxonomyData(
-                    reportObligation = getReportingObligation(it),
-                    attestation = getAttestation(it),
-                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
-                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
-                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
-                )
+                identifiers = getCompanyIdentifiers(it),
+                indices = getStockIndices(it)
             )
         }
     }
