@@ -56,7 +56,7 @@ function generateCompanyInformation() {
 }
 
 
-function generateCompanyAssociatedEuTaxonomyData() {
+function generateEuTaxonomyData() {
     const taxonomies = []
 
     for (let id = 1; id <= 250; id++) {
@@ -75,26 +75,23 @@ function generateCompanyAssociatedEuTaxonomyData() {
 
         taxonomies.push(
             {
-                "companyId": id,
-                "data": {
-                    "Capex": {
-                        "totalAmount": capexTotal,
-                        "alignedPercentage": capexAligned,
-                        "eligiblePercentage": capexEligible
-                    },
-                    "Opex": {
-                        "totalAmount": opexTotal,
-                        "alignedPercentage": opexAligned,
-                        "eligiblePercentage": opexEligible
-                    },
-                    "Revenue": {
-                        "totalAmount": revenueTotal,
-                        "alignedPercentage": revenueAligned,
-                        "eligiblePercentage": revenueEligible
-                    },
-                    "Reporting Obligation": reportingObligation,
-                    "Attestation": attestation
-                }
+                "Capex": {
+                    "totalAmount": capexTotal,
+                    "alignedPercentage": capexAligned,
+                    "eligiblePercentage": capexEligible
+                },
+                "Opex": {
+                    "totalAmount": opexTotal,
+                    "alignedPercentage": opexAligned,
+                    "eligiblePercentage": opexEligible
+                },
+                "Revenue": {
+                    "totalAmount": revenueTotal,
+                    "alignedPercentage": revenueAligned,
+                    "eligiblePercentage": revenueEligible
+                },
+                "Reporting Obligation": reportingObligation,
+                "Attestation": attestation
             }
         )
 
@@ -122,9 +119,9 @@ function euroGenerator(value:number){
     return value.toString().replace(".",",")
 }
 
-function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuTaxonomyData: Array<Object>) {
+function generateCSVData(companyInformation: Array<Object>, euTaxonomyData: Array<Object>) {
     const mergedData = companyInformation.map((element, index) => {
-        return {...element, ...companyAssociatedEuTaxonomyData[index]}
+        return {...element, ...euTaxonomyData[index]}
     })
     const dateOptions: any = {year: 'numeric', month: 'numeric', day: 'numeric'};
     const dateLocale = 'de-DE';
@@ -136,20 +133,20 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
             {label: 'Sector', value: 'sector'},
             {label: 'Market Capitalization EUR', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.data.Revenue.totalAmount)},
-            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.data.Capex.totalAmount)},
-            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.data.Opex.totalAmount)},
-            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.eligiblePercentage)},
-            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.data.Capex.eligiblePercentage)},
-            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.data.Opex.eligiblePercentage)},
-            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.data.Revenue.alignedPercentage)},
-            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.data.Capex.alignedPercentage)},
-            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.data.Opex.alignedPercentage)},
+            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.Revenue.totalAmount)},
+            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.Capex.totalAmount)},
+            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.Opex.totalAmount)},
+            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.Revenue.eligiblePercentage)},
+            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.Capex.eligiblePercentage)},
+            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.Opex.eligiblePercentage)},
+            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.Revenue.alignedPercentage)},
+            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.Capex.alignedPercentage)},
+            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.Opex.alignedPercentage)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
-            {label: 'NFRD mandatory', value: (row: any) => row.data["Reporting Obligation"] === "Yes" ? "Ja" : "" },
-            {label: 'Assurance', value: (row: any) => {if(row.data["Attestation"] === "LimitedAssurance"){
+            {label: 'NFRD mandatory', value: (row: any) => row["Reporting Obligation"] === "Yes" ? "Ja" : "" },
+            {label: 'Assurance', value: (row: any) => {if(row["Attestation"] === "LimitedAssurance"){
                     return "limited"
-                }  else if (row.data["Attestation"] === "ReasonableAssurance") {
+                }  else if (row["Attestation"] === "ReasonableAssurance") {
                     return "reasonable"
                 } else {
                     return "none"
@@ -170,12 +167,12 @@ function generateCSVData(companyInformation: Array<Object>, companyAssociatedEuT
 
 function main() {
     const CompanyInformation = generateCompanyInformation();
-    const CompanyAssociatedEuTaxonomyData = generateCompanyAssociatedEuTaxonomyData();
-    const csv = generateCSVData(CompanyInformation, CompanyAssociatedEuTaxonomyData)
+    const EuTaxonomyData = generateEuTaxonomyData();
+    const csv = generateCSVData(CompanyInformation, EuTaxonomyData)
 
     fs.writeFileSync('../testing/data/csvTestData.csv', csv);
     fs.writeFileSync('../testing/data/CompanyInformation.json', JSON.stringify(CompanyInformation, null, '\t'));
-    fs.writeFileSync('../testing/data/CompanyAssociatedEuTaxonomyData.json', JSON.stringify(CompanyAssociatedEuTaxonomyData, null, '\t'));
+    fs.writeFileSync('../testing/data/EuTaxonomyData.json', JSON.stringify(EuTaxonomyData, null, '\t'));
 }
 
 main()

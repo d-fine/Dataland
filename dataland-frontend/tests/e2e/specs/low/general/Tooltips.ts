@@ -1,35 +1,31 @@
 describe('Tooltips test suite', () => {
-    let idList:any
-    it('Retrieve data ID list', () => {
-        cy.request('GET', `${Cypress.env("API")}/metadata`).then((response) => {
-            idList = response.body.map(function (e:string){
-                return parseInt(Object.values(e)[2])
-            })
-        })
-    });
-
     it('tooltips are present and contain text as expected', function () {
         const NFRDText = "Non financial disclosure directive"
         const AssuranceText = "Level of Assurance specifies the confidence level"
-        cy.visit("/companies/"+idList[8]+"/eutaxonomies")
-        cy.get('#app').should("exist")
-        cy.get('.p-card-content .col-12.text-left strong')
-            .contains('NFRD required')
-            .trigger('mouseenter', "center")
-        cy.get('.p-tooltip')
-            .should('be.visible')
-            .contains(NFRDText)
-        cy.get('.p-card-content .col-12.text-left strong')
-            .contains('NFRD required')
-            .trigger('mouseleave' )
-        cy.get('.p-tooltip')
-            .should('not.exist')
-        cy.get('.p-card-content .col-12.text-left strong')
-            .contains('Level of Assurance')
-            .trigger('mouseenter', "center")
-        cy.get('.p-tooltip')
-            .should('be.visible')
-            .contains(AssuranceText)
+        cy.intercept('**/api/companies/*').as('retrieveCompany')
+        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+            cy.visit("/companies/" + companyIdList[8] + "/eutaxonomies")
+            cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
+                cy.get('#app', {timeout: 2000}).should("exist")
+                cy.get('.p-card-content .col-12.text-left strong')
+                    .contains('NFRD required')
+                    .trigger('mouseenter', "center")
+                cy.get('.p-tooltip')
+                    .should('be.visible')
+                    .contains(NFRDText)
+                cy.get('.p-card-content .col-12.text-left strong')
+                    .contains('NFRD required')
+                    .trigger('mouseleave')
+                cy.get('.p-tooltip')
+                    .should('not.exist')
+                cy.get('.p-card-content .col-12.text-left strong')
+                    .contains('Level of Assurance')
+                    .trigger('mouseenter', "center")
+                cy.get('.p-tooltip')
+                    .should('be.visible')
+                    .contains(AssuranceText)
+            })
+        });
     });
 })
 

@@ -6,7 +6,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
 import java.io.File
@@ -34,7 +33,7 @@ class TestDataProvider {
     private var dataCounter = 0
 
     private val companyJson = File("./build/resources/CompanyInformation.json")
-    private val dataJson = File("./build/resources/CompanyAssociatedEuTaxonomyData.json")
+    private val dataJson = File("./build/resources/EuTaxonomyData.json")
     private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
     private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
 
@@ -43,13 +42,13 @@ class TestDataProvider {
     private val companyType: ParameterizedType = Types
         .newParameterizedType(List::class.java, CompanyInformation::class.java)
     private val dataType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, CompanyAssociatedDataEuTaxonomyData::class.java)
+        .newParameterizedType(List::class.java, EuTaxonomyData::class.java)
     private val companyJsonAdapter: JsonAdapter<List<CompanyInformation>> = moshi.adapter(companyType)
-    private val dataJsonAdapter: JsonAdapter<List<CompanyAssociatedDataEuTaxonomyData>> = moshi.adapter(dataType)
+    private val dataJsonAdapter: JsonAdapter<List<EuTaxonomyData>> = moshi.adapter(dataType)
 
     private val testCompanyInformation: List<CompanyInformation> = companyJsonAdapter
         .fromJson(companyJsonString) ?: emptyList()
-    private val testData: List<CompanyAssociatedDataEuTaxonomyData> = dataJsonAdapter
+    private val testData: List<EuTaxonomyData> = dataJsonAdapter
         .fromJson(dataJsonString) ?: emptyList()
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
@@ -63,7 +62,7 @@ class TestDataProvider {
         val data = testData.slice(dataCounter until dataCounter + numberOfDataSets)
         dataCounter += numberOfDataSets
 
-        return data.map { it.data!! }
+        return data
     }
 
     fun getCompaniesWithData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):

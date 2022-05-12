@@ -31,7 +31,7 @@ jobs:
           -e DATALAND_EDC_TOKEN \
           -e DATALAND_EDC_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
-          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon
+          /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v2
@@ -62,7 +62,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testunit --no-daemon
+        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testunit --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -70,7 +70,7 @@ jobs:
           name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
       - name: Execute Frontend Scripts Tests
-        run: ./gradlew :dataland-frontend:npm_run_fakefixtures
+        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
 
 
   e2e-tests:
@@ -124,7 +124,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build project
-        run: ./gradlew assemble --no-daemon
+        run: ./gradlew assemble --no-daemon --stacktrace
       - uses: actions/download-artifact@v2
         with:
           name: JaCoCoResultsBackendUnitTests
@@ -144,7 +144,7 @@ jobs:
           path: fe-coverage/e2e
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube --no-daemon
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

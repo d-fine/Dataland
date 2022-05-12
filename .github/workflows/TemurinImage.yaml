@@ -21,7 +21,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build all project outputs and copy gradle cache
-        run: ./gradlew assemble --no-daemon
+        run: ./gradlew assemble --no-daemon --stacktrace
       - name: Copy the gradle cache into the workspace
         run: cp -r /home/runner/.gradle ./gradlecache
       - name: Login to Github Packages

@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.Collections
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -24,11 +27,10 @@ class DataManager(
     @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper
 ) : DataManagerInterface {
-    var dataMetaInformationPerDataId = mutableMapOf<String, DataMetaInformation>()
-    var companyDataPerCompanyId = mutableMapOf<String, StoredCompany>()
+    var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
+    var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
-    private var companyCounter = 0
-    private val greenAssetRatios = mutableMapOf<StockIndex, BigDecimal>()
+    private val greenAssetRatios = ConcurrentHashMap<StockIndex, BigDecimal>()
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -61,8 +63,7 @@ class DataManager(
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         verifyCompanyIdExists(storableDataSet.companyId)
-
-        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet))
+        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
 
         if (dataMetaInformationPerDataId.containsKey(dataId)) {
             throw IllegalArgumentException("The data ID $dataId already exists in Dataland.")
@@ -117,13 +118,13 @@ class DataManager(
     }
 
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
-        companyCounter++
-        companyDataPerCompanyId["$companyCounter"] = StoredCompany(
-            companyId = companyCounter.toString(),
+        val companyId = UUID.randomUUID().toString()
+        companyDataPerCompanyId[companyId] = StoredCompany(
+            companyId = companyId,
             companyInformation,
-            dataRegisteredByDataland = mutableListOf()
+            dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
         )
-        return companyDataPerCompanyId["$companyCounter"]!!
+        return companyDataPerCompanyId[companyId]!!
     }
 
     override fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany> {
