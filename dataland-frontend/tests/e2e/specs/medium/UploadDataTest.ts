@@ -46,7 +46,7 @@ describe('User interactive tests for Data Upload', () => {
                 const companyID = $companyID.text()
                 cy.intercept('**/api/companies/*').as('retrieveCompany')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
+                cy.wait('@retrieveCompany', {timeout: 120000}).then(() => {
                     cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "NaN")
                 });
             });
