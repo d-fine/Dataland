@@ -3,16 +3,14 @@ describe('Population Test',  () => {
         defaultCommandTimeout: 0
     })
 
+    let companiesWithData: any
     let eutaxonomiesData: any
     let companiesData: any
     const companyAssociatedEuTaxonomyData: any = []
 
     before(function () {
-        cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
-            eutaxonomiesData = eutaxonomies
-        });
-        cy.fixture('CompanyInformation').then(function (companies) {
-            companiesData = companies
+        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
+            companiesWithData = companies
         });
     });
 
@@ -40,6 +38,12 @@ describe('Population Test',  () => {
 
 
     it('Populate Companies', async () => {
+        companiesData = companiesWithData.map((company:any) => {
+            return company["companyInformation"]
+        })
+        eutaxonomiesData = companiesWithData.map((company:any) => {
+            return company["euTaxonomyData"]
+        })
         await uploadData(companiesData, "companies")
     });
 
