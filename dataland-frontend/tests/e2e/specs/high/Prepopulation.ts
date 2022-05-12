@@ -1,4 +1,8 @@
 describe('Population Test',  () => {
+    Cypress.config({
+        defaultCommandTimeout: 480000
+    })
+
     let eutaxonomiesData: any
     let companiesData: any
     const companyAssociatedEuTaxonomyData: any = []
@@ -54,7 +58,7 @@ describe('Population Test',  () => {
         })
     });
 
-    it('Populate EU Taxonomy Data', {defaultCommandTimeout: 480000}, async () => {
+    it('Populate EU Taxonomy Data', async () => {
         await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
     });
 
