@@ -14,18 +14,21 @@ describe('Login Section', () => {
         cy.get('button[name=join_dataland_button]')
             .should('be.visible')
             .should("contain.text","Join")
+        cy.get('button[name="join_dataland_button"]').click()
+        cy.get('h1').should("contain.text","Search EU Taxonomy data")
+        cy.visit("/")
         cy.get('button[name=login_dataland_button]')
             .should('be.visible')
             .should("contain.text","Login")
+        cy.get('button[name="login_dataland_button"]').click()
+        cy.get('h1').should("contain.text","Search EU Taxonomy data")
+        cy.visit("/")
     })
     it('Company logos are present', () => {
         cy.get('img[alt="pwc"]')
             .should('be.visible')
             .should('have.attr', 'src')
         cy.get('img[alt="d-fine GmbH"]')
-            .should('be.visible')
-            .should('have.attr', 'src')
-        cy.get('img[alt="quentic"]')
             .should('be.visible')
             .should('have.attr', 'src')
     })
@@ -51,13 +54,13 @@ describe('Sample Section', () => {
         cy.get('h2').contains('EU Taxonomy Data')
         cy.get('.p-button.p-button-rounded')
             .should("contain.text","COMPANY DATA SAMPLE")
-        cy.get('body').should('contain.text', 'Join Dataland with others')
+        cy.get('body').should('contain.text', 'Join Dataland with other')
         cy.get('[title=back_button').should('be.visible').click({force:true})
         cy.get('h1').should("contain.text","CREATE A DATASET")
     })
 })
 
-describe.only('Marketing Section', () => {
+describe('Marketing Section', () => {
     it('Checks that the marketing section works properly', () => {
         cy.visit("/")
         cy.get("h2").should("contain.text", "Learn about our vision")
@@ -76,4 +79,12 @@ describe.only('Marketing Section', () => {
 
 })
 
-
+describe('Footer Section', () => {
+    it('Checks that the footer section works properly', () => {
+        cy.visit("/")
+        cy.get('img[alt="Dataland logo"]')
+            .should('be.visible')
+            .should('have.attr', 'src')
+            .should('include','vision')
+    })
+})
