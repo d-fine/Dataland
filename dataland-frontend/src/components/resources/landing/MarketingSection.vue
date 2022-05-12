@@ -55,7 +55,7 @@
      </div>
     </div>
     <div class="col-5 p-0 ">
-      <img src="@/assets/images/elements/Data_Workflow.svg" alt="de" class="pl-0 pt-0 w-full"/>
+      <img src="@/assets/images/elements/Data_Workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
     </div>
   </div>
   <div class="text-center pt-6  m-0">
