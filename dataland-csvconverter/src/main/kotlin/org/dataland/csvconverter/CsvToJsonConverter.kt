@@ -78,6 +78,35 @@ class CsvToJsonConverter {
     }
 
     /**
+     * Method to build CompanyInformation from the read row in the csv file.
+     */
+    private fun buildCompanyInformation(row: Map<String, String>): CompanyInformation {
+        return CompanyInformation(
+            companyName = getValue("companyName", row),
+            headquarters = getValue("headquarters", row),
+            sector = getValue("sector", row),
+            marketCap = getScaledValue("marketCap", row, euroUnitConversionFactor)!!,
+            reportingDateOfMarketCap = LocalDate.parse(
+                getValue("reportingDateOfMarketCap", row), DateTimeFormatter.ofPattern("d.M.yyyy")
+            ),
+            identifiers = getCompanyIdentifiers(row),
+            indices = getStockIndices(row)
+        )
+    }
+
+    /**
+     * Method to build EuTaxonomyData from the read row in the csv file.
+     */
+    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyData {
+        return EuTaxonomyData(
+            reportObligation = getReportingObligation(row), attestation = getAttestation(row),
+            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
+            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
+            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
+        )
+    }
+
+    /**
      * Method to read a given csv file
      */
     fun parseCsvFile(filePath: String) {
@@ -98,25 +127,8 @@ class CsvToJsonConverter {
     fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyData> {
         return rawCsvData.filter { validateLine(it) }.map {
             CompanyInformationWithEuTaxonomyData(
-                CompanyInformation(
-                    companyName = getValue("companyName", it),
-                    headquarters = getValue("headquarters", it),
-                    sector = getValue("sector", it),
-                    marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
-                    reportingDateOfMarketCap = LocalDate.parse(
-                        getValue("reportingDateOfMarketCap", it),
-                        DateTimeFormatter.ofPattern("d.M.yyyy")
-                    ),
-                    identifiers = getCompanyIdentifiers(it),
-                    indices = getStockIndices(it)
-                ),
-                EuTaxonomyData(
-                    reportObligation = getReportingObligation(it),
-                    attestation = getAttestation(it),
-                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
-                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
-                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
-                )
+                buildCompanyInformation(it),
+                buildEuTaxonomyData(it)
             )
         }
     }
