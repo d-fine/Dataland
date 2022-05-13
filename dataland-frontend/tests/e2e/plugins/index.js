@@ -5,7 +5,7 @@ module.exports = (on, config) => {
     config.supportFile = 'tests/e2e/support/index.ts'
     config.env.commit_id = require('git-commit-id')({cwd: ".."})
     on('before:browser:launch', (browser = {}, launchOptions) => {
-        launchOptions.args.append(
+        launchOptions.args.push(
             "--ignore-connections-limit=localhost:8090,proxy," +
             "localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
         )
