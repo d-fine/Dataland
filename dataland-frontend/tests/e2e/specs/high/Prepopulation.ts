@@ -1,4 +1,4 @@
-describe('Population Test',  () => {
+describe.only('Population Test',  () => {
     Cypress.config({
         defaultCommandTimeout: 480000
     })
