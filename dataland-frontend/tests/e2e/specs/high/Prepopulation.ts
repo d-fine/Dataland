@@ -16,20 +16,21 @@ describe('Population Test', () => {
         });
     });
 
-    async function uploadData(dataArray: Array<object>, endpoint: string) {
-        Cypress.Promise.all(dataArray.map(async (element: object) => {
-                await fetch(`${Cypress.env("API")}/${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(element)
-                }).then(response => {
-                    assert(response.status.toString() === "200",
-                        `Got status code ${response.status.toString()}. Expected: 200`)
-                })
+    function uploadData(dataArray: Array<object>, endpoint: string) {
+        dataArray.map((element: object) => {
+            return fetch(`${Cypress.env("API")}/${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(element)
             })
-        )
+        }).map((promise) => {
+            promise.then(response => {
+                assert(response.status.toString() === "200",
+                    `Got status code ${response.status.toString()}. Expected: 200`)
+            })
+        })
     }
 
 
@@ -73,12 +74,15 @@ describe('Population Test', () => {
 
 describe('Visit all EuTaxonomy Data', () => {
     it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
-            Cypress.Promise.all(companyIdList.map(async (companyId: string) => {
-                    cy.visit(`/companies/${companyId}/eutaxonomies`)
-                    cy.get('h3', {timeout: 60000}).should('be.visible')
+        cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+            dataIdList.map((dataId: string) => {
+                return fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
+            }).map((promise: Promise<Response>) => {
+                promise.then(response => {
+                    assert(response.status.toString() === "200",
+                        `Got status code ${response.status.toString()}. Expected: 200`)
                 })
-            )
+            })
         });
     });
 });
