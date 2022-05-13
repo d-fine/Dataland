@@ -1,4 +1,4 @@
-describe('Population Test',  () => {
+describe('Population Test', () => {
     Cypress.config({
         defaultCommandTimeout: 480000
     })
@@ -11,7 +11,7 @@ describe('Population Test',  () => {
         });
     });
 
-    async function uploadCompanyWithData(companiesWithData: Array<object>) {
+    it('Populate Companies with Data', async () => {
         console.time(`The elapsed time to upload ${companiesWithData.length} companies with data`)
         const chunkSize = 50;
         for (let i = 0; i < companiesWithData.length; i += chunkSize) {
@@ -23,11 +23,11 @@ describe('Population Test',  () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(element["companyInformation"])
-                    }).then( async (response) => {
-                        assert(response.status.toString() === "200",
-                            `Got status code ${response.status.toString()} for companyInformation index ${i}. Expected: 200`)
-                        const data  = await response.json()
-                        const euTaxonomyData = {"companyId":data.companyId,  "data": element["euTaxonomyData"]}
+                    }).then(async (companyUploadResponse) => {
+                        assert(companyUploadResponse.status.toString() === "200",
+                            `Got status code ${companyUploadResponse.status.toString()} for company information index ${i}. Expected: 200`)
+                        const responseData = await companyUploadResponse.json()
+                        const euTaxonomyData = {"companyId": responseData.companyId, "data": element["euTaxonomyData"]}
                         console.log(euTaxonomyData)
                         await fetch(`${Cypress.env("API")}/data/eutaxonomies`, {
                             method: 'POST',
@@ -35,20 +35,15 @@ describe('Population Test',  () => {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(euTaxonomyData)
-                        }).then(response => {
-                            assert(response.status.toString() === "200",
-                                `Got status code ${response.status.toString()} for euTaxonomyData index ${i}. Expected: 200`)
+                        }).then(dataUploadResponse => {
+                            assert(dataUploadResponse.status.toString() === "200",
+                                `Got status code ${dataUploadResponse.status.toString()} for EuTaxonomy data index ${i}. Expected: 200`)
                         })
                     })
                 })
             )
         }
         console.timeEnd(`The elapsed time to upload ${companiesWithData.length} companies with data`)
-    }
-
-
-    it('Populate Companies with Data', async () => {
-        await uploadCompanyWithData(companiesWithData)
     });
 
     it('Check if all the company ids can be retrieved', () => {
@@ -68,9 +63,9 @@ describe('Population Test',  () => {
     });
 
     it('Check Data Presence and Link route for EU Taxonomy Data', () => {
-        cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+        cy.retrieveDataIdsList().then((dataIdList) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 60000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
@@ -80,9 +75,9 @@ describe('Population Test',  () => {
     })
 
     it('Check Data Presence and Link route for companies with eutaxonomies data', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+        cy.retrieveCompanyIdsList().then((companyIdList) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 60000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
