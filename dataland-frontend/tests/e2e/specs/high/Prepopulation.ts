@@ -80,7 +80,7 @@ describe('Visit all EuTaxonomy Data', () => {
                 const chunk = companyIdList.slice(i, i + chunkSize);
                 await Promise.all(chunk.map(async (companyId: string) => {
                             cy.visit(`/companies/${companyId}/eutaxonomies`)
-                            cy.get('body').contains("Market Cap:")
+                            cy.get('h3', { timeout: 60000 }).should('be.visible')
                     })
                 )
             }
