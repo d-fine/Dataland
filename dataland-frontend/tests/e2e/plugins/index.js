@@ -9,6 +9,8 @@ module.exports = (on, config) => {
             "--ignore-connections-limit=localhost:8090,proxy," +
             "localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
         )
+        console.log(launchOptions.args)
+        return launchOptions
     })
     return config
 }
