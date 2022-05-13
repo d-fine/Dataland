@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import org.dataland.csvconverter.model.CompanyInformationWithEuTaxonomyData
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
@@ -92,21 +93,30 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to get a list of CompanyInformation objects generated from the csv file
+     * Method to get a list of CompanyInformationWithEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyData> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformation(
-                companyName = getValue("companyName", it),
-                headquarters = getValue("headquarters", it),
-                sector = getValue("sector", it),
-                marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
-                reportingDateOfMarketCap = LocalDate.parse(
-                    getValue("reportingDateOfMarketCap", it),
-                    DateTimeFormatter.ofPattern("d.M.yyyy")
+            CompanyInformationWithEuTaxonomyData(
+                CompanyInformation(
+                    companyName = getValue("companyName", it),
+                    headquarters = getValue("headquarters", it),
+                    sector = getValue("sector", it),
+                    marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
+                    reportingDateOfMarketCap = LocalDate.parse(
+                        getValue("reportingDateOfMarketCap", it),
+                        DateTimeFormatter.ofPattern("d.M.yyyy")
+                    ),
+                    identifiers = getCompanyIdentifiers(it),
+                    indices = getStockIndices(it)
                 ),
-                identifiers = getCompanyIdentifiers(it),
-                indices = getStockIndices(it)
+                EuTaxonomyData(
+                    reportObligation = getReportingObligation(it),
+                    attestation = getAttestation(it),
+                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
+                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
+                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
+                )
             )
         }
     }
@@ -137,21 +147,6 @@ class CsvToJsonConverter {
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
         return StockIndex.values().filter { csvLineData[columnMapping[it.name]]!!.isNotBlank() }.toSet()
-    }
-
-    /**
-     * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
-     */
-    fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
-        return rawCsvData.filter { validateLine(it) }.map {
-            EuTaxonomyData(
-                reportObligation = getReportingObligation(it),
-                attestation = getAttestation(it),
-                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
-                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
-                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
-            )
-        }
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
@@ -192,7 +187,10 @@ class CsvToJsonConverter {
      */
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyInformationWithEuTaxonomyData.json"), buildListOfCompanyInformation())
+            .writeValue(
+                File("./CompanyInformationWithEuTaxonomyData.json"),
+                buildListOfCompanyInformationWithEuTaxonomyData()
+            )
     }
 
     companion object {

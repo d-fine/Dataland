@@ -2,25 +2,15 @@ package org.dataland.csvconverter
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.csvconverter.model.CompanyInformationWithEuTaxonomyData
 import java.io.File
 
 class TestDataProvider(private val objectMapper: ObjectMapper) {
     private val companyJsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
-    private val testCompanyInformation: List<CompanyWithData> =
-        objectMapper.readValue(companyJsonFile, object : TypeReference<List<CompanyWithData>>() {})
+    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyData> =
+        objectMapper.readValue(companyJsonFile, object : TypeReference<List<CompanyInformationWithEuTaxonomyData>>() {})
 
-    fun getAllCompanies(): List<CompanyInformation> {
-        return testCompanyInformation.map { it.companyInformation }
-    }
-
-    fun getAllData(): List<EuTaxonomyData> {
-        return testCompanyInformation.map { it.euTaxonomyData }
+    fun getAllCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyData> {
+        return testCompanyInformationWithEuTaxonomyData
     }
 }
-
-data class CompanyWithData(
-    val companyInformation: CompanyInformation,
-    val euTaxonomyData: EuTaxonomyData
-)
