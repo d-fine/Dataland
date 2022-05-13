@@ -19,6 +19,4 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
-export ELECTRON_EXTRA_LAUNCH_ARGS="--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
-echo "ELECTRON_EXTRA_LAUNCH_ARGS=$ELECTRON_EXTRA_LAUNCH_ARGS"
 ./gradlew :dataland-e2etests:test :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
