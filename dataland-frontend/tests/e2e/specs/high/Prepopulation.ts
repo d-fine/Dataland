@@ -1,6 +1,6 @@
-describe('Population Test',  () => {
+describe('Population Test', () => {
     Cypress.config({
-        defaultCommandTimeout: 480000
+        defaultCommandTimeout: 900*1000
     })
 
     let eutaxonomiesData: any
@@ -17,7 +17,6 @@ describe('Population Test',  () => {
     });
 
     async function uploadData(dataArray: Array<object>, endpoint: string) {
-        console.time(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
         const chunkSize = 80;
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
@@ -35,7 +34,6 @@ describe('Population Test',  () => {
                 })
             )
         }
-        console.timeEnd(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
     }
 
 
@@ -71,6 +69,22 @@ describe('Population Test',  () => {
                     `Validation of data number ${dataIdIndex}`)
             }
         })
+    });
+});
+
+describe('Visit all EuTaxonomy Data', () => {
+    it('Visit all EuTaxonomy Data', () => {
+        cy.retrieveCompanyIdsList().then(async (companyIdList: Array<string>) => {
+            const chunkSize = 80;
+            for (let i = 0; i < companyIdList.length; i += chunkSize) {
+                const chunk = companyIdList.slice(i, i + chunkSize);
+                await Promise.all(chunk.map(async (companyId: string) => {
+                            cy.visit(`/companies/${companyId}/eutaxonomies`)
+                            cy.get('body').contains("Market Cap:")
+                    })
+                )
+            }
+        });
     });
 });
 
