@@ -60,7 +60,7 @@ describe('Sample Section', () => {
     })
 })
 
-describe.only('Marketing Section', () => {
+describe('Marketing Section', () => {
     it('Checks that the marketing section works properly', () => {
         cy.visit("/")
         cy.get("h2").should("contain.text", "Learn about our vision")

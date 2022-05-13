@@ -10,12 +10,9 @@
       Our platform enables organisations to get all the data they need by requesting it directly from data owners while
       giving them a fair compensation.
     </div>
-   </div>
-
-
+  </div>
   <div class="grid align-items-center m-0">
     <div class="col-offset-1 col-10">
-
     <img src="@/assets/images/elements/video_placeholder.svg" alt="Showcase Video" class="pt-6 pb-6 w-full"/>
     </div>
   </div>

@@ -10,14 +10,14 @@
         <div class="col-3 col-offset-3">
           <router-link to="/searchtaxonomy" class="no-underline">
           <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
-            <span class="d-letters">
+            <span class="d-letters d-button-font">
               Join
             </span>
           </Button>
           </router-link>
           <router-link to="/searchtaxonomy" class="no-underline">
             <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button">
-              <span class="d-letters text-primary">
+              <span class="d-letters text-primary d-button-font">
                 Login
               </span>
             </Button>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-3 p-fluid pl-0">
                   <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem" name="get_started_button">
-                    <span class="d-letters">
+                    <span class="d-letters d-button-font">
                       Get Started
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
@@ -84,10 +84,8 @@
               <p class="text-primary underline text-left cursor-pointer">
                 Join with Linkedin
               </p>
-
             </template>
           </Card>
-
         </div>
       </div>
     </div>
@@ -111,6 +109,10 @@ export default {
 
 .d-letters {
   letter-spacing: 0.05em;
+}
+
+.d-button-font {
+  font-family: IBMPlexSans, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 
 </style>
