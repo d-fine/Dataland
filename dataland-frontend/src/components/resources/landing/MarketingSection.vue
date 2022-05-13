@@ -29,8 +29,7 @@
           <p class="text-left d-letters">
             Dataland is a permissionless platform for data
             exchange. We provide a protocol for allowing data users to purchase the data directly from its owners, open
-            to
-            <u></u>se by any organizations.
+            to use by any organizations.
           </p>
         </div>
       </div>

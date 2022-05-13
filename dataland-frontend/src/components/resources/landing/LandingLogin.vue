@@ -53,7 +53,6 @@
               <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="d-small-logo pr-5"/>
             </div>
           </div>
-
         </div>
       </div>
       <div class="grid m-0">
@@ -78,7 +77,6 @@
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
                   </Button>
-
                 </div>
               </div>
               <p class="text-primary underline text-left cursor-pointer">
