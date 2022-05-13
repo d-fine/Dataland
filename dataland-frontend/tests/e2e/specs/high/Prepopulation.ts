@@ -1,6 +1,6 @@
 describe('Population Test', () => {
     Cypress.config({
-        defaultCommandTimeout: 900*1000
+        defaultCommandTimeout: 900 * 1000
     })
 
     let eutaxonomiesData: any
@@ -50,7 +50,10 @@ describe('Population Test', () => {
                 assert(typeof companyId !== 'undefined',
                     `Validation of company number ${companyIdIndex}`)
                 if (typeof eutaxonomiesData[companyIdIndex] == "object") {
-                    companyAssociatedEuTaxonomyData.push({"companyId": companyId, "data": eutaxonomiesData[companyIdIndex]})
+                    companyAssociatedEuTaxonomyData.push({
+                        "companyId": companyId,
+                        "data": eutaxonomiesData[companyIdIndex]
+                    })
                 }
             }
         })
@@ -73,17 +76,13 @@ describe('Population Test', () => {
 });
 
 describe('Visit all EuTaxonomy Data', () => {
-    it('Visit all EuTaxonomy Data', async () => {
-        cy.retrieveCompanyIdsList().then(async (companyIdList: Array<string>) => {
-            const chunkSize = 80;
-            for (let i = 0; i < companyIdList.length; i += chunkSize) {
-                const chunk = companyIdList.slice(i, i + chunkSize);
-                await Promise.all(chunk.map(async (companyId: string) => {
-                            cy.visit(`/companies/${companyId}/eutaxonomies`)
-                            cy.get('h3', { timeout: 60000 }).should('be.visible')
-                    })
-                )
-            }
+    it('Visit all EuTaxonomy Data', () => {
+        cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+            Cypress.Promise.all(companyIdList.map(async (companyId: string) => {
+                    cy.visit(`/companies/${companyId}/eutaxonomies`)
+                    cy.get('h3', {timeout: 60000}).should('be.visible')
+                })
+            )
         });
     });
 });
@@ -92,7 +91,7 @@ describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 60000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
@@ -106,7 +105,7 @@ describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 60000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
