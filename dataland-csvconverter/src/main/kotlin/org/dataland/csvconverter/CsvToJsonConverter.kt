@@ -149,6 +149,24 @@ class CsvToJsonConverter {
         return StockIndex.values().filter { csvLineData[columnMapping[it.name]]!!.isNotBlank() }.toSet()
     }
 
+    /**
+     * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
+     */
+    fun buildListOfEuTaxonomyData(): List<CompanyAssociatedData<EuTaxonomyData>> {
+        return rawCsvData.filter { validateLine(it) }.withIndex().map { (index, csvLineData) ->
+            CompanyAssociatedData(
+                companyId = "${index + 1}",
+                EuTaxonomyData(
+                    reportObligation = getReportingObligation(csvLineData),
+                    attestation = getAttestation(csvLineData),
+                    capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", csvLineData),
+                    opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", csvLineData),
+                    revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", csvLineData)
+                )
+            )
+        }
+    }
+
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
         return if (getValue("reportObligation", csvLineData) == "Ja") {
             YesNo.Yes
@@ -187,10 +205,9 @@ class CsvToJsonConverter {
      */
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(
-                File("./CompanyInformationWithEuTaxonomyData.json"),
-                buildListOfCompanyInformationWithEuTaxonomyData()
-            )
+            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
+        objectMapper.writerWithDefaultPrettyPrinter()
+            .writeValue(File("./CompanyAssociatedEuTaxonomyData.json"), buildListOfEuTaxonomyData())
     }
 
     companion object {
