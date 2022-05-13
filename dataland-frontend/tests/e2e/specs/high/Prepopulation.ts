@@ -26,7 +26,7 @@ describe('Population Test', () => {
                     body: JSON.stringify(element)
                 }).then(response => {
                     assert(response.status.toString() === "200",
-                        `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
+                        `Got status code ${response.status.toString()}. Expected: 200`)
                 })
             })
         )
