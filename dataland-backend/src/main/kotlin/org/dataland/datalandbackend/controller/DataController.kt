@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 
 /**
@@ -19,9 +20,14 @@ abstract class DataController<T>(
     private val clazz: Class<T>
 ) : DataAPI<T> {
     private val dataType = clazz.simpleName
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
+        logger.info(
+            "Received a request to post company associated data " +
+                "for companyId '${companyAssociatedData.companyId}'"
+        )
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
                 companyAssociatedData.companyId, dataType,
@@ -34,9 +40,11 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        val companyId = dataManager.getDataMetaInfo(dataId).companyId
+        logger.info("Received a request to get company data with dataId '$dataId' for companyId '$companyId'")
         return ResponseEntity.ok(
             CompanyAssociatedData(
-                companyId = dataManager.getDataMetaInfo(dataId).companyId,
+                companyId = companyId,
                 data = objectMapper.readValue(
                     dataManager.getDataSet(dataId, dataType).data,
                     clazz

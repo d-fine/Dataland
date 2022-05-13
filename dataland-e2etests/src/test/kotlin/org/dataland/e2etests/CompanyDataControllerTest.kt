@@ -30,7 +30,7 @@ class CompanyDataControllerTest {
                 "the actual information of the company to be posted."
         )
         assertTrue(
-            postCompanyResponse.companyId.toInt() > 0,
+            postCompanyResponse.companyId.isNotEmpty(),
             "No valid company Id was assigned to the posted company."
         )
     }

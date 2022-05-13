@@ -40,7 +40,7 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button},
   props: {
     companyID: {
-      type: Number
+      type: String
     }
   }
 }
