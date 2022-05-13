@@ -26,9 +26,8 @@ describe('Population Test',  () => {
                     }).then( async (response) => {
                         assert(response.status.toString() === "200",
                             `Got status code ${response.status.toString()} for companyInformation index ${i}. Expected: 200`)
-                        const euTaxonomyData = element["euTaxonomyData"]
                         const data  = await response.json()
-                        euTaxonomyData["companyId"] = data.companyId
+                        const euTaxonomyData = {"companyId":data.companyId,  "data": element["euTaxonomyData"]}
                         console.log(euTaxonomyData)
                         await fetch(`${Cypress.env("API")}/data/eutaxonomies`, {
                             method: 'POST',
@@ -48,7 +47,7 @@ describe('Population Test',  () => {
     }
 
 
-    it.only('Populate Companies with Data', async () => {
+    it('Populate Companies with Data', async () => {
         await uploadCompanyWithData(companiesWithData)
     });
 
@@ -97,7 +96,7 @@ describe('Population Test',  () => {
     });
 
 
-    it.skip('Company Name Input field exists and works after population', () => {
+    it('Company Name Input field exists and works after population', () => {
         const inputValue = companiesWithData[0].companyInformation.companyName
         cy.visit("/search")
         cy.get('input[name=companyName]')
