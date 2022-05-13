@@ -1,5 +1,5 @@
 # build stage
-FROM ghcr.io/d-fine/dataland/temurinbase:latest as build-stage
+FROM ghcr.io/d-fine/dataland/cypressbase:latest as build-stage
 ARG DATALAND_EDC_USER
 ARG DATALAND_EDC_TOKEN
 WORKDIR /app
