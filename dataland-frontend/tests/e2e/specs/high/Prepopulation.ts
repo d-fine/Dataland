@@ -75,25 +75,6 @@ describe('Population Test', () => {
     });
 });
 
-describe('Visit all EuTaxonomy Data', () => {
-    async function visitAllTaxonomyData(dataIdList: Array<string>) {
-        await Promise.all(dataIdList.map(async (dataId: string) => {
-                await fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
-                    .then(response => {
-                    assert(response.status.toString() === "200",
-                        `Got status code ${response.status.toString()} for dataId ${dataId}. Expected: 200`)
-                })
-            })
-        )
-    }
-
-    it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveDataIdsList().then(async (dataIdList: Array<string>) => {
-            await visitAllTaxonomyData(dataIdList);
-        });
-    });
-});
-
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
