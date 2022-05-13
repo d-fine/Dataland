@@ -52,16 +52,7 @@ class TestDataProvider {
 
     fun getCompaniesWithData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<EuTaxonomyData>> {
-        if (dataSetsPerCompany > testCompanyInformationWithEuTaxonomyData.size) {
-            throw(
-                IllegalArgumentException(
-                    "Test data not big enough to provide $dataSetsPerCompany test data sets " +
-                        "(it only has ${testCompanyInformationWithEuTaxonomyData.size} elements)."
-                )
-                )
-        }
         val companies = getCompanyInformation(requiredNumberOfCompanies)
-
         return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
     }
 }
