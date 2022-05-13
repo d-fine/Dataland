@@ -54,14 +54,15 @@ jobs:
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
+          TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
+          TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           EDC_API_AUTH_KEY: ${{ secrets.EDC_API_AUTH_KEY }}
           EDC_API_CONTROL_AUTH_APIKEY_VALUE: ${{ secrets.EDC_API_CONTROL_AUTH_APIKEY_VALUE }}
           EDC_KEYSTORE_PASSWORD: ${{ secrets.EDC_KEYSTORE_PASSWORD }}
-          TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
-          PREVIEW_STARTUP_URL: ${{ secrets.PREVIEW_STARTUP_URL }}
-          DEV_STARTUP_URL: ${{ secrets.DEV_STARTUP_URL }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
       - name: Upload FE E2E Cypress Results
