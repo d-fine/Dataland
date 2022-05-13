@@ -74,17 +74,9 @@ describe('Population Test',  () => {
     });
 });
 
-describe('Visit all companies', () => {
-    it('Check Data Presence and Link route', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<String>) => {
-            companyIdList.forEach( companyId => cy.visit(`/companies/${companyId}/eutaxonomies`) )
-        });
-    });
-});
-
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.retrieveDataIdsList().then((dataIdList: Array<String>) => {
+        cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
             cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")
@@ -98,7 +90,7 @@ describe('EU Taxonomy Data', () => {
 
 describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<String>) => {
+        cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
             cy.get('h3', { timeout: 60000 }).should('be.visible')
             cy.get('h3').contains("Revenue")

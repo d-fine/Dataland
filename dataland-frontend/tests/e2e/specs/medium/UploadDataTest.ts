@@ -44,9 +44,9 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
-                cy.intercept('**/api/companies/*').as('retrieveCompany')
+                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
+                cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
                     cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "NaN")
                 });
             });
@@ -65,9 +65,9 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {
             const dataId = $dataID.text()
-            cy.intercept('**/api/data/eutaxonomies/*').as('retrieveData')
+            cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit(`/data/eutaxonomies/${dataId}`)
-            cy.wait('@retrieveData', {timeout: 120000}).then(() => {
+            cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
                 cy.get('body')
                     .should("contain", "Eligible Revenue")
                     .should("contain", "No data available")
