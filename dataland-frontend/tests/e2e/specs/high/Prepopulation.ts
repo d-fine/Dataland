@@ -73,7 +73,7 @@ describe('Population Test', () => {
 });
 
 describe('Visit all EuTaxonomy Data', () => {
-    it('Visit all EuTaxonomy Data', () => {
+    it('Visit all EuTaxonomy Data', async () => {
         cy.retrieveCompanyIdsList().then(async (companyIdList: Array<string>) => {
             const chunkSize = 80;
             for (let i = 0; i < companyIdList.length; i += chunkSize) {
