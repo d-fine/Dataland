@@ -16,26 +16,29 @@ describe('Population Test', () => {
         });
     });
 
-    function uploadData(dataArray: Array<object>, endpoint: string) {
-        dataArray.map((element: object) => {
-            return fetch(`${Cypress.env("API")}/${endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(element)
-            })
-        }).map((promise) => {
-            promise.then(response => {
-                assert(response.status.toString() === "200",
-                    `Got status code ${response.status.toString()}. Expected: 200`)
-            })
-        })
+    async function uploadData(dataArray: Array<object>, endpoint: string) {
+        const chunkSize = 80;
+        for (let i = 0; i < dataArray.length; i += chunkSize) {
+            const chunk = dataArray.slice(i, i + chunkSize);
+            await Promise.all(chunk.map(async (element: object) => {
+                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(element)
+                    }).then(response => {
+                        assert(response.status.toString() === "200",
+                            `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
+                    })
+                })
+            )
+        }
     }
 
 
-    it('Populate Companies', () => {
-        uploadData(companiesData, "companies")
+    it('Populate Companies', async () => {
+        await uploadData(companiesData, "companies")
     });
 
     it('Check if all the company ids can be retrieved', () => {
@@ -56,8 +59,8 @@ describe('Population Test', () => {
         })
     });
 
-    it('Populate EU Taxonomy Data', () => {
-        uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
+    it('Populate EU Taxonomy Data', async () => {
+        await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
     });
 
     it('Check if all the data ids can be retrieved', () => {
@@ -73,16 +76,20 @@ describe('Population Test', () => {
 });
 
 describe('Visit all EuTaxonomy Data', () => {
-    it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
-            dataIdList.map((dataId: string) => {
-                return fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
-            }).map((promise: Promise<Response>) => {
-                promise.then(response => {
+    async function visitAllTaxonomyData(dataIdList: Array<string>) {
+        await Promise.all(dataIdList.map(async (dataId: string) => {
+                await fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
+                    .then(response => {
                     assert(response.status.toString() === "200",
-                        `Got status code ${response.status.toString()}. Expected: 200`)
+                        `Got status code ${response.status.toString()} for dataId ${dataId}. Expected: 200`)
                 })
             })
+        )
+    }
+
+    it('Visit all EuTaxonomy Data', () => {
+        cy.retrieveCompanyIdsList().then(async (dataIdList: Array<string>) => {
+            await visitAllTaxonomyData(dataIdList);
         });
     });
 });
