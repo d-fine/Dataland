@@ -88,7 +88,7 @@ describe('Visit all EuTaxonomy Data', () => {
     }
 
     it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveCompanyIdsList().then(async (dataIdList: Array<string>) => {
+        cy.retrieveDataIdsList().then(async (dataIdList: Array<string>) => {
             await visitAllTaxonomyData(dataIdList);
         });
     });
