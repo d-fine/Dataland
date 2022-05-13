@@ -17,28 +17,24 @@ describe('Population Test', () => {
     });
 
     async function uploadData(dataArray: Array<object>, endpoint: string) {
-        const chunkSize = 80;
-        for (let i = 0; i < dataArray.length; i += chunkSize) {
-            const chunk = dataArray.slice(i, i + chunkSize);
-            await Promise.all(chunk.map(async (element: object) => {
-                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(element)
-                    }).then(response => {
-                        assert(response.status.toString() === "200",
-                            `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
-                    })
+        Cypress.Promise.all(dataArray.map(async (element: object) => {
+                await fetch(`${Cypress.env("API")}/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(element)
+                }).then(response => {
+                    assert(response.status.toString() === "200",
+                        `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
                 })
-            )
-        }
+            })
+        )
     }
 
 
-    it('Populate Companies', async () => {
-        await uploadData(companiesData, "companies")
+    it('Populate Companies', () => {
+        uploadData(companiesData, "companies")
     });
 
     it('Check if all the company ids can be retrieved', () => {
@@ -59,8 +55,8 @@ describe('Population Test', () => {
         })
     });
 
-    it('Populate EU Taxonomy Data', async () => {
-        await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
+    it('Populate EU Taxonomy Data', () => {
+        uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
     });
 
     it('Check if all the data ids can be retrieved', () => {
