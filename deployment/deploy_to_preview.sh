@@ -1,7 +1,7 @@
 #!/bin/bash
 set -u
 
-export server="3.71.162.94"
+export server="preview-dataland.duckdns.org"
 mkdir -p ~/.ssh/
 echo "$server ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k=" >  ~/.ssh/known_hosts
 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
