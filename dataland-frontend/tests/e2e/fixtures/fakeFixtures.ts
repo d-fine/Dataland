@@ -128,14 +128,14 @@ function generateCSVData(companyInformation: Array<Object>, euTaxonomyData: Arra
 
     const options = {
         fields: [
-            {label: 'Company name', value: 'companyName'},
+            {label: 'Unternehmensname', value: 'companyName'},
             {label: 'Headquarter', value: 'headquarters'},
             {label: 'Sector', value: 'sector'},
-            {label: 'Market Capitalization EUR', value: 'marketCap'},
+            {label: 'Market Capitalization EURmm', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue EUR', value: (row: any) => euroGenerator(row.Revenue.totalAmount)},
-            {label: 'Total CapEx EUR', value: (row: any) => euroGenerator(row.Capex.totalAmount)},
-            {label: 'Total OpEx EUR', value: (row: any) => euroGenerator(row.Opex.totalAmount)},
+            {label: 'Total Revenue EURmm', value: (row: any) => euroGenerator(row.Revenue.totalAmount)},
+            {label: 'Total CapEx EURmm', value: (row: any) => euroGenerator(row.Capex.totalAmount)},
+            {label: 'Total OpEx EURmm', value: (row: any) => euroGenerator(row.Opex.totalAmount)},
             {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.Revenue.eligiblePercentage)},
             {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.Capex.eligiblePercentage)},
             {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.Opex.eligiblePercentage)},

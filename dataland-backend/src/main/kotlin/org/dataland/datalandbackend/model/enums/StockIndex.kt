@@ -13,6 +13,5 @@ enum class StockIndex {
     Sdax,
     TecDax,
     Hdax,
-    Scale,
     Dax50Esg
 }
