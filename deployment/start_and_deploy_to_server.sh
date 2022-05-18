@@ -3,6 +3,13 @@ set -u
 
 environment=$1
 
+echo "Checking if EuroDaT is available before deploying to target server."
+if ! curl -f -X 'GET' "http://${TRUSTEE_IP}/api/ids/description" -H 'accept: application/json' >/dev/null 2>&1; then
+  echo "EuroDaT is not available."
+  exit 1
+fi
+echo "EuroDat is available."
+
 echo "Starting ${environment} server"
 curl "${TARGETSERVER_STARTUP_URL}" > /dev/null
 echo "Setting ${environment} server as deployment target"
