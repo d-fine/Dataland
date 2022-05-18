@@ -20,7 +20,7 @@
     <MarginWrapper>
       <div class="grid align-items-end">
         <div class="col-9">
-          <CompanyInformation :companyID="companyIdList[companyIndex]"/>
+          <CompanyInformation :companyID="responseArray[0].companyId"/>
         </div>
         <div class="col-3 pb-4 text-right">
           <Button label="Export Data" class="uppercase p-button">Export Data
@@ -30,7 +30,7 @@
       </div>
     </MarginWrapper>
     <MarginWrapper bgClass="surface-800">
-      <TaxonomyData :companyID="companyIdList[companyIndex]"/>
+      <TaxonomyData :companyID="responseArray[0].companyId"/>
     </MarginWrapper>
   </TheContent>
 </template>
@@ -55,24 +55,23 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button
   },
   data: () => ({
-      companyIdList: []
+    responseArray: []
   }),
   props: {
-    companyIndex: {
-      type: Number,
-      default: 1
+    companyQuery: {
+      type: String,
+      default: "gmbh"
     }
   },
   created() {
-    this.getCompanyIDs()
+    this.queryCompany()
   },
   methods: {
-    async getCompanyIDs() {
+    async queryCompany() {
       try {
-        const companyList = await getCompaniesWrapper.perform("", "", true)
-        this.companyIdList = companyList.data.map(element => element.companyId)
+        this.responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", false).then(this.responseMapper)
       } catch (error) {
-        this.companyIdList = []
+        console.error(error)
       }
     }
   }
