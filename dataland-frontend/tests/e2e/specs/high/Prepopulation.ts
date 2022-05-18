@@ -50,12 +50,13 @@ describe('Population Test',
                     )
                 ))
             }
+            promise.then(()=>{cy.log(`Uploaded ${dataArray.length} datasets to ${endpoint}`)})
             return promise
         }
 
 
-        it('Populate Companies', async () => {
-            await uploadData(companiesData, "companies")
+        it('Populate Companies', () => {
+            uploadData(companiesData, "companies")
         });
 
         it('Check if all the company ids can be retrieved', () => {
