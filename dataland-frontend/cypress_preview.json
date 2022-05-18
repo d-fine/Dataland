@@ -10,6 +10,7 @@
   "testFiles": [
     "verify_deployment/**/*.ts",
     "high/**/*.ts",
+    "medium/**/*.ts",
     "low/**/*.ts"
   ]
 }
