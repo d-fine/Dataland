@@ -52,7 +52,7 @@ describe('EU Taxonomy Data and Cards', function () {
     it('Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers', () => {
         const eligible=0.67
         cy.visit("/upload")
-        cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
+        cy.get('input[name="companyId"]').type(companyIdList[0], {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
         for (const argument of ["capex", "opex", "revenue"]) {

@@ -7,7 +7,7 @@ describe('Visit all EuTaxonomy Data', () => {
     }
 
     it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveDataIdsList().then(async (dataIdList: Array<string>) => {
+        cy.retrieveDataIdsList().then({timeout: 600}, async (dataIdList: Array<string>) => {
             await visitAllTaxonomyData(dataIdList);
         });
     });
