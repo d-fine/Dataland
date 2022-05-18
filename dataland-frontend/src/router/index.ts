@@ -7,6 +7,8 @@ import CompanyInformation from "@/components/resources/company/CompanyInformatio
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
+import LandingImprint from "@/components/pages/LandingImprint.vue";
+import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 
 const routes = [
     {
@@ -51,6 +53,16 @@ const routes = [
         props: true,
         name: "Company EU Taxonomy",
         component: CompanyTaxonomy,
+    },
+    {
+        path: "/DataPrivacy",
+        name: "DataPrivacy",
+        component: DataPrivacy,
+    },
+    {
+        path: "/LandingImprint",
+        name: "LandingImprint",
+        component: LandingImprint,
     },
 ];
 

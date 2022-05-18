@@ -1,5 +1,5 @@
 <template>
-  <div class="surface-section mt-8">
+  <div class="surface-800">
     <div class="grid m-0">
       <div class="col-offset-3 col-3">
         <div class="grid">

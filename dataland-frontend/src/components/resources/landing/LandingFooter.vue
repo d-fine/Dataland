@@ -18,11 +18,14 @@
               <p class="font-semibold">Legal</p>
             </div>
             <div class="col-12">
-              <p>You are free to use the data accessed in Dataland for any use, commercial and not commercial, with the exception of reselling the data to others.
-                <span class="font-semibold underline text-primary cursor-pointer">Details in our Terms and Conditions.</span> </p>
-              <p class="font-semibold underline text-primary cursor-pointer">
-                Privacy Policy
-              </p>
+              <router-link to="/LandingImprint" class="no-underline">
+                <span class="font-semibold underline text-primary cursor-pointer">Imprint</span>
+              </router-link>
+              <router-link to="/DataPrivacy" class="no-underline">
+                <p class="font-semibold underline text-primary cursor-pointer">
+                  Privacy Policy
+                </p>
+              </router-link>
             </div>
           </div>
         </div>
