@@ -16,7 +16,7 @@ describe('Population Test', () => {
         });
     });
 
-    function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
+    function uploadSingleElementOnce(endpoint: string, element: object, additional_info: string): Promise<void> {
         return fetch(`${Cypress.env("API")}/${endpoint}`, {
             method: 'POST',
             headers: {
@@ -25,16 +25,17 @@ describe('Population Test', () => {
             body: JSON.stringify(element)
         }).then(response => {
             assert(response.status.toString() === "200",
-                `Got status code ${response.status.toString()}. Expected: 200`)
+                `Got status code ${response.status.toString()} during upload of single ` +
+                `Element to ${endpoint}. Expected: 200. Additional Info: ${additional_info} `)
         })
     }
 
     function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
-        return uploadSingleElementOnce(endpoint, element)
+        return uploadSingleElementOnce(endpoint, element, "first attempt")
             .catch(_ =>
-                uploadSingleElementOnce(endpoint, element)
+                uploadSingleElementOnce(endpoint, element, "retry number one")
             ).catch(_ =>
-                uploadSingleElementOnce(endpoint, element)
+                uploadSingleElementOnce(endpoint, element, "retry number two")
             )
     }
 
