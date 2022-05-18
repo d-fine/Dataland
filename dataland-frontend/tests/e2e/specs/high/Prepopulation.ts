@@ -1,95 +1,96 @@
-describe('Population Test', () => {
-    Cypress.config({
-        defaultCommandTimeout: 900 * 1000
-    })
-
-    let eutaxonomiesData: any
-    let companiesData: any
-    const companyAssociatedEuTaxonomyData: any = []
-
-    before(function () {
-        cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
-            eutaxonomiesData = eutaxonomies
-        });
-        cy.fixture('CompanyInformation').then(function (companies) {
-            companiesData = companies
-        });
-    });
-
-    function uploadSingleElementOnce(endpoint: string, element: object, additional_info: string): Promise<void> {
-        return fetch(`${Cypress.env("API")}/${endpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(element)
-        }).then(response => {
-            assert(response.status.toString() === "200",
-                `Got status code ${response.status.toString()} during upload of single ` +
-                `Element to ${endpoint}. Expected: 200. Additional Info: ${additional_info} `)
+describe('Population Test',
+    () => {
+        Cypress.config({
+            defaultCommandTimeout: 900 * 1000
         })
-    }
 
-    function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
-        return uploadSingleElementOnce(endpoint, element, "first attempt")
-            .catch(_ =>
-                uploadSingleElementOnce(endpoint, element, "retry number one")
-            ).catch(_ =>
-                uploadSingleElementOnce(endpoint, element, "retry number two")
-            )
-    }
+        let eutaxonomiesData: any
+        let companiesData: any
+        const companyAssociatedEuTaxonomyData: any = []
 
-    function uploadData(dataArray: Array<object>, endpoint: string) {
-        const chunkSize = 40;
-        let promise = Promise.resolve()
-        for (let i = 0; i < dataArray.length; i += chunkSize) {
-            const chunk = dataArray.slice(i, i + chunkSize);
-            promise.then(() => Promise.all(chunk.map(element =>
-                    uploadSingleElementWithRetries(endpoint, element)
-                )
-            ))
+        before(function () {
+            cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
+                eutaxonomiesData = eutaxonomies
+            });
+            cy.fixture('CompanyInformation').then(function (companies) {
+                companiesData = companies
+            });
+        });
+
+        function uploadSingleElementOnce(endpoint: string, element: object, additional_info: string): Promise<void> {
+            return fetch(`${Cypress.env("API")}/${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(element)
+            }).then(response => {
+                assert(response.status.toString() === "200",
+                    `Got status code ${response.status.toString()} during upload of single ` +
+                    `Element to ${endpoint}. Expected: 200. Additional Info: ${additional_info} `)
+            })
         }
-        return promise
-    }
+
+        function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
+            return uploadSingleElementOnce(endpoint, element, "first attempt")
+                .catch(_ =>
+                    uploadSingleElementOnce(endpoint, element, "retry number one")
+                ).catch(_ =>
+                    uploadSingleElementOnce(endpoint, element, "retry number two")
+                )
+        }
+
+        function uploadData(dataArray: Array<object>, endpoint: string) {
+            const chunkSize = 40;
+            const promise = Promise.resolve()
+            for (let i = 0; i < dataArray.length; i += chunkSize) {
+                const chunk = dataArray.slice(i, i + chunkSize);
+                promise.then(() => Promise.all(chunk.map(element =>
+                        uploadSingleElementWithRetries(endpoint, element)
+                    )
+                ))
+            }
+            return promise
+        }
 
 
-    it('Populate Companies', async () => {
-        await uploadData(companiesData, "companies")
-    });
+        it('Populate Companies', async () => {
+            await uploadData(companiesData, "companies")
+        });
 
-    it('Check if all the company ids can be retrieved', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-            assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
-                `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
-            for (const companyIdIndex in companyIdList) {
-                const companyId = companyIdList[companyIdIndex]
-                assert(typeof companyId !== 'undefined',
-                    `Validation of company number ${companyIdIndex}`)
-                if (typeof eutaxonomiesData[companyIdIndex] == "object") {
-                    companyAssociatedEuTaxonomyData.push({
-                        "companyId": companyId,
-                        "data": eutaxonomiesData[companyIdIndex]
-                    })
+        it('Check if all the company ids can be retrieved', () => {
+            cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+                assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
+                for (const companyIdIndex in companyIdList) {
+                    const companyId = companyIdList[companyIdIndex]
+                    assert(typeof companyId !== 'undefined',
+                        `Validation of company number ${companyIdIndex}`)
+                    if (typeof eutaxonomiesData[companyIdIndex] == "object") {
+                        companyAssociatedEuTaxonomyData.push({
+                            "companyId": companyId,
+                            "data": eutaxonomiesData[companyIdIndex]
+                        })
+                    }
                 }
-            }
-        })
-    });
+            })
+        });
 
-    it('Populate EU Taxonomy Data', async () => {
-        await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
-    });
+        it('Populate EU Taxonomy Data', async () => {
+            await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
+        });
 
-    it('Check if all the data ids can be retrieved', () => {
-        cy.retrieveDataIdsList().then((dataIdList: any) => {
-            assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
-                `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
-            for (const dataIdIndex in dataIdList) {
-                assert(typeof dataIdList[dataIdIndex] !== 'undefined',
-                    `Validation of data number ${dataIdIndex}`)
-            }
-        })
+        it('Check if all the data ids can be retrieved', () => {
+            cy.retrieveDataIdsList().then((dataIdList: any) => {
+                assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
+                for (const dataIdIndex in dataIdList) {
+                    assert(typeof dataIdList[dataIdIndex] !== 'undefined',
+                        `Validation of data number ${dataIdIndex}`)
+                }
+            })
+        });
     });
-});
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
