@@ -23,7 +23,7 @@ ssh ubuntu@$target_server_url "cd $location && sudo docker-compose down"
 ssh ubuntu@$target_server_url 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 ssh ubuntu@$target_server_url "sudo rm -rf $location; mkdir -p $location/jar"
 
-envsubst < "environments/.env.template" > .env
+envsubst < environments/.env.template > .env
 
 scp ./.env ubuntu@$target_server_url:$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
