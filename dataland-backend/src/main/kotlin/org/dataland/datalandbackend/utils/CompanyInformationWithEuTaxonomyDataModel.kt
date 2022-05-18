@@ -1,4 +1,7 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackend.utils
+
+import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.EuTaxonomyData
 
 /**
  * --- Non-API model ---
@@ -6,7 +9,7 @@ package org.dataland.datalandbackend.model
  * @param companyInformation contains information of company
  * @param euTaxonomyData contains eu taxonomy dat for the company
  */
-data class CompanyWithEuTaxonomyData(
+data class CompanyInformationWithEuTaxonomyDataModel(
     val companyInformation: CompanyInformation,
     val euTaxonomyData: EuTaxonomyData
 )

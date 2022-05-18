@@ -36,10 +36,11 @@ class TestDataProvider {
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
     private val parameterizedType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyData::class.java)
-    private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyData>> = moshi.adapter(parameterizedType)
+        .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyDataModel::class.java)
+    private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyDataModel>> =
+        moshi.adapter(parameterizedType)
 
-    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyData> = jsonAdapter
+    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataModel> = jsonAdapter
         .fromJson(jsonFileAsString) ?: emptyList()
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
@@ -57,7 +58,7 @@ class TestDataProvider {
     }
 }
 
-data class CompanyInformationWithEuTaxonomyData(
+data class CompanyInformationWithEuTaxonomyDataModel(
     val companyInformation: CompanyInformation,
     val euTaxonomyData: EuTaxonomyData
 )

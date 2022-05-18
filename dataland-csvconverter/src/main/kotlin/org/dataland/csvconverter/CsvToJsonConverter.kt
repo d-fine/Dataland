@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import org.dataland.csvconverter.model.CompanyInformationWithEuTaxonomyData
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
@@ -14,6 +13,7 @@ import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.dataland.datalandbackend.model.enums.YesNo
+import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
@@ -124,9 +124,9 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyInformationWithEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyData> {
+    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataModel> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformationWithEuTaxonomyData(
+            CompanyInformationWithEuTaxonomyDataModel(
                 buildCompanyInformation(it),
                 buildEuTaxonomyData(it)
             )
