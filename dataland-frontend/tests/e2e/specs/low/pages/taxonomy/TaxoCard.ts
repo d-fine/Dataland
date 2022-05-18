@@ -12,9 +12,9 @@ describe('EU Taxonomy Data and Cards', function () {
             cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
             cy.get('select[name=identifierType]').select('ISIN')
             cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
-            cy.intercept('**/api/data/eutaxonomies/').as('postEuTaxonomyData')
+            cy.intercept('**/api/companies').as('postCompany')
             cy.get('button[name="postCompanyData"]').click()
-            cy.wait('@postEuTaxonomyData', {timeout: timeout}).then(() => {
+            cy.wait('@postCompany', {timeout: timeout}).then(() => {
                 cy.get('body').should("contain", "success")
                 cy.get('span[title=companyId]').then(($companyID) => {
                     const id = $companyID.text()
