@@ -16,12 +16,13 @@ describe('Population Test', () => {
         });
     });
 
-    async function uploadData(dataArray: Array<object>, endpoint: string) {
+    function uploadData(dataArray: Array<object>, endpoint: string) {
         const chunkSize = 80;
+        let promise = Promise.resolve()
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
-            await Promise.all(chunk.map(async (element: object) => {
-                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
+            promise.then(() => Promise.all(chunk.map((element: object) => {
+                    fetch(`${Cypress.env("API")}/${endpoint}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -32,8 +33,9 @@ describe('Population Test', () => {
                             `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
                     })
                 })
-            )
+            ))
         }
+        return promise
     }
 
 
@@ -79,7 +81,7 @@ describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', {timeout: 60000}).should('be.visible')
+            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
@@ -93,7 +95,7 @@ describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', {timeout: 60000}).should('be.visible')
+            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")

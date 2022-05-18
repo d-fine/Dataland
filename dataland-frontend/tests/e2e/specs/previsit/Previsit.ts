@@ -1,13 +1,13 @@
 describe('Visit all EuTaxonomy Data', () => {
-    async function visitAllTaxonomyData(dataIdList: Array<string>) {
-        await Promise.all(dataIdList.map(async (dataId: string) => {
-                await fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
+    function visitAllTaxonomyData(dataIdList: Array<string>) {
+        return Promise.all(dataIdList.map((dataId: string) => {
+                fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`)
             })
         )
     }
 
     it('Visit all EuTaxonomy Data', () => {
-        cy.retrieveDataIdsList().then({timeout: 600}, async (dataIdList: Array<string>) => {
+        cy.retrieveDataIdsList().then({timeout: 600*1000}, async (dataIdList: Array<string>) => {
             await visitAllTaxonomyData(dataIdList);
         });
     });
