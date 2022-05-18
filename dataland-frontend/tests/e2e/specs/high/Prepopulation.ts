@@ -40,7 +40,7 @@ describe('Population Test', () => {
     }
 
     function uploadData(dataArray: Array<object>, endpoint: string) {
-        const chunkSize = 80;
+        const chunkSize = 40;
         let promise = Promise.resolve()
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
