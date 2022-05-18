@@ -40,23 +40,17 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar
   },
   data: () => ({
+    companyQuery: "Adidas",
     companyID: null
   }),
-  props: {
-    companyQuery: {
-      type: String,
-      default: "adidas"
-    }
-  },
   created() {
     this.queryCompany()
   },
   methods: {
     async queryCompany() {
       try {
-        console.warn("Running query company")
-        const responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", true).then(this.responseMapper)
-        this.companyID=responseArray[0].companyId
+        const responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", true)
+        this.companyID = responseArray.data[0].companyId
       } catch (error) {
         await this.companyIdFallback()
         console.error(error)
@@ -64,11 +58,10 @@ export default {
     },
     async companyIdFallback() {
       try {
-        console.warn("Running ID fallback")
-        const companyList = await getCompaniesWrapper.perform("", "", true)
-        this.companyID=companyList[0].companyId
+        const companyResponse = await getCompaniesWrapper.perform("", "", true)
+        this.companyID = companyResponse.data[0].companyId
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
   }
