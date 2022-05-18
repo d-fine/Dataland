@@ -17,28 +17,11 @@
       <BackButton/>
     </MarginWrapper>
     <EuTaxoSearchBar/>
-    <MarginWrapper>
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformation :companyID="responseArray[0].companyId"/>
-        </div>
-        <div class="col-3 pb-4 text-right">
-          <Button label="Export Data" class="uppercase p-button">Export Data
-            <i class="material-icons pl-3" aria-hidden="true">arrow_drop_down</i>
-          </Button>
-        </div>
-      </div>
-    </MarginWrapper>
-    <MarginWrapper bgClass="surface-800">
-      <TaxonomyData :companyID="responseArray[0].companyId"/>
-    </MarginWrapper>
+    <TaxonomySample :companyID="companyID" v-if="companyID"/>
   </TheContent>
 </template>
 
 <script>
-import Button from "primevue/button";
-import CompanyInformation from "@/components/resources/company/CompanyInformation";
-import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
@@ -46,21 +29,23 @@ import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
 import {ApiWrapper} from "@/services/ApiWrapper"
+import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
 const companyDataControllerApi = new CompanyDataControllerApi()
 const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CompanyTaxonomy",
   components: {
+    TaxonomySample,
     TheContent,
-    TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar, TaxonomyData, CompanyInformation, Button
+    TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar
   },
   data: () => ({
-    responseArray: []
+    companyID: null
   }),
   props: {
     companyQuery: {
       type: String,
-      default: "gmbh"
+      default: "adidas"
     }
   },
   created() {
@@ -69,9 +54,21 @@ export default {
   methods: {
     async queryCompany() {
       try {
-        this.responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", false).then(this.responseMapper)
+        console.warn("Running query company")
+        const responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", true).then(this.responseMapper)
+        this.companyID=responseArray[0].companyId
       } catch (error) {
+        await this.companyIdFallback()
         console.error(error)
+      }
+    },
+    async companyIdFallback() {
+      try {
+        console.warn("Running ID fallback")
+        const companyList = await getCompaniesWrapper.perform("", "", true)
+        this.companyID=companyList[0].companyId
+      } catch (error) {
+        console.log(error)
       }
     }
   }
