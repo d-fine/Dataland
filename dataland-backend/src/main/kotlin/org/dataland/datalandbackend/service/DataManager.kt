@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.datalandbackend.model.EuTaxonomyNonFinancialData
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
@@ -195,7 +195,7 @@ class DataManager(
         var totalSum = BigDecimal(0.0)
         for (company in companies) {
             val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
-            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
+            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyNonFinancialData::class.java)
             eligibleSum += data.capex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.opex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.revenue?.eligiblePercentage ?: BigDecimal(0.0)

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.datalandbackend.model.EuTaxonomyNonFinancialData
 import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
 import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
@@ -142,9 +142,9 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
+    fun buildListOfEuTaxonomyData(): List<EuTaxonomyNonFinancialData> {
         return rawCsvData.filter { validateLine(it) }.map {
-            EuTaxonomyData(
+            EuTaxonomyNonFinancialData(
                 reportObligation = getReportingObligation(it),
                 attestation = getAttestation(it),
                 capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
