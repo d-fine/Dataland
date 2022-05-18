@@ -16,23 +16,36 @@ describe('Population Test', () => {
         });
     });
 
+    function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
+        return fetch(`${Cypress.env("API")}/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(element)
+        }).then(response => {
+            assert(response.status.toString() === "200",
+                `Got status code ${response.status.toString()}. Expected: 200`)
+        })
+    }
+
+    function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
+        return uploadSingleElementOnce(endpoint, element)
+            .catch(_ =>
+                uploadSingleElementOnce(endpoint, element)
+            ).catch(_ =>
+                uploadSingleElementOnce(endpoint, element)
+            )
+    }
+
     function uploadData(dataArray: Array<object>, endpoint: string) {
         const chunkSize = 80;
         let promise = Promise.resolve()
         for (let i = 0; i < dataArray.length; i += chunkSize) {
             const chunk = dataArray.slice(i, i + chunkSize);
-            promise.then(() => Promise.all(chunk.map((element: object) => {
-                    fetch(`${Cypress.env("API")}/${endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(element)
-                    }).then(response => {
-                        assert(response.status.toString() === "200",
-                            `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
-                    })
-                })
+            promise.then(() => Promise.all(chunk.map(element =>
+                    uploadSingleElementWithRetries(endpoint, element)
+                )
             ))
         }
         return promise
