@@ -1,3 +1,6 @@
+import { doThingsInChunks } from "../../support/utility";
+
+const chunkSize = 40
 describe('Population Test',
     () => {
         Cypress.config({
@@ -17,7 +20,7 @@ describe('Population Test',
             });
         });
 
-        function uploadSingleElementOnce(endpoint: string, element: object, additional_info: string): Promise<void> {
+        function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
             return fetch(`${Cypress.env("API")}/${endpoint}`, {
                 method: 'POST',
                 headers: {
@@ -27,36 +30,24 @@ describe('Population Test',
             }).then(response => {
                 assert(response.status.toString() === "200",
                     `Got status code ${response.status.toString()} during upload of single ` +
-                    `Element to ${endpoint}. Expected: 200. Additional Info: ${additional_info} `)
+                    `Element to ${endpoint}. Expected: 200.`)
             })
         }
 
         function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
-            return uploadSingleElementOnce(endpoint, element, "first attempt")
+            return uploadSingleElementOnce(endpoint, element)
                 .catch(_ =>
-                    uploadSingleElementOnce(endpoint, element, "retry number one")
-                ).catch(_ =>
-                    uploadSingleElementOnce(endpoint, element, "retry number two")
-                )
+                    uploadSingleElementOnce(endpoint, element))
+                .catch(_ =>
+                    uploadSingleElementOnce(endpoint, element))
         }
 
-        function uploadData(dataArray: Array<object>, endpoint: string) {
-            const chunkSize = 40;
-            const promise = Promise.resolve()
-            for (let i = 0; i < dataArray.length; i += chunkSize) {
-                const chunk = dataArray.slice(i, i + chunkSize);
-                promise.then(() => Promise.all(chunk.map(element =>
-                        uploadSingleElementWithRetries(endpoint, element)
-                    )
-                ))
-            }
-            promise.then(()=>{cy.log(`Uploaded ${dataArray.length} datasets to ${endpoint}`)})
-            return promise
-        }
-
-
-        it('Populate Companies', () => {
-            uploadData(companiesData, "companies")
+        it('Populate Companies', async () => {
+            await doThingsInChunks(
+                companiesData,
+                chunkSize,
+                (element: object) => uploadSingleElementWithRetries("companies", element)
+            )
         });
 
         it('Check if all the company ids can be retrieved', () => {
@@ -78,7 +69,11 @@ describe('Population Test',
         });
 
         it('Populate EU Taxonomy Data', async () => {
-            await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
+            await doThingsInChunks(
+                companyAssociatedEuTaxonomyData,
+                chunkSize,
+                (element: object) => uploadSingleElementWithRetries("data/eutaxonomies", element)
+            )
         });
 
         it('Check if all the data ids can be retrieved', () => {
