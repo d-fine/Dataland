@@ -14,12 +14,15 @@
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
           </Column>
-          <Column field="companyInformation.permId" header="PERM ID" :sortable="false" class="surface-0 w-3">
+          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-1">
+            <template #header>
+              <span class="uppercase">perm ID</span> <i class="material-icons pl-2" aria-hidden="true">info</i>
+            </template>
             <template #body="{data}">
               {{data.permId}}
             </template>
           </Column>
-          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-3">
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
           </Column>
           <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
             <template #body="{data}">
@@ -49,6 +52,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import {numberFormatter} from "@/utils/currencyMagnitude";
+import Tooltip from 'primevue/tooltip';
 
 export default {
   name: "EuTaxoSearchResults",
