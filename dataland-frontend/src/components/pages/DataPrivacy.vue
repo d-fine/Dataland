@@ -4,23 +4,24 @@
       <div class="grid align-items-center m-0">
         <div class="col-6 text-left">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2"/>
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
           </router-link>
-          <p>
-            <MarginWrapper class="text-left pl-2">
-              <BackButton/>
-            </MarginWrapper>
-          </p>
-          <div class="pl-4">
-            <h2>
-              Data Privacy
-            </h2>
-            <p>
-              to do
-            </p>
-          </div>
         </div>
       </div>
+      <MarginWrapper class="text-left pl-2">
+        <BackButton/>
+      </MarginWrapper>
+      <MarginWrapper class="text-left pl-2">
+        <div class="col-6 text-justify">
+
+          <h2>
+            Data Privacy
+          </h2>
+          <p>
+            Soon you will find our data privacy information here.
+          </p>
+        </div>
+      </MarginWrapper>
     </div>
   </div>
 </template>

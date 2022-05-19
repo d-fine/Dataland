@@ -30,6 +30,7 @@ describe('Search Taxonomy', function () {
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = companiesData[0].companyName
+        const PermIdText = "Permanent Identifier (PermID)"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})
@@ -40,8 +41,19 @@ describe('Search Taxonomy', function () {
             .should('contain', "Results")
         cy.get('table.p-datatable-table').should('exist')
         cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','PERM ID')
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseenter', "center")
+        cy.get('.p-tooltip')
+            .should('be.visible')
+            .contains(PermIdText)
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseleave')
+        cy.get('.p-tooltip')
+            .should('not.exist')
         cy.get('table.p-datatable-table').contains('th','SECTOR')
         cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('th','LOCATION')
         cy.get('table.p-datatable-table').contains('td','VIEW')
             .contains('a', 'VIEW')
             .click()

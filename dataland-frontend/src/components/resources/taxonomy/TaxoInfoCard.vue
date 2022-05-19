@@ -6,12 +6,12 @@
         <div class="col-6 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div class="col-6 text-left">
-          <div class="col-offset-10 material-icons" aria-hidden="true" v-tooltip.top="tooltipText ? {
+        <div class="col-2 col-offset-4 text-right">
+          <i :title="title" class="material-icons" aria-hidden="true" v-tooltip.top="tooltipText ? {
                 value: tooltipText,
                 class: 'd-tooltip-mw25'
               } : '' ">info
-          </div>
+          </i>
         </div>
         <div class="col-12 text-left">
           <span>{{value}}</span>

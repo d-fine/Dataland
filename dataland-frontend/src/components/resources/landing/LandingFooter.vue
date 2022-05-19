@@ -18,12 +18,12 @@
               <p class="font-semibold">Legal</p>
             </div>
             <div class="col-12">
-              <router-link to="/LandingImprint" class="no-underline">
-                <span class="font-semibold underline text-primary cursor-pointer">Imprint</span>
+              <router-link to="/imprint" class="no-underline">
+                <span class="font-semibold underline text-primary cursor-pointer" title="imprint">Imprint</span>
               </router-link>
-              <router-link to="/DataPrivacy" class="no-underline">
-                <p class="font-semibold underline text-primary cursor-pointer">
-                  Privacy Policy
+              <router-link to="/dataprivacy" class="no-underline">
+                <p class="font-semibold underline text-primary cursor-pointer" title="data privacy">
+                  Data Privacy
                 </p>
               </router-link>
             </div>

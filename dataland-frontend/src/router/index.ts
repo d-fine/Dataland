@@ -7,7 +7,7 @@ import CompanyInformation from "@/components/resources/company/CompanyInformatio
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
-import LandingImprint from "@/components/pages/LandingImprint.vue";
+import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 
 const routes = [
@@ -55,14 +55,14 @@ const routes = [
         component: CompanyTaxonomy,
     },
     {
-        path: "/DataPrivacy",
+        path: "/dataprivacy",
         name: "DataPrivacy",
         component: DataPrivacy,
     },
     {
-        path: "/LandingImprint",
+        path: "/imprint",
         name: "LandingImprint",
-        component: LandingImprint,
+        component: TheImprint,
     },
 ];
 

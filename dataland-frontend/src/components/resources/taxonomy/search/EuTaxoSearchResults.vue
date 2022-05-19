@@ -16,14 +16,14 @@
           </Column>
           <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-1">
             <template #header>
-              <span class="uppercase">perm ID</span> <i class="material-icons pl-2" aria-hidden="true" v-tooltip.top="{
+              <span class="uppercase">PERM ID</span> <i class="material-icons pl-2" aria-hidden="true" title="Perm ID" v-tooltip.top="{
               value: 'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
                'for data items including organizations, instruments, funds, issuers and people. You can search and verify an id at permid.org/search',
               class: 'd-tooltip-mw25'
             }">info</i>
             </template>
             <template #body="{data}">
-              {{data.companyInformation.PermId}}
+              {{data.permId}}
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
