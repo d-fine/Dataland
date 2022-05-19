@@ -1,6 +1,7 @@
+const timeout = 1201000
 describe('EU Taxonomy Data and Cards', function () {
-    let companyIdList:Array<string> = []
-    const companyNames:Array<string>  = ["eligible & total", "eligible"]
+    let companyIdList: Array<string> = []
+    const companyNames: Array<string> = ["eligible & total", "eligible"]
     it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {
             cy.visit("/upload")
@@ -11,20 +12,23 @@ describe('EU Taxonomy Data and Cards', function () {
             cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
             cy.get('select[name=identifierType]').select('ISIN')
             cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
+            cy.intercept('**/api/companies').as('postCompany')
             cy.get('button[name="postCompanyData"]').click()
-            cy.get('body').should("contain", "success")
-            cy.get('span[title=companyId]').then(($companyID) => {
-                const id = $companyID.text()
-                companyIdList.push(id)
-                cy.visit(`/companies/${id}`)
-                cy.get('body').should("contain", companyName)
+            cy.wait('@postCompany', {timeout: timeout}).then(() => {
+                cy.get('body').should("contain", "success")
+                cy.get('span[title=companyId]').then(($companyID) => {
+                    const id = $companyID.text()
+                    companyIdList.push(id)
+                    cy.visit(`/companies/${id}`)
+                    cy.get('body').should("contain", companyName)
+                })
             })
         })
     });
 
     it('Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers', () => {
-        const eligible=0.67
-        const total="15422154"
+        const eligible = 0.67
+        const total = "15422154"
         cy.visit("/upload")
         cy.get('input[name="companyId"]').type(companyIdList[0], {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
@@ -40,7 +44,7 @@ describe('EU Taxonomy Data and Cards', function () {
                 const companyID = $companyID.text()
                 cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
+                cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
                     cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
                     cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100 * eligible}%`)
                     cy.get('.font-semibold.text-lg').should('contain', '€')
@@ -50,7 +54,7 @@ describe('EU Taxonomy Data and Cards', function () {
     });
 
     it('Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers', () => {
-        const eligible=0.67
+        const eligible = 0.67
         cy.visit("/upload")
         cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
@@ -65,7 +69,7 @@ describe('EU Taxonomy Data and Cards', function () {
                 const companyID = $companyID.text()
                 cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
+                cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
                     cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100 * eligible}%`)
                     cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
                     cy.get('.font-semibold.text-lg').should('not.exist')

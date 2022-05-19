@@ -4,7 +4,7 @@ describe('Tooltips test suite', () => {
         const AssuranceText = "Level of Assurance specifies the confidence level"
         cy.intercept('**/api/companies/*').as('retrieveCompany')
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-            cy.visit("/companies/" + companyIdList[8] + "/eutaxonomies")
+            cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies")
             cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
                 cy.get('#app', {timeout: 2000}).should("exist")
                 cy.get('.p-card-content .col-12.text-left strong')

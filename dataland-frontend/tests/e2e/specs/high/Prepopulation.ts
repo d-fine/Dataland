@@ -1,84 +1,98 @@
-describe('Population Test',  () => {
-    Cypress.config({
-        defaultCommandTimeout: 480000
-    })
+import { doThingsInChunks } from "../../support/utility";
 
-    let eutaxonomiesData: any
-    let companiesData: any
-    const companyAssociatedEuTaxonomyData: any = []
+const chunkSize = 40
+describe('Population Test',
+    () => {
+        Cypress.config({
+            defaultCommandTimeout: 900 * 1000
+        })
 
-    before(function () {
-        cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
-            eutaxonomiesData = eutaxonomies
+        let eutaxonomiesData: any
+        let companiesData: any
+        const companyAssociatedEuTaxonomyData: any = []
+
+        before(function () {
+            cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
+                eutaxonomiesData = eutaxonomies
+            });
+            cy.fixture('CompanyInformation').then(function (companies) {
+                companiesData = companies
+            });
         });
-        cy.fixture('CompanyInformation').then(function (companies) {
-            companiesData = companies
-        });
-    });
 
-    async function uploadData(dataArray: Array<object>, endpoint: string) {
-        console.time(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
-        const chunkSize = 80;
-        for (let i = 0; i < dataArray.length; i += chunkSize) {
-            const chunk = dataArray.slice(i, i + chunkSize);
-            await Promise.all(chunk.map(async (element: object) => {
-                    await fetch(`${Cypress.env("API")}/${endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(element)
-                    }).then(response => {
-                        assert(response.status.toString() === "200",
-                            `Got status code ${response.status.toString()} for index ${i}. Expected: 200`)
-                    })
-                })
-            )
+        function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
+            return fetch(`${Cypress.env("API")}/${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(element)
+            }).then(response => {
+                assert(response.status.toString() === "200",
+                    `Got status code ${response.status.toString()} during upload of single ` +
+                    `Element to ${endpoint}. Expected: 200.`)
+            })
         }
-        console.timeEnd(`The elapsed time to upload ${dataArray.length} items for '${endpoint}'`)
-    }
 
+        function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
+            return uploadSingleElementOnce(endpoint, element)
+                .catch(_ =>
+                    uploadSingleElementOnce(endpoint, element))
+                .catch(_ =>
+                    uploadSingleElementOnce(endpoint, element))
+        }
 
-    it('Populate Companies', async () => {
-        await uploadData(companiesData, "companies")
-    });
+        it('Populate Companies', async () => {
+            await doThingsInChunks(
+                companiesData,
+                chunkSize,
+                (element: object) => uploadSingleElementWithRetries("companies", element)
+            )
+        });
 
-    it('Check if all the company ids can be retrieved', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-            assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
-                `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
-            for (const companyIdIndex in companyIdList) {
-                const companyId = companyIdList[companyIdIndex]
-                assert(typeof companyId !== 'undefined',
-                    `Validation of company number ${companyIdIndex}`)
-                if (typeof eutaxonomiesData[companyIdIndex] == "object") {
-                    companyAssociatedEuTaxonomyData.push({"companyId": companyId, "data": eutaxonomiesData[companyIdIndex]})
+        it('Check if all the company ids can be retrieved', () => {
+            cy.retrieveCompanyIdsList().then((companyIdList: any) => {
+                assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
+                for (const companyIdIndex in companyIdList) {
+                    const companyId = companyIdList[companyIdIndex]
+                    assert(typeof companyId !== 'undefined',
+                        `Validation of company number ${companyIdIndex}`)
+                    if (typeof eutaxonomiesData[companyIdIndex] == "object") {
+                        companyAssociatedEuTaxonomyData.push({
+                            "companyId": companyId,
+                            "data": eutaxonomiesData[companyIdIndex]
+                        })
+                    }
                 }
-            }
-        })
-    });
+            })
+        });
 
-    it('Populate EU Taxonomy Data', async () => {
-        await uploadData(companyAssociatedEuTaxonomyData, "data/eutaxonomies")
-    });
+        it('Populate EU Taxonomy Data', async () => {
+            await doThingsInChunks(
+                companyAssociatedEuTaxonomyData,
+                chunkSize,
+                (element: object) => uploadSingleElementWithRetries("data/eutaxonomies", element)
+            )
+        });
 
-    it('Check if all the data ids can be retrieved', () => {
-        cy.retrieveDataIdsList().then((dataIdList: any) => {
-            assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
-                `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
-            for (const dataIdIndex in dataIdList) {
-                assert(typeof dataIdList[dataIdIndex] !== 'undefined',
-                    `Validation of data number ${dataIdIndex}`)
-            }
-        })
+        it('Check if all the data ids can be retrieved', () => {
+            cy.retrieveDataIdsList().then((dataIdList: any) => {
+                assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
+                for (const dataIdIndex in dataIdList) {
+                    assert(typeof dataIdList[dataIdIndex] !== 'undefined',
+                        `Validation of data number ${dataIdIndex}`)
+                }
+            })
+        });
     });
-});
 
 describe('EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
@@ -92,7 +106,7 @@ describe('Company EU Taxonomy Data', () => {
     it('Check Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', { timeout: 60000 }).should('be.visible')
+            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
             cy.get('h3').contains("Revenue")
             cy.get('h3').contains("CapEx")
             cy.get('h3').contains("OpEx")
