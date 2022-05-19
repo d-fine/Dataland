@@ -10,14 +10,14 @@
         <div class="col-3 col-offset-3">
           <router-link to="/searchtaxonomy" class="no-underline">
           <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
-            <span class="d-letters d-button-font">
+            <span class="d-letters d-button">
               Join
             </span>
           </Button>
           </router-link>
           <router-link to="/searchtaxonomy" class="no-underline">
             <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button">
-              <span class="d-letters text-primary d-button-font">
+              <span class="d-letters text-primary d-button">
                 Login
               </span>
             </Button>
@@ -25,26 +25,26 @@
         </div>
       </div>
       <div class="grid align-items-center m-0">
-        <div class="col-4 col-offset-2">
+        <div class="col-4 col-offset-1">
           <h1 class="text-justify">COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE
             COSTS.</h1>
         </div>
-        <div class="col-4 col-offset-2">
+        <div class="col-4 col-offset-1">
           <router-link to="/searchtaxonomy">
             <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto">
           </router-link>
         </div>
       </div>
       <div class="grid text-left m-0">
-        <div class="col-10 col-offset-2 pb-0">
+        <div class="col-10 col-offset-1 pb-0">
           <p class="uppercase mb-0">Built by</p>
         </div>
-        <div class="col-1 col-offset-2 pt-0">
+        <div class="col-1 col-offset-1 pt-0">
           <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line"/>
         </div>
       </div>
       <div class="grid text-left m-0">
-        <div class="col-offset-2 col-10">
+        <div class="col-offset-1 col-10">
           <div class="grid align-items-baseline">
             <div class="col-1">
               <img src="@/assets/images/logos/pwc.svg" alt="pwc" class="pr-5"/>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-3 p-fluid pl-0">
                   <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem" name="get_started_button">
-                    <span class="d-letters d-button-font">
+                    <span class="d-letters d-button">
                       Get Started
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
@@ -100,17 +100,3 @@ export default {
 
 }
 </script>
-<style>
-.d-small-logo {
-  height: 1.25em;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.d-button-font {
-  font-family: IBMPlexSans, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-}
-
-</style>
