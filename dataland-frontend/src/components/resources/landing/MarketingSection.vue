@@ -18,7 +18,7 @@
   </div>
   <div class="grid m-0">
     <div class="col-offset-1 col-5 p-0">
-      <img src="@/assets/images/elements/Flow_Diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
+      <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
     </div>
     <div class="col-5 p-0 bg-primary">
       <div class="grid mt-6">
@@ -51,7 +51,7 @@
      </div>
     </div>
     <div class="col-5 p-0 ">
-      <img src="@/assets/images/elements/Data_Workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
+      <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
     </div>
   </div>
   <div class="text-center pt-6  m-0">

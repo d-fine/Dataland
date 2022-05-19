@@ -14,12 +14,19 @@
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
           </Column>
+          <Column field="companyInformation.permId" header="PERM ID" :sortable="false" class="surface-0 w-3">
+            <template #body="{data}">
+              {{data.permId}}
+            </template>
+          </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-3">
           </Column>
           <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
             <template #body="{data}">
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
+          </Column>
+          <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
           </Column>
           <Column field="companyId" header="" class="surface-0 w-2 d-datatable-column-right">
             <template #body="{data}">
