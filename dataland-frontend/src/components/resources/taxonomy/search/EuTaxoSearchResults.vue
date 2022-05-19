@@ -23,7 +23,7 @@
             }">info</i>
             </template>
             <template #body="{data}">
-              {{data.permId}}
+              {{data.companyInformation.PermId}}
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
