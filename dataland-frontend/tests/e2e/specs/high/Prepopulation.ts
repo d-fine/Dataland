@@ -1,4 +1,4 @@
-import { doThingsInChunks, uploadSingleElementWithRetries } from "../../support/utility";
+import {doThingsInChunks, uploadSingleElementWithRetries} from "../../support/utility";
 
 const chunkSize = 40
 describe('Population Test',
@@ -67,34 +67,42 @@ describe('Population Test',
     });
 
 describe('EU Taxonomy Data', () => {
-    it('Check Data Presence and Link route', () => {
+    it('Check Eu Taxonomy Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+            cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
-            cy.get('h3').contains("Revenue")
-            cy.get('h3').contains("CapEx")
-            cy.get('h3').contains("OpEx")
-            cy.get('.d-card').should('contain', 'Eligible')
-            cy.get('.d-card .p-progressbar').should('exist')
+            cy.wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
+                cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
+                cy.get('h3').contains("Revenue")
+                cy.get('h3').contains("CapEx")
+                cy.get('h3').contains("OpEx")
+                cy.get('.d-card').should('contain', 'Eligible')
+                cy.get('.d-card .p-progressbar').should('exist')
+            });
         });
     })
 });
 
 describe('Company EU Taxonomy Data', () => {
-    it('Check Data Presence and Link route', () => {
+    it('Check Company associated EU Taxonomy Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+            cy.intercept('**/api/companies/*').as('retrieveCompany')
+            cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
-            cy.get('h3').contains("Revenue")
-            cy.get('h3').contains("CapEx")
-            cy.get('h3').contains("OpEx")
-            cy.get('body').contains("Market Cap:")
-            cy.get('body').contains("Headquarter:")
-            cy.get('body').contains("Sector:")
-            cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
-            cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
-            cy.get('input[name=eu_taxonomy_search_input]').should('exist')
-        })
+            cy.wait('@retrieveCompany', {timeout: 60000})
+                .wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
+                cy.get('h3').should('be.visible')
+                cy.get('h3').contains("Revenue")
+                cy.get('h3').contains("CapEx")
+                cy.get('h3').contains("OpEx")
+                cy.get('body').contains("Market Cap:")
+                cy.get('body').contains("Headquarter:")
+                cy.get('body').contains("Sector:")
+                cy.get('.grid.align-items-end.text-left').contains('Financial Data 2021')
+                cy.get('.grid.align-items-end.text-left').contains('Sustainability Data 2021')
+                cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+            });
+        });
     });
 });
 

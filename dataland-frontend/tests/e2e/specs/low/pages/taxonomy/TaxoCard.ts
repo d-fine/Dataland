@@ -77,8 +77,6 @@ describe('EU Taxonomy Data and Cards', function () {
 
     it('Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers', () => {
         const eligible = 0.67
-
-
         uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
             ()=> {
                 cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
