@@ -37,7 +37,7 @@ describe('EU Taxonomy Data and Cards', function () {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
             cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total)
         }
-        cy.intercept('**/api/data/eutaxonomies/*').as('postTaxonomyData')
+        cy.intercept('**/api/data/eutaxonomies').as('postTaxonomyData')
         cy.get('button[name="postEUData"]').click({force: true})
         cy.wait('@postTaxonomyData', {timeout: timeout}).then(() => {
             cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
@@ -65,7 +65,7 @@ describe('EU Taxonomy Data and Cards', function () {
         for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
         }
-        cy.intercept('**/api/data/eutaxonomies/*').as('postTaxonomyData')
+        cy.intercept('**/api/data/eutaxonomies').as('postTaxonomyData')
         cy.get('button[name="postEUData"]').click({force: true})
         cy.wait('@postTaxonomyData', {timeout: timeout}).then(() => {
             cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
