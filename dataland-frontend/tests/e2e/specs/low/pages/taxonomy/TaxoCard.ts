@@ -1,4 +1,4 @@
-const timeout = 1201000
+const timeout = 120 * 1000
 describe('EU Taxonomy Data and Cards', function () {
     let companyIdList: Array<string> = []
     const companyNames: Array<string> = ["eligible & total", "eligible"]
@@ -37,17 +37,20 @@ describe('EU Taxonomy Data and Cards', function () {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
             cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total)
         }
+        cy.intercept('**/api/data/eutaxonomies/*').as('postTaxonomyData')
         cy.get('button[name="postEUData"]').click({force: true})
-        cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
-        cy.get('span[title=dataId]').then(() => {
-            cy.get('span[title=companyId]').then(($companyID) => {
-                const companyID = $companyID.text()
-                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
-                cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
-                    cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
-                    cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100 * eligible}%`)
-                    cy.get('.font-semibold.text-lg').should('contain', '€')
+        cy.wait('@postTaxonomyData', {timeout: timeout}).then(() => {
+            cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
+            cy.get('span[title=dataId]').then(() => {
+                cy.get('span[title=companyId]').then(($companyID) => {
+                    const companyID = $companyID.text()
+                    cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
+                    cy.visit(`/companies/${companyID}/eutaxonomies`)
+                    cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
+                        cy.get('body').should('contain', 'Eligible Revenue').should("contain", `Out of total of`)
+                        cy.get('body').should('contain', 'Eligible Revenue').should("contain", `${100 * eligible}%`)
+                        cy.get('.font-semibold.text-lg').should('contain', '€')
+                    })
                 })
             })
         })
@@ -62,17 +65,20 @@ describe('EU Taxonomy Data and Cards', function () {
         for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString())
         }
+        cy.intercept('**/api/data/eutaxonomies/*').as('postTaxonomyData')
         cy.get('button[name="postEUData"]').click({force: true})
-        cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
-        cy.get('span[title=dataId]').then(() => {
-            cy.get('span[title=companyId]').then(($companyID) => {
-                const companyID = $companyID.text()
-                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
-                cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
-                    cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100 * eligible}%`)
-                    cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
-                    cy.get('.font-semibold.text-lg').should('not.exist')
+        cy.wait('@postTaxonomyData', {timeout: timeout}).then(() => {
+            cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
+            cy.get('span[title=dataId]').then(() => {
+                cy.get('span[title=companyId]').then(($companyID) => {
+                    const companyID = $companyID.text()
+                    cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
+                    cy.visit(`/companies/${companyID}/eutaxonomies`)
+                    cy.wait('@retrieveTaxonomyData', {timeout: timeout}).then(() => {
+                        cy.get('body').should('contain', 'Eligible OpEx').should("contain", `${100 * eligible}%`)
+                        cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", `Out of total of`)
+                        cy.get('.font-semibold.text-lg').should('not.exist')
+                    })
                 })
             })
         })
