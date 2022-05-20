@@ -10,9 +10,9 @@
   "testFiles": [
     "verify_deployment/**/*.ts",
     "high/**/*.ts",
-    "upload/**/*.ts",
     "medium/**/*.ts",
     "low/**/*.ts",
-    "previsit/**/*.ts"
+    "previsit/**/*.ts",
+    "dev/**/*.ts"
   ]
 }

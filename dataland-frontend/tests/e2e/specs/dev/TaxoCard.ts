@@ -1,6 +1,6 @@
 const timeout = 120 * 1000
 describe('EU Taxonomy Data and Cards', function () {
-    let companyIdList: Array<string> = []
+    const companyIdList: Array<string> = []
     const companyNames: Array<string> = ["eligible & total", "eligible"]
     it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {
@@ -77,8 +77,6 @@ describe('EU Taxonomy Data and Cards', function () {
 
     it('Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers', () => {
         const eligible = 0.67
-
-
         uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
             ()=> {
                 cy.get('input[name="companyId"]').type(companyIdList[1], {force: true})
