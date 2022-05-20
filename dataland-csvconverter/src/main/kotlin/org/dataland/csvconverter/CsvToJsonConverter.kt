@@ -32,14 +32,14 @@ class CsvToJsonConverter {
     private var rawCsvData: List<Map<String, String>> = listOf()
 
     private val columnMapping = mapOf(
-        "companyName" to "Company name",
+        "companyName" to "Unternehmensname",
         "headquarters" to "Headquarter",
         "sector" to "Sector",
-        "marketCap" to "Market Capitalization EUR",
+        "marketCap" to "Market Capitalization EURmm",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
-        "totalRevenue" to "Total Revenue EUR",
-        "totalCapex" to "Total CapEx EUR",
-        "totalOpex" to "Total OpEx EUR",
+        "totalRevenue" to "Total Revenue EURmm",
+        "totalCapex" to "Total CapEx EURmm",
+        "totalOpex" to "Total OpEx EURmm",
         "eligibleRevenue" to "Eligible Revenue",
         "eligibleCapex" to "Eligible CapEx",
         "eligibleOpex" to "Eligible OpEx",
@@ -55,7 +55,6 @@ class CsvToJsonConverter {
         StockIndex.PrimeStandard.name to "Prime Standard",
         StockIndex.GeneralStandard.name to "General Standard",
         StockIndex.Hdax.name to "HDAX",
-        StockIndex.Scale.name to "Scale",
         StockIndex.Cdax.name to "CDAX",
         StockIndex.Gex.name to "GEX",
         StockIndex.Dax.name to "DAX",
@@ -136,7 +135,7 @@ class CsvToJsonConverter {
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return StockIndex.values().filter { csvLineData[columnMapping[it.name]]!!.isNotBlank() }.toSet()
+        return StockIndex.values().filter { (csvLineData[columnMapping[it.name]] ?: "").isNotBlank() }.toSet()
     }
 
     /**
