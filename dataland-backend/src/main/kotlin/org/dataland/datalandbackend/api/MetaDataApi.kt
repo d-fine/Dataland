@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -31,6 +32,7 @@ interface MetaDataApi {
     @GetMapping(
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId filters the requested meta info to a specific company.
@@ -54,6 +56,7 @@ interface MetaDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to retrieve meta info about a specific data set
      * @param dataId as unique identifier for a specific data set
@@ -74,6 +77,7 @@ interface MetaDataApi {
         value = ["/greenAssetRatio"],
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to retrieve the green asset ratio of a specific index or for all indices (if none is selected)
      * @param selectedIndex determines which index the green asset ratio is retrieved for
