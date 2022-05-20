@@ -1,4 +1,4 @@
-import { doThingsInChunks } from "../../support/utility";
+import { doThingsInChunks, uploadSingleElementWithRetries } from "../../support/utility";
 
 const chunkSize = 40
 describe('Population Test',
@@ -19,28 +19,6 @@ describe('Population Test',
                 companiesData = companies
             });
         });
-
-        function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
-            return fetch(`${Cypress.env("API")}/${endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(element)
-            }).then(response => {
-                assert(response.status.toString() === "200",
-                    `Got status code ${response.status.toString()} during upload of single ` +
-                    `Element to ${endpoint}. Expected: 200.`)
-            })
-        }
-
-        function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
-            return uploadSingleElementOnce(endpoint, element)
-                .catch(_ =>
-                    uploadSingleElementOnce(endpoint, element))
-                .catch(_ =>
-                    uploadSingleElementOnce(endpoint, element))
-        }
 
         it('Populate Companies', async () => {
             await doThingsInChunks(
