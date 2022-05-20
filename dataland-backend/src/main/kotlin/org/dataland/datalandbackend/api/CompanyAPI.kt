@@ -59,6 +59,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('USER')")
             /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.

@@ -12,13 +12,13 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 
 @KeycloakConfiguration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     private val public_links = arrayOf(
         "/actuator/health",
-        "/actuator/info",
-        "/companies"
+        "/swagger-ui/**",
+        "/v3/api-docs"
     )
 
     @Autowired
@@ -39,7 +39,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         super.configure(http)
         http
             .authorizeRequests()
-            .antMatchers(*public_links).permitAll() // all requests except the /api/actuator/** need to be fully authenticated
+            .antMatchers(*public_links).permitAll() // all requests except the ones to the endpoints in public_links need to be fully authenticated
             //.antMatchers("/companies").permitAll()
             .anyRequest().fullyAuthenticated()
     }
