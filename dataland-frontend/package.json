@@ -9,7 +9,7 @@
     "teste2e": "vue-cli-service test:e2e --mode development --url http://localhost:8090",
     "testheadless": "vue-cli-service test:e2e --mode development --url http://localhost:8090 --headless",
     "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
-    "testpreview": "vue-cli-service test:e2e --url http://preview-dataland.duckdns.org/ --headless",
+    "testpreview": "vue-cli-service test:e2e --url http://preview-dataland.duckdns.org/ --headless --config-file cypress_preview.json",
     "testremote": "vue-cli-service test:e2e --url http://localhost",
     "testunit": "vue-cli-service test:unit",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/fakeFixtures.ts",
