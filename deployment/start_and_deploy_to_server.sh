@@ -3,12 +3,17 @@ set -u
 
 environment=$1
 
-echo "Checking if EuroDaT is available before deploying to target server."
-if ! curl -f -X 'GET' "http://${TRUSTEE_IP}/api/ids/description" -H 'accept: application/json' >/dev/null 2>&1; then
-  echo "EuroDaT is not available."
-  exit 1
+if [[ $IN_MEMORY == true ]]; then
+  profile=productionInMemory
+else
+  profile=production
+  echo "Checking if EuroDaT is available before deploying to target server."
+  if ! curl -f -X 'GET' "http://${TRUSTEE_IP}/api/ids/description" -H 'accept: application/json' >/dev/null 2>&1; then
+    echo "EuroDaT is not available."
+    exit 1
+  fi
+  echo "EuroDat is available."
 fi
-echo "EuroDat is available."
 
 echo "Starting ${environment} server"
 curl "${TARGETSERVER_STARTUP_URL}" > /dev/null
@@ -37,4 +42,4 @@ scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ .
 scp ./dataland-frontend/Dockerfile ubuntu@$target_server_url:$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@$target_server_url:$location/DockerfileBackend
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@$target_server_url:$location/jar/dataland-backend.jar
-ssh ubuntu@$target_server_url "cd $location; sudo docker-compose pull; sudo docker-compose --profile production up -d --build"
+ssh ubuntu@$target_server_url "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"

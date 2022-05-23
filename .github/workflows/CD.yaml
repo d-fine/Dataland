@@ -7,9 +7,6 @@ env:
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
-  push:
-    branches:
-      - 'main'
   workflow_dispatch:
     inputs:
       realData:
