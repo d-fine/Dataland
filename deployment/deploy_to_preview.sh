@@ -1,10 +1,12 @@
 #!/bin/bash
 set -u
 
-profile=production
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
+else
+  profile=production
 fi
+
 server="preview-dataland.duckdns.org"
 mkdir -p ~/.ssh/
 echo "$server ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k=" >  ~/.ssh/known_hosts
