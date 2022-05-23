@@ -1,4 +1,5 @@
 import {doThingsInChunks, uploadSingleElementWithRetries} from "../../support/utility";
+import {EuTaxonomyData, CompanyInformation} from "../../../../build/clients/backend/api"
 
 const chunkSize = 40
 describe('Population Test',
@@ -7,7 +8,7 @@ describe('Population Test',
             defaultCommandTimeout: 900 * 1000
         })
 
-        let companiesWithData: Array<{companyInformation: {[key:string]:any}; euTaxonomyData: object}>
+        let companiesWithData: Array<{companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData}>
 
         before(function () {
             cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
