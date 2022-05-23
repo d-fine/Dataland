@@ -7,7 +7,7 @@ describe('Population Test',
             defaultCommandTimeout: 900 * 1000
         })
 
-        let companiesWithData: Array<{companyInformation: object; euTaxonomyData: object}>
+        let companiesWithData: Array<{companyInformation: {[key:string]:any}; euTaxonomyData: object}>
 
         before(function () {
             cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
@@ -44,7 +44,6 @@ describe('Population Test',
             })
         });
 
-
         it('Check if all the data ids can be retrieved', () => {
             cy.retrieveDataIdsList().then((dataIdList: any) => {
                 assert(dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
@@ -54,6 +53,29 @@ describe('Population Test',
                         `Validation of data number ${dataIdIndex}`)
                 }
             })
+        });
+
+        it('Company Name Input field exists and works', () => {
+            const inputValue = companiesWithData[0].companyInformation.companyName
+            cy.visit("/search")
+            cy.get('input[name=companyName]')
+                .should('not.be.disabled')
+                .type(inputValue, {force: true})
+                .should('have.value', inputValue)
+            cy.intercept('**/api/companies*').as('retrieveCompany')
+            cy.get('button[name=getCompanies]').click()
+            cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
+                cy.get('td').contains("VIEW")
+                    .contains('a', 'VIEW')
+                    .click().url().should('include', '/companies/')
+            })
+        });
+
+        it('Show all companies button exists', () => {
+            cy.visit("/search")
+            cy.get('button.p-button').contains('Show all companies')
+                .should('not.be.disabled')
+                .click()
         });
     });
 
@@ -93,38 +115,5 @@ describe('Company EU Taxonomy Data', () => {
                     cy.get('input[name=eu_taxonomy_search_input]').should('exist')
             });
         });
-    });
-});
-
-describe('Company Data', () => {
-
-    let companiesWithData: Array<{companyInformation: any; euTaxonomyData: any}>
-
-    before(function () {
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
-            companiesWithData = companies
-        });
-    });
-    it('Company Name Input field exists and works', () => {
-        const inputValue = companiesWithData[0].companyInformation.companyName
-        cy.visit("/search")
-        cy.get('input[name=companyName]')
-            .should('not.be.disabled')
-            .type(inputValue, {force: true})
-            .should('have.value', inputValue)
-        cy.intercept('**/api/companies*').as('retrieveCompany')
-        cy.get('button[name=getCompanies]').click()
-        cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
-            cy.get('td').contains("VIEW")
-                .contains('a', 'VIEW')
-                .click().url().should('include', '/companies/')
-        })
-    });
-
-    it('Show all companies button exists', () => {
-        cy.visit("/search")
-        cy.get('button.p-button').contains('Show all companies')
-            .should('not.be.disabled')
-            .click()
     });
 });
