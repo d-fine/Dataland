@@ -12,7 +12,7 @@
     "high/**/*.ts",
     "medium/**/*.ts",
     "low/**/*.ts",
-    "previsit/**/*.ts",
-    "dev/**/*.ts"
+    "dev/**/*.ts",
+    "previsit/**/*.ts"
   ]
 }

@@ -11,7 +11,7 @@ export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, proc
     return promise
 }
 
-export function uploadSingleElementOnce(endpoint: string, element: object): Promise<void> {
+export function uploadSingleElementOnce(endpoint: string, element: object): Promise<any> {
     return fetch(`${Cypress.env("API")}/${endpoint}`, {
         method: 'POST',
         headers: {
@@ -22,10 +22,11 @@ export function uploadSingleElementOnce(endpoint: string, element: object): Prom
         assert(response.status.toString() === "200",
             `Got status code ${response.status.toString()} during upload of single ` +
             `Element to ${endpoint}. Expected: 200.`)
+        return response.json()
     })
 }
 
-export function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<void> {
+export function uploadSingleElementWithRetries(endpoint: string, element: object): Promise<any> {
     return uploadSingleElementOnce(endpoint, element)
         .catch(_ =>
             uploadSingleElementOnce(endpoint, element))
