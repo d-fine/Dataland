@@ -1,6 +1,10 @@
 #!/bin/bash
 set -u
 
+profile=production
+if [[ $IN_MEMORY == true ]]; then
+  profile=productionInMemory
+fi
 server="preview-dataland.duckdns.org"
 mkdir -p ~/.ssh/
 echo "$server ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNGocXXehCSfKoYwGdaYUpjvNm7gZE2LS7Nl/gGGXSxqwbGT+X6b+q7AGwhwZpFY9u17wv4NY3EOCK1cGaeot4k=" >  ~/.ssh/known_hosts
@@ -23,4 +27,4 @@ scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ .
 scp ./dataland-frontend/Dockerfile ubuntu@$server:$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@$server:$location/DockerfileBackend
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@$server:$location/jar/dataland-backend.jar
-ssh ubuntu@$server "cd $location; sudo docker-compose pull; sudo -E docker-compose --profile production up -d --build"
+ssh ubuntu@$server "cd $location; sudo docker-compose pull; sudo -E docker-compose --profile $profile up -d --build"

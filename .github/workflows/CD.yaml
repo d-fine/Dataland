@@ -53,14 +53,6 @@ jobs:
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
       - name: Start Preview Server
         run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-      - name: Use in memory storage on demand
-        run: |
-          if [[ $IN_MEMORY == true ]]; then
-            echo "Changing data storage to in memory only instead of trustee"
-            cp ./deployment/docker-compose_inMemory.yml ./docker-compose.yml
-          fi
-        env:
-          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
       - name: Deploy to Preview
         run: ./deployment/deploy_to_preview.sh
         env:
@@ -68,6 +60,7 @@ jobs:
           TRUSTEE_KEYCLOAK_IP: ${{ secrets.TRUSTEE_KEYCLOAK_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
         env:
