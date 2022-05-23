@@ -3,9 +3,12 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.DATA_READER
+import org.dataland.datalandbackend.DATA_UPLOADER
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,7 +34,7 @@ interface DataAPI<T> {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @Secured(DATA_UPLOADER)
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored
@@ -53,7 +56,7 @@ interface DataAPI<T> {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('USER')")
+    @Secured(DATA_READER)
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store
