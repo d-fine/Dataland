@@ -1,4 +1,5 @@
 import {doThingsInChunks, uploadSingleElementWithRetries} from "../../support/utility";
+import {EuTaxonomyData, CompanyInformation} from "../../../../build/clients/backend/api"
 
 const chunkSize = 40
 describe('Population Test',
@@ -7,62 +8,75 @@ describe('Population Test',
             defaultCommandTimeout: 900 * 1000
         })
 
-        let eutaxonomiesData: any
-        let companiesData: any
-        const companyAssociatedEuTaxonomyData: any = []
+        let companiesWithData: Array<{companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData}>
 
         before(function () {
-            cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
-                eutaxonomiesData = eutaxonomies
-            });
-            cy.fixture('CompanyInformation').then(function (companies) {
-                companiesData = companies
+            cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
+                companiesWithData = companies
             });
         });
 
-        it('Populate Companies', async () => {
+        it('Populate Companies and Eu Taxonomy Data', async () => {
             await doThingsInChunks(
-                companiesData,
+                companiesWithData,
                 chunkSize,
-                (element: object) => uploadSingleElementWithRetries("companies", element)
+                (element) => {
+                    uploadSingleElementWithRetries("companies", element.companyInformation).then(
+                        (json) => {
+                            uploadSingleElementWithRetries("data/eutaxonomies", {
+                                "companyId": json.companyId,
+                                "data": element.euTaxonomyData
+                            })
+                        }
+                    )
+                }
             )
         });
 
         it('Check if all the company ids can be retrieved', () => {
-            cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-                assert(companyIdList.length >= companiesData.length, // >= to avoid problem with several runs in a row
-                    `Uploaded ${companyIdList.length} out of ${companiesData.length} companies`)
+            cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+                assert(companyIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${companyIdList.length} out of ${companiesWithData.length} companies`)
                 for (const companyIdIndex in companyIdList) {
                     const companyId = companyIdList[companyIdIndex]
                     assert(typeof companyId !== 'undefined',
                         `Validation of company number ${companyIdIndex}`)
-                    if (typeof eutaxonomiesData[companyIdIndex] == "object") {
-                        companyAssociatedEuTaxonomyData.push({
-                            "companyId": companyId,
-                            "data": eutaxonomiesData[companyIdIndex]
-                        })
-                    }
                 }
             })
         });
 
-        it('Populate EU Taxonomy Data', async () => {
-            await doThingsInChunks(
-                companyAssociatedEuTaxonomyData,
-                chunkSize,
-                (element: object) => uploadSingleElementWithRetries("data/eutaxonomies", element)
-            )
-        });
-
         it('Check if all the data ids can be retrieved', () => {
             cy.retrieveDataIdsList().then((dataIdList: any) => {
-                assert(dataIdList.length >= eutaxonomiesData.length, // >= to avoid problem with several runs in a row
-                    `Uploaded ${dataIdList.length} out of ${eutaxonomiesData.length} data`)
+                assert(dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
+                    `Uploaded ${dataIdList.length} out of ${companiesWithData.length} data`)
                 for (const dataIdIndex in dataIdList) {
                     assert(typeof dataIdList[dataIdIndex] !== 'undefined',
                         `Validation of data number ${dataIdIndex}`)
                 }
             })
+        });
+
+        it('Company Name Input field exists and works', () => {
+            const inputValue = companiesWithData[0].companyInformation.companyName
+            cy.visit("/search")
+            cy.get('input[name=companyName]')
+                .should('not.be.disabled')
+                .type(inputValue, {force: true})
+                .should('have.value', inputValue)
+            cy.intercept('**/api/companies*').as('retrieveCompany')
+            cy.get('button[name=getCompanies]').click()
+            cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
+                cy.get('td').contains("VIEW")
+                    .contains('a', 'VIEW')
+                    .click().url().should('include', '/companies/')
+            })
+        });
+
+        it('Show all companies button exists', () => {
+            cy.visit("/search")
+            cy.get('button.p-button').contains('Show all companies')
+                .should('not.be.disabled')
+                .click()
         });
     });
 
@@ -102,37 +116,5 @@ describe('Company EU Taxonomy Data', () => {
                     cy.get('input[name=eu_taxonomy_search_input]').should('exist')
             });
         });
-    });
-});
-
-describe('Company Data', () => {
-    let companiesData: any
-    before(function () {
-        cy.fixture('CompanyInformation').then(function (companies) {
-            companiesData = companies
-        });
-
-    });
-    it('Company Name Input field exists and works', () => {
-        const inputValue = companiesData[0].companyName
-        cy.visit("/search")
-        cy.get('input[name=companyName]')
-            .should('not.be.disabled')
-            .type(inputValue, {force: true})
-            .should('have.value', inputValue)
-        cy.intercept('**/api/companies*').as('retrieveCompany')
-        cy.get('button[name=getCompanies]').click()
-        cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
-            cy.get('td').contains("VIEW")
-                .contains('a', 'VIEW')
-                .click().url().should('include', '/companies/')
-        })
-    });
-
-    it('Show all companies button exists', () => {
-        cy.visit("/search")
-        cy.get('button.p-button').contains('Show all companies')
-            .should('not.be.disabled')
-            .click()
     });
 });

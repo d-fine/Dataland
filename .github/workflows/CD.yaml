@@ -7,9 +7,6 @@ env:
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
-  push:
-    branches:
-      - 'main'
   workflow_dispatch:
     inputs:
       realData:
@@ -20,7 +17,6 @@ on:
         description: 'Store data only in memory'
         required: false
         type: boolean
-
 
 jobs:
   build-prod-and-deploy:
@@ -38,7 +34,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.1
           fi
         env:
           REALDATA: ${{ github.event.inputs.realData }}

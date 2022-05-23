@@ -1,9 +1,9 @@
 describe('Search Taxonomy', function () {
-    let companiesData:any
+    let companiesWithData:any
 
     before(function(){
-        cy.fixture('CompanyInformation').then(function(companies){
-            companiesData=companies
+        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+            companiesWithData=companies
         });
     });
 
@@ -29,7 +29,7 @@ describe('Search Taxonomy', function () {
 
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
-        const inputValue = companiesData[0].companyName
+        const inputValue = companiesWithData[0].companyInformation.companyName
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})
@@ -52,7 +52,7 @@ describe('Search Taxonomy', function () {
 
     it('Company Search by Identifier', () => {
         cy.visit('/searchtaxonomy')
-        const inputValue = companiesData[1].identifiers[0].identifierValue
+        const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})
