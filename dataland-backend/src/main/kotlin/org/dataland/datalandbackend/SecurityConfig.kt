@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.stereotype.Component
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -33,6 +34,12 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     @Override
     override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return NullAuthenticatedSessionStrategy()
+    }
+
+    @Component("RoleContainer")
+    object RoleContainer {
+        const val DATA_READER = "USER"
+        const val DATA_UPLOADER = "ADMIN"
     }
 
     @Override
