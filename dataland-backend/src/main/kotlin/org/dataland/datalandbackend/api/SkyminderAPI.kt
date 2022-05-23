@@ -3,8 +3,11 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandbackend.DATA_READER
+import org.dataland.datalandbackend.DATA_UPLOADER
 import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,7 +31,7 @@ interface SkyminderAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('USER')")
+    @Secured(DATA_READER)
     /**
      * A method to search for company data using the Skyminder API.
      * @param countryCode three-letter ISO country code (e.g. DEU for Germany)

@@ -7,7 +7,9 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.dataland.datalandbackend.DATA_READER
+import org.dataland.datalandbackend.DATA_UPLOADER
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -36,7 +38,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    //@PreAuthorize("hasRole('ADMIN')")
+    @Secured(DATA_UPLOADER)
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
@@ -59,7 +61,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    //@PreAuthorize(value = "hasRole('USER')")
+    @Secured(DATA_READER)
             /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.
@@ -89,8 +91,7 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('USER') and #companyId == '1'")
-
+    @Secured(DATA_READER)
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
