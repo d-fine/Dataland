@@ -35,7 +35,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
@@ -88,7 +88,7 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('USER') or #companyId == '1'")
+
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
