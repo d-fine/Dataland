@@ -125,19 +125,19 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
 
-  postgres:
+  keycloak-db:
     profiles: ["development"]
     networks:
       - external
       - internal
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - keycloak_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
-  dataland-keycloak:
+  keycloak:
     profiles: ["development"]
     networks:
       - external
@@ -149,7 +149,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
+      DB_ADDR: keycloak-db
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_SCHEMA: public
@@ -157,10 +157,10 @@ services:
     command:
       - start-dev
     depends_on:
-      - postgres
+      - keycloak-db
 networks:
   internal:
   external:
 volumes:
-  postgres_data:
+  keycloak_data:
     driver: local

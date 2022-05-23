@@ -10,6 +10,31 @@ import '@formkit/themes/genesis'
 import { plugin, defaultConfig } from '@formkit/vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
+import Keycloak from "keycloak-js";
+
+let initOptions = {
+    url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend', onLoad: 'login-required'
+}
+
+
+export async function authenticateAgainstKeycloak (): Promise<void> {
+    const keycloak = new Keycloak(initOptions)
+    await keycloak.init({ onLoad: 'login-required' }).then((auth) => {
+        if (!auth) {
+            window.location.reload()
+        } else {
+            console.log('Authenticated')
+        }
+
+        if (keycloak.token) {
+            window.localStorage.setItem('keycloakToken', keycloak.token)
+        }
+    })
+    await router.push('/')
+}
+
+
+
 
 const app = createApp(App)
 app.use(plugin, defaultConfig)
