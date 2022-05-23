@@ -7,25 +7,27 @@ env:
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
-  push:
-    branches:
-      - 'main'
   workflow_dispatch:
     inputs:
       realData:
         description: 'Use real data'
         required: false
         type: boolean
+      whichEnvironment:
+        description: "Choose environment"
+        required: true
+        type: environment
       useInMemoryStorage:
         description: 'Store data only in memory'
         required: false
         type: boolean
 
-
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: preview
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -38,7 +40,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:latest
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.1
           fi
         env:
           REALDATA: ${{ github.event.inputs.realData }}
@@ -51,18 +53,19 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
-      - name: Start Preview Server
-        run: curl ${{ secrets.PREVIEW_STARTUP_URL }} > /dev/null
-      - name: Deploy to Preview
-        run: ./deployment/deploy_to_preview.sh
+      - name: Start server and deploy to it (either Preview or Dev)
+        run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
+          TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
           TRUSTEE_KEYCLOAK_IP: ${{ secrets.TRUSTEE_KEYCLOAK_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
       - name: check deployment
-        run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
+        run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
       - name: Upload FE E2E Cypress Results
