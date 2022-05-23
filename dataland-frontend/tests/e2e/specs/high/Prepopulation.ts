@@ -7,24 +7,19 @@ describe('Population Test',
             defaultCommandTimeout: 900 * 1000
         })
 
-        let eutaxonomiesData: any
-        let companiesData: any
-        const companyAssociatedEuTaxonomyData: any = []
+        let companiesWithData: any
 
         before(function () {
-            cy.fixture('EuTaxonomyData').then(function (eutaxonomies) {
-                eutaxonomiesData = eutaxonomies
-            });
-            cy.fixture('CompanyInformation').then(function (companies) {
-                companiesData = companies
+            cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
+                companiesWithData = companies
             });
         });
 
         it('Populate Companies', async () => {
             await doThingsInChunks(
-                companiesData,
+                companiesWithData,
                 chunkSize,
-                (element: object) => uploadSingleElementWithRetries("companies", element)
+                (element: object) => uploadSingleElementWithRetries("companies", element["companyInformation"])
             )
         });
 
