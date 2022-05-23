@@ -125,12 +125,13 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
   dataland-keycloak:
+    profiles: ["development"]
     networks:
       - external
       - internal
     image: quay.io/keycloak/keycloak:18.0.0
     ports:
-        - "8080:8080"
+        - "8095:8080"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
