@@ -13,7 +13,7 @@ import PrimeVue from 'primevue/config';
 import Keycloak from "keycloak-js";
 
 const initOptions = {
-    url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend', onLoad: 'login-required'
+    url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend'
 }
 
 export async function authenticateAgainstKeycloak(): Promise<void> {
