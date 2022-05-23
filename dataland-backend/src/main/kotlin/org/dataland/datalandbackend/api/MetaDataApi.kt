@@ -35,7 +35,7 @@ interface MetaDataApi {
     @GetMapping(
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId filters the requested meta info to a specific company.
@@ -59,7 +59,7 @@ interface MetaDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to retrieve meta info about a specific data set
      * @param dataId as unique identifier for a specific data set
@@ -80,7 +80,7 @@ interface MetaDataApi {
         value = ["/greenAssetRatio"],
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to retrieve the green asset ratio of a specific index or for all indices (if none is selected)
      * @param selectedIndex determines which index the green asset ratio is retrieved for

@@ -34,7 +34,7 @@ interface DataAPI<T> {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @Secured(DATA_UPLOADER)
+    @PreAuthorize("hasRole('ADMIN')")
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored
@@ -56,7 +56,7 @@ interface DataAPI<T> {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store

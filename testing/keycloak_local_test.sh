@@ -77,3 +77,14 @@ else
   exit 1
 fi
 
+echo "Trying to get the company that was posted in the last step with user jwt token."
+getspecificcompany_response=$(curl --location --request GET "${backend_url}/companies/${companyId}" --header "Authorization: Bearer ${jwt_token_user}")
+echo "Start matching getspecificcompany_response with regex of expected value."
+regex="TestCompanyA"
+if [[ $getspecificcompany_response =~ $regex ]]; then
+  echo "Matching successful, TestCompanyA could be retrieved."
+else
+  echo "Matching failed."
+  exit 1
+fi
+

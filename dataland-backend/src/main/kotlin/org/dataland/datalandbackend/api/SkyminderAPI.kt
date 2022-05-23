@@ -31,7 +31,7 @@ interface SkyminderAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER')")
     /**
      * A method to search for company data using the Skyminder API.
      * @param countryCode three-letter ISO country code (e.g. DEU for Germany)

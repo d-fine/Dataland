@@ -38,7 +38,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @Secured(DATA_UPLOADER)
+    @PreAuthorize("hasRole('ADMIN')")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
@@ -61,7 +61,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize(value = "hasRole('USER')")
             /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.
@@ -91,7 +91,8 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-    @Secured(DATA_READER)
+    @PreAuthorize("hasRole('USER') or #companyId == '1'")
+
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
