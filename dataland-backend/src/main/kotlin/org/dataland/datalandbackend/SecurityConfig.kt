@@ -18,8 +18,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     private val public_links = arrayOf(
         "/actuator/health",
         "/swagger-ui/**",
-        "/v3/api-docs",
-        "/companies"
+        "/v3/api-docs"
     )
 
     @Autowired
@@ -43,5 +42,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
             .antMatchers(*public_links).permitAll() // all requests except the ones to the endpoints in public_links need to be fully authenticated
             //.antMatchers("/companies").permitAll()
             .anyRequest().fullyAuthenticated()
+
+        http.csrf().disable() // Without this step, it is not possible to do POST requests
     }
 }
