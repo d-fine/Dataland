@@ -16,6 +16,10 @@ on:
         description: 'Use real data'
         required: false
         type: boolean
+      useInMemoryStorage:
+        description: 'Store data only in memory'
+        required: false
+        type: boolean
 
 
 jobs:
@@ -56,6 +60,7 @@ jobs:
           TRUSTEE_KEYCLOAK_IP: ${{ secrets.TRUSTEE_KEYCLOAK_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_testpreview --no-daemon --stacktrace
         env:
