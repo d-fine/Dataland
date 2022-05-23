@@ -20,6 +20,10 @@ on:
         description: "Choose environment"
         required: true
         type: environment
+      useInMemoryStorage:
+        description: 'Store data only in memory'
+        required: false
+        type: boolean
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
@@ -61,6 +65,7 @@ jobs:
           TRUSTEE_KEYCLOAK_IP: ${{ secrets.TRUSTEE_KEYCLOAK_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
