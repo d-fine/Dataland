@@ -20,8 +20,14 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/actuator/health",
         "/swagger-ui/**",
         "/v3/api-docs",
-        "/companies/1"
+        "/companies/**"
     )
+
+    @Component("RoleContainer")
+    object RoleContainer {
+        const val DATA_READER = "USER"
+        const val DATA_UPLOADER = "ADMIN"
+    }
 
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
@@ -34,12 +40,6 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     @Override
     override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return NullAuthenticatedSessionStrategy()
-    }
-
-    @Component("RoleContainer")
-    object RoleContainer {
-        const val DATA_READER = "USER"
-        const val DATA_UPLOADER = "ADMIN"
     }
 
     @Override

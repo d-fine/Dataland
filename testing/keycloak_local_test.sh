@@ -5,8 +5,8 @@
 # an authorization, it only responds (with an empty list: []) if authorization was successful.
 
 
-export keycloak_openid_token_endpoint="http://localhost:8080/realms/datalandsecurity/protocol/openid-connect/token"
-export backend_url="http://localhost:8081/api"
+export keycloak_openid_token_endpoint="http://localhost:8095/realms/datalandsecurity/protocol/openid-connect/token"
+export backend_url="http://localhost:8080/api"
 export user_name="some_user"
 export user_password="test"
 export admin_name="admin_user"

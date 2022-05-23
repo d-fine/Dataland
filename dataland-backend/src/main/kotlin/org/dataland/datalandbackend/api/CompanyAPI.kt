@@ -88,8 +88,11 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
+    //@PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == (T(org.dataland.datalandbackend.PreviewStuff).previewCompanyId)")
+    //@PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == '2'")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == '2'")
 
-    /**
+            /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
      * @return information about the company
