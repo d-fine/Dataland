@@ -6,18 +6,17 @@ import org.springframework.stereotype.Component
 
 const val RATIO_PRECISION = 4
 
-val PREVIEWCOMPANY_NAME = "Adidas AG"//System.getenv("PREVIEWCOMPANY_NAME")
-
 @Component("PreviewStuff")
 class PreviewStuff(
     @Autowired var dataManager: DataManagerInterface,
 ) {
-    fun isCompanyPublic(companyId:String) : Boolean {
-        val searchResult = dataManager.searchCompanies(PREVIEWCOMPANY_NAME, true)
+    fun isCompanyPublic(companyId: String): Boolean {
+        val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?:"Adidas AG"
+        val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
         return if (searchResult.isEmpty()) {
             false
         }
-        //else if {searchResult.size > 1}
+        // else if {searchResult.size > 1} TODO Validate if only one company found
         else companyId == searchResult.last().companyId
     }
 }

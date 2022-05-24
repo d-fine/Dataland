@@ -59,7 +59,7 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
-            /**
+    /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.
      * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
@@ -89,7 +89,7 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @PreviewStuff.isCompanyPublic(#companyId)")
-            /**
+    /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
      * @return information about the company
