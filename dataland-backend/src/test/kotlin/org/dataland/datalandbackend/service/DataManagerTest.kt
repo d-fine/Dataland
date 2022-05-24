@@ -188,4 +188,11 @@ class DataManagerTest(
             testDataManager.searchDataMetaInfo(companyId = "error")
         }
     }
+
+    @Test
+    fun `check that an exception is thrown when a data id is provided that does not exist`() {
+        assertThrows<IllegalArgumentException> {
+            testDataManager.getDataMetaInfo(dataId = "error")
+        }
+    }
 }

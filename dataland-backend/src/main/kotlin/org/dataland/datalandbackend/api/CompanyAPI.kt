@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
@@ -20,6 +21,7 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding company data.
  */
 @RequestMapping("/companies")
+@SecurityRequirement(name = "default-auth")
 interface CompanyAPI {
 
     @Operation(
@@ -59,7 +61,7 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
-            /**
+    /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.
      * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
@@ -88,11 +90,8 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-    //@PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == (T(org.dataland.datalandbackend.PreviewStuff).previewCompanyId)")
-    //@PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == '2'")
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or #companyId == '2'")
-
-            /**
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @PreviewStuff.isCompanyPublic(#companyId)")
+    /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
      * @return information about the company

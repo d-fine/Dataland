@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.skyminderClient.model.ContactInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 
 @RequestMapping("/skyminder")
+@SecurityRequirement(name = "default-auth")
 interface SkyminderAPI {
     @Operation(
         summary = "Retrieve company data from Skyminder server.",

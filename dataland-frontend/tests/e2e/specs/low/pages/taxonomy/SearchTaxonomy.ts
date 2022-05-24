@@ -1,9 +1,9 @@
 describe('Search Taxonomy', function () {
-    let companiesData:any
+    let companiesWithData:any
 
     before(function(){
-        cy.fixture('CompanyInformation').then(function(companies){
-            companiesData=companies
+        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+            companiesWithData=companies
         });
     });
 
@@ -29,7 +29,8 @@ describe('Search Taxonomy', function () {
 
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
-        const inputValue = companiesData[0].companyName
+        const inputValue = companiesWithData[0].companyInformation.companyName
+        const PermIdText = "Permanent Identifier (PermID)"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})
@@ -40,8 +41,19 @@ describe('Search Taxonomy', function () {
             .should('contain', "Results")
         cy.get('table.p-datatable-table').should('exist')
         cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','PERM ID')
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseenter', "center")
+        cy.get('.p-tooltip')
+            .should('be.visible')
+            .contains(PermIdText)
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseleave')
+        cy.get('.p-tooltip')
+            .should('not.exist')
         cy.get('table.p-datatable-table').contains('th','SECTOR')
         cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('th','LOCATION')
         cy.get('table.p-datatable-table').contains('td','VIEW')
             .contains('a', 'VIEW')
             .click()
@@ -52,7 +64,7 @@ describe('Search Taxonomy', function () {
 
     it('Company Search by Identifier', () => {
         cy.visit('/searchtaxonomy')
-        const inputValue = companiesData[1].identifiers[0].identifierValue
+        const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
             .click({force:true})

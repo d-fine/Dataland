@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend
+package org.dataland.datalandbackend.configurations
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver
 import org.springframework.context.annotation.Bean
