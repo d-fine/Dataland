@@ -1,8 +1,7 @@
 #!/bin/bash
-# This test does two things in sequence:
-# First it gets a jwt token from the keycloak service, validates it and saves it.
-# Then it uses this token to make a get-all-companies request against the backend. Since this endpoint needs
-# an authorization, it only responds (with an empty list: []) if authorization was successful.
+# This test can/should be executed locally after starting the backend.
+# It generates different jwt tokens and tests if it can reach secured endpoints by using them (or by not using them
+# in case of teaser data).
 
 
 export keycloak_openid_token_endpoint="http://localhost:8095/realms/datalandsecurity/protocol/openid-connect/token"
