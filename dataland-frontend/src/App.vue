@@ -8,7 +8,7 @@
 
     </div>
     <div class="col-1 col-offset-5">
-      <i class="material-icons text-white" aria-hidden="true">help_outline</i>
+      <i class="material-icons text-white" aria-hidden="true" @click="authenticate">help_outline</i>
     </div>
   </div>
   <div class="d-content">
@@ -21,9 +21,15 @@
 <script>
 
 
-
+import {authenticate} from "@/utils/keycloak";
 export default {
   name: 'app',
+  methods: {
+    authenticate(){
+      authenticate()
+      alert("ran authentication")
+    }
+  }
 }
 </script>
 
