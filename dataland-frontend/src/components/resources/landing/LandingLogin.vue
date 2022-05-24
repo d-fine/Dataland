@@ -1,8 +1,8 @@
 <template>
   <div class="surface-ground pb-8">
     <div class="m-0">
-      <div class="grid align-items-start m-0 ">
-        <div class="col-1 text-left">
+      <div class="grid align-items-center m-0 ">
+        <div class="col-1 text-left p-0">
           <img src="@/assets/images/logos/preview_banner.svg" alt="Preview Banner">
         </div>
         <div class="col-5 text-left ">
