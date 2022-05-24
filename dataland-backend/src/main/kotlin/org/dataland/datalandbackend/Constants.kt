@@ -10,13 +10,18 @@ const val RATIO_PRECISION = 4
 class PreviewStuff(
     @Autowired var dataManager: DataManagerInterface,
 ) {
-    fun isCompanyPublic(companyId: String): Boolean {
-        val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?:"Adidas AG"
+    fun isCompanyPublic(requestedCompanyId: String): Boolean {
+        val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?: "Adidas AG"
         val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
         return if (searchResult.isEmpty()) {
             false
-        }
-        // else if {searchResult.size > 1} TODO Validate if only one company found
-        else companyId == searchResult.last().companyId
+        } else if (searchResult.size > 1) {
+            for (storedCompany in searchResult) {
+                if (requestedCompanyId == storedCompany.companyId) {
+                    return true
+                }
+            }
+            return false
+        } else return requestedCompanyId == searchResult.first().companyId
     }
 }
