@@ -5,15 +5,8 @@
 <script>
 
 
-import {authenticate} from "@/utils/keycloak";
 export default {
-  name: 'app',
-  methods: {
-    authenticate(){
-      authenticate()
-      alert("ran authentication")
-    }
-  }
+  name: 'app'
 }
 </script>
 

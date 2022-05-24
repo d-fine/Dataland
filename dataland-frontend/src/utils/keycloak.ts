@@ -4,7 +4,6 @@ const qs = require('qs');
 const data = qs.stringify({
     'grant_type': 'password',
     'client_id': 'dataland-frontend',
-    'client_secret': 'ihNr3Dp4RozH3TvAAAivOWy7G9HIqv4g',
     'username': 'myuser',
     'password': '123456'
 });
@@ -45,11 +44,13 @@ function keycloack_activate(access_token:string, refresh_token:string){
         url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend'
     }
     const keycloak = new Keycloak(initOptions)
-    keycloak.init({onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+    keycloak.init({checkLoginIframe: false,
         token: access_token, refreshToken: refresh_token}).then((auth) => {
         if (auth) {
-            console.info("Authenticated");
+            console.log("Authenticated");
+        } else {
+            console.log("Not Authenticated");
+
         }
         if (keycloak.token) {
             window.sessionStorage.setItem('keycloakToken', keycloak.token)
@@ -58,7 +59,7 @@ function keycloack_activate(access_token:string, refresh_token:string){
         setInterval(() => {
             keycloak.updateToken(70).then((refreshed) => {
                 if (refreshed) {
-                    console.info('Token refreshed' + refreshed);
+                    console.log('Token refreshed' + refreshed);
                 } else {
                     console.warn('Token not refreshed, valid for ')
                 }
