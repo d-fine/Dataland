@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.dataland.datalandbackend.model.enums.YesNo
+import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
@@ -76,6 +77,35 @@ class CsvToJsonConverter {
     }
 
     /**
+     * Method to build CompanyInformation from the read row in the csv file.
+     */
+    private fun buildCompanyInformation(row: Map<String, String>): CompanyInformation {
+        return CompanyInformation(
+            companyName = getValue("companyName", row),
+            headquarters = getValue("headquarters", row),
+            sector = getValue("sector", row),
+            marketCap = getScaledValue("marketCap", row, euroUnitConversionFactor)!!,
+            reportingDateOfMarketCap = LocalDate.parse(
+                getValue("reportingDateOfMarketCap", row), DateTimeFormatter.ofPattern("d.M.yyyy")
+            ),
+            identifiers = getCompanyIdentifiers(row),
+            indices = getStockIndices(row)
+        )
+    }
+
+    /**
+     * Method to build EuTaxonomyData from the read row in the csv file.
+     */
+    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyData {
+        return EuTaxonomyData(
+            reportObligation = getReportingObligation(row), attestation = getAttestation(row),
+            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
+            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
+            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
+        )
+    }
+
+    /**
      * Method to read a given csv file
      */
     fun parseCsvFile(filePath: String) {
@@ -91,21 +121,13 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to get a list of CompanyInformation objects generated from the csv file
+     * Method to get a list of CompanyInformationWithEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataModel> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformation(
-                companyName = getValue("companyName", it),
-                headquarters = getValue("headquarters", it),
-                sector = getValue("sector", it),
-                marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
-                reportingDateOfMarketCap = LocalDate.parse(
-                    getValue("reportingDateOfMarketCap", it),
-                    DateTimeFormatter.ofPattern("d.M.yyyy")
-                ),
-                identifiers = getCompanyIdentifiers(it),
-                indices = getStockIndices(it)
+            CompanyInformationWithEuTaxonomyDataModel(
+                buildCompanyInformation(it),
+                buildEuTaxonomyData(it)
             )
         }
     }
@@ -136,21 +158,6 @@ class CsvToJsonConverter {
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
         return StockIndex.values().filter { (csvLineData[columnMapping[it.name]] ?: "").isNotBlank() }.toSet()
-    }
-
-    /**
-     * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
-     */
-    fun buildListOfEuTaxonomyData(): List<EuTaxonomyData> {
-        return rawCsvData.filter { validateLine(it) }.map {
-            EuTaxonomyData(
-                reportObligation = getReportingObligation(it),
-                attestation = getAttestation(it),
-                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
-                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
-                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
-            )
-        }
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
@@ -191,9 +198,10 @@ class CsvToJsonConverter {
      */
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
-        objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./EuTaxonomyData.json"), buildListOfEuTaxonomyData())
+            .writeValue(
+                File("./CompanyInformationWithEuTaxonomyData.json"),
+                buildListOfCompanyInformationWithEuTaxonomyData()
+            )
     }
 
     companion object {

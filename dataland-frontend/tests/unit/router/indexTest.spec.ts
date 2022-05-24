@@ -9,18 +9,6 @@ describe('routerTest', () => {
         const wrapper = shallowMount(routes)
         expect(wrapper.text()).toBeDefined()
     });
-    it('routing', () => {
-        const router = createRouter({
-            history: createWebHistory(),
-            routes: routes,
-        })
-        const wrapper = mount(App, {
-            global: {
-                plugins: [router]
-            }
-        })
-        expect(wrapper.html()).toContain('d-header')
-    });
     it('home', async () => {
         const router = createRouter({
             history: createWebHistory(),
