@@ -20,7 +20,8 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/actuator/health",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/companies/**"
+        "/companies/**",
+        "/data/**"
     )
 
     @Component("RoleContainer")
