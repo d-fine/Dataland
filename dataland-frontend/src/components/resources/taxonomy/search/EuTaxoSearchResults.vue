@@ -7,7 +7,7 @@
     </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100" 
+        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         >
@@ -23,12 +23,12 @@
             }">info</i>
             </template>
             <template #body="{data}">
-              {{data.permId}}
+              {{data.permId ? data.permId : "Not available"}}
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
           </Column>
-          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-1 text-right">
             <template #body="{data}">
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>

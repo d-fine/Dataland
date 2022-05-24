@@ -14,12 +14,6 @@
       <span>Sector: </span> <span class="font-semibold" >{{companyInformation.sector}}</span>
     </div>
 
-    <div class="col-4">
-      Company Reports: <span class="cursor-pointer underline text-primary font-semibold">Financial Data 2021</span>
-    </div>
-    <div class="col-4">
-      <span  class="cursor-pointer underline text-primary font-semibold">Sustainability Data 2021</span>
-    </div>
   </div>
 </template>
 

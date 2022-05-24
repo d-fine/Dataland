@@ -70,7 +70,7 @@ describe('User interactive tests for Data Upload', () => {
             cy.wait('@retrieveTaxonomyData', {timeout: 120000}).then(() => {
                 cy.get('body')
                     .should("contain", "Eligible Revenue")
-                    .should("contain", "No data available")
+                    .should("contain", "No data has been reported")
             });
         });
     });

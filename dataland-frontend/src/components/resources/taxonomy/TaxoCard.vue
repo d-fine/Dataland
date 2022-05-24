@@ -6,13 +6,14 @@
         <div class="col-5 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div v-if="percent" class="col-6 text-right text-green-500">
-          <span class="font-semibold text-xl">{{ percentCalculation }}</span>
+        <div v-if="percent" class="col-7 text-right text-primary">
+          <span class="font-medium text-3xl">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
         <div v-else class="col-6 col-offset-1 grid align-items-center text-right">
-          <i class="material-icons" aria-hidden="true"> error </i> <span
-            class="pl-4 font-semibold">No data available</span>
+          <span
+              class="pl-4 font-semibold">No data has been reported
+          </span>
         </div>
       </div>
       <template v-if="percent">
@@ -21,8 +22,8 @@
         <div class="grid mt-4">
           <div class="col-12 text-left p-0 pl-2" v-if="total">
             <template v-if="amount">
-              <span class="font-semibold text-lg">€ </span>
-              <span class="font-bold text-2xl">{{ amount }}</span>
+              <span class="font-medium text-3xl">€ </span>
+              <span class="font-bold text-4xl">{{ amount }}</span>
             </template>
             <p class="left-align"><strong>Out of total of € {{ orderOfMagnitudeSuffix }}</strong></p>
           </div>
@@ -40,6 +41,7 @@ import Card from "primevue/card";
 import ProgressBar from 'primevue/progressbar';
 import {numberFormatter} from "@/utils/currencyMagnitude";
 import {humanize} from "@/utils/StringHumanizer";
+
 export default {
   name: "TaxoCard",
   components: {Card, ProgressBar},
@@ -59,7 +61,7 @@ export default {
 
   },
   computed: {
-    title(){
+    title() {
       return humanize(this.taxonomyType + this.taxonomyKind)
     },
     percentCalculation() {
