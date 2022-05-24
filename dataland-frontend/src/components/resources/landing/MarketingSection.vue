@@ -11,7 +11,7 @@
       giving them a fair compensation.
     </div>
   </div>
-  <div class="grid mt-6">
+  <div class="grid mt-6 mr-0">
     <div class="col-offset-1 col-5 p-0 ">
       <div class="border-solid border-gray-50 border-1">
         <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
