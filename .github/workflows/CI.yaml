@@ -12,12 +12,8 @@ on:
   push:
     branches:
       - '**'
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
-
   unit-tests-backend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'

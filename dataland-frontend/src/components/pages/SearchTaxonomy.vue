@@ -1,20 +1,25 @@
 <template>
-  <SearchTaxonomyHeader :scrolled="scrolled"/>
-  <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndices="stockIndices" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
-  <IndexPanel @index-click="handleIndex" :showIndexPanel="showIndexPanel" :stockIndices="stockIndices"/>
+  <TheHeader/>
+  <TheContent>
+    <SearchTaxonomyHeader :scrolled="scrolled"/>
+    <EuTaxoSearchBar @autocomplete-focus="handleAutoCompleteFocus" :stockIndices="stockIndices" ref="euTaxoSearchBar" @scrolling="handleScrolling"/>
+    <IndexPanel @index-click="handleIndex" :showIndexPanel="showIndexPanel" :stockIndices="stockIndices"/>
+  </TheContent>
 </template>
 <script>
 
 import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchTaxonomyHeader";
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
 import IndexPanel from "@/components/resources/indices/IndexPanel";
+import TheHeader from "@/components/structure/TheHeader"
+import TheContent from "@/components/structure/TheContent"
 import {useRoute} from "vue-router"
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 
 export default {
   name: "SearchTaxonomy",
-  components: {SearchTaxonomyHeader, IndexPanel, EuTaxoSearchBar},
+  components: {SearchTaxonomyHeader, IndexPanel, EuTaxoSearchBar, TheHeader, TheContent},
   data(){
     return {
       showIndexPanel: true,

@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.dataland.datalandbackend.model.enums.YesNo
+import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
@@ -32,14 +33,14 @@ class CsvToJsonConverter {
     private var rawCsvData: List<Map<String, String>> = listOf()
 
     private val columnMapping = mapOf(
-        "companyName" to "Company name",
+        "companyName" to "Unternehmensname",
         "headquarters" to "Headquarter",
         "sector" to "Sector",
-        "marketCap" to "Market Capitalization EUR",
+        "marketCap" to "Market Capitalization EURmm",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
-        "totalRevenue" to "Total Revenue EUR",
-        "totalCapex" to "Total CapEx EUR",
-        "totalOpex" to "Total OpEx EUR",
+        "totalRevenue" to "Total Revenue EURmm",
+        "totalCapex" to "Total CapEx EURmm",
+        "totalOpex" to "Total OpEx EURmm",
         "eligibleRevenue" to "Eligible Revenue",
         "eligibleCapex" to "Eligible CapEx",
         "eligibleOpex" to "Eligible OpEx",
@@ -55,7 +56,6 @@ class CsvToJsonConverter {
         StockIndex.PrimeStandard.name to "Prime Standard",
         StockIndex.GeneralStandard.name to "General Standard",
         StockIndex.Hdax.name to "HDAX",
-        StockIndex.Scale.name to "Scale",
         StockIndex.Cdax.name to "CDAX",
         StockIndex.Gex.name to "GEX",
         StockIndex.Dax.name to "DAX",
@@ -77,6 +77,35 @@ class CsvToJsonConverter {
     }
 
     /**
+     * Method to build CompanyInformation from the read row in the csv file.
+     */
+    private fun buildCompanyInformation(row: Map<String, String>): CompanyInformation {
+        return CompanyInformation(
+            companyName = getValue("companyName", row),
+            headquarters = getValue("headquarters", row),
+            sector = getValue("sector", row),
+            marketCap = getScaledValue("marketCap", row, euroUnitConversionFactor)!!,
+            reportingDateOfMarketCap = LocalDate.parse(
+                getValue("reportingDateOfMarketCap", row), DateTimeFormatter.ofPattern("d.M.yyyy")
+            ),
+            identifiers = getCompanyIdentifiers(row),
+            indices = getStockIndices(row)
+        )
+    }
+
+    /**
+     * Method to build EuTaxonomyData from the read row in the csv file.
+     */
+    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyNonFinancialData {
+        return EuTaxonomyNonFinancialData(
+            reportObligation = getReportingObligation(row), attestation = getAttestation(row),
+            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
+            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
+            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
+        )
+    }
+
+    /**
      * Method to read a given csv file
      */
     fun parseCsvFile(filePath: String) {
@@ -92,21 +121,13 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to get a list of CompanyInformation objects generated from the csv file
+     * Method to get a list of CompanyInformationWithEuTaxonomyData objects generated from the csv file
      */
-    fun buildListOfCompanyInformation(): List<CompanyInformation> {
+    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataModel> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformation(
-                companyName = getValue("companyName", it),
-                headquarters = getValue("headquarters", it),
-                sector = getValue("sector", it),
-                marketCap = getScaledValue("marketCap", it, euroUnitConversionFactor)!!,
-                reportingDateOfMarketCap = LocalDate.parse(
-                    getValue("reportingDateOfMarketCap", it),
-                    DateTimeFormatter.ofPattern("d.M.yyyy")
-                ),
-                identifiers = getCompanyIdentifiers(it),
-                indices = getStockIndices(it)
+            CompanyInformationWithEuTaxonomyDataModel(
+                buildCompanyInformation(it),
+                buildEuTaxonomyData(it)
             )
         }
     }
@@ -136,22 +157,7 @@ class CsvToJsonConverter {
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return StockIndex.values().filter { csvLineData[columnMapping[it.name]]!!.isNotBlank() }.toSet()
-    }
-
-    /**
-     * Method to get a list of CompanyAssociatedEuTaxonomyData objects generated from the csv file
-     */
-    fun buildListOfEuTaxonomyData(): List<EuTaxonomyNonFinancialData> {
-        return rawCsvData.filter { validateLine(it) }.map {
-            EuTaxonomyNonFinancialData(
-                reportObligation = getReportingObligation(it),
-                attestation = getAttestation(it),
-                capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", it),
-                opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", it),
-                revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", it)
-            )
-        }
+        return StockIndex.values().filter { (csvLineData[columnMapping[it.name]] ?: "").isNotBlank() }.toSet()
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
@@ -192,9 +198,10 @@ class CsvToJsonConverter {
      */
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./CompanyInformation.json"), buildListOfCompanyInformation())
-        objectMapper.writerWithDefaultPrettyPrinter()
-            .writeValue(File("./EuTaxonomyData.json"), buildListOfEuTaxonomyData())
+            .writeValue(
+                File("./CompanyInformationWithEuTaxonomyData.json"),
+                buildListOfCompanyInformationWithEuTaxonomyData()
+            )
     }
 
     companion object {

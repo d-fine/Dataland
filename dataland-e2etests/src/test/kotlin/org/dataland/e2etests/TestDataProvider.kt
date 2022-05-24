@@ -30,53 +30,35 @@ object LocalDateAdapter {
 }
 
 class TestDataProvider {
-    private var dataCounter = 0
-
-    private val companyJson = File("./build/resources/CompanyInformation.json")
-    private val dataJson = File("./build/resources/EuTaxonomyData.json")
-    private val companyJsonString = companyJson.inputStream().bufferedReader().readText()
-    private val dataJsonString = dataJson.inputStream().bufferedReader().readText()
+    private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
+    private val jsonFileAsString = jsonFile.inputStream().bufferedReader().readText()
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
-    private val companyType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, CompanyInformation::class.java)
-    private val dataType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, EuTaxonomyData::class.java)
-    private val companyJsonAdapter: JsonAdapter<List<CompanyInformation>> = moshi.adapter(companyType)
-    private val dataJsonAdapter: JsonAdapter<List<EuTaxonomyData>> = moshi.adapter(dataType)
+    private val parameterizedType: ParameterizedType = Types
+        .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyDataModel::class.java)
+    private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyDataModel>> =
+        moshi.adapter(parameterizedType)
 
-    private val testCompanyInformation: List<CompanyInformation> = companyJsonAdapter
-        .fromJson(companyJsonString) ?: emptyList()
-    private val testData: List<EuTaxonomyData> = dataJsonAdapter
-        .fromJson(dataJsonString) ?: emptyList()
+    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataModel> = jsonAdapter
+        .fromJson(jsonFileAsString) ?: emptyList()
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
-        return testCompanyInformation.slice(0 until requiredQuantity)
+        return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.companyInformation }
     }
 
     fun getEuTaxonomyData(numberOfDataSets: Int): List<EuTaxonomyData> {
-        if (dataCounter + numberOfDataSets > testData.size) {
-            dataCounter = 0
-        }
-        val data = testData.slice(dataCounter until dataCounter + numberOfDataSets)
-        dataCounter += numberOfDataSets
-
-        return data
+        return testCompanyInformationWithEuTaxonomyData.slice(0 until numberOfDataSets).map { it.euTaxonomyData }
     }
 
     fun getCompaniesWithData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<EuTaxonomyData>> {
-        if (dataSetsPerCompany > testData.size) {
-            throw(
-                IllegalArgumentException(
-                    "Test data not big enough to provide $dataSetsPerCompany test data sets " +
-                        "(it only has ${testData.size} elements)."
-                )
-                )
-        }
         val companies = getCompanyInformation(requiredNumberOfCompanies)
-
         return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
     }
 }
+
+data class CompanyInformationWithEuTaxonomyDataModel(
+    val companyInformation: CompanyInformation,
+    val euTaxonomyData: EuTaxonomyData
+)

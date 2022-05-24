@@ -1,0 +1,17 @@
+{
+  "pluginsFile": "tests/e2e/plugins/index.js",
+  "defaultCommandTimeout": 10000,
+  "viewportHeight": 684,
+  "viewportWidth": 1536,
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  },
+  "testFiles": [
+    "verify_deployment/**/*.ts",
+    "high/**/*.ts",
+    "medium/**/*.ts",
+    "low/**/*.ts",
+    "previsit/**/*.ts"
+  ]
+}

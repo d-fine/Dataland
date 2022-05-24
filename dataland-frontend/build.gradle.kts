@@ -8,8 +8,8 @@ val jacocoClasses by extra(emptyList<File>())
 
 plugins {
     kotlin("jvm")
-    id("com.github.node-gradle.node") version "3.2.1"
-    id("org.openapi.generator") version "5.4.0"
+    id("com.github.node-gradle.node")
+    id("org.openapi.generator")
 }
 
 node {

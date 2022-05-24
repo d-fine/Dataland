@@ -124,7 +124,10 @@ export default {
       return response.data.map(e => ({
         "companyName": e.companyInformation.companyName,
         "companyInformation": e.companyInformation,
-        "companyId": e.companyId
+        "companyId": e.companyId,
+        "permId": e.companyInformation.identifiers.map((identifier) => {
+          return identifier.identifierType === "PermId" ? identifier.identifierValue : ""
+        }).pop()
       }))
     },
     toggleIndexTabs(stockIndex, index) {

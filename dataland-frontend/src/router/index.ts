@@ -6,6 +6,9 @@ import CompanyEU from "@/components/resources/taxonomy/TaxonomyPanel.vue";
 import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
+import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
+import TheImprint from "@/components/pages/TheImprint.vue";
+import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 
 const routes = [
     {
@@ -29,6 +32,11 @@ const routes = [
         component: SearchTaxonomy,
     },
     {
+        path: "/taxonomysample",
+        name: "Eu Taxonomy Sample",
+        component: CompanyTaxonomySample,
+    },
+    {
         path: "/data/eutaxonomies/:dataID",
         props: true,
         name: "EU Taxonomy",
@@ -45,6 +53,16 @@ const routes = [
         props: true,
         name: "Company EU Taxonomy",
         component: CompanyTaxonomy,
+    },
+    {
+        path: "/dataprivacy",
+        name: "DataPrivacy",
+        component: DataPrivacy,
+    },
+    {
+        path: "/imprint",
+        name: "LandingImprint",
+        component: TheImprint,
     },
 ];
 
