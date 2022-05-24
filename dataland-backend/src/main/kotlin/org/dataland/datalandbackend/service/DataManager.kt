@@ -34,13 +34,13 @@ class DataManager(
 
     private fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId.")
+            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
         }
     }
 
     private fun verifyDataIdExists(dataId: String) {
         if (!dataMetaInformationPerDataId.containsKey(dataId)) {
-            throw IllegalArgumentException("Dataland does not know the data ID: $dataId.")
+            throw IllegalArgumentException("Dataland does not know the data ID: $dataId")
         }
     }
 
@@ -107,9 +107,7 @@ class DataManager(
             matches = matches.filter { it.value.dataType == dataType }
         }
 
-        return matches.map {
-            DataMetaInformation(dataId = it.key, it.value.dataType, it.value.companyId)
-        }
+        return matches.map { it.value }
     }
 
     override fun getDataMetaInfo(dataId: String): DataMetaInformation {
