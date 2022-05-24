@@ -129,3 +129,8 @@ else
   exit 1
 fi
 
+
+
+echo "Show all-companies-list after tests by using user jwt token:"
+curl --location --request GET "${backend_url}/companies" --header "Authorization: Bearer ${jwt_token_user}"
+

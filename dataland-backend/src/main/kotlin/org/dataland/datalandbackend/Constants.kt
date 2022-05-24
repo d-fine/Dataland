@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component
 
 const val RATIO_PRECISION = 4
 
-@Component("PreviewStuff")
-class PreviewStuff(
+@Component("TeaserConfiguration")
+class TeaserConfiguration(
     @Autowired var dataManager: DataManagerInterface,
 ) {
     fun isCompanyPublic(requestedCompanyId: String): Boolean {
@@ -23,5 +23,10 @@ class PreviewStuff(
             }
             return false
         } else return requestedCompanyId == searchResult.first().companyId
+    }
+
+    fun isDataSetPublic(requestedDataId: String): Boolean {
+        val associatedCompanyId = dataManager.getDataMetaInfo(requestedDataId).companyId
+        return isCompanyPublic(associatedCompanyId)
     }
 }

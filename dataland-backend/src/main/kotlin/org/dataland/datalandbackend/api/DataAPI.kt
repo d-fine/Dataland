@@ -55,7 +55,7 @@ interface DataAPI<T> {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @TeaserConfiguration.isDataSetPublic(#dataId)")
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store

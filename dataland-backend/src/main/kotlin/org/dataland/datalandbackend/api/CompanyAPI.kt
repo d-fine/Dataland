@@ -90,7 +90,7 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @PreviewStuff.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @TeaserConfiguration.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
