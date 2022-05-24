@@ -15,13 +15,11 @@
             </span>
           </Button>
           </router-link>
-          <router-link to="/searchtaxonomy" class="no-underline">
-            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button">
+            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="authenticate">
               <span class="d-letters text-primary d-button">
                 Login
               </span>
             </Button>
-          </router-link>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -93,10 +91,18 @@
 <script>
 import Card from "primevue/card";
 import InputText from 'primevue/inputtext';
+import Button from "primevue/button";
+import {authenticate} from "@/utils/keycloak";
 
 export default {
   name: "LandingLogin",
-  components: {Card, InputText}
+  components: {Card, InputText, Button},
+  methods: {
+    authenticate(){
+      authenticate()
+      alert("ran authentication")
+    }
+  }
 
 }
 </script>

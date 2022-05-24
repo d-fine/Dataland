@@ -54,9 +54,7 @@ function instantiateVueApp() {
 }
 
 if (!window.localStorage.getItem('keycloakToken')) {
-    authenticateAgainstKeycloak().then(() => {
         instantiateVueApp()
-    })
 } else {
     instantiateVueApp()
 }
