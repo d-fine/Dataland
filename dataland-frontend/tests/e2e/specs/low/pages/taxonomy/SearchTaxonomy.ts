@@ -17,7 +17,7 @@ describe('Search Taxonomy', function () {
     });
 
     it('Search Input field should be present before index filter', () => {
-        const placeholder = "Search a company by name, ISIN, PermID or LEI"
+        const placeholder = "Search company by name or PermID"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('not.be.disabled')
@@ -85,7 +85,7 @@ describe('Search Taxonomy', function () {
     });
 
     it('Search Input field should be always present', () => {
-        const placeholder = "Search a company by name, ISIN, PermID or LEI"
+        const placeholder = "Search company by name or PermID"
         const inputValue = "A company name"
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies")
@@ -100,25 +100,24 @@ describe('Search Taxonomy', function () {
 
 
     it('Autocomplete functionality', () => {
-        cy.intercept('**/api/companies*').as('searchCompany')
         cy.visit('/searchtaxonomy')
+        cy.intercept('**/api/companies*').as('searchCompany')
         cy.get('input[name=eu_taxonomy_search_input]')
             .click({force:true})
             .type('b')
         cy.wait('@searchCompany', {timeout: 1000}).then(() => {
             cy.get('.p-autocomplete-item')
-                .eq(0).click()
+                .eq(0).click({force:true})
                 .url().should('include', '/companies/')
                 .url().should('include', '/eutaxonomies')
         })
-
     });
 
     it('Scroll functionality', () => {
         cy.visit('/searchtaxonomy')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
         cy.get('input[name=eu_taxonomy_search_input]')
-            .click()
+            .click({force:true})
             .type('a')
             .type('{enter}')
         cy.scrollTo(0, 500)
