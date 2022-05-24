@@ -73,10 +73,10 @@
 
 <script>
 import Card from "primevue/card";
-
+import Button from "primevue/button";
 export default {
   name: "LandingLogin",
-  components: {Card}
+  components: {Card, Button}
 
 }
 </script>

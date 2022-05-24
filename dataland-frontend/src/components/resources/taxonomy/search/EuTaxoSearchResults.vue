@@ -7,14 +7,14 @@
     </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
+        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100" 
                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         >
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
           </Column>
-          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-1">
+          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
             <template #header>
               <span class="uppercase">PERM ID</span> <i class="material-icons pl-2" aria-hidden="true" title="Perm ID" v-tooltip.top="{
               value: 'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
@@ -35,7 +35,7 @@
           </Column>
           <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
           </Column>
-          <Column field="companyId" header="" class="surface-0 w-2 d-datatable-column-right">
+          <Column field="companyId" header="" class="surface-0 w-1 d-datatable-column-right">
             <template #body="{data}">
               <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
                            class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>
