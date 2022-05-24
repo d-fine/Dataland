@@ -9,7 +9,7 @@
             <i v-else aria-hidden="true"/>
             <AutoComplete
                 v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
-                @complete="searchCompany($event)" placeholder="Search a company by name, ISIN, PermID or LEI" inputClass="h-3rem" ref="autocomplete"
+                @complete="searchCompany($event)" placeholder="Search company by name or PermID" inputClass="h-3rem" ref="autocomplete"
                 field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect">
               <template #footer>

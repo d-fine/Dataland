@@ -11,14 +11,11 @@
       giving them a fair compensation.
     </div>
   </div>
-  <div class="grid align-items-center m-0">
-    <div class="col-offset-1 col-10">
-    <img src="@/assets/images/elements/video_placeholder.svg" alt="Showcase Video" class="pt-6 pb-6 w-full"/>
-    </div>
-  </div>
-  <div class="grid m-0">
-    <div class="col-offset-1 col-5 p-0">
-      <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
+  <div class="grid mt-6">
+    <div class="col-offset-1 col-5 p-0 ">
+      <div class="border-solid border-gray-50 border-1">
+        <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
+      </div>
     </div>
     <div class="col-5 p-0 bg-primary">
       <div class="grid mt-6">
@@ -51,16 +48,11 @@
      </div>
     </div>
     <div class="col-5 p-0 ">
-      <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
+      <div class="border-solid border-gray-50 border-1">
+        <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
+      </div>
     </div>
   </div>
-  <div class="text-center pt-6  m-0">
-    Dataland is not for you?
-    <p class="text-primary text-center underline cursor-pointer">
-      Let us know what we can do better.
-    </p>
-  </div>
-
 </template>
 
 <script>

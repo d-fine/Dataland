@@ -2,31 +2,18 @@
   <div class="surface-ground pb-8">
     <div class="m-0">
       <div class="grid align-items-center m-0">
-        <div class="col-6 text-left">
-          <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
-          </router-link>
+        <div class="">
+          <img src="@/assets/images/logos/preview_banner.svg" alt="Preview Banner">
         </div>
-        <div class="col-3 col-offset-3">
-          <router-link to="/searchtaxonomy" class="no-underline">
-          <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
-            <span class="d-letters d-button">
-              Join
-            </span>
-          </Button>
-          </router-link>
-          <router-link to="/searchtaxonomy" class="no-underline">
-            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button">
-              <span class="d-letters text-primary d-button">
-                Login
-              </span>
-            </Button>
+        <div class="col-5 text-left">
+          <router-link to="/">
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pb-7 pl-4"/>
           </router-link>
         </div>
       </div>
       <div class="grid align-items-center m-0">
-        <div class="col-4 col-offset-1">
-          <h1 class="text-justify">COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE
+        <div class="col-5 col-offset-1">
+          <h1 class="text-justify text-6xl  font-normal">COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE
             COSTS.</h1>
         </div>
         <div class="col-4 col-offset-1">
@@ -59,19 +46,14 @@
         <div class="col-6 col-offset-3">
           <Card class="d-card">
             <template #title>
-              <h2 class="text-gray-100 text-left">Join Dataland to access our data</h2>
+              <h2 class="text-gray-100 text-left">Access EU Taxonomy Data</h2>
             </template>
             <template #content>
-              <p class="text-gray-800 text-left">Register free to access <strong>EU Taxonomy</strong> data from 450
-                Germany public
-                companies and Sustainability Data from
-                <strong>+100 German SMEs</strong>. Be notified about updates</p>
+              <p class="text-gray-800 text-left">
+                Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
-                <div class="col-9 p-fluid pr-0">
-                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing"/>
-                </div>
-                <div class="col-3 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem" name="get_started_button">
+                <div class="col-3 col-offset-4 p-fluid pl-0">
+                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-9rem" name="get_started_button">
                     <span class="d-letters d-button">
                       Get Started
                     </span>
@@ -79,9 +61,6 @@
                   </Button>
                 </div>
               </div>
-              <p class="text-primary underline text-left cursor-pointer">
-                Join with Linkedin
-              </p>
             </template>
           </Card>
         </div>
@@ -92,11 +71,10 @@
 
 <script>
 import Card from "primevue/card";
-import InputText from 'primevue/inputtext';
 
 export default {
   name: "LandingLogin",
-  components: {Card, InputText}
+  components: {Card}
 
 }
 </script>
