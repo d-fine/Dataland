@@ -1,12 +1,12 @@
 <template>
   <div class="grid m-0">
     <div class="col-5 col-offset-1 pt-5 text-left" >
-      <h2 class="uppercase font-light d-letters">Learn about our vision</h2>
+      <h2 class="uppercase font-light d-letters text-4xl">Learn about our vision</h2>
     </div>
     <div class="col-1 pt-6 text-right">
       <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" class="pl-2"/>
     </div>
-    <div class="col-3 text-left pt-6 font-semibold d-letters">
+    <div class="col-3 text-left pt-6 font-medium d-letters text-xl">
       Our platform enables organisations to get all the data they need by requesting it directly from data owners while
       giving them a fair compensation.
     </div>

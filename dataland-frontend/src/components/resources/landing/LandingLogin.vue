@@ -1,13 +1,13 @@
 <template>
   <div class="surface-ground pb-8">
     <div class="m-0">
-      <div class="grid align-items-center m-0">
-        <div class="">
+      <div class="grid align-items-start m-0 ">
+        <div class="col-1 text-left">
           <img src="@/assets/images/logos/preview_banner.svg" alt="Preview Banner">
         </div>
-        <div class="col-5 text-left">
+        <div class="col-5 text-left ">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pb-7 pl-4"/>
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class=""/>
           </router-link>
         </div>
       </div>
@@ -53,12 +53,14 @@
                 Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
                 <div class="col-3 col-offset-4 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button-sm pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-9rem" name="get_started_button">
+                  <router-link to="/searchtaxonomy">
+                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button">
                     <span class="d-letters d-button">
                       Get Started
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
                   </Button>
+                  </router-link>
                 </div>
               </div>
             </template>
