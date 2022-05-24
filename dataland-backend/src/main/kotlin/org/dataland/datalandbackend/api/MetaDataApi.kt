@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
@@ -18,6 +19,7 @@ import java.math.BigDecimal
  */
 
 @RequestMapping("/metadata")
+@SecurityRequirement(name = "default-auth")
 interface MetaDataApi {
 
     @Operation(

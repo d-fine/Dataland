@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
@@ -17,6 +18,7 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding data exchange
  */
 
+@SecurityRequirement(name = "default-auth")
 interface DataAPI<T> {
     @Operation(
         summary = "Upload new data set.",

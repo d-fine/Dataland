@@ -19,7 +19,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     private val public_links = arrayOf(
         "/actuator/health",
         "/swagger-ui/**",
-        "/v3/api-docs",
+        "/v3/api-docs/**",
         "/companies/**"
     )
 

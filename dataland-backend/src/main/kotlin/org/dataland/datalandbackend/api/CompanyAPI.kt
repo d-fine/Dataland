@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
@@ -20,6 +21,7 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding company data.
  */
 @RequestMapping("/companies")
+@SecurityRequirement(name = "default-auth")
 interface CompanyAPI {
 
     @Operation(
