@@ -26,11 +26,10 @@
 <script>
 
 import {CompanyDataControllerApi} from "../../../../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import {numberFormatter} from "@/utils/currencyMagnitude";
 
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompanyByIdWrapper = new ApiWrapper(companyDataControllerApi.getCompanyById)
+const companyDataControllerApi = new CompanyDataControllerApi(axiosDefaultConfiguration)
 export default {
   name: "CompanyInformation",
   data() {
@@ -56,7 +55,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.company = await getCompanyByIdWrapper.perform(this.companyID)
+        this.company = await companyDataControllerApi.getCompanyById(this.companyID)
         this.companyInformation = this.company.data.companyInformation
       } catch (error) {
         console.error(error)

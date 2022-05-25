@@ -40,12 +40,11 @@
 <script>
 import Button from "primevue/button";
 
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import {MetaDataControllerApi} from "../../../../build/clients/backend/api";
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel";
 
-const metaDataControllerApi = new MetaDataControllerApi()
-const getListOfDataMetaInfoWrapper = new ApiWrapper(metaDataControllerApi.getListOfDataMetaInfo)
+const metaDataControllerApi = new MetaDataControllerApi(axiosDefaultConfiguration)
 
 export default {
   name: "TaxonomyData",
@@ -72,7 +71,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.metaDataInfo = await getListOfDataMetaInfoWrapper.perform(this.companyID, "EuTaxonomyData")
+        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
       } catch (error) {
         console.error(error)
         this.metaDataInfo = null
