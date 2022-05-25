@@ -9,7 +9,7 @@
             <i v-else aria-hidden="true"/>
             <AutoComplete
                 v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
-                @complete="searchCompany($event)" placeholder="Search a company by name, ISIN, PermID or LEI" inputClass="h-3rem" ref="autocomplete"
+                @complete="searchCompany($event)" placeholder="Search company by name or PermID" inputClass="h-3rem" ref="autocomplete"
                 field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect">
               <template #footer>
@@ -25,7 +25,7 @@
       </div>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
+        <Button icon="pi pi-search" class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
         <IndexTabs v-if="showIndexTabs" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
@@ -59,7 +59,7 @@ export default {
     return {
       route: useRoute(),
       showIndexTabs: false,
-      index: null,
+      index: 1,
       scrolled: false,
       focus: false,
       collection: false,
@@ -78,6 +78,8 @@ export default {
     if (this.route.query && this.route.query.input) {
       this.selectedCompany = this.route.query.input
       this.queryCompany()
+    } else if (this.route.path === "/searchtaxonomy") {
+      this.toggleIndexTabs("Dax", 1)
     }
   },
   methods: {

@@ -8,7 +8,7 @@
               <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class=" pt-2"/>
             </div>
             <div class="col-12">
-              <p class="font-semibold">Come together to create a dataset that nobody can create alone while sharing the costs.</p>
+              <p class="font-medium text-xl">Come together to create a dataset that nobody can create alone while sharing the costs.</p>
             </div>
           </div>
         </div>

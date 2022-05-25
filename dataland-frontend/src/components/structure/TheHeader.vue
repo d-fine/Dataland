@@ -11,13 +11,6 @@
       </span>
 
     </div>
-    <div class="col-4">
-      <div class="grid justify-content-end ">
-        <div class="col-1">
-          <i class="material-icons text-white" aria-hidden="true">help_outline</i>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
