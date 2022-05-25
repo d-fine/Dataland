@@ -3,10 +3,7 @@
 </template>
 
 <script>
-import {MetaDataControllerApi} from "../../../../build/clients/backend/api";
-import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
-
-const metaDataControllerApi = new MetaDataControllerApi(axiosDefaultConfiguration)
+import {getMetaDataControllerApi} from "@/services/ApiClients"
 
 export default {
   name: "DataList",
@@ -28,7 +25,7 @@ export default {
   },
   methods: {
     async getData() {
-      this.response = await metaDataControllerApi.getListOfDataMetaInfo("")
+      this.response = await getMetaDataControllerApi.getListOfDataMetaInfo("")
     }
   }
 }
