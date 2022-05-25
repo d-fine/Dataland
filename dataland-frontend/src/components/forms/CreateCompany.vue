@@ -43,17 +43,15 @@
 
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue"
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
 import SuccessUpload from "@/components/messages/SuccessUpload"
 import {SchemaGenerator} from "@/services/SchemaGenerator"
-import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
+import {getCompanyDataControllerApi} from "@/services/ApiClients"
 import backend from "@/../build/clients/backend/backendOpenApi.json"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
 import Button from "primevue/button"
 import Message from 'primevue/message'
 
-const companyDataControllerApi = new CompanyDataControllerApi(axiosDefaultConfiguration)
 const companyInformation = backend.components.schemas.CompanyInformation
 const companyIdentifier = backend.components.schemas.CompanyIdentifier
 const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation)
@@ -81,7 +79,7 @@ const createCompany = {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await companyDataControllerApi.postCompany(this.model)
+        this.response = await getCompanyDataControllerApi().postCompany(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {
         console.error(error)
