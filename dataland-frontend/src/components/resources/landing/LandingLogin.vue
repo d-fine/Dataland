@@ -9,7 +9,7 @@
         </div>
         <div class="col-3 col-offset-3">
           <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openModal" />
-          <Dialog header="Header" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
+          <Dialog v-model:visible="displayModal" :modal="true">
             <p class="m-0"> <CreateAccount/> </p>
           </Dialog>
             <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="authenticate">
