@@ -1,4 +1,10 @@
 <template>
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="modal-body">
+            <slot name="body">
   <MarginWrapper>
     <div class="grid">
         <div class="col-12 text-center">
@@ -14,9 +20,7 @@
 
 
         <div class="col-12 flex align-items-center justify-content-center">
-                    <div>
-                      Enter your email address
-                    </div>
+
                     <div class="p-float-label">
                         <InputText id="inputtext" type="text" v-model="value1" />
                         <label for="inputtext">Valid email address</label>
@@ -51,11 +55,22 @@
                             validation-messages="Please provide a valid email address."
                         >
                         </FormKit>
-        </FormKit>
-        </div>
+                    </FormKit>
+                  </div>
 
+                </div>
+              </MarginWrapper>
+            </slot>
+          </div>
+          <div class="modal-footer">
+            <slot name="footer">
+
+            </slot>
+          </div>
+        </div>
+      </div>
     </div>
-  </MarginWrapper>
+  </transition>
 </template>
 
 <script>
