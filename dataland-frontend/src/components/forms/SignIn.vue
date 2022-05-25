@@ -1,87 +1,54 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-body">
-            <slot name="body">
   <MarginWrapper>
     <div class="grid">
-        <div class="col-12 text-center">
-      <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-3"/>
-
-      <h1 >
-        Login
-      </h1>
-        </div>
-    </div>
-    <div class="grid flex justify-content-center flex-wrap">
-
-
-
-        <div class="col-12 flex align-items-center justify-content-center">
-
-                    <div class="p-float-label">
-                        <InputText id="inputtext" type="text" v-model="value1" />
-                        <label for="inputtext">Valid email address</label>
-                    </div>
-        </div>
-      <div class="col-12 flex align-items-center justify-content-center">
-        <FormKit
-            v-model="model"
-            submit-label="JOIN NOW"
-            :submit-attrs="{
-                    'name': 'postEUData'
-                  }"
-            type="form"
-            id="signin"
-            :form-class="formClass"
-            @submit="postEUData">
-
-                        <FormKit
-                            id="emailfield"
-                            type="email"
-                            name="email"
-                            label="Password"
-                            placeholder="Password"
-                            :inner-class="innerClass"
-                            :outer-class="outerClass"
-                            :wrapper-class="wrapperClass"
-                            :input-class="inputClass"
-                            :sections-schema="{
-
-                            }"
-                            validation="required|email"
-                            validation-messages="Please provide a valid email address."
-                        >
-                        </FormKit>
-                    </FormKit>
-                  </div>
-
-                </div>
-              </MarginWrapper>
-            </slot>
-          </div>
-          <div class="modal-footer">
-            <slot name="footer">
-
-            </slot>
-          </div>
-        </div>
+      <div class="col-12 text-center">
+        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-3"/>
+        <h1>
+          Login
+        </h1>
       </div>
     </div>
-  </transition>
+    <div class="grid flex justify-content-center flex-wrap">
+      <div class="col-12 p-fluid align-items-center justify-content-center">
+        <div class="grid p-fluid">
+          <div class="field col-12">
+              <span class="p-float-label">
+                  <InputText id="email" type="text" v-model="email"/>
+                  <label for="email">Email</label>
+              </span>
+          </div>
+          <div class="field col-12 ">
+              <span class="p-float-label">
+                  <InputText id="password" type="password" v-model="password"/>
+                  <label for="password">Password</label>
+              </span>
+          </div>
+        </div>
+
+        <Button class="p-button" @click="authenticate">Login</Button>
+      </div>
+    </div>
+  </MarginWrapper>
+
 </template>
 
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import InputText from "primevue/inputtext";
-import {FormKit} from "@formkit/vue"
+import {authenticate} from "@/utils/keycloak";
+
 export default {
   name: "SignIn",
-  components: {MarginWrapper, InputText, FormKit},
-  data(){
+  components: {MarginWrapper, InputText},
+  methods: {
+    authenticate() {
+      authenticate(this.email, this.password)
+    }
+  },
+  data() {
     return {
+      email: null,
+      password: null,
       innerClass: {
         'formkit-inner': false,
       },
@@ -92,12 +59,12 @@ export default {
         'formkit-wrapper': false,
       },
       inputClass: {
-        'formkit-input':false,
+        'formkit-input': false,
         'p-inputtext': true,
         'p-component': true
       },
       formClass: {
-        'formkit-form':false
+        'formkit-form': false
       }
     }
   }
