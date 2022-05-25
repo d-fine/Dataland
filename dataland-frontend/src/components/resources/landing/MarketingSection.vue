@@ -11,11 +11,9 @@
       giving them a fair compensation.
     </div>
   </div>
-  <div class="grid mt-6 mr-0">
-    <div class="col-offset-1 col-5 p-0 ">
-      <div class="border-solid border-gray-50 border-1">
+  <div class="grid m-0 pt-6">
+    <div class="col-offset-1 col-5 p-0 border-solid border-gray-50 border-1" >
         <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
-      </div>
     </div>
     <div class="col-5 p-0 bg-primary">
       <div class="grid mt-6">
@@ -32,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="grid m-0">
+  <div class="grid m-0 pb-6">
     <div class="col-5 col-offset-1 p-0 surface-700">
      <div class="grid mt-6">
        <div class="col-8 col-offset-1 align-content-center">
@@ -47,10 +45,8 @@
        </div>
      </div>
     </div>
-    <div class="col-5 p-0 ">
-      <div class="border-solid border-gray-50 border-1">
+    <div class="col-5 p-0 border-solid border-gray-50 border-1">
         <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
-      </div>
     </div>
   </div>
 </template>

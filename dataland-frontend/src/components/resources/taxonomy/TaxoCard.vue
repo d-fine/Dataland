@@ -6,7 +6,7 @@
         <div class="col-5 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div v-if="percent" class="col-7 text-right text-primary">
+        <div v-if="percent != null" class="col-7 text-right text-primary">
           <span class="font-medium text-3xl">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
@@ -16,7 +16,7 @@
           </span>
         </div>
       </div>
-      <template v-if="percent">
+      <template v-if="percent != null">
         <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar">
         </ProgressBar>
         <div class="grid mt-4">

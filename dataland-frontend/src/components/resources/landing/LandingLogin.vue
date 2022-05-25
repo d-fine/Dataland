@@ -53,7 +53,7 @@
                 Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
                 <div class="col-3 col-offset-4 p-fluid pl-0">
-                  <router-link to="/searchtaxonomy">
+                  <router-link to="/searchtaxonomy" class="no-underline">
                   <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button">
                     <span class="d-letters d-button">
                       Get Started
