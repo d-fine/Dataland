@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <Button class="p-button" @click="authenticate">Create</Button>
+        <Button class="p-button" @click="register">Create</Button>
       </div>
       </div>
   </MarginWrapper>
@@ -36,14 +36,14 @@
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import {authenticate} from "@/utils/keycloak";
+import {register} from "@/utils/keycloak";
 
 export default {
   name: "CreateAccount",
   components: {MarginWrapper,  InputText, Button},
   methods: {
-    authenticate() {
-      authenticate()
+    register() {
+      register()
     }
   },
   data() {
