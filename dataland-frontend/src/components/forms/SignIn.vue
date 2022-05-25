@@ -9,7 +9,6 @@
     <div class="grid">
         <div class="col-12 text-center">
       <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-3"/>
-
       <h1 >
         Login
       </h1>

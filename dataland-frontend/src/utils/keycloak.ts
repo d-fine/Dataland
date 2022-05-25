@@ -1,20 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import Keycloak from "keycloak-js";
 const qs = require('qs');
-const data = qs.stringify({
-    'grant_type': 'password',
-    'client_id': 'dataland-frontend',
-    'username': 'myuser',
-    'password': '123456'
-});
-const config = {
-    method: 'post',
-    url: 'http://localhost:8095/realms/myrealm/protocol/openid-connect/token',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    data: data
-};
 
 function updateToken(refreshToken: string): void {
     const refresh_data = qs.stringify({
@@ -48,6 +34,7 @@ function keycloack_activate(access_token:string, refresh_token:string){
         token: access_token, refreshToken: refresh_token}).then((auth) => {
         if (auth) {
             console.log("Authenticated");
+            alert("Authenticated")
         } else {
             console.log("Not Authenticated");
 
@@ -75,6 +62,20 @@ function keycloack_activate(access_token:string, refresh_token:string){
 
 
 export function authenticate() {
+    const data = qs.stringify({
+        'grant_type': 'password',
+        'client_id': 'dataland-frontend',
+        'username': 'myuser',
+        'password': '123456'
+    });
+    const config = {
+        method: 'post',
+        url: 'http://localhost:8095/realms/myrealm/protocol/openid-connect/token',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: data
+    };
     axios(config)
         .then(function (response: AxiosResponse) {
             console.log(JSON.stringify(response.data));
