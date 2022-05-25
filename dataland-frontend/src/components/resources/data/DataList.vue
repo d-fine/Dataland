@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     async getData() {
-      this.response = await getMetaDataControllerApi.getListOfDataMetaInfo("")
+      this.response = await getMetaDataControllerApi().getListOfDataMetaInfo("")
     }
   }
 }

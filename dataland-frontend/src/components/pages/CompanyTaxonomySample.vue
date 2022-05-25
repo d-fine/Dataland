@@ -46,7 +46,7 @@ export default {
   methods: {
     async queryCompany() {
       try {
-        const responseArray = await getCompanyDataControllerApi.getCompanies(this.companyQuery, "", true)
+        const responseArray = await getCompanyDataControllerApi().getCompanies(this.companyQuery, "", true)
         this.companyID = responseArray.data[0].companyId
       } catch (error) {
         await this.companyIdFallback()
@@ -55,7 +55,7 @@ export default {
     },
     async companyIdFallback() {
       try {
-        const companyResponse = getCompanyDataControllerApi.getCompanies("", "", true)
+        const companyResponse = getCompanyDataControllerApi().getCompanies("", "", true)
         this.companyID = companyResponse.data[0].companyId
       } catch (error) {
         console.error(error)

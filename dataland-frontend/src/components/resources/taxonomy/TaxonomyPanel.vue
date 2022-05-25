@@ -83,7 +83,7 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        this.response = await getEuTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID)
+        this.response = await getEuTaxonomyDataControllerApi().getCompanyAssociatedData(this.dataID)
         this.dataSet = this.response.data.data
 
       } catch (error) {

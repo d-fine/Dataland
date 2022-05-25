@@ -58,7 +58,7 @@ export default {
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.model)
-        this.response = await getSkyminderControllerApi.getDataSkyminderRequest(...inputArgs)
+        this.response = await getSkyminderControllerApi().getDataSkyminderRequest(...inputArgs)
       } catch (error) {
         console.error(error)
       }

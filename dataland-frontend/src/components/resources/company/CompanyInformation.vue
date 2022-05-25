@@ -53,7 +53,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.company = await getCompanyDataControllerApi.getCompanyById(this.companyID)
+        this.company = await getCompanyDataControllerApi().getCompanyById(this.companyID)
         this.companyInformation = this.company.data.companyInformation
       } catch (error) {
         console.error(error)

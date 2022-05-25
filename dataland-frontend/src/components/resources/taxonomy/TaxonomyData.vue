@@ -68,7 +68,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.metaDataInfo = await getMetaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
+        this.metaDataInfo = await getMetaDataControllerApi().getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
       } catch (error) {
         console.error(error)
         this.metaDataInfo = null

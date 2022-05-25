@@ -74,7 +74,7 @@ export default {
         if (all) {
           this.model.companyName = ""
         }
-        this.response = await getCompanyDataControllerApi.getCompanies(this.model.companyName, "", true)
+        this.response = await getCompanyDataControllerApi().getCompanies(this.model.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null

@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     async getTaxoData() {
-      this.response = await getEuTaxonomyDataControllerApi.getData()
+      this.response = await getEuTaxonomyDataControllerApi().getData()
     }
   }
 }

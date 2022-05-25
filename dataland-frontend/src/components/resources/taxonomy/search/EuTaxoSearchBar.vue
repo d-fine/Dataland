@@ -137,7 +137,7 @@ export default {
     async filterByIndex(stockIndex) {
       try {
         this.loading = true
-        this.responseArray = await getCompanyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
+        this.responseArray = await getCompanyDataControllerApi().getCompanies("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -150,7 +150,7 @@ export default {
       try {
         this.loading = true
         this.showIndexTabs = true
-        this.responseArray = await getCompanyDataControllerApi.getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
+        this.responseArray = await getCompanyDataControllerApi().getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -163,7 +163,7 @@ export default {
     async searchCompany(event) {
       try {
         this.loading = true
-        this.autocompleteArray = await getCompanyDataControllerApi.getCompanies(event.query, "", true).then(this.responseMapper)
+        this.autocompleteArray = await getCompanyDataControllerApi().getCompanies(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.autocompleteArray.slice(0, 3)
       } catch (error) {
         console.error(error)

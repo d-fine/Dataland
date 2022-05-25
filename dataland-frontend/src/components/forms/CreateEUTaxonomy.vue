@@ -202,7 +202,7 @@ export default {
   methods: {
     async getCompanyIDs(){
       try {
-        const companyList = await getCompanyDataControllerApi.getCompanies("", "", true)
+        const companyList = await getCompanyDataControllerApi().getCompanies("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = []
@@ -213,7 +213,7 @@ export default {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await getEuTaxonomyDataControllerApi.postCompanyAssociatedData(this.model)
+        this.response = await getEuTaxonomyDataControllerApi().postCompanyAssociatedData(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null
