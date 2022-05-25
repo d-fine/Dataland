@@ -9,8 +9,10 @@ import {
 function getConfiguration() {
     const keyCloakToken = window.sessionStorage.getItem('keycloakToken')
     if (keyCloakToken) {
+        console.log("Using Token")
         return new Configuration({accessToken: keyCloakToken})
     } else {
+        console.log("Not Using Token")
         return undefined
     }
 }

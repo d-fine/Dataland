@@ -34,14 +34,13 @@
 
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import {FormKit} from "@formkit/vue"
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import {authenticate} from "@/utils/keycloak";
 
 export default {
   name: "CreateAccount",
-  components: {MarginWrapper, FormKit, InputText, Button},
+  components: {MarginWrapper,  InputText, Button},
   methods: {
     authenticate() {
       authenticate()

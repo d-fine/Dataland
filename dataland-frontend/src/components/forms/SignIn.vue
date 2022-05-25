@@ -12,20 +12,20 @@
       <div class="col-12 p-fluid align-items-center justify-content-center">
         <div class="grid p-fluid">
           <div class="field col-12">
-                      <span class="p-float-label">
-                          <InputText id="email" type="text" v-model="email"/>
-                          <label for="email">Email</label>
-                      </span>
+              <span class="p-float-label">
+                  <InputText id="email" type="text" v-model="email"/>
+                  <label for="email">Email</label>
+              </span>
           </div>
           <div class="field col-12 ">
-                      <span class="p-float-label">
-                          <InputText id="password" type="password" v-model="password"/>
-                          <label for="password">Password</label>
-                      </span>
+              <span class="p-float-label">
+                  <InputText id="password" type="password" v-model="password"/>
+                  <label for="password">Password</label>
+              </span>
           </div>
         </div>
 
-        <Button class="p-button" @click="authenticate">Create</Button>
+        <Button class="p-button" @click="authenticate">Login</Button>
       </div>
     </div>
   </MarginWrapper>
@@ -35,17 +35,17 @@
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import InputText from "primevue/inputtext";
-import {FormKit} from "@formkit/vue"
 import {authenticate} from "@/utils/keycloak";
+
 export default {
   name: "SignIn",
-  components: {MarginWrapper, InputText, FormKit},
+  components: {MarginWrapper, InputText},
   methods: {
     authenticate() {
       authenticate(this.email, this.password)
     }
   },
-  data(){
+  data() {
     return {
       email: null,
       password: null,
@@ -59,12 +59,12 @@ export default {
         'formkit-wrapper': false,
       },
       inputClass: {
-        'formkit-input':false,
+        'formkit-input': false,
         'p-inputtext': true,
         'p-component': true
       },
       formClass: {
-        'formkit-form':false
+        'formkit-form': false
       }
     }
   }
