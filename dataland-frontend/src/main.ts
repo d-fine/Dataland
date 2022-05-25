@@ -13,7 +13,7 @@ import PrimeVue from 'primevue/config';
 import Keycloak from "keycloak-js";
 
 const initOptions = {
-    url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend'
+    url: 'http://localhost:8095/', realm: 'datalandsecurity', clientId: 'dataland-frontend'
 }
 
 export async function authenticateAgainstKeycloak(): Promise<void> {
@@ -53,8 +53,4 @@ function instantiateVueApp() {
     app.mount('#app')
 }
 
-if (!window.localStorage.getItem('keycloakToken')) {
-        instantiateVueApp()
-} else {
-    instantiateVueApp()
-}
+instantiateVueApp()

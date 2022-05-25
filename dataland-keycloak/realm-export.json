@@ -1,6 +1,6 @@
 {
-  "id": "myrealm",
-  "realm": "myrealm",
+  "id": "datalandsecurity",
+  "realm": "datalandsecurity",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -47,7 +47,7 @@
     "realm": [
       {
         "id": "d64732ff-8594-42fc-80ae-89185c633fea",
-        "name": "default-roles-myrealm",
+        "name": "default-roles-datalandsecurity",
         "description": "${role_default-roles}",
         "composite": true,
         "composites": {
@@ -63,7 +63,7 @@
           }
         },
         "clientRole": false,
-        "containerId": "myrealm",
+        "containerId": "datalandsecurity",
         "attributes": {}
       },
       {
@@ -72,7 +72,7 @@
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false,
-        "containerId": "myrealm",
+        "containerId": "datalandsecurity",
         "attributes": {}
       },
       {
@@ -81,7 +81,7 @@
         "description": "${role_offline-access}",
         "composite": false,
         "clientRole": false,
-        "containerId": "myrealm",
+        "containerId": "datalandsecurity",
         "attributes": {}
       }
     ],
@@ -397,11 +397,11 @@
   "groups": [],
   "defaultRole": {
     "id": "d64732ff-8594-42fc-80ae-89185c633fea",
-    "name": "default-roles-myrealm",
+    "name": "default-roles-datalandsecurity",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
-    "containerId": "myrealm"
+    "containerId": "datalandsecurity"
   },
   "requiredCredentials": [
     "password"
@@ -464,13 +464,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/myrealm/account/",
+      "baseUrl": "/realms/datalandsecurity/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/myrealm/account/*"
+        "/realms/datalandsecurity/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -506,13 +506,13 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/myrealm/account/",
+      "baseUrl": "/realms/datalandsecurity/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/myrealm/account/*"
+        "/realms/datalandsecurity/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -720,13 +720,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/myrealm/console/",
+      "baseUrl": "/admin/datalandsecurity/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/admin/myrealm/console/*"
+        "/admin/datalandsecurity/console/*"
       ],
       "webOrigins": [
         "+"

@@ -1,5 +1,5 @@
 {
-  "realm": "myrealm",
+  "realm": "datalandsecurity",
   "auth-server-url": "http://localhost:8095/",
   "ssl-required": "external",
   "resource": "dataland-frontend",

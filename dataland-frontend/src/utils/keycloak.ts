@@ -2,32 +2,10 @@ import axios, {AxiosResponse} from "axios";
 import Keycloak from "keycloak-js";
 const qs = require('qs');
 
-function updateToken(refreshToken: string): void {
-    const refresh_data = qs.stringify({
-        'grant_type': 'refresh_token',
-        'client_id': 'dataland-frontend',
-        'refresh_token ': refreshToken
-    });
-    setInterval(() =>
-        axios({
-                method: 'post',
-                url: 'http://localhost:8095/realms/myrealm/protocol/openid-connect/token',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: refresh_data
-            }
-        ).then(function (response: AxiosResponse) {
-            console.log(JSON.stringify(response.data));
-        })
-            .catch(function (error: Error) {
-                console.log(error);
-            }), 6000)
-}
 
 function keycloack_activate(access_token:string, refresh_token:string){
     const initOptions = {
-        url: 'http://localhost:8095/', realm: 'myrealm', clientId: 'dataland-frontend'
+        url: 'http://localhost:8095/', realm: 'datalandsecurity', clientId: 'dataland-frontend'
     }
     const keycloak = new Keycloak(initOptions)
     keycloak.init({checkLoginIframe: false,
@@ -71,7 +49,7 @@ export function authenticate(email: string, password: string) {
     });
     const config = {
         method: 'post',
-        url: 'http://localhost:8095/realms/myrealm/protocol/openid-connect/token',
+        url: 'http://localhost:8095/realms/datalandsecurity/protocol/openid-connect/token',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
