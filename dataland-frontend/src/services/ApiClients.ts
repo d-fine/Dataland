@@ -6,14 +6,6 @@ import {
     SkyminderControllerApi
 } from "@/../build/clients/backend/api"
 
-console.log(process.env.VUE_APP_BASE_API_URL)
-export const apiClients = new Configuration({
-    accessToken: () => window.sessionStorage.getItem('keycloakToken') ?? "undefined",
-    basePath: process.env.VUE_APP_BASE_API_URL + "/api"
-
-})
-console.log(apiClients.basePath)
-
 function getConfiguration() {
     const keyCloakToken = window.sessionStorage.getItem('keycloakToken')
     if (keyCloakToken) {
