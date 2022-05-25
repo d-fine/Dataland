@@ -6,7 +6,7 @@ set -ex
 
 is_infrastructure_up () {
   declare -A services
-  services["backend"]=http://proxy:80/api/actuator/health/ping
+  services["backend"]=http://proxy:80/api/actuator/health
   services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
   services["edc-dummyserver"]=http://dataland-edc:9191/api/actuator/health
 
@@ -19,4 +19,4 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
-./gradlew :dataland-e2etests:test :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
+./gradlew :dataland-e2etests:test --no-daemon --stacktrace
