@@ -1,12 +1,15 @@
-package org.dataland.e2etests
+package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.acessmanagement.TokenRequester
+import org.dataland.e2etests.acessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -17,18 +20,13 @@ class CompanyDataControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val testDataProvider = TestDataProvider()
-
-    init {
-        ApiClient.Companion.accessToken = "TODO: Add Access Token here!"
-    }
+    private val tokenRequester = TokenRequester()
 
     @Test
     fun `post a dummy company and check if post was successful`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-
-        val postCompanyResponse =
-            companyDataControllerApi.postCompany(testCompanyInformation)
-
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         assertEquals(
             testCompanyInformation, postCompanyResponse.companyInformation,
             "The company information in the post-response does not match " +
@@ -43,7 +41,9 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
             testCompanyInformation.companyName, null, true
         )
@@ -62,12 +62,13 @@ class CompanyDataControllerTest {
     @Test
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
         val listOfTestCompanyInformation = testDataProvider.getCompanyInformation(3)
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies("", null, true).size
         for (companyInformation in listOfTestCompanyInformation) {
             companyDataControllerApi.postCompany(companyInformation)
         }
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies("", null, true).size
-
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${listOfTestCompanyInformation.size}."
@@ -79,11 +80,12 @@ class CompanyDataControllerTest {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
-
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             testCompanyId,
             testDataType
@@ -99,7 +101,9 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         assertTrue(
             companyDataControllerApi.getCompanies(
                 searchString = testCompanyInformation.identifiers.first().identifierValue,
