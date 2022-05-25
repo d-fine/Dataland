@@ -32,7 +32,7 @@
           Don't have an account?
         </div>
         <div class="col-2">
-         <Button label="Login" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem" name="login_dataland_button" @click="openLogin" />
+         <Button label="Join" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem" name="login_dataland_button" @click="openLogin" />
         </div>
 
     </div>
