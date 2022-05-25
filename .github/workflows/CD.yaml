@@ -39,8 +39,9 @@ jobs:
       - name: Get GitHub real data image on demand
         run: |
           if [[ $REALDATA == true ]]; then
-            echo "Retrieving real data"
+            echo "Retrieving real data and adapt test config"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.2
+            cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
           fi
         env:
           REALDATA: ${{ github.event.inputs.realData }}
