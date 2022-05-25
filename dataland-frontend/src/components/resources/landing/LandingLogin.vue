@@ -9,15 +9,11 @@
         </div>
         <div class="col-3 col-offset-3">
           <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openRegister" />
-          <Dialog v-model:visible="displayRegister" :modal="true">
+          <Dialog v-model:visible="displayRegister" :modal="true" :showHeader="false" :dismissableMask="true">
             <p class="m-0"> <CreateAccount/> </p>
           </Dialog>
-            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin">
-              <span class="d-letters text-primary d-button">
-                Login
-              </span>
-            </Button>
-          <Dialog v-model:visible="displayLogin" :modal="true">
+            <Button label="Login" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin" />
+          <Dialog v-model:visible="displayLogin" :modal="true" :showHeader="false" :dismissableMask="true">
             <p class="m-0"> <SignIn/> </p>
           </Dialog>
         </div>
