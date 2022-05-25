@@ -43,10 +43,8 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
-import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
+import {getCompanyDataControllerApi} from "@/services/ApiClients"
 
-const companyDataControllerApi = new CompanyDataControllerApi(axiosDefaultConfiguration)
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
@@ -76,7 +74,7 @@ export default {
         if (all) {
           this.model.companyName = ""
         }
-        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true)
+        this.response = await getCompanyDataControllerApi.getCompanies(this.model.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null
