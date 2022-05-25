@@ -2,7 +2,8 @@ import {Configuration} from "@/../build/clients/backend/configuration"
 import {
     CompanyDataControllerApi,
     EuTaxonomyDataControllerApi,
-    MetaDataControllerApi
+    MetaDataControllerApi,
+    SkyminderControllerApi
 } from "@/../build/clients/backend/api"
 
 console.log(process.env.VUE_APP_BASE_API_URL)
@@ -37,3 +38,8 @@ export function getEuTaxonomyDataControllerApi() {
 export function getMetaDataControllerApi() {
     return getConstructedApi(MetaDataControllerApi)
 }
+
+export function getSkyminderControllerApi() {
+    return getConstructedApi(SkyminderControllerApi)
+}
+
