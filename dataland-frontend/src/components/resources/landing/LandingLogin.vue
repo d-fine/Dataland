@@ -8,13 +8,10 @@
           </router-link>
         </div>
         <div class="col-3 col-offset-3">
-          <router-link to="/searchtaxonomy" class="no-underline">
-          <Button class="uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button">
-            <span class="d-letters d-button">
-              Join
-            </span>
-          </Button>
-          </router-link>
+          <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openModal" />
+          <Dialog v-model:visible="displayModal" :modal="true" :showHeader="false" :dismissableMask="true">
+            <p class="m-0"> <CreateAccount/> </p>
+          </Dialog>
             <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="authenticate">
               <span class="d-letters text-primary d-button">
                 Login
@@ -90,19 +87,31 @@
 
 <script>
 import Card from "primevue/card";
+import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import Button from "primevue/button";
 import {authenticate} from "@/utils/keycloak";
+import CreateAccount from "@/components/forms/CreateAccount";
 
 export default {
   name: "LandingLogin",
-  components: {Card, InputText, Button},
+  components: {CreateAccount, Card, Dialog,InputText, Button},
   methods: {
-    authenticate(){
+    authenticate() {
       authenticate()
       alert("ran authentication")
+    },
+    openModal() {
+      this.displayModal = true;
+    },
+    closeModal() {
+      this.displayModal = false;
     }
-  }
-
+  },
+    data() {
+      return {
+        displayModal: false
+      }
+    }
 }
 </script>

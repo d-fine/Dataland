@@ -1,13 +1,13 @@
 <template>
   <MarginWrapper>
     <div class="grid">
-        <div class="col-12 text-center">
-      <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-3"/>
+      <div class="col-12 text-center">
+        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-3"/>
 
-      <h1 >
-        Create an account
-      </h1>
-        </div>
+        <h1>
+          Create an account
+        </h1>
+      </div>
     </div>
     <div class="grid flex justify-content-center flex-wrap">
 
@@ -49,6 +49,7 @@
       </div>
     </div>
   </MarginWrapper>
+
 </template>
 
 <script>
@@ -58,14 +59,14 @@ import {FormKit} from "@formkit/vue"
 export default {
   name: "CreateAccount",
   components: {MarginWrapper, FormKit},
-  data(){
+  data() {
     return {
       innerClass: {
         'formkit-inner': false,
         'p-inputwrapper': true
       },
       inputClass: {
-        'formkit-input':false,
+        'formkit-input': false,
         'p-inputtext': true,
         'w-full': true
       },

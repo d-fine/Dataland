@@ -173,17 +173,12 @@
   </Card>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend/api"
 import SuccessUpload from "@/components/messages/SuccessUpload"
 import {FormKit} from "@formkit/vue"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {getCompanyDataControllerApi, getEuTaxonomyDataControllerApi} from "@/services/ApiClients"
 
-const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
-const postCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.postCompanyAssociatedData)
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CustomEUTaxonomy",
   components: {FailedUpload, Card, FormKit, SuccessUpload},
@@ -207,7 +202,7 @@ export default {
   methods: {
     async getCompanyIDs(){
       try {
-        const companyList = await getCompaniesWrapper.perform("", "", true)
+        const companyList = await getCompanyDataControllerApi().getCompanies("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = []
@@ -218,7 +213,7 @@ export default {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await postCompanyAssociatedDataWrapper.perform(this.model)
+        this.response = await getEuTaxonomyDataControllerApi().postCompanyAssociatedData(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null

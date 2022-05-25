@@ -1,4 +1,10 @@
 <template>
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="modal-body">
+            <slot name="body">
   <MarginWrapper>
     <div class="grid">
         <div class="col-12 text-center">
@@ -9,17 +15,18 @@
       </h1>
         </div>
     </div>
-    <div class="p-fluid grid">
+    <div class="grid flex justify-content-center flex-wrap">
 
 
 
-        <div class="field col-12 md:col-12">
+        <div class="col-12 flex align-items-center justify-content-center">
+
                     <div class="p-float-label">
                         <InputText id="inputtext" type="text" v-model="value1" />
-                        <label for="inputtext">InputText</label>
+                        <label for="inputtext">Valid email address</label>
                     </div>
         </div>
-      <div class="field col-12 md:col-12">
+      <div class="col-12 flex align-items-center justify-content-center">
         <FormKit
             v-model="model"
             submit-label="JOIN NOW"
@@ -35,7 +42,8 @@
                             id="emailfield"
                             type="email"
                             name="email"
-                            label="email"
+                            label="Password"
+                            placeholder="Password"
                             :inner-class="innerClass"
                             :outer-class="outerClass"
                             :wrapper-class="wrapperClass"
@@ -47,11 +55,22 @@
                             validation-messages="Please provide a valid email address."
                         >
                         </FormKit>
-        </FormKit>
-        </div>
+                    </FormKit>
+                  </div>
 
+                </div>
+              </MarginWrapper>
+            </slot>
+          </div>
+          <div class="modal-footer">
+            <slot name="footer">
+
+            </slot>
+          </div>
+        </div>
+      </div>
     </div>
-  </MarginWrapper>
+  </transition>
 </template>
 
 <script>

@@ -25,12 +25,9 @@
 
 <script>
 
-import {CompanyDataControllerApi} from "../../../../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {getCompanyDataControllerApi} from "@/services/ApiClients"
 import {numberFormatter} from "@/utils/currencyMagnitude";
 
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompanyByIdWrapper = new ApiWrapper(companyDataControllerApi.getCompanyById)
 export default {
   name: "CompanyInformation",
   data() {
@@ -56,7 +53,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        this.company = await getCompanyByIdWrapper.perform(this.companyID)
+        this.company = await getCompanyDataControllerApi().getCompanyById(this.companyID)
         this.companyInformation = this.company.data.companyInformation
       } catch (error) {
         console.error(error)

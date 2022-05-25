@@ -28,12 +28,9 @@
 </template>
 
 <script>
-import {EuTaxonomyDataControllerApi} from "../../../../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {getEuTaxonomyDataControllerApi} from "@/services/ApiClients"
 import DataTable from "primevue/datatable";
 
-const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
-const getDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.getData)
 export default {
   name: "TaxonomyData",
   components: {DataTable},
@@ -48,7 +45,7 @@ export default {
   },
   methods: {
     async getTaxoData() {
-      this.response = await getDataWrapper.perform()
+      this.response = await getEuTaxonomyDataControllerApi().getData()
     }
   }
 }
