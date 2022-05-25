@@ -36,6 +36,7 @@ function keycloack_activate(access_token:string, refresh_token:string){
             console.log("Authenticated");
             alert("Authenticated")
         } else {
+            alert("Not Authenticated")
             console.log("Not Authenticated");
 
         }
@@ -61,12 +62,12 @@ function keycloack_activate(access_token:string, refresh_token:string){
 }
 
 
-export function authenticate() {
+export function authenticate(email: string, password: string) {
     const data = qs.stringify({
         'grant_type': 'password',
         'client_id': 'dataland-frontend',
-        'username': 'myuser',
-        'password': '123456'
+        'username': email,
+        'password': password
     });
     const config = {
         method: 'post',

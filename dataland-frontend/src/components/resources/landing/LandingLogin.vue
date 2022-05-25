@@ -8,15 +8,18 @@
           </router-link>
         </div>
         <div class="col-3 col-offset-3">
-          <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openModal" />
-          <Dialog v-model:visible="displayModal" :modal="true">
+          <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openRegister" />
+          <Dialog v-model:visible="displayRegister" :modal="true">
             <p class="m-0"> <CreateAccount/> </p>
           </Dialog>
-            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="authenticate">
+            <Button class="uppercase p-button p-button-sm justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin">
               <span class="d-letters text-primary d-button">
                 Login
               </span>
             </Button>
+          <Dialog v-model:visible="displayLogin" :modal="true">
+            <p class="m-0"> <SignIn/> </p>
+          </Dialog>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -92,25 +95,33 @@ import InputText from 'primevue/inputtext';
 import Button from "primevue/button";
 import {authenticate} from "@/utils/keycloak";
 import CreateAccount from "@/components/forms/CreateAccount";
+import SignIn from "@/components/forms/SignIn";
 
 export default {
   name: "LandingLogin",
-  components: {CreateAccount, Card, Dialog,InputText, Button},
+  components: {SignIn, CreateAccount, Card, Dialog,InputText, Button},
   methods: {
     authenticate() {
       authenticate()
       alert("ran authentication")
     },
-    openModal() {
-      this.displayModal = true;
+    openRegister() {
+      this.displayRegister = true;
     },
-    closeModal() {
-      this.displayModal = false;
+    openLogin() {
+      this.displayLogin = true;
+    },
+    closeRegister() {
+      this.displayRegister = false;
+    },
+    closeLogin() {
+      this.displayLogin = false;
     }
   },
     data() {
       return {
-        displayModal: false
+        displayRegister: false,
+        displayLogin: false
       }
     }
 }

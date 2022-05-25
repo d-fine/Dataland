@@ -10,59 +10,24 @@
     </div>
     <div class="grid flex justify-content-center flex-wrap">
       <div class="col-12 p-fluid align-items-center justify-content-center">
-        <pre>{{email}}</pre>
-        <pre>{{password}}</pre>
-        <FormKit
-            v-model="model"
-            submit-label="JOIN NOW"
-            :submit-attrs="{
-                    'name': 'postEUData'
-                  }"
-            type="form"
-            id="createEuTaxonomyForm"
-            @submit="authenticate">
-          <FormKit
-              type="email"
-              name="email"
-              placeholder="Valid email address"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-              validation="required|email"
-              validation-messages="Please provide a valid email address."
-          >
-            <template #input>
-              <span class="p-float-label">
-                  <InputText id="email" type="text" v-model="email"/>
-                  <label for="email">Email</label>
-              </span>
+        <div class="grid p-fluid">
+          <div class="field col-12">
+                      <span class="p-float-label">
+                          <InputText id="email" type="text" v-model="email"/>
+                          <label for="email">Email</label>
+                      </span>
+          </div>
+          <div class="field col-12 ">
+                      <span class="p-float-label">
+                          <InputText id="password" type="text" v-model="password"/>
+                          <label for="password">Password</label>
+                      </span>
+          </div>
+        </div>
 
-            </template>
-          </FormKit>
-          <FormKit
-              type="password"
-              name="password"
-              placeholder="Password"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-              :outer-class="outerClass"
-              :wrapper-class="wrapperClass"
-              validation="required|length:8"
-              validation-messages="Please provide a password that is at least 8 characters long."
-          >
-            <template #input>
-              <span class="p-float-label">
-                  <InputText id="password" type="text" v-model="password"/>
-                  <label for="password">InputText</label>
-              </span>
-
-            </template>
-          </FormKit>
-
-        </FormKit>
-
-
+        <Button class="p-button" @click="authenticate">Create</Button>
       </div>
-    </div>
+      </div>
   </MarginWrapper>
 
 </template>
@@ -71,14 +36,15 @@
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import {FormKit} from "@formkit/vue"
 import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 import {authenticate} from "@/utils/keycloak";
+
 export default {
   name: "CreateAccount",
-  components: {MarginWrapper, FormKit, InputText},
+  components: {MarginWrapper, FormKit, InputText, Button},
   methods: {
     authenticate() {
       authenticate()
-
     }
   },
   data() {
