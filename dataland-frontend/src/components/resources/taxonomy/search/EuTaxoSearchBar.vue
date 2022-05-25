@@ -40,7 +40,7 @@
 
 <script>
 import {CompanyDataControllerApi} from "../../../../../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import AutoComplete from 'primevue/autocomplete';
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
@@ -48,8 +48,7 @@ import IndexTabs from "@/components/resources/indices/IndexTabs";
 import Button from "primevue/button";
 import {useRoute} from "vue-router"
 
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
+const companyDataControllerApi = new CompanyDataControllerApi(axiosDefaultConfiguration)
 
 
 export default {
@@ -141,7 +140,7 @@ export default {
     async filterByIndex(stockIndex) {
       try {
         this.loading = true
-        this.responseArray = await getCompaniesWrapper.perform("", stockIndex, false).then(this.responseMapper)
+        this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -154,7 +153,7 @@ export default {
       try {
         this.loading = true
         this.showIndexTabs = true
-        this.responseArray = await getCompaniesWrapper.perform(this.selectedCompany, "", false).then(this.responseMapper)
+        this.responseArray = await companyDataControllerApi.getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -167,7 +166,7 @@ export default {
     async searchCompany(event) {
       try {
         this.loading = true
-        this.autocompleteArray = await getCompaniesWrapper.perform(event.query, "", true).then(this.responseMapper)
+        this.autocompleteArray = await companyDataControllerApi.getCompanies(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.autocompleteArray.slice(0, 3)
       } catch (error) {
         console.error(error)

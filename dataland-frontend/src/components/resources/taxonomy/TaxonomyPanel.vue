@@ -56,12 +56,11 @@
 
 <script>
 import {EuTaxonomyDataControllerApi} from "../../../../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
 import TaxoInfoCard from "@/components/resources/taxonomy/TaxoInfoCard";
 
-const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
-const getCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.getCompanyAssociatedData)
+const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi(axiosDefaultConfiguration)
 
 export default {
   name: "TaxonomyPanel",
@@ -87,7 +86,7 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        this.response = await getCompanyAssociatedDataWrapper.perform(this.dataID)
+        this.response = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID)
         this.dataSet = this.response.data.data
 
       } catch (error) {

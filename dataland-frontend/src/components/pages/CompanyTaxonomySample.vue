@@ -28,10 +28,9 @@ import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
+const companyDataControllerApi = new CompanyDataControllerApi(axiosDefaultConfiguration)
 export default {
   name: "CompanyTaxonomy",
   components: {
@@ -49,7 +48,7 @@ export default {
   methods: {
     async queryCompany() {
       try {
-        const responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", true)
+        const responseArray = await companyDataControllerApi.getCompanies(this.companyQuery, "", true)
         this.companyID = responseArray.data[0].companyId
       } catch (error) {
         await this.companyIdFallback()
@@ -58,7 +57,7 @@ export default {
     },
     async companyIdFallback() {
       try {
-        const companyResponse = await getCompaniesWrapper.perform("", "", true)
+        const companyResponse = companyDataControllerApi.getCompanies("", "", true)
         this.companyID = companyResponse.data[0].companyId
       } catch (error) {
         console.error(error)

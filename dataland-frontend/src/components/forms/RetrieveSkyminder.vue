@@ -37,13 +37,12 @@
 <script>
 import {FormKit} from "@formkit/vue";
 import {SkyminderControllerApi} from "@/../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {axiosDefaultConfiguration} from "@/services/AxiosDefaultConfiguration"
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import SkyminderTable from "@/components/tables/SkyminderTable";
 
-const skyminderControllerApi = new SkyminderControllerApi()
-const getDataSkyminderRequestWrapper = new ApiWrapper(skyminderControllerApi.getDataSkyminderRequest)
+const skyminderControllerApi = new SkyminderControllerApi(axiosDefaultConfiguration)
 
 export default {
   name: "RetrieveSkyminder",
@@ -62,7 +61,7 @@ export default {
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.model)
-        this.response = await getDataSkyminderRequestWrapper.perform(...inputArgs)
+        this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs)
       } catch (error) {
         console.error(error)
       }
