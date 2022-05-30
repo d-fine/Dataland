@@ -13,7 +13,7 @@ export user_password="test"
 export admin_name="admin_user"
 export admin_password="test"
 
-export client_id="public"
+export client_id="dataland-public"
 
 export test_company_name=$1
 export test_company_data_marker=1234565432101
@@ -145,7 +145,7 @@ fi
 
 
 echo "=>Post one EU taxonomy data set for test company ${test_company_name} and one data set for teaser company ${teaser_company_name} by using admin jwt token."
-postdata_response_test_company=$(curl -X 'POST' 'http://localhost:8080/api/data/eutaxonomies' -H 'accept: application/json' -H 'Content-Type: application/json' -d "{
+postdata_response_test_company=$(curl -X 'POST' "${backend_url}/data/eutaxonomies" -H 'accept: application/json' -H 'Content-Type: application/json' -d "{
   \"companyId\": \"${test_companyId}\",
   \"data\": {
     \"Capex\": {
@@ -177,7 +177,7 @@ else
   echo "Matching failed."
   exit 1
 fi
-postdata_response_teaser_company=$(curl -X 'POST' 'http://localhost:8080/api/data/eutaxonomies' -H 'accept: application/json' -H 'Content-Type: application/json' -d "{
+postdata_response_teaser_company=$(curl -X 'POST' "${backend_url}/data/eutaxonomies" -H 'accept: application/json' -H 'Content-Type: application/json' -d "{
   \"companyId\": \"${teaser_companyId}\",
   \"data\": {
     \"Capex\": {
