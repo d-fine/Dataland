@@ -14,7 +14,7 @@
   <div class="grid align-items-center m-0">
     <div class="col-offset-1 col-10">
       <div class="video-container">
-        <iframe src="https://www.youtube-nocookie.com/embed/dpA579Kcibs?color=white&modestbranding=1&=rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube-nocookie.com/embed/dpA579Kcibs?color=white&modestbranding=1&=rel=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
       </div>
     </div>
@@ -79,5 +79,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  border: 0;
 }
 </style>
