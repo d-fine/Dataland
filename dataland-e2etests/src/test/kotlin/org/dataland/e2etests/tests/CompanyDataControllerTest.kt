@@ -8,8 +8,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
 import org.dataland.e2etests.TestDataProvider
-import org.dataland.e2etests.acessmanagement.TokenRequester
-import org.dataland.e2etests.acessmanagement.UserType
+import org.dataland.e2etests.accessmanagement.TokenRequester
+import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

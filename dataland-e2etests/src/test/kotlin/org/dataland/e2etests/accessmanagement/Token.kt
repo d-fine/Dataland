@@ -1,9 +1,8 @@
-package org.dataland.e2etests.acessmanagement
+package org.dataland.e2etests.accessmanagement
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 
-class Token(token: String) {
-    private val token = token
+class Token(private val token: String) {
 
     fun setToken() {
         ApiClient.Companion.accessToken = token

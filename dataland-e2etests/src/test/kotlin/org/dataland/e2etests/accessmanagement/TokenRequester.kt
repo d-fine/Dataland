@@ -1,4 +1,4 @@
-package org.dataland.e2etests.acessmanagement
+package org.dataland.e2etests.accessmanagement
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
