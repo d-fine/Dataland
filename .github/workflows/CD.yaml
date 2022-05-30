@@ -18,11 +18,11 @@ on:
         required: true
         type: environment
       useInMemoryStorage:
-        description: 'Store data only in memory'
+        description: 'Mock Trustee'
         required: false
         type: boolean
       trusteeEnvironmentName:
-        description: 'The environment name for the Trustee'
+        description: 'Trustee Environment Name'
         required: false
         type: string
         default: integration
