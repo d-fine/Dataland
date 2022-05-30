@@ -121,11 +121,9 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
-
   keycloak-db:
     profiles: ["development"]
     networks:
-      - external
       - internal
     image: postgres
     volumes:
@@ -137,22 +135,15 @@ services:
   keycloak:
     profiles: ["development"]
     networks:
-      - external
       - internal
-    image: quay.io/keycloak/keycloak:18.0.0
-    ports:
-        - "8095:8080"
+    build:
+      context: ./
+      dockerfile: ./keycloak/Dockerfile
+    expose:
+        - "8080"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      DB_VENDOR: POSTGRES
-      DB_ADDR: keycloak-db
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
-    command:
-      - start-dev
     depends_on:
       - keycloak-db
 networks:
