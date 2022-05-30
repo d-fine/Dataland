@@ -21,6 +21,14 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+private const val REPORT_OBLIGATION_YES = "Yes"
+private const val REPORT_OBLIGATION_NO = "No"
+
+private const val ATTESTATION_REASONABLE = "reasonable"
+private const val ATTESTATION_LIMITED = "limited"
+private const val ATTESTATION_NA = "n/a"
+private const val ATTESTATION_NONE = "none"
+
 /**
  * Class to transform company information and EU Taxonomy data delivered by csv into json format
  */
@@ -161,18 +169,32 @@ class CsvToJsonConverter {
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
-        return if (getValue("reportObligation", csvLineData) == "Ja") {
-            YesNo.Yes
-        } else {
-            YesNo.No
+        val rawReportObligation = getValue("reportObligation", csvLineData)
+        return when (rawReportObligation) {
+            REPORT_OBLIGATION_YES -> YesNo.Yes
+            REPORT_OBLIGATION_NO -> YesNo.No
+            else -> {
+                throw java.lang.IllegalArgumentException(
+                    "Could not determine reportObligation: Found $rawReportObligation, " +
+                        "but expect one of $REPORT_OBLIGATION_YES or $REPORT_OBLIGATION_NO "
+                )
+            }
         }
     }
 
     private fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
+        val rawAttestation = getValue("attestation", csvLineData)
         return when (getValue("attestation", csvLineData)) {
-            "reasonable" -> AttestationOptions.ReasonableAssurance
-            "limited" -> AttestationOptions.LimitedAssurance
-            else -> AttestationOptions.None
+            ATTESTATION_REASONABLE -> AttestationOptions.ReasonableAssurance
+            ATTESTATION_LIMITED -> AttestationOptions.LimitedAssurance
+            ATTESTATION_NA, ATTESTATION_NONE -> AttestationOptions.None
+            else -> {
+                throw java.lang.IllegalArgumentException(
+                    "Could not determine attestation: Found $rawAttestation, " +
+                        "but expect one of $ATTESTATION_REASONABLE, $ATTESTATION_LIMITED, " +
+                        "$ATTESTATION_NA or $ATTESTATION_NONE "
+                )
+            }
         }
     }
 
