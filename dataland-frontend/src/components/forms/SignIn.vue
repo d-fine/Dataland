@@ -13,21 +13,22 @@
         <div class="grid p-fluid">
           <div class="field col-12">
               <span class="p-float-label">
-                  <InputText id="email" type="text" v-model="email"/>
-                  <label for="email">Email</label>
+                  <InputText id="login_email" type="text" v-model="email"/>
+                  <label for="login_email">Email</label>
               </span>
           </div>
           <div class="field col-12 ">
               <span class="p-float-label">
-                  <InputText id="password" type="password" v-model="password"/>
-                  <label for="password">Password</label>
+                  <InputText id="login_password" type="password" v-model="password"/>
+                  <label for="login_password">Password</label>
               </span>
           </div>
         </div>
 
+      </div>
+      <div class="col-12 align-items-center justify-content-center text-center">
         <Button class="p-button uppercase d-letters" @click="authenticate">Sign-In</Button>
       </div>
-        <p/>
         <div class="col-4 pt-3">
           Don't have an account?
         </div>
@@ -79,7 +80,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

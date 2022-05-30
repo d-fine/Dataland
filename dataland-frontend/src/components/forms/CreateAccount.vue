@@ -12,22 +12,22 @@
       <div class="col-12 p-fluid align-items-center justify-content-center">
         <div class="grid p-fluid">
           <div class="field col-12">
-                      <span class="p-float-label">
-                          <InputText id="email" type="text" v-model="email"/>
-                          <label for="email">Email</label>
-                      </span>
+            <span class="p-float-label">
+                <InputText id="create_email" type="text" v-model="email"/>
+                <label for="create_email">Email</label>
+            </span>
           </div>
           <div class="field col-12 ">
-                      <span class="p-float-label">
-                          <InputText id="password" type="text" v-model="password"/>
-                          <label for="password">Password</label>
-                      </span>
+            <span class="p-float-label">
+                <InputText id="create_password" type="password" v-model="password"/>
+                <label for="create_password">Password</label>
+            </span>
           </div>
         </div>
-
-        <Button class="p-button uppercase d-letters" @click="authenticate">Join Now</Button>
       </div>
-      <p/>
+      <div class="col-12 align-items-center justify-content-center text-center">
+        <Button class="p-button uppercase d-letters" @click="register">Join Now</Button>
+      </div>
       <div class="col-4 pt-3">
         Already have an account?
       </div>
@@ -55,8 +55,8 @@ export default {
   },
   data() {
     return {
-      model: null,
-      value1: null,
+      email: null,
+      password: null,
       innerClass: {
         'formkit-inner': false,
       },
@@ -78,7 +78,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

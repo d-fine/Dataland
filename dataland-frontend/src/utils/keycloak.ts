@@ -38,7 +38,7 @@ function keycloack_activate(access_token: string, refresh_token: string) {
     }).then((auth) => {
         if (auth) {
             console.log("Authenticated");
-            alert("Authenticated")
+            console.log(keycloak.createRegisterUrl())
         } else {
             alert("Not Authenticated")
             console.log("Not Authenticated");
@@ -63,13 +63,14 @@ function keycloack_activate(access_token: string, refresh_token: string) {
     }).catch(() => {
         console.error("Authenticated Failed");
     });
+
 }
 
 function retrieve_admin_token() {
     console.log("retrieve_admin_token")
     const data = {
         'grant_type': 'client_credentials',
-        'client_id': 'dataland-frontend',
+        'client_id': 'dataland-public',
         'client_secret': 'bZJhNnmW1Of6GAZGF1hwjGY8mw629McW'
     };
     return axios(authentication_config(data))
