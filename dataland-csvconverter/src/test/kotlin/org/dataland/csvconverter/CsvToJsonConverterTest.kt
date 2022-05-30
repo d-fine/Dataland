@@ -26,7 +26,7 @@ class CsvToJsonConverterTest {
         assertTrue(
             actualCompanyInformationWithEuTaxonomyData.size == expectedCompanyInformationWithEuTaxonomyData.size,
             "Size mismatch: the parsed list contains ${actualCompanyInformationWithEuTaxonomyData.size} " +
-                    "and the read list contains ${expectedCompanyInformationWithEuTaxonomyData.size} elements."
+                "and the read list contains ${expectedCompanyInformationWithEuTaxonomyData.size} elements."
         )
         assertEquals(
             expectedCompanyInformationWithEuTaxonomyData, actualCompanyInformationWithEuTaxonomyData,
@@ -65,7 +65,7 @@ class CsvToJsonConverterTest {
         assertTrue(
             found.contains(expectedErrorMessage),
             "checking that the correct exception message string is present. " +
-                    "Found: $found, expected: $expectedErrorMessage"
+                "Found: $found, expected: $expectedErrorMessage"
         )
     }
 }

@@ -25,7 +25,6 @@ private const val REPORT_OBLIGATION_YES = "Yes"
 private const val REPORT_OBLIGATION_NO = "No"
 private const val REPORT_OBLIGATION_NA = "n/a"
 
-
 private const val ATTESTATION_REASONABLE = "reasonable"
 private const val ATTESTATION_LIMITED = "limited"
 private const val ATTESTATION_NA = "n/a"
