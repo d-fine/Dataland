@@ -21,6 +21,11 @@ on:
         description: 'Store data only in memory'
         required: false
         type: boolean
+      trusteeEnvironmentName:
+        description: 'The environment name for the Trustee'
+        required: false
+        type: string
+        default: integration
 
 jobs:
   build-prod-and-deploy:
@@ -60,8 +65,8 @@ jobs:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
           TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
-          TRUSTEE_IP: ${{ secrets.TRUSTEE_IP }}
-          TRUSTEE_KEYCLOAK_IP: ${{ secrets.TRUSTEE_KEYCLOAK_IP }}
+          TRUSTEE_BASE_URL: ${{ secrets.TRUSTEE_BASE_URL }}
+          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
