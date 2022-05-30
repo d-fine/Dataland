@@ -23,11 +23,14 @@ import java.time.format.DateTimeFormatter
 
 private const val REPORT_OBLIGATION_YES = "Yes"
 private const val REPORT_OBLIGATION_NO = "No"
+private const val REPORT_OBLIGATION_NA = "n/a"
+
 
 private const val ATTESTATION_REASONABLE = "reasonable"
 private const val ATTESTATION_LIMITED = "limited"
 private const val ATTESTATION_NA = "n/a"
 private const val ATTESTATION_NONE = "none"
+private const val NOT_AVAILABLE_STRING = "n/a"
 
 /**
  * Class to transform company information and EU Taxonomy data delivered by csv into json format
@@ -36,7 +39,6 @@ class CsvToJsonConverter {
 
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-    private val notAvailableString = "n/a"
     private var euroUnitConversionFactor = "1"
     private var rawCsvData: List<Map<String, String>> = listOf()
 
@@ -142,13 +144,13 @@ class CsvToJsonConverter {
 
     private fun validateLine(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
-        return getValue("companyType", csvLineData) !in listOf("FS", notAvailableString) &&
-            getValue("marketCap", csvLineData) != notAvailableString
+        return getValue("companyType", csvLineData) !in listOf("FS", NOT_AVAILABLE_STRING) &&
+            getValue("marketCap", csvLineData) != NOT_AVAILABLE_STRING
     }
 
     private fun getValue(property: String, csvData: Map<String, String>): String {
         return csvData[columnMapping[property]!!]!!.trim().ifBlank {
-            notAvailableString
+            NOT_AVAILABLE_STRING
         }
     }
 
@@ -161,7 +163,7 @@ class CsvToJsonConverter {
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return IdentifierType.values().sortedBy { it.name }.map {
             CompanyIdentifier(identifierValue = getValue(it.name, csvLineData), identifierType = it)
-        }.filter { it.identifierValue != notAvailableString }
+        }.filter { it.identifierValue != NOT_AVAILABLE_STRING }
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
@@ -172,11 +174,11 @@ class CsvToJsonConverter {
         val rawReportObligation = getValue("reportObligation", csvLineData)
         return when (rawReportObligation) {
             REPORT_OBLIGATION_YES -> YesNo.Yes
-            REPORT_OBLIGATION_NO -> YesNo.No
+            REPORT_OBLIGATION_NO, REPORT_OBLIGATION_NA -> YesNo.No
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine reportObligation: Found $rawReportObligation, " +
-                        "but expect one of $REPORT_OBLIGATION_YES or $REPORT_OBLIGATION_NO "
+                        "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO or $REPORT_OBLIGATION_NA"
                 )
             }
         }
