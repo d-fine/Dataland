@@ -29,7 +29,7 @@ function registeration_config(user_data: object, admin_token: string) {
 
 function keycloack_activate(access_token: string, refresh_token: string) {
     const initOptions = {
-        url: 'http://localhost:8095/', realm: 'datalandsecurity', clientId: 'dataland-frontend'
+        url: 'http://localhost:8095/', realm: 'datalandsecurity', clientId: 'dataland-public'
     }
     const keycloak = new Keycloak(initOptions)
     keycloak.init({
@@ -65,32 +65,6 @@ function keycloack_activate(access_token: string, refresh_token: string) {
     });
 }
 
-
-export function authenticate(email: string, password: string) {
-    const data = qs.stringify({
-        'grant_type': 'password',
-        'client_id': 'dataland-frontend',
-        'username': email,
-        'password': password
-    });
-    const config = {
-        method: 'post',
-        url: 'http://localhost:8095/realms/datalandsecurity/protocol/openid-connect/token',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data: data
-    };
-    axios(config)
-        .then(function (response: AxiosResponse) {
-            console.log(JSON.stringify(response.data));
-            keycloack_activate(response.data.access_token, response.data.refresh_token)
-        })
-        .catch(function (error: Error) {
-            console.log(error);
-        })
-}
-
 function retrieve_admin_token() {
     console.log("retrieve_admin_token")
     const data = {
@@ -122,3 +96,28 @@ export function register() {
         })
 }
 
+
+export function authenticate(email: string, password: string) {
+    const data = qs.stringify({
+        'grant_type': 'password',
+        'client_id': 'dataland-public',
+        'username': email,
+        'password': password
+    });
+    const config = {
+        method: 'post',
+        url: 'http://localhost:8095/realms/datalandsecurity/protocol/openid-connect/token',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: data
+    };
+    axios(config)
+        .then(function (response: AxiosResponse) {
+            console.log(JSON.stringify(response.data));
+            keycloack_activate(response.data.access_token, response.data.refresh_token)
+        })
+        .catch(function (error: Error) {
+            console.log(error);
+        })
+}

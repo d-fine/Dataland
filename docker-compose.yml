@@ -140,7 +140,9 @@ services:
       context: ./
       dockerfile: ./keycloak/Dockerfile
     expose:
-        - "8080"
+      - "8080"
+    ports:
+      - "8095:8080"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
