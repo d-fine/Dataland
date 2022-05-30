@@ -11,6 +11,14 @@
       giving them a fair compensation.
     </div>
   </div>
+  <div class="grid align-items-center m-0">
+    <div class="col-offset-1 col-10">
+      <div class="video-container">
+        <iframe src="https://www.youtube-nocookie.com/embed/dpA579Kcibs?color=white&modestbranding=1&=rel=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      </div>
+    </div>
+  </div>
   <div class="grid m-0 pt-6">
     <div class="col-offset-1 col-5 p-0 border-solid border-gray-50 border-1" >
         <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
@@ -57,3 +65,20 @@ export default {
   name: "MarketingSection",
 }
 </script>
+
+<style>
+.video-container{
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+.video-container iframe{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+</style>
