@@ -40,7 +40,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data and adapt test config"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.2
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.3
             cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
           fi
         env:
