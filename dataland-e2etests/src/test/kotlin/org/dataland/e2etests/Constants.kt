@@ -11,3 +11,5 @@ const val ADMIN_USER_NAME = "admin_user"
 const val ADMIN_USER_PASSWORD = "test"
 const val SOME_USER_NAME = "some_user"
 const val SOME_USER_PASSWORD = "test"
+
+const val TEASER_COMPANY_INDEX_IN_FIXTURES = 2

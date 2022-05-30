@@ -30,6 +30,7 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+      TEASER_COMPANY_NAME: ${TEASER_COMPANY_NAME}
   e2etests:
     profiles: ["testing"]
     build:
@@ -113,6 +114,7 @@ services:
       - "8080"
     networks:
       - external
+      - internal
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
@@ -121,6 +123,7 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+      TEASER_COMPANY_NAME: ${TEASER_COMPANY_NAME}
   keycloak-db:
     profiles: ["testing", "development"]
     networks:
