@@ -18,18 +18,14 @@ class TeaserConfiguration(
     /**
      * This method checks if a company Id belongs to a company which should be accessible without authorization. Such
      * companies are called "teaser companies".
-     * @param requestedCompanyId contains the company Id for which a user has requested data
+     * @param requestedCompanyId contains the company Id for which the check should occur
      * @return is a boolean which is TRUE if the company Id belongs to a teaser company, else it is FALSE
      */
     fun isCompanyPublic(requestedCompanyId: String): Boolean {
         val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?: "Adidas AG"
         val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
-        return when (searchResult.size) {
-            0 -> false
-            1 -> searchResult.first().companyId == requestedCompanyId
-            else -> searchResult.any { it.companyId == requestedCompanyId }
+        return searchResult.any { it.companyId == requestedCompanyId }
         }
-    }
 
     /**
      * This method checks if a data Id is assigned to a company Id which belongs to a teaser company.
