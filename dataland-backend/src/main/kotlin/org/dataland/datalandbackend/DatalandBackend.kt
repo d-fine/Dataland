@@ -13,7 +13,12 @@ import org.springframework.boot.runApplication
  */
 @SpringBootApplication
 @OpenAPIDefinition(info = Info(title = "Dataland API", version = "0.0.1", description = "The API for Dataland"))
-@SecurityScheme(name = "default-auth", scheme = "bearer", type = SecuritySchemeType.HTTP, `in` = SecuritySchemeIn.HEADER)
+@SecurityScheme(
+    name = "default-auth",
+    scheme = "bearer",
+    type = SecuritySchemeType.HTTP,
+    `in` = SecuritySchemeIn.HEADER
+)
 class DatalandBackend
 
 /**

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
-    private val public_links = arrayOf(
+    private val publicLinks = arrayOf(
         "/actuator/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
@@ -48,7 +48,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         super.configure(http)
         http
             .authorizeRequests()
-            .antMatchers(*public_links).permitAll()
+            .antMatchers(*publicLinks).permitAll()
             .anyRequest().fullyAuthenticated()
 
         http.csrf().disable()

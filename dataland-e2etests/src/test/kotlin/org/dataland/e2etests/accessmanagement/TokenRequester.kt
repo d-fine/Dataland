@@ -13,7 +13,7 @@ import org.dataland.e2etests.SOME_USER_PASSWORD
 import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 
-class TokenRequester() {
+class TokenRequester {
 
     private val objectMapper = ObjectMapper()
     private val client = OkHttpClient()
