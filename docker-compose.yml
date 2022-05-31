@@ -149,7 +149,7 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      PROXY_ADDRESS_FORWARDING: true
+      PROXY_ADDRESS_FORWARDING: "true"
       KEYCLOAK_FRONTEND_URL: "http://keycloak:8080"
     depends_on:
       - keycloak-db
