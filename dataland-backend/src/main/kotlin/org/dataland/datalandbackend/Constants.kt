@@ -25,7 +25,7 @@ class TeaserConfiguration(
         val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?: "Adidas AG"
         val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
         return searchResult.any { it.companyId == requestedCompanyId }
-        }
+    }
 
     /**
      * This method checks if a data Id is assigned to a company Id which belongs to a teaser company.
