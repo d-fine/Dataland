@@ -3,6 +3,7 @@
 # The create image will bear the contents of the <source_volume> in the folder /data
 # the image's name/tag will be <image_tag>
 # Usage: create_data_image_from_volume <source_volume> <image_tag>
+set -ex
 
 docker stop data_image_creator || true
 docker rm data_image_creator || true
