@@ -56,6 +56,7 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         return NullAuthenticatedSessionStrategy()
     }
 
+    @Suppress("SpreadOperator")
     @Override
     override fun configure(http: HttpSecurity) {
         super.configure(http)

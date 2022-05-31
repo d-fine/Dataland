@@ -24,16 +24,11 @@ class TeaserConfiguration(
     fun isCompanyPublic(requestedCompanyId: String): Boolean {
         val teaserCompanyName = System.getenv("TEASER_COMPANY_NAME") ?: "Adidas AG"
         val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
-        return if (searchResult.isEmpty()) {
-            false
-        } else if (searchResult.size > 1) {
-            for (storedCompany in searchResult) {
-                if (requestedCompanyId == storedCompany.companyId) {
-                    return true
-                }
-            }
-            return false
-        } else return requestedCompanyId == searchResult.first().companyId
+        return when (searchResult.size) {
+            0 -> false
+            1 -> searchResult.first().companyId == requestedCompanyId
+            else -> searchResult.any { it.companyId == requestedCompanyId }
+        }
     }
 
     /**
