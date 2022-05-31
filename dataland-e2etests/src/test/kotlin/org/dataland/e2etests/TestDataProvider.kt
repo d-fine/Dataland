@@ -56,6 +56,10 @@ class TestDataProvider {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
         return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
     }
+
+    fun getFakeTeaserCompany(): CompanyInformation {
+        return testCompanyInformationWithEuTaxonomyData[TEASER_COMPANY_INDEX_IN_FIXTURES].companyInformation
+    }
 }
 
 data class CompanyInformationWithEuTaxonomyDataModel(
