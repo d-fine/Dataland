@@ -14,10 +14,12 @@ class CompanyUploader {
     internal fun uploadCompany(
         mockMvc: MockMvc,
         objectMapper: ObjectMapper,
-        companyInformation: CompanyInformation
+        companyInformation: CompanyInformation,
+        token: String
     ): StoredCompany {
         val request = mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
+                .header("Authorization", "Bearer $token")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(companyInformation))
