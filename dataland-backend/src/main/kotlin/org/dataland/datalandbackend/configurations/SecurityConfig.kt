@@ -12,6 +12,9 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.stereotype.Component
 
+/**
+ * This class contains all security configurations for the backend to secure endpoints with keycloak.
+ */
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
@@ -24,12 +27,22 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/data/**"
     )
 
+    /**
+     * The Role Container is a component which maps actual roles from the Dataland keycloak service to the role
+     * definitions which are used in the Dataland backend code to decouple the role namings in the keycloak service
+     * from the ones in backend.
+     */
     @Component("RoleContainer")
     object RoleContainer {
         const val DATA_READER = "USER"
         const val DATA_UPLOADER = "ADMIN"
     }
 
+    /**
+     * The SimpleAuthorityMapper is a simple one-to-one GrantedAuthoritiesMapper which allows for case conversion of
+     * the authority name and the addition of a string prefix (which defaults to ROLE_ ).
+     * @param auth is needed to build an AuthenticationProvider
+     */
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         val keycloakAuthenticationProvider = keycloakAuthenticationProvider()
