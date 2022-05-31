@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerAp
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
 import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.accessmanagement.Token
 import org.dataland.e2etests.accessmanagement.TokenRequester
 import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -20,7 +21,8 @@ class EuTaxonomyControllerTest {
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
-        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        //tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        Token("quatschtoken").setToken()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
