@@ -141,7 +141,7 @@ services:
       - internal
     build:
       context: ./
-      dockerfile: ./keycloak/Dockerfile
+      dockerfile: dataland-keycloak/Dockerfile
     expose:
       - "8080"
     ports:
