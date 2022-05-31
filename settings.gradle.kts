@@ -4,7 +4,7 @@ include("dataland-backend", "dataland-e2etests", "dataland-frontend", "dataland-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.8")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.9")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.8.2")
             library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.8.2")
@@ -32,9 +32,9 @@ dependencyResolutionManagement {
 
             library("slf4j-api", "org.slf4j:slf4j-api:1.7.36")
 
-            library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
-            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-            library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
+            library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.3")
+            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.2.3")
+            library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3")
         }
     }
 }
