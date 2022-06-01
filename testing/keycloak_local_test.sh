@@ -18,7 +18,7 @@ export client_id="dataland-public"
 export test_company_name=$1
 export test_company_data_marker=1234565432101
 
-export teaser_company_name=${TEASER_COMPANY_NAME}
+export teaser_company_name="Deuschle AG"
 export teaser_company_data_marker=98765456789101
 
 

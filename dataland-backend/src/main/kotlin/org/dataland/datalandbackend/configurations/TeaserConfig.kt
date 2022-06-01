@@ -2,9 +2,10 @@ package org.dataland.datalandbackend.configurations
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.REALDATA
+import org.dataland.datalandbackend.REAL_TEASER_COMPANY_PERM_ID
 import org.dataland.datalandbackend.TEASER_COMPANY_INDEX_IN_FIXTURES
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -25,14 +26,14 @@ class TeaserConfig(
      * environment variable TEASER_COMPANY_INDEX_IN_FIXTURES.
      * @return is the CompanyInformation object based on the n-th teaser company in the fixtures
      */
-    fun getFakeTeaserCompany(): CompanyInformation {
+    fun getFakeTeaserCompanyName(): String {
         val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
         val testCompanyInformationWithEuTaxonomyData =
             objectMapper.readValue(
                 jsonFile,
                 object : TypeReference<List<CompanyInformationWithEuTaxonomyDataModel>>() {}
             )
-        return testCompanyInformationWithEuTaxonomyData[TEASER_COMPANY_INDEX_IN_FIXTURES].companyInformation
+        return testCompanyInformationWithEuTaxonomyData[TEASER_COMPANY_INDEX_IN_FIXTURES].companyInformation.companyName
     } // TODO maybe just import function from TestDataProvider in test
 
     /**
@@ -42,10 +43,10 @@ class TeaserConfig(
      * @return is a boolean which is TRUE if the company Id belongs to a teaser company, else it is FALSE
      */
     fun isCompanyPublic(requestedCompanyId: String): Boolean {
-        val teaserCompanyIndexInFixtures = System.getenv("TEASER_COMPANY_INDEX_IN_FIXTURES")
-        val teaserCompanyName = when (teaserCompanyIndexInFixtures.length) {
-            0 -> "Adidas AG"
-            else -> getFakeTeaserCompany().companyName
+        val teaserCompanyName = when (REALDATA) {
+            true -> dataManager.searchCompanies(REAL_TEASER_COMPANY_PERM_ID, false)
+                .first().companyInformation.companyName
+            else -> getFakeTeaserCompanyName()
         }
         val searchResult = dataManager.searchCompanies(teaserCompanyName, true)
         return searchResult.any { it.companyId == requestedCompanyId }

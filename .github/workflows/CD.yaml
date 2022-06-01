@@ -28,6 +28,7 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -42,8 +43,6 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.1
           fi
-        env:
-          REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -54,7 +53,7 @@ jobs:
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
       - name: Start server and deploy to it (either Preview or Dev)
-        run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
+        run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT $REALDATA
         env:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
           TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
@@ -64,6 +63,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
+          REAL_TEASER_COMPANY_PERM_ID: ${{ secrets.REAL_TEASER_COMPANY_PERM_ID }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
