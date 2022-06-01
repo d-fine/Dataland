@@ -12,5 +12,3 @@ const val ADMIN_USER_NAME = "admin_user"
 const val ADMIN_USER_PASSWORD = "test"
 const val SOME_USER_NAME = "some_user"
 const val SOME_USER_PASSWORD = "test"
-
-val TEASER_COMPANY_INDEX_IN_FIXTURES: Int = System.getenv("TEASER_COMPANY_INDEX_IN_FIXTURES").toInt()

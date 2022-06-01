@@ -36,6 +36,23 @@ class EuTaxonomyControllerTest {
         )
     }
 /*
+    fun `post fake teaser company and a dummy data set for it and test if access to it is possible without token`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        Token("").setToken()
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        ).dataId
+
+        //Throw unauthorized exception
+
+        assertThrows<IllegalArgumentException> {
+            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
+        }
+    }*/
+
+    /*
     fun `post a dummy company and a dummy data set for it and test if access to it is denied if no token is passed`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()

@@ -58,7 +58,7 @@ class TestDataProvider {
     }
 
     fun getFakeTeaserCompany(): CompanyInformation {
-        return testCompanyInformationWithEuTaxonomyData[TEASER_COMPANY_INDEX_IN_FIXTURES].companyInformation
+        return testCompanyInformationWithEuTaxonomyData.first().companyInformation
     }
 }
 

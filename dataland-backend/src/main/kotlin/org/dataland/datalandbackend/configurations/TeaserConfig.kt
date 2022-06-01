@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.REALDATA
 import org.dataland.datalandbackend.REAL_TEASER_COMPANY_PERM_ID
-import org.dataland.datalandbackend.TEASER_COMPANY_INDEX_IN_FIXTURES
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +32,7 @@ class TeaserConfig(
                 jsonFile,
                 object : TypeReference<List<CompanyInformationWithEuTaxonomyDataModel>>() {}
             )
-        return testCompanyInformationWithEuTaxonomyData[TEASER_COMPANY_INDEX_IN_FIXTURES].companyInformation.companyName
+        return testCompanyInformationWithEuTaxonomyData.first().companyInformation.companyName
     } // TODO maybe just import function from TestDataProvider in test
 
     /**
