@@ -105,7 +105,7 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]')
             .click({force:true})
             .type('b')
-        cy.wait('@searchCompany', {timeout: 1000}).then(() => {
+        cy.wait('@searchCompany', {timeout: 2000}).then(() => {
             cy.get('.p-autocomplete-item')
                 .eq(0).click({force:true})
                 .url().should('include', '/companies/')
