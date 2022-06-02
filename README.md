@@ -49,7 +49,7 @@ To do so:
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 * Update Fronted packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues 
-  (Known issues appeared in the past with updating Jest and Eslint).
+  (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
 * Update Docker Images. Publish new versions of docker images in CI by running CypressImage and TemurinImage Jobs
 * update node version in `dataland-frontend/build.gradle.kts`
 * Do the above also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
