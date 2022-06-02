@@ -44,6 +44,10 @@ dependencies {
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("getTestData")
+}
+
 tasks.withType<org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask> {
     outputFileName.set("$backendOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
