@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenRequester
-import org.dataland.e2etests.accessmanagement.UnauthorizedRequester
+import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -22,7 +22,7 @@ class CompanyDataControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val testDataProvider = TestDataProvider()
     private val tokenRequester = TokenRequester()
-    private val unauthorizedRequester = UnauthorizedRequester()
+    private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -37,6 +37,19 @@ class CompanyDataControllerTest {
         assertTrue(
             postCompanyResponse.companyId.isNotEmpty(),
             "No valid company Id was assigned to the posted company."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if that specific company can be queried by its company Id`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
+        assertEquals(
+            StoredCompany(receivedCompanyId, testCompanyInformation, emptyList()),
+            companyDataControllerApi.getCompanyById(receivedCompanyId),
+            "Dataland does not contain the posted company."
         )
     }
 
@@ -120,7 +133,7 @@ class CompanyDataControllerTest {
         val teaserCompanyInformation = testDataProvider.getFakeTeaserCompany()
         tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
-        val getCompanyByIdResponse = unauthorizedRequester.getCompanyById(teaserCompanyId)
+        val getCompanyByIdResponse = unauthorizedCompanyDataControllerApi.getCompanyById(teaserCompanyId)
         val expectedStoredTeaserCompany = StoredCompany(
             companyId = teaserCompanyId,
             companyInformation = teaserCompanyInformation,

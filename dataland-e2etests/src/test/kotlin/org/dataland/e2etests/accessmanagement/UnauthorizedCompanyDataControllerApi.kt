@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.mosh
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
 
-class UnauthorizedRequester {
+class UnauthorizedCompanyDataControllerApi {
 
     private val client = OkHttpClient()
 
