@@ -24,7 +24,9 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/swagger-ui/**",
         "/v3/api-docs/**",
         "/companies/**",
-        "/data/**"
+        "/data/**",
+        "/metadata",
+        "/metadata/**"
     )
 
     /**
