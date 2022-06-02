@@ -1,4 +1,4 @@
-import faker from "@faker-js/faker";
+import {faker} from '@faker-js/faker';
 import {humanize} from '../../../src/utils/StringHumanizer';
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
