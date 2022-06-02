@@ -1,8 +1,10 @@
 package org.dataland.e2etests.tests
 
+import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -14,6 +16,7 @@ import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class CompanyDataControllerTest {
 
@@ -143,5 +146,26 @@ class CompanyDataControllerTest {
             expectedStoredTeaserCompany, getCompanyByIdResponse,
             "The posted company does not equal the teaser company."
         )
+    }
+
+    @Test
+    fun `post a non-teaser company and test if it cannot be retrieved by its company ID as unauthorized user`() {
+        val nonTeaserCompanyInformation = testDataProvider.getFakeNonTeaserCompany()
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
+        assertThrows<java.lang.IllegalArgumentException> {
+            unauthorizedCompanyDataControllerApi.getCompanyById(
+                nonTeaserCompanyId
+            )
+        }
+    }
+
+    @Test
+    fun `post a company as a user type which does not have the rights to do so and receive an error code 403`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
+        val exception =
+            assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
+        assertThat(exception.message.equals("Client error: 403"))
     }
 }

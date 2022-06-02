@@ -60,6 +60,16 @@ class TestDataProvider {
     fun getFakeTeaserCompany(): CompanyInformation {
         return testCompanyInformationWithEuTaxonomyData.first().companyInformation
     }
+
+    fun getFakeNonTeaserCompany(): CompanyInformation {
+        val companyInformationOfLastCompany = testCompanyInformationWithEuTaxonomyData.last().companyInformation
+        if (companyInformationOfLastCompany == getFakeTeaserCompany()) {
+            throw IllegalArgumentException(
+                "Error: The non-teaser company as the last element in the fixtures equals the teaser-company."
+            )
+        }
+        return companyInformationOfLastCompany
+    }
 }
 
 data class CompanyInformationWithEuTaxonomyDataModel(
