@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests
 
-import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -153,11 +152,10 @@ class CompanyDataControllerTest {
         val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
-        assertThrows<java.lang.IllegalArgumentException> {
-            unauthorizedCompanyDataControllerApi.getCompanyById(
-                nonTeaserCompanyId
-            )
+        val exception = assertThrows<IllegalArgumentException> {
+            unauthorizedCompanyDataControllerApi.getCompanyById(nonTeaserCompanyId)
         }
+        assertTrue(exception.message!!.contains("Unauthorized access failed"))
     }
 
     @Test
@@ -166,6 +164,6 @@ class CompanyDataControllerTest {
         tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         val exception =
             assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
-        assertThat(exception.message.equals("Client error: 403"))
+        assertEquals("Client error : 403 ", exception.message)
     }
 }

@@ -9,7 +9,10 @@ import org.dataland.e2etests.accessmanagement.TokenRequester
 import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataControllerApi
 import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.lang.IllegalArgumentException
 
 class EuTaxonomyControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
@@ -59,7 +62,35 @@ class EuTaxonomyControllerTest {
             "The posted data does not equal the expected test data."
         )
     }
+
+    @Test
+    fun `post a non-teaser dummy company and a dummy data set for it and test if unauthorized access is denied`() {
+        val teaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        val nonTeaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(nonTeaserCompanyId, testData)
+        ).dataId
+        val exception = assertThrows<IllegalArgumentException> {
+            unauthorizedEuTaxonomyDataControllerApi.getCompanyAssociatedDataEuTaxonomyData(testDataId)
+        }
+        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+    }
 }
+
+/*
+@Test
+fun `post a non-teaser dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
+    val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+    tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+    val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
+    assertThrows<IllegalArgumentException> {
+        unauthorizedCompanyDataControllerApi.getCompanyById(
+            nonTeaserCompanyId
+        )
+    }
+}*/
 
 /*
 fun `post a dummy company and a dummy data set for it and test if access to it is denied if no token is passed`() {
