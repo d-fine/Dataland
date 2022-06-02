@@ -132,8 +132,8 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post the teaser company and test if it can be retrieved by its company ID as unauthorized user`() {
-        val teaserCompanyInformation = testDataProvider.getFakeTeaserCompany()
+    fun `post the teaser dummy company and test if it can be retrieved by its company ID as unauthorized user`() {
+        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
         tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
         val getCompanyByIdResponse = unauthorizedCompanyDataControllerApi.getCompanyById(teaserCompanyId)
@@ -149,8 +149,8 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a non-teaser company and test if it cannot be retrieved by its company ID as unauthorized user`() {
-        val nonTeaserCompanyInformation = testDataProvider.getFakeNonTeaserCompany()
+    fun `post a non-teaser dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
+        val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
         val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
         assertThrows<java.lang.IllegalArgumentException> {
@@ -161,7 +161,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a company as a user type which does not have the rights to do so and receive an error code 403`() {
+    fun `post a dummy company as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         tokenRequester.requestTokenForUserType(UserType.SomeUser).setToken()
         val exception =

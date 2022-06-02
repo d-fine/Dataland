@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuT
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenRequester
+import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataControllerApi
 import org.dataland.e2etests.accessmanagement.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -15,6 +16,7 @@ class EuTaxonomyControllerTest {
     private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
     private val testDataProvider = TestDataProvider()
     private val tokenRequester = TokenRequester()
+    private val unauthorizedEuTaxonomyDataControllerApi = UnauthorizedEuTaxonomyDataControllerApi()
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
@@ -35,47 +37,53 @@ class EuTaxonomyControllerTest {
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
     }
-/*
-    fun `post fake teaser company and a dummy data set for it and test if access to it is possible without token`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+
+    @Test
+    fun `post the teaser dummy company and a dummy data set for it and test if unauthorized access is possible`() {
+        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
-        Token("").setToken()
-        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        tokenRequester.requestTokenForUserType(UserType.Admin).setToken()
+        val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+            CompanyAssociatedDataEuTaxonomyData(teaserCompanyId, testData)
         ).dataId
 
-        //Throw unauthorized exception
-
-        assertThrows<IllegalArgumentException> {
-            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
-        }
-    }*/
-
-    /*
-    fun `post a dummy company and a dummy data set for it and test if access to it is denied if no token is passed`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
-        Token("").setToken()
-        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
-        ).dataId
-
-       //Throw unauthorized exception
-
-        assertThrows<IllegalArgumentException> {
-            euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
-        }
-    }*/
-
-    /*fun `post the teaser company and a dummy data set for it and test if access is possible even without token`() {
+        val getDataByIdResponse =
+            unauthorizedEuTaxonomyDataControllerApi.getCompanyAssociatedDataEuTaxonomyData(testDataId)
+        val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyData(
+            companyId = teaserCompanyId,
+            data = testData
+        )
         assertEquals(
-            "a",
-            "a",
-            "The posted and the received eu taxonomy data sets and their company IDs are not equal."
+            expectedCompanyAssociatedData, getDataByIdResponse,
+            "The posted data does not equal the expected test data."
         )
     }
-
- */
 }
+
+/*
+fun `post a dummy company and a dummy data set for it and test if access to it is denied if no token is passed`() {
+    val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+    val testData = testDataProvider.getEuTaxonomyData(1).first()
+    Token("").setToken()
+    val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+    val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+        CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+    ).dataId
+
+   //Throw unauthorized exception
+
+    assertThrows<IllegalArgumentException> {
+        euTaxonomyDataControllerApi.getCompanyAssociatedData(testDataId)
+    }
+}*/
+
+/*fun `post the teaser company and a dummy data set for it and test if access is possible even without token`() {
+    assertEquals(
+        "a",
+        "a",
+        "The posted and the received eu taxonomy data sets and their company IDs are not equal."
+    )
+}
+
+*/
