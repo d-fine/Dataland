@@ -190,7 +190,7 @@ class MetaDataControllerTest {
                 DataMetaInformation(dataId = testDataId, dataType = testDataType, companyId = teaserCompanyId)
             ),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                    "match the retrieved meta info."
+                "match the retrieved meta info."
         )
     }
 
