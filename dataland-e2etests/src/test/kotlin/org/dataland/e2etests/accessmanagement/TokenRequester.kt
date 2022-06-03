@@ -23,7 +23,8 @@ class TokenRequester {
             .add("grant_type", TOKENREQUEST_GRANT_TYPE)
             .add("client_id", TOKENREQUEST_CLIENT_ID)
             .add("username", username)
-            .add("password", password).build()
+            .add("password", password)
+            .build()
         return Request.Builder()
             .url(PATH_TO_KEYCLOAK_TOKENENDPOINT)
             .post(requestBody)
@@ -31,18 +32,23 @@ class TokenRequester {
             .build()
     }
 
-    private fun requestToken(username: String, password: String): String {
+    private fun requestToken(username: String, password: String): Token {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
-        if (!response.isSuccessful) throw IllegalArgumentException("Unexpected code $response")
-        val responseAsString = response.body!!.string()
-        val node: ObjectNode = objectMapper.readValue(responseAsString, ObjectNode::class.java)
-        return node.get("access_token").toString().drop(1).dropLast(1)
+        if (!response.isSuccessful) throw IllegalArgumentException("Token request failed, response is: $response")
+        val responseBodyAsString = response.body!!.string()
+        val node: ObjectNode = objectMapper.readValue(responseBodyAsString, ObjectNode::class.java)
+        return Token(node.get("access_token").toString().drop(1).dropLast(1))
     }
 
     fun requestTokenForUserType(user: UserType): Token {
         return when (user) {
-            UserType.SomeUser -> Token(requestToken(SOME_USER_NAME, SOME_USER_PASSWORD))
-            UserType.Admin -> Token(requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD))
+            UserType.SomeUser -> requestToken(SOME_USER_NAME, SOME_USER_PASSWORD)
+            UserType.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
         }
+    }
+
+    enum class UserType {
+        Admin,
+        SomeUser
     }
 }

@@ -28,7 +28,7 @@ class UnauthorizedEuTaxonomyDataControllerApi {
     fun getCompanyAssociatedDataEuTaxonomyData(dataId: String): CompanyAssociatedDataEuTaxonomyData {
         val response = client.newCall(buildGetCompanyAssociatedDataEuTaxonomyDataRequest(dataId)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseAsString = response.body!!.string()
-        return transferJsonToCompanyAssociatedDataEuTaxonomyData(responseAsString)
+        val responseBodyAsString = response.body!!.string()
+        return transferJsonToCompanyAssociatedDataEuTaxonomyData(responseBodyAsString)
     }
 }

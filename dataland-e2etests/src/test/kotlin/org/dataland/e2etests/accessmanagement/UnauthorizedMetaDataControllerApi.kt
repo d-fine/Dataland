@@ -15,16 +15,14 @@ class UnauthorizedMetaDataControllerApi {
     private val client = OkHttpClient()
 
     private fun transferJsonToDataMetaInformation(inputString: String): DataMetaInformation {
-        val jsonAdapter: JsonAdapter<DataMetaInformation> =
-            moshi.adapter(DataMetaInformation::class.java)
+        val jsonAdapter: JsonAdapter<DataMetaInformation> = moshi.adapter(DataMetaInformation::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
     private fun transferJsonToListOfDataMetaInformation(inputString: String): List<DataMetaInformation> {
         val parameterizedType: ParameterizedType =
             Types.newParameterizedType(List::class.java, DataMetaInformation::class.java)
-        val jsonAdapter: JsonAdapter<List<DataMetaInformation>> =
-            moshi.adapter(parameterizedType)
+        val jsonAdapter: JsonAdapter<List<DataMetaInformation>> = moshi.adapter(parameterizedType)
         return jsonAdapter.fromJson(inputString)!!
     }
 
@@ -34,7 +32,7 @@ class UnauthorizedMetaDataControllerApi {
             .get()
             .build()
     }
-    // TODO retrieve hardcoded values from BASE_PATH_TO_DATALAND_PROXY = "http://localhost:80/api"
+
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: String): Request {
         val endpointUrl = HttpUrl.Builder()
             .scheme(BASE_PATH_TO_DATALAND_PROXY.substringBefore("://"))
@@ -54,14 +52,14 @@ class UnauthorizedMetaDataControllerApi {
     fun getDataMetaInfo(dataId: String): DataMetaInformation {
         val response = client.newCall(buildGetDataMetaInfoRequest(dataId)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseAsString = response.body!!.string()
-        return transferJsonToDataMetaInformation(responseAsString)
+        val responseBodyAsString = response.body!!.string()
+        return transferJsonToDataMetaInformation(responseBodyAsString)
     }
 
     fun getListOfDataMetaInfo(companyId: String, dataType: String): List<DataMetaInformation> {
         val response = client.newCall(buildGetListOfDataMetaInfoRequest(companyId, dataType)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseAsString = response.body!!.string()
-        return transferJsonToListOfDataMetaInformation(responseAsString)
+        val responseBodyAsString = response.body!!.string()
+        return transferJsonToListOfDataMetaInformation(responseBodyAsString)
     }
 }

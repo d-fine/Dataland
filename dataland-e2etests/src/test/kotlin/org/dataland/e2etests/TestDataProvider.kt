@@ -62,13 +62,14 @@ class TestDataProvider {
     }
 
     fun getNonTeaserDummyCompany(): CompanyInformation {
-        val companyInformationOfLastCompany = testCompanyInformationWithEuTaxonomyData.last().companyInformation
-        if (companyInformationOfLastCompany == getTeaserDummyCompany()) {
+        val companyInformationOfNonTeaserDummyCompany =
+            testCompanyInformationWithEuTaxonomyData.last().companyInformation
+        if (companyInformationOfNonTeaserDummyCompany == getTeaserDummyCompany()) {
             throw IllegalArgumentException(
-                "Error: The non-teaser company as the last element in the fixtures equals the teaser-company."
+                "Error: The non-teaser dummy company information equals the teaser dummy company information."
             )
         }
-        return companyInformationOfLastCompany
+        return companyInformationOfNonTeaserDummyCompany
     }
 }
 

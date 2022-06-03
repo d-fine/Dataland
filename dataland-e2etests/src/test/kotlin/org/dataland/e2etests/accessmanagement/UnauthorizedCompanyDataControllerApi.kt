@@ -12,8 +12,7 @@ class UnauthorizedCompanyDataControllerApi {
     private val client = OkHttpClient()
 
     private fun transferJsonToStoredCompany(inputString: String): StoredCompany {
-        val jsonAdapter: JsonAdapter<StoredCompany> =
-            moshi.adapter(StoredCompany::class.java)
+        val jsonAdapter: JsonAdapter<StoredCompany> = moshi.adapter(StoredCompany::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
@@ -27,7 +26,7 @@ class UnauthorizedCompanyDataControllerApi {
     fun getCompanyById(companyId: String): StoredCompany {
         val response = client.newCall(buildGetCompanyByIdRequest(companyId)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseAsString = response.body!!.string()
-        return transferJsonToStoredCompany(responseAsString)
+        val responseBodyAsString = response.body!!.string()
+        return transferJsonToStoredCompany(responseBodyAsString)
     }
 }
