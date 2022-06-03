@@ -4,6 +4,7 @@ import org.keycloak.adapters.springsecurity.KeycloakConfiguration
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component
 /**
  * This class contains all security configurations for the backend to secure endpoints with keycloak.
  */
+@Profile("!unprotected")
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
