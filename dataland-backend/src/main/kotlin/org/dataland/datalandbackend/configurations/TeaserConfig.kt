@@ -33,7 +33,7 @@ class TeaserConfig(
                 object : TypeReference<List<CompanyInformationWithEuTaxonomyDataModel>>() {}
             )
         return testCompanyInformationWithEuTaxonomyData.first().companyInformation.companyName
-    } // TODO maybe just import function from TestDataProvider in test
+    }
 
     /**
      * This method checks if a company Id belongs to a company which should be accessible without authorization. Such
