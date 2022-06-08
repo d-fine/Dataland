@@ -8,6 +8,7 @@ ENV KC_HOSTNAME_STRICT=false
 ENV KC_HOSTNAME_STRICT_HTTPS=false
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_ADDRESS_FORWARDING=true
+# Need this to change the issuer in the jwt token to keycloak:8080
 ENV KC_FRONTEND_URL=http://keycloak:8080/keycloak
 #COPY ./dataland-keycloak/dataland_theme /opt/keycloak/themes/dataland_theme
 ENV KC_PROXY=edge
