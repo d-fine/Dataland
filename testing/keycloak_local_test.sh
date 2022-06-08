@@ -4,7 +4,7 @@
 # in case of teaser data).
 
 
-export keycloak_openid_token_endpoint="http://keycloak:8080/realms/datalandsecurity/protocol/openid-connect/token"
+export keycloak_openid_token_endpoint="http://keycloak:8080/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 export backend_url="http://backend:8080/api"
 
 export user_name="some_user"
