@@ -11,6 +11,7 @@ import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import CreateAccount from "@/components/forms/CreateAccount.vue";
 import SignIn from "@/components/forms/SignIn.vue";
+import LoginIframeContent from "@/components/auth/LoginIframeContent.vue";
 
 const routes = [
     {
@@ -75,6 +76,11 @@ const routes = [
         path: "/signin",
         name: "SignIn",
         component: SignIn,
+    },
+    {
+        path: "/login",
+        name: "LoginIframeContent",
+        component: LoginIframeContent,
     },
 ];
 
