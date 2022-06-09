@@ -105,6 +105,12 @@ jobs:
         with:
           name: cypress
           path: ./cypress
+      - name: Upload E2E Test Reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestReports
+          path: ./reports
 
   sonar:
     runs-on: ubuntu-latest

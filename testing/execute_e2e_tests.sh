@@ -10,6 +10,7 @@ timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 docker exec dala-e2e-test_backend_1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test_backend_1 --follow"
 docker cp dala-e2e-test_backend_1:/app/dataland-backend/build/jacoco/bootRun.exec .
+docker cp dala-e2e-test_backend_1:/app/dataland-e2etests/build/reports .
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test_e2etests_1`
