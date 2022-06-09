@@ -5,7 +5,7 @@
         <h1 class="mb-0">Search EU Taxonomy data</h1>
       </div>
       <div class="col-4 text-right font-semibold">
-        <span title="login message">Welcome to Dataland, Roger</span>
+        <span title="login message">Welcome to Dataland</span>
       </div>
     </div>
   </MarginWrapper>

@@ -14,7 +14,7 @@
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
           </Column>
-          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-1">
+          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
             <template #header>
               <span class="uppercase">PERM ID</span> <i class="material-icons pl-2" aria-hidden="true" title="Perm ID" v-tooltip.top="{
               value: 'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
@@ -23,19 +23,19 @@
             }">info</i>
             </template>
             <template #body="{data}">
-              {{data.permId}}
+              {{data.permId ? data.permId : "Not available"}}
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
           </Column>
-          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-2">
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-1 text-right">
             <template #body="{data}">
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
           </Column>
           <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
           </Column>
-          <Column field="companyId" header="" class="surface-0 w-2 d-datatable-column-right">
+          <Column field="companyId" header="" class="surface-0 w-1 d-datatable-column-right">
             <template #body="{data}">
               <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
                            class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>

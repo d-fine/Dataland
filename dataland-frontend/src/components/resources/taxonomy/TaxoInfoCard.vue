@@ -14,7 +14,7 @@
           </i>
         </div>
         <div class="col-12 text-left">
-          <span>{{value}}</span>
+          <span>{{humanizedValue}}</span>
         </div>
       </div>
     </template>
@@ -25,7 +25,7 @@
 
 import Card from "primevue/card";
 import Tooltip from 'primevue/tooltip';
-
+import {humanize} from "@/utils/StringHumanizer"
 export default {
   name: "TaxoInfoCard",
   components: {Card},
@@ -44,5 +44,10 @@ export default {
       default: ""
     },
   },
+  computed: {
+    humanizedValue(){
+      return humanize(this.value)
+    }
+  }
 }
 </script>

@@ -10,8 +10,8 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] At least one E2E Test exists testing the new feature
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to preview using this branch
+- [ ] The new version is deployed to the dev server using this branch
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
-  - [ ] The new feature is manually used/tested/observed on preview
+  - [ ] The new feature is manually used/tested/observed on dev server
 - [ ] There is at least one picture for each story, which was created before coding has started
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, npm serve, npm teste2e and execute Cypress Tests locally
