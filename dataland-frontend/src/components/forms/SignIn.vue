@@ -1,8 +1,10 @@
 <template>
   <MarginWrapper>
-    <iframe src="http://www.d-fine.de" class="col-8" ></iframe>
+    <div class="grid col-12 lg:pt-8">
+      <iframe src="https://www.d-fine.de" class="col-12 lg:pt-8 ">
+      </iframe>
+    </div>
   </MarginWrapper>
-
 </template>
 
 <script>
