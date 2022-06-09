@@ -1,7 +1,9 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
-        ${msg("loginAccountTitle")}
+        <img src="${url.resourcesPath}/img/logo_dataland_long.svg">
+		<p/>
+		${msg("loginAccountTitle")}
     <#elseif section = "form">
     <div id="kc-form">
       <div id="kc-form-wrapper">
@@ -11,10 +13,10 @@
                     <div class="${properties.kcFormGroupClass!}">
                         
 
-                        <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off"
+                        <input tabindex="1" id="username" class="${properties.kcInputClass!} floating-label-field--s3" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off"
                                placeholder="Enter your email address" aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                         />
-						<label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
+						<!--<label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label> -->
 
                         <#if messagesPerField.existsError('username','password')>
                             <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
@@ -26,11 +28,12 @@
                 </#if>
 
                 <div class="${properties.kcFormGroupClass!}">
-                    <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
+                    
 
                     <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off"
-                           aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                           placeholder="Password" aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                     />
+					<!--<label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label> -->
 
                     <#if usernameHidden?? && messagesPerField.existsError('username','password')>
                         <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
@@ -56,7 +59,7 @@
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="5" style="color:#e67f3f" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
@@ -75,8 +78,8 @@
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
             <div id="kc-registration-container">
                 <div id="kc-registration">
-                    <span>${msg("noAccount")} <a tabindex="6"
-                                                 href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                    <span>${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" style="background-color:white; color:#e67f3f" name="join_dataland_button" onclick="${url.registrationUrl}">
+                                                ${msg("doRegister")}</Button></span>
                 </div>
             </div>
         </#if>
