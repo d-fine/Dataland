@@ -10,8 +10,8 @@ import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue"
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import CreateAccount from "@/components/forms/CreateAccount.vue";
-import SignIn from "@/components/forms/SignIn.vue";
 import LoginIframeContent from "@/components/auth/LoginIframeContent.vue";
+import LogoutIframeContent from "@/components/auth/LogoutIframeContent.vue";
 
 const routes = [
     {
@@ -73,14 +73,14 @@ const routes = [
         component: CreateAccount,
     },
     {
-        path: "/signin",
-        name: "SignIn",
-        component: SignIn,
-    },
-    {
         path: "/login",
         name: "LoginIframeContent",
         component: LoginIframeContent,
+    },
+    {
+        path: "/logout",
+        name: "LogoutIframeContent",
+        component: LogoutIframeContent,
     },
 ];
 

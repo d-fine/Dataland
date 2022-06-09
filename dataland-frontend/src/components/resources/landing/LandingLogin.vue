@@ -11,14 +11,7 @@
           </router-link>
         </div>
         <div class="col-3 col-offset-3">
-          <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openRegister" />
-          <Dialog v-model:visible="displayRegister" :modal="true" :showHeader="false" :dismissableMask="true">
-            <p class="m-0"> <CreateAccount/> </p>
-          </Dialog>
-            <Button label="Login" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin" />
-          <Dialog v-model:visible="displayLogin" class="col-10 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
-            <p class="m-0"> <SignIn/> </p>
-          </Dialog>
+          <UserAuthenticationButtons/>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -83,38 +76,11 @@
 
 <script>
 import Card from "primevue/card";
-import Dialog from 'primevue/dialog';
 import Button from "primevue/button";
-import {authenticate} from "@/utils/keycloak";
-import CreateAccount from "@/components/forms/CreateAccount";
-import SignIn from "@/components/forms/SignIn";
+import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {
   name: "LandingLogin",
-  components: {SignIn, CreateAccount, Card, Dialog, Button},
-  methods: {
-    authenticate() {
-      authenticate()
-      alert("ran authentication")
-    },
-    openRegister() {
-      this.displayRegister = true;
-    },
-    openLogin() {
-      this.displayLogin = true;
-    },
-    closeRegister() {
-      this.displayRegister = false;
-    },
-    closeLogin() {
-      this.displayLogin = false;
-    }
-  },
-    data() {
-      return {
-        displayRegister: false,
-        displayLogin: false
-      }
-    }
+  components: {UserAuthenticationButtons, Card, Button},
 }
 </script>
