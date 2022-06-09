@@ -1,9 +1,12 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
-        <img src="${url.resourcesPath}/img/logo_dataland_long.svg">
-		<p/>
-		${msg("loginAccountTitle")}
+        <div>
+			<img src="${url.resourcesPath}/img/logo_dataland_long.svg" class="d-padding d-scaling">
+		</div>
+		<div>
+			${msg("loginAccountTitle")}
+		</div>
     <#elseif section = "form">
     <div id="kc-form">
       <div id="kc-form-wrapper">
@@ -13,7 +16,7 @@
                     <div class="${properties.kcFormGroupClass!}">
                         
 
-                        <input tabindex="1" id="username" class="${properties.kcInputClass!} floating-label-field--s3" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off"
+                        <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off"
                                placeholder="Enter your email address" aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                         />
 						<!--<label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label> -->

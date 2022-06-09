@@ -1,9 +1,12 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=true displayMessage=!messagesPerField.existsError('username'); section>
     <#if section = "header">
-        <img src="${url.resourcesPath}/img/logo_dataland_long.svg">
-		<p/>
-		${msg("emailForgotTitle")}
+        <div>
+			<img src="${url.resourcesPath}/img/logo_dataland_long.svg" class="d-padding d-scaling">
+		</div>
+		<div>
+			${msg("emailForgotTitle")}
+		</div>
     <#elseif section = "form">
         <form id="kc-reset-password-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
