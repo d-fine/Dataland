@@ -25,7 +25,7 @@ class EuTaxonomyControllerTest {
 
     private fun postOneCompanyAndEuTaxonomyData(companyInformation: CompanyInformation, euTaxonomyData: EuTaxonomyData):
         Map<String, String> {
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin)
+        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
         val companyId = companyDataControllerApi.postCompany((companyInformation)).companyId
         val dataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(companyId, euTaxonomyData)

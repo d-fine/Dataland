@@ -26,7 +26,7 @@ class CompanyDataControllerTest {
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
     private fun postOneCompanyAndData(): Map<String, String> {
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin)
+        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")

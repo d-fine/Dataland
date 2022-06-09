@@ -16,7 +16,7 @@
             <p class="m-0"> <CreateAccount/> </p>
           </Dialog>
             <Button label="Login" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin" />
-          <Dialog v-model:visible="displayLogin" :modal="true" :showHeader="false" :dismissableMask="true">
+          <Dialog v-model:visible="displayLogin" class="col-10 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
             <p class="m-0"> <SignIn/> </p>
           </Dialog>
         </div>
