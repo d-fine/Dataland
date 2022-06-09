@@ -25,6 +25,18 @@ class CompanyDataControllerTest {
     private val tokenRequester = TokenRequester()
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
+    private fun postOneCompanyAndData(): Map<String, String> {
+        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin)
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        ).dataId
+        return mapOf("companyId" to testCompanyId, "dataId" to testDataId, "dataType" to testDataType)
+    }
+
     @Test
     fun `post a dummy company and check if post was successful`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
@@ -93,22 +105,19 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
-        val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
-        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
-        ).dataId
+        val testDataInformation = postOneCompanyAndData()
         tokenRequester.requestTokenForUserType(TokenRequester.UserType.SomeUser).setToken()
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
-            testCompanyId,
-            testDataType
+            testDataInformation["companyId"],
+            testDataInformation["dataType"]
         )
         assertTrue(
             listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(testDataId, testDataType, testCompanyId)
+                DataMetaInformation(
+                    testDataInformation["dataId"]!!,
+                    testDataInformation["dataType"]!!,
+                    testDataInformation["companyId"]!!
+                )
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
         )
@@ -147,7 +156,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a non-teaser dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
+    fun `post a regular dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
         val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
         val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
