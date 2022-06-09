@@ -84,7 +84,6 @@
 <script>
 import Card from "primevue/card";
 import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
 import Button from "primevue/button";
 import {authenticate} from "@/utils/keycloak";
 import CreateAccount from "@/components/forms/CreateAccount";
@@ -92,7 +91,7 @@ import SignIn from "@/components/forms/SignIn";
 
 export default {
   name: "LandingLogin",
-  components: {SignIn, CreateAccount, Card, Dialog,InputText, Button},
+  components: {SignIn, CreateAccount, Card, Dialog, Button},
   methods: {
     authenticate() {
       authenticate()
