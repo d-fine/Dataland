@@ -5,6 +5,7 @@ docker-compose --project-name dala-e2e-test --profile testing up -d --build
 timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 #docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info . TODO
 #docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/cypress/ . TODO
+docker cp dala-e2e-test_e2etests_1:/app/dataland-e2etests/build/reports/ .
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test_backend_1 pkill -f spring
