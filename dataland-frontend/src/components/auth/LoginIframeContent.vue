@@ -16,7 +16,7 @@ export default {
   created() {
     const initOptions = {
       realm: "datalandsecurity",
-      url: "http://localhost/keycloak",
+      url: "/keycloak",
       clientId: "dataland-public",
       onLoad: 'login-required'
     }
