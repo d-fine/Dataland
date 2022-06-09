@@ -145,8 +145,6 @@ services:
       dockerfile: dataland-keycloak/Dockerfile
     expose:
       - "8080"
-    ports:
-      - "8095:8080"
     depends_on:
       - keycloak-db
 networks:

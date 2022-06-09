@@ -1,4 +1,4 @@
-import faker from "@faker-js/faker";
+import {faker} from '@faker-js/faker';
 import {humanize} from '../../../src/utils/StringHumanizer';
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
@@ -132,7 +132,7 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
             {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.Capex.alignedPercentage)},
             {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.Opex.alignedPercentage)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
-            {label: 'NFRD mandatory', value: (row: any) => row["Reporting Obligation"] === "Yes" ? "Ja" : "" },
+            {label: 'NFRD mandatory', value: (row: any) => row["Reporting Obligation"]},
             {label: 'Assurance', value: (row: any) => {if(row["Attestation"] === "LimitedAssurance"){
                     return "limited"
                 }  else if (row["Attestation"] === "ReasonableAssurance") {

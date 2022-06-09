@@ -9,21 +9,8 @@
           2021
         </p>
         <p class="font-semibold text-gray-800 mt-0">
-          Data from company report. Disclosures in accordance with EU Taxonomy Regulation, Article 8.
+          Data from company report.
         </p>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-6 text-left">
-        <Button class="bg-white border-gray-50 border-2 text-900 mt-2 mb-3 h-3rem">
-          <span>Invite someone to access this data.&nbsp;</span>
-          <span class="font-semibold"> No registration necessary.</span>
-          <span class="uppercase ml-4 text-primary font-semibold">
-            SHARE
-          </span>
-          <i class="material-icons ml-2 text-primary " aria-hidden="true">share</i>
-
-        </Button>
       </div>
     </div>
     <div class="grid">
@@ -38,14 +25,13 @@
 </template>
 
 <script>
-import Button from "primevue/button";
 
 import {getMetaDataControllerApi} from "@/services/ApiClients"
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel";
 
 export default {
   name: "TaxonomyData",
-  components: {TaxonomyPanel, Button},
+  components: {TaxonomyPanel},
   data() {
     return {
       response: null,
