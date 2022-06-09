@@ -62,7 +62,7 @@ class EuTaxonomyControllerTest {
     }
 
     @Test
-    fun `post a non-teaser dummy company and a dummy data set for it and test if unauthorized access is denied`() {
+    fun `post a regular dummy company and a dummy data set for it and test if unauthorized access is denied`() {
         val teaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyData(teaserCompanyInformation, testData)

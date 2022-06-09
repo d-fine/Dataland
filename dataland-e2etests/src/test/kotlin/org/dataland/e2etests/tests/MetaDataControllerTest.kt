@@ -158,7 +158,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post non-teaser dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
+    fun `post regular dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
@@ -193,7 +193,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post non-teaser dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
+    fun `post regular dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
         val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
