@@ -6,4 +6,4 @@ if [[ $KEYCLOAK_FRONTEND_URL == "" ]]; then
   exit 1
 fi
 
-envsubst < ./datalandsecurity-realm-template.json > ./realms/datalandsecurity-realm-template.json
+envsubst < ./datalandsecurity-realm-template.json > ./realms/datalandsecurity-realm.json
