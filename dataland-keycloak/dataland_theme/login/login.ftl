@@ -4,7 +4,7 @@
         <div>
 			<img src="${url.resourcesPath}/img/logo_dataland_long.svg" class="d-padding d-scaling">
 		</div>
-		<div>
+		<div class="d-font-family">
 			${msg("loginAccountTitle")}
 		</div>
     <#elseif section = "form">
@@ -62,7 +62,7 @@
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" class="d-text-primary" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="5" class="d-text-primary d-font-family" style="font-size:12px" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
@@ -70,7 +70,7 @@
 
                   <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
                       <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                      <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
+                      <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} d-font-family" style="width: 170px" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
                   </div>
             </form>
         </#if>
@@ -81,7 +81,7 @@
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
             <div id="kc-registration-container">
                 <div id="kc-registration">
-                    <span>${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" style="background-color:white; color:#e67f3f" name="join_dataland_button" onclick="${url.registrationUrl}">
+                    <span class="d-font-family">${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm d-font-family justify-content-center w-5rem" style="background-color:white; color:#e67f3f" name="join_dataland_button" onclick="${url.registrationUrl}">
                                                 ${msg("doRegisterLogin")}</Button></span>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 <hr/ class="d-hidden">
 				<div class="separator">
 					<div class="line"></div>
-						<h4>${msg("identity-provider-login-label")}</h4>
+						<h4 class="d-font-family">${msg("identity-provider-login-label")}</h4>
 					<div class="line"></div>
 				</div>
 
@@ -102,9 +102,9 @@
                                 type="button" href="${p.loginUrl}">
                             <#if p.iconClasses?has_content>
                                 <i class="${properties.kcCommonLogoIdP!} ${p.iconClasses!}" aria-hidden="true"></i>
-                                <span class="${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">${p.displayName!}</span>
+                                <span class=" d-font-family${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">${p.displayName!}</span>
                             <#else>
-                                <span class="${properties.kcFormSocialAccountNameClass!}">${p.displayName!}</span>
+                                <span class="d-font-family ${properties.kcFormSocialAccountNameClass!}">${p.displayName!}</span>
                             </#if>
                         </a>
                     </#list>
