@@ -1,0 +1,14 @@
+.d-hline{
+  display:flex;
+  align-items: center;
+}
+
+.d-hline .line{
+  height: 3px;
+  flex: 1;
+  background-color: #000;
+}
+
+.d-hline h4{
+  padding: 0 2rem;
+}

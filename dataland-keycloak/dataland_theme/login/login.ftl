@@ -62,7 +62,7 @@
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" style="color:#e67f3f" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="5" class="d-text-primary" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
@@ -82,15 +82,19 @@
             <div id="kc-registration-container">
                 <div id="kc-registration">
                     <span>${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" style="background-color:white; color:#e67f3f" name="join_dataland_button" onclick="${url.registrationUrl}">
-                                                ${msg("doRegister")}</Button></span>
+                                                ${msg("doRegisterLogin")}</Button></span>
                 </div>
             </div>
         </#if>
     <#elseif section = "socialProviders" >
         <#if realm.password && social.providers??>
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountSectionClass!}">
-                <hr/>
-                <h4>${msg("identity-provider-login-label")}</h4>
+                <hr/ class="d-hidden">
+				<div class="separator">
+					<div class="line"></div>
+						<h4>${msg("identity-provider-login-label")}</h4>
+					<div class="line"></div>
+				</div>
 
                 <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 3>${properties.kcFormSocialAccountListGridClass!}</#if>">
                     <#list social.providers as p>
