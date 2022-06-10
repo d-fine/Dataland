@@ -143,6 +143,12 @@ services:
     build:
       context: ./
       dockerfile: dataland-keycloak/Dockerfile
+    volumes:
+      - ./dataland-keycloak/realm_export_dataland_security.json:/opt/keycloak/data/import/realm_export_dataland_security.json
+    command: --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     expose:
       - "8080"
     depends_on:
