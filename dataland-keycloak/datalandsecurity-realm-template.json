@@ -1919,7 +1919,7 @@
     "oauth2DeviceCodeLifespan" : "600",
     "parRequestUriLifespan" : "60",
     "clientSessionMaxLifespan" : "0",
-    "frontendUrl" : "https://proxy:80/keycloak"
+    "frontendUrl" : "${KEYCLOAK_FRONTEND_URL}"
   },
   "keycloakVersion" : "18.0.0",
   "userManagedAccessAllowed" : false,
