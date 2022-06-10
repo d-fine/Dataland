@@ -62,7 +62,7 @@
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" class="d-text-primary d-font-family" style="font-size:12px" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="5" class="d-text-primary d-font-family" style="font-size:12px; padding-right: 4rem;" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
@@ -81,7 +81,7 @@
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
             <div id="kc-registration-container">
                 <div id="kc-registration">
-                    <span class="d-font-family">${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button p-button-sm d-font-family justify-content-center w-5rem" style="background-color:white; color:#e67f3f" name="join_dataland_button" onclick="${url.registrationUrl}">
+                    <span class="d-font-family" style="font-size:16px;">${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button d-font-family justify-content-center" style="background-color:white; color:#e67f3f; font-size:24;" name="join_dataland_button" onclick="${url.registrationUrl}">
                                                 ${msg("doRegisterLogin")}</Button></span>
                 </div>
             </div>
