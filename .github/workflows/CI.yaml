@@ -82,6 +82,8 @@ jobs:
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
       - name: Build realms out of templates
         run: ./dataland-keycloak/create_datalandsecurity_realm_from_template.sh
+        env:
+          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
