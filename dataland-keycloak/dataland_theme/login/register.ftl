@@ -131,14 +131,18 @@
             </#if>
 
             <div class="${properties.kcFormGroupClass!}">
-                <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
-                    <div class="${properties.kcFormOptionsWrapperClass!}">
-                        <span><a class="d-text-primary" href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
-                    </div>
-                </div>
+                
 
                 <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
                     <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" style="width: 170px" type="submit" value="${msg("doRegister")}"/>
+                </div>
+				<div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
+                    <div class="${properties.kcFormOptionsWrapperClass!}">
+                        
+						<span class="d-font-family" style="font-size:16px; padding-top:30px;">${msg("backToLogin")}  <Button type="button" label="Login" class="d-letters d-button uppercase p-button d-font-family justify-content-center" style="background-color:white; color:#e67f3f; font-size:24;" name="back_to_login_button" onclick="location.href='${url.loginUrl}'">
+                                                ${msg("doLogIn")}</Button></span>
+                    </div>
+					
                 </div>
             </div>
         </form>

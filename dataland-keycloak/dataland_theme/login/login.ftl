@@ -83,6 +83,7 @@
                 <div id="kc-registration">
                     <span class="d-font-family" style="font-size:16px;">${msg("noAccount")}  <Button label="Join" class="d-letters d-button uppercase p-button d-font-family justify-content-center" style="background-color:white; color:#e67f3f; font-size:24;" name="join_dataland_button" onclick="location.href='${url.registrationUrl}'">
                                                 ${msg("doRegisterLogin")}</Button></span>
+												
                 </div>
             </div>
         </#if>

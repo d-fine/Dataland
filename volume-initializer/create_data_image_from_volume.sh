@@ -12,3 +12,4 @@ docker commit data_image_creator $2
 docker stop data_image_creator || true
 docker rm data_image_creator || true
 docker push $2
+h
