@@ -1,0 +1,46 @@
+.input-wrapper {
+  position: relative;
+  margin: auto;
+}
+
+.floating-control {
+  display: block;
+  line-height: 2em;
+  margin: auto;
+  padding-left: 10px;
+  width: 20%;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+ 
+  
+}
+
+.floating-control:focus {
+  border: 1px solid #e67f3f;
+}
+
+.control-label {
+  display: block;
+  position: absolute;
+  text-align:center;
+  opacity: 0;
+  bottom: 1.9rem;
+  color: #e67f3f;
+  transition: 0.2s ease-in-out transform;
+  font-size: 12px;
+}
+
+.floating-control:placeholder-shown + .control-label {
+  visibility: hidden;
+  z-index: -1;
+  transition: 0.2s ease-in-out;
+}
+
+.floating-control:not(:placeholder-shown) + .control-label,
+.floating-control:focus:not(:placeholder-shown) + .control-label {
+  visibility: visible;
+  z-index: 1;
+  opacity: 1;
+  transform: translateY(-10px);
+  transition: 0.2s ease-in-out transform;
+}
