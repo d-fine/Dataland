@@ -7,10 +7,10 @@ import {
 } from "@/../build/clients/backend/api"
 
 function getConfiguration() {
-    const keyCloakToken = window.sessionStorage.getItem('keycloakToken')
-    if (keyCloakToken) {
+    const keycloakAccessCloakToken = window.sessionStorage.getItem('keycloakAccessToken')
+    if (keycloakAccessCloakToken) {
         console.log("Using Token")
-        return new Configuration({accessToken: keyCloakToken})
+        return new Configuration({accessToken: keycloakAccessCloakToken})
     } else {
         console.log("Not Using Token")
         return undefined

@@ -9,8 +9,9 @@ import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
-import CreateAccount from "@/components/forms/CreateAccount.vue";
-import SignIn from "@/components/forms/SignIn.vue";
+import LoginIframeContent from "@/components/auth/LoginIframeContent.vue";
+import LogoutIframeContent from "@/components/auth/LogoutIframeContent.vue";
+import RegisterIframeContent from "@/components/auth/RegisterIframeContent.vue";
 
 const routes = [
     {
@@ -67,15 +68,20 @@ const routes = [
         component: TheImprint,
     },
     {
-        path: "/signup",
-        name: "CreateAccount",
-        component: CreateAccount,
+        path: "/login",
+        name: "LoginIframeContent",
+        component: LoginIframeContent,
     },
     {
-        path: "/signin",
-        name: "SignIn",
-        component: SignIn,
+        path: "/logout",
+        name: "LogoutIframeContent",
+        component: LogoutIframeContent,
     },
+    {
+        path: "/register",
+        name: "RegisterIframeContent",
+        component: RegisterIframeContent
+    }
 ];
 
 const router = createRouter({

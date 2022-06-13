@@ -2,7 +2,7 @@ version: "3.8"
 services:
   proxy:
     restart: always
-    profiles: ["production", "testing", "productionInMemory"]
+    profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
       - external
       - internal
@@ -11,7 +11,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./dataland-inbound-proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ${NGINX_CONFIG_FILE:-./dataland-inbound-proxy/nginx.conf}:/etc/nginx/nginx.conf
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -105,7 +105,7 @@ services:
       TRUSTEE_CREDENTIALS: ${TRUSTEE_CREDENTIALS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
   develop:
-    profiles: ["devcontainer"]
+    profiles: ["testing", "devcontainer"]
     build:
       context: ./
       dockerfile: ./devcontainer/Dockerfile
@@ -143,6 +143,12 @@ services:
     build:
       context: ./
       dockerfile: dataland-keycloak/Dockerfile
+    volumes:
+      - ./dataland-keycloak/realms:/opt/keycloak/data/import
+    command: --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     expose:
       - "8080"
     depends_on:

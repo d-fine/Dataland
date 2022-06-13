@@ -5,4 +5,5 @@
 set -ex
 
 docker volume rm $2 || true
+docker pull $1
 docker run --rm -v $2:/target_volume $1 sh -c "cp -r /data/* /target_volume"

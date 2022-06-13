@@ -80,8 +80,12 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-      - name: Copy keycloak data from image to volume
-        run: ./volume-initializer/create_volume_from_data_image.sh ghcr.io/d-fine/dataland/keycloak-ci-data:0.0.1 dala-e2e-test_keycloak_data
+      - name: Build realms out of templates
+        run: |
+          cd ./dataland-keycloak
+          ./create_datalandsecurity_realm_from_template.sh
+        env:
+          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
