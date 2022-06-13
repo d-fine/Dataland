@@ -7,3 +7,5 @@ if [[ $KEYCLOAK_FRONTEND_URL == "" ]]; then
 fi
 
 envsubst < ./datalandsecurity-realm-template.json > ./realms/datalandsecurity-realm.json
+
+cat ./realms/datalandsecurity-realm.json
