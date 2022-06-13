@@ -6,4 +6,6 @@ if [[ $KEYCLOAK_FRONTEND_URL == "" ]]; then
   exit 1
 fi
 
-envsubst < ./datalandsecurity-realm-template.json > ./realms/datalandsecurity-realm.json
+# Since the keycloak realm file already contains bash-like variable entries, all variables to be substituted have to be
+# listed explicitly below.
+envsubst '${KEYCLOAK_FRONTEND_URL}' < ./datalandsecurity-realm-template.json > ./realms/datalandsecurity-realm.json

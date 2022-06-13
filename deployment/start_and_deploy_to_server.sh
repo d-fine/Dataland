@@ -45,4 +45,5 @@ scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ .
 scp ./dataland-frontend/Dockerfile ubuntu@$target_server_url:$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@$target_server_url:$location/DockerfileBackend
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@$target_server_url:$location/jar/dataland-backend.jar
-ssh ubuntu@$target_server_url "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
+
+ssh ubuntu@$target_server_url "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build; export REALDATA=$realdata; export REAL_TEASER_COMPANY_PERM_ID=$REAL_TEASER_COMPANY_PERM_ID; echo $REALDATA"
