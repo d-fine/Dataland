@@ -22,7 +22,8 @@ import org.springframework.stereotype.Component
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     private val publicLinks = arrayOf(
-        "/actuator/**",
+        "/actuator/health",
+        "/actuator/info",
         "/swagger-ui/**",
         "/v3/api-docs/**",
         "/companies/**",
