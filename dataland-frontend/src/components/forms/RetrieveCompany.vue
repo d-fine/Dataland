@@ -43,7 +43,7 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {getCompanyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 
 import Card from 'primevue/card';
 import Button from 'primevue/button';
@@ -67,6 +67,7 @@ export default {
     filteredCompaniesBasic: null,
     additionalCompanies: null,
   }),
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyByName(all = false) {
       try {
@@ -74,7 +75,8 @@ export default {
         if (all) {
           this.model.companyName = ""
         }
-        this.response = await getCompanyDataControllerApi().getCompanies(this.model.companyName, "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null

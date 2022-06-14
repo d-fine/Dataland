@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {getCompanyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import AutoComplete from 'primevue/autocomplete';
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
@@ -78,6 +78,7 @@ export default {
       this.toggleIndexTabs("Dax", 1)
     }
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     activateSearchBar() {
       window.scrollTo({top: 0, behavior: 'smooth'})
@@ -139,7 +140,8 @@ export default {
     async filterByIndex(stockIndex) {
       try {
         this.loading = true
-        this.responseArray = await getCompanyDataControllerApi().getCompanies("", stockIndex, false).then(this.responseMapper)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -152,7 +154,8 @@ export default {
       try {
         this.loading = true
         this.showIndexTabs = true
-        this.responseArray = await getCompanyDataControllerApi().getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.responseArray = await companyDataControllerApi.getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
@@ -165,7 +168,8 @@ export default {
     async searchCompany(event) {
       try {
         this.loading = true
-        this.autocompleteArray = await getCompanyDataControllerApi().getCompanies(event.query, "", true).then(this.responseMapper)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.autocompleteArray = await companyDataControllerApi.getCompanies(event.query, "", true).then(this.responseMapper)
         this.filteredCompaniesBasic = this.autocompleteArray.slice(0, 3)
       } catch (error) {
         console.error(error)

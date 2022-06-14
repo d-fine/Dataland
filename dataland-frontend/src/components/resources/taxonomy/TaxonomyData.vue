@@ -26,7 +26,7 @@
 
 <script>
 
-import {getMetaDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel";
 
 export default {
@@ -51,10 +51,12 @@ export default {
       this.getCompanyInformation()
     }
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyInformation() {
       try {
-        this.metaDataInfo = await getMetaDataControllerApi().getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getMetaDataControllerApi()
+        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
       } catch (error) {
         console.error(error)
         this.metaDataInfo = null

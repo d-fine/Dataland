@@ -6,7 +6,7 @@
 
 
 import Keycloak from "keycloak-js";
-import { computed } from 'vue';
+import {computed} from 'vue';
 
 
 export default {
@@ -30,6 +30,9 @@ export default {
         }).then((authenticated) => {
           this.keycloak_authenticated = authenticated
           return authenticated
+        }).catch((error) => {
+          console.log("Error in init keycloak ", error)
+          this.keycloak_authenticated = false
         }).then(() => {
           return this.keycloak
         });
@@ -47,7 +50,9 @@ export default {
       getKeycloakInitPromise: () => {
         return this.keycloak_init_promise
       },
-      authenticated: computed(() => {return this.keycloak_authenticated})
+      authenticated: computed(() => {
+        return this.keycloak_authenticated
+      })
 
     }
   },
