@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component
  */
 @Profile("!unprotected")
 @KeycloakConfiguration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     private val publicLinks = arrayOf(
