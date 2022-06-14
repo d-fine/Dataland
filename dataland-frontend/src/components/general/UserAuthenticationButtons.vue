@@ -1,11 +1,11 @@
 <template>
   <div class="col-12" >
     <Button v-if="!loggedIn" label="Join" class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem" name="join_dataland_button" @click="openRegister" />
-    <Dialog v-model:visible="displayRegister" :modal="true" :showHeader="false" :dismissableMask="true">
+    <Dialog v-model:visible="displayRegister" class="col-4 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
       <p class="m-0"> <KeyCloakIframe url="/register"/> </p>
     </Dialog>
     <Button v-if="!loggedIn" label="Login" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogin" />
-    <Dialog v-model:visible="displayLogin" class="col-10 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
+    <Dialog v-model:visible="displayLogin" class="col-4 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
       <p class="m-0"> <KeyCloakIframe url="/login"/> </p>
     </Dialog>
     <Button v-if="loggedIn" label="Logout" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogout" />
