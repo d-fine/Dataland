@@ -44,44 +44,6 @@ export default {
     openLogout() {
       this.displayLogout = true;
     },
-    //attemptLoginWithSessionStoredData() {
-      // if (!access_token || !refresh_token) {
-      //   this.clearLogin();
-      // }
-      // else {
-      //   const initOptions = {
-      //     realm: "datalandsecurity",
-      //     url: "/keycloak",
-      //     clientId: "dataland-public",
-      //   }
-      //   const keycloak = new Keycloak(initOptions);
-      //   keycloak.init({
-      //     token: access_token, refreshToken: refresh_token
-      //   }).then((auth) => {
-      //     if(auth) {
-      //       this.loggedIn=true;
-      //       setInterval(() => {
-      //         keycloak.updateToken(70).then((refreshed) => {
-      //           if (refreshed) {
-      //             console.log('Token refreshed')
-      //           } else {
-      //             console.log('Token not refreshed')
-      //           }
-      //         }).catch(() => {
-      //           console.error('Failed to refresh token');
-      //           this.clearLogin()
-      //         });
-      //       }, 6000)
-      //     }
-      //     else {
-      //       this.clearLogin()
-      //     }
-      //   }).catch(()=>{
-      //     console.error('Failed to init keycloak');
-      //     this.clearLogin()
-      //   });
-      // }
-    //},
   },
   data() {
     return {

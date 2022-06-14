@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import {getEuTaxonomyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
 import TaxoInfoCard from "@/components/resources/taxonomy/TaxoInfoCard";
 
@@ -80,10 +80,12 @@ export default {
       this.getCompanyEUDataset()
     }
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyEUDataset() {
       try {
-        this.response = await getEuTaxonomyDataControllerApi().getCompanyAssociatedData(this.dataID)
+        const euTaxonomyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getEuTaxonomyDataControllerApi()
+        this.response = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID)
         this.dataSet = this.response.data.data
 
       } catch (error) {

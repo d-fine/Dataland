@@ -5,35 +5,52 @@ import {
     MetaDataControllerApi,
     SkyminderControllerApi
 } from "@/../build/clients/backend/api"
+export class ApiClientProvider {
 
-function getConfiguration() {
-    const keycloakAccessCloakToken = window.sessionStorage.getItem('keycloakAccessToken')
-    if (keycloakAccessCloakToken) {
-        console.log("Using Token")
-        return new Configuration({accessToken: keycloakAccessCloakToken})
-    } else {
-        console.log("Not Using Token")
-        return undefined
+    keycloak_init_promise: any
+    keycloak_init: any
+
+    constructor(keycloak_init_promise: any, keycloak_init: any) {
+        this.keycloak_init_promise = keycloak_init_promise
+        this.keycloak_init = keycloak_init
     }
-}
 
-function getConstructedApi<T>(constructor: new (configuration: Configuration | undefined, basePath: string) => T): T {
-    return new constructor(getConfiguration(), process.env.VUE_APP_BASE_API_URL + "/api")
-}
+    async getConfiguration() {
+        const keycloak = await this.keycloak_init_promise
+        if (keycloak.authenticated) {
+            const refreshed = await keycloak.updateToken(5)
+            if (refreshed) {
+                console.log('Token was successfully refreshed');
+            } else {
+                console.log('Token is still valid');
+            }
+            console.log("Using Token")
+            return new Configuration({accessToken: keycloak.token})
+        } else {
+            console.log("Not Using Token")
+            return undefined
+        }
+    }
 
-export function getCompanyDataControllerApi() {
-    return getConstructedApi(CompanyDataControllerApi)
-}
+    async getConstructedApi<T>(constructor: new (configuration: Configuration | undefined, basePath: string) => T) {
+        const configuration = await this.getConfiguration()
+        return new constructor(configuration, process.env.VUE_APP_BASE_API_URL + "/api")
+    }
 
-export function getEuTaxonomyDataControllerApi() {
-    return getConstructedApi(EuTaxonomyDataControllerApi)
-}
+    async getCompanyDataControllerApi() {
+        return await this.getConstructedApi(CompanyDataControllerApi)
+    }
 
-export function getMetaDataControllerApi() {
-    return getConstructedApi(MetaDataControllerApi)
-}
+    async getEuTaxonomyDataControllerApi() {
+        return await this.getConstructedApi(EuTaxonomyDataControllerApi)
+    }
 
-export function getSkyminderControllerApi() {
-    return getConstructedApi(SkyminderControllerApi)
+    async getMetaDataControllerApi() {
+        return await this.getConstructedApi(MetaDataControllerApi)
+    }
+
+    async getSkyminderControllerApi() {
+        return await this.getConstructedApi(SkyminderControllerApi)
+    }
 }
 

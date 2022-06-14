@@ -45,7 +45,7 @@
 import {FormKit, FormKitSchema} from "@formkit/vue"
 import SuccessUpload from "@/components/messages/SuccessUpload"
 import {SchemaGenerator} from "@/services/SchemaGenerator"
-import {getCompanyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import backend from "@/../build/clients/backend/backendOpenApi.json"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
@@ -74,12 +74,14 @@ const createCompany = {
     // delete auto identifiers
     delete this.companyInformationSchema[6]
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async postCompanyData() {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await getCompanyDataControllerApi().postCompany(this.model)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.response = await companyDataControllerApi.postCompany(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {
         console.error(error)

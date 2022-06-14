@@ -19,7 +19,7 @@
 
 <script>
 
-import {getCompanyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import {numberFormatter} from "@/utils/currencyMagnitude";
 
 export default {
@@ -44,10 +44,12 @@ export default {
       this.getCompanyInformation()
     }
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyInformation() {
       try {
-        this.company = await getCompanyDataControllerApi().getCompanyById(this.companyID)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.company = await companyDataControllerApi.getCompanyById(this.companyID)
         this.companyInformation = this.company.data.companyInformation
       } catch (error) {
         console.error(error)
