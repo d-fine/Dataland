@@ -1,5 +1,8 @@
+import {login} from "../../support/utility";
+
 describe('EU Taxonomy Data', () => {
     it('Check for a dataset, that bears decent data, that the data is present and displayed', () => {
+        login()
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])

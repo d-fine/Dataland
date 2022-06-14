@@ -1,8 +1,11 @@
+import {login} from "../../../support/utility";
+
 describe('Tooltips test suite', () => {
     it('tooltips are present and contain text as expected', function () {
         const NFRDText = "Non financial disclosure directive"
         const AssuranceText = "Level of Assurance specifies the confidence level"
         cy.intercept('**/api/companies/*').as('retrieveCompany')
+        login()
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
             cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies")
             cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {

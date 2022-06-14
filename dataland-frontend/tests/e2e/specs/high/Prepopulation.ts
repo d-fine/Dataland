@@ -3,7 +3,7 @@ import {EuTaxonomyData, CompanyInformation} from "../../../../build/clients/back
 
 const chunkSize = 40
 
-describe.only('Population Test',
+describe('Population Test',
     () => {
         Cypress.config({
             defaultCommandTimeout: 900 * 1000

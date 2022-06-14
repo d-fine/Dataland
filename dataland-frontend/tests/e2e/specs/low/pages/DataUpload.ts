@@ -1,4 +1,9 @@
+import {login} from "../../../support/utility";
+
 describe('Data Upload Page', function () {
+    beforeEach(()=> {
+        login()
+    })
     it('page should be present', function () {
         cy.visit("/upload")
         cy.get('#app').should("exist")
