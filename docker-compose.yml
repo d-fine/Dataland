@@ -30,8 +30,6 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
-      REALDATA: ${REALDATA}
-      REAL_TEASER_COMPANY_PERM_ID: ${REAL_TEASER_COMPANY_PERM_ID}
   e2etests:
     profiles: ["testing"]
     build:

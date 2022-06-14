@@ -98,10 +98,9 @@ interface CompanyAPI {
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
 
-
     @Operation(
         summary = "Retrieve company information.", // TODO
-        description = "Company information behind the given company Id is retrieved." //TODO
+        description = "Company information behind the given company Id is retrieved." // TODO
     )
     @ApiResponses(
         value = [
@@ -114,10 +113,10 @@ interface CompanyAPI {
         consumes = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
-            /**TODO
-             * A method to retrieve company information for one specific company identified by its company Id
-             * @param companyIds identifier of the company in dataland
-             * @return information about the company
-             */
+    /**TODO
+     * A method to retrieve company information for one specific company identified by its company Id
+     * @param companyIds identifier of the company in dataland
+     * @return information about the company
+     */
     fun setTeaserCompanies(@Valid @RequestBody companyIds: List<String>)
 }

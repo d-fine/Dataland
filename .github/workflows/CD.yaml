@@ -69,7 +69,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
-          REAL_TEASER_COMPANY_PERM_ID: ${{ secrets.REAL_TEASER_COMPANY_PERM_ID }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
