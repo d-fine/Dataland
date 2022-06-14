@@ -1,5 +1,5 @@
 #!/bin/bash
-set -u
+set -ux
 
 environment=$1
 realdata=$2
