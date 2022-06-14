@@ -53,3 +53,4 @@ To do so:
 * Update Docker Images. Publish new versions of docker images in CI by running CypressImage and TemurinImage Jobs
 * update node version in `dataland-frontend/build.gradle.kts`
 * Do the above also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
+* After updating all components check if everything is still working

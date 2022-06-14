@@ -16,7 +16,7 @@
                     <div class="${properties.kcFormGroupClass!}">
                         
 						<div class="input-group">
-							<input tabindex="1" id="username" class="${properties.kcInputClass!} name="username" value="${(login.username!'')}"  type="text" required autofocus autocomplete="off"
+							<input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" required autofocus autocomplete="off"
                                 aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
 							/>
 							<span class="highlight"></span>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" class="d-text-primary d-font-family" style="font-size:12px; padding-right: 4rem;" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="5" class="d-text-primary d-font-family" style="font-size:12px; padding-right: 12rem;" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
@@ -107,7 +107,7 @@
                                 type="button" style="width: 300px;" href="${p.loginUrl}">
                             <#if p.iconClasses?has_content>
                                 <i class="${properties.kcCommonLogoIdP!} ${p.iconClasses!}" aria-hidden="true"></i>
-                                <span class=" d-font-family${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">${p.displayName!}</span>
+                                <span class=" d-font-family${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">${msg("LoginSocialLinksMessage")} ${p.displayName!}</span>
                             <#else>
                                 <span class="d-font-family ${properties.kcFormSocialAccountNameClass!}">${p.displayName!}</span>
                             </#if>
