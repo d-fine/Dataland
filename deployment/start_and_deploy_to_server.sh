@@ -2,7 +2,9 @@
 set -ux
 
 environment=$1
-realdata=$2
+
+#DEBUGGING
+echo "${REALDATA}"
 
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
@@ -37,7 +39,6 @@ ssh ubuntu@$target_server_url 'sudo docker kill $(sudo docker ps -q); sudo docke
 ssh ubuntu@$target_server_url "sudo rm -rf $location; mkdir -p $location/jar"
 
 envsubst < environments/.env.template > .env
-ssh ubuntu@$target_server_url "export REALDATA=$realdata"
 
 scp ./.env ubuntu@$target_server_url:$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
