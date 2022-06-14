@@ -16,6 +16,7 @@ function instantiateVueApp() {
     app.use(plugin, defaultConfig)
     app.use(router)
     app.use(PrimeVue)
+    app.config.unwrapInjectedRef = true
     app.mount('#app')
 }
 
