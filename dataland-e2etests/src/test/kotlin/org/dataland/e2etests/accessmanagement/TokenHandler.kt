@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.ADMIN_USER_NAME
 import org.dataland.e2etests.ADMIN_USER_PASSWORD
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
@@ -13,7 +14,7 @@ import org.dataland.e2etests.SOME_USER_PASSWORD
 import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 
-class TokenRequester {
+class TokenHandler {
 
     private val objectMapper = ObjectMapper()
     private val client = OkHttpClient()
@@ -32,16 +33,16 @@ class TokenRequester {
             .build()
     }
 
-    private fun requestToken(username: String, password: String): Token {
+    private fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Token request failed, response is: $response")
         val responseBodyAsString = response.body!!.string()
         val node: ObjectNode = objectMapper.readValue(responseBodyAsString, ObjectNode::class.java)
-        return Token(node.get("access_token").toString().drop(1).dropLast(1))
+        return node.get("access_token").toString().trim('"')
     }
 
-    fun requestTokenForUserType(user: UserType): Token {
-        return when (user) {
+    fun obtainTokenForUserType(user: UserType) {
+        ApiClient.Companion.accessToken = when (user) {
             UserType.SomeUser -> requestToken(SOME_USER_NAME, SOME_USER_PASSWORD)
             UserType.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
         }
