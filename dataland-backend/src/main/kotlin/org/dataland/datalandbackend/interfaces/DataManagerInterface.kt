@@ -82,9 +82,9 @@ interface DataManagerInterface {
     // TODO doc
     fun setTeaserCompanies(companyIds: List<String>)
 
-    //TODO doc
+    // TODO doc
     fun isCompanyPublic(companyId: String): Boolean
 
-    //TODO doc
+    // TODO doc
     fun isDataSetPublic(dataId: String): Boolean
 }
