@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.RATIO_PRECISION
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.EuTaxonomyData
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -15,29 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.Collections
-import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
  */
-@Component("DefaultManager")
+@Component("DataManager")
 class DataManager(
     @Autowired var edcClient: DefaultApi,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
+    @Autowired var companyManager: CompanyManager
 ) : DataManagerInterface {
     var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
-    var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
-    var teaserCompanyIds = listOf<String>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
     private val greenAssetRatios = ConcurrentHashMap<StockIndex, BigDecimal>()
-
-    private fun verifyCompanyIdExists(companyId: String) {
-        if (!companyDataPerCompanyId.containsKey(companyId)) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
-        }
-    }
 
     private fun verifyDataIdExists(dataId: String) {
         if (!dataMetaInformationPerDataId.containsKey(dataId)) {
@@ -63,7 +53,7 @@ class DataManager(
     }
 
     override fun addDataSet(storableDataSet: StorableDataSet): String {
-        verifyCompanyIdExists(storableDataSet.companyId)
+        companyManager.verifyCompanyIdExists(storableDataSet.companyId)
         val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
 
         if (dataMetaInformationPerDataId.containsKey(dataId)) {
@@ -73,7 +63,8 @@ class DataManager(
         val dataMetaInformation =
             DataMetaInformation(dataId, storableDataSet.dataType, storableDataSet.companyId)
         dataMetaInformationPerDataId[dataId] = dataMetaInformation
-        companyDataPerCompanyId[storableDataSet.companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
+        companyManager.addMetaDataInformationToCompanyStore(storableDataSet.companyId, dataMetaInformation)
+
         return dataId
     }
 
@@ -100,7 +91,7 @@ class DataManager(
         var matches: Map<String, DataMetaInformation> = dataMetaInformationPerDataId
 
         if (companyId.isNotEmpty()) {
-            verifyCompanyIdExists(companyId)
+            companyManager.verifyCompanyIdExists(companyId)
             matches = matches.filter { it.value.companyId == companyId }
         }
         if (dataType.isNotEmpty()) {
@@ -116,58 +107,6 @@ class DataManager(
         return dataMetaInformationPerDataId[dataId]!!
     }
 
-    override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
-        val companyId = UUID.randomUUID().toString()
-        companyDataPerCompanyId[companyId] = StoredCompany(
-            companyId = companyId,
-            companyInformation,
-            dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
-        )
-        return companyDataPerCompanyId[companyId]!!
-    }
-
-    override fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany> {
-        val allCompanies = companyDataPerCompanyId.values.toList()
-
-        return if (searchString == "") {
-            allCompanies
-        } else if (onlyCompanyNames) {
-            filterCompaniesByName(searchString, allCompanies)
-        } else {
-            (
-                filterCompaniesByName(searchString, allCompanies) +
-                    filterCompaniesByIdentifier(searchString, allCompanies)
-                ).distinct()
-        }
-    }
-
-    private fun filterCompaniesByName(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
-        return (
-            companies.filter { it.companyInformation.companyName.startsWith(searchString, true) } +
-                companies.filter { it.companyInformation.companyName.contains(searchString, true) }
-            ).distinct()
-    }
-
-    private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
-        return companies.filter {
-            it.companyInformation.identifiers.any { identifier ->
-                identifier.identifierValue.contains(searchString, true)
-            }
-        }
-    }
-
-    override fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany> {
-        return companyDataPerCompanyId.values.filter {
-            it.companyInformation.indices.any { index -> index == selectedIndex }
-        }
-    }
-
-    override fun getCompanyById(companyId: String): StoredCompany {
-        verifyCompanyIdExists(companyId)
-
-        return companyDataPerCompanyId[companyId]!!
-    }
-
     override fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal> {
 
         val indices = if (selectedIndex == null) {
@@ -177,7 +116,7 @@ class DataManager(
         }
 
         for (index in indices) {
-            val filteredCompanies = searchCompaniesByIndex(index).filter {
+            val filteredCompanies = companyManager.searchCompaniesByIndex(index).filter {
                 it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyData" }
             }
 
@@ -205,16 +144,8 @@ class DataManager(
         greenAssetRatios[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
     }
 
-    override fun setTeaserCompanies(companyIds: List<String>) {
-        teaserCompanyIds = companyIds
-    }
-
-    override fun isCompanyPublic(companyId: String): Boolean {
-        return teaserCompanyIds.contains(companyId)
-    }
-
     override fun isDataSetPublic(dataId: String): Boolean {
         val associatedCompanyId = getDataMetaInfo(dataId).companyId
-        return isCompanyPublic(associatedCompanyId)
+        return companyManager.isCompanyPublic(associatedCompanyId)
     }
 }
