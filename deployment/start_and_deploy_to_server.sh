@@ -3,9 +3,6 @@ set -ux
 
 environment=$1
 
-#DEBUGGING
-echo "${REALDATA}"
-
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
 else
