@@ -140,31 +140,32 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post the teaser dummy company and taxonomy data for it and confirm unauthorized meta info access succeeds`() {
-        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
+    fun `post a dummy company and data for it, set it as teaser and confirm unauthorized meta info access succeeds`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(teaserCompanyId, testData)
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
+        companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
         val dataMetaInformation = unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, teaserCompanyId),
+            DataMetaInformation(testDataId, testDataType, testCompanyId),
             dataMetaInformation,
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
     }
 
     @Test
-    fun `post regular dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
-        val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+    fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(nonTeaserCompanyId, testData)
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
@@ -173,19 +174,20 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post the teaser dummy company and taxonomy data for it and confirm unauthorized meta info search succeeds`() {
-        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
+    fun `post a dummy company and data for it, set it as teaser and confirm unauthorized meta info search succeeds`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(teaserCompanyId, testData)
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
+        companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
 
         assertTrue(
-            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(teaserCompanyId, testDataType).contains(
-                DataMetaInformation(dataId = testDataId, dataType = testDataType, companyId = teaserCompanyId)
+            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType).contains(
+                DataMetaInformation(dataId = testDataId, dataType = testDataType, companyId = testCompanyId)
             ),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
                 "match the retrieved meta info."
@@ -193,17 +195,17 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post regular dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
-        val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+    fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(nonTeaserCompanyId, testData)
+            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
         ).dataId
         val exception = assertThrows<IllegalArgumentException> {
-            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(nonTeaserCompanyId, testDataType)
+            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
         }
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
     }

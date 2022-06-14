@@ -34,7 +34,7 @@ class EuTaxonomyControllerTest {
     }
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if that dummy data set can be retrieved`() {
+    fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyData(testCompanyInformation, testData)
@@ -48,10 +48,11 @@ class EuTaxonomyControllerTest {
     }
 
     @Test
-    fun `post the teaser dummy company and a dummy data set for it and test if unauthorized access is possible`() {
-        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
+    fun `post a dummy company and a data set for it, set it as teaser and test if unauthorized access is possible`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
-        val mapOfIds = postOneCompanyAndEuTaxonomyData(teaserCompanyInformation, testData)
+        val mapOfIds = postOneCompanyAndEuTaxonomyData(testCompanyInformation, testData)
+        companyDataControllerApi.setTeaserCompanies(listOf(mapOfIds["companyId"]!!))
         val getDataByIdResponse =
             unauthorizedEuTaxonomyDataControllerApi.getCompanyAssociatedDataEuTaxonomyData(mapOfIds["dataId"]!!)
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyData(mapOfIds["companyId"]!!, testData)
@@ -62,10 +63,10 @@ class EuTaxonomyControllerTest {
     }
 
     @Test
-    fun `post a regular dummy company and a dummy data set for it and test if unauthorized access is denied`() {
-        val teaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+    fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
-        val mapOfIds = postOneCompanyAndEuTaxonomyData(teaserCompanyInformation, testData)
+        val mapOfIds = postOneCompanyAndEuTaxonomyData(testCompanyInformation, testData)
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedEuTaxonomyDataControllerApi.getCompanyAssociatedDataEuTaxonomyData(mapOfIds["dataId"]!!)
         }

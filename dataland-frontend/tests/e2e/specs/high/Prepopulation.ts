@@ -38,7 +38,7 @@ describe.only('Population Test',
                         )
                     }
                 )
-                cy.log("Uplaod done")
+                cy.log("Upload done")
             })
         });
 

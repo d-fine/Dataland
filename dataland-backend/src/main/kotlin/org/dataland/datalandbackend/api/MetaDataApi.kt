@@ -34,7 +34,7 @@ interface MetaDataApi {
     @GetMapping(
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @TeaserConfig.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @DefaultManager.isCompanyPublic(#companyId)")
     /**
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId filters the requested meta info to a specific company.
@@ -58,7 +58,7 @@ interface MetaDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @TeaserConfig.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @DefaultManager.isDataSetPublic(#dataId)")
     /**
      * A method to retrieve meta info about a specific data set
      * @param dataId as unique identifier for a specific data set

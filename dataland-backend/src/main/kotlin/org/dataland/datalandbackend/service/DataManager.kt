@@ -29,6 +29,7 @@ class DataManager(
 ) : DataManagerInterface {
     var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
+    var teaserCompanyIds = listOf<String>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
     private val greenAssetRatios = ConcurrentHashMap<StockIndex, BigDecimal>()
 
@@ -202,5 +203,18 @@ class DataManager(
             totalSum += data.revenue?.totalAmount ?: BigDecimal(0.0)
         }
         greenAssetRatios[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
+    }
+
+    override fun setTeaserCompanies(companyIds: List<String>) {
+        teaserCompanyIds = companyIds
+    }
+
+    override fun isCompanyPublic(companyId: String): Boolean {
+        return teaserCompanyIds.contains(companyId)
+    }
+
+    override fun isDataSetPublic(dataId: String): Boolean {
+        val associatedCompanyId = getDataMetaInfo(dataId).companyId
+        return isCompanyPublic(associatedCompanyId)
     }
 }

@@ -47,4 +47,8 @@ class CompanyDataController(
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(dataManager.getCompanyById(companyId))
     }
+
+    override fun setTeaserCompanies(companyIds: List<String>) {
+        dataManager.setTeaserCompanies(companyIds)
+    }
 }

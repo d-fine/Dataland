@@ -78,4 +78,13 @@ interface DataManagerInterface {
      * @return green asset ratio in a map form
      */
     fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal>
+
+    // TODO doc
+    fun setTeaserCompanies(companyIds: List<String>)
+
+    //TODO doc
+    fun isCompanyPublic(companyId: String): Boolean
+
+    //TODO doc
+    fun isDataSetPublic(dataId: String): Boolean
 }

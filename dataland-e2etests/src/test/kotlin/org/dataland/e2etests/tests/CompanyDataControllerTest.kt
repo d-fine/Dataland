@@ -139,14 +139,15 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post the teaser dummy company and test if it can be retrieved by its company ID as unauthorized user`() {
-        val teaserCompanyInformation = testDataProvider.getTeaserDummyCompany()
+    fun `post a dummy company, set it as teaser and test if it is retrievable by company ID as unauthorized user`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val teaserCompanyId = companyDataControllerApi.postCompany(teaserCompanyInformation).companyId
-        val getCompanyByIdResponse = unauthorizedCompanyDataControllerApi.getCompanyById(teaserCompanyId)
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
+        val getCompanyByIdResponse = unauthorizedCompanyDataControllerApi.getCompanyById(testCompanyId)
         val expectedStoredTeaserCompany = StoredCompany(
-            companyId = teaserCompanyId,
-            companyInformation = teaserCompanyInformation,
+            companyId = testCompanyId,
+            companyInformation = testCompanyInformation,
             dataRegisteredByDataland = emptyList()
         )
         assertEquals(
@@ -156,12 +157,12 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a regular dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
-        val nonTeaserCompanyInformation = testDataProvider.getNonTeaserDummyCompany()
+    fun `post a dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val nonTeaserCompanyId = companyDataControllerApi.postCompany(nonTeaserCompanyInformation).companyId
+        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val exception = assertThrows<IllegalArgumentException> {
-            unauthorizedCompanyDataControllerApi.getCompanyById(nonTeaserCompanyId)
+            unauthorizedCompanyDataControllerApi.getCompanyById(testCompanyId)
         }
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
     }
