@@ -1,7 +1,7 @@
 <template>
   <MarginWrapper>
     <div class="grid col-12 lg:pt-8">
-      <iframe :src="url" class="col-12 lg:pt-8 ">
+      <iframe :src="url" class="col-12 lg:pt-8" height="500" >
       </iframe>
     </div>
   </MarginWrapper>

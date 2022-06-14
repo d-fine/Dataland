@@ -15,12 +15,13 @@
                 <#if !usernameHidden??>
                     <div class="${properties.kcFormGroupClass!}">
                         
-						<div class="input-wrapper  d-align">
-							<input tabindex="1" id="username" class="${properties.kcInputClass!} floating-control" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off"
-                               placeholder="Enter your email address" aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+						<div class="input-group">
+							<input tabindex="1" id="username" class="${properties.kcInputClass!} name="username" value="${(login.username!'')}"  type="text" required autofocus autocomplete="off"
+                                aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
 							/>
-						
-							<label for="username" class="${properties.kcLabelClass!} control-label"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
+							<span class="highlight"></span>
+							<span class="bar"></span>
+							<label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
 
 							<#if messagesPerField.existsError('username','password')>
 								<span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
@@ -32,11 +33,13 @@
                 </#if>
 
                 <div class="${properties.kcFormGroupClass!}">
-                    <div class="input-wrapper d-align">
+                    <div class="input-group">
 
-						<input tabindex="2" id="password" class="${properties.kcInputClass!} floating-control" name="password" type="password" autocomplete="off"
-                           placeholder="Password" aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+						<input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" required autocomplete="off"
+                           aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
 						/>
+						<span class="highlight"></span>
+						<span class="bar"></span>
 						<label for="password" class="${properties.kcLabelClass!} control-label">${msg("password")}</label>
 
 						<#if usernameHidden?? && messagesPerField.existsError('username','password')>
@@ -71,7 +74,7 @@
 
                   <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
                       <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                      <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} d-font-family" style="width: 170px" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
+                      <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} d-font-family" style="width: 300px; margin:auto" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
                   </div>
             </form>
         </#if>
