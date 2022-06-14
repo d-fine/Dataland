@@ -25,7 +25,7 @@ class EuTaxonomyControllerTest {
 
     private fun postOneCompanyAndEuTaxonomyData(companyInformation: CompanyInformation, euTaxonomyData: EuTaxonomyData):
         Map<String, String> {
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val companyId = companyDataControllerApi.postCompany((companyInformation)).companyId
         val dataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyData(companyId, euTaxonomyData)
@@ -76,9 +76,9 @@ class EuTaxonomyControllerTest {
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.Admin).setToken()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        tokenRequester.requestTokenForUserType(TokenRequester.UserType.SomeUser).setToken()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> {
                 euTaxonomyDataControllerApi.postCompanyAssociatedData(
