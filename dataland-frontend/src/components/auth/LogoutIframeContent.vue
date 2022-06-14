@@ -4,35 +4,24 @@ It will post a message to the outer window stating "DatalandLoginSucceeded" afte
 keycloakAccessToken and keycloakRefreshToken in window session store.
 -->
 <template>
-<div/>
+  <div/>
 </template>
 
 <script>
 
-import Keycloak from "keycloak-js";
-
 export default {
   name: "LogoutIframeContent",
   created() {
-    const initOptions = {
-      realm: "datalandsecurity",
-      url: "/keycloak",
-      clientId: "dataland-public",
-      onLoad: 'login-required'
-    }
-    const keycloak = new Keycloak(initOptions);
-    console.log("init kc")
-    keycloak.init({onLoad: "login-required"}).then(authenticated => {
-      if (authenticated) {
+    this.getKeycloakInitPromise().then((keycloak) => {
+      if (keycloak.authenticated) {
         console.log("authenticated - trying to log out")
         keycloak.logout()
+      } else {
+        console.log("logged out")
+        window.parent.postMessage('DatalandToggleLogin', '*')
       }
-    }).then(()=> {
-      console.log("logged out")
-      window.sessionStorage.removeItem('keycloakAccessToken')
-      window.sessionStorage.removeItem('keycloakRefreshToken')
-      window.top.postMessage('DatalandLogoutSucceded', '*')
     })
   },
+  inject: ['getKeycloakInitPromise'],
 }
 </script>
