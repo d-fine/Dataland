@@ -37,6 +37,14 @@ ssh ubuntu@$target_server_url "sudo rm -rf $location; mkdir -p $location/jar"
 
 envsubst < environments/.env.template > .env
 
+# TODO  Delete this part later!  Only for test-deployment.    Keycloak in production should survice as it is.
+cd dataland-keycloak
+./create_datalandsecurity_realm_from_template
+cd ..
+# ----------
+
+envsubst < environments/.env.template > .env
+
 scp ./.env ubuntu@$target_server_url:$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
 scp ./dataland-frontend/Dockerfile ubuntu@$target_server_url:$location/DockerfileFrontend
