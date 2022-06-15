@@ -56,21 +56,6 @@ class TestDataProvider {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
         return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
     }
-
-    fun getTeaserDummyCompany(): CompanyInformation {
-        return testCompanyInformationWithEuTaxonomyData.first().companyInformation
-    }
-
-    fun getNonTeaserDummyCompany(): CompanyInformation {
-        val companyInformationOfNonTeaserDummyCompany =
-            testCompanyInformationWithEuTaxonomyData.last().companyInformation
-        if (companyInformationOfNonTeaserDummyCompany == getTeaserDummyCompany()) {
-            throw IllegalArgumentException(
-                "Error: The non-teaser dummy company information equals the teaser dummy company information."
-            )
-        }
-        return companyInformationOfNonTeaserDummyCompany
-    }
 }
 
 data class CompanyInformationWithEuTaxonomyDataModel(

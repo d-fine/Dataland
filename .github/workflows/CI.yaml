@@ -90,7 +90,6 @@ jobs:
         run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
-          REALDATA: "false"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2

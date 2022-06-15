@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {getEuTaxonomyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import DataTable from "primevue/datatable";
 
 export default {
@@ -45,7 +45,8 @@ export default {
   },
   methods: {
     async getTaxoData() {
-      this.response = await getEuTaxonomyDataControllerApi().getData()
+      const euTaxonomyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getEuTaxonomyDataControllerApi()
+      this.response = await euTaxonomyDataControllerApi.getData()
     }
   }
 }

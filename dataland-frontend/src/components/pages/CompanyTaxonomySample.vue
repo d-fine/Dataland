@@ -27,7 +27,7 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
-import {getCompanyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
 export default {
   name: "CompanyTaxonomy",
@@ -43,10 +43,12 @@ export default {
   created() {
     this.queryCompany()
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async queryCompany() {
       try {
-        const responseArray = await getCompanyDataControllerApi().getCompanies(this.companyQuery, "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        const responseArray = await companyDataControllerApi.getCompanies(this.companyQuery, "", true)
         this.companyID = responseArray.data[0].companyId
       } catch (error) {
         await this.companyIdFallback()
@@ -55,7 +57,8 @@ export default {
     },
     async companyIdFallback() {
       try {
-        const companyResponse = getCompanyDataControllerApi().getCompanies("", "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        const companyResponse = companyDataControllerApi.getCompanies("", "", true)
         this.companyID = companyResponse.data[0].companyId
       } catch (error) {
         console.error(error)

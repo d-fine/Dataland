@@ -177,7 +177,7 @@ import SuccessUpload from "@/components/messages/SuccessUpload"
 import {FormKit} from "@formkit/vue"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
-import {getCompanyDataControllerApi, getEuTaxonomyDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 
 export default {
   name: "CustomEUTaxonomy",
@@ -199,10 +199,12 @@ export default {
     companyID: null,
     idList: []
   }),
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyIDs(){
       try {
-        const companyList = await getCompanyDataControllerApi().getCompanies("", "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        const companyList = await companyDataControllerApi.getCompanies("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
       } catch(error) {
         this.idList = []
@@ -213,7 +215,8 @@ export default {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await getEuTaxonomyDataControllerApi().postCompanyAssociatedData(this.model)
+        const euTaxonomyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getEuTaxonomyDataControllerApi()
+        this.response = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null

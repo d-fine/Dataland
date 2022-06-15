@@ -1,5 +1,10 @@
+import {login} from "../../support/utility";
+
 describe('User interactive tests for Data Upload', () => {
     let companyId:string
+    beforeEach(() => {
+        login()
+    })
 
     it('Create a Company with no input', () => {
         cy.visit("/upload")

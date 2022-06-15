@@ -1,5 +1,6 @@
 // add new command to the existing Cypress interface
 import Chainable = Cypress.Chainable;
+import {getKeycloakToken} from "./utility";
 
 declare global {
     namespace Cypress {
@@ -11,8 +12,17 @@ declare global {
 }
 
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
-    return cy.request('GET', `${Cypress.env("API")}/${endpoint}`).then((response) => {
-        return response.body.map((e:any) => e[idKey])
+    return cy.wrap(null).then(async () => {
+            return await getKeycloakToken("admin_user", "test")
+        }
+    ).then((token) => {
+        return cy.request({
+            url: `${Cypress.env("API")}/${endpoint}`,
+            method: 'GET',
+            headers: {"Authorization": "Bearer " + token}
+        })
+    }).then((response) => {
+        return response.body.map((e: any) => e[idKey])
     })
 }
 

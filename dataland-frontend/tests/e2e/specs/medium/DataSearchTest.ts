@@ -1,6 +1,9 @@
+import {login} from "../../support/utility";
+
 describe('User interactive tests for Data Search', () => {
 
     beforeEach(() => {
+        login()
         cy.visit("/search")
     })
 

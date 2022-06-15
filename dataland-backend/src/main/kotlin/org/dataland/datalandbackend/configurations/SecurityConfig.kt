@@ -18,11 +18,13 @@ import org.springframework.stereotype.Component
  */
 @Profile("!unprotected")
 @KeycloakConfiguration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     private val publicLinks = arrayOf(
-        "/actuator/**",
+        "/actuator/health",
+        "/actuator/health/ping",
+        "/actuator/info",
         "/swagger-ui/**",
         "/v3/api-docs/**",
         "/companies/**",

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getMetaDataControllerApi} from "@/services/ApiClients"
+import {ApiClientProvider} from "@/services/ApiClients"
 
 export default {
   name: "DataList",
@@ -20,12 +20,14 @@ export default {
       type: Number
     }
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   created() {
     this.getData()
   },
   methods: {
     async getData() {
-      this.response = await getMetaDataControllerApi().getListOfDataMetaInfo("")
+      const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getMetaDataControllerApi()
+      this.response = await metaDataControllerApi.getListOfDataMetaInfo("")
     }
   }
 }

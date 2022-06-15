@@ -1,4 +1,9 @@
+import {login} from "../../../support/utility";
+
 describe('Data Search Page Skyminder', function () {
+    beforeEach(()=> {
+        login()
+    })
     it('page should be present', function () {
         cy.visit("/search")
         cy.get('#app').should("exist")
@@ -36,6 +41,9 @@ describe('Data Search Page Skyminder', function () {
 });
 
 describe('Data Search Page Company', function () {
+    beforeEach(()=> {
+        login()
+    })
     it('page should be present', function () {
         cy.visit("/search")
         cy.get('#app').should("exist")
