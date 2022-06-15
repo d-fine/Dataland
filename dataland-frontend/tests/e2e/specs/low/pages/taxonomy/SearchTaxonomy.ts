@@ -1,3 +1,5 @@
+import {login} from "../../../../support/utility";
+
 describe('Search Taxonomy', function () {
     let companiesWithData:any
 
@@ -7,16 +9,14 @@ describe('Search Taxonomy', function () {
         });
     });
 
-    it('page should be present', function () {
+    beforeEach(function() {
+        login()
+    });
+
+    it('Check static layout of the search page', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
-    });
-
-    it('Heading should be present', () => {
         cy.get('h1').should("contain", "Search EU Taxonomy data")
-    });
-
-    it('Search Input field should be present before index filter', () => {
         const placeholder = "Search company by name or PermID"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')

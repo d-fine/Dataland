@@ -3,7 +3,7 @@ import {login} from "../../support/utility";
 describe('User interactive tests for Data Upload', () => {
     let companyId:string
     beforeEach(() => {
-        login()
+        login("admin_user", "test")
     })
 
     it('Create a Company with no input', () => {

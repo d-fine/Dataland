@@ -5,7 +5,7 @@ describe('EU Taxonomy Data and Cards', function () {
     const companyIdList: Array<string> = []
     const companyNames: Array<string> = ["eligible & total", "eligible"]
     beforeEach(() => {
-        login()
+        login("admin_user", "test")
     })
     it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {

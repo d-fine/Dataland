@@ -129,6 +129,7 @@ describe('Population Test',
 describe('EU Taxonomy Data', () => {
     it('Check Eu Taxonomy Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+            login()
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
             cy.wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
@@ -145,6 +146,7 @@ describe('EU Taxonomy Data', () => {
 describe('Company EU Taxonomy Data', () => {
     it('Check Company associated EU Taxonomy Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+            login()
             cy.intercept('**/api/companies/*').as('retrieveCompany')
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
