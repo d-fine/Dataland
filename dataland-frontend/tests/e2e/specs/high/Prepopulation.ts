@@ -10,6 +10,14 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
+        let teaserCompanies: Array<{ companyIds: String}>
+        let teaserCompaniesPermIds: Array<{ permId: String}>
+        let teaserCompanySet: Boolean
+        teaserCompanySet=false
+
+        if (Cypress.env("REALDATA") == true) {
+            teaserCompaniesPermIds=Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
+        }
 
         before(function () {
             cy.fixture('CompanyInformationWithEuTaxonomyData').then(function (companies) {
@@ -34,12 +42,38 @@ describe('Population Test',
                                         "data": element.euTaxonomyData
                                     }
                                     , token)
+                                if (Cypress.env("REALDATA") == false && !teaserCompanySet) {
+                                    teaserCompanies.push(json.companyId)
+                                    teaserCompanySet=true
+                                }
+                                if (Cypress.env("REALDATA") == true) {
+                                    for (const identifier of element.companyInformation.identifiers) {
+                                        if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds){
+                                            teaserCompanies.push(json.companyId)
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (!teaserCompanySet) {
+                                        teaserCompanies.push(json.companyId)
+                                        teaserCompanySet = true
+                                    }
+                                }
                             }
                         )
                     }
                 )
                 cy.log("Upload done")
             })
+        });
+
+        it('Check if the teaser company can be set', () => {
+            cy.wrap(null).then(async () => {
+                    return await getKeycloakToken("admin_user", "test")
+                }
+            ).then(token => {
+                uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
+            });
         });
 
         it('Check if all the company ids can be retrieved', () => {
@@ -95,6 +129,7 @@ describe('Population Test',
 describe('EU Taxonomy Data', () => {
     it('Check Eu Taxonomy Data Presence and Link route', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+            login()
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
             cy.wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
@@ -111,6 +146,7 @@ describe('EU Taxonomy Data', () => {
 describe('Company EU Taxonomy Data', () => {
     it('Check Company associated EU Taxonomy Data Presence and Link route', () => {
         cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+            login()
             cy.intercept('**/api/companies/*').as('retrieveCompany')
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)

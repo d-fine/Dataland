@@ -1,7 +1,7 @@
 import {login} from "../../../support/utility";
 
 describe('Data Search Page Skyminder', function () {
-    beforeEach(()=> {
+    before(()=> {
         login()
     })
     it('page should be present', function () {
@@ -41,7 +41,7 @@ describe('Data Search Page Skyminder', function () {
 });
 
 describe('Data Search Page Company', function () {
-    beforeEach(()=> {
+    before(()=> {
         login()
     })
     it('page should be present', function () {
@@ -59,7 +59,7 @@ describe('Data Search Page Company', function () {
             .type(inputValue)
             .should('have.value', inputValue)
     });
-    it('Should have button to search all companies', () => {
+    it.skip('Should have button to search all companies', () => {
         cy.get('button[name=show_all_companies_button].p-button')
             .should('not.be.disabled')
             .should('contain', 'Show all companies')

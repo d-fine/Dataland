@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Implementation of a company manager for Dataland
  */
 @Component("CompanyManager")
-class CompanyManager: CompanyManagerInterface {
+class CompanyManager : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     var teaserCompanyIds = listOf<String>()
 

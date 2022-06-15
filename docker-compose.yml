@@ -42,6 +42,7 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+      TEASER_COMPANY_PERM_IDS: ${TEASER_COMPANY_PERM_IDS}
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -103,7 +104,7 @@ services:
       TRUSTEE_CREDENTIALS: ${TRUSTEE_CREDENTIALS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
   develop:
-    profiles: ["testing", "devcontainer"]
+    profiles: ["devcontainer"]
     build:
       context: ./
       dockerfile: ./devcontainer/Dockerfile
@@ -122,9 +123,8 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
-      TEASER_COMPANY_NAME: ${TEASER_COMPANY_NAME}
   keycloak-db:
-    profiles: ["testing", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - internal
     image: postgres
@@ -135,7 +135,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    profiles: ["testing", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - internal
     build:

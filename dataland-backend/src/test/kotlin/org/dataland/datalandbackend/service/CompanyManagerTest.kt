@@ -64,7 +64,8 @@ class CompanyManagerTest(
         addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
-                val searchResponse = testCompanyManager.searchCompanies(identifier.identifierValue, false).toMutableList()
+                val searchResponse = testCompanyManager.searchCompanies(identifier.identifierValue, false)
+                    .toMutableList()
                 // The response list is filtered to exclude results that match in account of another identifier having
                 // the required value but the looked for identifier type does not exist (This happens due to the test
                 // data having non-unique identifier values for different identifier types)

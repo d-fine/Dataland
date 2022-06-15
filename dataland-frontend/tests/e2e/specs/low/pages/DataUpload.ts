@@ -1,7 +1,7 @@
 import {login} from "../../../support/utility";
 
 describe('Data Upload Page', function () {
-    beforeEach(()=> {
+    before(()=> {
         login()
     })
     it('page should be present', function () {
