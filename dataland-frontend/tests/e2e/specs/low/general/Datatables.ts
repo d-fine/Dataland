@@ -1,8 +1,6 @@
-import {login} from "../../../support/utility";
-
 describe('Datables test suite', () => {
     it('Search for all companies containing a and verify that results are paginated, only first 100 are shown', () => {
-        login()
+        cy.restoreLoginSession()
         cy.visit('/searchtaxonomy')
         const inputValue = "a"
         cy.get('input[name=eu_taxonomy_search_input]')

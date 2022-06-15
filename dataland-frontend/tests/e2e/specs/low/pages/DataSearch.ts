@@ -1,8 +1,6 @@
-import {login} from "../../../support/utility";
-
 describe('Data Search Page Skyminder', function () {
-    before(()=> {
-        login()
+    beforeEach(() => {
+        cy.restoreLoginSession()
     })
     it('page should be present', function () {
         cy.visit("/search")
@@ -40,9 +38,9 @@ describe('Data Search Page Skyminder', function () {
     })
 });
 
-describe('Data Search Page Company', function () {
-    before(()=> {
-        login()
+describe.only('Data Search Page Company', function () {
+    beforeEach(() => {
+        cy.restoreLoginSession()
     })
     it('page should be present', function () {
         cy.visit("/search")
@@ -59,16 +57,16 @@ describe('Data Search Page Company', function () {
             .type(inputValue)
             .should('have.value', inputValue)
     });
-    it.skip('Should have button to search all companies', () => {
+    it('Should have button to search all companies', () => {
         cy.get('button[name=show_all_companies_button].p-button')
             .should('not.be.disabled')
             .should('contain', 'Show all companies')
             .click({force: true})
         cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
+        cy.get('table.p-datatable-table').contains('th', 'COMPANY')
+        cy.get('table.p-datatable-table').contains('th', 'SECTOR')
+        cy.get('table.p-datatable-table').contains('th', 'MARKET CAP')
+        cy.get('table.p-datatable-table').contains('td', 'VIEW')
             .contains('a', 'VIEW')
             .click()
             .url().should('include', '/companies/')

@@ -1,8 +1,6 @@
-import {login} from "../../../support/utility";
-
 describe('Data Upload Page', function () {
-    before(()=> {
-        login()
+    beforeEach(()=> {
+        cy.restoreLoginSession()
     })
     it('page should be present', function () {
         cy.visit("/upload")
