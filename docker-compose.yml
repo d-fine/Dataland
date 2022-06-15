@@ -42,6 +42,7 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+      TEASER_COMPANY_PERM_IDS: ${TEASER_COMPANY_PERM_IDS}
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -122,7 +123,6 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
-      TEASER_COMPANY_NAME: ${TEASER_COMPANY_NAME}
   keycloak-db:
     profiles: ["testing", "development"]
     networks:

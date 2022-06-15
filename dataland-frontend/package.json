@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint",
     "teste2e": "vue-cli-service test:e2e --mode development --url http://localhost",
     "testheadless": "vue-cli-service test:e2e --mode development --url http://localhost --headless",
-    "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless",
+    "testpipeline": "vue-cli-service test:e2e --url http://proxy --headless --browser chrome",
     "testpreview": "vue-cli-service test:e2e --url http://preview-dataland.duckdns.org --headless --config-file cypress_preview.json",
     "testdevelopment": "vue-cli-service test:e2e --url http://dev-dataland.duckdns.org --headless",
     "testremote": "vue-cli-service test:e2e --url http://localhost",
