@@ -25,7 +25,7 @@
             </div>
             <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
                 <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
-                    <div class="${properties.kcFormOptionsWrapperClass!}">
+                    <div class="${properties.kcFormOptionsWrapperClass!}" style="margin-bottom:20px;">
                         <span><a class="d-text-primary" href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
                     </div>
                 </div>
@@ -37,9 +37,13 @@
         </form>
     <#elseif section = "info" >
         <#if realm.duplicateEmailsAllowed>
-            ${msg("emailInstructionUsername")}
+            <div class="d-margin">
+			${msg("emailInstructionUsername")}
+			</div>
         <#else>
+		<div class="d-margin">
             ${msg("emailInstruction")}
+			</div>
         </#if>
     </#if>
 </@layout.registrationLayout>

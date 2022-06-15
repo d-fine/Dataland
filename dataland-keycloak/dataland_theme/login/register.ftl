@@ -136,7 +136,7 @@
 				<div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
                     <div class="${properties.kcFormOptionsWrapperClass!}">
                         
-						<span class="d-font-family" style="font-size:16px; padding-top:30px;">${msg("backToLogin")}  <Button type="button" label="Login" class="d-letters d-button uppercase p-button d-font-family justify-content-center" style="background-color:white; color:#e67f3f; font-size:24;" name="back_to_login_button" onclick="location.href='${url.loginUrl}'">
+						<span class="d-font-family" style="font-size:16px; padding-top:30px;">${msg("backToLogin")}  <Button type="button" label="Login" class="d-letters d-button uppercase p-button d-font-family justify-content-center" style="background-color:white; color:#e67f3f; font-size:24; margin-bottom:5px;" name="back_to_login_button" onclick="location.href='${url.loginUrl}'">
                                                 ${msg("doLogIn")}</Button></span>
                     </div>
 					
