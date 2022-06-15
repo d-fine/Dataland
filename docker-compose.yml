@@ -103,7 +103,7 @@ services:
       TRUSTEE_CREDENTIALS: ${TRUSTEE_CREDENTIALS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
   develop:
-    profiles: ["testing", "devcontainer"]
+    profiles: ["devcontainer"]
     build:
       context: ./
       dockerfile: ./devcontainer/Dockerfile
