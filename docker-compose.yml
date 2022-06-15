@@ -124,7 +124,7 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
   keycloak-db:
-    profiles: ["testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - internal
     image: postgres
@@ -135,7 +135,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    profiles: ["testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - internal
     build:
