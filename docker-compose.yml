@@ -124,7 +124,7 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
   keycloak-db:
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - internal
     image: postgres
@@ -140,13 +140,27 @@ services:
       - internal
     build:
       context: ./
-      dockerfile: dataland-keycloak/Dockerfile
+      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-db
+  keycloak-initializer:
+    profiles: [ "init" ]
+    networks:
+      - internal
+    build:
+      context: ./
+      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/opt/keycloak/data/import
     command: --import-realm
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     expose:
       - "8080"
     depends_on:
