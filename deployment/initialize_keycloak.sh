@@ -8,6 +8,7 @@ echo "Copying the realm jsons to the server $target_server_url."
 ssh ubuntu@"$target_server_url" "mkdir -p $location/realms"
 scp -r "$(dirname "$0")"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$location"/realms
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
+scp ./docker-compose.yml ubuntu@"$target_server_url":$location
 
 old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data")
 if [[ -n $old_volume ]]; then
