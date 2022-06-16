@@ -21,7 +21,7 @@ echo "Setting $environment server as deployment target"
 target_server_url="$TARGETSERVER_URL"
 
 mkdir -p ~/.ssh/
-echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
+#echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 
