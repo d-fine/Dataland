@@ -74,7 +74,7 @@ jobs:
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           INITIALIZE_KEYCLOAK: ${{ secrets.INITIALIZE_KEYCLOAK }}
-          TEASER_COMPANY_PERM_IDS: ${{ secrets.SSH_PRIVATE_KEY }}
+          TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
