@@ -25,7 +25,12 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  sudo -E docker-compose --profile init up -d --build"
 message="Profile prod activated."
-timeout 300 bash -c "while ! docker logs dataland_keycloak_1 | grep -q \"$message\"; do echo Startup of Keycloak incomplete. Waiting for it to finish.; sleep 1; done" || exit 1
+container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
+timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location && sudo docker logs $container_name | grep -q \\\"$message\\\"\";
+                     do
+                       echo Startup of Keycloak incomplete. Waiting for it to finish.;
+                       sleep 5;
+                     done"
 
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
