@@ -26,7 +26,7 @@ echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 
 timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
-cat ~/.ssh/known_hosts
+
 location=/home/ubuntu/dataland
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
@@ -42,6 +42,8 @@ if [[ $INITIALIZE_KEYCLOAK == true ]]; then
 fi
 
 envsubst < environments/.env.template > .env
+
+scp ~/.ssh/known_hosts ubuntu@"$target_server_url":$location
 
 scp ./.env ubuntu@"$target_server_url":$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location

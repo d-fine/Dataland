@@ -11,7 +11,7 @@ scp -r "$script_dir"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$l
 scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
 
-old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data")
+old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data") || true
 if [[ -n $old_volume ]]; then
   echo "Removing old keycloak volume with name $old_volume."
   ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $old_volume"
