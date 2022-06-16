@@ -39,14 +39,10 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.keycloak:keycloak-spring-boot-starter:18.0.0")
-    implementation("org.springframework.boot:spring-boot-starter-security:2.6.7")
+    implementation("org.springframework.boot:spring-boot-starter-security:2.7.0")
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("getTestData")
-}
 
 tasks.withType<org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask> {
     outputFileName.set("$backendOpenApiJson")
