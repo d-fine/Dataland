@@ -84,7 +84,7 @@ jobs:
         run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
-          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
+          KEYCLOAK_FRONTEND_URL: "http://proxy/keycloak"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
