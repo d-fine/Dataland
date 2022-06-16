@@ -38,7 +38,7 @@ envsubst < environments/.env.template > .env
 
 if [[ $INITIALIZE_KEYCLOAK == true ]]; then
   echo "Deployment configuration requires Keycloak to be set up from scratch."
-  "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location"
+  "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
 fi
 
 envsubst < environments/.env.template > .env
