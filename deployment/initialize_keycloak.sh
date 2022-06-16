@@ -22,6 +22,7 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
                                  export KEYCLOAK_FRONTEND_URL=$KEYCLOAK_FRONTEND_URL;
                                  export KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN;
                                  export KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD;
+                                 export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  sudo -E docker-compose --profile init up -d --build"
 message="Profile prod activated."
 timeout 300 bash -c "while ! docker logs dataland_keycloak_1 | grep -q \"$message\"; do echo Startup of Keycloak incomplete. Waiting for it to finish.; sleep 1; done" || exit 1
