@@ -12,7 +12,7 @@ scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/Dockerf
 old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data")
 if [[ -n $old_volume ]]; then
   echo "Removing old keycloak volume with name $old_volume."
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm old_volume"
+  ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $old_volume"
 fi
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
