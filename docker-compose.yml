@@ -135,7 +135,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "productionInMemory", "development"]
     networks:
       - internal
     build:
@@ -148,9 +148,11 @@ services:
     depends_on:
       - keycloak-db
   keycloak-initializer:
-    profiles: [ "init" ]
+    profiles: [ "init", "testing" ]
     networks:
-      - internal
+      internal:
+        aliases:
+          - keycloak
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
