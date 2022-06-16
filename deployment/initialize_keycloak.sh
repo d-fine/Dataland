@@ -24,7 +24,6 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
                                  export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
                                  export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
-                                 sudo -E env;
                                  sudo -E docker-compose --profile init up -d --build"
 message="Profile prod activated."
 container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
