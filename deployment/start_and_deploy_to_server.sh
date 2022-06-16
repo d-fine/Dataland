@@ -21,7 +21,7 @@ echo "Setting $environment server as deployment target"
 target_server_url="$TARGETSERVER_URL"
 
 mkdir -p ~/.ssh/
-#echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
+echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 
@@ -42,8 +42,6 @@ if [[ $INITIALIZE_KEYCLOAK == true ]]; then
 fi
 
 envsubst < environments/.env.template > .env
-
-scp ~/.ssh/known_hosts ubuntu@"$target_server_url":$location
 
 scp ./.env ubuntu@"$target_server_url":$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
