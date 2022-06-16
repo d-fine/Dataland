@@ -19,9 +19,10 @@ fi
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
-                                 export KEYCLOAK_FRONTEND_URL=$KEYCLOAK_FRONTEND_URL;
-                                 export KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN;
-                                 export KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD;
+                                 export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
+                                 export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
+                                 export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
+                                 export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  sudo -E docker-compose --profile init up -d --build"
 message="Profile prod activated."
