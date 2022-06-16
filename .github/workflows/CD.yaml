@@ -72,6 +72,7 @@ jobs:
           KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           INITIALIZE_KEYCLOAK: ${{ secrets.INITIALIZE_KEYCLOAK }}
           TEASER_COMPANY_PERM_IDS: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
