@@ -10,9 +10,10 @@ scp -r "$(dirname "$0")"/../dataland-keycloak/realms ubuntu@"$target_server_url"
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 
 number_of_volumes=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | wc -l")
+echo "Found $number_of_volumes old volumes."
 if [[ $number_of_volumes -gt 0 ]]; then
   echo "Removing all previously existing volumes."
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $(docker volume ls -q)"
+  ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $(sudo docker volume ls -q)"
 fi
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
