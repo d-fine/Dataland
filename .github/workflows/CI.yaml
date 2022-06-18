@@ -85,6 +85,7 @@ jobs:
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "http://proxy/keycloak"
+          KEYCLOAK_DB_PASSWORD: "DummyPasswordForCiTests"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
