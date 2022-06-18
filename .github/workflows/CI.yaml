@@ -109,6 +109,12 @@ jobs:
         with:
           name: e2eTestReports
           path: ./reports
+      - name: Upload docker log files
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestDockerLogs
+          path: ./dockerLogs
 
   sonar:
     runs-on: ubuntu-latest
