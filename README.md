@@ -22,17 +22,22 @@ To explicitly mark a script executable, do:
 ## Environment Variables
 Some environment variables are used within the project. Find attached the variables and their meaning
 
-| Variable name                  | Description                                                                               | example values                           |
-|--------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------|
-| DATALAND_SKYMINDERCLIENT_TOKEN | An Access Token to access the Github Skyminder Package registry                           |                                          |
-| DATALAND_SKYMINDERCLIENT_USER  | The User corresponding to `DATALAND_SKYMINDERCLIENT_TOKEN`                                |                                          |
-| DATALAND_EDC_TOKEN             | An Access Token to access the Github DatalandEDC Package registry                         |                                          |
-| DATALAND_EDC_USER              | The User corresponding to `DATALAND_EDC_TOKEN`                                            |                                          |
-| SKYMINDER_URL                  | The base URL of the Skyminder API                                                         |                                          |
-| SKYMINDER_USER                 | The username for the Skyminder API                                                        |                                          |
-| SKYMINDER_PW                   | The password for the Skyminder API                                                        |                                          |
-| FRONTEND_DOCKERFILE            | Defines the dockerfile to be used for the fronted container in the docker compose stack   | `./dataland-frontend/DockerfileTest`     |
-| BACKEND_DOCKERFILE             | Defines the dockerfile to be used for the backend container in the docker compose stack   | `./dataland-backend/DockerfileTest`      |
+| Variable name                  | Description                                                                              | example values                       |
+|--------------------------------|------------------------------------------------------------------------------------------|--------------------------------------|
+| DATALAND_SKYMINDERCLIENT_TOKEN | An Access Token to access the Github Skyminder Package registry                          |                                      |
+| DATALAND_SKYMINDERCLIENT_USER  | The User corresponding to `DATALAND_SKYMINDERCLIENT_TOKEN`                               |                                      |
+| DATALAND_EDC_TOKEN             | An Access Token to access the Github DatalandEDC Package registry                        |                                      |
+| DATALAND_EDC_USER              | The User corresponding to `DATALAND_EDC_TOKEN`                                           |                                      |
+| SKYMINDER_URL                  | The base URL of the Skyminder API                                                        |                                      |
+| SKYMINDER_USER                 | The username for the Skyminder API                                                       |                                      |
+| SKYMINDER_PW                   | The password for the Skyminder API                                                       |                                      |
+| FRONTEND_DOCKERFILE            | Defines the dockerfile to be used for the fronted container in the docker compose stack  | `./dataland-frontend/DockerfileTest` |
+| BACKEND_DOCKERFILE             | Defines the dockerfile to be used for the backend container in the docker compose stack  | `./dataland-backend/DockerfileTest`  |
+| KEYCLOAK_DOCKERFILE            | Defines the dockerfile to be used for the keycloak container in the docker compose stack | `./dataland-keycloak/Dockerfile`     |
+| KEYCLOAK_ADMIN                 | Defines the name of the admin user when keycloak is set up from scratch                  |                                      |
+| KEYCLOAK_ADMIN_PASSWORD        | Defines the password for the admin user when keycloak is set up from scratch             |                                      |
+| KEYCLOAK_FRONTEND_URL          | Defines the frontend URL to be used when keycloak is set up from scratch                 |                                      |
+| KEYCLOAK_DB_PASSWORD           | Defines the password for the keycloak DB when keycloak is set up from scratch            |                                      |
 
 ## Run Cypress Tests locally
 * start the docker-compose stack with the "development" profile. Set the env-variables (see above). 
