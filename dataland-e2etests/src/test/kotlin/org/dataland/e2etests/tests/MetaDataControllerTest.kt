@@ -140,7 +140,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and data for it, set it as teaser and confirm unauthorized meta info access succeeds`() {
+    fun `post a dummy company as teaser company and a data for it and confirm unauthorized meta info access succeeds`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
@@ -174,7 +174,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and data for it, set it as teaser and confirm unauthorized meta info search succeeds`() {
+    fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
