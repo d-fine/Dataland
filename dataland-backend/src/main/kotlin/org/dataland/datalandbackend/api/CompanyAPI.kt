@@ -101,7 +101,7 @@ interface CompanyAPI {
     @Operation(
         summary = "Set the teaser companies.",
         description = "A list of company IDs can be posted, declaring all contained companies as teaser companies, " +
-                      "making their information available without authentication."
+            "making their information available without authentication."
     )
     @ApiResponses(
         value = [
