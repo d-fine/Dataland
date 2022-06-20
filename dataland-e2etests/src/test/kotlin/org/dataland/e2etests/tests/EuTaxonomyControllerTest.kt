@@ -48,7 +48,7 @@ class EuTaxonomyControllerTest {
     }
 
     @Test
-    fun `post a dummy company and a data set for it, set it as teaser and test if unauthorized access is possible`() {
+    fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         val testData = testDataProvider.getEuTaxonomyData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyData(testCompanyInformation, testData)

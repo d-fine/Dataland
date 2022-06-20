@@ -139,7 +139,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company, set it as teaser and test if it is retrievable by company ID as unauthorized user`() {
+    fun `post a dummy company as teaser company and test if it is retrievable by company ID as unauthorized user`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
