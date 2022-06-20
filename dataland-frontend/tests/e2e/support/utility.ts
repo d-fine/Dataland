@@ -35,10 +35,10 @@ export function uploadSingleElementWithRetries(endpoint: string, element: object
             uploadSingleElementOnce(endpoint, element, token))
 }
 
-export async function getKeycloakToken(username: string, password: string, client_id: string = "dataland-public") {
-    return fetch(
-        "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+export function getKeycloakToken(username: string, password: string, client_id: string = "dataland-public") {
+    return cy.request(
         {
+            url: "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -48,8 +48,8 @@ export async function getKeycloakToken(username: string, password: string, clien
                 "&grant_type=password&client_id=" + encodeURIComponent(client_id) + ""
         }
     ).then(
-        (response) => response.json()
-    ).then(
-        response_json => response_json.access_token
-    )
+        (response) => {
+            expect(response.status).to.eq(200)
+            return response.body.access_token
+        })
 }

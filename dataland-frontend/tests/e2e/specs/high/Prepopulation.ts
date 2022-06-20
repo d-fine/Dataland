@@ -10,13 +10,13 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
-        let teaserCompanies: Array<{ companyIds: string}>
-        let teaserCompaniesPermIds: Array<{ permId: string}>
+        let teaserCompanies: Array<{ companyIds: string }>
+        let teaserCompaniesPermIds: Array<{ permId: string }>
         let teaserCompanySet: boolean
-        teaserCompanySet=false
+        teaserCompanySet = false
 
         if (Cypress.env("REALDATA")) {
-            teaserCompaniesPermIds=Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
+            teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
         }
 
         before(function () {
@@ -25,59 +25,55 @@ describe('Population Test',
             });
         });
 
-        beforeEach(function()  {
+        beforeEach(function () {
             cy.restoreLoginSession()
         });
 
         it('Populate Companies and Eu Taxonomy Data', () => {
-            cy.wrap(null).then(async () => {
-                    return getKeycloakToken("admin_user", "test")
-                }
-            ).then(async token => {
-                cy.log("got token from keycloak: " + token)
-                await doThingsInChunks(
-                    companiesWithData,
-                    chunkSize,
-                    (element) => {
-                        uploadSingleElementWithRetries("companies", element.companyInformation, token).then(
-                            (json) => {
-                                uploadSingleElementWithRetries("data/eutaxonomies", {
-                                        "companyId": json.companyId,
-                                        "data": element.euTaxonomyData
-                                    }
-                                    , token)
-                                if (!Cypress.env("REALDATA") && !teaserCompanySet) {
-                                    teaserCompanies.push(json.companyId)
-                                    teaserCompanySet=true
-                                }
-                                if (Cypress.env("REALDATA")) {
-                                    for (const identifier of element.companyInformation.identifiers) {
-                                        if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds){
-                                            teaserCompanies.push(json.companyId)
+
+            getKeycloakToken("admin_user", "test")
+                .then(async token => {
+                    cy.log("got token from keycloak: " + token)
+                    await doThingsInChunks(
+                        companiesWithData,
+                        chunkSize,
+                        (element) => {
+                            uploadSingleElementWithRetries("companies", element.companyInformation, token).then(
+                                (json) => {
+                                    uploadSingleElementWithRetries("data/eutaxonomies", {
+                                            "companyId": json.companyId,
+                                            "data": element.euTaxonomyData
                                         }
-                                    }
-                                }
-                                else {
-                                    if (!teaserCompanySet) {
+                                        , token)
+                                    if (!Cypress.env("REALDATA") && !teaserCompanySet) {
                                         teaserCompanies.push(json.companyId)
                                         teaserCompanySet = true
                                     }
+                                    if (Cypress.env("REALDATA")) {
+                                        for (const identifier of element.companyInformation.identifiers) {
+                                            if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds) {
+                                                teaserCompanies.push(json.companyId)
+                                            }
+                                        }
+                                    } else {
+                                        if (!teaserCompanySet) {
+                                            teaserCompanies.push(json.companyId)
+                                            teaserCompanySet = true
+                                        }
+                                    }
                                 }
-                            }
-                        )
-                    }
-                )
-                cy.log("Upload done")
-            })
+                            )
+                        }
+                    )
+                    cy.log("Upload done")
+                })
         });
 
         it('Check if the teaser company can be set', () => {
-            cy.wrap(null).then(async () => {
-                    return getKeycloakToken("admin_user", "test")
-                }
-            ).then(token => {
-                uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
-            });
+            getKeycloakToken("admin_user", "test")
+                .then(token => {
+                    uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
+                });
         });
 
         it('Check if all the company ids can be retrieved', () => {

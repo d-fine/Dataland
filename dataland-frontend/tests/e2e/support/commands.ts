@@ -14,16 +14,14 @@ declare global {
 }
 
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
-    return cy.wrap(null).then(async () => {
-            return getKeycloakToken("admin_user", "test")
-        }
-    ).then((token) => {
-        return cy.request({
-            url: `${Cypress.env("API")}/${endpoint}`,
-            method: 'GET',
-            headers: {"Authorization": "Bearer " + token}
-        })
-    }).then((response) => {
+    return getKeycloakToken("admin_user", "test")
+        .then((token) => {
+            cy.request({
+                url: `${Cypress.env("API")}/${endpoint}`,
+                method: 'GET',
+                headers: {"Authorization": "Bearer " + token}
+            })
+        }).then((response) => {
         return response.body.map((e: any) => e[idKey])
     })
 }
