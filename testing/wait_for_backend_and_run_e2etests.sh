@@ -19,5 +19,4 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
-./gradlew :dataland-e2etests:test
-#:dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace TODO
+./gradlew :dataland-e2etests:test :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
