@@ -135,7 +135,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
   keycloak:
-    profiles: ["production", "productionInMemory", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - internal
     build:
