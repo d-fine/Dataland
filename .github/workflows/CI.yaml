@@ -80,16 +80,12 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-      - name: Build realms out of templates
-        run: |
-          cd ./dataland-keycloak
-          ./create_datalandsecurity_realm_from_template.sh
-        env:
-          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
+          KEYCLOAK_FRONTEND_URL: "http://proxy/keycloak"
+          KEYCLOAK_DB_PASSWORD: "DummyPasswordForCiTests"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -114,6 +110,12 @@ jobs:
         with:
           name: e2eTestReports
           path: ./reports
+      - name: Upload docker log files
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestDockerLogs
+          path: ./dockerLogs
 
   sonar:
     runs-on: ubuntu-latest
