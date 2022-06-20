@@ -1,9 +1,9 @@
-import {login} from "../../support/utility";
+import {restoreLoginSession} from "../../support/commands";
 
 describe('User interactive tests for Data Upload', () => {
     let companyId:string
     beforeEach(() => {
-        login("admin_user", "test")
+        cy.restoreLoginSession("admin_user", "test")
     })
 
     it('Create a Company with no input', () => {
@@ -12,9 +12,8 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('body').should("contain", "Sorry")
     })
 
-    it('Create a Company when everything is fine', () => {
+    function uploadCompanyWithEverythingFine(companyName: string) {
         cy.visit("/upload")
-        const companyName = "Test company"
         cy.get('input[name=companyName]').type(companyName, {force: true})
         cy.get('input[name=headquarters]').type("applications", {force: true})
         cy.get('input[name=sector]').type("Handmade", {force: true})
@@ -23,6 +22,11 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('select[name=identifierType]').select('ISIN')
         cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
         cy.get('button[name="postCompanyData"]').click()
+    }
+
+    it('Create a Company when everything is fine', () => {
+        const companyName = "Test company"
+        uploadCompanyWithEverythingFine(companyName);
         cy.get('body').should("contain", "success")
         cy.get('span[title=companyId]').then(($companyID) => {
             companyId = $companyID.text()
@@ -31,9 +35,16 @@ describe('User interactive tests for Data Upload', () => {
         })
     })
 
-    it('Create EU Taxonomy Dataset with Reporting Obligation and Check the Link', () => {
+    it('Create a Company when the login is wrong', () => {
+        cy.restoreLoginSession()
+        const companyName = "Test company"
+        uploadCompanyWithEverythingFine(companyName);
+        cy.get('body').should("contain", "Sorry")
+    })
+
+    function uploadEuTaxonomyDatasetWithReportingObligation() {
         cy.visit("/upload")
-        cy.get('button[name="postEUData"]', { timeout: 2000 }).should('be.visible')
+        cy.get('button[name="postEUData"]', {timeout: 2000}).should('be.visible')
         cy.get('input[name="companyId"]').type(companyId, {force: true})
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
@@ -45,8 +56,12 @@ describe('User interactive tests for Data Upload', () => {
         }
         cy.get('div[title=revenue] input').eq(0).type("0")
         cy.get('div[title=revenue] input').eq(1).type("0")
-        cy.get('button[name="postEUData"]', { timeout: 2000 }).should('not.be.disabled')
+        cy.get('button[name="postEUData"]', {timeout: 2000}).should('not.be.disabled')
         cy.get('button[name="postEUData"]').click({force: true})
+    }
+
+    it('Create EU Taxonomy Dataset with Reporting Obligation and Check the Link', () => {
+        uploadEuTaxonomyDatasetWithReportingObligation();
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
@@ -60,15 +75,20 @@ describe('User interactive tests for Data Upload', () => {
         });
     });
 
+    it('Create EU Taxonomy Dataset with Reporting Obligation and wrong login', () => {
+        restoreLoginSession()
+        uploadEuTaxonomyDatasetWithReportingObligation();
+        cy.get('body').should("contain", "Sorry")
+    });
+
     it('Create EU Taxonomy Dataset without Reporting Obligation', () => {
         cy.visit("/upload")
         cy.get('button[name="postEUData"]', { timeout: 2000 }).should('be.visible')
         cy.get('input[name="companyId"]').type(companyId, {force: true})
         cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
-        cy.get('button[name="postEUData"]', { timeout: 2000 }).should('be.enabled')
-        cy.wait(1000)
-        cy.get('button[name="postEUData"]').click()
+        cy.get('button[name="postEUData"]', { timeout: 2000 }).should('not.be.disabled')
+        cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {
             const dataId = $dataID.text()
@@ -83,3 +103,4 @@ describe('User interactive tests for Data Upload', () => {
     });
 
 })
+

@@ -1,11 +1,9 @@
-import {login} from "../../support/utility";
-
 const timeout = 120 * 1000
 describe('EU Taxonomy Data and Cards', function () {
     const companyIdList: Array<string> = []
     const companyNames: Array<string> = ["eligible & total", "eligible"]
     beforeEach(() => {
-        login("admin_user", "test")
+        cy.restoreLoginSession("admin_user", "test")
     })
     it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {

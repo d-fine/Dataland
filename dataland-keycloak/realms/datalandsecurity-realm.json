@@ -26,7 +26,7 @@
   "oauth2DeviceCodeLifespan" : 600,
   "oauth2DevicePollingInterval" : 5,
   "enabled" : true,
-  "sslRequired" : "external",
+  "sslRequired" : "none",
   "registrationAllowed" : true,
   "registrationEmailAsUsername" : false,
   "rememberMe" : false,
@@ -1919,7 +1919,7 @@
     "oauth2DeviceCodeLifespan" : "600",
     "parRequestUriLifespan" : "60",
     "clientSessionMaxLifespan" : "0",
-    "frontendUrl" : "http://localhost/keycloak"
+    "frontendUrl" : "${KEYCLOAK_FRONTEND_URL}"
   },
   "keycloakVersion" : "18.0.0",
   "userManagedAccessAllowed" : false,

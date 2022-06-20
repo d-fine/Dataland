@@ -1,5 +1,3 @@
-import {login} from "../../../../support/utility";
-
 describe('Search Taxonomy', function () {
     let companiesWithData:any
 
@@ -10,7 +8,7 @@ describe('Search Taxonomy', function () {
     });
 
     beforeEach(function() {
-        login()
+        cy.restoreLoginSession()
     });
 
     it('Check static layout of the search page', function () {

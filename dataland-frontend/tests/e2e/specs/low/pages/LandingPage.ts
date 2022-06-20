@@ -2,23 +2,19 @@ describe('Login Section', () => {
     it('Check if App is present', () => {
         cy.visit("/")
         cy.get('#app').should('exist')
-    })
-    it('Logo and welcome message are present', () => {
         cy.get('h1').should("contain.text","CREATE A DATASET")
         cy.get('img[alt="Dataland logo"]')
             .should('be.visible')
             .should('have.attr', 'src')
             .should('include','vision')
-    })
-    it('Login and Join buttons are present', () => {
         cy.get('button[name=get_started_button]')
             .should('be.visible')
             .should("contain.text","Get Started")
         cy.get('button[name="get_started_button"]').click()
         cy.get('h1').should("contain.text","Search EU Taxonomy data")
-        cy.visit("/")
     })
     it('Company logos are present', () => {
+        cy.visit("/")
         cy.get('img[alt="pwc"]')
             .should('be.visible')
             .should('have.attr', 'src')
