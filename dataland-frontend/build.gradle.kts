@@ -14,7 +14,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("16.15.0")
+    version.set("16.15.1")
 }
 
 val backendOpenApiSpecConfig by configurations.creating {
