@@ -16,7 +16,7 @@ declare global {
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
     return getKeycloakToken("admin_user", "test")
         .then((token) => {
-            cy.request({
+            return cy.request({
                 url: `${Cypress.env("API")}/${endpoint}`,
                 method: 'GET',
                 headers: {"Authorization": "Bearer " + token}

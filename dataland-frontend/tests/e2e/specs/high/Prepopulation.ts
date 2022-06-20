@@ -10,8 +10,8 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
-        let teaserCompanies: Array<{ companyIds: string }>
-        let teaserCompaniesPermIds: Array<{ permId: string }>
+        let teaserCompanies: Array<{ companyIds: string }> = []
+        let teaserCompaniesPermIds: Array<{ permId: string }> = []
         let teaserCompanySet: boolean
         teaserCompanySet = false
 
@@ -32,13 +32,12 @@ describe('Population Test',
         it('Populate Companies and Eu Taxonomy Data', () => {
 
             getKeycloakToken("admin_user", "test")
-                .then(async token => {
-                    cy.log("got token from keycloak: " + token)
-                    await doThingsInChunks(
+                .then((token) => {
+                    doThingsInChunks(
                         companiesWithData,
                         chunkSize,
                         (element) => {
-                            uploadSingleElementWithRetries("companies", element.companyInformation, token).then(
+                            return uploadSingleElementWithRetries("companies", element.companyInformation, token).then(response => response.json()).then(
                                 (json) => {
                                     uploadSingleElementWithRetries("data/eutaxonomies", {
                                             "companyId": json.companyId,
@@ -65,14 +64,22 @@ describe('Population Test',
                             )
                         }
                     )
-                    cy.log("Upload done")
-                })
+                }).should("eq", "done")
         });
 
         it('Check if the teaser company can be set', () => {
             getKeycloakToken("admin_user", "test")
                 .then(token => {
-                    uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
+                    // TODO: Hier vielleicht lieber cy.request benutzen!
+                    return new Cypress.Promise((resolve, reject) => {
+                        try {
+                            uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
+                                .then(() => resolve("done"), (reason) => reject(reason))
+                        } catch (e) {
+                            reject(e)
+                        }
+
+                    });
                 });
         });
 

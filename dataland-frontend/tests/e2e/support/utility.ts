@@ -1,4 +1,6 @@
-export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, processor: (element: T) => void): Promise<any> {
+import Chainable = Cypress.Chainable;
+
+export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, processor: (element: T) => Promise<any>): Chainable<any> {
     let promise: Promise<any> = Promise.resolve()
     for (let i = 0; i < dataArray.length; i += chunkSize) {
         const chunk = dataArray.slice(i, i + chunkSize);
@@ -8,10 +10,18 @@ export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, proc
             ))
         )
     }
-    return promise
+    return cy.then(() => {
+        return new Cypress.Promise((resolve, reject) => {
+            try {
+                promise.then(()=>resolve("done"), (reason) => reject(reason))
+            } catch (e) {
+                reject(e)
+            }
+        })
+    })
 }
 
-export function uploadSingleElementOnce(endpoint: string, element: object, token: string): Promise<any> {
+export function browserPromiseUploadSingleElementOnce(endpoint: string, element: object, token: string): Promise<Response> {
     return fetch(`${Cypress.env("API")}/${endpoint}`, {
         method: 'POST',
         headers: {
@@ -23,19 +33,19 @@ export function uploadSingleElementOnce(endpoint: string, element: object, token
         assert(response.status.toString() === "200",
             `Got status code ${response.status.toString()} during upload of single ` +
             `Element to ${endpoint}. Expected: 200.`)
-        return response.json()
+        return response
     })
 }
 
-export function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<any> {
-    return uploadSingleElementOnce(endpoint, element, token)
+export function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
+    return browserPromiseUploadSingleElementOnce(endpoint, element, token)
         .catch(_ =>
-            uploadSingleElementOnce(endpoint, element, token))
+            browserPromiseUploadSingleElementOnce(endpoint, element, token))
         .catch(_ =>
-            uploadSingleElementOnce(endpoint, element, token))
+            browserPromiseUploadSingleElementOnce(endpoint, element, token))
 }
 
-export function getKeycloakToken(username: string, password: string, client_id: string = "dataland-public") {
+export function getKeycloakToken(username: string, password: string, client_id: string = "dataland-public"): Chainable<string> {
     return cy.request(
         {
             url: "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
@@ -47,9 +57,6 @@ export function getKeycloakToken(username: string, password: string, client_id: 
                 "&password=" + encodeURIComponent(password) +
                 "&grant_type=password&client_id=" + encodeURIComponent(client_id) + ""
         }
-    ).then(
-        (response) => {
-            expect(response.status).to.eq(200)
-            return response.body.access_token
-        })
+    ).should("have.a.property", "body")
+        .should("have.a.property", "access_token").then(token => token.toString())
 }
