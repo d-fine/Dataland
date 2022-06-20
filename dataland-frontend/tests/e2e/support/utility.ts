@@ -37,7 +37,7 @@ export function uploadSingleElementWithRetries(endpoint: string, element: object
 
 export async function getKeycloakToken(username: string, password: string, client_id: string = "dataland-public") {
     return fetch(
-        "http://localhost/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+        "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
         {
             method: "POST",
             headers: {
