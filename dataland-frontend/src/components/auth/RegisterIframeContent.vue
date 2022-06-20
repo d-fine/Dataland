@@ -26,6 +26,6 @@ export default {
       }
     }).catch((error) => console.log("error: " + error))
   },
-  inject: ["getKeycloakInitPromise"],  //   let kc = new Keycloak()
+  inject: ["getKeycloakInitPromise"],
 }
 </script>

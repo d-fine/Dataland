@@ -15,7 +15,7 @@ declare global {
 
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
     return cy.wrap(null).then(async () => {
-            return await getKeycloakToken("admin_user", "test")
+            return getKeycloakToken("admin_user", "test")
         }
     ).then((token) => {
         return cy.request({

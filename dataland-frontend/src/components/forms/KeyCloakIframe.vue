@@ -1,7 +1,7 @@
 <template>
   <MarginWrapper>
     <div class="grid col-12 lg:pt-1">
-      <iframe name="keycloak-iframe" :src="url" class="col-12 lg:pt-1" height="600" style="border:none;">
+      <iframe name="keycloak-iframe" title="Authentication" :src="url" class="col-12 lg:pt-1" height="600" style="border:none;">
       </iframe>
     </div>
   </MarginWrapper>

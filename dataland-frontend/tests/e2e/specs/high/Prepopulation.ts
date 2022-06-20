@@ -10,12 +10,12 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
-        let teaserCompanies: Array<{ companyIds: String}>
-        let teaserCompaniesPermIds: Array<{ permId: String}>
-        let teaserCompanySet: Boolean
+        let teaserCompanies: Array<{ companyIds: string}>
+        let teaserCompaniesPermIds: Array<{ permId: string}>
+        let teaserCompanySet: boolean
         teaserCompanySet=false
 
-        if (Cypress.env("REALDATA") == true) {
+        if (Cypress.env("REALDATA")) {
             teaserCompaniesPermIds=Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
         }
 
@@ -31,7 +31,7 @@ describe('Population Test',
 
         it('Populate Companies and Eu Taxonomy Data', () => {
             cy.wrap(null).then(async () => {
-                    return await getKeycloakToken("admin_user", "test")
+                    return getKeycloakToken("admin_user", "test")
                 }
             ).then(async token => {
                 cy.log("got token from keycloak: " + token)
@@ -46,11 +46,11 @@ describe('Population Test',
                                         "data": element.euTaxonomyData
                                     }
                                     , token)
-                                if (Cypress.env("REALDATA") == false && !teaserCompanySet) {
+                                if (!Cypress.env("REALDATA") && !teaserCompanySet) {
                                     teaserCompanies.push(json.companyId)
                                     teaserCompanySet=true
                                 }
-                                if (Cypress.env("REALDATA") == true) {
+                                if (Cypress.env("REALDATA")) {
                                     for (const identifier of element.companyInformation.identifiers) {
                                         if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds){
                                             teaserCompanies.push(json.companyId)
@@ -73,7 +73,7 @@ describe('Population Test',
 
         it('Check if the teaser company can be set', () => {
             cy.wrap(null).then(async () => {
-                    return await getKeycloakToken("admin_user", "test")
+                    return getKeycloakToken("admin_user", "test")
                 }
             ).then(token => {
                 uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)

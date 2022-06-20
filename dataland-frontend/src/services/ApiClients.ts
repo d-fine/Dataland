@@ -38,19 +38,19 @@ export class ApiClientProvider {
     }
 
     async getCompanyDataControllerApi() {
-        return await this.getConstructedApi(CompanyDataControllerApi)
+        return this.getConstructedApi(CompanyDataControllerApi)
     }
 
     async getEuTaxonomyDataControllerApi() {
-        return await this.getConstructedApi(EuTaxonomyDataControllerApi)
+        return this.getConstructedApi(EuTaxonomyDataControllerApi)
     }
 
     async getMetaDataControllerApi() {
-        return await this.getConstructedApi(MetaDataControllerApi)
+        return this.getConstructedApi(MetaDataControllerApi)
     }
 
     async getSkyminderControllerApi() {
-        return await this.getConstructedApi(SkyminderControllerApi)
+        return this.getConstructedApi(SkyminderControllerApi)
     }
 }
 

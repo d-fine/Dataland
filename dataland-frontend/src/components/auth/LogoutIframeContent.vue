@@ -18,7 +18,7 @@ export default {
         keycloak.logout()
       } else {
         console.log("logged out")
-        window.parent.postMessage('DatalandToggleLogin', '*')
+        window.parent.postMessage('DatalandToggleLogin',  location.origin)
       }
     })
   },
