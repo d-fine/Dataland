@@ -105,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cypress
-          path: ./cypress
+          path: ./dataland-frontend/cypress
       - name: Upload E2E Test Reports
         if: always()
         uses: actions/upload-artifact@v2
