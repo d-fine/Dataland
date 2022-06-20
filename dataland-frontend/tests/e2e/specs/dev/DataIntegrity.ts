@@ -4,7 +4,7 @@ describe('EU Taxonomy Data', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
+            cy.wait('@retrieveTaxonomyData', {timeout: 60 * 1000}).then(() => {
                 cy.get('h3', {timeout: 90 * 1000}).should('be.visible')
                 cy.get('h3').contains("Revenue")
                 cy.get('h3').contains("CapEx")

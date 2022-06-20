@@ -6,7 +6,7 @@ const chunkSize = 40
 describe('Population Test',
     () => {
         Cypress.config({
-            defaultCommandTimeout: 900 * 1000
+            defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
@@ -112,7 +112,7 @@ describe('Population Test',
                 .should('have.value', inputValue)
             cy.intercept('**/api/companies*').as('retrieveCompany')
             cy.get('button[name=getCompanies]').click()
-            cy.wait('@retrieveCompany', {timeout: 60000}).then(() => {
+            cy.wait('@retrieveCompany', {timeout: 60 * 1000}).then(() => {
                 cy.get('td').contains("VIEW")
                     .contains('a', 'VIEW')
                     .click().url().should('include', '/companies/')
@@ -133,7 +133,7 @@ describe('EU Taxonomy Data', () => {
         cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit("/data/eutaxonomies/" + dataIdList[0])
-            cy.wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
+            cy.wait('@retrieveTaxonomyData', {timeout: 60 * 1000}).then(() => {
                 cy.get('h3').should('be.visible')
                 cy.get('h3').contains("Revenue")
                 cy.get('h3').contains("CapEx")
@@ -150,8 +150,8 @@ describe('Company EU Taxonomy Data', () => {
             cy.intercept('**/api/companies/*').as('retrieveCompany')
             cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
             cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.wait('@retrieveCompany', {timeout: 60000})
-                .wait('@retrieveTaxonomyData', {timeout: 60000}).then(() => {
+            cy.wait('@retrieveCompany', {timeout: 60 * 1000})
+                .wait('@retrieveTaxonomyData', {timeout: 60 * 1000}).then(() => {
                 cy.get('h3').should('be.visible')
                 cy.get('h3').contains("Revenue")
                 cy.get('h3').contains("CapEx")
