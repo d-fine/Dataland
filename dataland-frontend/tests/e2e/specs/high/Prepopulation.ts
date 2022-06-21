@@ -10,10 +10,8 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
-        let teaserCompanies: Array<{ companyIds: string }> = []
+        const teaserCompanies: Array<{ companyIds: string }> = []
         let teaserCompaniesPermIds: Array<{ permId: string }> = []
-        let teaserCompanySet: boolean
-        teaserCompanySet = false
 
         if (Cypress.env("REALDATA")) {
             teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
@@ -29,8 +27,21 @@ describe('Population Test',
             cy.restoreLoginSession()
         });
 
-        it('Populate Companies and Eu Taxonomy Data', () => {
+        function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
+            if (Cypress.env("REALDATA")) {
+                for (const identifier of companyInformation.identifiers) {
+                    if (identifier.identifierType == "PermId" && teaserCompaniesPermIds.includes(identifier.identifierValue)) {
+                        teaserCompanies.push(json.companyId)
+                    }
+                }
+            } else {
+                if (teaserCompanies.length == 0) {
+                    teaserCompanies.push(json.companyId)
+                }
+            }
+        }
 
+        it('Populate Companies and Eu Taxonomy Data', () => {
             getKeycloakToken("admin_user", "test")
                 .then((token) => {
                     doThingsInChunks(
@@ -44,22 +55,7 @@ describe('Population Test',
                                             "data": element.euTaxonomyData
                                         }
                                         , token)
-                                    if (!Cypress.env("REALDATA") && !teaserCompanySet) {
-                                        teaserCompanies.push(json.companyId)
-                                        teaserCompanySet = true
-                                    }
-                                    if (Cypress.env("REALDATA")) {
-                                        for (const identifier of element.companyInformation.identifiers) {
-                                            if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds) {
-                                                teaserCompanies.push(json.companyId)
-                                            }
-                                        }
-                                    } else {
-                                        if (!teaserCompanySet) {
-                                            teaserCompanies.push(json.companyId)
-                                            teaserCompanySet = true
-                                        }
-                                    }
+                                    addCompanyIdToTeaserCompanies(element.companyInformation, json);
                                 }
                             )
                         }
