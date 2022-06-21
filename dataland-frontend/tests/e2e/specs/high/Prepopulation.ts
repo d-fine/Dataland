@@ -33,13 +33,12 @@ describe('Population Test',
                     return identifier.identifierValue
                 }
             }
-            return ""
+            return "NotAvailable"
         }
 
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
-            if (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) })) {
-                teaserCompanies.push(json.companyId)
-            } else if (teaserCompanies.length == 0) {
+            if ((Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) }))
+                 || (!Cypress.env("REALDATA") && teaserCompanies.length == 0)) {
                 teaserCompanies.push(json.companyId)
             }
         }
