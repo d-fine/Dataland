@@ -8,7 +8,7 @@
     <Dialog v-model:visible="displayLogin" class="col-3 lg:pt-0" :modal="true" :showHeader="false" :dismissableMask="true">
       <p class="m-0"> <KeyCloakIframe url="/login"/> </p>
     </Dialog>
-    <Button v-if="authenticated" label="Logout" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="login_dataland_button" @click="openLogout" />
+    <Button v-if="authenticated" label="Logout" class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4" name="logout_dataland_button" @click="openLogout" />
     <Dialog v-model:visible="displayLogout" class="col-10 lg:pt-8" :modal="true" :showHeader="false" :dismissableMask="true">
       <p class="m-0"> <KeyCloakIframe url="/logout"/> </p>
     </Dialog>
