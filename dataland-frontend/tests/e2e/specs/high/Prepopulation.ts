@@ -88,7 +88,7 @@ describe('Population Test',
             })
         });
 
-        it.only('Check if all the data ids can be retrieved', () => {
+        it('Check if all the data ids can be retrieved', () => {
             cy.retrieveDataIdsList().then((dataIdList: any) => {
                 assert(dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
                     `Found ${dataIdList.length}, expected at least ${companiesWithData.length} datasets`)
