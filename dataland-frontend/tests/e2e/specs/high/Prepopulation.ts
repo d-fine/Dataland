@@ -29,15 +29,11 @@ describe('Population Test',
 
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
             if (Cypress.env("REALDATA")) {
-                for (const identifier of companyInformation.identifiers) {
-                    if (identifier.identifierType == "PermId" && teaserCompaniesPermIds.includes({ permId: identifier.identifierValue })) {
-                        teaserCompanies.push(json.companyId)
-                    }
-                }
-            } else {
-                if (teaserCompanies.length == 0) {
+                if (companyInformation.identifiers.any(
+                    (identifier: any) => {teaserCompaniesPermIds.includes({ permId: identifier.identifierValue })}))
                     teaserCompanies.push(json.companyId)
-                }
+            } else if (teaserCompanies.length == 0) {
+                teaserCompanies.push(json.companyId)
             }
         }
 
