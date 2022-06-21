@@ -4,14 +4,13 @@
     </template>
     <template #content>
       <FormKit
-        v-model="model"
-        submit-label="Post EU-Taxonomy Dataset"
-        :submit-attrs="{
-                'name': 'postEUData'
-              }"
-        type="form"
-        id="createEuTaxonomyForm"
-        @submit="postEUData">
+          v-model="model"
+          :actions="false"
+          type="form"
+          id="createEuTaxonomyForm"
+          @submit="postEUData"
+          #default="{ state: { valid } }"
+      >
         <FormKit
             type="text"
             name="companyId"
@@ -162,11 +161,17 @@
               />
             </FormKit>
           </div>
+          <FormKit
+              type="submit"
+              :disabled="!valid"
+              label="Post EU-Taxonomy Dataset"
+              name='postEUData'
+          />
         </FormKit>
       </FormKit>
       <template v-if="processed">
         <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data"/>
-        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount"/>
       </template>
 
     </template>
@@ -189,7 +194,7 @@ export default {
       'p-inputwrapper': true
     },
     inputClass: {
-      'formkit-input':false,
+      'formkit-input': false,
       'p-inputtext': true
     },
     processed: false,
@@ -199,14 +204,14 @@ export default {
     companyID: null,
     idList: []
   }),
-  inject: ['getKeycloakInitPromise','keycloak_init'],
+  inject: ['getKeycloakInitPromise', 'keycloak_init'],
   methods: {
-    async getCompanyIDs(){
+    async getCompanyIDs() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         const companyList = await companyDataControllerApi.getCompanies("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
-      } catch(error) {
+      } catch (error) {
         this.idList = []
       }
     },

@@ -1,7 +1,7 @@
 import {restoreLoginSession} from "../../support/commands";
 
 describe('User interactive tests for Data Upload', () => {
-    let companyId:string
+    let companyId: string
     beforeEach(() => {
         cy.restoreLoginSession("admin_user", "test")
     })
@@ -66,12 +66,13 @@ describe('User interactive tests for Data Upload', () => {
         cy.get('span[title=dataId]').then(() => {
             cy.get('span[title=companyId]').then(($companyID) => {
                 const companyID = $companyID.text()
-                cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
+                cy.intercept('/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
                 cy.visit(`/companies/${companyID}/eutaxonomies`)
-                cy.wait('@retrieveTaxonomyData', {timeout: 120 * 1000}).then(() => {
-                    cy.get('body').should('contain', 'Eligible Revenue').should("not.contain", "No data has been reported")
-                });
             });
+            cy.wait('@retrieveTaxonomyData', {timeout: 120 * 1000})
+                .get('body')
+                .should('contain', 'Eligible Revenue')
+                .should("not.contain", "No data has been reported")
         });
     });
 
@@ -83,11 +84,11 @@ describe('User interactive tests for Data Upload', () => {
 
     it('Create EU Taxonomy Dataset without Reporting Obligation', () => {
         cy.visit("/upload")
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should('be.visible')
+        cy.get('button[name="postEUData"]', {timeout: 2 * 1000}).should('be.visible')
         cy.get('input[name="companyId"]').type(companyId, {force: true})
         cy.get('input[name="Reporting Obligation"][value=No]').check({force: true})
         cy.get('select[name="Attestation"]').select('None')
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should('not.be.disabled')
+        cy.get('button[name="postEUData"]', {timeout: 2 * 1000}).should('not.be.disabled')
         cy.get('button[name="postEUData"]').click({force: true})
         cy.get('body').should("contain", "success").should("contain", "EU Taxonomy Data")
         cy.get('span[title=dataId]').then(($dataID) => {
