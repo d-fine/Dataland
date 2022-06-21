@@ -12,7 +12,7 @@ export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, proc
         )
     }
     return cy.then(() => {
-        wrapPromiseToCypressPromise(promise)
+        return wrapPromiseToCypressPromise(promise)
     })
 }
 
