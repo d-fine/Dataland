@@ -1229,7 +1229,7 @@
       "firstBrokerLoginFlowAlias": "first broker login",
       "config": {
         "syncMode": "IMPORT",
-        "clientSecret": "**********",
+        "clientSecret": "${KEYCLOAK_GITHUB_SECRET}",
         "clientId": "7e0f49c49cdc6fb53bc1",
         "useJwksUrl": "true"
       }
