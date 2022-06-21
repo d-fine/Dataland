@@ -30,7 +30,7 @@ describe('Population Test',
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
             if (Cypress.env("REALDATA")) {
                 for (const identifier of companyInformation.identifiers) {
-                    if (identifier.identifierType == "PermId" && teaserCompaniesPermIds.includes(identifier.identifierValue)) {
+                    if (identifier.identifierType == "PermId" && teaserCompaniesPermIds.includes({ permId: identifier.identifierValue })) {
                         teaserCompanies.push(json.companyId)
                     }
                 }
