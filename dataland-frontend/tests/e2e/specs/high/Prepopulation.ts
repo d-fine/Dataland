@@ -33,12 +33,15 @@ describe('Population Test',
         });
 
         function getPermId(companyInformation: CompanyInformation) {
-            for (const identifier of companyInformation.identifiers) {
-                if (identifier.identifierType == "PermId") {
-                    return identifier.identifierValue
-                }
+            let permIdArray = companyInformation.identifiers
+                .filter(identifier => identifier.identifierType === "PermId")
+                .map(identifier => identifier.identifierValue)
+            if (permIdArray.length >= 1) {
+                return permIdArray[0]
             }
-            return "NotAvailable"
+            else {
+                return "NotAvailable"
+            }
         }
 
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
@@ -81,23 +84,14 @@ describe('Population Test',
         it('Check if all the company ids can be retrieved', () => {
             cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
                 assert(companyIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-                    `Uploaded ${companyIdList.length} out of ${companiesWithData.length} companies`)
-                for (const companyIdIndex in companyIdList) {
-                    const companyId = companyIdList[companyIdIndex]
-                    assert(typeof companyId !== 'undefined',
-                        `Validation of company number ${companyIdIndex}`)
-                }
+                    `Found ${companyIdList.length}, expected at least ${companiesWithData.length} companies`)
             })
         });
 
-        it('Check if all the data ids can be retrieved', () => {
+        it.only('Check if all the data ids can be retrieved', () => {
             cy.retrieveDataIdsList().then((dataIdList: any) => {
                 assert(dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-                    `Uploaded ${dataIdList.length} out of ${companiesWithData.length} data`)
-                for (const dataIdIndex in dataIdList) {
-                    assert(typeof dataIdList[dataIdIndex] !== 'undefined',
-                        `Validation of data number ${dataIdIndex}`)
-                }
+                    `Found ${dataIdList.length}, expected at least ${companiesWithData.length} datasets`)
             })
         });
 
