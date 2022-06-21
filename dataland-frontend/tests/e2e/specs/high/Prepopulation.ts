@@ -1,4 +1,9 @@
-import {doThingsInChunks, getKeycloakToken, uploadSingleElementWithRetries} from "../../support/utility";
+import {
+    doThingsInChunks,
+    getKeycloakToken,
+    uploadSingleElementWithRetries,
+    wrapPromiseToCypressPromise
+} from "../../support/utility";
 import {CompanyInformation, EuTaxonomyData} from "../../../../build/clients/backend/api"
 
 const chunkSize = 40
@@ -29,7 +34,7 @@ describe('Population Test',
 
         function getPermId(companyInformation: CompanyInformation) {
             for (const identifier of companyInformation.identifiers) {
-                if (identifier.identifierType == "PermId"){
+                if (identifier.identifierType == "PermId") {
                     return identifier.identifierValue
                 }
             }
@@ -37,8 +42,8 @@ describe('Population Test',
         }
 
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
-            if ((Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) }))
-                 || (!Cypress.env("REALDATA") && teaserCompanies.length == 0)) {
+            if ((Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({permId: getPermId(companyInformation)}))
+                || (!Cypress.env("REALDATA") && teaserCompanies.length == 0)) {
                 teaserCompanies.push(json.companyId)
             }
         }
@@ -69,15 +74,7 @@ describe('Population Test',
             getKeycloakToken("admin_user", "test")
                 .then(token => {
                     // TODO: Hier vielleicht lieber cy.request benutzen!
-                    return new Cypress.Promise((resolve, reject) => {
-                        try {
-                            uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token)
-                                .then(() => resolve("done"), (reason) => reject(reason))
-                        } catch (e) {
-                            reject(e)
-                        }
-
-                    });
+                    wrapPromiseToCypressPromise(uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token))
                 });
         });
 

@@ -1,4 +1,5 @@
 import Chainable = Cypress.Chainable;
+import Bluebird from "cypress/types/bluebird";
 
 export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, processor: (element: T) => Promise<any>): Chainable<any> {
     let promise: Promise<any> = Promise.resolve()
@@ -11,13 +12,7 @@ export function doThingsInChunks<T>(dataArray: Array<T>, chunkSize: number, proc
         )
     }
     return cy.then(() => {
-        return new Cypress.Promise((resolve, reject) => {
-            try {
-                promise.then(()=>resolve("done"), (reason) => reject(reason))
-            } catch (e) {
-                reject(e)
-            }
-        })
+        wrapPromiseToCypressPromise(promise)
     })
 }
 
@@ -59,4 +54,15 @@ export function getKeycloakToken(username: string, password: string, client_id: 
         }
     ).should("have.a.property", "body")
         .should("have.a.property", "access_token").then(token => token.toString())
+}
+
+export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
+    return new Cypress.Promise((resolve, reject) => {
+        try {
+            promise.then(() => resolve("done"), (reason) => reject(reason))
+        } catch (e) {
+            reject(e)
+        }
+    })
+
 }

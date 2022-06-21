@@ -5,13 +5,12 @@
     <template #content>
       <FormKit
           v-model="model"
+          :actions="false"
           type="form"
           id="createCompanyForm"
-          :submit-attrs="{
-                  'name': 'postCompanyData'
-                }"
-          submit-label="Post Company"
-          @submit="postCompanyData">
+          @submit="postCompanyData"
+          #default="{ state: { valid } }"
+      >
         <FormKitSchema
             :schema="companyInformationSchema"
         />
@@ -29,14 +28,21 @@
             />
           </FormKit>
         </FormKit>
+        <FormKit
+            type="submit"
+            :disabled="!valid"
+            label="Post Company"
+            name='postCompanyData'
+        />
       </FormKit>
       <p> {{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
-      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier</Button>
-        <template v-if="processed">
-          <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
-          <FailedUpload v-else msg="Company" :messageCount="messageCount" />
-        </template>
+      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier
+      </Button>
+      <template v-if="processed">
+        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data"/>
+        <FailedUpload v-else msg="Company" :messageCount="messageCount"/>
+      </template>
     </template>
   </Card>
 </template>
@@ -74,7 +80,7 @@ const createCompany = {
     // delete auto identifiers
     delete this.companyInformationSchema[6]
   },
-  inject: ['getKeycloakInitPromise','keycloak_init'],
+  inject: ['getKeycloakInitPromise', 'keycloak_init'],
   methods: {
     async postCompanyData() {
       try {
