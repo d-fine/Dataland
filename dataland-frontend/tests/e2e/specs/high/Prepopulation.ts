@@ -10,7 +10,7 @@ describe('Population Test',
         })
 
         let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
-        let teaserCompanies: Array<{ companyIds: string }> = []
+        const teaserCompanies: Array<{ companyIds: string }> = []
         let teaserCompaniesPermIds: Array<{ permId: string }> = []
 
         if (Cypress.env("REALDATA")) {
@@ -27,6 +27,15 @@ describe('Population Test',
             cy.restoreLoginSession()
         });
 
+        function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
+            if (Cypress.env("REALDATA")) {
+                if (companyInformation.identifiers.any((id: any) => {teaserCompaniesPermIds.includes({ permId: id.identifierValue })}))
+                    teaserCompanies.push(json.companyId)
+            } else if (teaserCompanies.length == 0) {
+                teaserCompanies.push(json.companyId)
+            }
+        }
+
         it('Populate Companies and Eu Taxonomy Data', () => {
             getKeycloakToken("admin_user", "test")
                 .then((token) => {
@@ -41,17 +50,7 @@ describe('Population Test',
                                             "data": element.euTaxonomyData
                                         }
                                         , token)
-                                    if (Cypress.env("REALDATA")) {
-                                        for (const identifier of element.companyInformation.identifiers) {
-                                            if (identifier.identifierType == "PermId" && identifier.identifierValue in teaserCompaniesPermIds) {
-                                                teaserCompanies.push(json.companyId)
-                                            }
-                                        }
-                                    } else {
-                                        if (teaserCompanies.length==0) {
-                                            teaserCompanies.push(json.companyId)
-                                        }
-                                    }
+                                    addCompanyIdToTeaserCompanies(element.companyInformation, json);
                                 }
                             )
                         }
