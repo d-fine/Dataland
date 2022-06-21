@@ -14,7 +14,7 @@ describe('Population Test',
         let teaserCompaniesPermIds: Array<{ permId: string }> = []
 
         if (Cypress.env("REALDATA")) {
-            teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").cut(',')
+            teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",")
         }
 
         before(function () {
@@ -27,11 +27,18 @@ describe('Population Test',
             cy.restoreLoginSession()
         });
 
+        function getPermId(companyInformation: CompanyInformation) {
+            for (const identifier of companyInformation.identifiers) {
+                if (identifier.identifierType == "PermId"){
+                    return identifier.identifierValue
+                }
+            }
+            return "NotAvailable"
+        }
+
         function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
-            if (Cypress.env("REALDATA")) {
-                if (companyInformation.identifiers.any((id: any) => {teaserCompaniesPermIds.includes({ permId: id.identifierValue })}))
-                    teaserCompanies.push(json.companyId)
-            } else if (teaserCompanies.length == 0) {
+            if ((Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) }))
+                 || (!Cypress.env("REALDATA") && teaserCompanies.length == 0)) {
                 teaserCompanies.push(json.companyId)
             }
         }
