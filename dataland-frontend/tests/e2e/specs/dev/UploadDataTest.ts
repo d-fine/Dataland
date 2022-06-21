@@ -6,10 +6,9 @@ describe('User interactive tests for Data Upload', () => {
         cy.restoreLoginSession("admin_user", "test")
     })
 
-    it('Create a Company with no input', () => {
+    it('cannot create a Company with no input', () => {
         cy.visit("/upload")
-        cy.get('button[name="postCompanyData"]').click()
-        cy.get('body').should("contain", "Sorry")
+        cy.get('button[name="postCompanyData"]').should("be.disabled")
     })
 
     function uploadCompanyWithEverythingFine(companyName: string) {
