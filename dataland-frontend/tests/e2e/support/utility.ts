@@ -58,11 +58,7 @@ export function getKeycloakToken(username: string, password: string, client_id: 
 
 export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
     return new Cypress.Promise((resolve, reject) => {
-        try {
-            promise.then(() => resolve("done"), (reason) => reject(reason))
-        } catch (e) {
-            reject(e)
-        }
+        promise.then(() => resolve("done"), reason => reject(reason)).catch(reason => reject(reason))
     })
 
 }

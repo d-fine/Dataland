@@ -1,8 +1,7 @@
 import {
     doThingsInChunks,
     getKeycloakToken,
-    uploadSingleElementWithRetries,
-    wrapPromiseToCypressPromise
+    uploadSingleElementWithRetries
 } from "../../support/utility";
 import {CompanyInformation, EuTaxonomyData} from "../../../../build/clients/backend/api"
 
@@ -75,10 +74,21 @@ describe('Population Test',
 
         it('Check if the teaser company can be set', () => {
             getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-                .then(token => {
-                    // TODO: Hier vielleicht lieber cy.request benutzen!
-                    wrapPromiseToCypressPromise(uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token))
-                });
+                .then(token =>
+                    cy.request(
+                        {
+                            url: `${Cypress.env("API")}/companies/teaser`,
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + token
+                            },
+                            body: JSON.stringify(teaserCompanies)
+                        }
+
+                    )
+                ).its("status")
+                .should("eq","200")
         });
 
         it('Check if all the company ids can be retrieved', () => {
