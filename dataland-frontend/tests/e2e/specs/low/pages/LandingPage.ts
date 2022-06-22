@@ -86,7 +86,7 @@ describe('Authentication Buttons', () => {
         cy.visit("/")
         cy.login()
         cy.logout()
-        cy.wait(500)
+        cy.wait(1000)
         cy.login()
         cy.get('[name=logout_dataland_button').should('be.visible')
     })
