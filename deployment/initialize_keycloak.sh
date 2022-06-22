@@ -19,15 +19,7 @@ if [[ -n $old_volume ]]; then
 fi
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
-ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
-                                 export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
-                                 export KEYCLOAK_UPLOADER_SECRET=\"$KEYCLOAK_UPLOADER_SECRET\";
-                                 export KEYCLOAK_READER_SECRET=\"$KEYCLOAK_READER_SECRET\";
-                                 export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
-                                 export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
-                                 export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
-                                 export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
-                                 sudo -E docker-compose --profile init up -d --build"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile init up -d --build"
 message="Profile prod activated."
 container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
 timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location && sudo docker logs $container_name | grep -q \\\"$message\\\"\";
