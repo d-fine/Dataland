@@ -35,15 +35,16 @@ ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo doc
 ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak"
 
 envsubst < environments/.env.template > .env
+scp ./.env ubuntu@"$target_server_url":$location
 
 if [[ $INITIALIZE_KEYCLOAK == true ]]; then
   echo "Deployment configuration requires Keycloak to be set up from scratch."
   "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
 fi
 
-envsubst < environments/.env.template > .env
+#envsubst < environments/.env.template > .env
 
-scp ./.env ubuntu@"$target_server_url":$location
+#scp ./.env ubuntu@"$target_server_url":$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
 scp -r ./dataland-keycloak/dataland_theme ubuntu@$target_server_url:$location/dataland-keycloak
 scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileFrontend
