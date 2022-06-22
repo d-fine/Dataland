@@ -138,3 +138,75 @@ describe('Search Taxonomy', function () {
 
 
 });
+describe('Search Taxonomy without authentication', function () {
+    let companiesWithData:any
+
+    before(function(){
+        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+            companiesWithData=companies
+        });
+    });
+
+    it('Company Search by Name', () => {
+        cy.visit('/searchtaxonomy')
+        const inputValue = companiesWithData[0].companyInformation.companyName
+        const PermIdText = "Permanent Identifier (PermID)"
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click({force:true})
+            .type(inputValue)
+            .type('{enter}')
+            .should('have.value', inputValue)
+        cy.get('h2')
+            .should('contain', "Results")
+        cy.get('table.p-datatable-table').should('exist')
+        cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','PERM ID')
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseenter', "center")
+        cy.get('.p-tooltip')
+            .should('be.visible')
+            .contains(PermIdText)
+        cy.get('.material-icons[title="Perm ID"]')
+            .trigger('mouseleave')
+        cy.get('.p-tooltip')
+            .should('not.exist')
+        cy.get('table.p-datatable-table').contains('th','SECTOR')
+        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('th','LOCATION')
+        cy.get('table.p-datatable-table').contains('td','VIEW')
+            .should('not.exist')
+        cy.get('h1').contains(inputValue)
+            .should('not.exist')
+    });
+
+    it('Company Search by Identifier', () => {
+        cy.visit('/searchtaxonomy')
+        const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .should('not.be.disabled')
+            .click({force:true})
+            .type(inputValue)
+            .type('{enter}')
+            .should('have.value', inputValue)
+        cy.get('h2')
+            .should('contain', "Results")
+        cy.get('table.p-datatable-table').should('exist')
+        cy.get('table.p-datatable-table').contains('th','COMPANY')
+        cy.get('table.p-datatable-table').contains('th','SECTOR')
+        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
+        cy.get('table.p-datatable-table').contains('td','VIEW')
+            .should('not.exist')
+    });
+    it('Autocomplete functionality', () => {
+        cy.visit('/searchtaxonomy')
+        cy.intercept('**/api/companies*').as('searchCompany')
+        cy.get('input[name=eu_taxonomy_search_input]')
+            .click({force:true})
+            .type('b')
+        cy.wait('@searchCompany', {timeout: 2 * 1000}).then(() => {
+            cy.get('.p-autocomplete-item')
+                .should('not.exist')
+        })
+    });
+});
