@@ -9,6 +9,8 @@ declare global {
             retrieveCompanyIdsList: typeof retrieveCompanyIdsList
             login: typeof login
             restoreLoginSession: typeof restoreLoginSession
+            register: typeof register
+            logout: typeof logout
         }
     }
 }
@@ -71,7 +73,56 @@ export function login(username: string = "some_user", password: string = "test")
         .get("iframe[name='keycloak-iframe']")
         .should("not.exist")
 }
+const currentTime=Date.now();
+export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
+    return cy.visit("/")
+        .get("button[name='join_dataland_button']").click()
+        .get("iframe[name='keycloak-iframe']")
+        .its("0.contentWindow.location.href")
+        .should(
+            "contain",
+            "keycloak/realms/datalandsecurity/protocol/openid-connect/registrations?client_id=dataland-public"
+        )
 
+        .get("iframe[name='keycloak-iframe']")
+        .its('0.contentDocument.body')
+        .should('not.be.empty')
+        .then(cy.wrap)
+        .find("#email")
+        .should('exist')
+        .type(email.concat(currentTime.toString()).concat('@dataland.com'), {force: true})
+
+        .get("iframe[name='keycloak-iframe']")
+        .its('0.contentDocument.body')
+        .should('not.be.empty')
+        .then(cy.wrap)
+        .find("#password")
+        .should('exist')
+        .type(password, {force: true})
+        .get("iframe[name='keycloak-iframe']")
+        .its('0.contentDocument.body')
+        .should('not.be.empty')
+        .then(cy.wrap)
+        .find("#password-confirm")
+        .should('exist')
+        .type(password, {force: true})
+
+        .get("iframe[name='keycloak-iframe']")
+        .its('0.contentDocument.body')
+        .should('not.be.empty')
+        .then(cy.wrap)
+        .find("#kc-form-buttons")
+        .should('exist')
+        .click()
+
+        .get("iframe[name='keycloak-iframe']")
+        .should("not.exist")
+}
+
+export function logout(): Chainable<JQuery> {
+    return cy.visit("/")
+        .get("button[name='logout_dataland_button']").click()
+}
 
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
     return cy.session([username, password], () => {
@@ -83,3 +134,5 @@ Cypress.Commands.add('retrieveDataIdsList', retrieveDataIdsList)
 Cypress.Commands.add('retrieveCompanyIdsList', retrieveCompanyIdsList)
 Cypress.Commands.add('login', login)
 Cypress.Commands.add('restoreLoginSession', restoreLoginSession)
+Cypress.Commands.add('register', register)
+Cypress.Commands.add('logout', logout)
