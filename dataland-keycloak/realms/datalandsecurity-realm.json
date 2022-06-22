@@ -485,7 +485,7 @@
           "id": "b0bb5d63-0e6b-47af-a3f7-462e1a881cd9",
           "type": "password",
           "createdDate": 1655881525020,
-          "secretData": "${KEYCLOAK_UPLOADER_SECRET}",
+          "secretData": "{\"value\":\"${KEYCLOAK_UPLOADER_VALUE}\",\"salt\":\"${KEYCLOAK_UPLOADER_SALT}\",\"additionalParameters\":{}}",
           "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
         }
       ],
@@ -510,7 +510,7 @@
           "id": "2146c047-7342-4adb-ae73-33e268ab398b",
           "type": "password",
           "createdDate": 1655881581628,
-          "secretData": "${KEYCLOAK_READER_SECRET}",
+          "secretData": "{\"value\":\"${KEYCLOAK_READER_VALUE}\",\"salt\":\"${KEYCLOAK_READER_SALT}\",\"additionalParameters\":{}}",
           "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
         }
       ],
