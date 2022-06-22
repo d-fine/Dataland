@@ -76,6 +76,8 @@ jobs:
           INITIALIZE_KEYCLOAK: ${{ secrets.INITIALIZE_KEYCLOAK }}
           TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
           KEYCLOAK_GITHUB_SECRET: ${{ secrets.KEYCLOAK_GITHUB_SECRET }}
+          KEYCLOAK_READER_SECRET: ${{ secrets.KEYCLOAK_READER_SECRET }}
+          KEYCLOAK_UPLOADER_SECRET: ${{ secrets.KEYCLOAK_UPLOADER_SECRET }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:

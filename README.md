@@ -38,6 +38,8 @@ Some environment variables are used within the project. Find attached the variab
 | KEYCLOAK_ADMIN_PASSWORD        | Defines the password for the admin user when keycloak is set up from scratch             |                                      |
 | KEYCLOAK_FRONTEND_URL          | Defines the frontend URL to be used when keycloak is set up from scratch                 |                                      |
 | KEYCLOAK_DB_PASSWORD           | Defines the password for the keycloak DB when keycloak is set up from scratch            |                                      |
+| KEYCLOAK_READER_SECRET         | Defines the password for the technical user in keycloak for reading data                 |                                      |
+| KEYCLOAK_UPLOADER_SECRET       | Defines the password for the technical user in keycloak for uploading data               |                                      |
 
 ## Run Cypress Tests locally
 * start the docker-compose stack with the "development" profile. Set the env-variables (see above). 

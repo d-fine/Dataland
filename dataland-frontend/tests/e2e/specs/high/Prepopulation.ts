@@ -33,7 +33,7 @@ describe('Population Test',
         });
 
         function getPermId(companyInformation: CompanyInformation) {
-            let permIdArray = companyInformation.identifiers
+            const permIdArray = companyInformation.identifiers
                 .filter(identifier => identifier.identifierType === "PermId")
                 .map(identifier => identifier.identifierValue)
             if (permIdArray.length >= 1) {
@@ -52,7 +52,7 @@ describe('Population Test',
         }
 
         it('Populate Companies and Eu Taxonomy Data', () => {
-            getKeycloakToken("admin_user", "test")
+            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
                 .then((token) => {
                     doThingsInChunks(
                         companiesWithData,
@@ -74,7 +74,7 @@ describe('Population Test',
         });
 
         it('Check if the teaser company can be set', () => {
-            getKeycloakToken("admin_user", "test")
+            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
                 .then(token => {
                     // TODO: Hier vielleicht lieber cy.request benutzen!
                     wrapPromiseToCypressPromise(uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token))

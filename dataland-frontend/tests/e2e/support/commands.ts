@@ -16,7 +16,7 @@ declare global {
 }
 
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
-    return getKeycloakToken("admin_user", "test")
+    return getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
             return cy.request({
                 url: `${Cypress.env("API")}/${endpoint}`,
@@ -36,7 +36,7 @@ export function retrieveCompanyIdsList(): Chainable<Array<string>> {
     return retrieveIdsList("companyId", "companies")
 }
 
-export function login(username: string = "some_user", password: string = "test"): Chainable<JQuery> {
+export function login(username: string = "data_reader", password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='login_dataland_button']").click()
         .get("iframe[name='keycloak-iframe']")

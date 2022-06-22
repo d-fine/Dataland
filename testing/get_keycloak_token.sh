@@ -26,8 +26,8 @@ writer_password="$2"
 keycloak_base_url="$3"
 
 keycloak_openid_token_endpoint="$keycloak_base_url"/realms/datalandsecurity/protocol/openid-connect/token
-user_reader="some_user"
-user_writer="admin_user"
+user_reader="data_reader"
+user_writer="data_uploader"
 client_id="dataland-public"
 regex="access_token\":\"([a-zA-Z0-9._-]+)\""
 
