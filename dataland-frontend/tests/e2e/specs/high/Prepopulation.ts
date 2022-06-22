@@ -52,7 +52,7 @@ describe('Population Test',
         }
 
         it('Populate Companies and Eu Taxonomy Data', () => {
-            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD").toString())
                 .then((token) => {
                     doThingsInChunks(
                         companiesWithData,
@@ -74,7 +74,7 @@ describe('Population Test',
         });
 
         it('Check if the teaser company can be set', () => {
-            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+            getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD").toString())
                 .then(token => {
                     // TODO: Hier vielleicht lieber cy.request benutzen!
                     wrapPromiseToCypressPromise(uploadSingleElementWithRetries("companies/teaser", teaserCompanies, token))
