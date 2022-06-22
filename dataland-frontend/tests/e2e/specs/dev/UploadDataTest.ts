@@ -3,7 +3,7 @@ import {restoreLoginSession} from "../../support/commands";
 describe('User interactive tests for Data Upload', () => {
     let companyId: string
     beforeEach(() => {
-        cy.restoreLoginSession("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD").toString())
+        cy.restoreLoginSession("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
     })
 
     it('cannot create a Company with no input', () => {
