@@ -88,7 +88,7 @@ describe('Population Test',
 
                     )
                 ).its("status")
-                .should("eq","200")
+                .should("eq",200)
         });
 
         it('Check if all the company ids can be retrieved', () => {
