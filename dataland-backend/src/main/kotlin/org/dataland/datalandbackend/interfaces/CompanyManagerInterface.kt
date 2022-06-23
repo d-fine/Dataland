@@ -65,4 +65,5 @@ interface CompanyManagerInterface {
      * @param dataMetaInformation the information to be linked to the company in the store
      */
     fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation)
+    fun getTeaserCompanyIds(): List<String>
 }

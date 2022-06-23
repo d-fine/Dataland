@@ -90,6 +90,7 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
+
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
@@ -119,4 +120,24 @@ interface CompanyAPI {
      * @param companyIds a list of dataland company identifiers specifying the teaser companies
      */
     fun setTeaserCompanies(@Valid @RequestBody companyIds: List<String>)
+
+    @Operation(
+        //TodO text anpassen
+        summary = "Set the teaser companies.",
+        description = "A list of teaser company IDs can be retrieved, without authentication."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies.")
+        ]
+    )
+    @GetMapping(
+        value = ["/teaser"],
+        produces = ["application/json"]
+    )
+
+            /**
+             * A method to get the teaser companies.
+             */
+    fun getTeaserCompanies():List<String>
 }

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Component("CompanyManager")
 class CompanyManager : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
-    var teaserCompanyIds = listOf<String>()
+    private var teaserCompanyIds: List<String> = listOf<String>()
 
     override fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -26,6 +26,10 @@ class CompanyManager : CompanyManagerInterface {
 
     override fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation) {
         companyDataPerCompanyId[companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
+    }
+
+    override fun getTeaserCompanyIds(): List<String> {
+        return teaserCompanyIds
     }
 
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
