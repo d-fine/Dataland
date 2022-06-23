@@ -125,6 +125,7 @@ services:
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
   keycloak-db:
+    restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - internal
@@ -136,6 +137,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
   keycloak:
+    restart: always
     profiles: ["production", "productionInMemory", "development"]
     networks:
       - internal
