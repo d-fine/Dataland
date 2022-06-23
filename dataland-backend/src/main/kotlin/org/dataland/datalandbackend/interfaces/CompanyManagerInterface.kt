@@ -47,6 +47,12 @@ interface CompanyManagerInterface {
     fun setTeaserCompanies(companyIds: List<String>)
 
     /**
+     * Method to retrieve the list of currently set teaser company IDs
+     * @return a list of company IDs that are currently labeled as teaser companies
+     */
+    fun getTeaserCompanyIds(): List<String>
+
+    /**
      * Method to check if a company is a teaser company and hence publicly available
      * @param companyId the ID of the company to be checked
      * @return a boolean signalling if the company is public or not
@@ -65,5 +71,4 @@ interface CompanyManagerInterface {
      * @param dataMetaInformation the information to be linked to the company in the store
      */
     fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation)
-    fun getTeaserCompanyIds(): List<String>
 }
