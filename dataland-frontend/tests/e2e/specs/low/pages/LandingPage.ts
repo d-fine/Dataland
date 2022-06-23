@@ -108,6 +108,3 @@ describe('Authentication Buttons', () => {
         cy.get('[name=logout_dataland_button').should('be.visible')
     })
 })
-
-//TODO: Add test that checks that logout actually works
-//TODO: @Logout remove session cookies
