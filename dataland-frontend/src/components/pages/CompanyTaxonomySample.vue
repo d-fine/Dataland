@@ -37,7 +37,8 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar
   },
   data: () => ({
-    companyQuery: "Adidas",
+    //ToDO company should be env variable
+    companyQuery: "Bayerische Motoren Werke AG",
     companyID: null
   }),
   created() {
@@ -58,7 +59,7 @@ export default {
     async companyIdFallback() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        const companyResponse = companyDataControllerApi.getCompanies("", "", true)
+        const companyResponse = companyDataControllerApi.getTeaserCompanies()
         this.companyID = companyResponse.data[0].companyId
       } catch (error) {
         console.error(error)

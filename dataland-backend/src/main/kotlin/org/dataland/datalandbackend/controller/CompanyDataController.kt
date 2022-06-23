@@ -51,4 +51,8 @@ class CompanyDataController(
     override fun setTeaserCompanies(companyIds: List<String>) {
         companyManager.setTeaserCompanies(companyIds)
     }
+
+    override fun getTeaserCompanies(): List<String> {
+        return companyManager.getTeaserCompanyIds()
+    }
 }
