@@ -58,53 +58,30 @@ const currentTime=Date.now();
 export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='join_dataland_button']").click()
-        .get("iframe[name='keycloak-iframe']")
-        .its("0.contentWindow.location.href")
-        .should(
-            "contain",
-            "keycloak/realms/datalandsecurity/protocol/openid-connect/registrations?client_id=dataland-public"
-        )
-
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#email")
+        .get("#email")
         .should('exist')
         .type(email.concat(currentTime.toString()).concat('@dataland.com'), {force: true})
 
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#password")
+        .get("#password")
         .should('exist')
         .type(password, {force: true})
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#password-confirm")
+        .get("#password-confirm")
         .should('exist')
         .type(password, {force: true})
 
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#kc-form-buttons")
+        .get("#kc-form-buttons")
         .should('exist')
         .click()
 
-        .get("iframe[name='keycloak-iframe']")
-        .should("not.exist")
+        .get("button[name='logout_dataland_button']")
+        .should("exist")
 }
 
 export function logout(): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='logout_dataland_button']").click()
-        .get("iframe[name='keycloak-iframe']").should("exist")
-        .get("iframe[name='keycloak-iframe']").should("not.exist")
+        .get("button[name='login_dataland_button']")
+        .should("exist")
 }
 
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
