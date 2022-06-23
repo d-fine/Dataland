@@ -9,9 +9,6 @@ import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
-import LoginIframeContent from "@/components/auth/LoginIframeContent.vue";
-import LogoutIframeContent from "@/components/auth/LogoutIframeContent.vue";
-import RegisterIframeContent from "@/components/auth/RegisterIframeContent.vue";
 
 const routes = [
     {
@@ -66,21 +63,6 @@ const routes = [
         path: "/imprint",
         name: "LandingImprint",
         component: TheImprint,
-    },
-    {
-        path: "/login",
-        name: "LoginIframeContent",
-        component: LoginIframeContent,
-    },
-    {
-        path: "/logout",
-        name: "LogoutIframeContent",
-        component: LogoutIframeContent,
-    },
-    {
-        path: "/register",
-        name: "RegisterIframeContent",
-        component: RegisterIframeContent
     }
 ];
 
