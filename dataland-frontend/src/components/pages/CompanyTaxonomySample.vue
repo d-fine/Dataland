@@ -37,8 +37,6 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar
   },
   data: () => ({
-    //ToDO company should be env variable
-    companyQuery: "Bayerische Motoren Werke AG",
     companyID: null
   }),
   created() {
@@ -49,18 +47,9 @@ export default {
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        const responseArray = await companyDataControllerApi.getCompanies(this.companyQuery, "", true)
-        this.companyID = responseArray.data[0].companyId
-      } catch (error) {
-        await this.companyIdFallback()
-        console.error(error)
-      }
-    },
-    async companyIdFallback() {
-      try {
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        const companyResponse = companyDataControllerApi.getTeaserCompanies()
-        this.companyID = companyResponse.data[0].companyId
+        const companyResponse = await companyDataControllerApi.getTeaserCompanies()
+        console.log(companyResponse)
+        this.companyID = companyResponse.data[0]
       } catch (error) {
         console.error(error)
       }
