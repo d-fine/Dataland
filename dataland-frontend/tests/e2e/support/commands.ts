@@ -122,6 +122,8 @@ export function register(email: string = "some_user", password: string = "test")
 export function logout(): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='logout_dataland_button']").click()
+        .get("iframe[name='keycloak-iframe']").should("exist")
+        .get("iframe[name='keycloak-iframe']").should("not.exist")
 }
 
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
