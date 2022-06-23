@@ -1,12 +1,12 @@
-describe('Search Taxonomy', function () {
-    let companiesWithData:any
+let companiesWithData:any
 
-    before(function(){
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-            companiesWithData=companies
-        });
+before(function(){
+    cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+        companiesWithData=companies
     });
+});
 
+describe('Search Taxonomy', function () {
     beforeEach(function() {
         cy.restoreLoginSession()
     });
@@ -139,13 +139,6 @@ describe('Search Taxonomy', function () {
 
 });
 describe('Search Taxonomy without authentication', function () {
-    let companiesWithData:any
-
-    before(function(){
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-            companiesWithData=companies
-        });
-    });
 
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
