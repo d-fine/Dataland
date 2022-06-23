@@ -1,5 +1,6 @@
 import CompanyInformation from '@/components/resources/company/CompanyInformation.vue'
 import {shallowMount} from "@vue/test-utils"
+import { expect } from '@jest/globals';
 
 describe('CompanyInformation', () => {
 

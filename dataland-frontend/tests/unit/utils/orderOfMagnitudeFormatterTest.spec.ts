@@ -1,4 +1,6 @@
 import {numberFormatter} from "@/utils/currencyMagnitude";
+import { expect } from '@jest/globals';
+
 describe("nFormatter", () => {
     it("verifies whether the implementation works correctly", () => {
         expect(numberFormatter(0, 1)).toEqual("0")

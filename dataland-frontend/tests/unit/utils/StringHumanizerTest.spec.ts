@@ -1,4 +1,5 @@
 import {humanize} from "@/utils/StringHumanizer"
+import { expect } from '@jest/globals';
 
 describe("Test StringHumanizer", () => {
     it("verifies if the implementation works correctly", () => {
