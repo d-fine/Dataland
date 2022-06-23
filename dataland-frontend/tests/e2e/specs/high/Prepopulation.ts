@@ -8,13 +8,11 @@ import {CompanyInformation, EuTaxonomyData} from "../../../../build/clients/back
 const chunkSize = 40
 
 describe('Population Test', () => {
-    Cypress.config({
-        defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000
-    })
 
     let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>
     const teaserCompanies: Array<{ companyIds: string }> = []
     let teaserCompaniesPermIds: Array<{ permId: string }> = []
+    const prepopulate_timeout = Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000
 
     if (Cypress.env("REALDATA")) {
         teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",")
@@ -50,7 +48,7 @@ describe('Population Test', () => {
 
     it('Populate Companies and Eu Taxonomy Data', () => {
         getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-            .then((token) => {
+            .then({timeout: prepopulate_timeout}, (token) => {
                 doThingsInChunks(
                     companiesWithData,
                     chunkSize,

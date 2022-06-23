@@ -24,8 +24,8 @@ function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<strin
                 headers: {"Authorization": "Bearer " + token}
             })
         }).then((response) => {
-        return response.body.map((e: any) => e[idKey])
-    })
+            return response.body.map((e: any) => e[idKey])
+        })
 }
 
 export function retrieveDataIdsList(): Chainable<Array<string>> {
@@ -54,7 +54,8 @@ export function login(username: string = "data_reader", password: string = Cypre
         .should("exist")
 }
 
-const currentTime=Date.now();
+const currentTime = Date.now();
+
 export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='join_dataland_button']").click()
@@ -85,9 +86,19 @@ export function logout(): Chainable<JQuery> {
 }
 
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
-    return cy.session([username, password], () => {
-        login(username, password)
-    })
+    return cy.session(
+        [username, password],
+        () => {
+            login(username, password)
+        },
+        {
+            "validate": () => {
+                cy.visit("/")
+                    .get("button[name='logout_dataland_button']")
+                    .should("exist")
+            }
+        }
+    )
 }
 
 Cypress.Commands.add('retrieveDataIdsList', retrieveDataIdsList)
