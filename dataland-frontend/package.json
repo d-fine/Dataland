@@ -27,7 +27,7 @@
     "dotenv-cli": "^5.1.0",
     "get-parameter-names": "^0.3.0",
     "json2csv": "^5.0.7",
-    "keycloak-js": "^18.0.0",
+    "keycloak-js": "^18.0.1",
     "material-icons": "^1.11.2",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
