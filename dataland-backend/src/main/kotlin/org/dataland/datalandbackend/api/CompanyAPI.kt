@@ -123,7 +123,8 @@ interface CompanyAPI {
 
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
-        description = "A list of all company IDs that are set as teaser companies (accessible without authentication)."
+        description = "A list of all company IDs that are currently set as teaser companies (accessible without " +
+                "authentication)."
     )
     @ApiResponses(
         value = [
