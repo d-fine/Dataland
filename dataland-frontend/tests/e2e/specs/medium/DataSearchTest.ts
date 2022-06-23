@@ -18,18 +18,3 @@ describe('User interactive tests for Data Search', () => {
     })
 
 })
-
-describe('User interactive tests for Data Search without authentication', () => {
-
-    beforeEach(() => {
-        cy.visit("/search")
-    })
-
-    it('Skyminder Data Search without authentication', () => {
-        cy.get('input[name=code]').type("DEU", {force: true})
-        cy.get('input[name=name]').type("BMW", {force: true})
-        cy.get('button[name="getSkyminderData"]').click()
-        cy.get('table').should('not.exist')
-    })
-
-})
