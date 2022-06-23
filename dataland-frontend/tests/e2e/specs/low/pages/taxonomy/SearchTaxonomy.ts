@@ -1,12 +1,12 @@
-describe('Search Taxonomy', function () {
-    let companiesWithData:any
+let companiesWithData:any
 
-    before(function(){
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-            companiesWithData=companies
-        });
+before(function(){
+    cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+        companiesWithData=companies
     });
+});
 
+describe('Search Taxonomy', function () {
     beforeEach(function() {
         cy.restoreLoginSession()
     });
@@ -139,13 +139,6 @@ describe('Search Taxonomy', function () {
 
 });
 describe('Search Taxonomy without authentication', function () {
-    let companiesWithData:any
-
-    before(function(){
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-            companiesWithData=companies
-        });
-    });
 
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
@@ -209,4 +202,20 @@ describe('Search Taxonomy without authentication', function () {
                 .should('not.exist')
         })
     });
+});
+
+describe('Check that nothing can be seen after logout', function () {
+    beforeEach(function () {
+        cy.restoreLoginSession()
+    });
+
+    it('Check that companies are found if logged in, and none are there if logged out', function () {
+        cy.visit("/searchtaxonomy")
+        cy.get("tr[role='row'] > td[role='cell']").should("exist")
+        cy.logout()
+        cy.intercept("/api/companies**").as("companyRequest")
+        cy.visit("/searchtaxonomy")
+        cy.wait('@companyRequest').its("response.statusCode").should("eq", 401)
+    });
+
 });
