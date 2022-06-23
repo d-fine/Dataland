@@ -86,12 +86,12 @@ jobs:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "http://proxy/keycloak"
           KEYCLOAK_DB_PASSWORD: "DummyPasswordForCiTests"
-          KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
-          KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
-          KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
-          KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
-          KEYCLOAK_UPLOADER_SALT: ${{ secrets.KEYCLOAK_UPLOADER_SALT }}
-          KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
+          KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
+          KEYCLOAK_READER_PASSWORD: "test"
+          KEYCLOAK_UPLOADER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
+          KEYCLOAK_UPLOADER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
+          KEYCLOAK_UPLOADER_PASSWORD: "test"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2

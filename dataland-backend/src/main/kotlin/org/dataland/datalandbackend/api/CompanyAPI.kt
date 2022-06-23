@@ -122,9 +122,8 @@ interface CompanyAPI {
     fun setTeaserCompanies(@Valid @RequestBody companyIds: List<String>)
 
     @Operation(
-        //TodO text anpassen
-        summary = "Set the teaser companies.",
-        description = "A list of teaser company IDs can be retrieved, without authentication."
+        summary = "Get the company IDs of the teaser companies.",
+        description = "A list of all company IDs that are set as teaser companies (accessible without authentication)."
     )
     @ApiResponses(
         value = [
@@ -136,8 +135,9 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
 
-            /**
-             * A method to get the teaser companies.
-             */
-    fun getTeaserCompanies():List<String>
+    /**
+     * A method to get the teaser company IDs.
+     * @return a list of all company IDs currently set as teaser companies
+     */
+    fun getTeaserCompanies(): List<String>
 }
