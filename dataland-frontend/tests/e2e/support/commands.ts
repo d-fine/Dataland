@@ -39,40 +39,21 @@ export function retrieveCompanyIdsList(): Chainable<Array<string>> {
 export function login(username: string = "data_reader", password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='login_dataland_button']").click()
-        .get("iframe[name='keycloak-iframe']")
-        .its("0.contentWindow.location.href")
-        .should(
-            "contain",
-            "keycloak/realms/datalandsecurity/protocol/openid-connect/auth?client_id=dataland-public"
-        )
-
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#username")
+        .get("#username")
         .should('exist')
         .type(username, {force: true})
-
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#password")
+        .get("#password")
         .should('exist')
         .type(password, {force: true})
 
-        .get("iframe[name='keycloak-iframe']")
-        .its('0.contentDocument.body')
-        .should('not.be.empty')
-        .then(cy.wrap)
-        .find("#kc-login")
+        .get("#kc-login")
         .should('exist')
         .click()
 
-        .get("iframe[name='keycloak-iframe']")
-        .should("not.exist")
+        .get("button[name='logout_dataland_button']")
+        .should("exist")
 }
+
 const currentTime=Date.now();
 export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
     return cy.visit("/")
