@@ -80,7 +80,6 @@ describe('Sample Section', () => {
     })
     it('Check that the sample section works properly without authentication', () => {
         cy.visit("/")
-        cy.logout()
         cy.get('h2').should("contain.text","Explore Dataland")
         cy.get('button[name=eu_taxonomy_sample_button]')
             .should('be.visible')
