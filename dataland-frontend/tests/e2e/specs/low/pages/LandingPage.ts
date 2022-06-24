@@ -97,13 +97,13 @@ describe('Sample Section', () => {
     })
 })
 
-describe('Authentication Buttons', () => {
+describe.only('Authentication Buttons', () => {
     it('Checks that the authentication buttons are there and working' , () => {
         cy.visit("/")
         cy.login()
         cy.logout()
         cy.wait(1000)
-        cy.login()
+        cy.register()
         cy.get('[name=logout_dataland_button').should('be.visible')
     })
 })
