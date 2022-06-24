@@ -10,7 +10,6 @@ describe('Login Section', () => {
         cy.get('button[name=get_started_button]')
             .should('be.visible')
             .should("contain.text","Get Started")
-        //TODO fix get started button and create test for it
     })
     it('Company logos are present', () => {
         cy.visit("/")
