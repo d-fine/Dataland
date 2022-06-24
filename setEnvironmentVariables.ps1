@@ -15,7 +15,7 @@
 [Environment]::SetEnvironmentVariable("INITIALIZE_KEYCLOAK", "false", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_ADMIN", "admin", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_ADMIN_PASSWORD", "admin", [System.EnvironmentVariableTarget]::Machine)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::Machine)
+[Environment]::SetEnvironmentVariable("KEYCLOAK_DB_PASSWORD", "dummy", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DOCKERFILE", "./dataland-keycloak/Dockerfile", [System.EnvironmentVariableTarget]::Machine)
 # TODO: figure out value [Environment]::SetEnvironmentVariable("KEYCLOAK_FRONTEND_URL", "http://localhost/keycloak", [System.EnvironmentVariableTarget]::Machine)
 # TODO: figure out value [Environment]::SetEnvironmentVariable("KEYCLOAK_GITHUB_SECRET", "${{ secrets.KEYCLOAK_GITHUB_SECRET }}", [System.EnvironmentVariableTarget]::Machine)
