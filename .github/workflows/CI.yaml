@@ -92,6 +92,8 @@ jobs:
           KEYCLOAK_UPLOADER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_UPLOADER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
           KEYCLOAK_UPLOADER_PASSWORD: "test"
+          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
+          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
