@@ -1,5 +1,6 @@
 describe('EU Taxonomy Page', function () {
     it('page should be present', function () {
+        cy.restoreLoginSession()
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             cy.visit("/companies/" + dataIdList[2] + "/eutaxonomies")
             cy.get('#app').should("exist")
