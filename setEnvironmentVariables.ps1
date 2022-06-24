@@ -18,7 +18,6 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DOCKERFILE", "./dataland-keycloak/Dockerfile", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_FRONTEND_URL", "http://localhost/keycloak", [System.EnvironmentVariableTarget]::Machine)
-# TODO: figure out value and add google as well [Environment]::SetEnvironmentVariable("KEYCLOAK_GITHUB_SECRET", "${{ secrets.KEYCLOAK_GITHUB_SECRET }}", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_PASSWORD", "test", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_SALT", "6ZN+5rRT/wQcQqvNhXIsfA==", [System.EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_VALUE", "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ==", [System.EnvironmentVariableTarget]::Machine)
