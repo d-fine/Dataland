@@ -97,7 +97,7 @@ describe('Sample Section', () => {
     })
 })
 
-describe.only('Authentication Buttons', () => {
+describe('Authentication Buttons', () => {
     it('Checks that the authentication buttons are there and working' , () => {
         cy.visit("/")
         cy.login()
