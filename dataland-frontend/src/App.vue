@@ -16,7 +16,7 @@ export default {
       keycloak: null,
       keycloak_init_promise: null,
       keycloak_init_promise_finished: true,
-      keycloak_authenticated: false,
+      keycloak_authenticated: null,
     }
   },
   methods: {

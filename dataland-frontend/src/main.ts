@@ -15,6 +15,13 @@ function instantiateVueApp() {
     const app = createApp(App)
     app.use(plugin, defaultConfig)
     app.use(router)
+
+    //router.beforeResolve(to => {
+    //    if (to.name == "Create Data" && !this.keycloak_authenticated) {
+    //        return {name: "Welcome to Dataland"}
+    //    }
+    //})
+
     app.use(PrimeVue)
     app.config.unwrapInjectedRef = true
     app.mount('#app')
