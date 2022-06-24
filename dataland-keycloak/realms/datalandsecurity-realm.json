@@ -1491,6 +1491,25 @@
   "adminEventsEnabled": false,
   "adminEventsDetailsEnabled": false,
   "identityProviders": [
+    {
+      "alias": "google",
+      "internalId": "50c70d7c-8872-47f6-a60c-8eaffddfd9cf",
+      "providerId": "google",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": false,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "firstBrokerLoginFlowAlias": "first broker login",
+      "config": {
+        "syncMode": "IMPORT",
+        "clientSecret": "${KEYCLOAK_GOOGLE_SECRET}",
+        "clientId": "${KEYCLOAK_GOOGLE_ID}",
+        "useJwksUrl": "true"
+      }
+    }
   ],
   "identityProviderMappers": [],
   "components": {

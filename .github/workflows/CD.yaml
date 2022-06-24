@@ -82,6 +82,8 @@ jobs:
           KEYCLOAK_UPLOADER_SALT: ${{ secrets.KEYCLOAK_UPLOADER_SALT }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
+          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
