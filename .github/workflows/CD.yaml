@@ -26,6 +26,11 @@ on:
         required: false
         type: string
         default: integration
+      resetKeycloakSecurityPhraseInput:
+        description: 'If set to the proper value, keycloak will be reset'
+        required: false
+        type: string
+
 
 jobs:
   build-prod-and-deploy:
@@ -35,6 +40,24 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     steps:
+      - name: verifyKeycloakPassword
+        run: |
+          if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
+            echo not resetting keycloak in this run
+             echo '::set-output name=INITIALIZE_KEYCLOAK::false'
+            exit 0
+          elif [[ $RESET_KEYCLOAK_SECURITY_PHRASE_SECRET == $RESET_KEYCLOAK_SECURITY_PHRASE_INPUT ]]; then
+            echo resetting keycloak in this run
+             echo '::set-output name=INITIALIZE_KEYCLOAK::true'
+            exit 0
+          else
+            echo password to reset keycloak incorrect
+            exit 1
+          fi
+        env:
+          RESET_KEYCLOAK_SECURITY_PHRASE_SECRET: ${{ secrets.RESET_KEYCLOAK_SECURITY_PHRASE_SECRET }}
+          RESET_KEYCLOAK_SECURITY_PHRASE_INPUT: ${{ github.event.inputs.resetKeycloakSecurityPhraseInput }}
+        id: verifyKeycloakPassword
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         uses: docker/login-action@v1
@@ -73,8 +96,7 @@ jobs:
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
-# TODO: Soll das wirklich ein Secret sein?
-          INITIALIZE_KEYCLOAK: ${{ secrets.INITIALIZE_KEYCLOAK }}
+          INITIALIZE_KEYCLOAK: ${{ steps.verifyKeycloakPassword.outputs.INITIALIZE_KEYCLOAK }}
           TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
