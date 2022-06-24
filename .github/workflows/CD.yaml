@@ -76,7 +76,6 @@ jobs:
 # TODO: Soll das wirklich ein Secret sein?
           INITIALIZE_KEYCLOAK: ${{ secrets.INITIALIZE_KEYCLOAK }}
           TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
-          KEYCLOAK_GITHUB_SECRET: ${{ secrets.KEYCLOAK_GITHUB_SECRET }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
           KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
