@@ -59,6 +59,14 @@ const currentTime = Date.now();
 export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
     return cy.visit("/")
         .get("button[name='join_dataland_button']").click()
+        .get("#firstName")
+        .should('exist')
+        .type('data', {force: true})
+
+        .get("#lastName")
+        .should('exist')
+        .type('land', {force: true})
+
         .get("#email")
         .should('exist')
         .type(email.concat(currentTime.toString()).concat('@dataland.com'), {force: true})
