@@ -144,13 +144,12 @@ describe('Check that nothing can be seen after logout', function () {
         cy.restoreLoginSession()
     });
 
-    it('Check that companies are found if logged in, and none are there if logged out', function () {
+    it.only('Check that companies are found if logged in, and none are there if logged out', function () {
         cy.visit("/searchtaxonomy")
         cy.get("tr[role='row'] > td[role='cell']").should("exist")
         cy.logout()
-        cy.intercept("/api/companies**").as("companyRequest")
         cy.visit("/searchtaxonomy")
-        cy.wait('@companyRequest').its("response.statusCode").should("eq", 401)
+        cy.url().should("eq", Cypress.config('baseUrl') + "/")
     });
 
 });
