@@ -11,6 +11,7 @@ declare global {
             restoreLoginSession: typeof restoreLoginSession
             register: typeof register
             logout: typeof logout
+            socialLoginWithGoogle: typeof socialLoginWithGoogle
         }
     }
 }
@@ -52,9 +53,23 @@ export function login(username: string = "data_reader", password: string = Cypre
 
         .get("button[name='logout_dataland_button']")
         .should("exist")
+        .should("be.visible")
 }
 
-const currentTime = Date.now();
+export function socialLoginWithGoogle(username: string = Cypress.env("GOOGLE_ACCOUNT_NAME"), password: string = Cypress.env("GOOGLE_PASSWORD")) {
+    return cy.visit("/")
+        .get("button[name='login_dataland_button']").click()
+        .get("#social-google").should("exist").click()
+        .get( "#identifierId").should("exist")
+        .type(username, {force: true})
+        .get("form").submit()
+        .get("input[type='password']").should("exist")
+        .type(password, {force: true})
+        .get("form").submit()
+        .get("button[name='logout_dataland_button']")
+        .should("exist")
+        .should("be.visible")
+}
 
 export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
     return cy.visit("/")
@@ -69,7 +84,7 @@ export function register(email: string = "some_user", password: string = "test")
 
         .get("#email")
         .should('exist')
-        .type(email.concat(currentTime.toString()).concat('@dataland.com'), {force: true})
+        .type(email.concat(Date.now().toString()).concat('@dataland.com'), {force: true})
 
         .get("#password")
         .should('exist')
@@ -84,6 +99,7 @@ export function register(email: string = "some_user", password: string = "test")
 
         .get("button[name='logout_dataland_button']")
         .should("exist")
+        .should("be.visible")
 }
 
 export function logout(): Chainable<JQuery> {
@@ -91,6 +107,7 @@ export function logout(): Chainable<JQuery> {
         .get("button[name='logout_dataland_button']").click()
         .get("button[name='login_dataland_button']")
         .should("exist")
+        .should("be.visible")
 }
 
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
@@ -115,3 +132,4 @@ Cypress.Commands.add('login', login)
 Cypress.Commands.add('restoreLoginSession', restoreLoginSession)
 Cypress.Commands.add('register', register)
 Cypress.Commands.add('logout', logout)
+Cypress.Commands.add('socialLoginWithGoogle', socialLoginWithGoogle)
