@@ -40,4 +40,4 @@
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_ACCOUNT_NAME", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_PASSWORD", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_ID", "#", [System.EnvironmentVariableTarget]::User)
-# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_Secret", "#", [System.EnvironmentVariableTarget]::User)
+# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_SECRET", "#", [System.EnvironmentVariableTarget]::User)
