@@ -27,7 +27,7 @@ on:
         type: string
         default: integration
       resetKeycloakSecurityPhraseInput:
-        description: 'If set to the proper value, keycloak will be reset'
+        description: 'Set to reset Keycloak during deployment, leave blank otherwise.'
         required: false
         type: string
 
@@ -43,15 +43,13 @@ jobs:
       - name: verifyKeycloakPassword
         run: |
           if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
-            echo not resetting keycloak in this run
-             echo '::set-output name=INITIALIZE_KEYCLOAK::false'
-            exit 0
+            echo "Keycloak will not be reset during deployment."
+            echo '::set-output name=INITIALIZE_KEYCLOAK::false'
           elif [[ $RESET_KEYCLOAK_SECURITY_PHRASE_SECRET == $RESET_KEYCLOAK_SECURITY_PHRASE_INPUT ]]; then
-            echo resetting keycloak in this run
-             echo '::set-output name=INITIALIZE_KEYCLOAK::true'
-            exit 0
+            echo "Resetting Keycloak during deployment."
+            echo '::set-output name=INITIALIZE_KEYCLOAK::true'
           else
-            echo password to reset keycloak incorrect
+            echo "Entered password for resetting Keycloak is incorrect. Aborting run."
             exit 1
           fi
         env:
