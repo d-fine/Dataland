@@ -12,7 +12,7 @@ class KeycloakConfig {
     @Bean
 
     /**
-     * Method to return a Keycloak Spring Boot Resolver object
+     * Method to use spring boot properties file instead of default keycloak.json
      * @return Keycloak Config Resolver for Spring Boot
      */
     fun keycloakConfigResolver(): KeycloakSpringBootConfigResolver? {
