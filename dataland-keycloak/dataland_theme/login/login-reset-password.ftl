@@ -25,7 +25,7 @@
             </div>
             <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
                 <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
-                    <div class="${properties.kcFormOptionsWrapperClass!}" style="margin-bottom:20px;">
+                    <div class="${properties.kcFormOptionsWrapperClass!} d-slink d-margin">
                         <span><a class="d-text-primary" href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
                     </div>
                 </div>

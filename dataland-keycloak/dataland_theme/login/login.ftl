@@ -64,9 +64,9 @@
 								</div>
 							</#if>
 							</div>
-							<div class="${properties.kcFormOptionsWrapperClass!}">
+							<div class="${properties.kcFormOptionsWrapperClass!}  d-slink">
 								<#if realm.resetPasswordAllowed>
-									<span><a tabindex="5" class="d-text-primary" style="font-size:12px; padding-right: 12rem;" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+									<span><a tabindex="5" class="d-text-primary" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
 								</#if>
 							</div>
 
