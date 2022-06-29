@@ -62,35 +62,27 @@ describe('Footer Section', () => {
 })
 
 describe('Sample Section', () => {
+    function visitSamplePage() {
+        cy.visit("/")
+        cy.get('h2').should("contain.text", "Explore Dataland")
+        cy.get('button[name=eu_taxonomy_sample_button]')
+            .should('be.visible')
+            .should("contain.text", "EU Taxonomy")
+            .click({force: true})
+            .url().should('include', '/taxonomysample')
+        cy.get('h2').contains('EU Taxonomy Data')
+        cy.get('.p-button.p-button-rounded')
+            .should("contain.text", "COMPANY DATA SAMPLE")
+        cy.get('body').should('contain.text', 'Join Dataland with other')
+        cy.get('[title=back_button').should('be.visible').click({force: true})
+        cy.url().should("eq", Cypress.config('baseUrl') + "/")
+    }
+
     it('Check that the sample section works properly with authentication', () => {
         cy.restoreLoginSession()
-        cy.visit("/")
-        cy.get('h2').should("contain.text","Explore Dataland")
-        cy.get('button[name=eu_taxonomy_sample_button]')
-            .should('be.visible')
-            .should("contain.text","EU Taxonomy")
-            .click({force:true})
-            .url().should('include', '/taxonomysample')
-        cy.get('h2').contains('EU Taxonomy Data')
-        cy.get('.p-button.p-button-rounded')
-            .should("contain.text","COMPANY DATA SAMPLE")
-        cy.get('body').should('contain.text', 'Join Dataland with other')
-        cy.get('[title=back_button').should('be.visible').click({force:true})
-        cy.get('h1').should("contain.text","CREATE A DATASET")
+        visitSamplePage();
     })
     it('Check that the sample section works properly without authentication', () => {
-        cy.visit("/")
-        cy.get('h2').should("contain.text","Explore Dataland")
-        cy.get('button[name=eu_taxonomy_sample_button]')
-            .should('be.visible')
-            .should("contain.text","EU Taxonomy")
-            .click({force:true})
-            .url().should('include', '/taxonomysample')
-        cy.get('h2').contains('EU Taxonomy Data')
-        cy.get('.p-button.p-button-rounded')
-            .should("contain.text","COMPANY DATA SAMPLE")
-        cy.get('body').should('contain.text', 'Join Dataland with other')
-        cy.get('[title=back_button').should('be.visible').click({force:true})
-        cy.get('h1').should("contain.text","CREATE A DATASET")
+        visitSamplePage();
     })
 })

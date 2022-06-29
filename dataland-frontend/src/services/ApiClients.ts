@@ -34,7 +34,7 @@ export class ApiClientProvider {
 
     async getConstructedApi<T>(constructor: new (configuration: Configuration | undefined, basePath: string) => T) {
         const configuration = await this.getConfiguration()
-        return new constructor(configuration, process.env.VUE_APP_BASE_API_URL + "/api")
+        return new constructor(configuration, `${process.env.VUE_APP_BASE_API_URL}` + `${process.env.CYPRESS_API}`)
     }
 
     async getCompanyDataControllerApi() {
