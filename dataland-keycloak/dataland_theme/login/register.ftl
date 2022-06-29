@@ -19,7 +19,7 @@
                     />
 					<span class="highlight"></span>
 					<span class="bar"></span>
-					<label for="email" class="${properties.kcLabelClass!} control-label">${msg("email")}</label>
+					<label for="email" class="${properties.kcLabelClass!}">${msg("email")}</label>
                     <#if messagesPerField.existsError('email')>
                         <span id="input-error-email" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                             ${kcSanitize(messagesPerField.get('email'))?no_esc}
@@ -38,7 +38,7 @@
                         />
 						<span class="highlight"></span>
 						<span class="bar"></span>
-						<label for="username" class="${properties.kcLabelClass!} control-label">${msg("username")}</label>
+						<label for="username" class="${properties.kcLabelClass!}">${msg("username")}</label>
                         <#if messagesPerField.existsError('username')>
                             <span id="input-error-username" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                                 ${kcSanitize(messagesPerField.get('username'))?no_esc}
@@ -58,7 +58,7 @@
                         />
 						<span class="highlight"></span>
 						<span class="bar"></span>
-						<label for="password" class="${properties.kcLabelClass!} control-label">${msg("password")}</label>
+						<label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
                         <#if messagesPerField.existsError('password')>
                             <span id="input-error-password" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                                 ${kcSanitize(messagesPerField.get('password'))?no_esc}
@@ -76,7 +76,7 @@
                         />
 						<span class="highlight"></span>
 						<span class="bar"></span>
-						<label for="password-confirm"class="${properties.kcLabelClass!} control-label">${msg("passwordConfirm")}</label>
+						<label for="password-confirm"class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
                         <#if messagesPerField.existsError('password-confirm')>
                             <span id="input-error-password-confirm" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                                 ${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}

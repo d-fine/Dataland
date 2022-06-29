@@ -16,7 +16,7 @@
 						<div class="${properties.kcFormGroupClass!}">
                         
 							<div class="input-group">
-								<input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" required autofocus autocomplete="off"
+								<input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" required autofocus autocomplete="email"
 									aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
 								/>
 								<span class="highlight"></span>
