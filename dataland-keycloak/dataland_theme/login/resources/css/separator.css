@@ -1,0 +1,14 @@
+.separator{
+  display:flex;
+  align-items: center;
+}
+
+.separator .line{
+  height: 1px;
+  flex: 1;
+  background-color: #E0DFDE;
+}
+
+.separator h4{
+  padding: 0 1rem;
+}
