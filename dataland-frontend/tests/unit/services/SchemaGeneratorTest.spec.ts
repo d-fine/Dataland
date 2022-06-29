@@ -1,4 +1,5 @@
 import {SchemaGenerator} from "@/services/SchemaGenerator";
+import { expect } from '@jest/globals';
 
 describe("SchemaGenerator", () => {
 

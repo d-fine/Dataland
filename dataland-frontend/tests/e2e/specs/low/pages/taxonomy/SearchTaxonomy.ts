@@ -1,22 +1,20 @@
-describe('Search Taxonomy', function () {
-    let companiesWithData:any
+let companiesWithData:any
 
-    before(function(){
-        cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-            companiesWithData=companies
-        });
+before(function(){
+    cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
+        companiesWithData=companies
+    });
+});
+
+describe('Search Taxonomy', function () {
+    beforeEach(function() {
+        cy.restoreLoginSession()
     });
 
-    it('page should be present', function () {
+    it('Check static layout of the search page', function () {
         cy.visit("/searchtaxonomy")
         cy.get('#app').should("exist")
-    });
-
-    it('Heading should be present', () => {
         cy.get('h1').should("contain", "Search EU Taxonomy data")
-    });
-
-    it('Search Input field should be present before index filter', () => {
         const placeholder = "Search company by name or PermID"
         const inputValue = "A company name"
         cy.get('input[name=eu_taxonomy_search_input]')
@@ -105,7 +103,7 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]')
             .click({force:true})
             .type('b')
-        cy.wait('@searchCompany', {timeout: 2000}).then(() => {
+        cy.wait('@searchCompany', {timeout: 2 * 1000}).then(() => {
             cy.get('.p-autocomplete-item')
                 .eq(0).click({force:true})
                 .url().should('include', '/companies/')
@@ -135,8 +133,5 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]').should('exist')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
     });
-
-
-
 
 });

@@ -27,11 +27,8 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {ApiClientProvider} from "@/services/ApiClients"
 import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CompanyTaxonomy",
   components: {
@@ -40,26 +37,19 @@ export default {
     TheHeader, BackButton, MarginWrapper, EuTaxoSearchBar
   },
   data: () => ({
-    companyQuery: "Adidas",
     companyID: null
   }),
   created() {
     this.queryCompany()
   },
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async queryCompany() {
       try {
-        const responseArray = await getCompaniesWrapper.perform(this.companyQuery, "", true)
-        this.companyID = responseArray.data[0].companyId
-      } catch (error) {
-        await this.companyIdFallback()
-        console.error(error)
-      }
-    },
-    async companyIdFallback() {
-      try {
-        const companyResponse = await getCompaniesWrapper.perform("", "", true)
-        this.companyID = companyResponse.data[0].companyId
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        const companyResponse = await companyDataControllerApi.getTeaserCompanies()
+        console.log(companyResponse)
+        this.companyID = companyResponse.data[0]
       } catch (error) {
         console.error(error)
       }

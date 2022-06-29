@@ -2,7 +2,9 @@ import EuTaxoSearchBar from '@/components/resources/taxonomy/search/EuTaxoSearch
 import {mount} from "@vue/test-utils"
 import { createRouter, createMemoryHistory } from "vue-router"
 import {routes} from '@/router'
-    describe("EuTaxoSearchBarTest", () => {
+import { expect } from '@jest/globals';
+
+describe("EuTaxoSearchBarTest", () => {
     let wrapper:any
         it('checks field properties', async () => {
             const router = createRouter({

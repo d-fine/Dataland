@@ -1,5 +1,6 @@
 import CustomEUTaxonomy from '@/components/forms/CreateEUTaxonomy.vue'
 import {shallowMount} from "@vue/test-utils"
+import { expect } from '@jest/globals';
 
 describe('CreateCompanyTest', () => {
 

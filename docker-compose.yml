@@ -2,7 +2,7 @@ version: "3.8"
 services:
   proxy:
     restart: always
-    profiles: ["production", "testing","productionInMemory"]
+    profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
       - external
       - internal
@@ -11,10 +11,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./dataland-inbound-proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ${NGINX_CONFIG_FILE:-./dataland-inbound-proxy/nginx.conf}:/etc/nginx/nginx.conf
   backend:
     restart: always
-    profiles: ["production", "testing","productionInMemory"]
+    profiles: ["production", "testing", "productionInMemory"]
     networks:
       - internal
     build:
@@ -42,9 +42,11 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+      KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
+      KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
   frontend:
     restart: always
-    profiles: ["production", "testing","productionInMemory"]
+    profiles: ["production", "testing", "productionInMemory"]
     build:
       context: ./
       dockerfile: ${FRONTEND_DOCKERFILE:-./dataland-frontend/DockerfileTest}
@@ -68,7 +70,7 @@ services:
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   edc-dummyserver:
     restart: always
-    profiles: ["testing", "development","productionInMemory"]
+    profiles: ["testing", "development", "productionInMemory"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.0
     environment:
       SERVER_PORT: 9191
@@ -113,6 +115,7 @@ services:
       - "8080"
     networks:
       - external
+      - internal
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
@@ -121,6 +124,62 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+  keycloak-db:
+    restart: always
+    profiles: ["production", "productionInMemory", "testing", "development", "init"]
+    networks:
+      - internal
+    image: postgres
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+  keycloak:
+    restart: always
+    profiles: ["production", "productionInMemory", "development"]
+    networks:
+      - internal
+    build:
+      context: ./
+      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    expose:
+      - "8080"
+    environment:
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    depends_on:
+      - keycloak-db
+  keycloak-initializer:
+    profiles: [ "init", "testing" ]
+    networks:
+      internal:
+        aliases:
+          - keycloak
+    build:
+      context: ./
+      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    volumes:
+      - ./dataland-keycloak/realms:/opt/keycloak/data/import
+    command: --import-realm
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_READER_VALUE: ${KEYCLOAK_READER_VALUE}
+      KEYCLOAK_READER_SALT: ${KEYCLOAK_READER_SALT}
+      KEYCLOAK_UPLOADER_VALUE: ${KEYCLOAK_UPLOADER_VALUE}
+      KEYCLOAK_UPLOADER_SALT: ${KEYCLOAK_UPLOADER_SALT}
+      KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
+      KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
+    expose:
+      - "8080"
+    depends_on:
+      - keycloak-db
 networks:
   internal:
   external:
+volumes:
+  keycloak_data:
+    driver: local

@@ -2,7 +2,7 @@ import {routes} from '@/router'
 import {shallowMount, mount} from "@vue/test-utils"
 import App from '@/App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
+import { expect } from '@jest/globals';
 
 describe('routerTest', () => {
     it('checks if the router is mounted', () => {

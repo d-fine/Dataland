@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 
 import 'primevue/resources/primevue.min.css'
@@ -7,12 +7,17 @@ import 'material-icons/iconfont/material-icons.css'; // prefer these icons in mo
 import 'primeflex/primeflex.css'
 import './assets/theme/theme.css'
 import '@formkit/themes/genesis'
-import { plugin, defaultConfig } from '@formkit/vue'
+import {plugin, defaultConfig} from '@formkit/vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
 
-const app = createApp(App)
-app.use(plugin, defaultConfig)
-app.use(router)
-app.use(PrimeVue)
-app.mount('#app')
+function instantiateVueApp() {
+    const app = createApp(App)
+    app.use(plugin, defaultConfig)
+    app.use(router)
+    app.use(PrimeVue)
+    app.config.unwrapInjectedRef = true
+    app.mount('#app')
+}
+
+instantiateVueApp()

@@ -1,21 +1,27 @@
 describe('Data Upload Page', function () {
+    beforeEach(()=> {
+        cy.restoreLoginSession()
+    })
     it('page should be present', function () {
         cy.visit("/upload")
         cy.get('#app').should("exist")
-    });
-    it('Create a company is present', () => {
         cy.get('.p-card-title').should("contain", "Create a Company")
-    });
-    it('Company name Input field exists and works', () => {
         const inputValue = "A company name"
-        cy.get('input[name=companyName]')
-            .should('not.be.disabled')
-            .click({force: true})
-            .type(inputValue)
-            .should('have.value', inputValue)
-    });
-    it('Post company button is present', () => {
         cy.get('button[name="postCompanyData"]').contains('Post Company')
-            .should('not.be.disabled')
+            .should('be.disabled')
+        cy.get('input[name=companyName]').type(inputValue, {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=headquarters]').type("applications", {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=sector]').type("Handmade", {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=marketCap]').type("123", {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('select[name=identifierType]').select('ISIN')
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
+        cy.get('button[name="postCompanyData"]').should('not.be.disabled')
     });
 });

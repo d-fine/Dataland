@@ -36,14 +36,10 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {SkyminderControllerApi} from "@/../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {ApiClientProvider} from "@/services/ApiClients"
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import SkyminderTable from "@/components/tables/SkyminderTable";
-
-const skyminderControllerApi = new SkyminderControllerApi()
-const getDataSkyminderRequestWrapper = new ApiWrapper(skyminderControllerApi.getDataSkyminderRequest)
 
 export default {
   name: "RetrieveSkyminder",
@@ -53,6 +49,7 @@ export default {
     model: {},
     response: null
   }),
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     clearAll() {
       this.model = {}
@@ -62,7 +59,8 @@ export default {
     async getSkyminderByName() {
       try {
         const inputArgs = Object.values(this.model)
-        this.response = await getDataSkyminderRequestWrapper.perform(...inputArgs)
+        const skyminderControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getSkyminderControllerApi()
+        this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs)
       } catch (error) {
         console.error(error)
       }

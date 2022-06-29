@@ -3,10 +3,12 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,8 +20,8 @@ import javax.validation.Valid
 /**
  * Defines the restful dataland-backend API regarding company data.
  */
-
 @RequestMapping("/companies")
+@SecurityRequirement(name = "default-auth")
 interface CompanyAPI {
 
     @Operation(
@@ -35,6 +37,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
+    @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
@@ -57,6 +60,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
      * A method to retrieve specific companies identified by their company names identifier or stock index
      * If only an empty string is passed as search argument, all companies in the data store are returned.
@@ -87,10 +91,54 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
 
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
      * @return information about the company
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
+
+    @Operation(
+        summary = "Set the teaser companies.",
+        description = "A list of company IDs can be posted, declaring all contained companies as teaser companies, " +
+            "making their information available without authentication."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully set teaser companies.")
+        ]
+    )
+    @PostMapping(
+        value = ["/teaser"],
+        produces = ["application/json"],
+        consumes = ["application/json"]
+    )
+    @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
+    /**
+     * A method to set the teaser companies
+     * @param companyIds a list of dataland company identifiers specifying the teaser companies
+     */
+    fun setTeaserCompanies(@Valid @RequestBody companyIds: List<String>)
+
+    @Operation(
+        summary = "Get the company IDs of the teaser companies.",
+        description = "A list of all company IDs that are currently set as teaser companies (accessible without " +
+            "authentication)."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies.")
+        ]
+    )
+    @GetMapping(
+        value = ["/teaser"],
+        produces = ["application/json"]
+    )
+
+    /**
+     * A method to get the teaser company IDs.
+     * @return a list of all company IDs currently set as teaser companies
+     */
+    fun getTeaserCompanies(): List<String>
 }

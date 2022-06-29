@@ -2,23 +2,17 @@ describe('Login Section', () => {
     it('Check if App is present', () => {
         cy.visit("/")
         cy.get('#app').should('exist')
-    })
-    it('Logo and welcome message are present', () => {
         cy.get('h1').should("contain.text","CREATE A DATASET")
         cy.get('img[alt="Dataland logo"]')
             .should('be.visible')
             .should('have.attr', 'src')
             .should('include','vision')
-    })
-    it('Login and Join buttons are present', () => {
         cy.get('button[name=get_started_button]')
             .should('be.visible')
             .should("contain.text","Get Started")
-        cy.get('button[name="get_started_button"]').click()
-        cy.get('h1').should("contain.text","Search EU Taxonomy data")
-        cy.visit("/")
     })
     it('Company logos are present', () => {
+        cy.visit("/")
         cy.get('img[alt="pwc"]')
             .should('be.visible')
             .should('have.attr', 'src')
@@ -64,5 +58,31 @@ describe('Footer Section', () => {
             .click({force:true})
             .url().should('include', '/dataprivacy')
         cy.get("h2").contains('Data Privacy')
+    })
+})
+
+describe('Sample Section', () => {
+    function visitSamplePage() {
+        cy.visit("/")
+        cy.get('h2').should("contain.text", "Explore Dataland")
+        cy.get('button[name=eu_taxonomy_sample_button]')
+            .should('be.visible')
+            .should("contain.text", "EU Taxonomy")
+            .click({force: true})
+            .url().should('include', '/taxonomysample')
+        cy.get('h2').contains('EU Taxonomy Data')
+        cy.get('.p-button.p-button-rounded')
+            .should("contain.text", "COMPANY DATA SAMPLE")
+        cy.get('body').should('contain.text', 'Join Dataland with other')
+        cy.get('[title=back_button').should('be.visible').click({force: true})
+        cy.url().should("eq", Cypress.config('baseUrl') + "/")
+    }
+
+    it('Check that the sample section works properly with authentication', () => {
+        cy.restoreLoginSession()
+        visitSamplePage();
+    })
+    it('Check that the sample section works properly without authentication', () => {
+        visitSamplePage();
     })
 })

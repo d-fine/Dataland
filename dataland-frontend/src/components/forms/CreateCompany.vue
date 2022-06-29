@@ -5,13 +5,12 @@
     <template #content>
       <FormKit
           v-model="model"
+          :actions="false"
           type="form"
           id="createCompanyForm"
-          :submit-attrs="{
-                  'name': 'postCompanyData'
-                }"
-          submit-label="Post Company"
-          @submit="postCompanyData">
+          @submit="postCompanyData"
+          #default="{ state: { valid } }"
+      >
         <FormKitSchema
             :schema="companyInformationSchema"
         />
@@ -29,36 +28,40 @@
             />
           </FormKit>
         </FormKit>
+        <FormKit
+            type="submit"
+            :disabled="!valid"
+            label="Post Company"
+            name='postCompanyData'
+        />
       </FormKit>
       <p> {{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
-      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier</Button>
-        <template v-if="processed">
-          <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
-          <FailedUpload v-else msg="Company" :messageCount="messageCount" />
-        </template>
+      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier
+      </Button>
+      <template v-if="processed">
+        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data"/>
+        <FailedUpload v-else msg="Company" :messageCount="messageCount"/>
+      </template>
     </template>
   </Card>
 </template>
 
 <script>
 import {FormKit, FormKitSchema} from "@formkit/vue"
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api"
 import SuccessUpload from "@/components/messages/SuccessUpload"
 import {SchemaGenerator} from "@/services/SchemaGenerator"
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {ApiClientProvider} from "@/services/ApiClients"
 import backend from "@/../build/clients/backend/backendOpenApi.json"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
 import Button from "primevue/button"
 import Message from 'primevue/message'
 
-const companyDataControllerApi = new CompanyDataControllerApi()
 const companyInformation = backend.components.schemas.CompanyInformation
 const companyIdentifier = backend.components.schemas.CompanyIdentifier
 const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation)
 const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier)
-const postCompanyWrapper = new ApiWrapper(companyDataControllerApi.postCompany)
 
 const createCompany = {
   name: "CreateCompany",
@@ -77,12 +80,14 @@ const createCompany = {
     // delete auto identifiers
     delete this.companyInformationSchema[6]
   },
+  inject: ['getKeycloakInitPromise', 'keycloak_init'],
   methods: {
     async postCompanyData() {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await postCompanyWrapper.perform(this.model)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.response = await companyDataControllerApi.postCompany(this.model)
         this.$formkit.reset('createCompanyForm')
       } catch (error) {
         console.error(error)

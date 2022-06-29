@@ -4,14 +4,13 @@
     </template>
     <template #content>
       <FormKit
-        v-model="model"
-        submit-label="Post EU-Taxonomy Dataset"
-        :submit-attrs="{
-                'name': 'postEUData'
-              }"
-        type="form"
-        id="createEuTaxonomyForm"
-        @submit="postEUData">
+          v-model="model"
+          :actions="false"
+          type="form"
+          id="createEuTaxonomyForm"
+          @submit="postEUData"
+          #default="{ state: { valid } }"
+      >
         <FormKit
             type="text"
             name="companyId"
@@ -162,28 +161,29 @@
               />
             </FormKit>
           </div>
+          <FormKit
+              type="submit"
+              :disabled="!valid"
+              label="Post EU-Taxonomy Dataset"
+              name='postEUData'
+          />
         </FormKit>
       </FormKit>
       <template v-if="processed">
         <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data"/>
-        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount"/>
       </template>
 
     </template>
   </Card>
 </template>
 <script>
-import {EuTaxonomyDataControllerApi, CompanyDataControllerApi} from "@/../build/clients/backend/api"
 import SuccessUpload from "@/components/messages/SuccessUpload"
 import {FormKit} from "@formkit/vue"
 import FailedUpload from "@/components/messages/FailedUpload"
 import Card from 'primevue/card'
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {ApiClientProvider} from "@/services/ApiClients"
 
-const euTaxonomyDataControllerApi = new EuTaxonomyDataControllerApi()
-const postCompanyAssociatedDataWrapper = new ApiWrapper(euTaxonomyDataControllerApi.postCompanyAssociatedData)
-const companyDataControllerApi = new CompanyDataControllerApi()
-const getCompaniesWrapper = new ApiWrapper(companyDataControllerApi.getCompanies)
 export default {
   name: "CustomEUTaxonomy",
   components: {FailedUpload, Card, FormKit, SuccessUpload},
@@ -194,7 +194,7 @@ export default {
       'p-inputwrapper': true
     },
     inputClass: {
-      'formkit-input':false,
+      'formkit-input': false,
       'p-inputtext': true
     },
     processed: false,
@@ -204,12 +204,14 @@ export default {
     companyID: null,
     idList: []
   }),
+  inject: ['getKeycloakInitPromise', 'keycloak_init'],
   methods: {
-    async getCompanyIDs(){
+    async getCompanyIDs() {
       try {
-        const companyList = await getCompaniesWrapper.perform("", "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        const companyList = await companyDataControllerApi.getCompanies("", "", true)
         this.idList = companyList.data.map(element => element.companyId)
-      } catch(error) {
+      } catch (error) {
         this.idList = []
       }
     },
@@ -218,7 +220,8 @@ export default {
       try {
         this.processed = false
         this.messageCount++
-        this.response = await postCompanyAssociatedDataWrapper.perform(this.model)
+        const euTaxonomyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getEuTaxonomyDataControllerApi()
+        this.response = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model)
         this.$formkit.reset('createEuTaxonomyForm')
       } catch (error) {
         this.response = null

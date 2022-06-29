@@ -1,5 +1,8 @@
 package org.dataland.datalandbackend
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -7,6 +10,12 @@ import org.springframework.boot.runApplication
  * Class to define the spring boot application
  */
 @SpringBootApplication
+@SecurityScheme(
+    name = "default-auth",
+    scheme = "bearer",
+    type = SecuritySchemeType.HTTP,
+    `in` = SecuritySchemeIn.HEADER
+)
 class DatalandBackend
 
 /**

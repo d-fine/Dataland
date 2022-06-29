@@ -43,11 +43,8 @@
 
 <script>
 import {FormKit} from "@formkit/vue";
-import {CompanyDataControllerApi} from "@/../build/clients/backend/api";
-import {ApiWrapper} from "@/services/ApiWrapper"
+import {ApiClientProvider} from "@/services/ApiClients"
 
-const companyDataControllerApi = new CompanyDataControllerApi()
-const dataStore = new ApiWrapper(companyDataControllerApi.getCompanies)
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
@@ -70,6 +67,7 @@ export default {
     filteredCompaniesBasic: null,
     additionalCompanies: null,
   }),
+  inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
     async getCompanyByName(all = false) {
       try {
@@ -77,7 +75,8 @@ export default {
         if (all) {
           this.model.companyName = ""
         }
-        this.response = await dataStore.perform(this.model.companyName, "", true)
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true)
       } catch (error) {
         console.error(error)
         this.response = null

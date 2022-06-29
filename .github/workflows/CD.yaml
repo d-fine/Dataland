@@ -26,6 +26,11 @@ on:
         required: false
         type: string
         default: integration
+      resetKeycloakSecurityPhraseInput:
+        description: 'Keycloak Reset Password'
+        required: false
+        type: string
+
 
 jobs:
   build-prod-and-deploy:
@@ -33,7 +38,24 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
     steps:
+      - name: verifyKeycloakPassword
+        run: |
+          if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
+            echo "Keycloak will not be reset during deployment."
+            echo '::set-output name=INITIALIZE_KEYCLOAK::false'
+          elif [[ $RESET_KEYCLOAK_SECURITY_PHRASE_SECRET == $RESET_KEYCLOAK_SECURITY_PHRASE_INPUT ]]; then
+            echo "Resetting Keycloak during deployment."
+            echo '::set-output name=INITIALIZE_KEYCLOAK::true'
+          else
+            echo "Entered password for resetting Keycloak is incorrect. Aborting run."
+            exit 1
+          fi
+        env:
+          RESET_KEYCLOAK_SECURITY_PHRASE_SECRET: ${{ secrets.RESET_KEYCLOAK_SECURITY_PHRASE_SECRET }}
+          RESET_KEYCLOAK_SECURITY_PHRASE_INPUT: ${{ github.event.inputs.resetKeycloakSecurityPhraseInput }}
+        id: verifyKeycloakPassword
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         uses: docker/login-action@v1
@@ -48,8 +70,6 @@ jobs:
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.3
             cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
           fi
-        env:
-          REALDATA: ${{ github.event.inputs.realData }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -70,10 +90,28 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
+          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
+          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
+          INITIALIZE_KEYCLOAK: ${{ steps.verifyKeycloakPassword.outputs.INITIALIZE_KEYCLOAK }}
+          TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
+          KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
+          KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
+          KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
+          KEYCLOAK_UPLOADER_SALT: ${{ secrets.KEYCLOAK_UPLOADER_SALT }}
+          KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
+          KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
+          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 40 || 900 }}
+          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
+          KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
+          KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2

@@ -7,8 +7,11 @@
         </div>
         <div class="col-5 text-left ">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class=""/>
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
           </router-link>
+        </div>
+        <div class="col-3 col-offset-3">
+          <UserAuthenticationButtons/>
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -74,9 +77,10 @@
 <script>
 import Card from "primevue/card";
 import Button from "primevue/button";
+import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
+
 export default {
   name: "LandingLogin",
-  components: {Card, Button}
-
+  components: {UserAuthenticationButtons, Card, Button},
 }
 </script>

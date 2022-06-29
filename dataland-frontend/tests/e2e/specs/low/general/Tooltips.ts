@@ -3,10 +3,11 @@ describe('Tooltips test suite', () => {
         const NFRDText = "Non financial disclosure directive"
         const AssuranceText = "Level of Assurance specifies the confidence level"
         cy.intercept('**/api/companies/*').as('retrieveCompany')
+        cy.restoreLoginSession()
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
             cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies")
-            cy.wait('@retrieveCompany', {timeout: 2000}).then(() => {
-                cy.get('#app', {timeout: 2000}).should("exist")
+            cy.wait('@retrieveCompany', {timeout: 2 * 1000}).then(() => {
+                cy.get('#app', {timeout: 2 * 1000}).should("exist")
                 cy.get('.p-card-content .text-left strong')
                     .contains('NFRD required')
                 cy.get('.material-icons[title="NFRD required"]')

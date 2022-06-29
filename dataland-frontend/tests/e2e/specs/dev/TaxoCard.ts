@@ -2,6 +2,9 @@ const timeout = 120 * 1000
 describe('EU Taxonomy Data and Cards', function () {
     const companyIdList: Array<string> = []
     const companyNames: Array<string> = ["eligible & total", "eligible"]
+    beforeEach(() => {
+        cy.restoreLoginSession("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+    })
     it('Create a Company providing only valid data', () => {
         companyNames.forEach((companyName) => {
             cy.visit("/upload")

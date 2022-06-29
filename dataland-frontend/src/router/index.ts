@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import UploadData from "@/components/pages/UploadData.vue";
 import SearchData from "@/components/pages/SearchData.vue";
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
-import CompanyEU from "@/components/resources/taxonomy/TaxonomyPanel.vue";
+import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel.vue";
 import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
@@ -40,7 +40,7 @@ const routes = [
         path: "/data/eutaxonomies/:dataID",
         props: true,
         name: "EU Taxonomy",
-        component: CompanyEU,
+        component: TaxonomyPanel,
     },
     {
         path: "/companies/:companyID",
@@ -63,7 +63,7 @@ const routes = [
         path: "/imprint",
         name: "LandingImprint",
         component: TheImprint,
-    },
+    }
 ];
 
 const router = createRouter({
