@@ -34,7 +34,7 @@ describe('User interactive tests for Data Upload', () => {
         })
     })
 
-    it('Create a Company when the login is wrong', () => {
+    it('Create a Company with insufficient rights should fail', () => {
         cy.restoreLoginSession()
         const companyName = "Test company"
         uploadCompanyWithEverythingFine(companyName);
@@ -75,7 +75,7 @@ describe('User interactive tests for Data Upload', () => {
         });
     });
 
-    it('Create EU Taxonomy Dataset with Reporting Obligation and wrong login', () => {
+    it('Create EU Taxonomy Dataset with Reporting Obligation and insufficient rights should fail', () => {
         restoreLoginSession()
         uploadEuTaxonomyDatasetWithReportingObligation();
         cy.get('body').should("contain", "Sorry")
