@@ -27,7 +27,7 @@ on:
         type: string
         default: integration
       resetKeycloakSecurityPhraseInput:
-        description: 'Set to reset Keycloak during deployment, leave blank otherwise.'
+        description: 'Keycloak Reset Password'
         required: false
         type: string
 
