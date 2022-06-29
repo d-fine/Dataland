@@ -5,9 +5,7 @@
         <h2 class="mb-0">EU Taxonomy Data</h2>
       </div>
       <div class="col-6 text-left">
-        <p class="font-semibold m-0">
-          2021
-        </p>
+        <p class="font-semibold m-0">2021</p>
         <p class="font-semibold text-gray-800 mt-0">
           Data from company report.
         </p>
@@ -15,7 +13,10 @@
     </div>
     <div class="grid">
       <div class="col-7">
-        <TaxonomyPanel :dataID="metaDataInfo.data[0].dataId" v-if="metaDataInfo.data.length > 0"/>
+        <TaxonomyPanel
+          :dataID="metaDataInfo.data[0].dataId"
+          v-if="metaDataInfo.data.length > 0"
+        />
       </div>
     </div>
   </div>
@@ -25,43 +26,48 @@
 </template>
 
 <script>
-
-import {ApiClientProvider} from "@/services/ApiClients"
+import { ApiClientProvider } from "@/services/ApiClients";
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel";
 
 export default {
   name: "TaxonomyData",
-  components: {TaxonomyPanel},
+  components: { TaxonomyPanel },
   data() {
     return {
       response: null,
-      metaDataInfo: null
-    }
+      metaDataInfo: null,
+    };
   },
   props: {
     companyID: {
-      type: String
-    }
+      type: String,
+    },
   },
   created() {
-    this.getCompanyInformation()
+    this.getCompanyInformation();
   },
   watch: {
     companyID() {
-      this.getCompanyInformation()
-    }
+      this.getCompanyInformation();
+    },
   },
-  inject: ['getKeycloakInitPromise','keycloak_init'],
+  inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
     async getCompanyInformation() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getMetaDataControllerApi()
-        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData")
+        const metaDataControllerApi = await new ApiClientProvider(
+          this.getKeycloakInitPromise(),
+          this.keycloak_init
+        ).getMetaDataControllerApi();
+        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(
+          this.companyID,
+          "EuTaxonomyData"
+        );
       } catch (error) {
-        console.error(error)
-        this.metaDataInfo = null
+        console.error(error);
+        this.metaDataInfo = null;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <div :class="'grid ' + bgClass ">
-      <div class="col-12 pl-4 pr-4">
-          <slot></slot>
-      </div>
+  <div :class="'grid ' + bgClass">
+    <div class="col-12 pl-4 pr-4">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -12,8 +12,8 @@ export default {
   props: {
     bgClass: {
       type: String,
-      default: ""
-    }
-  }
-}
+      default: "",
+    },
+  },
+};
 </script>

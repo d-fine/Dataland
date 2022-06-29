@@ -7,18 +7,25 @@
  */
 
 export function numberFormatter(number: number, digits?: number) {
-    const lookup = [
-        {value: 1, symbol: ""},
-        {value: 1e3, symbol: "K"},
-        {value: 1e6, symbol: "M"},
-        {value: 1e9, symbol: "B"},
-        {value: 1e12, symbol: "T"},
-        {value: 1e15, symbol: "QA"},
-        {value: 1e18, symbol: "QI"}
-    ];
-    const regex = /\.0+$|(\.d*[1-9])0+$/;
-    const item = lookup.slice().reverse().find(function(part) {
-        return number >= part.value;
+  const lookup = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "K" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "B" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "QA" },
+    { value: 1e18, symbol: "QI" },
+  ];
+  const regex = /\.0+$|(\.d*[1-9])0+$/;
+  const item = lookup
+    .slice()
+    .reverse()
+    .find(function (part) {
+      return number >= part.value;
     });
-    return item ? (number / item.value).toFixed(digits).replace(regex, "$1") + " " + item.symbol : "0";
+  return item
+    ? (number / item.value).toFixed(digits).replace(regex, "$1") +
+        " " +
+        item.symbol
+    : "0";
 }

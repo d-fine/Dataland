@@ -1,26 +1,29 @@
 <template>
   <div v-if="company" class="grid align-items-end text-left">
     <div class="col-12">
-      <h1 class="mb-0">{{companyInformation.companyName}}</h1>
+      <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
     </div>
 
     <div class="col-4">
-      <span>Market Cap:</span> <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
+      <span>Market Cap:</span>
+      <span class="font-semibold"
+        >€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span
+      >
     </div>
     <div class="col-4">
-      <span>Headquarter: </span> <span class="font-semibold" >{{companyInformation.headquarters}}</span>
+      <span>Headquarter: </span>
+      <span class="font-semibold">{{ companyInformation.headquarters }}</span>
     </div>
     <div class="col-4">
-      <span>Sector: </span> <span class="font-semibold" >{{companyInformation.sector}}</span>
+      <span>Sector: </span>
+      <span class="font-semibold">{{ companyInformation.sector }}</span>
     </div>
-
   </div>
 </template>
 
 <script>
-
-import {ApiClientProvider} from "@/services/ApiClients"
-import {numberFormatter} from "@/utils/currencyMagnitude";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { numberFormatter } from "@/utils/currencyMagnitude";
 
 export default {
   name: "CompanyInformation",
@@ -28,38 +31,42 @@ export default {
     return {
       response: null,
       company: null,
-      companyInformation: null
-    }
+      companyInformation: null,
+    };
   },
   props: {
     companyID: {
-      type: String
-    }
+      type: String,
+    },
   },
   created() {
-      this.getCompanyInformation()
+    this.getCompanyInformation();
   },
   watch: {
-    companyID(){
-      this.getCompanyInformation()
-    }
+    companyID() {
+      this.getCompanyInformation();
+    },
   },
-  inject: ['getKeycloakInitPromise','keycloak_init'],
+  inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
     async getCompanyInformation() {
       try {
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.company = await companyDataControllerApi.getCompanyById(this.companyID)
-        this.companyInformation = this.company.data.companyInformation
+        const companyDataControllerApi = await new ApiClientProvider(
+          this.getKeycloakInitPromise(),
+          this.keycloak_init
+        ).getCompanyDataControllerApi();
+        this.company = await companyDataControllerApi.getCompanyById(
+          this.companyID
+        );
+        this.companyInformation = this.company.data.companyInformation;
       } catch (error) {
-        console.error(error)
-        this.company=null
+        console.error(error);
+        this.company = null;
       }
-
     },
-     orderOfMagnitudeSuffix(value){
-      return numberFormatter(value)
-     }
-  }
-}
+    orderOfMagnitudeSuffix(value) {
+      return numberFormatter(value);
+    },
+  },
+};
 </script>
