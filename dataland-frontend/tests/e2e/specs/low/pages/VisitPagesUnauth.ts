@@ -3,7 +3,7 @@ describe('Test that if unauthenticated will be redirected to landing page', () =
         const pages = ['/upload', '/search', '/searchtaxonomy', '/companies/:companyID/eutaxonomies']
         pages.forEach(page => {
             cy.visit(page)
-            cy.get('h1').should("contain.text","CREATE A DATASET")
+            cy.url().should("eq", Cypress.config('baseUrl') + "/")
         })
     })
 })

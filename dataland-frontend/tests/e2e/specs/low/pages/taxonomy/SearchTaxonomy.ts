@@ -134,22 +134,4 @@ describe('Search Taxonomy', function () {
         cy.get('button[name=search_bar_collapse]').should('not.exist')
     });
 
-
-
-
-});
-
-describe('Check that nothing can be seen after logout', function () {
-    beforeEach(function () {
-        cy.restoreLoginSession()
-    });
-
-    it('Check that companies are found if logged in, and none are there if logged out', function () {
-        cy.visit("/searchtaxonomy")
-        cy.get("tr[role='row'] > td[role='cell']").should("exist")
-        cy.logout()
-        cy.visit("/searchtaxonomy")
-        cy.url().should("eq", Cypress.config('baseUrl') + "/")
-    });
-
 });
