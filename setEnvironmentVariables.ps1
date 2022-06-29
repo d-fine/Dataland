@@ -1,7 +1,7 @@
 # USAGE: set github token and user and simply run this script in an ELEVATED! powershell window
 # The Script can take quite some time (something like a minute) to complete
-# SET to your own value! [Environment]::SetEnvironmentVariable("#GITHUB_TOKEN", "", [System.EnvironmentVariableTarget]::User)
-# SET to your own value! [Environment]::SetEnvironmentVariable("#GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
+# SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "", [System.EnvironmentVariableTarget]::User)
+# SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DOCKERFILE", "./dataland-backend/DockerfileTest", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "40", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "90", [System.EnvironmentVariableTarget]::User)
