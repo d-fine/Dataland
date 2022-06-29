@@ -1,8 +1,0 @@
-{
-  "realm": "datalandsecurity",
-  "auth-server-url": "http://localhost:8095/",
-  "ssl-required": "external",
-  "resource": "dataland-frontend",
-  "public-client": true,
-  "confidential-port": 0
-}
