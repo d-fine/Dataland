@@ -8,7 +8,7 @@
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
             <i v-else aria-hidden="true"/>
             <AutoComplete
-                v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
+                v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
                 @complete="searchCompany($event)" placeholder="Search company by name or PermID" inputClass="h-3rem" ref="autocomplete"
                 field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect">
@@ -86,12 +86,6 @@ export default {
     close() {
       this.$refs.autocomplete.hideOverlay()
     },
-    focused() {
-      this.$emit('autocomplete-focus', true)
-      if (this.$refs.indexTabs) {
-        this.$refs.indexTabs.activeIndex = null
-      }
-    },
     handleItemSelect() {
       this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
@@ -133,9 +127,6 @@ export default {
       this.index = index
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
-    },
-    unfocused() {
-      this.$emit('autocomplete-focus', false)
     },
     async filterByIndex(stockIndex) {
       try {
