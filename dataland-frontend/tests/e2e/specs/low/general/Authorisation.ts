@@ -10,8 +10,4 @@ describe('Authentication Buttons', () => {
         cy.logout()
     })
 
-    it('Checks social login', () => {
-        cy.socialLoginWithGoogle()
-        cy.logout()
-    })
 })

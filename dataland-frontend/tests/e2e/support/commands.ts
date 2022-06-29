@@ -11,7 +11,6 @@ declare global {
             restoreLoginSession: typeof restoreLoginSession
             register: typeof register
             logout: typeof logout
-            socialLoginWithGoogle: typeof socialLoginWithGoogle
         }
     }
 }
@@ -51,21 +50,6 @@ export function login(username: string = "data_reader", password: string = Cypre
         .should('exist')
         .click()
 
-        .get("button[name='logout_dataland_button']")
-        .should("exist")
-        .should("be.visible")
-}
-
-export function socialLoginWithGoogle(username: string = Cypress.env("GOOGLE_ACCOUNT_NAME"), password: string = Cypress.env("GOOGLE_PASSWORD")) {
-    return cy.visit("/")
-        .get("button[name='login_dataland_button']").click()
-        .get("#social-google").should("exist").click()
-        .get( "#identifierId").should("exist")
-        .type(username, {force: true})
-        .get("form").submit()
-        .get("input[type='password']").should("exist")
-        .type(password, {force: true})
-        .get("form").submit()
         .get("button[name='logout_dataland_button']")
         .should("exist")
         .should("be.visible")
@@ -132,4 +116,3 @@ Cypress.Commands.add('login', login)
 Cypress.Commands.add('restoreLoginSession', restoreLoginSession)
 Cypress.Commands.add('register', register)
 Cypress.Commands.add('logout', logout)
-Cypress.Commands.add('socialLoginWithGoogle', socialLoginWithGoogle)

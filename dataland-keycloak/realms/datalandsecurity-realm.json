@@ -82,6 +82,7 @@
         "composite": true,
         "composites": {
           "realm": [
+            "ROLE_USER",
             "offline_access",
             "uma_authorization"
           ],
