@@ -8,7 +8,7 @@
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
             <i v-else aria-hidden="true"/>
             <AutoComplete
-                v-model="selectedCompany" :suggestions="filteredCompaniesBasic"
+                v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
                 @complete="searchCompany($event)" placeholder="Search company by name or PermID" inputClass="h-3rem" ref="autocomplete"
                 field="companyName" style="z-index:10" name="eu_taxonomy_search_input"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect">
@@ -64,7 +64,7 @@ export default {
       loading: false,
       selectedCompany: null,
       filteredCompaniesBasic: null,
-      currentScrollPosition: 0
+      latestScrollPosition: 0
     }
   },
   created() {
@@ -86,26 +86,32 @@ export default {
     close() {
       this.$refs.autocomplete.hideOverlay()
     },
+    focused() {
+      this.$emit('autocomplete-focus', true)
+    },
     handleItemSelect() {
       this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
+      if (this.$refs.indexTabs) {
+        this.$refs.indexTabs.activeIndex = null
+      }
       this.collection = true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
     },
     handleScroll() {
-      const scrolled = window.scrollY;
-      if(this.currentScrollPosition > scrolled){
+      const windowScrollY = window.scrollY;
+      if(this.latestScrollPosition > windowScrollY){
         //ScrollUP event
-        this.currentScrollPosition = scrolled;
+        this.latestScrollPosition = windowScrollY;
         this.scrolled = document.documentElement.scrollTop >= 50;
       } else{
         //ScrollDOWN event
         this.scrolled = document.documentElement.scrollTop > 150;
-        this.currentScrollPosition = scrolled;
+        this.latestScrollPosition = windowScrollY;
       }
       this.$emit('scrolling', this.scrolled)
       if (!this.scrolled && this.$refs.autocomplete) {
@@ -127,6 +133,9 @@ export default {
       this.index = index
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
+    },
+    unfocused() {
+      this.$emit('autocomplete-focus', false)
     },
     async filterByIndex(stockIndex) {
       try {
