@@ -11,6 +11,8 @@ declare global {
       restoreLoginSession: typeof restoreLoginSession;
       register: typeof register;
       logout: typeof logout;
+      verifyResultTable: typeof verifyResultTable;
+      checkViewButtonWorks: typeof checkViewButtonWorks;
     }
   }
 }
@@ -134,9 +136,33 @@ export function restoreLoginSession(
   );
 }
 
+export function verifyResultTable() {
+  return cy
+    .get("table.p-datatable-table")
+    .contains("th", "COMPANY")
+    .contains("th", "PERM ID")
+    .contains("th", "SECTOR")
+    .contains("th", "MARKET CAP")
+    .contains("th", "LOCATION");
+}
+
+export function checkViewButtonWorks() {
+  return cy
+    .get("table.p-datatable-table")
+    .contains("td", "VIEW")
+    .contains("a", "VIEW")
+    .click()
+    .url()
+    .should("include", "/companies/")
+    .url()
+    .should("include", "/eutaxonomies");
+}
+
 Cypress.Commands.add("retrieveDataIdsList", retrieveDataIdsList);
 Cypress.Commands.add("retrieveCompanyIdsList", retrieveCompanyIdsList);
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("restoreLoginSession", restoreLoginSession);
 Cypress.Commands.add("register", register);
 Cypress.Commands.add("logout", logout);
+Cypress.Commands.add("verifyResultTable", verifyResultTable);
+Cypress.Commands.add("checkViewButtonWorks", checkViewButtonWorks);

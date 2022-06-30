@@ -1,3 +1,8 @@
+import {
+  checkViewButtonWorks,
+  verifyResultTable,
+} from "../../../support/commands";
+
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
     cy.restoreLoginSession();
@@ -48,17 +53,7 @@ describe("Data Search Page Company", function () {
       .should("not.be.disabled")
       .should("contain", "Show all companies")
       .click({ force: true });
-    cy.get("table.p-datatable-table").should("exist");
-    cy.get("table.p-datatable-table").contains("th", "COMPANY");
-    cy.get("table.p-datatable-table").contains("th", "SECTOR");
-    cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
-    cy.get("table.p-datatable-table")
-      .contains("td", "VIEW")
-      .contains("a", "VIEW")
-      .click()
-      .url()
-      .should("include", "/companies/")
-      .url()
-      .should("include", "/eutaxonomies");
+    verifyResultTable();
+    checkViewButtonWorks();
   });
 });
