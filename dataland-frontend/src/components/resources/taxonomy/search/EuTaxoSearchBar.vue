@@ -110,7 +110,7 @@ export default {
         this.scrolled = document.documentElement.scrollTop >= 50;
       } else{
         //ScrollDOWN event
-        this.scrolled = document.documentElement.scrollTop > 150;
+        this.scrolled = document.documentElement.scrollTop > 80;
         this.currentScrollPosition = scrolled;
       }
       this.$emit('scrolling', this.scrolled)
