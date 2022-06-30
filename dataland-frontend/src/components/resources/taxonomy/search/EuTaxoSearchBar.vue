@@ -28,7 +28,7 @@
         <Button icon="pi pi-search" class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
-        <IndexTabs v-if="showIndexTabs" :initIindex="selectedIndex" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+        <IndexTabs v-if="showIndexTabs" :initIndex="selectedIndex" @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
     </div>
   </MarginWrapper>
