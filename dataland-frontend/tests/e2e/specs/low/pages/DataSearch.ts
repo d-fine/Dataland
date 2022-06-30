@@ -1,6 +1,6 @@
 import {
   checkViewButtonWorks,
-  verifyResultTable,
+  verifyCompanySearchResultTable,
 } from "../../../support/commands";
 
 describe("Data Search Page Skyminder", function () {
@@ -53,7 +53,7 @@ describe("Data Search Page Company", function () {
       .should("not.be.disabled")
       .should("contain", "Show all companies")
       .click({ force: true });
-    verifyResultTable();
+    verifyCompanySearchResultTable();
     checkViewButtonWorks();
   });
 });

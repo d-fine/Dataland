@@ -1,6 +1,6 @@
 import {
   checkViewButtonWorks,
-  verifyResultTable,
+  verifyTaxonomySearchResultTable,
 } from "../../../../support/commands";
 
 let companiesWithData: any;
@@ -54,7 +54,7 @@ describe("Search Taxonomy", function () {
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
-    verifyResultTable();
+    verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
@@ -65,7 +65,7 @@ describe("Search Taxonomy", function () {
     const inputValue =
       companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
-    verifyResultTable();
+    verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
   });
 

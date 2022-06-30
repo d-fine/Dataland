@@ -1,7 +1,7 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 import {
   checkViewButtonWorks,
-  verifyResultTable,
+  verifyTaxonomySearchResultTable,
 } from "../../../../support/commands";
 
 const numberOfStockIndices =
@@ -23,7 +23,7 @@ describe("Index Panel behavior", function () {
       .eq(1)
       .parent(".p-tabmenuitem")
       .should("have.css", "color", "rgb(27, 27, 27)");
-    verifyResultTable();
+    verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get(indexTabMenu).should("not.exist");
   });
@@ -32,7 +32,7 @@ describe("Index Panel behavior", function () {
     cy.visit("/searchtaxonomy");
     cy.get(indexTabMenu).should("exist");
     cy.get(".grid").should("not.contain", "Choose by stock market index");
-    verifyResultTable();
+    verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
   });
 });

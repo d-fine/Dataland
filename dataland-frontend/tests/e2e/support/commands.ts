@@ -11,7 +11,8 @@ declare global {
       restoreLoginSession: typeof restoreLoginSession;
       register: typeof register;
       logout: typeof logout;
-      verifyResultTable: typeof verifyResultTable;
+      verifyTaxonomySearchResultTable: typeof verifyTaxonomySearchResultTable;
+      verifyCompanySearchResultTable: typeof verifyCompanySearchResultTable;
       checkViewButtonWorks: typeof checkViewButtonWorks;
     }
   }
@@ -136,12 +137,18 @@ export function restoreLoginSession(
   );
 }
 
-export function verifyResultTable() {
+export function verifyTaxonomySearchResultTable() {
   cy.get("table.p-datatable-table").contains("th", "COMPANY");
   cy.get("table.p-datatable-table").contains("th", "PERM ID");
   cy.get("table.p-datatable-table").contains("th", "SECTOR");
   cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
   cy.get("table.p-datatable-table").contains("th", "LOCATION");
+}
+
+export function verifyCompanySearchResultTable() {
+  cy.get("table.p-datatable-table").contains("th", "COMPANY");
+  cy.get("table.p-datatable-table").contains("th", "SECTOR");
+  cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
 }
 
 export function checkViewButtonWorks() {
@@ -162,5 +169,12 @@ Cypress.Commands.add("login", login);
 Cypress.Commands.add("restoreLoginSession", restoreLoginSession);
 Cypress.Commands.add("register", register);
 Cypress.Commands.add("logout", logout);
-Cypress.Commands.add("verifyResultTable", verifyResultTable);
+Cypress.Commands.add(
+  "verifyTaxonomySearchResultTable",
+  verifyTaxonomySearchResultTable
+);
+Cypress.Commands.add(
+  "verifyCompanySearchResultTable",
+  verifyCompanySearchResultTable
+);
 Cypress.Commands.add("checkViewButtonWorks", checkViewButtonWorks);
