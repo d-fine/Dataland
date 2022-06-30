@@ -137,13 +137,11 @@ export function restoreLoginSession(
 }
 
 export function verifyResultTable() {
-  return cy
-    .get("table.p-datatable-table")
-    .contains("th", "COMPANY")
-    .contains("th", "PERM ID")
-    .contains("th", "SECTOR")
-    .contains("th", "MARKET CAP")
-    .contains("th", "LOCATION");
+  cy.get("table.p-datatable-table").contains("th", "COMPANY");
+  cy.get("table.p-datatable-table").contains("th", "PERM ID");
+  cy.get("table.p-datatable-table").contains("th", "SECTOR");
+  cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
+  cy.get("table.p-datatable-table").contains("th", "LOCATION");
 }
 
 export function checkViewButtonWorks() {
