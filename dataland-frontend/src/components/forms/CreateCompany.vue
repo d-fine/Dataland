@@ -76,10 +76,6 @@ const createCompany = {
     messageCount: 0,
     identifierListSize: 1
   }),
-  created() {
-    // delete auto identifiers
-    delete this.companyInformationSchema[6]
-  },
   inject: ['getKeycloakInitPromise', 'keycloak_init'],
   methods: {
     async postCompanyData() {
