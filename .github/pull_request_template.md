@@ -5,7 +5,6 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github. 
 - [ ] A peer-review has been executed
   - [ ] The code has been manually inspected by someone who did not implement the feature
-  - [ ] The new feature was observed "in running software"
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one E2E Test exists testing the new feature
 - [ ] Documentation is updated as required
