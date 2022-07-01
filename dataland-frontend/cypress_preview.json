@@ -3,6 +3,7 @@
   "defaultCommandTimeout": 10000,
   "viewportHeight": 684,
   "viewportWidth": 1536,
+  "experimentalSessionAndOrigin": true,
   "retries": {
     "runMode": 2,
     "openMode": 1

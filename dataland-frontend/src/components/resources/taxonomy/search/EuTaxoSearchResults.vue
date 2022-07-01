@@ -34,6 +34,9 @@
             </template>
           </Column>
           <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
+            <template #body="{data}">
+              {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}
+            </template>
           </Column>
           <Column field="companyId" header="" class="surface-0 w-1 d-datatable-column-right">
             <template #body="{data}">
@@ -77,6 +80,9 @@ export default {
   methods: {
     orderOfMagnitudeSuffix(value) {
       return numberFormatter(value, 2) + " €"
+    },
+    buildLocationString(headquarters, countryCode) {
+      return headquarters + ", " + countryCode
     }
   }
 }
