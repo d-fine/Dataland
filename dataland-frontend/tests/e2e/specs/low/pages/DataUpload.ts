@@ -19,6 +19,8 @@ describe('Data Upload Page', function () {
         cy.get('button[name="postCompanyData"]').should('be.disabled')
         cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
         cy.get('button[name="postCompanyData"]').should('be.disabled')
+        cy.get('input[name=countryCode]').type(inputValue, {force: true})
+        cy.get('button[name="postCompanyData"]').should('be.disabled')
         cy.get('select[name=identifierType]').select('ISIN')
         cy.get('button[name="postCompanyData"]').should('be.disabled')
         cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
