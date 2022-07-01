@@ -49,6 +49,9 @@
       </div>
     </div>
   </MarginWrapper>
+  <router-link to="searchtaxonomy">
+    <Button class="p-button" />
+  </router-link>
 </template>
 
 <script>
