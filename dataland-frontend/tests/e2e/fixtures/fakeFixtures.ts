@@ -35,6 +35,7 @@ function generateCompanyInformation() {
                 "identifierValue": faker.random.alphaNumeric(12)
             }
         ]).sort((a,b) => {return a.identifierType.localeCompare(b.identifierType)});
+        const countryCode = faker.address.countryCode();
         return  {
             "companyName": companyName,
             "headquarters": headquarters,
@@ -42,7 +43,8 @@ function generateCompanyInformation() {
             "marketCap": marketCap,
             "reportingDateOfMarketCap": reportingDateOfMarketCap,
             "indices": indices,
-            "identifiers": identifiers
+            "identifiers": identifiers,
+            "countryCode": countryCode
         }
 }
 
@@ -89,22 +91,22 @@ function generateCompanyWithEuTaxonomyData() {
     return companiesWithEuTaxonomyData
 }
 
-function stockIndexValue(stockIndexList: Array<string>, stockIndex: string) {
-    return stockIndexList.includes(stockIndex) ? "x" : ""
+function getStockIndexValueForCsv(setStockIndexList: Array<string>, stockIndexToCheck: string) {
+    return setStockIndexList.includes(stockIndexToCheck) ? "x" : ""
 }
 
-function identifierValue(identifierArray: Array<Object>, identifierType: string) {
+function getIdentifierValueForCsv(identifierArray: Array<Object>, identifierType: string) {
     const identifierObject: any = identifierArray.find((identifier: any) => {
         return identifier.identifierType === identifierType
     })
     return identifierObject ? identifierObject.identifierValue : ""
 }
 
-function percentageGenerator(value:number){
+function convertToPercentageString(value:number){
     return (Math.round(value * 100 * 100) / 100).toFixed(2).replace(".",",") + "%"
 }
 
-function euroGenerator(value:number){
+function decimalSeparatorConverter(value:number){
     return value.toString().replace(".",",")
 }
 
@@ -120,17 +122,18 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
             {label: 'Unternehmensname', value: 'companyName'},
             {label: 'Headquarter', value: 'headquarters'},
             {label: 'Sector', value: 'sector'},
+            {label: 'Countrycode', value: 'countryCode'},
             {label: 'Market Capitalization EURmm', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
-            {label: 'Total Revenue EURmm', value: (row: any) => euroGenerator(row.Revenue.totalAmount)},
-            {label: 'Total CapEx EURmm', value: (row: any) => euroGenerator(row.Capex.totalAmount)},
-            {label: 'Total OpEx EURmm', value: (row: any) => euroGenerator(row.Opex.totalAmount)},
-            {label: 'Eligible Revenue', value: (row: any) => percentageGenerator(row.Revenue.eligiblePercentage)},
-            {label: 'Eligible CapEx', value: (row: any) => percentageGenerator(row.Capex.eligiblePercentage)},
-            {label: 'Eligible OpEx', value: (row: any) => percentageGenerator(row.Opex.eligiblePercentage)},
-            {label: 'Aligned Revenue', value: (row: any) => percentageGenerator(row.Revenue.alignedPercentage)},
-            {label: 'Aligned CapEx', value: (row: any) => percentageGenerator(row.Capex.alignedPercentage)},
-            {label: 'Aligned OpEx', value: (row: any) => percentageGenerator(row.Opex.alignedPercentage)},
+            {label: 'Total Revenue EURmm', value: (row: any) => decimalSeparatorConverter(row.Revenue.totalAmount)},
+            {label: 'Total CapEx EURmm', value: (row: any) => decimalSeparatorConverter(row.Capex.totalAmount)},
+            {label: 'Total OpEx EURmm', value: (row: any) => decimalSeparatorConverter(row.Opex.totalAmount)},
+            {label: 'Eligible Revenue', value: (row: any) => convertToPercentageString(row.Revenue.eligiblePercentage)},
+            {label: 'Eligible CapEx', value: (row: any) => convertToPercentageString(row.Capex.eligiblePercentage)},
+            {label: 'Eligible OpEx', value: (row: any) => convertToPercentageString(row.Opex.eligiblePercentage)},
+            {label: 'Aligned Revenue', value: (row: any) => convertToPercentageString(row.Revenue.alignedPercentage)},
+            {label: 'Aligned CapEx', value: (row: any) => convertToPercentageString(row.Capex.alignedPercentage)},
+            {label: 'Aligned OpEx', value: (row: any) => convertToPercentageString(row.Opex.alignedPercentage)},
             {label: 'IS/FS', value: 'companyType', default: 'IS'},
             {label: 'NFRD mandatory', value: (row: any) => row["Reporting Obligation"]},
             {label: 'Assurance', value: (row: any) => {if(row["Attestation"] === "LimitedAssurance"){
@@ -142,10 +145,10 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
                 }
             }},
             ...stockIndexArray.map((e: any) => {
-                return {label: humanize(e), value: (row: any) => stockIndexValue(row.indices, e)}
+                return {label: humanize(e), value: (row: any) => getStockIndexValueForCsv(row.indices, e)}
             }),
             ...identifierTypeArray.map((e: any) => {
-                return {label: humanize(e), value: (row: any) => identifierValue(row.identifiers, e)}
+                return {label: humanize(e), value: (row: any) => getIdentifierValueForCsv(row.identifiers, e)}
             }),
         ],
         delimiter: ';'

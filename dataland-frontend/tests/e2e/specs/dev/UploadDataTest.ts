@@ -1,4 +1,4 @@
-import {restoreLoginSession} from "../../support/commands";
+import {fillCompanyUploadFields, restoreLoginSession} from "../../support/commands";
 
 describe('User interactive tests for Data Upload', () => {
     let companyId: string
@@ -13,13 +13,7 @@ describe('User interactive tests for Data Upload', () => {
 
     function uploadCompanyWithEverythingFine(companyName: string) {
         cy.visit("/upload")
-        cy.get('input[name=companyName]').type(companyName, {force: true})
-        cy.get('input[name=headquarters]').type("applications", {force: true})
-        cy.get('input[name=sector]').type("Handmade", {force: true})
-        cy.get('input[name=marketCap]').type("123", {force: true})
-        cy.get('input[name=reportingDateOfMarketCap]').type("2021-09-02", {force: true})
-        cy.get('select[name=identifierType]').select('ISIN')
-        cy.get('input[name=identifierValue]').type("IsinValueId", {force: true})
+        fillCompanyUploadFields(companyName)
         cy.get('button[name="postCompanyData"]').click()
     }
 
