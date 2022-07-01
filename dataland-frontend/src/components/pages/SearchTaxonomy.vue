@@ -41,9 +41,6 @@ export default {
         this.$refs.euTaxoSearchBar.showIndexTabs = true
       }
     },
-    handleIndex(stockIndex, index) {
-      this.$refs.euTaxoSearchBar.toggleIndexTabs(stockIndex, index)
-    },
     handleScrolling(scrolled) {
       this.scrolled = scrolled
     },

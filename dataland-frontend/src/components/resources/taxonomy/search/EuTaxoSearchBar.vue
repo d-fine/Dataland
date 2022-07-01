@@ -64,7 +64,7 @@ export default {
       loading: false,
       selectedCompany: null,
       filteredCompaniesBasic: null,
-      currentScrollPosition: 0
+      latestScrollPosition: 0
     }
   },
   created() {
@@ -88,30 +88,30 @@ export default {
     },
     focused() {
       this.$emit('autocomplete-focus', true)
-      if (this.$refs.indexTabs) {
-        this.$refs.indexTabs.activeIndex = null
-      }
     },
     handleItemSelect() {
       this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
+      if (this.$refs.indexTabs) {
+        this.$refs.indexTabs.activeIndex = null
+      }
       this.collection = true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
     },
     handleScroll() {
-      const scrolled = window.scrollY;
-      if(this.currentScrollPosition > scrolled){
+      const windowScrollY = window.scrollY;
+      if(this.latestScrollPosition > windowScrollY){
         //ScrollUP event
-        this.currentScrollPosition = scrolled;
+        this.latestScrollPosition = windowScrollY;
         this.scrolled = document.documentElement.scrollTop >= 50;
       } else{
         //ScrollDOWN event
         this.scrolled = document.documentElement.scrollTop > 80;
-        this.currentScrollPosition = scrolled;
+        this.latestScrollPosition = windowScrollY;
       }
       this.$emit('scrolling', this.scrolled)
       if (!this.scrolled && this.$refs.autocomplete) {
