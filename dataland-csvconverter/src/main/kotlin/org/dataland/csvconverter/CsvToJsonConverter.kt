@@ -44,6 +44,7 @@ class CsvToJsonConverter {
     private val columnMapping = mapOf(
         "companyName" to "Unternehmensname",
         "headquarters" to "Headquarter",
+        "countryCode" to "Countrycode",
         "sector" to "Sector",
         "marketCap" to "Market Capitalization EURmm",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
@@ -98,7 +99,8 @@ class CsvToJsonConverter {
                 getValue("reportingDateOfMarketCap", row), DateTimeFormatter.ofPattern("d.M.yyyy")
             ),
             identifiers = getCompanyIdentifiers(row),
-            indices = getStockIndices(row)
+            indices = getStockIndices(row),
+            countryCode = getValue("countryCode", row)
         )
     }
 

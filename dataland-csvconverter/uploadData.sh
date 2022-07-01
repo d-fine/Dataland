@@ -19,6 +19,8 @@ iconv -f iso-8859-1 -t UTF-8 "$csv_file" > $work_file
 
 ./../gradlew :dataland-csvconverter:run --args="$work_file" --stacktrace
 
+exit 0
+
 docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
 docker build -t ghcr.io/d-fine/dataland/datacontainer:"$version" .
 docker image push ghcr.io/d-fine/dataland/datacontainer:"$version"

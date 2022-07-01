@@ -35,6 +35,7 @@ function generateCompanyInformation() {
                 "identifierValue": faker.random.alphaNumeric(12)
             }
         ]).sort((a,b) => {return a.identifierType.localeCompare(b.identifierType)});
+        const countryCode = faker.address.countryCode();
         return  {
             "companyName": companyName,
             "headquarters": headquarters,
@@ -42,7 +43,8 @@ function generateCompanyInformation() {
             "marketCap": marketCap,
             "reportingDateOfMarketCap": reportingDateOfMarketCap,
             "indices": indices,
-            "identifiers": identifiers
+            "identifiers": identifiers,
+            "countryCode": countryCode
         }
 }
 
@@ -120,6 +122,7 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
             {label: 'Unternehmensname', value: 'companyName'},
             {label: 'Headquarter', value: 'headquarters'},
             {label: 'Sector', value: 'sector'},
+            {label: 'Countrycode', value: 'countryCode'},
             {label: 'Market Capitalization EURmm', value: 'marketCap'},
             {label: 'Market Capitalization Date', value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions) },
             {label: 'Total Revenue EURmm', value: (row: any) => euroGenerator(row.Revenue.totalAmount)},
