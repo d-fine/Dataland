@@ -8,10 +8,10 @@ is_infrastructure_up () {
   declare -A services
   services["backend"]=http://proxy:80/api/actuator/health/ping
   services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
-  services["edc-dummyserver"]=http://dataland-edc:9191/api/actuator/health
+  services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
 
   for service in "${!services[@]}"; do
-    if ! curl ${services[$service]} 2>/dev/null | grep -q UP; then
+    if ! curl ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
       echo "$service not yet there"
       return 1
     fi
