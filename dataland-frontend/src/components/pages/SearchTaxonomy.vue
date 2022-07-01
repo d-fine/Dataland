@@ -33,9 +33,7 @@ export default {
   data() {
     return {
       scrolled: false,
-      stockIndices:
-        apiSpecs.components.schemas.CompanyInformation.properties["indices"]
-          .items.enum,
+      stockIndices: apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum,
       route: useRoute(),
     };
   },

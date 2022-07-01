@@ -10,19 +10,12 @@
           <span class="font-medium text-3xl">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
-        <div
-          v-else
-          class="col-6 col-offset-1 grid align-items-center text-right"
-        >
+        <div v-else class="col-6 col-offset-1 grid align-items-center text-right">
           <span class="pl-4 font-semibold">No data has been reported </span>
         </div>
       </div>
       <template v-if="percent != null">
-        <ProgressBar
-          :value="percentCalculation"
-          :showValue="false"
-          class="bg-black-alpha-20 d-progressbar"
-        >
+        <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar">
         </ProgressBar>
         <div class="grid mt-4">
           <div class="col-12 text-left p-0 pl-2" v-if="total">
@@ -35,9 +28,7 @@
             </p>
           </div>
           <div class="col-12 text-left p-0 pl-2" v-else>
-            <p class="left-align">
-              In percentage of the total {{ taxonomyKind }}
-            </p>
+            <p class="left-align">In percentage of the total {{ taxonomyKind }}</p>
           </div>
         </div>
       </template>
@@ -79,11 +70,7 @@ export default {
       return numberFormatter(parseFloat(this.total), 2);
     },
     amount() {
-      return numberFormatter(
-        Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) /
-          100,
-        2
-      );
+      return numberFormatter(Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100, 2);
     },
   },
 };

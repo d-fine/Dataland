@@ -9,20 +9,12 @@ describe("Tooltips test suite", () => {
       cy.wait("@retrieveCompany", { timeout: 2 * 1000 }).then(() => {
         cy.get("#app", { timeout: 2 * 1000 }).should("exist");
         cy.get(".p-card-content .text-left strong").contains("NFRD required");
-        cy.get('.material-icons[title="NFRD required"]').trigger(
-          "mouseenter",
-          "center"
-        );
+        cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
         cy.get('.material-icons[title="NFRD required"]').trigger("mouseleave");
         cy.get(".p-tooltip").should("not.exist");
-        cy.get(".p-card-content .text-left strong").contains(
-          "Level of Assurance"
-        );
-        cy.get('.material-icons[title="Level of Assurance"]').trigger(
-          "mouseenter",
-          "center"
-        );
+        cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
+        cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
       });
     });

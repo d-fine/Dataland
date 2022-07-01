@@ -1,16 +1,10 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-import {
-  checkViewButtonWorks,
-  verifyTaxonomySearchResultTable,
-} from "../../../../support/commands";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
 
-const numberOfStockIndices =
-  apiSpecs.components.schemas.CompanyInformation.properties["indices"].items
-    .enum.length;
+const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 
 describe("Index Panel behavior", function () {
-  const indexTabMenu =
-    ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
+  const indexTabMenu = ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
   beforeEach(() => {
     cy.restoreLoginSession();
   });
@@ -18,11 +12,7 @@ describe("Index Panel behavior", function () {
   it("Index tabmenu should be present on first visit", () => {
     cy.visit("/searchtaxonomy");
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
-    cy.get(indexTabMenu)
-      .should("exist")
-      .eq(1)
-      .parent(".p-tabmenuitem")
-      .should("have.css", "color", "rgb(27, 27, 27)");
+    cy.get(indexTabMenu).should("exist").eq(1).parent(".p-tabmenuitem").should("have.css", "color", "rgb(27, 27, 27)");
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get(indexTabMenu).should("not.exist");

@@ -142,26 +142,12 @@
               />
             </FormKit>
           </div>
-          <FormKit
-            type="submit"
-            :disabled="!valid"
-            label="Post EU-Taxonomy Dataset"
-            name="postEUData"
-          />
+          <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
         </FormKit>
       </FormKit>
       <template v-if="processed">
-        <SuccessUpload
-          v-if="response"
-          msg="EU Taxonomy Data"
-          :messageCount="messageCount"
-          :data="response.data"
-        />
-        <FailedUpload
-          v-else
-          msg="EU Taxonomy Data"
-          :messageCount="messageCount"
-        />
+        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data" />
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
       </template>
     </template>
   </Card>
@@ -201,11 +187,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        const companyList = await companyDataControllerApi.getCompanies(
-          "",
-          "",
-          true
-        );
+        const companyList = await companyDataControllerApi.getCompanies("", "", true);
         this.idList = companyList.data.map((element) => element.companyId);
       } catch (error) {
         this.idList = [];
@@ -220,10 +202,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getEuTaxonomyDataControllerApi();
-        this.response =
-          await euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            this.model
-          );
+        this.response = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
         this.$formkit.reset("createEuTaxonomyForm");
       } catch (error) {
         this.response = null;

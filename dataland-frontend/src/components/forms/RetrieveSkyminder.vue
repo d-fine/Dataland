@@ -11,31 +11,14 @@
         }"
         @submit="getSkyminderByName"
       >
-        <FormKit
-          type="text"
-          name="code"
-          validation="required"
-          label="Country Code"
-        />
-        <FormKit
-          type="text"
-          name="name"
-          validation="required"
-          label="Company Name"
-        />
+        <FormKit type="text" name="code" validation="required" label="Country Code" />
+        <FormKit type="text" name="name" validation="required" label="Company Name" />
       </FormKit>
       <br />
       <Button @click="clearAll" label="Clear" />
       <div v-if="response" class="col m12">
         <SkyminderTable
-          :headers="[
-            'Name',
-            'Address',
-            'Website',
-            'Email',
-            'Phone',
-            'Identifier',
-          ]"
+          :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
           :data="response.data"
         />
       </div>
@@ -72,9 +55,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getSkyminderControllerApi();
-        this.response = await skyminderControllerApi.getDataSkyminderRequest(
-          ...inputArgs
-        );
+        this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {
         console.error(error);
       }

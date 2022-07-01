@@ -1,7 +1,4 @@
-import {
-  checkViewButtonWorks,
-  verifyCompanySearchResultTable,
-} from "../../../support/commands";
+import { checkViewButtonWorks, verifyCompanySearchResultTable } from "../../../support/commands";
 
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
@@ -23,15 +20,10 @@ describe("Data Search Page Skyminder", function () {
       .click({ force: true })
       .type(inputValueCompany)
       .should("have.value", inputValueCompany);
-    cy.get("button.p-button")
-      .contains("Clear")
-      .should("not.be.disabled")
-      .click();
+    cy.get("button.p-button").contains("Clear").should("not.be.disabled").click();
     cy.get("input[name=code]").should("have.value", "");
     cy.get("input[name=name]").should("have.value", "");
-    cy.get('button[name="getSkyminderData"]')
-      .contains("Get Skyminder Data")
-      .should("not.be.disabled");
+    cy.get('button[name="getSkyminderData"]').contains("Get Skyminder Data").should("not.be.disabled");
   });
 });
 

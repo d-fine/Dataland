@@ -31,17 +31,9 @@ export class ApiClientProvider {
     }
   }
 
-  async getConstructedApi<T>(
-    constructor: new (
-      configuration: Configuration | undefined,
-      basePath: string
-    ) => T
-  ) {
+  async getConstructedApi<T>(constructor: new (configuration: Configuration | undefined, basePath: string) => T) {
     const configuration = await this.getConfiguration();
-    return new constructor(
-      configuration,
-      `${process.env.VUE_APP_BASE_API_URL}` + `${process.env.VUE_APP_API}`
-    );
+    return new constructor(configuration, `${process.env.VUE_APP_BASE_API_URL}` + `${process.env.VUE_APP_API}`);
   }
 
   async getCompanyDataControllerApi() {

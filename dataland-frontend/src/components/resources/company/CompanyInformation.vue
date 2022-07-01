@@ -6,9 +6,7 @@
 
     <div class="col-4">
       <span>Market Cap:</span>
-      <span class="font-semibold"
-        >€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span
-      >
+      <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
     </div>
     <div class="col-4">
       <span>Headquarter: </span>
@@ -55,9 +53,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        this.company = await companyDataControllerApi.getCompanyById(
-          this.companyID
-        );
+        this.company = await companyDataControllerApi.getCompanyById(this.companyID);
         this.companyInformation = this.company.data.companyInformation;
       } catch (error) {
         console.error(error);

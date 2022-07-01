@@ -11,9 +11,7 @@
     <tbody>
       <tr v-for="(dataset, index) in data" :key="index">
         <td v-for="(item, i) in dataset" :key="i">
-          <router-link v-if="i === linkKey" :to="route + dataset[linkID]">{{
-            item
-          }}</router-link>
+          <router-link v-if="i === linkKey" :to="route + dataset[linkID]">{{ item }}</router-link>
           <template v-else>
             {{ item }}
           </template>

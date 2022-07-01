@@ -23,9 +23,5 @@ export function numberFormatter(number: number, digits?: number) {
     .find(function (part) {
       return number >= part.value;
     });
-  return item
-    ? (number / item.value).toFixed(digits).replace(regex, "$1") +
-        " " +
-        item.symbol
-    : "0";
+  return item ? (number / item.value).toFixed(digits).replace(regex, "$1") + " " + item.symbol : "0";
 }

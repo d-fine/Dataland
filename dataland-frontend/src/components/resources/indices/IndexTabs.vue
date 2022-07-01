@@ -6,9 +6,7 @@
 import TabMenu from "primevue/tabmenu";
 import { humanize } from "@/utils/StringHumanizer";
 import apiSpecs from "../../../../build/clients/backend/backendOpenApi.json";
-const stockIndices =
-  apiSpecs.components.schemas.CompanyInformation.properties["indices"].items
-    .enum;
+const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
   name: "IndexTabs",

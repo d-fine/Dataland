@@ -117,10 +117,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getEuTaxonomyDataControllerApi();
-        this.response =
-          await euTaxonomyDataControllerApi.getCompanyAssociatedData(
-            this.dataID
-          );
+        this.response = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);
         this.dataSet = this.response.data.data;
       } catch (error) {
         console.error(error);

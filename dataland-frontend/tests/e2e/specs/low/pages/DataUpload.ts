@@ -7,9 +7,7 @@ describe("Data Upload Page", function () {
     cy.get("#app").should("exist");
     cy.get(".p-card-title").should("contain", "Create a Company");
     const inputValue = "A company name";
-    cy.get('button[name="postCompanyData"]')
-      .contains("Post Company")
-      .should("be.disabled");
+    cy.get('button[name="postCompanyData"]').contains("Post Company").should("be.disabled");
     cy.get("input[name=companyName]").type(inputValue, { force: true });
     cy.get('button[name="postCompanyData"]').should("be.disabled");
     cy.get("input[name=headquarters]").type("applications", { force: true });

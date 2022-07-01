@@ -23,11 +23,7 @@
             class="surface-0 w-3 d-datatable-column-left"
           >
           </Column>
-          <Column
-            field="companyInformation.permId"
-            :sortable="false"
-            class="surface-0 w-2"
-          >
+          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
             <template #header>
               <span class="uppercase">PERM ID</span>
               <i
@@ -47,13 +43,7 @@
               {{ data.permId ? data.permId : "Not available" }}
             </template>
           </Column>
-          <Column
-            field="companyInformation.sector"
-            header="SECTOR"
-            :sortable="true"
-            class="surface-0 w-2"
-          >
-          </Column>
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2"> </Column>
           <Column
             field="companyInformation.marketCap"
             header="MARKET CAP"
@@ -64,18 +54,9 @@
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
           </Column>
-          <Column
-            field="companyInformation.headquarters"
-            header="LOCATION"
-            :sortable="true"
-            class="surface-0 w-2"
-          >
+          <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
           </Column>
-          <Column
-            field="companyId"
-            header=""
-            class="surface-0 w-1 d-datatable-column-right"
-          >
+          <Column field="companyId" header="" class="surface-0 w-1 d-datatable-column-right">
             <template #body="{ data }">
               <router-link
                 :to="'/companies/' + data.companyId + '/eutaxonomies'"

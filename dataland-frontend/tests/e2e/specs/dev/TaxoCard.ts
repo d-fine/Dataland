@@ -3,10 +3,7 @@ describe("EU Taxonomy Data and Cards", function () {
   const companyIdList: Array<string> = [];
   const companyNames: Array<string> = ["eligible & total", "eligible"];
   beforeEach(() => {
-    cy.restoreLoginSession(
-      "data_uploader",
-      Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")
-    );
+    cy.restoreLoginSession("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
   });
   it("Create a Company providing only valid data", () => {
     companyNames.forEach((companyName) => {
@@ -52,9 +49,7 @@ describe("EU Taxonomy Data and Cards", function () {
     cy.intercept("**/api/data/eutaxonomies").as("postTaxonomyData");
     cy.get('button[name="postEUData"]').click({ force: true });
     cy.wait("@postTaxonomyData", { timeout: timeout }).then(() => {
-      cy.get("body")
-        .should("contain", "success")
-        .should("contain", "EU Taxonomy Data");
+      cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
       cy.get("span[title=dataId]").then(() => {
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
@@ -81,16 +76,12 @@ describe("EU Taxonomy Data and Cards", function () {
         });
         cy.get('select[name="Attestation"]').select("None");
         for (const argument of ["capex", "opex", "revenue"]) {
-          cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(
-            eligible.toString()
-          );
+          cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
           cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
         }
       },
       () => {
-        cy.get("body")
-          .should("contain", "Eligible Revenue")
-          .should("contain", `Out of total of`);
+        cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
         cy.get("body")
           .should("contain", "Eligible Revenue")
           .should("contain", `${100 * eligible}%`);
@@ -111,18 +102,14 @@ describe("EU Taxonomy Data and Cards", function () {
         });
         cy.get('select[name="Attestation"]').select("None");
         for (const argument of ["capex", "opex", "revenue"]) {
-          cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(
-            eligible.toString()
-          );
+          cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
         }
       },
       () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")
           .should("contain", `${100 * eligible}%`);
-        cy.get("body")
-          .should("contain", "Eligible Revenue")
-          .should("not.contain", `Out of total of`);
+        cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
       }
     );

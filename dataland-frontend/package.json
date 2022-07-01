@@ -70,6 +70,9 @@
     "ts-node": "^10.8.1",
     "typescript": "~4.7.4"
   },
+  "prettier": {
+    "printWidth": 120
+  },
   "eslintConfig": {
     "root": true,
     "env": {
@@ -85,7 +88,7 @@
       "parser": "@typescript-eslint/parser"
     },
     "rules": {
-      "prettier/prettier": "error"
+      "prettier/prettier": "warning"
     },
     "overrides": [
       {

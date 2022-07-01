@@ -9,9 +9,7 @@ export function doThingsInChunks<T>(
   let promise: Promise<any> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
-    promise = promise.then(() =>
-      Promise.all(chunk.map((element) => processor(element)))
-    );
+    promise = promise.then(() => Promise.all(chunk.map((element) => processor(element))));
   }
   return cy.then(() => {
     return wrapPromiseToCypressPromise(promise);
@@ -40,18 +38,10 @@ export function browserPromiseUploadSingleElementOnce(
   });
 }
 
-export function uploadSingleElementWithRetries(
-  endpoint: string,
-  element: object,
-  token: string
-): Promise<Response> {
+export function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
   return browserPromiseUploadSingleElementOnce(endpoint, element, token)
-    .catch((_) =>
-      browserPromiseUploadSingleElementOnce(endpoint, element, token)
-    )
-    .catch((_) =>
-      browserPromiseUploadSingleElementOnce(endpoint, element, token)
-    );
+    .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token))
+    .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
 }
 
 export function getKeycloakToken(
@@ -80,9 +70,7 @@ export function getKeycloakToken(
     .then((token) => token.toString());
 }
 
-export function wrapPromiseToCypressPromise(
-  promise: Promise<any>
-): Bluebird<any> {
+export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
   return new Cypress.Promise((resolve, reject) => {
     promise
       .then(

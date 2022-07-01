@@ -18,14 +18,8 @@ declare global {
   }
 }
 
-function retrieveIdsList(
-  idKey: string,
-  endpoint: string
-): Chainable<Array<string>> {
-  return getKeycloakToken(
-    "data_uploader",
-    Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")
-  )
+function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
+  return getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
     .then((token) => {
       return cy.request({
         url: `${Cypress.env("API")}/${endpoint}`,
@@ -70,10 +64,7 @@ export function login(
     .should("be.visible");
 }
 
-export function register(
-  email: string = "some_user",
-  password: string = "test"
-): Chainable<JQuery> {
+export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
   return cy
     .visit("/")
     .get("button[name='join_dataland_button']")
@@ -118,10 +109,7 @@ export function logout(): Chainable<JQuery> {
     .should("be.visible");
 }
 
-export function restoreLoginSession(
-  username?: string,
-  password?: string
-): Chainable<null> {
+export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
   return cy.session(
     [username, password],
     () => {
@@ -129,9 +117,7 @@ export function restoreLoginSession(
     },
     {
       validate: () => {
-        cy.visit("/")
-          .get("button[name='logout_dataland_button']")
-          .should("exist");
+        cy.visit("/").get("button[name='logout_dataland_button']").should("exist");
       },
     }
   );
@@ -169,12 +155,6 @@ Cypress.Commands.add("login", login);
 Cypress.Commands.add("restoreLoginSession", restoreLoginSession);
 Cypress.Commands.add("register", register);
 Cypress.Commands.add("logout", logout);
-Cypress.Commands.add(
-  "verifyTaxonomySearchResultTable",
-  verifyTaxonomySearchResultTable
-);
-Cypress.Commands.add(
-  "verifyCompanySearchResultTable",
-  verifyCompanySearchResultTable
-);
+Cypress.Commands.add("verifyTaxonomySearchResultTable", verifyTaxonomySearchResultTable);
+Cypress.Commands.add("verifyCompanySearchResultTable", verifyCompanySearchResultTable);
 Cypress.Commands.add("checkViewButtonWorks", checkViewButtonWorks);

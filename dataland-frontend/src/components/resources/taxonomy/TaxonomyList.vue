@@ -9,11 +9,7 @@
             </caption>
             <thead>
               <tr>
-                <th
-                  v-for="(header, i) in ['Data ID', 'Data Type', 'Link']"
-                  :key="i"
-                  scope="col"
-                >
+                <th v-for="(header, i) in ['Data ID', 'Data Type', 'Link']" :key="i" scope="col">
                   {{ header }}
                 </th>
               </tr>
@@ -24,10 +20,7 @@
                   {{ item }}
                 </td>
                 <td>
-                  <router-link
-                    :to="'/eutaxonomies/' + dataset.dataIdentifier['Data ID']"
-                    >Data Information</router-link
-                  >
+                  <router-link :to="'/eutaxonomies/' + dataset.dataIdentifier['Data ID']">Data Information</router-link>
                 </td>
               </tr>
             </tbody>

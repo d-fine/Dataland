@@ -1,7 +1,4 @@
-import {
-  checkViewButtonWorks,
-  verifyTaxonomySearchResultTable,
-} from "../../../../support/commands";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
 
 let companiesWithData: any;
 
@@ -62,8 +59,7 @@ describe("Search Taxonomy", function () {
 
   it("Company Search by Identifier", () => {
     cy.visit("/searchtaxonomy");
-    const inputValue =
-      companiesWithData[1].companyInformation.identifiers[0].identifierValue;
+    const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
@@ -87,9 +83,7 @@ describe("Search Taxonomy", function () {
   it("Autocomplete functionality", () => {
     cy.visit("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=eu_taxonomy_search_input]")
-      .click({ force: true })
-      .type("b");
+    cy.get("input[name=eu_taxonomy_search_input]").click({ force: true }).type("b");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
       cy.get(".p-autocomplete-item")
         .eq(0)
@@ -104,10 +98,7 @@ describe("Search Taxonomy", function () {
   it("Scroll functionality", () => {
     cy.visit("/searchtaxonomy");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
-    cy.get("input[name=eu_taxonomy_search_input]")
-      .click({ force: true })
-      .type("a")
-      .type("{enter}");
+    cy.get("input[name=eu_taxonomy_search_input]").click({ force: true }).type("a").type("{enter}");
     cy.scrollTo(0, 500);
     cy.get("input[name=eu_taxonomy_search_input]").should("not.exist");
     cy.get("button[name=search_bar_collapse]").should("exist");

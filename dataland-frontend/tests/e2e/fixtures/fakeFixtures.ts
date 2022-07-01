@@ -2,11 +2,8 @@ import { faker } from "@faker-js/faker";
 import { humanize } from "../../../src/utils/StringHumanizer";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
-const stockIndexArray =
-  apiSpecs.components.schemas.CompanyInformation.properties["indices"].items
-    .enum;
-const identifierTypeArray =
-  apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum;
+const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
+const identifierTypeArray = apiSpecs.components.schemas.CompanyIdentifier.properties.identifierType.enum;
 
 const { parse } = require("json2csv");
 const fs = require("fs");
@@ -22,10 +19,7 @@ function generateCompanyInformation() {
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
   const marketCap = faker.mersenne.rand(10000000, 50000);
-  const reportingDateOfMarketCap = faker.date
-    .past()
-    .toISOString()
-    .split("T")[0];
+  const reportingDateOfMarketCap = faker.date.past().toISOString().split("T")[0];
   const indices = faker.helpers.arrayElements(stockIndexArray);
   const identifiers = faker.helpers
     .arrayElements([
@@ -61,28 +55,18 @@ function generateEuTaxonomyData() {
     apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-    apiSpecs.components.schemas.EuTaxonomyData.properties[
-      "Reporting Obligation"
-    ].enum
+    apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum
   );
   const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
-  const capexEligible = faker.datatype
-    .float({ min: 0, max: 1, precision: resolution })
-    .toFixed(4);
+  const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const capexAligned = faker.datatype
     .float({ min: 0, max: parseFloat(capexEligible), precision: resolution })
     .toFixed(4);
   const opexTotal = faker.finance.amount(minEuro, maxEuro, 2);
-  const opexEligible = faker.datatype
-    .float({ min: 0, max: 1, precision: resolution })
-    .toFixed(4);
-  const opexAligned = faker.datatype
-    .float({ min: 0, max: parseFloat(opexEligible), precision: resolution })
-    .toFixed(4);
+  const opexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const opexAligned = faker.datatype.float({ min: 0, max: parseFloat(opexEligible), precision: resolution }).toFixed(4);
   const revenueTotal = faker.finance.amount(minEuro, maxEuro, 2);
-  const revenueEligible = faker.datatype
-    .float({ min: 0, max: 1, precision: resolution })
-    .toFixed(4);
+  const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const revenueAligned = faker.datatype
     .float({ min: 0, max: parseFloat(revenueEligible), precision: resolution })
     .toFixed(4);
@@ -123,10 +107,7 @@ function stockIndexValue(stockIndexList: Array<string>, stockIndex: string) {
   return stockIndexList.includes(stockIndex) ? "x" : "";
 }
 
-function identifierValue(
-  identifierArray: Array<Object>,
-  identifierType: string
-) {
+function identifierValue(identifierArray: Array<Object>, identifierType: string) {
   const identifierObject: any = identifierArray.find((identifier: any) => {
     return identifier.identifierType === identifierType;
   });
@@ -134,9 +115,7 @@ function identifierValue(
 }
 
 function percentageGenerator(value: number) {
-  return (
-    (Math.round(value * 100 * 100) / 100).toFixed(2).replace(".", ",") + "%"
-  );
+  return (Math.round(value * 100 * 100) / 100).toFixed(2).replace(".", ",") + "%";
 }
 
 function euroGenerator(value: number) {
@@ -144,11 +123,9 @@ function euroGenerator(value: number) {
 }
 
 function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
-  const mergedData = companyInformationWithEuTaxonomyData.map(
-    (element: any) => {
-      return { ...element["companyInformation"], ...element["euTaxonomyData"] };
-    }
-  );
+  const mergedData = companyInformationWithEuTaxonomyData.map((element: any) => {
+    return { ...element["companyInformation"], ...element["euTaxonomyData"] };
+  });
   const dateOptions: any = {
     year: "numeric",
     month: "numeric",
@@ -164,11 +141,7 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
       { label: "Market Capitalization EURmm", value: "marketCap" },
       {
         label: "Market Capitalization Date",
-        value: (row: any) =>
-          new Date(row.reportingDateOfMarketCap).toLocaleDateString(
-            dateLocale,
-            dateOptions
-          ),
+        value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
       },
       {
         label: "Total Revenue EURmm",
@@ -184,8 +157,7 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
       },
       {
         label: "Eligible Revenue",
-        value: (row: any) =>
-          percentageGenerator(row.Revenue.eligiblePercentage),
+        value: (row: any) => percentageGenerator(row.Revenue.eligiblePercentage),
       },
       {
         label: "Eligible CapEx",
@@ -243,8 +215,7 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
 }
 
 function main() {
-  const companyInformationWithEuTaxonomyData =
-    generateCompanyWithEuTaxonomyData();
+  const companyInformationWithEuTaxonomyData = generateCompanyWithEuTaxonomyData();
   const csv = generateCSVData(companyInformationWithEuTaxonomyData);
 
   fs.writeFileSync("../testing/data/csvTestData.csv", csv);

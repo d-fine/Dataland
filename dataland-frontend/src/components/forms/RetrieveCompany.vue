@@ -19,39 +19,13 @@
           label="Company Name"
         />
       </FormKit>
-      <Button
-        @click="getCompanyByName(true)"
-        label="Show all companies"
-        name="show_all_companies_button"
-      />
+      <Button @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
       <br />
       <template v-if="loading">
-        <DataTable
-          v-if="response"
-          :value="response.data"
-          responsive-layout="scroll"
-        >
-          <Column
-            field="companyInformation.companyName"
-            header="COMPANY"
-            :sortable="true"
-            class="surface-0"
-          >
-          </Column>
-          <Column
-            field="companyInformation.sector"
-            header="SECTOR"
-            :sortable="true"
-            class="surface-0"
-          >
-          </Column>
-          <Column
-            field="companyInformation.marketCap"
-            header="MARKET CAP"
-            :sortable="true"
-            class="surface-0"
-          >
-          </Column>
+        <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
+          <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
           <Column field="companyId" header="" class="surface-0">
             <template #body="{ data }">
               <router-link
@@ -110,11 +84,7 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        this.response = await companyDataControllerApi.getCompanies(
-          this.model.companyName,
-          "",
-          true
-        );
+        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
       } catch (error) {
         console.error(error);
         this.response = null;

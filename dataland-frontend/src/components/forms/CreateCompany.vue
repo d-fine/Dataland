@@ -12,37 +12,19 @@
       >
         <FormKitSchema :schema="companyInformationSchema" />
         <FormKit type="list" name="identifiers">
-          <FormKit
-            v-for="nIdentifier in identifierListSize"
-            :key="nIdentifier"
-            type="group"
-          >
+          <FormKit v-for="nIdentifier in identifierListSize" :key="nIdentifier" type="group">
             <FormKitSchema :schema="companyIdentifierSchema" />
           </FormKit>
         </FormKit>
-        <FormKit
-          type="submit"
-          :disabled="!valid"
-          label="Post Company"
-          name="postCompanyData"
-        />
+        <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
       </FormKit>
       <p>{{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
-      <Button
-        v-if="identifierListSize > 1"
-        @click="identifierListSize--"
-        class="ml-2"
-      >
+      <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
         Remove the last identifier
       </Button>
       <template v-if="processed">
-        <SuccessUpload
-          v-if="response"
-          msg="company"
-          :messageCount="messageCount"
-          :data="response.data"
-        />
+        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
         <FailedUpload v-else msg="Company" :messageCount="messageCount" />
       </template>
     </template>
@@ -62,9 +44,7 @@ import Message from "primevue/message";
 
 const companyInformation = backend.components.schemas.CompanyInformation;
 const companyIdentifier = backend.components.schemas.CompanyIdentifier;
-const companyInformationSchemaGenerator = new SchemaGenerator(
-  companyInformation
-);
+const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation);
 const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
 
 const createCompany = {

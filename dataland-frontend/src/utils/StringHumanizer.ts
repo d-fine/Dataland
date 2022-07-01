@@ -48,7 +48,5 @@ function getStringFromMapper(rawText: string): string {
  */
 export function humanize(rawText: string): string {
   const valueFromMapping = getStringFromMapper(rawText);
-  return valueFromMapping == ""
-    ? convertCamelCaseToSentenceCase(rawText)
-    : valueFromMapping;
+  return valueFromMapping == "" ? convertCamelCaseToSentenceCase(rawText) : valueFromMapping;
 }

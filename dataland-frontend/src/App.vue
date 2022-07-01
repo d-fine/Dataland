@@ -24,8 +24,7 @@ export default {
         this.keycloak_init_promise = this.keycloak
           .init({
             onLoad: "check-sso",
-            silentCheckSsoRedirectUri:
-              window.location.origin + "/silent-check-sso.html",
+            silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
           })
           .then((authenticated) => {
             this.keycloak_authenticated = authenticated;
