@@ -10,6 +10,7 @@
         <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                   @update:first="scrollToTop"
         >
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
@@ -86,7 +87,10 @@ export default {
     },
     buildLocationString(headquarters, countryCode) {
       return headquarters + ", " + countryCode
+    },
+    scrollToTop(){
+      window.scrollTo(0, 0);
     }
-  }
+  },
 }
 </script>
