@@ -117,7 +117,6 @@ export default {
       if (!this.scrolled && this.$refs.autocomplete) {
         this.$refs.autocomplete.focus()
       }
-      console.log(this.$refs.indexTabs.activeIndex)
     },
 
     responseMapper(response) {
