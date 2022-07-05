@@ -25,10 +25,32 @@
       </div>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button icon="pi pi-search" class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
+        <Button icon="pi pi-search" class="p-button-rounded surface-ground border-none" @click="toggleSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
         <IndexTabs v-if="showIndexTabs" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+        <div class="col-8 text-left" v-if="searchBarActivated">
+        <span class="p-fluid">
+          <span class="p-input-icon-left p-input-icon-right ">
+            <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
+            <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
+            <i v-else aria-hidden="true"/>
+            <AutoComplete
+                v-model="selectedCompany" :suggestions="filteredCompaniesBasic" @focus="focused" @focusout="unfocused"
+                @complete="searchCompany($event)" placeholder="Search company by name or PermID" inputClass="h-3rem" ref="autocomplete"
+                field="companyName" style="z-index:10" name="eu_taxonomy_search_input_scrolled"
+                @keyup.enter="handleQuery" @item-select="handleItemSelect">
+              <template #footer>
+                <ul v-if="autocompleteArray && autocompleteArray.length > 0" class="p-autocomplete-items pt-0">
+                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleQuery">
+                    View all results.
+                  </li>
+                </ul>
+              </template>
+            </AutoComplete>
+          </span>
+        </span>
+        </div>
       </div>
     </div>
   </MarginWrapper>
@@ -53,6 +75,7 @@ export default {
   components: {MarginWrapper, EuTaxoSearchResults, AutoComplete, Button, IndexTabs},
   data() {
     return {
+      searchBarActivated: false,
       route: useRoute(),
       showIndexTabs: false,
       index: 1,
@@ -80,9 +103,6 @@ export default {
   },
   inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
-    activateSearchBar() {
-      window.scrollTo({top: 0, behavior: 'smooth'})
-    },
     close() {
       this.$refs.autocomplete.hideOverlay()
     },
@@ -133,6 +153,9 @@ export default {
       this.index = index
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
+    },
+    toggleSearchBar() {
+      this.searchBarActivated = !this.searchBarActivated
     },
     unfocused() {
       this.$emit('autocomplete-focus', false)

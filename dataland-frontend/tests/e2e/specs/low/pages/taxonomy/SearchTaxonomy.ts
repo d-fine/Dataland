@@ -130,8 +130,13 @@ describe('Search Taxonomy', function () {
         cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
         cy.get('button[name=search_bar_collapse]').should('exist')
             .click()
-        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
-        cy.get('button[name=search_bar_collapse]').should('not.exist')
+        cy.get('input[name=eu_taxonomy_search_input_scrolled]').should('exist')
+        cy.get('button[name=search_bar_collapse]').should('exist')
+
+        cy.get('button[name=search_bar_collapse]').should('exist')
+            .click()
+        cy.get('input[name=eu_taxonomy_search_input_scrolled]').should('not.exist')
+
     });
 
 });
