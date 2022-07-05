@@ -12,4 +12,8 @@ describe("Test for failed message", () => {
   it("verify that string input yields correct output", () => {
     expect(wrapper.vm.humanize("hallo")).toEqual("Hallo");
   });
+
+  it("verify coverage", () => {
+    expect(wrapper.vm.testForCoverage("Hallo")).toEqual("World");
+  });
 });

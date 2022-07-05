@@ -23,6 +23,10 @@ export default {
       if (typeof text == "string") return humanize(text);
       else return null;
     },
+    testForCoverage(input) {
+      if (input === "Hallo") return "World";
+      else return "Test";
+    },
   },
 };
 </script>
