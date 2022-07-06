@@ -21,15 +21,10 @@ describe("EuTaxoSearchBarTest", () => {
         })
 
         it('checks field properties', () => {
-            expect(wrapper.vm.showIndexTabs).toBeDefined()
-            expect(wrapper.vm.selectedIndex).toBeDefined()
-            expect(wrapper.vm.scrolled).toBeDefined()
-            expect(wrapper.vm.responseArray).toBeDefined()
-            expect(wrapper.vm.showSearchResultsTable).toBeDefined()
             expect(wrapper.vm.autocompleteArray).toBeDefined()
+            expect(wrapper.vm.autocompleteArrayDisplayed).toBeDefined()
             expect(wrapper.vm.loading).toBeDefined()
             expect(wrapper.vm.selectedCompany).toBeDefined()
-            expect(wrapper.vm.filteredCompaniesBasic).toBeDefined()
             expect(wrapper.vm.route).toBeDefined()
         })
 

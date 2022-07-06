@@ -105,7 +105,6 @@ export default {
     }
   },
 
-
   emits: ['companyToQuery'],
 
   unmounted() {
