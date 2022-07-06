@@ -55,15 +55,16 @@
               <p class="text-gray-800 text-left">
                 Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
-                <div class="col-3 col-offset-4 p-fluid pl-0">
-                  <router-link to="/searchtaxonomy" class="no-underline">
-                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button">
+                <div class="col-9 p-fluid pr-0">
+                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing"/>
+                </div>
+                <div class="col-3 p-fluid pl-0">
+                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button" @click="login" >
                     <span class="d-letters d-button">
                       Get Started
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
                   </Button>
-                  </router-link>
                 </div>
               </div>
             </template>
@@ -77,10 +78,21 @@
 <script>
 import Card from "primevue/card";
 import Button from "primevue/button";
+import InputText from 'primevue/inputtext';
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {
   name: "LandingLogin",
-  components: {UserAuthenticationButtons, Card, Button},
+  components: {UserAuthenticationButtons, Card, Button, InputText},
+  inject: ['authenticated', 'getKeycloakInitPromise'],
+  methods: {
+    login() {
+      this.getKeycloakInitPromise().then((keycloak) => {
+        if (!keycloak.authenticated) {
+          return keycloak.login()
+        }
+      }).catch((error) => console.log("error: " + error))
+    },
+  }
 }
 </script>
