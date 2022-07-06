@@ -20,6 +20,21 @@ describe('Login Section', () => {
             .should('be.visible')
             .should('have.attr', 'src')
     })
+    it('Check that get started button exists and is working', () => {
+        cy.visit("/")
+        cy.get('Input[name=email_input_landing]')
+            .should('be.visible')
+            .type('data@dataland.com')
+            .should('have.value', "data@dataland.com")
+            .invoke('attr', 'placeholder').should('contain', "Email address")
+
+        cy.get('button[name=get_started_button]')
+            .should('be.visible')
+            .should("contain.text", "Get Started")
+        cy.get('button[name="get_started_button"]').click()
+        cy.url().should('contain', "/keycloak/realms/datalandsecurity/")
+        cy.visit("/")
+    })
 })
 
 describe('Marketing Section', () => {
