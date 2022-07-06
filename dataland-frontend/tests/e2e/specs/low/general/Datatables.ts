@@ -3,7 +3,7 @@ describe('Datables test suite', () => {
         cy.restoreLoginSession()
         cy.visit('/searchtaxonomy')
         const inputValue = "a"
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .should('not.be.disabled')
             .click({force:true})
             .type(inputValue)

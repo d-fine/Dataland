@@ -17,7 +17,10 @@ export default {
   name: 'SearchTaxonomyHeader',
   components: {MarginWrapper},
   props: {
-    scrolled: {}
+    scrolled: {
+      type: Boolean,
+      default: false
+    }
   }
 }
 </script>

@@ -17,7 +17,7 @@ describe('Search Taxonomy', function () {
         cy.get('h1').should("contain", "Search EU Taxonomy data")
         const placeholder = "Search company by name or PermID"
         const inputValue = "A company name"
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .should('not.be.disabled')
             .click({force:true})
             .type(inputValue)
@@ -29,7 +29,7 @@ describe('Search Taxonomy', function () {
         cy.visit('/searchtaxonomy')
         const inputValue = companiesWithData[0].companyInformation.companyName
         const PermIdText = "Permanent Identifier (PermID)"
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .should('not.be.disabled')
             .click({force:true})
             .type(inputValue)
@@ -63,7 +63,7 @@ describe('Search Taxonomy', function () {
     it('Company Search by Identifier', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .should('not.be.disabled')
             .click({force:true})
             .type(inputValue)
@@ -87,7 +87,7 @@ describe('Search Taxonomy', function () {
         const inputValue = "A company name"
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies")
-            cy.get('input[name=eu_taxonomy_search_input]')
+            cy.get('input[name=eu_taxonomy_search_bar_standard]')
                 .should('not.be.disabled')
                 .click({force: true})
                 .type(inputValue)
@@ -100,7 +100,7 @@ describe('Search Taxonomy', function () {
     it('Autocomplete functionality', () => {
         cy.visit('/searchtaxonomy')
         cy.intercept('**/api/companies*').as('searchCompany')
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .click({force:true})
             .type('b')
         cy.wait('@searchCompany', {timeout: 2 * 1000}).then(() => {
@@ -114,29 +114,27 @@ describe('Search Taxonomy', function () {
     it('Scroll functionality', () => {
         cy.visit('/searchtaxonomy')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
-        cy.get('input[name=eu_taxonomy_search_input]')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
             .click({force:true})
             .type('a')
             .type('{enter}')
         cy.scrollTo(0, 500)
-        cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('not.exist')
         cy.get('button[name=search_bar_collapse]').should('exist')
 
         cy.scrollTo(0, 0)
-        cy.get('input[name=eu_taxonomy_search_input]').should('exist')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('exist')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
 
         cy.scrollTo(0, 500)
-        cy.get('input[name=eu_taxonomy_search_input]').should('not.exist')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('not.exist')
         cy.get('button[name=search_bar_collapse]').should('exist')
             .click()
-        cy.get('input[name=eu_taxonomy_search_input_scrolled]').should('exist')
-        cy.get('button[name=search_bar_collapse]').should('exist')
-
+        cy.get('input[name=eu_taxonomy_search_bar_scrolled]').should('exist')
         cy.get('button[name=search_bar_collapse]').should('exist')
             .click()
-        cy.get('input[name=eu_taxonomy_search_input_scrolled]').should('not.exist')
-
+        cy.get('input[name=eu_taxonomy_search_bar_scrolled]').should('not.exist')
+        cy.get('button[name=search_bar_collapse]').should('exist')
     });
 
 });
