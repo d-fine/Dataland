@@ -68,14 +68,6 @@ export default {
       this.$refs.autocomplete.hideOverlay()
     },
 
-    focused() {
-      this.$emit('autocomplete-focus', true)
-    },
-    unfocused() {
-      this.$emit('autocomplete-focus', false)
-    },
-
-
     handleItemSelect() {
       this.collection = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
@@ -114,7 +106,7 @@ export default {
   },
 
 
-  emits: ['autocomplete-focus', 'companyToQuery'],
+  emits: ['companyToQuery'],
 
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
