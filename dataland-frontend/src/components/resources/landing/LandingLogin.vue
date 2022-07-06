@@ -49,11 +49,11 @@
         <div class="col-6 col-offset-3">
           <Card class="d-card">
             <template #title>
-              <h2 class="text-gray-100 text-left">Access EU Taxonomy Data</h2>
+              <h2 class="text-gray-100 text-left">Join Dataland to access our data</h2>
             </template>
             <template #content>
               <p class="text-gray-800 text-left">
-                Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
+                Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
                 <div class="col-9 p-fluid pr-0">
                   <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing" v-on:input="setEmail"/>
