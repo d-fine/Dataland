@@ -92,6 +92,7 @@ export default {
           return keycloak.login()
         }
       }).catch((error) => console.log("error: " + error))
+      keycloak.loginHint: 'test'
     },
   }
 }
