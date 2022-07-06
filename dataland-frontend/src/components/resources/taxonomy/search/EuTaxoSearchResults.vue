@@ -11,7 +11,10 @@
                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                    @update:first="scrollToTop"
-        >
+                   @row-click="goToData"
+                   class="table-cursor">
+
+
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
                   class="surface-0 w-3 d-datatable-column-left">
           </Column>
@@ -87,7 +90,16 @@ export default {
     },
     scrollToTop(){
       window.scrollTo(0, 0);
-    }
+    },
+    goToData(event){
+      const company=event.data.companyId;
+      this.$router.push('/companies/' + company + '/eutaxonomies')
+    },
   },
 }
 </script>
+<style>
+.table-cursor tbody tr:hover {
+  cursor: pointer;
+}
+</style>
