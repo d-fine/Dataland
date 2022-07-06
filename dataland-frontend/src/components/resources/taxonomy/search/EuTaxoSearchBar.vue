@@ -47,6 +47,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.$refs.autocomplete.focus()
+  },
+
   data() {
     return {
       route: useRoute(),

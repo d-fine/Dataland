@@ -73,7 +73,6 @@ export default {
     } else if (this.route.path === "/searchtaxonomy") {
       this.filterByIndex(stockIndices[this.selectedIndex])
     }
-    this.$refs.euTaxoSearchBar.$refs.autocomplete.focus()
   },
 
   data() {
@@ -110,9 +109,6 @@ export default {
         //ScrollDOWN event
         this.pageScrolled = document.documentElement.scrollTop > 80
         this.latestScrollPosition = windowScrollY
-      }
-      if (this.latestScrollPosition === 0) {
-        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus()
       }
     },
 
