@@ -56,10 +56,10 @@
                 Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
                 <div class="col-9 p-fluid pr-0">
-                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing"/>
+                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing" v-on:input="setEmail"/>
                 </div>
                 <div class="col-3 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button" @click="login" >
+                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button" @click="login(email)" >
                     <span class="d-letters d-button">
                       Get Started
                     </span>
@@ -84,15 +84,24 @@ import UserAuthenticationButtons from "@/components/general/UserAuthenticationBu
 export default {
   name: "LandingLogin",
   components: {UserAuthenticationButtons, Card, Button, InputText},
-  inject: ['authenticated', 'getKeycloakInitPromise'],
+  inject: ['authenticated', 'getKeycloakInitPromise', 'loginHint'],
+  data() {
+    return {
+      email: ''
+    }
+  },
   methods: {
-    login() {
+    setEmail(event) {
+       this.email=event.target.value
+    },
+    login(email) {
       this.getKeycloakInitPromise().then((keycloak) => {
         if (!keycloak.authenticated) {
-          return keycloak.login()
+          return keycloak.login({
+           loginHint: email,
+          })
         }
       }).catch((error) => console.log("error: " + error))
-      keycloak.loginHint: 'test'
     },
   }
 }
