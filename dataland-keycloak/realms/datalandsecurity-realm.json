@@ -835,6 +835,19 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "05dff6f2-6129-4e18-b9a0-3e7b36ee0aae",
+          "name": "picture",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-claims-param-token-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "acr",
@@ -1514,7 +1527,19 @@
       }
     }
   ],
-  "identityProviderMappers": [],
+  "identityProviderMappers": [
+    {
+      "id": "8fe5cb09-9a63-4a4a-aa51-32d78aafc187",
+      "name": "picture",
+      "identityProviderAlias": "google",
+      "identityProviderMapper": "google-user-attribute-mapper",
+      "config": {
+        "syncMode": "INHERIT",
+        "jsonField": "picture",
+        "userAttribute": "picture"
+      }
+    }
+  ],
   "components": {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
