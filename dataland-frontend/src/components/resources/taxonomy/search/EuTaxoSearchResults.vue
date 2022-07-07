@@ -93,7 +93,7 @@ export default {
     },
     goToData(event){
       const company=event.data.companyId;
-      this.$router.push('/companies/' + company + '/eutaxonomies')
+      this.$router.push(`/companies/${company}/eutaxonomies`)
     },
   },
 }

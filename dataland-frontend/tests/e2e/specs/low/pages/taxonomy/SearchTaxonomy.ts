@@ -58,6 +58,15 @@ describe('Search Taxonomy', function () {
             .url().should('include', '/companies/')
             .url().should('include', '/eutaxonomies')
         cy.get('h1').contains(inputValue)
+        cy.get('[title=back_button')
+            .should('be.visible')
+            .click({force: true})
+        cy.contains('td', 'VIEW')
+            .siblings()
+            .contains('€')
+            .click()
+            .url().should('include', '/companies/')
+            .url().should('include', '/eutaxonomies')
     });
 
     it('Company Search by Identifier', () => {
