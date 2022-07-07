@@ -1,5 +1,3 @@
-import {logoutDropdown} from "../../../support/commands";
-
 describe('Authentication Buttons', () => {
     it('Checks that normal and logout work' , () => {
         cy.visit("/")
