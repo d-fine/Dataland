@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggle" class="max-w-full max-h-full flex justify-content-center" name="profile-picture-dropdown-toggle">
+  <div @click="toggle" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle" name="profile-picture-dropdown-toggle">
     <img ref="profile-picture" class="d-profile-picture" src="@/assets/images/logos/favicon-32x32.png" alt="User profile picture"/>
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon"/>
   </div>
@@ -51,6 +51,10 @@ export default {
 </script>
 
 <style scoped>
+  .d-drop-down-toggle {
+    cursor: pointer;
+  }
+
   .d-profile-picture {
     border-radius: 50%;
     height: 2rem;
