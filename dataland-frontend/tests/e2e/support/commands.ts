@@ -12,6 +12,7 @@ declare global {
             register: typeof register
             logout: typeof logout
             fillCompanyUploadFields: typeof fillCompanyUploadFields
+            logoutDropdown : typeof logoutDropdown
         }
     }
 }
@@ -87,6 +88,16 @@ export function logout(): Chainable<JQuery> {
         .should("be.visible")
 }
 
+export function logoutDropdown() : Chainable<JQuery> {
+    return cy.visit('/searchtaxonomy')
+        .get("div[name='profile-picture-dropdown-toggle']").click()
+        .get("a[id='profile-picture-dropdown-toggle']").click()
+        .url().should("eq", Cypress.config('baseUrl') + "/")
+        .get("button[name='login_dataland_button']")
+        .should("exist")
+        .should("be.visible")
+}
+
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
     return cy.session(
         [username, password],
@@ -120,4 +131,5 @@ Cypress.Commands.add('login', login)
 Cypress.Commands.add('restoreLoginSession', restoreLoginSession)
 Cypress.Commands.add('register', register)
 Cypress.Commands.add('logout', logout)
+Cypress.Commands.add('logoutDropdown', logoutDropdown)
 Cypress.Commands.add('fillCompanyUploadFields', fillCompanyUploadFields)
