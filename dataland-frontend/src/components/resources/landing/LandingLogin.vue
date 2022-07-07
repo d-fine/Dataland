@@ -10,7 +10,7 @@
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
           </router-link>
         </div>
-        <div class="col-3 col-offset-3">
+        <div class="col-2 col-offset-4">
           <UserAuthenticationButtons/>
         </div>
       </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="grid m-0">
-        <div class="col-6 col-offset-3">
+        <div class="col-5 col-offset-3">
           <Card class="d-card">
             <template #title>
               <h2 class="text-gray-100 text-left">Join Dataland to access our data</h2>
@@ -55,13 +55,10 @@
               <p class="text-gray-800 text-left">
                 Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
-                <div class="col-9 p-fluid pr-0">
-                  <InputText type="text" placeholder="Email address" class="h-2rem" name="email_input_landing" v-on:input="setEmail"/>
-                </div>
-                <div class="col-3 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="get_started_button" @click="login(email)" >
+                <div class="col-10 col-offset-1 p-fluid pl-0">
+                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="join_dataland_button" @click="register" >
                     <span class="d-letters d-button">
-                      Get Started
+                      Join Dataland
                     </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
                   </Button>
@@ -78,28 +75,17 @@
 <script>
 import Card from "primevue/card";
 import Button from "primevue/button";
-import InputText from 'primevue/inputtext';
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {
   name: "LandingLogin",
-  components: {UserAuthenticationButtons, Card, Button, InputText},
-  inject: ['authenticated', 'getKeycloakInitPromise', 'loginHint'],
-  data() {
-    return {
-      email: ''
-    }
-  },
+  components: {UserAuthenticationButtons, Card, Button},
+  inject: ['authenticated', 'getKeycloakInitPromise'],
   methods: {
-    setEmail(event) {
-       this.email=event.target.value
-    },
-    login(email) {
+    register() {
       this.getKeycloakInitPromise().then((keycloak) => {
         if (!keycloak.authenticated) {
-          return keycloak.login({
-           loginHint: email,
-          })
+          return keycloak.register()
         }
       }).catch((error) => console.log("error: " + error))
     },
