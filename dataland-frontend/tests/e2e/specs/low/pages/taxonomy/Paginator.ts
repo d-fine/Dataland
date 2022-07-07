@@ -1,9 +1,10 @@
 import Chainable = Cypress.Chainable;
 
 describe('Paginator test suite', () => {
-
-    it('Assure existence of paginator for Dax search', () => {
+    beforeEach(() => {
         cy.restoreLoginSession()
+    })
+    it('Assure existence of paginator for Dax search', () => {
         cy.visit('/searchtaxonomy')
         cy.get('#app').should("exist")
         cy.get('h1').should("contain", "Search EU Taxonomy data")
