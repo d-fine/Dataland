@@ -130,10 +130,24 @@ describe('Search Taxonomy', function () {
         cy.get('button[name=search_bar_collapse]').should('exist')
             .click()
         cy.get('input[name=eu_taxonomy_search_bar_scrolled]').should('exist')
-        cy.get('button[name=search_bar_collapse]').should('exist')
+        cy.get('button[name=search_bar_collapse]').should('not.exist')
+    });
+
+    it('Communication between standard search bar and search bar in scrolled mode', () => {
+        const inputValue1 = "ABCDEFG"
+        const inputValue2 = "XYZ"
+        cy.visit('/searchtaxonomy')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
+            .type(inputValue1)
+        cy.scrollTo(0, 500)
+        cy.get('button[name=search_bar_collapse]')
             .click()
-        cy.get('input[name=eu_taxonomy_search_bar_scrolled]').should('not.exist')
-        cy.get('button[name=search_bar_collapse]').should('exist')
+        cy.get('input[name=eu_taxonomy_search_bar_scrolled]')
+            .should('have.value', inputValue1)
+            .type(inputValue2)
+        cy.scrollTo('top')
+        cy.get('input[name=eu_taxonomy_search_bar_standard]')
+            .should('have.value', inputValue1+inputValue2)
     });
 
 });
