@@ -28,14 +28,14 @@
         <Button icon="pi pi-search" class="p-button-rounded surface-ground border-none" @click="activateSearchBar" name="search_bar_collapse">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
         </Button>
-        <IndexTabs v-if="showIndexTabs" :initIndex="index" @tab-click="toggleIndexTabs" ref="indexTabs"/>
+        <IndexTabs v-if="showIndexTabs" :initIndex="selectedIndex" @tab-click="toggleIndexTabs" ref="indexTabs"/>
       </div>
     </div>
   </MarginWrapper>
   <MarginWrapper>
-    <IndexTabs v-if="showIndexTabs && !scrolled" :initIndex="index"  @tab-click="toggleIndexTabs" ref="indexTabs"/>
+    <IndexTabs v-if="showIndexTabs && !scrolled" :initIndex="selectedIndex"  @tab-click="toggleIndexTabs" ref="indexTabs"/>
   </MarginWrapper>
-  <EuTaxoSearchResults v-if="collection" :data="responseArray"/>
+  <EuTaxoSearchResults v-if="showSearchResultsTable" :data="responseArray"/>
 </template>
 
 <script>
@@ -55,10 +55,10 @@ export default {
     return {
       route: useRoute(),
       showIndexTabs: false,
-      index: 1,
+      selectedIndex: null,
       scrolled: false,
       focus: false,
-      collection: false,
+      showSearchResultsTable: false,
       responseArray: [],
       autocompleteArray: [],
       loading: false,
@@ -90,14 +90,14 @@ export default {
       this.$emit('autocomplete-focus', true)
     },
     handleItemSelect() {
-      this.collection = false;
+      this.showSearchResultsTable = false;
       this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
     },
     handleQuery() {
       if (this.$refs.indexTabs) {
         this.$refs.indexTabs.activeIndex = null
       }
-      this.collection = true;
+      this.showSearchResultsTable = true;
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}});
       this.queryCompany();
       this.close();
@@ -130,7 +130,7 @@ export default {
       }))
     },
     toggleIndexTabs(stockIndex, index) {
-      this.index = index
+      this.selectedIndex = index
       this.showIndexTabs = true
       this.filterByIndex(stockIndex)
     },
@@ -147,7 +147,7 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.collection = true
+        this.showSearchResultsTable = true
       }
     },
     async queryCompany() {
@@ -161,8 +161,8 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.collection = true
-        this.index = null
+        this.showSearchResultsTable = true
+        this.selectedIndex = null
       }
     },
     async searchCompany(event) {
@@ -175,7 +175,7 @@ export default {
         console.error(error)
       } finally {
         this.loading = false
-        this.index = null
+        this.selectedIndex = null
       }
     }
   },
