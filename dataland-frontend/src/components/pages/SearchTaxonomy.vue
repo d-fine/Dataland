@@ -13,8 +13,14 @@
                    @tab-click="toggleIndexTabs"/>
       </MarginWrapper>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled" >
-        <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button name="search_bar_collapse"
+          <EuTaxoSearchBar class="col-12"
+                           v-if="searchBarActivated"
+                           taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
+                           @companyToQuery="handleCompanyQuery"
+          />
+        <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
+        <Button v-if="!searchBarActivated"
+                name="search_bar_collapse"
                 icon="pi pi-search" class="p-button-rounded surface-ground border-none m-2"
                 @click="toggleSearchBar">
           <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
