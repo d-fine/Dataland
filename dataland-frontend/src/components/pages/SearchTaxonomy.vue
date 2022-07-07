@@ -5,6 +5,8 @@
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-if="!pageScrolled"
                        ref="euTaxoSearchBar"
+                       :initial-input="currentInput"
+                       @searchBarInput="handleInput"
                        @companyToQuery="handleCompanyQuery"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
@@ -15,7 +17,9 @@
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled" >
           <EuTaxoSearchBar class="col-12"
                            v-if="searchBarActivated"
+                           :initial-input="currentInput"
                            taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
+                           @searchBarInput="handleInput"
                            @companyToQuery="handleCompanyQuery"
           />
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
@@ -28,11 +32,6 @@
         <IndexTabs ref="indexTabs"
                    :initIndex="selectedIndex"
                    @tab-click="toggleIndexTabs" />
-        <EuTaxoSearchBar class="col-8 text-left"
-                         v-if="searchBarActivated"
-                         taxoSearchBarName="eu_taxonomy_search_bar_scrolled"
-                         @companyToQuery="handleCompanyQuery"
-                         />
       </div>
       <EuTaxoSearchResults v-if="showSearchResultsTable" :data="responseArray"/>
     </TheContent>
@@ -90,7 +89,8 @@ export default {
       showSearchResultsTable: false,
       responseArray: [],
       latestScrollPosition: 0,
-      loading: false
+      loading: false,
+      currentInput: null,
     }
   },
 
@@ -116,6 +116,10 @@ export default {
         this.pageScrolled = document.documentElement.scrollTop > 80
         this.latestScrollPosition = windowScrollY
       }
+    },
+
+    handleInput(value) {
+      this.currentInput=value
     },
 
     handleCompanyQuery(value) {

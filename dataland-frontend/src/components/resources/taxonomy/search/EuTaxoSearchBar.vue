@@ -11,7 +11,6 @@
                 v-model="selectedCompany" :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
                 ref="autocomplete" inputClass="h-3rem" field="companyName" style="z-index:10"
                 placeholder="Search company by name or PermID"
-                @focus="focused" @focusout="unfocused"
                 @complete="searchCompany"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect"
                 >
@@ -45,10 +44,15 @@ export default {
       type: String,
       default: "eu_taxonomy_search_bar_standard"
     },
+    initialInput: {
+      type: String,
+      default: null
+    },
   },
 
   mounted() {
     this.$refs.autocomplete.focus()
+    this.selectedCompany=this.initialInput
   },
 
   data() {
@@ -62,6 +66,13 @@ export default {
   },
 
   inject: ['getKeycloakInitPromise','keycloak_init'],
+
+  watch: {
+    selectedCompany(value) {
+      this.$emit("searchBarInput", value)
+    }
+  },
+
   methods: {
 
     closeDropdown() {
@@ -105,7 +116,7 @@ export default {
     }
   },
 
-  emits: ['companyToQuery'],
+  emits: ['companyToQuery', 'searchBarInput'],
 
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
