@@ -1534,7 +1534,7 @@
       "identityProviderAlias": "google",
       "identityProviderMapper": "google-user-attribute-mapper",
       "config": {
-        "syncMode": "INHERIT",
+        "syncMode": "FORCE",
         "jsonField": "picture",
         "userAttribute": "picture"
       }
