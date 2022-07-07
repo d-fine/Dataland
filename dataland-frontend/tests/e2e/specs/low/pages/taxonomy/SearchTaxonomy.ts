@@ -25,7 +25,7 @@ describe('Search Taxonomy', function () {
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 
-    it('Company Search by Name', () => {
+    it.only('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = companiesWithData[0].companyInformation.companyName
         const PermIdText = "Permanent Identifier (PermID)"

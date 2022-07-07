@@ -12,13 +12,16 @@
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                    @update:first="scrollToTop"
                    @row-click="goToData"
-                   class="table-cursor">
+                   class="table-cursor"
+                   id="search-result"
+                   :rowHover="true"
+        >
 
 
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
-                  class="surface-0 w-3 d-datatable-column-left">
+                  class="d-bg-white w-3 d-datatable-column-left">
           </Column>
-          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
+          <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
             <template #header>
               <span class="uppercase">PERM ID</span> <i class="material-icons pl-2" aria-hidden="true" title="Perm ID" v-tooltip.top="{
               value: 'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
@@ -30,19 +33,19 @@
               {{data.permId ? data.permId : "Not available"}}
             </template>
           </Column>
-          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0 w-2">
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2">
           </Column>
-          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0 w-1 text-right">
+          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="d-bg-white w-1 text-right">
             <template #body="{data}">
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
           </Column>
-          <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="surface-0 w-2">
+          <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
             <template #body="{data}">
               {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}
             </template>
           </Column>
-          <Column field="companyId" header="" class="surface-0 w-1 d-datatable-column-right">
+          <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="{data}">
               <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
                            class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>
@@ -99,7 +102,10 @@ export default {
 }
 </script>
 <style>
-.table-cursor tbody tr:hover {
+#search-result tr:hover {
   cursor: pointer;
+}
+#search-result th {
+  background: white;
 }
 </style>
