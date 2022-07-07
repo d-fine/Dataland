@@ -6,7 +6,7 @@ describe('Tooltips test suite', () => {
         cy.restoreLoginSession()
         cy.retrieveCompanyIdsList().then((companyIdList: any) => {
             cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies")
-            cy.wait('@retrieveCompany', {timeout: 2 * 1000}).then(() => {
+            cy.wait('@retrieveCompany', {timeout: 5 * 1000}).then(() => {
                 cy.get('#app', {timeout: 2 * 1000}).should("exist")
                 cy.get('.p-card-content .text-left strong')
                     .contains('NFRD required')

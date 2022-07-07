@@ -2,6 +2,8 @@ describe('Back Button test suite', () => {
     it('company eu taxonomy page should be present and contain back button', function () {
         cy.restoreLoginSession()
         cy.visit("/searchtaxonomy")
+        cy.get('#app').should("exist")
+        cy.get('h1').should("contain", "Search EU Taxonomy data")
         cy.retrieveDataIdsList().then((dataIdList: any) => {
             cy.visit("/companies/" + dataIdList[5] + "/eutaxonomies")
             cy.get('#app').should("exist")
