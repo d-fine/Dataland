@@ -22,7 +22,6 @@
                          taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
                          @queryCompany="handleCompanyQuery"
                          @filterByIndex="handleFilterByIndex"/>
-        />
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
         <Button v-if="!searchBarActivated"
                 name="search_bar_collapse"
@@ -120,7 +119,7 @@ export default {
 
     handleCompanyQuery(event) {
       this.$refs.indexTabs.activeIndex = null
-      console.log(event)
+      this.selectedIndex = null
       this.resultsArray = event
       this.showSearchResultsTable = true
     },
@@ -131,6 +130,7 @@ export default {
     },
 
     toggleIndexTabs(stockIndex, index) {
+      this.$refs.indexTabs.activeIndex = true
       this.selectedIndex = index
       this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)
     },

@@ -31,6 +31,8 @@ export default {
         })
       }
   },
+
+
   data(){
     return {
       activeIndex: null,
