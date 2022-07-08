@@ -118,11 +118,10 @@ export default {
     },
 
     handleCompanyQuery(event) {
-      console.log("AAAA" + event)
       this.selectedIndex = null
       this.resultsArray = event
       this.showSearchResultsTable = true
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: event}})
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.currentInput}})
 
     },
 
