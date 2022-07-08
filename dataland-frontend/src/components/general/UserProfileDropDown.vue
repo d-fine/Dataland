@@ -1,7 +1,7 @@
 <template>
   <div @click="toggle" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle" name="profile-picture-dropdown-toggle">
     <img ref="profile-picture" class="d-profile-picture" src="@/assets/images/logos/favicon-32x32.png" alt="User profile picture"/>
-    <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon"/>
+    <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" referrerpolicy="no-referrer"/>
   </div>
   <Menu ref="menu" :model="items" :popup="true" style="transform:translate(0px,1rem);" class="text-primary">
     <template #item="{item}">
