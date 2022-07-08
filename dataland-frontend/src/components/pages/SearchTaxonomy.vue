@@ -130,7 +130,7 @@ export default {
 
     toggleIndexTabs(stockIndex, index) {
       this.selectedIndex = index
-      this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)
+      this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)   //Diese Aufgabe sollte von der IndexTabs Komponente ausgeführt werden!  Denn die gescrollte search bar ist nicht gerendert wenn man nicht auf die Lupe klickt.
     },
 
     toggleSearchBar() {
