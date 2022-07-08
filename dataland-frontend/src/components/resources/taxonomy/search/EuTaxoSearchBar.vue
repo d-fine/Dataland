@@ -13,12 +13,12 @@
                 @input="handleInput"
                 ref="autocomplete" inputClass="h-3rem" field="companyName" style="z-index:10"
                 placeholder="Search company by name or PermID"
-                @complete="searchCompany"
-                @keyup.enter="handleQuery" @item-select="handleItemSelect"
+                @complete="searchCompanyName"
+                @keyup.enter="handleCompanyQuery" @item-select="handleItemSelect"
                 >
               <template #footer>
                 <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries">
-                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleQuery">
+                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleCompanyQuery">
                     View all results.
                   </li>
                 </ul>
@@ -42,7 +42,7 @@ export default {
   name: "EuTaxoSearchBar",
   components: {AutoComplete, MarginWrapper},
 
-  emits: ['companyToQuery', 'update:modelValue'],
+  emits: ['queryCompany', 'filterByIndex', 'update:modelValue'],
 
   props: {
     taxoSearchBarName: {
@@ -87,11 +87,11 @@ export default {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`)
     },
 
-    handleQuery(event) {
-      this.$emit("companyToQuery", event.target.value)
+    handleCompanyQuery(value) {
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: value}})
+      this.queryCompany(value.target.value)
       this.closeDropdown()
     },
-
 
     responseMapper(response) {
       return response.data.map(e => ({
@@ -104,11 +104,40 @@ export default {
       }))
     },
 
-    async searchCompany(event) {
+    async filterByIndex(stockIndex) {
       try {
         this.loading = true
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.autocompleteArray = await companyDataControllerApi.getCompanies(event.query, "", true).then(this.responseMapper)
+        this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.$emit("filterByIndex", this.responseArray)
+      }
+    },
+
+    async queryCompany(companyName) {
+      try {
+        this.loading = true
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.responseArray = await companyDataControllerApi.getCompanies(companyName, "", false).then(this.responseMapper)
+        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+        this.showSearchResultsTable = true
+        this.selectedIndex = null
+        this.$emit("queryCompany", this.responseArray)
+      }
+    },
+
+    async searchCompanyName(companyName) {
+      try {
+        this.loading = true
+        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
+        this.autocompleteArray = await companyDataControllerApi.getCompanies(companyName.query, "", true).then(this.responseMapper)
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries)
       } catch (error) {
         console.error(error)

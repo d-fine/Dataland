@@ -5,22 +5,24 @@
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-model="currentInput"
                        v-if="!pageScrolled"
-                       ref="euTaxoSearchBar1"
-                       @companyToQuery="handleCompanyQuery"/>
+                       ref="euTaxoSearchBar"
+                       @queryCompany="handleCompanyQuery"
+                       @filterByIndex="handleFilterByIndex"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
                    ref="indexTabs"
                    :initIndex="selectedIndex"
                    @tab-click="toggleIndexTabs"/>
       </MarginWrapper>
-      <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled" >
-          <EuTaxoSearchBar class="col-12"
-                           v-model="currentInput"
-                           v-if="searchBarActivated"
-                           ref="euTaxoSearchBar2"
-                           taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
-                           @companyToQuery="handleCompanyQuery"
-          />
+      <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled">
+        <EuTaxoSearchBar class="col-12"
+                         v-model="currentInput"
+                         v-if="searchBarActivated"
+                         ref="euTaxoSearchBar"
+                         taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
+                         @queryCompany="handleCompanyQuery"
+                         @filterByIndex="handleFilterByIndex"/>
+        />
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
         <Button v-if="!searchBarActivated"
                 name="search_bar_collapse"
@@ -30,9 +32,9 @@
         </Button>
         <IndexTabs ref="indexTabs"
                    :initIndex="selectedIndex"
-                   @tab-click="toggleIndexTabs" />
+                   @tab-click="toggleIndexTabs"/>
       </div>
-      <EuTaxoSearchResults v-if="showSearchResultsTable" :data="responseArray"/>
+      <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray"/>
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -48,7 +50,6 @@ import IndexTabs from "@/components/resources/indices/IndexTabs"
 import Button from "primevue/button"
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults"
 import {useRoute} from "vue-router"
-import {ApiClientProvider} from "@/services/ApiClients"
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum
@@ -73,9 +74,9 @@ export default {
   mounted() {
     if (this.route.query && this.route.query.input) {
       this.currentInput = this.route.query.input
-      this.queryCompany()
+      this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
     } else if (this.route.path === "/searchtaxonomy") {
-      this.filterByIndex(stockIndices[this.selectedIndex])
+      this.$refs.euTaxoSearchBar.filterByIndex(stockIndices[this.selectedIndex])
     }
   },
   data() {
@@ -85,13 +86,13 @@ export default {
       route: useRoute(),
       selectedIndex: 1,
       showSearchResultsTable: false,
-      responseArray: [],
+      resultsArray: [],
       latestScrollPosition: 0,
-      currentInput: "",
+      currentInput: null,
     }
   },
 
-  inject: ['getKeycloakInitPromise','keycloak_init'],
+  inject: ['getKeycloakInitPromise', 'keycloak_init'],
 
   watch: {
     pageScrolled(value) {
@@ -104,82 +105,38 @@ export default {
   methods: {
 
 
-
     handleScroll() {
       const windowScrollY = window.scrollY
-      if(this.latestScrollPosition > windowScrollY){
+      if (this.latestScrollPosition > windowScrollY) {
         //ScrollUP event
         this.latestScrollPosition = windowScrollY
         this.pageScrolled = document.documentElement.scrollTop >= 50
-      } else{
+      } else {
         //ScrollDOWN event
         this.pageScrolled = document.documentElement.scrollTop > 80
         this.latestScrollPosition = windowScrollY
       }
     },
 
-    handleCompanyQuery(value) {
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: value}})
-      this.queryCompany()
+    handleCompanyQuery(event) {
       this.$refs.indexTabs.activeIndex = null
+      console.log(event)
+      this.resultsArray = event
+      this.showSearchResultsTable = true
+    },
+
+    handleFilterByIndex(event) {
+      this.resultsArray = event
       this.showSearchResultsTable = true
     },
 
     toggleIndexTabs(stockIndex, index) {
       this.selectedIndex = index
-      this.filterByIndex(stockIndex)
+      this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)
     },
 
     toggleSearchBar() {
       this.searchBarActivated = !this.searchBarActivated
-    },
-
-    responseMapper(response) {
-      return response.data.map(e => ({
-        "companyName": e.companyInformation.companyName,
-        "companyInformation": e.companyInformation,
-        "companyId": e.companyId,
-        "permId": e.companyInformation.identifiers.map((identifier) => {
-          return identifier.identifierType === "PermId" ? identifier.identifierValue : ""
-        }).pop()
-      }))
-    },
-
-    setLoading(value) {
-      if (this.$refs.euTaxoSearchBar1) {
-        this.$refs.euTaxoSearchBar1.loading = value;
-      }
-      if (this.$refs.euTaxoSearchBar2) {
-        this.$refs.euTaxoSearchBar2.loading = value;
-      }
-    },
-
-    async filterByIndex(stockIndex) {
-      try {
-        this.setLoading(true)
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.setLoading(false)
-        this.showSearchResultsTable = true
-      }
-    },
-
-    async queryCompany() {
-      try {
-        this.setLoading(true)
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.responseArray = await companyDataControllerApi.getCompanies(this.currentInput, "", false).then(this.responseMapper)
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.setLoading(false)
-        this.showSearchResultsTable = true
-        this.selectedIndex = null
-      }
     },
   },
 }
