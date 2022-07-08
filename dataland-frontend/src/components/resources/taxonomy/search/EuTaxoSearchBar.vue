@@ -87,9 +87,9 @@ export default {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`)
     },
 
-    handleCompanyQuery(value) {
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: value}})
-      this.queryCompany(value.target.value)
+    handleCompanyQuery(event) {
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: event.target.value}})
+      this.queryCompany(event.target.value)
       this.closeDropdown()
     },
 
