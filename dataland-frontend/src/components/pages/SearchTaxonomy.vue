@@ -88,7 +88,6 @@ export default {
       showSearchResultsTable: false,
       responseArray: [],
       latestScrollPosition: 0,
-      loading: false,
       currentInput: "",
     }
   },
