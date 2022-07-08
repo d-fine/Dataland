@@ -5,7 +5,7 @@
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-model="currentInput"
                        v-if="!pageScrolled"
-                       ref="euTaxoSearchBar"
+                       ref="euTaxoSearchBar1"
                        @companyToQuery="handleCompanyQuery"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
@@ -17,7 +17,7 @@
           <EuTaxoSearchBar class="col-12"
                            v-model="currentInput"
                            v-if="searchBarActivated"
-                           ref="euTaxoSearchBar"
+                           ref="euTaxoSearchBar2"
                            taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
                            @companyToQuery="handleCompanyQuery"
           />
@@ -78,7 +78,6 @@ export default {
       this.filterByIndex(stockIndices[this.selectedIndex])
     }
   },
-
   data() {
     return {
       searchBarActivated: false,
@@ -146,29 +145,38 @@ export default {
       }))
     },
 
+    setLoading(value) {
+      if (this.$refs.euTaxoSearchBar1) {
+        this.$refs.euTaxoSearchBar1.loading = value;
+      }
+      if (this.$refs.euTaxoSearchBar2) {
+        this.$refs.euTaxoSearchBar2.loading = value;
+      }
+    },
+
     async filterByIndex(stockIndex) {
       try {
-        this.$refs.euTaxoSearchBar.loading = true
+        this.setLoading(true)
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
       } catch (error) {
         console.error(error)
       } finally {
-        this.$refs.euTaxoSearchBar.loading = false
+        this.setLoading(false)
         this.showSearchResultsTable = true
       }
     },
 
     async queryCompany() {
       try {
-        this.$refs.euTaxoSearchBar.loading  = true
+        this.setLoading(true)
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         this.responseArray = await companyDataControllerApi.getCompanies(this.currentInput, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
       } finally {
-        this.$refs.euTaxoSearchBar.loading  = false
+        this.setLoading(false)
         this.showSearchResultsTable = true
         this.selectedIndex = null
       }
