@@ -6,13 +6,13 @@
       <EuTaxoSearchBar v-model="currentInput"
                        v-if="!pageScrolled"
                        ref="euTaxoSearchBar"
-                       @queryCompany="handleCompanyQuery"
-                       @filterByIndex="handleFilterByIndex"/>
+                       @queryCompany="handleCompanyQuery"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
                    ref="indexTabs"
                    :initIndex="selectedIndex"
-                   @tab-click="toggleIndexTabs"/>
+                   @tab-click="toggleIndexTabs"
+                   @filterByIndex="handleFilterByIndex"/>
       </MarginWrapper>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled">
         <EuTaxoSearchBar class="col-12"
@@ -20,8 +20,7 @@
                          v-if="searchBarActivated"
                          ref="euTaxoSearchBar"
                          taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
-                         @queryCompany="handleCompanyQuery"
-                         @filterByIndex="handleFilterByIndex"/>
+                         @queryCompany="handleCompanyQuery"/>
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
         <Button v-if="!searchBarActivated"
                 name="search_bar_collapse"
@@ -31,7 +30,8 @@
         </Button>
         <IndexTabs ref="indexTabs"
                    :initIndex="selectedIndex"
-                   @tab-click="toggleIndexTabs"/>
+                   @tab-click="toggleIndexTabs"
+                   @filterByIndex="handleFilterByIndex"/>
       </div>
       <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray"/>
     </TheContent>
@@ -75,7 +75,7 @@ export default {
       this.currentInput = this.route.query.input
       this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
     } else if (this.route.path === "/searchtaxonomy") {
-      this.$refs.euTaxoSearchBar.filterByIndex(stockIndices[this.selectedIndex])
+      this.$refs.indexTabs.filterByIndex(stockIndices[this.selectedIndex])
     }
   },
   data() {
@@ -133,7 +133,7 @@ export default {
 
     toggleIndexTabs(stockIndex, index) {
       this.selectedIndex = index
-      this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)   //Diese Aufgabe sollte von der IndexTabs Komponente ausgeführt werden!  Denn die gescrollte search bar ist nicht gerendert wenn man nicht auf die Lupe klickt.
+      this.$refs.indexTabs.filterByIndex(stockIndex)   //Diese Aufgabe sollte von der IndexTabs Komponente ausgeführt werden!  Denn die gescrollte search bar ist nicht gerendert wenn man nicht auf die Lupe klickt.
     },
 
     toggleSearchBar() {

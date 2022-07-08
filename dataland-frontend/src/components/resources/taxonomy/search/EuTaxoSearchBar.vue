@@ -42,7 +42,7 @@ export default {
   name: "EuTaxoSearchBar",
   components: {AutoComplete, MarginWrapper},
 
-  emits: ['queryCompany', 'filterByIndex', 'update:modelValue'],
+  emits: ['queryCompany', 'update:modelValue'],
 
   props: {
     taxoSearchBarName: {
@@ -103,18 +103,7 @@ export default {
       }))
     },
 
-    async filterByIndex(stockIndex) {
-      try {
-        this.loading = true
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        this.loading = false
-        this.$emit("filterByIndex", this.responseArray)
-      }
-    },
+
 
     async queryCompany(companyName) {
       try {
