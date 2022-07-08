@@ -118,7 +118,6 @@ export default {
     },
 
     handleCompanyQuery(event) {
-      this.$refs.indexTabs.activeIndex = null
       this.selectedIndex = null
       this.resultsArray = event
       this.showSearchResultsTable = true
@@ -130,7 +129,6 @@ export default {
     },
 
     toggleIndexTabs(stockIndex, index) {
-      this.$refs.indexTabs.activeIndex = true
       this.selectedIndex = index
       this.$refs.euTaxoSearchBar.filterByIndex(stockIndex)
     },
