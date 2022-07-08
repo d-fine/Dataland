@@ -10,4 +10,9 @@ describe('Authentication Buttons', () => {
         cy.logout()
     })
 
+    it('Checks that user dropdown menu logout works', () => {
+        cy.login()
+        cy.logoutDropdown()
+    })
+
 })
