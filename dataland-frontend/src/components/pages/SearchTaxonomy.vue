@@ -3,10 +3,9 @@
     <TheHeader/>
     <TheContent>
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
-      <EuTaxoSearchBar v-if="!pageScrolled"
+      <EuTaxoSearchBar v-model="currentInput"
+                       v-if="!pageScrolled"
                        ref="euTaxoSearchBar"
-                       :initial-input="currentInput"
-                       @searchBarInput="handleInput"
                        @companyToQuery="handleCompanyQuery"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
@@ -16,10 +15,9 @@
       </MarginWrapper>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled" >
           <EuTaxoSearchBar class="col-12"
+                           v-model="currentInput"
                            v-if="searchBarActivated"
-                           :initial-input="currentInput"
                            taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
-                           @searchBarInput="handleInput"
                            @companyToQuery="handleCompanyQuery"
           />
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
@@ -86,6 +84,7 @@ export default {
       pageScrolled: false,
       route: useRoute(),
       selectedIndex: 1,
+      selectedCompany: null,
       showSearchResultsTable: false,
       responseArray: [],
       latestScrollPosition: 0,
@@ -100,11 +99,15 @@ export default {
     pageScrolled(value) {
       if (!value) {
         this.searchBarActivated = false
+        console.log("currentInput is " + this.currentInput)
       }
     }
   },
 
   methods: {
+
+
+
     handleScroll() {
       const windowScrollY = window.scrollY
       if(this.latestScrollPosition > windowScrollY){
@@ -116,10 +119,6 @@ export default {
         this.pageScrolled = document.documentElement.scrollTop > 80
         this.latestScrollPosition = windowScrollY
       }
-    },
-
-    handleInput(value) {
-      this.currentInput=value
     },
 
     handleCompanyQuery(value) {

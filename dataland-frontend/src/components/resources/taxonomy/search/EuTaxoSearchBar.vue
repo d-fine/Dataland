@@ -39,20 +39,22 @@ import {useRoute} from "vue-router"
 export default {
   name: "EuTaxoSearchBar",
   components: {AutoComplete, MarginWrapper},
+
+  emits: ['companyToQuery', 'input'],
+
   props: {
     taxoSearchBarName: {
       type: String,
       default: "eu_taxonomy_search_bar_standard"
     },
-    initialInput: {
+    value: {
       type: String,
-      default: null
-    },
+      default: "THIS IS DEFAULT"
+    }
   },
 
   mounted() {
     this.$refs.autocomplete.focus()
-    this.selectedCompany=this.initialInput
   },
 
   data() {
@@ -69,7 +71,8 @@ export default {
 
   watch: {
     selectedCompany(value) {
-      this.$emit("searchBarInput", value)
+      this.$emit('input', value)
+      console.log("Emitted value from EuTaxoSearchBar is " + value)
     }
   },
 
@@ -115,8 +118,6 @@ export default {
       }
     }
   },
-
-  emits: ['companyToQuery', 'searchBarInput'],
 
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
