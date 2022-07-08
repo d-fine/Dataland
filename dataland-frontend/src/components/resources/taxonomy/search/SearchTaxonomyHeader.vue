@@ -13,7 +13,7 @@
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper"
 
-export default {
+export default   {
   name: 'SearchTaxonomyHeader',
   components: {MarginWrapper},
   props: {

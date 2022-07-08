@@ -8,14 +8,16 @@
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
             <i v-else aria-hidden="true"/>
             <AutoComplete
-                v-model="selectedCompany" :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
+                :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
+                :modelValue="modelValue"
+                @input="$emit('update:modelValue', $event.target.value)"
                 ref="autocomplete" inputClass="h-3rem" field="companyName" style="z-index:10"
                 placeholder="Search company by name or PermID"
                 @complete="searchCompany"
                 @keyup.enter="handleQuery" @item-select="handleItemSelect"
                 >
               <template #footer>
-                <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length > 0">
+                <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries">
                   <li class="p-autocomplete-item text-primary font-semibold" @click="handleQuery">
                     View all results.
                   </li>
@@ -40,16 +42,20 @@ export default {
   name: "EuTaxoSearchBar",
   components: {AutoComplete, MarginWrapper},
 
-  emits: ['companyToQuery', 'input'],
+  emits: ['companyToQuery', 'update:modelValue'],
 
   props: {
     taxoSearchBarName: {
       type: String,
       default: "eu_taxonomy_search_bar_standard"
     },
-    value: {
+    modelValue: {
       type: String,
-      default: "THIS IS DEFAULT"
+      default: ""
+    },
+    maxNumAutoCompleteEntries: {
+      type: Number,
+      default: 3,
     }
   },
 
@@ -62,29 +68,19 @@ export default {
       route: useRoute(),
       autocompleteArray: [],
       autocompleteArrayDisplayed: null,
-      loading: false,
-      selectedCompany: null,
+      loading: false
     }
   },
 
   inject: ['getKeycloakInitPromise','keycloak_init'],
-
-  watch: {
-    selectedCompany(value) {
-      this.$emit('input', value)
-      console.log("Emitted value from EuTaxoSearchBar is " + value)
-    }
-  },
-
   methods: {
 
     closeDropdown() {
       this.$refs.autocomplete.hideOverlay()
     },
 
-    handleItemSelect() {
-      this.collection = false;
-      this.$router.push(`/companies/${this.selectedCompany.companyId}/eutaxonomies`)
+    handleItemSelect(event) {
+      this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`)
     },
 
     handleQuery(event) {
@@ -109,7 +105,7 @@ export default {
         this.loading = true
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         this.autocompleteArray = await companyDataControllerApi.getCompanies(event.query, "", true).then(this.responseMapper)
-        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, 3)
+        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries)
       } catch (error) {
         console.error(error)
       } finally {

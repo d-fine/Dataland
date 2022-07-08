@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     if (this.route.query && this.route.query.input) {
-      this.selectedCompany = this.route.query.input
+      this.currentInput = this.route.query.input
       this.queryCompany()
     } else if (this.route.path === "/searchtaxonomy") {
       this.filterByIndex(stockIndices[this.selectedIndex])
@@ -84,12 +84,11 @@ export default {
       pageScrolled: false,
       route: useRoute(),
       selectedIndex: 1,
-      selectedCompany: null,
       showSearchResultsTable: false,
       responseArray: [],
       latestScrollPosition: 0,
       loading: false,
-      currentInput: null,
+      currentInput: "",
     }
   },
 
@@ -122,8 +121,7 @@ export default {
     },
 
     handleCompanyQuery(value) {
-      this.selectedCompany = value
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.selectedCompany}})
+      this.$router.push({name: 'Search Eu Taxonomy', query: {input: value}})
       this.queryCompany()
       this.$refs.indexTabs.activeIndex = null
       this.showSearchResultsTable = true
@@ -166,7 +164,7 @@ export default {
       try {
         this.loading = true
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.responseArray = await companyDataControllerApi.getCompanies(this.selectedCompany, "", false).then(this.responseMapper)
+        this.responseArray = await companyDataControllerApi.getCompanies(this.currentInput, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)

@@ -5,7 +5,7 @@
       <MarginWrapper class="text-left">
         <BackButton/>
       </MarginWrapper>
-      <EuTaxoSearchBar/>
+      <EuTaxoSearchBar v-model="searchContent"/>
       <TaxonomySample :companyID="companyID"/>
     </TheContent>
   </AuthenticationWrapper>
@@ -30,6 +30,11 @@ export default {
     MarginWrapper,
     EuTaxoSearchBar,
     AuthenticationWrapper
+  },
+  data() {
+    return {
+      searchContent: ""
+    }
   },
   props: {
     companyID: {
