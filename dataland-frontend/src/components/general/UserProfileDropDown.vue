@@ -58,7 +58,6 @@ export default {
   .d-profile-picture {
     border-radius: 50%;
     height: 2rem;
-    /* TODO: Make the profile picture adjust size to fit parent automatically */
   }
 
   .d-triangle-down {
