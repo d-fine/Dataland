@@ -17,6 +17,7 @@
           <EuTaxoSearchBar class="col-12"
                            v-model="currentInput"
                            v-if="searchBarActivated"
+                           ref="euTaxoSearchBar"
                            taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
                            @companyToQuery="handleCompanyQuery"
           />
@@ -98,7 +99,6 @@ export default {
     pageScrolled(value) {
       if (!value) {
         this.searchBarActivated = false
-        console.log("currentInput is " + this.currentInput)
       }
     }
   },
@@ -149,27 +149,27 @@ export default {
 
     async filterByIndex(stockIndex) {
       try {
-        this.loading = true
+        this.$refs.euTaxoSearchBar.loading = true
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         this.responseArray = await companyDataControllerApi.getCompanies("", stockIndex, false).then(this.responseMapper)
       } catch (error) {
         console.error(error)
       } finally {
-        this.loading = false
+        this.$refs.euTaxoSearchBar.loading = false
         this.showSearchResultsTable = true
       }
     },
 
     async queryCompany() {
       try {
-        this.loading = true
+        this.$refs.euTaxoSearchBar.loading  = true
         const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
         this.responseArray = await companyDataControllerApi.getCompanies(this.currentInput, "", false).then(this.responseMapper)
         this.filteredCompaniesBasic = this.responseArray.slice(0, 3)
       } catch (error) {
         console.error(error)
       } finally {
-        this.loading = false
+        this.$refs.euTaxoSearchBar.loading  = false
         this.showSearchResultsTable = true
         this.selectedIndex = null
       }

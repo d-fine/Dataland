@@ -10,7 +10,7 @@
             <AutoComplete
                 :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
                 :modelValue="modelValue"
-                @input="$emit('update:modelValue', $event.target.value)"
+                @input="handleInput"
                 ref="autocomplete" inputClass="h-3rem" field="companyName" style="z-index:10"
                 placeholder="Search company by name or PermID"
                 @complete="searchCompany"
@@ -51,7 +51,7 @@ export default {
     },
     modelValue: {
       type: String,
-      default: ""
+      default: null
     },
     maxNumAutoCompleteEntries: {
       type: Number,
@@ -77,6 +77,10 @@ export default {
 
     closeDropdown() {
       this.$refs.autocomplete.hideOverlay()
+    },
+
+    handleInput(event) {
+      this.$emit('update:modelValue', event.target.value)
     },
 
     handleItemSelect(event) {
