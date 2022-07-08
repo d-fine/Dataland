@@ -24,7 +24,7 @@ describe("EuTaxoSearchBarTest", () => {
             expect(wrapper.vm.autocompleteArray).toBeDefined()
             expect(wrapper.vm.autocompleteArrayDisplayed).toBeDefined()
             expect(wrapper.vm.loading).toBeDefined()
-            expect(wrapper.vm.selectedCompany).toBeDefined()
+            expect(wrapper.vm.modelValue).toBeDefined()
             expect(wrapper.vm.route).toBeDefined()
         })
 
