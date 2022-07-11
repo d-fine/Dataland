@@ -15,7 +15,8 @@
     "testunit": "vue-cli-service test:unit",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/fakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
-    "updatepackagelock": "npm update --save --dev && npm audit fix"
+    "updatepackagelock": "npm update --save --dev && npm audit fix",
+    "checkdependencies": "depcheck --ignores='@vue/cli-plugin-*,@vue/vue3-jest,sass-loader,ts-jest'"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.8",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@faker-js/faker": "^7.2.0",
+    "@jest/globals": "^28.1.2",
     "@vue/cli-plugin-babel": "~5.0.4",
     "@vue/cli-plugin-e2e-cypress": "~5.0.4",
     "@vue/cli-plugin-eslint": "~5.0.4",
@@ -43,7 +45,9 @@
     "@vue/test-utils": "^2.0.0",
     "@vue/vue3-jest": "^27.0.0",
     "cypress": "^9.7.0",
+    "depcheck": "^1.4.3",
     "eslint": "^8.14.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-vue": "^8.7.1",
     "eslint-plugin-prettier": "^4.2.1",
     "git-commit-id": "^2.0.1",
