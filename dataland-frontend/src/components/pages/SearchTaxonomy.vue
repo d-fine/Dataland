@@ -6,7 +6,8 @@
       <EuTaxoSearchBar v-model="currentInput"
                        v-show="!pageScrolled"
                        ref="euTaxoSearchBar"
-                       @queryCompany="handleCompanyQuery"/>
+                       @queryCompany="handleCompanyQuery"
+                       @rendered="handleEuTaxoSearchBarRender"/>
       <MarginWrapper>
         <IndexTabs v-if="!pageScrolled"
                    ref="indexTabs"
@@ -66,31 +67,17 @@ export default {
     EuTaxoSearchResults
   },
 
+  emits: ['queryCompany', 'update:modelValue'],
+
   created() {
     window.addEventListener('scroll', this.handleScroll)
   },
-  mounted() {
-    setTimeout(() => {
-      while(!this.$refs) {
-        console.log("waiting on refs")
-      }
-      console.log("refs loaded")
-      console.log(this.$refs)
-    }, 10000)
-    if (this.route.query && this.route.query.input) {
-      this.currentInput = this.route.query.input
-        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
-    } else if (this.route.path === "/searchtaxonomy") {
-      console.log("reached this point A")
-      this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex)
-      console.log("reached this point B")
 
-    }
-  },
   data() {
     return {
       searchBarActivated: false,
       pageScrolled: false,
+      pageTopReached: true,
       route: useRoute(),
       selectedIndex: 1,
       showSearchResultsTable: false,
@@ -100,14 +87,14 @@ export default {
     }
   },
 
-  inject: ['getKeycloakInitPromise', 'keycloak_init'],
+  inject: ['getKeycloakInitPromise', 'keycloak_init', 'authenticated'],
 
   watch: {
     pageScrolled(value) {
       if (!value) {
         this.searchBarActivated = false
       }
-    }
+    },
   },
 
   methods: {
@@ -126,28 +113,46 @@ export default {
       }
     },
 
-    handleCompanyQuery(event) {
-      this.selectedIndex = null
-      this.$refs.indexTabs.activeIndex = null
-      this.resultsArray = event
-      this.showSearchResultsTable = true
-      this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.currentInput}})
+    handleEuTaxoSearchBarRender() {
+      if (this.route.query && this.route.query.input) {
+        this.currentInput = this.route.query.input
+        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
+      } else if (this.route.path === "/searchtaxonomy") {
+        this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex)
+      }
+    }
+    ,
 
-    },
+      handleCompanyQuery(event)
+      {
+        this.selectedIndex = null
+        this.$refs.indexTabs.activeIndex = null
+        this.resultsArray = event
+        this.showSearchResultsTable = true
+        this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.currentInput}})
 
-    handleFilterByIndex(event) {
-      this.resultsArray = event
-      this.showSearchResultsTable = true
-    },
+      }
+    ,
 
-    toggleIndexTabs(stockIndex, index) {
-      this.selectedIndex = index
-      this.$refs.indexTabs.filterByIndex(stockIndex)
-    },
+      handleFilterByIndex(event)
+      {
+        this.resultsArray = event
+        this.showSearchResultsTable = true
+      }
+    ,
 
-    toggleSearchBar() {
-      this.searchBarActivated = !this.searchBarActivated
+      toggleIndexTabs(stockIndex, index)
+      {
+        this.selectedIndex = index
+        this.$refs.indexTabs.filterByIndex(stockIndex)
+      }
+    ,
+
+      toggleSearchBar()
+      {
+        this.searchBarActivated = !this.searchBarActivated
+      }
+    ,
     },
-  },
-}
+  }
 </script>

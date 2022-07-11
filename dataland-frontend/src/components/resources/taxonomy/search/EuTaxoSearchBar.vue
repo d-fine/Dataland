@@ -42,7 +42,7 @@ export default {
   name: "EuTaxoSearchBar",
   components: {AutoComplete, MarginWrapper},
 
-  emits: ['queryCompany', 'update:modelValue'],
+  emits: ['queryCompany', 'update:modelValue', "rendered"],
 
   props: {
     taxoSearchBarName: {
@@ -60,6 +60,7 @@ export default {
   },
 
   mounted() {
+    this.$emit("rendered", true)
     this.$refs.autocomplete.focus()
   },
 
