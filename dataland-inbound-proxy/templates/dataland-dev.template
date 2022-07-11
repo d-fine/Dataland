@@ -1,0 +1,48 @@
+server {
+    listen                  443 ssl http2;
+    listen                  [::]:443 ssl http2;
+    server_name             ${PROXY_NGINX_URLS};
+    root                    /var/www/;
+
+    # SSL
+
+    # The /certs/dataland directory is a symlink directory that either points
+    # to /etc/letsencrypt/live/$DOMAIN or to dummy certificates depending on weather LetsEncrypt certs are present
+    # This symlink is managed in the /scripts/check-letsencrypt-certs.sh
+
+    ssl_certificate         /certs/dataland/fullchain.pem;
+    ssl_certificate_key     /certs/dataland/privkey.pem;
+
+    # additional config
+    include utils/general.conf;
+
+    # security
+    include                 utils/security.conf;
+
+
+    # reverse proxy
+    location / {
+      proxy_pass http://host.docker.internal:8090;
+      include utils/proxy.conf;
+    }
+
+    location /api {
+      proxy_pass http://host.docker.internal:8080/api;
+      include utils/proxy.conf;
+    }
+
+    location /edc/api/dataland/eurodat {
+      proxy_pass http://dataland-edc:9191/api/dataland/eurodat;
+      include utils/proxy.conf;
+    }
+
+    location /edc/ids/api {
+      proxy_pass http://dataland-edc:9292/api;
+      include utils/proxy.conf;
+    }
+
+    location /keycloak {
+      proxy_pass http://keycloak:8080/keycloak;
+      include utils/proxy.conf;
+    }
+}

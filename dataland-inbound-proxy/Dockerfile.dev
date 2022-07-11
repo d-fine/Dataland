@@ -1,0 +1,14 @@
+FROM nginx
+
+# Add CertBot to
+RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/*
+
+# Add CronJob for certificate renewal (Add 00:00 on every day)
+# RUN echo "0 0 * * * root sh /scripts/renew-certbot.sh" > /etc/cron.d/certbot-renew
+
+COPY config /etc/nginx
+COPY templates/dataland-dev.template /etc/nginx/templates/dataland-dev.template
+COPY docker-entrypoint.d/* /docker-entrypoint.d
+COPY scripts /scripts
+
+VOLUME /etc/letsencrypt
