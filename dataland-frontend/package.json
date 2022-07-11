@@ -60,6 +60,7 @@
     "cypress": "^9.7.0",
     "eslint": "^8.14.0",
     "eslint-plugin-vue": "^8.7.1",
+    "eslint-plugin-prettier": "^4.1.0",
     "git-commit-id": "^2.0.1",
     "jest": "^27.5.1",
     "node-sass": "^7.0.1",
@@ -69,11 +70,15 @@
     "ts-node": "^10.8.1",
     "typescript": "~4.7.4"
   },
+  "prettier": {
+    "printWidth": 120
+  },
   "eslintConfig": {
     "root": true,
     "env": {
       "node": true
     },
+    "plugins": ["prettier"],
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended",
@@ -82,7 +87,9 @@
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     },
-    "rules": {},
+    "rules": {
+      "prettier/prettier": "warn"
+    },
     "overrides": [
       {
         "files": [
