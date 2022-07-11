@@ -4,7 +4,7 @@
     <TheContent>
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-model="currentInput"
-                       v-if="!pageScrolled"
+                       v-show="!pageScrolled"
                        ref="euTaxoSearchBar"
                        @queryCompany="handleCompanyQuery"/>
       <MarginWrapper>
@@ -18,7 +18,6 @@
         <EuTaxoSearchBar class="col-12"
                          v-model="currentInput"
                          v-if="searchBarActivated"
-                         ref="euTaxoSearchBar"
                          taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
                          @queryCompany="handleCompanyQuery"/>
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
@@ -71,11 +70,21 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
   },
   mounted() {
+    setTimeout(() => {
+      while(!this.$refs) {
+        console.log("waiting on refs")
+      }
+      console.log("refs loaded")
+      console.log(this.$refs)
+    }, 10000)
     if (this.route.query && this.route.query.input) {
       this.currentInput = this.route.query.input
-      this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
+        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput)
     } else if (this.route.path === "/searchtaxonomy") {
-      this.$refs.indexTabs.filterByIndex(stockIndices[this.selectedIndex])
+      console.log("reached this point A")
+      this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex)
+      console.log("reached this point B")
+
     }
   },
   data() {
@@ -119,6 +128,7 @@ export default {
 
     handleCompanyQuery(event) {
       this.selectedIndex = null
+      this.$refs.indexTabs.activeIndex = null
       this.resultsArray = event
       this.showSearchResultsTable = true
       this.$router.push({name: 'Search Eu Taxonomy', query: {input: this.currentInput}})
@@ -132,7 +142,7 @@ export default {
 
     toggleIndexTabs(stockIndex, index) {
       this.selectedIndex = index
-      this.$refs.indexTabs.filterByIndex(stockIndex)   //Diese Aufgabe sollte von der IndexTabs Komponente ausgeführt werden!  Denn die gescrollte search bar ist nicht gerendert wenn man nicht auf die Lupe klickt.
+      this.$refs.indexTabs.filterByIndex(stockIndex)
     },
 
     toggleSearchBar() {
