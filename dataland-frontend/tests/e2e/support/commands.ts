@@ -14,6 +14,8 @@ declare global {
       verifyTaxonomySearchResultTable: typeof verifyTaxonomySearchResultTable;
       verifyCompanySearchResultTable: typeof verifyCompanySearchResultTable;
       checkViewButtonWorks: typeof checkViewButtonWorks;
+      fillCompanyUploadFields: typeof fillCompanyUploadFields;
+      logoutDropdown: typeof logoutDropdown;
     }
   }
 }
@@ -69,19 +71,9 @@ export function register(email: string = "some_user", password: string = "test")
     .visit("/")
     .get("button[name='join_dataland_button']")
     .click()
-    .get("#firstName")
-    .should("exist")
-    .type("data", { force: true })
-
-    .get("#lastName")
-    .should("exist")
-    .type("land", { force: true })
-
     .get("#email")
     .should("exist")
-    .type(email.concat(Date.now().toString()).concat("@dataland.com"), {
-      force: true,
-    })
+    .type(email.concat(Date.now().toString()).concat("@dataland.com"), { force: true })
 
     .get("#password")
     .should("exist")
@@ -109,6 +101,20 @@ export function logout(): Chainable<JQuery> {
     .should("be.visible");
 }
 
+export function logoutDropdown(): Chainable<JQuery> {
+  return cy
+    .visit("/searchtaxonomy")
+    .get("div[name='profile-picture-dropdown-toggle']")
+    .click()
+    .get("a[id='profile-picture-dropdown-toggle']")
+    .click()
+    .url()
+    .should("eq", Cypress.config("baseUrl") + "/")
+    .get("button[name='login_dataland_button']")
+    .should("exist")
+    .should("be.visible");
+}
+
 export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
   return cy.session(
     [username, password],
@@ -121,6 +127,17 @@ export function restoreLoginSession(username?: string, password?: string): Chain
       },
     }
   );
+}
+
+export function fillCompanyUploadFields(companyName: string) {
+  cy.get("input[name=companyName]").type(companyName, { force: true });
+  cy.get("input[name=headquarters]").type("Capitol City", { force: true });
+  cy.get("input[name=sector]").type("Handmade", { force: true });
+  cy.get("input[name=marketCap]").type("123", { force: true });
+  cy.get("input[name=countryCode]").type("DE", { force: true });
+  cy.get("input[name=reportingDateOfMarketCap]").type("2021-09-02", { force: true });
+  cy.get("select[name=identifierType]").select("ISIN");
+  cy.get("input[name=identifierValue]").type("IsinValueId", { force: true });
 }
 
 export function verifyTaxonomySearchResultTable() {
@@ -158,3 +175,5 @@ Cypress.Commands.add("logout", logout);
 Cypress.Commands.add("verifyTaxonomySearchResultTable", verifyTaxonomySearchResultTable);
 Cypress.Commands.add("verifyCompanySearchResultTable", verifyCompanySearchResultTable);
 Cypress.Commands.add("checkViewButtonWorks", checkViewButtonWorks);
+Cypress.Commands.add("logoutDropdown", logoutDropdown);
+Cypress.Commands.add("fillCompanyUploadFields", fillCompanyUploadFields);
