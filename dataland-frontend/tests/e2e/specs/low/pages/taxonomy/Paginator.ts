@@ -14,12 +14,12 @@ describe('Paginator test suite', () => {
 
     it('Do a search with 0 matches, then assure that the paginator is gone', () => {
         cy.visit("/searchtaxonomy")
-        const inputValue = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321"
+        const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321"
         cy.get('input[name=eu_taxonomy_search_input]')
             .should('exist')
-            .type(inputValue)
+            .type(inputValueThatWillResultInZeroMatches)
             .type('{enter}')
-            .should('have.value', inputValue)
+            .should('have.value', inputValueThatWillResultInZeroMatches)
         cy.get('div.p-paginator').should('not.exist')
     });
 })
