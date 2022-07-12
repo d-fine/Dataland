@@ -1,6 +1,6 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent>
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-model="currentInput"

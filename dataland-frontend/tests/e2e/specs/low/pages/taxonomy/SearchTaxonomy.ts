@@ -1,11 +1,17 @@
-let companiesWithData:any
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
 
-before(function(){
-    cy.fixture('CompanyInformationWithEuTaxonomyData').then(function(companies){
-        companiesWithData=companies
-    });
+let companiesWithData: any;
+
+before(function () {
+  cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
+    companiesWithData = companies;
+  });
 });
 
+describe("Search Taxonomy", function () {
+  beforeEach(function () {
+    cy.restoreLoginSession();
+  });
 describe('Search Taxonomy', function () {
     beforeEach(function() {
         cy.restoreLoginSession()
@@ -24,61 +30,41 @@ describe('Search Taxonomy', function () {
             .invoke('attr', 'placeholder').should('contain', placeholder)
     });
 
+    function executeCompanySearch(inputValue: string) {
+        cy.get("input[name=eu_taxonomy_search_bar_standard]")
+            .should("not.be.disabled")
+            .click({ force: true })
+            .type(inputValue)
+            .type("{enter}")
+            .should("have.value", inputValue);
+        cy.get("h2").should("contain", "Results");
+        cy.get("table.p-datatable-table").should("exist");
+    }
+
+    function checkPermIdToolTip(permIdText: string) {
+        cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+        cy.get(".p-tooltip").should("be.visible").contains(permIdText);
+        cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+        cy.get(".p-tooltip").should("not.exist");
+    }
+
     it('Company Search by Name', () => {
         cy.visit('/searchtaxonomy')
         const inputValue = companiesWithData[0].companyInformation.companyName
-        const PermIdText = "Permanent Identifier (PermID)"
-        cy.get('input[name=eu_taxonomy_search_bar_standard]')
-            .should('not.be.disabled')
-            .click({force:true})
-            .type(inputValue)
-            .type('{enter}')
-            .should('have.value', inputValue)
-        cy.get('h2')
-            .should('contain', "Results")
-        cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','PERM ID')
-        cy.get('.material-icons[title="Perm ID"]')
-            .trigger('mouseenter', "center")
-        cy.get('.p-tooltip')
-            .should('be.visible')
-            .contains(PermIdText)
-        cy.get('.material-icons[title="Perm ID"]')
-            .trigger('mouseleave')
-        cy.get('.p-tooltip')
-            .should('not.exist')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('th','LOCATION')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
-            .contains('a', 'VIEW')
-            .click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
-        cy.get('h1').contains(inputValue)
+        const permIdText = "Permanent Identifier (PermID)"
+        executeCompanySearch(inputValue);
+        verifyTaxonomySearchResultTable();
+        checkPermIdToolTip(permIdText);
+        checkViewButtonWorks();
+        cy.get("h1").contains(inputValue);
     });
 
     it('Company Search by Identifier', () => {
-        cy.visit('/searchtaxonomy')
-        const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue
-        cy.get('input[name=eu_taxonomy_search_bar_standard]')
-            .should('not.be.disabled')
-            .click({force:true})
-            .type(inputValue)
-            .type('{enter}')
-            .should('have.value', inputValue)
-        cy.get('h2')
-            .should('contain', "Results")
-        cy.get('table.p-datatable-table').should('exist')
-        cy.get('table.p-datatable-table').contains('th','COMPANY')
-        cy.get('table.p-datatable-table').contains('th','SECTOR')
-        cy.get('table.p-datatable-table').contains('th','MARKET CAP')
-        cy.get('table.p-datatable-table').contains('td','VIEW')
-            .contains('a', 'VIEW')
-            .click()
-            .url().should('include', '/companies/')
-            .url().should('include', '/eutaxonomies')
+        cy.visit("/searchtaxonomy");
+        const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
+        executeCompanySearch(inputValue);
+        verifyTaxonomySearchResultTable();
+        checkViewButtonWorks();
     });
 
     it('Search Input field should be always present', () => {
@@ -88,7 +74,6 @@ describe('Search Taxonomy', function () {
             cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies")
             cy.get('input[name=eu_taxonomy_search_bar_standard]')
                 .should('not.be.disabled')
-                .click({force: true})
                 .type(inputValue)
                 .should('have.value', inputValue)
                 .invoke('attr', 'placeholder').should('contain', placeholder)

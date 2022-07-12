@@ -1,10 +1,12 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent>
       <MarginWrapper class="text-left">
-        <BackButton/>
+        <BackButton />
       </MarginWrapper>
+      <EuTaxoSearchBar />
+      <TaxonomySample :companyID="companyID" />
       <EuTaxoSearchBar v-model="searchContent"/>
       <TaxonomySample :companyID="companyID"/>
     </TheContent>
@@ -29,7 +31,7 @@ export default {
     BackButton,
     MarginWrapper,
     EuTaxoSearchBar,
-    AuthenticationWrapper
+    AuthenticationWrapper,
   },
   data() {
     return {
@@ -38,8 +40,8 @@ export default {
   },
   props: {
     companyID: {
-      type: String
-    }
-  }
-}
+      type: String,
+    },
+  },
+};
 </script>

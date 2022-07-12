@@ -35,4 +35,3 @@ describe("EuTaxoSearchBarTest", () => {
             expect(console.error).toHaveBeenCalled();
         });
     });
-

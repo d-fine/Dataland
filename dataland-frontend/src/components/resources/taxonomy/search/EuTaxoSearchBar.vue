@@ -1,12 +1,12 @@
 <template>
-  <MarginWrapper >
+  <MarginWrapper>
     <div class="grid">
       <div class="col-8 text-left">
         <span class="p-fluid">
-          <span class="p-input-icon-left p-input-icon-right ">
-            <i class="pi pi-search" aria-hidden="true" style="z-index:20; color:#958D7C"/>
-            <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index:20; color:#e67f3f"/>
-            <i v-else aria-hidden="true"/>
+          <span class="p-input-icon-left p-input-icon-right">
+            <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+            <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            <i v-else aria-hidden="true" />
             <AutoComplete
                 :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
                 :modelValue="modelValue"

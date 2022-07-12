@@ -11,7 +11,7 @@
   </MarginWrapper>
 </template>
 <script>
-import MarginWrapper from "@/components/wrapper/MarginWrapper"
+import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 export default   {
   name: 'SearchTaxonomyHeader',
