@@ -1,12 +1,12 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent>
       <div class="grid">
         <div class="col-12">
           <div class="grid">
-            <RetrieveCompany/>
-            <RetrieveSkyminder/>
+            <RetrieveCompany />
+            <RetrieveSkyminder />
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@ export default {
     TheHeader,
     RetrieveCompany,
     RetrieveSkyminder,
-    AuthenticationWrapper
-  }
-}
+    AuthenticationWrapper,
+  },
+};
 </script>

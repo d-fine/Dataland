@@ -16,21 +16,27 @@
                    id="search-result"
                    :rowHover="true"
         >
-
-
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
-                  class="d-bg-white w-3 d-datatable-column-left">
+                  class="surface-0 w-3 d-datatable-column-left">
           </Column>
           <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
             <template #header>
-              <span class="uppercase">PERM ID</span> <i class="material-icons pl-2" aria-hidden="true" title="Perm ID" v-tooltip.top="{
-              value: 'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
-               'for data items including organizations, instruments, funds, issuers and people. You can search and verify an id at permid.org/search',
-              class: 'd-tooltip-mw25'
-            }">info</i>
+              <span class="uppercase">PERM ID</span>
+              <i
+                class="material-icons pl-2"
+                aria-hidden="true"
+                title="Perm ID"
+                v-tooltip.top="{
+                  value:
+                    'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
+                    'for data items including organizations, instruments, funds, issuers and people. You can search and verify an id at permid.org/search',
+                  class: 'd-tooltip-mw25',
+                }"
+                >info</i
+              >
             </template>
-            <template #body="{data}">
-              {{data.permId ? data.permId : "Not available"}}
+            <template #body="{ data }">
+              {{ data.permId ? data.permId : "Not available" }}
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2">
@@ -53,7 +59,8 @@
             </template>
           </Column>
         </DataTable>
-        <p v-else>The resource you requested does not exist yet. You can create it:
+        <p v-else>
+          The resource you requested does not exist yet. You can create it:
           <router-link to="/upload">Create Data</router-link>
         </p>
       </div>
@@ -65,33 +72,33 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import {numberFormatter} from "@/utils/currencyMagnitude";
-import Tooltip from 'primevue/tooltip';
+import { numberFormatter } from "@/utils/currencyMagnitude";
+import Tooltip from "primevue/tooltip";
 
 export default {
   name: "EuTaxoSearchResults",
-  components: {MarginWrapper, DataTable, Column},
+  components: { MarginWrapper, DataTable, Column },
   directives: {
-    'tooltip': Tooltip
+    tooltip: Tooltip,
   },
   props: {
     data: {
       type: Object,
-      default: null
+      default: null,
     },
     processed: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     orderOfMagnitudeSuffix(value) {
-      return numberFormatter(value, 2) + " €"
+      return numberFormatter(value, 2) + " €";
     },
     buildLocationString(headquarters, countryCode) {
-      return headquarters + ", " + countryCode
+      return headquarters + ", " + countryCode;
     },
-    scrollToTop(){
+    scrollToTop() {
       window.scrollTo(0, 0);
     },
     goToData(event){
@@ -99,13 +106,13 @@ export default {
       this.$router.push(`/companies/${company}/eutaxonomies`)
     },
   },
-}
+};
 </script>
-<style>
+<style scroped>
 #search-result tr:hover {
   cursor: pointer;
 }
 #search-result th {
   background: white;
 }
-</style>
+</style scoped>

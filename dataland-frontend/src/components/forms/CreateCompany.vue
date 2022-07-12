@@ -1,71 +1,55 @@
 <template>
   <Card class="col-5 col-offset-1">
-    <template #title>Create a Company
-    </template>
+    <template #title>Create a Company </template>
     <template #content>
       <FormKit
-          v-model="model"
-          :actions="false"
-          type="form"
-          id="createCompanyForm"
-          @submit="postCompanyData"
-          #default="{ state: { valid } }"
+        v-model="model"
+        :actions="false"
+        type="form"
+        id="createCompanyForm"
+        @submit="postCompanyData"
+        #default="{ state: { valid } }"
       >
-        <FormKitSchema
-            :schema="companyInformationSchema"
-        />
-        <FormKit
-            type="list"
-            name="identifiers"
-        >
-          <FormKit
-              v-for="nIdentifier in identifierListSize"
-              :key="nIdentifier"
-              type="group"
-          >
-            <FormKitSchema
-                :schema="companyIdentifierSchema"
-            />
+        <FormKitSchema :schema="companyInformationSchema" />
+        <FormKit type="list" name="identifiers">
+          <FormKit v-for="nIdentifier in identifierListSize" :key="nIdentifier" type="group">
+            <FormKitSchema :schema="companyIdentifierSchema" />
           </FormKit>
         </FormKit>
-        <FormKit
-            type="submit"
-            :disabled="!valid"
-            label="Post Company"
-            name='postCompanyData'
-        />
+        <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
       </FormKit>
-      <p> {{ model }}</p>
+      <p>{{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
-      <Button v-if="identifierListSize>1" @click="identifierListSize--" class="ml-2"> Remove the last identifier
+      <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
+        Remove the last identifier
       </Button>
       <template v-if="processed">
-        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data"/>
-        <FailedUpload v-else msg="Company" :messageCount="messageCount"/>
+        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
+        <FailedUpload v-else msg="Company" :messageCount="messageCount" />
       </template>
     </template>
   </Card>
 </template>
 
 <script>
-import {FormKit, FormKitSchema} from "@formkit/vue"
-import SuccessUpload from "@/components/messages/SuccessUpload"
-import {SchemaGenerator} from "@/services/SchemaGenerator"
-import {ApiClientProvider} from "@/services/ApiClients"
-import backend from "@/../build/clients/backend/backendOpenApi.json"
-import FailedUpload from "@/components/messages/FailedUpload"
-import Card from 'primevue/card'
-import Button from "primevue/button"
-import Message from 'primevue/message'
+import { FormKit, FormKitSchema } from "@formkit/vue";
+import SuccessUpload from "@/components/messages/SuccessUpload";
+import { SchemaGenerator } from "@/services/SchemaGenerator";
+import { ApiClientProvider } from "@/services/ApiClients";
+import backend from "@/../build/clients/backend/backendOpenApi.json";
+import FailedUpload from "@/components/messages/FailedUpload";
+import Card from "primevue/card";
+import Button from "primevue/button";
+import Message from "primevue/message";
 
-const companyInformation = backend.components.schemas.CompanyInformation
-const companyIdentifier = backend.components.schemas.CompanyIdentifier
-const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation)
-const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier)
+const companyInformation = backend.components.schemas.CompanyInformation;
+const companyIdentifier = backend.components.schemas.CompanyIdentifier;
+const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation);
+const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
 
 const createCompany = {
   name: "CreateCompany",
-  components: {FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload},
+  components: { FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload },
 
   data: () => ({
     processed: false,
@@ -74,28 +58,29 @@ const createCompany = {
     companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
     response: null,
     messageCount: 0,
-    identifierListSize: 1
+    identifierListSize: 1,
   }),
-  inject: ['getKeycloakInitPromise', 'keycloak_init'],
+  inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
     async postCompanyData() {
       try {
-        this.processed = false
-        this.messageCount++
-        const companyDataControllerApi = await new ApiClientProvider(this.getKeycloakInitPromise(), this.keycloak_init).getCompanyDataControllerApi()
-        this.response = await companyDataControllerApi.postCompany(this.model)
-        this.$formkit.reset('createCompanyForm')
+        this.processed = false;
+        this.messageCount++;
+        const companyDataControllerApi = await new ApiClientProvider(
+          this.getKeycloakInitPromise(),
+          this.keycloak_init
+        ).getCompanyDataControllerApi();
+        this.response = await companyDataControllerApi.postCompany(this.model);
+        this.$formkit.reset("createCompanyForm");
       } catch (error) {
-        console.error(error)
-        this.response = null
+        console.error(error);
+        this.response = null;
       } finally {
-        this.processed = true
+        this.processed = true;
       }
-    }
+    },
   },
+};
 
-}
-
-export default createCompany
-
+export default createCompany;
 </script>
