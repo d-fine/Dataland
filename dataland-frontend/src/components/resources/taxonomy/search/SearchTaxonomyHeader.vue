@@ -13,14 +13,14 @@
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
-export default   {
-  name: 'SearchTaxonomyHeader',
-  components: {MarginWrapper},
+export default {
+  name: "SearchTaxonomyHeader",
+  components: { MarginWrapper },
   props: {
     scrolled: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>

@@ -131,22 +131,23 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
     });
   });
 
-    it('Check Company associated EU Taxonomy Data Presence and Link route', () => {
-        cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
-            cy.intercept('**/api/companies/*').as('retrieveCompany')
-            cy.intercept('**/api/data/eutaxonomies/*').as('retrieveTaxonomyData')
-            cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`)
-            cy.wait('@retrieveCompany', {timeout: 60 * 1000})
-                .wait('@retrieveTaxonomyData', {timeout: 60 * 1000}).then(() => {
-                cy.get('h3').should('be.visible')
-                cy.get('h3').contains("Revenue")
-                cy.get('h3').contains("CapEx")
-                cy.get('h3').contains("OpEx")
-                cy.get('body').contains("Market Cap:")
-                cy.get('body').contains("Headquarter:")
-                cy.get('body').contains("Sector:")
-                cy.get('input[name=eu_taxonomy_search_bar_standard]').should('exist')
-            });
+  it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
+    cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+      cy.intercept("**/api/companies/*").as("retrieveCompany");
+      cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+      cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`);
+      cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
+        .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
+        .then(() => {
+          cy.get("h3").should("be.visible");
+          cy.get("h3").contains("Revenue");
+          cy.get("h3").contains("CapEx");
+          cy.get("h3").contains("OpEx");
+          cy.get("body").contains("Market Cap:");
+          cy.get("body").contains("Headquarter:");
+          cy.get("body").contains("Sector:");
+          cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
         });
     });
+  });
 });
