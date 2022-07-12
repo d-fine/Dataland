@@ -1,12 +1,12 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent>
       <MarginWrapper class="text-left">
-        <BackButton/>
+        <BackButton />
       </MarginWrapper>
-      <EuTaxoSearchBar v-model="currentInput" @queryCompany="handleQueryCompany"/>
-      <TaxonomySample :companyID="companyID"/>
+      <EuTaxoSearchBar v-model="currentInput" @queryCompany="handleQueryCompany" />
+      <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -48,7 +48,7 @@ export default {
       } else {
         this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
       }
-    }
-  }
+    },
+  },
 };
 </script>
