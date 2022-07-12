@@ -108,11 +108,11 @@ export default {
   },
 };
 </script>
-<style scroped>
+<style scoped>
 #search-result tr:hover {
   cursor: pointer;
 }
 #search-result th {
   background: white;
 }
-</style scoped>
+</style>
