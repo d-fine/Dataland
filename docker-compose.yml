@@ -18,7 +18,7 @@ services:
     environment:
       # This variable will be inserted into the NGINX server config file (URLS separated by a space e.g. dataland.com www.dataland.com)
       PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
-      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT/)
+      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
   backend:
     restart: always
