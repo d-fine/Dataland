@@ -6,7 +6,7 @@
       <EuTaxoSearchBar
         v-model="currentInput"
         ref="euTaxoSearchBarTop"
-        @queryCompany="handleCompanyQuery"
+        @companies-received="handleCompanyQuery"
         @rendered="handleEuTaxoSearchBarRender"
       />
       <MarginWrapper>
@@ -15,7 +15,7 @@
           ref="indexTabs"
           :initIndex="selectedIndex"
           @tab-click="toggleIndexTabs"
-          @filterByIndex="handleFilterByIndex"
+          @companies-received="handleFilterByIndex"
         />
       </MarginWrapper>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled">
@@ -24,7 +24,7 @@
           v-model="currentInput"
           v-if="searchBarActivated"
           taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
-          @queryCompany="handleCompanyQuery"
+          @companies-received="handleCompanyQuery"
         />
         <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
         <Button
@@ -40,7 +40,7 @@
           ref="indexTabs"
           :initIndex="selectedIndex"
           @tab-click="toggleIndexTabs"
-          @filterByIndex="handleFilterByIndex"
+          @companies-received="handleFilterByIndex"
         />
       </div>
       <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
@@ -129,16 +129,16 @@ export default {
         this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex);
       }
     },
-    handleCompanyQuery(event) {
+    handleCompanyQuery(companiesReceived) {
       this.selectedIndex = null;
       this.$refs.indexTabs.activeIndex = null;
-      this.resultsArray = event;
+      this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
       this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
     },
 
-    handleFilterByIndex(event) {
-      this.resultsArray = event;
+    handleFilterByIndex(companiesReceived) {
+      this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
     },
     toggleIndexTabs(stockIndex, index) {

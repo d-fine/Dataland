@@ -12,7 +12,7 @@ const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["
 export default {
   name: "IndexTabs",
   components: { TabMenu },
-  emits: ["tab-click", "filterByIndex"],
+  emits: ["tab-click", "companies-received"],
   props: {
     initIndex: {
       type: Number,
@@ -60,7 +60,7 @@ export default {
       } catch (error) {
         console.error(error);
       } finally {
-        this.$emit("filterByIndex", this.responseArray);
+        this.$emit("companies-received", this.responseArray);
       }
     },
   },

@@ -48,7 +48,7 @@ export default {
   name: "EuTaxoSearchBar",
   components: { AutoComplete, MarginWrapper },
 
-  emits: ["queryCompany", "update:modelValue", "rendered"],
+  emits: ["companies-received", "update:modelValue", "rendered"],
 
   props: {
     taxoSearchBarName: {
@@ -122,7 +122,7 @@ export default {
       } finally {
         this.loading = false;
         this.selectedIndex = null;
-        this.$emit("queryCompany", this.responseArray);
+        this.$emit("companies-received", this.responseArray);
       }
     },
 
