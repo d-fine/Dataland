@@ -1,8 +1,7 @@
 #!/bin/sh
 set -x
 #Start E2E Test and wait for E2E Test completion
-timeout 2400 sh -c "docker-compose --project-name dala-e2e-test --profile testing up --build"
-#docker-compose --project-name dala-e2e-test --profile testing up -d --build || exit
+docker-compose --project-name dala-e2e-test --profile testing up -d --build || exit
 timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"
 E2ETEST_TIMEOUT_EXIT_CODE=$?
 docker cp dala-e2e-test_e2etests_1:/app/dataland-frontend/coverage/e2e/lcov.info .

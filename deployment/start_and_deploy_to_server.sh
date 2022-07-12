@@ -52,4 +52,10 @@ scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_u
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
 
-timeout 240 bash -c "while ! curl http://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"
+# Wait for backend to finish boot process
+# Using the insecure flag here as valid ssl certificates will be obtained later
+timeout 240 bash -c "while ! curl --insecure https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"
+
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose exec proxy_prod sh /scripts/obtain-letsencrypt-certs.sh $PROXY_LETSENCRYPT_ARGS"
+
+timeout 240 bash -c "while ! curl https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process (with proper SSL).'; sleep 5; done; echo 'Backend available!'"
