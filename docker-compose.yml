@@ -72,7 +72,7 @@ services:
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
     external_links:
-      - dataland-local.duckdns.org:proxy_dev
+      - proxy_dev:dataland-local.duckdns.org
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
