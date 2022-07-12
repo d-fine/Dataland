@@ -8,7 +8,7 @@ RUN echo "0 0 * * * root sh /scripts/renew-certbot.sh" > /etc/cron.d/certbot-ren
 
 COPY config /etc/nginx
 COPY templates/dataland-prod.template /etc/nginx/templates/dataland-prod.template
-COPY docker-entrypoint.d/* /docker-entrypoint.d
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY scripts /scripts
 
 VOLUME /etc/letsencrypt
