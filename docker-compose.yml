@@ -1,17 +1,44 @@
 version: "3.8"
 services:
-  proxy:
+  proxy_dev:
+    build:
+      context: ./dataland-inbound-proxy
+      dockerfile: Dockerfile.dev
     restart: always
-    profiles: ["production", "testing", "productionInMemory", "development"]
+    profiles: ["development", "testing"]
     networks:
       - external
       - internal
-    image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ${NGINX_CONFIG_FILE:-./dataland-inbound-proxy/nginx.conf}:/etc/nginx/nginx.conf
+      - letsencrypt:/etc/letsencrypt
+      - ./local/certs:/certs/custom
+    environment:
+      # This variable will be inserted into the NGINX server config file (URLS separated by a space e.g. dataland.com www.dataland.com)
+      PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
+      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT/)
+      PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
+  proxy_prod:
+    build:
+      context: ./dataland-inbound-proxy
+      dockerfile: Dockerfile
+    restart: always
+    profiles: [ "production", "productionInMemory" ]
+    networks:
+      - external
+      - internal
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+    environment:
+      # This variable will be inserted into the NGINX server config file (URLS separated by a space e.g. dataland.com www.dataland.com)
+      PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
+      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT/)
+      PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -44,6 +71,8 @@ services:
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
+    external_links:
+      - dataland-local.duckdns.org:proxy_dev
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -182,4 +211,6 @@ networks:
   external:
 volumes:
   keycloak_data:
+    driver: local
+  letsencrypt:
     driver: local

@@ -104,10 +104,12 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
+          PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
+          PROXY_NGINX_URLS: ${{ secrets.PROXY_NGINX_URLS }}
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
-          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org"
+          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
           CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 40 || 900 }}
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}

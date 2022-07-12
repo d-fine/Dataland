@@ -3,11 +3,11 @@
 # This script checks if LetsEncrypt certificates are available
 # and rewrites the symlink for the nginx certificates accordingly
 
-if [ -d "/certs/custom" ]; then
+if [ -f "/certs/custom/privkey.pem" ]; then
   echo "Found custom certificates folder. Rewring symlink"
   rm /certs/dataland
   ln -s /certs/custom /certs/dataland
-elif [ -d "$PROXY_LETSENCRYPT_PATH" ]; then
+elif [ -f "$PROXY_LETSENCRYPT_PATH/privkey.pem" ]; then
   echo "LetsEncrypt is there. Rewriting symlink"
   rm /certs/dataland
   ln -s $PROXY_LETSENCRYPT_PATH /certs/dataland

@@ -1,6 +1,6 @@
 FROM nginx
 
-# Add CertBot to
+# Install certbot and cron and delete default nginx config
 RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/*
 
 # Add CronJob for certificate renewal (Add 00:00 on every day)
