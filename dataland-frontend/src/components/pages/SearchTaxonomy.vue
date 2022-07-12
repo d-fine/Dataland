@@ -4,8 +4,7 @@
     <TheContent>
       <SearchTaxonomyHeader :scrolled="pageScrolled"/>
       <EuTaxoSearchBar v-model="currentInput"
-                       v-show="!pageScrolled"
-                       ref="euTaxoSearchBar"
+                       ref="euTaxoSearchBarTop"
                        @queryCompany="handleCompanyQuery"
                        @rendered="handleEuTaxoSearchBarRender"/>
       <MarginWrapper>
@@ -77,7 +76,6 @@ export default {
     return {
       searchBarActivated: false,
       pageScrolled: false,
-      pageTopReached: true,
       route: useRoute(),
       selectedIndex: 1,
       showSearchResultsTable: false,
@@ -91,8 +89,12 @@ export default {
 
   watch: {
     pageScrolled(value) {
+      if (value) {
+        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.hideOverlay()
+      }
       if (!value) {
         this.searchBarActivated = false
+        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus()
       }
     },
   },
@@ -106,6 +108,7 @@ export default {
         //ScrollUP event
         this.latestScrollPosition = windowScrollY
         this.pageScrolled = document.documentElement.scrollTop >= 50
+        this.pageTopReached = document.documentElement.scrollTop === 0
       } else {
         //ScrollDOWN event
         this.pageScrolled = document.documentElement.scrollTop > 80

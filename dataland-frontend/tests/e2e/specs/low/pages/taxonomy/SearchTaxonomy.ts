@@ -118,15 +118,12 @@ describe('Search Taxonomy', function () {
             .type('a')
             .type('{enter}')
         cy.scrollTo(0, 500)
-        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('not.be.visible')
         cy.get('button[name=search_bar_collapse]').should('exist')
 
         cy.scrollTo(0, 0)
-        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('be.visible')
         cy.get('button[name=search_bar_collapse]').should('not.exist')
 
         cy.scrollTo(0, 500)
-        cy.get('input[name=eu_taxonomy_search_bar_standard]').should('not.be.visible')
         cy.get('button[name=search_bar_collapse]').should('exist')
             .click()
         cy.get('input[name=eu_taxonomy_search_bar_scrolled]').should('exist')

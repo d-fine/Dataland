@@ -10,9 +10,9 @@
             <AutoComplete
                 :suggestions="autocompleteArrayDisplayed" :name="taxoSearchBarName"
                 :modelValue="modelValue"
-                @input="handleInput"
                 ref="autocomplete" inputClass="h-3rem" field="companyName" style="z-index:10"
                 placeholder="Search company by name or PermID"
+                @input="handleInput"
                 @complete="searchCompanyName"
                 @keyup.enter="handleCompanyQuery" @item-select="handleItemSelect"
                 >
@@ -76,10 +76,6 @@ export default {
   inject: ['getKeycloakInitPromise','keycloak_init'],
   methods: {
 
-    closeDropdown() {
-      this.$refs.autocomplete.hideOverlay()
-    },
-
     handleInput(event) {
       this.$emit('update:modelValue', event.target.value)
     },
@@ -90,7 +86,7 @@ export default {
 
     handleCompanyQuery(event) {
       this.queryCompany(event.target.value)
-      this.closeDropdown()
+      this.$refs.autocomplete.hideOverlay()
     },
 
     responseMapper(response) {
