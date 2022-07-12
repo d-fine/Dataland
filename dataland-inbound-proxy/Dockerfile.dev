@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/*
 
 COPY config /etc/nginx
 COPY templates/dataland-dev.template /etc/nginx/templates/dataland-dev.template
-COPY docker-entrypoint.d/* /docker-entrypoint.d
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY scripts /scripts
 
 VOLUME /etc/letsencrypt
