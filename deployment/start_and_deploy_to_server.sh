@@ -56,6 +56,6 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo do
 # Using the insecure flag here as valid ssl certificates will be obtained later
 timeout 240 bash -c "while ! curl --insecure https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"
 
-ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose exec proxy_prod sh /scripts/obtain-letsencrypt-certs.sh $PROXY_LETSENCRYPT_ARGS"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose exec proxy sh /scripts/obtain-letsencrypt-certs.sh $PROXY_LETSENCRYPT_ARGS"
 
 timeout 240 bash -c "while ! curl https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process (with proper SSL).'; sleep 5; done; echo 'Backend available!'"
