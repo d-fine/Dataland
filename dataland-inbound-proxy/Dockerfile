@@ -11,4 +11,7 @@ COPY templates/dataland-prod.template /etc/nginx/templates/dataland-prod.templat
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY scripts /scripts
 
+RUN chmod -R +x /docker-entrypoint.d
+RUN chmod -R +x /scripts
+
 VOLUME /etc/letsencrypt
