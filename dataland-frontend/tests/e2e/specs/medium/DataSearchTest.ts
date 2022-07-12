@@ -13,6 +13,6 @@ describe("User interactive tests for Data Search", () => {
     cy.get("input[name=code]").type("DEU", { force: true });
     cy.get("input[name=name]").type("BMW", { force: true });
     cy.get('button[name="getSkyminderData"]').click();
-    cy.get("table").should("exist");
+    cy.get("table", { timeout: 30 * 1000 }).should("exist");
   });
 });
