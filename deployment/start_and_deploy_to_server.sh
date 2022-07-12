@@ -34,11 +34,6 @@ ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak"
 
-if [[ $INITIALIZE_KEYCLOAK == true ]]; then
-  echo "Deployment configuration requires Keycloak to be set up from scratch."
-  "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
-fi
-
 envsubst < environments/.env.template > .env
 
 scp ./.env ubuntu@"$target_server_url":$location
@@ -48,6 +43,11 @@ scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/Dockerf
 scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileBackend
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_url":$location/jar/dataland-backend.jar
+
+if [[ $INITIALIZE_KEYCLOAK == true ]]; then
+  echo "Deployment configuration requires Keycloak to be set up from scratch."
+  "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
+fi
 
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
