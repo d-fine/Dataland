@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent>
-      <SearchTaxonomyHeader :scrolled="pageScrolled" />
+      <SearchTaxonomyHeader />
       <EuTaxoSearchBar
         v-model="currentInput"
         ref="euTaxoSearchBarTop"
