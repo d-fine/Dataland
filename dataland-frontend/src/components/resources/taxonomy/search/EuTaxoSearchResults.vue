@@ -8,7 +8,7 @@
     <div class="grid">
       <div class="col-12 text-left">
         <DataTable
-          v-if="data"
+          v-if="data && data.length > 0"
           :value="data"
           responsive-layout="scroll"
           :paginator="true"
