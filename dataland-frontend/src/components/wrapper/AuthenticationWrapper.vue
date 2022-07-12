@@ -5,13 +5,13 @@
 <script>
 export default {
   name: "AuthenticationWrapper",
-  inject: ['authenticated'],
+  inject: ["authenticated"],
   watch: {
     authenticated(newAuthenticated) {
       if (!newAuthenticated && newAuthenticated !== null) {
-        this.$router.push("/")
+        this.$router.push("/");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

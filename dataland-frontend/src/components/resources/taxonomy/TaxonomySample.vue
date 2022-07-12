@@ -2,12 +2,12 @@
   <MarginWrapper>
     <div class="grid align-items-end">
       <div class="col-9">
-        <CompanyInformation :companyID="companyID"/>
+        <CompanyInformation :companyID="companyID" />
       </div>
     </div>
   </MarginWrapper>
   <MarginWrapper bgClass="surface-800">
-    <TaxonomyData :companyID="companyID"/>
+    <TaxonomyData :companyID="companyID" />
   </MarginWrapper>
 </template>
 
@@ -19,12 +19,14 @@ import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 export default {
   name: "TaxonomySample",
   components: {
-    MarginWrapper, CompanyInformation, TaxonomyData
+    MarginWrapper,
+    CompanyInformation,
+    TaxonomyData,
   },
   props: {
     companyID: {
-      type: String
-    }
-  }
-}
+      type: String,
+    },
+  },
+};
 </script>

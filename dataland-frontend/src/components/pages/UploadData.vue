@@ -1,17 +1,17 @@
 <template>
   <AuthenticationWrapper>
-  <TheHeader/>
-  <TheContent>
-    <div class="grid">
-      <CreateCompany/>
-      <CreateEUTaxonomy/>
-    </div>
-  </TheContent>
+    <TheHeader />
+    <TheContent>
+      <div class="grid">
+        <CreateCompany />
+        <CreateEUTaxonomy />
+      </div>
+    </TheContent>
   </AuthenticationWrapper>
 </template>
 
 <script>
-import CreateCompany from "@/components/forms/CreateCompany"
+import CreateCompany from "@/components/forms/CreateCompany";
 import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
@@ -24,9 +24,9 @@ export default {
     TheHeader,
     CreateEUTaxonomy,
     CreateCompany,
-    AuthenticationWrapper
-  }
-}
+    AuthenticationWrapper,
+  },
+};
 </script>
 
 <style lang="scss">
