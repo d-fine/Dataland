@@ -6,13 +6,13 @@ set -ex
 
 is_infrastructure_up () {
   declare -A services
-  services["backend"]=https://dataland-local.duckdns.org/api/actuator/health/ping
+  services["backend"]=http://proxy/api/actuator/health/ping
   services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
 
   for service in "${!services[@]}"; do
-    curl ${services[$service]}
-    if ! curl ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
+    curl --insecure ${services[$service]}
+    if ! curl --insecure ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
       echo "$service not yet there"
       return 1
     fi
