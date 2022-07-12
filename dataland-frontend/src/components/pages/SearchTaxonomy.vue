@@ -124,7 +124,7 @@ export default {
     handleEuTaxoSearchBarRender() {
       if (this.route.query && this.route.query.input) {
         this.currentInput = this.route.query.input;
-        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
+        this.$refs.euTaxoSearchBarTop.queryCompany(this.currentInput);
       } else if (this.route.path === "/searchtaxonomy") {
         this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex);
       }

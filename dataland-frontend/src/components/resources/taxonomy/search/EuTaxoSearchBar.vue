@@ -43,7 +43,6 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import AutoComplete from "primevue/autocomplete";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import { useRoute } from "vue-router";
 
 export default {
   name: "EuTaxoSearchBar",
@@ -73,7 +72,6 @@ export default {
 
   data() {
     return {
-      route: useRoute(),
       autocompleteArray: [],
       autocompleteArrayDisplayed: null,
       loading: false,

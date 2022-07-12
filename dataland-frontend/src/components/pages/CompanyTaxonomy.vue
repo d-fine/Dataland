@@ -1,12 +1,12 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader />
+    <TheHeader/>
     <TheContent>
       <MarginWrapper class="text-left">
-        <BackButton />
+        <BackButton/>
       </MarginWrapper>
-      <EuTaxoSearchBar v-model="searchContent" />
-      <TaxonomySample :companyID="companyID" />
+      <EuTaxoSearchBar v-model="currentInput" @queryCompany="handleQueryCompany"/>
+      <TaxonomySample :companyID="companyID"/>
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      searchContent: "",
+      currentInput: "",
     };
   },
   props: {
@@ -41,5 +41,14 @@ export default {
       type: String,
     },
   },
+  methods: {
+    handleQueryCompany(event) {
+      if (event.length === 1) {
+        this.$router.push(`/companies/${event[0].companyId}/eutaxonomies`);
+      } else {
+        this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
+      }
+    }
+  }
 };
 </script>
