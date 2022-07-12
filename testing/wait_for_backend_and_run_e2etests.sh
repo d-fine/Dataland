@@ -6,7 +6,7 @@ set -ex
 
 is_infrastructure_up () {
   declare -A services
-  services["backend"]=http://proxy:80/api/actuator/health/ping
+  services["backend"]=https://dataland-local.duckdns.org/api/actuator/health/ping
   services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
 
