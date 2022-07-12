@@ -15,7 +15,7 @@
         <FormKit type="text" name="name" validation="required" label="Company Name" />
       </FormKit>
       <br />
-      <Button @click="clearAll" label="Clear" />
+      <PrimeButton @click="clearAll" label="Clear" />
       <div v-if="response" class="col m12">
         <SkyminderTable
           :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
@@ -30,12 +30,12 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import Button from "primevue/button";
+import { Button as PrimeButton } from "primevue/button";
 import SkyminderTable from "@/components/tables/SkyminderTable";
 
 export default {
   name: "RetrieveSkyminder",
-  components: { Card, Button, FormKit, SkyminderTable },
+  components: { Card, PrimeButton, FormKit, SkyminderTable },
 
   data: () => ({
     model: {},

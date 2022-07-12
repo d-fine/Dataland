@@ -33,14 +33,14 @@
       </div>
       <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="scrolled">
         <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
-        <Button
+        <PrimeButton
           icon="pi pi-search"
           class="p-button-rounded surface-ground border-none"
           @click="activateSearchBar"
           name="search_bar_collapse"
         >
           <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-        </Button>
+        </PrimeButton>
         <IndexTabs v-if="showIndexTabs" :initIndex="selectedIndex" @tab-click="toggleIndexTabs" ref="indexTabs" />
       </div>
     </div>
@@ -62,12 +62,12 @@ import AutoComplete from "primevue/autocomplete";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
-import Button from "primevue/button";
+import { Button as PrimeButton } from "primevue/button";
 import { useRoute } from "vue-router";
 
 export default {
   name: "EuTaxoSearchBar",
-  components: { MarginWrapper, EuTaxoSearchResults, AutoComplete, Button, IndexTabs },
+  components: { MarginWrapper, EuTaxoSearchResults, AutoComplete, PrimeButton, IndexTabs },
   data() {
     return {
       route: useRoute(),

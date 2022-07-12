@@ -60,13 +60,13 @@
               <div class="grid">
                 <div class="col-3 col-offset-4 p-fluid pl-0">
                   <router-link to="/searchtaxonomy" class="no-underline">
-                    <Button
+                    <PrimeButton
                       class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full"
                       name="get_started_button"
                     >
                       <span class="d-letters d-button"> Get Started </span>
                       <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
-                    </Button>
+                    </PrimeButton>
                   </router-link>
                 </div>
               </div>
@@ -80,11 +80,11 @@
 
 <script>
 import Card from "primevue/card";
-import Button from "primevue/button";
+import { Button as PrimeButton } from "primevue/button";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {
   name: "LandingLogin",
-  components: { UserAuthenticationButtons, Card, Button },
+  components: { UserAuthenticationButtons, Card, PrimeButton },
 };
 </script>
