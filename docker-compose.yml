@@ -5,7 +5,7 @@ services:
       context: ./dataland-inbound-proxy
       dockerfile: Dockerfile.dev
     restart: always
-    profiles: ["development", "testing"]
+    profiles: ["development"]
     networks:
       - external
       - internal
@@ -25,7 +25,7 @@ services:
       context: ./dataland-inbound-proxy
       dockerfile: Dockerfile
     restart: always
-    profiles: [ "production", "productionInMemory" ]
+    profiles: [ "testing", "production", "productionInMemory" ]
     networks:
       - external
       - internal
