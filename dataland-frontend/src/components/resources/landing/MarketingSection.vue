@@ -1,10 +1,10 @@
 <template>
   <div class="grid m-0">
-    <div class="col-5 col-offset-1 pt-5 text-left" >
+    <div class="col-5 col-offset-1 pt-5 text-left">
       <h2 class="uppercase font-light d-letters text-4xl">Learn about our vision</h2>
     </div>
     <div class="col-1 pt-6 text-right">
-      <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" class="pl-2"/>
+      <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" class="pl-2" />
     </div>
     <div class="col-3 text-left pt-6 font-medium d-letters text-xl">
       Our platform enables organisations to get all the data they need by requesting it directly from data owners while
@@ -14,25 +14,26 @@
   <div class="grid align-items-center m-0">
     <div class="col-offset-1 col-10">
       <div class="video-container">
-        <iframe src="https://www.youtube-nocookie.com/embed/XTNBYTtPNLY?color=white&modestbranding=1&=rel=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/XTNBYTtPNLY?color=white&modestbranding=1&=rel=0"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
   </div>
   <div class="grid m-0 pt-6">
-    <div class="col-offset-1 col-5 p-0 border-solid border-gray-50 border-1" >
-        <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full"/>
+    <div class="col-offset-1 col-5 p-0 border-solid border-gray-50 border-1">
+      <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full" />
     </div>
     <div class="col-5 p-0 bg-primary">
       <div class="grid mt-6">
         <div class="col-8 col-offset-1 align-content-center">
-          <h3 class="text-left d-letters text-xl">
-            Bring together who needs the data with who owns the data.
-          </h3>
+          <h3 class="text-left d-letters text-xl">Bring together who needs the data with who owns the data.</h3>
           <p class="text-left d-letters">
-            Dataland is a permissionless platform for data
-            exchange. We provide a protocol for allowing data users to purchase the data directly from its owners, open
-            to use by any organizations.
+            Dataland is a permissionless platform for data exchange. We provide a protocol for allowing data users to
+            purchase the data directly from its owners, open to use by any organizations.
           </p>
         </div>
       </div>
@@ -40,42 +41,41 @@
   </div>
   <div class="grid m-0 pb-6">
     <div class="col-5 col-offset-1 p-0 surface-700">
-     <div class="grid mt-6">
-       <div class="col-8 col-offset-1 align-content-center">
-         <h3 class="text-white text-left d-letters text-xl">
-           Maximize data coverage by requesting data collectively.
-         </h3>
-         <p class="text-white text-left d-letters">
-           Our platform enables organizations to directly request
-           data from companies, customers and suppliers. By joining many other data users requesting data through Dataland,
-           you can obtain data that is unavailable fom data providers and fill all your gaps.
-         </p>
-       </div>
-     </div>
+      <div class="grid mt-6">
+        <div class="col-8 col-offset-1 align-content-center">
+          <h3 class="text-white text-left d-letters text-xl">
+            Maximize data coverage by requesting data collectively.
+          </h3>
+          <p class="text-white text-left d-letters">
+            Our platform enables organizations to directly request data from companies, customers and suppliers. By
+            joining many other data users requesting data through Dataland, you can obtain data that is unavailable fom
+            data providers and fill all your gaps.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="col-5 p-0 border-solid border-gray-50 border-1">
-        <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full"/>
+      <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full" />
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "MarketingSection",
-}
+};
 </script>
 
 <style>
-.video-container{
+.video-container {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
   height: 0;
 }
-.video-container iframe{
+.video-container iframe {
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
