@@ -1,6 +1,6 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 import Chainable = Cypress.Chainable;
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
+import { verifyTaxonomySearchResultTable } from "../../../../support/commands";
 
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 
@@ -23,7 +23,7 @@ describe("Index Panel behavior", function () {
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
     cy.get(indexTabMenu).should("exist").eq(1).parent(".p-tabmenuitem").should("have.css", "color", "rgb(27, 27, 27)");
     verifyTaxonomySearchResultTable();
-    checkViewButtonWorks();
+    cy.checkViewButtonWorks();
     cy.get(indexTabMenu).should("not.exist");
   });
 

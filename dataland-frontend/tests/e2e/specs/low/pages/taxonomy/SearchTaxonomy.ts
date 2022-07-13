@@ -1,4 +1,4 @@
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
+import { verifyTaxonomySearchResultTable } from "../../../../support/commands";
 
 let companiesWithData: any;
 
@@ -52,7 +52,7 @@ describe("Search Taxonomy", function () {
     executeCompanySearch(inputValue);
     verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
-    checkViewButtonWorks();
+    cy.checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
   });
 
@@ -61,7 +61,7 @@ describe("Search Taxonomy", function () {
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
     verifyTaxonomySearchResultTable();
-    checkViewButtonWorks();
+    cy.checkViewButtonWorks();
   });
 
   it("Search Input field should be always present", () => {

@@ -1,4 +1,4 @@
-import { checkViewButtonWorks, verifyCompanySearchResultTable } from "../../../support/commands";
+import { verifyCompanySearchResultTable } from "../../../support/commands";
 
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
@@ -44,6 +44,6 @@ describe("Data Search Page Company", function () {
       .should("contain", "Show all companies")
       .click({ force: true });
     verifyCompanySearchResultTable();
-    checkViewButtonWorks();
+    cy.checkViewButtonWorks();
   });
 });
