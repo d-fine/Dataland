@@ -17,7 +17,6 @@ export default defineConfig({
     },
     experimentalSessionAndOrigin: true,
     specPattern: "tests/e2e/specs",
-    excludeSpecPattern: process.env.CI ? ["./tests/e2e/runAll.ts"] : [],
     supportFile: "tests/e2e/support/index.ts",
   },
 });
