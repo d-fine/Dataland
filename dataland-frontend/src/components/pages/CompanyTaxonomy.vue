@@ -5,7 +5,7 @@
       <MarginWrapper class="text-left">
         <BackButton />
       </MarginWrapper>
-      <EuTaxoSearchBar v-model="currentInput" @queryCompany="handleQueryCompany" />
+      <EuTaxoSearchBar v-model="currentInput" @companies-received="handleQueryCompany" />
       <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
