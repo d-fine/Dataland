@@ -1,49 +1,46 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader />
+    <TheHeader/>
     <TheContent>
-      <SearchTaxonomyHeader />
-      <EuTaxoSearchBar
-        v-model="currentInput"
-        ref="euTaxoSearchBarTop"
-        @companies-received="handleCompanyQuery"
-        @rendered="handleEuTaxoSearchBarRender"
-      />
-      <MarginWrapper>
-        <IndexTabs
-          v-if="!pageScrolled"
-          ref="indexTabs"
-          :initIndex="selectedIndex"
-          @tab-click="toggleIndexTabs"
-          @companies-received="handleFilterByIndex"
-        />
-      </MarginWrapper>
-      <div class="col-12 align-items-center grid bg-white d-search-toggle fixed" v-if="pageScrolled">
-        <EuTaxoSearchBar
-          class="col-12"
-          v-model="currentInput"
-          v-if="searchBarActivated"
-          taxo-search-bar-name="eu_taxonomy_search_bar_scrolled"
-          @companies-received="handleCompanyQuery"
-        />
-        <span class="mr-3 font-semibold" v-if="!searchBarActivated">Search EU Taxonomy data</span>
-        <Button
-          v-if="!searchBarActivated"
-          name="search_bar_collapse"
-          icon="pi pi-search"
-          class="p-button-rounded surface-ground border-none m-2"
-          @click="toggleSearchBar"
-        >
-          <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-        </Button>
-        <IndexTabs
-          ref="indexTabs"
-          :initIndex="selectedIndex"
-          @tab-click="toggleIndexTabs"
-          @companies-received="handleFilterByIndex"
-        />
+      <div :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']">
+
+        <SearchTaxonomyHeader/>
+        <MarginWrapper>
+
+          <EuTaxoSearchBar
+              v-model="currentInput"
+              ref="euTaxoSearchBarTop"
+              @companies-received="handleCompanyQuery"
+              @rendered="handleEuTaxoSearchBarRender">
+          </EuTaxoSearchBar>
+
+          <div
+              :class="[pageScrolled ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed'] : '']">
+
+            <span class="mr-3 font-semibold" v-if="!searchBarToggled && pageScrolled">Search EU Taxonomy data</span>
+            <Button
+                v-if="!searchBarToggled && pageScrolled"
+                name="search_bar_collapse"
+                icon="pi pi-search"
+                class="p-button-rounded surface-ground border-none m-2"
+                @click="toggleSearchBar"
+            >
+              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c"/>
+            </Button>
+            <IndexTabs
+                ref="indexTabs"
+                :initIndex="selectedIndex"
+                @tab-click="toggleIndexTabs"
+                @companies-received="handleFilterByIndex">
+            </IndexTabs>
+
+          </div>
+
+        </MarginWrapper>
+
       </div>
-      <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
+
+      <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray"/>
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -57,7 +54,7 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
 import Button from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
-import { useRoute } from "vue-router";
+import {useRoute} from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
@@ -84,7 +81,7 @@ export default {
 
   data() {
     return {
-      searchBarActivated: false,
+      searchBarToggled: true,
       pageScrolled: false,
       route: useRoute(),
       selectedIndex: 1,
@@ -101,7 +98,7 @@ export default {
         this.$refs.euTaxoSearchBarTop.$refs.autocomplete.hideOverlay();
       }
       if (!value) {
-        this.searchBarActivated = false;
+        this.searchBarToggled = false;
         this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus();
       }
     },
@@ -134,7 +131,7 @@ export default {
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
-      this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
+      this.$router.push({name: "Search Eu Taxonomy", query: {input: this.currentInput}});
     },
 
     handleFilterByIndex(companiesReceived) {
@@ -146,7 +143,7 @@ export default {
       this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
-      this.searchBarActivated = !this.searchBarActivated;
+      this.searchBarToggled = !this.searchBarToggled;
     },
   },
 };

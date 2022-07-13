@@ -18,7 +18,7 @@
               placeholder="Search company by name or PermID"
               @input="handleInput"
               @complete="searchCompanyName"
-              @keyup.enter="handleCompanyQuery"
+              @keyup.enter="handleKeyupEnter"
               @item-select="handleItemSelect"
             >
               <template #footer>
@@ -26,7 +26,7 @@
                   class="p-autocomplete-items pt-0"
                   v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
                 >
-                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleCompanyQuery">
+                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleViewAllResults">
                     View all results.
                   </li>
                 </ul>
@@ -76,6 +76,7 @@ export default {
       autocompleteArray: [],
       autocompleteArrayDisplayed: null,
       loading: false,
+      currentInput: null,
     };
   },
 
@@ -89,8 +90,13 @@ export default {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`);
     },
 
-    handleCompanyQuery(event) {
+    handleKeyupEnter(event) {
       this.queryCompany(event.target.value);
+      this.$refs.autocomplete.hideOverlay();
+    },
+    handleViewAllResults() {
+      console.log(this.currentInput)
+      this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
 
@@ -113,6 +119,7 @@ export default {
     },
 
     async searchCompanyName(companyName) {
+      this.currentInput = companyName.query
       try {
         this.loading = true;
         const companyDataControllerApi = await new ApiClientProvider(
