@@ -29,7 +29,6 @@ describe('Index Panel behavior', function () {
     });
 
     it('Visit searchtaxonomy page, scroll to the bottom, back to the top, and check if Dax still highlighted', () => {
-        cy.restoreLoginSession()
         cy.visit('/searchtaxonomy')
 
         checkIfDaxTabIsHighlighted()
