@@ -83,7 +83,7 @@ describe("Search Taxonomy", function () {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      visitAndCheckAppMount("/companies/" + dataIdList[7] + "/eutaxonomies");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[7] + "/eutaxonomies");
       cy.get("input[name=eu_taxonomy_search_bar_standard]")
         .should("not.be.disabled")
         .type(inputValue)
