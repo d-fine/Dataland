@@ -1,13 +1,15 @@
+import {visitAndCheckAppMount} from "../../../support/commands";
+
 describe("Login Section", () => {
   it("Check if App is present", () => {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.get("#app").should("exist");
     cy.get("h1").should("contain.text", "CREATE A DATASET");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("button[name=get_started_button]").should("be.visible").should("contain.text", "Get Started");
   });
   it("Company logos are present", () => {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.get('img[alt="pwc"]').should("be.visible").should("have.attr", "src");
     cy.get('img[alt="d-fine GmbH"]').should("be.visible").should("have.attr", "src");
   });
@@ -15,7 +17,7 @@ describe("Login Section", () => {
 
 describe("Marketing Section", () => {
   it("Checks that the marketing section works properly", () => {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.get("h2").should("contain.text", "Learn about our vision");
     cy.get('img[alt="Flow Diagramm"]').should("be.visible").should("have.attr", "src");
     cy.get("h3").contains("Bring together who");
@@ -26,7 +28,7 @@ describe("Marketing Section", () => {
 
 describe("Footer Section", () => {
   it("Checks that the footer section works properly", () => {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("body").should("contain.text", "Legal");
     cy.get("body").should("contain.text", "Copyright © 2022 Dataland");
@@ -48,7 +50,7 @@ describe("Footer Section", () => {
 
 describe("Sample Section", () => {
   function visitSamplePage() {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.get("h2").should("contain.text", "Explore Dataland");
     cy.get("button[name=eu_taxonomy_sample_button]")
       .should("be.visible")

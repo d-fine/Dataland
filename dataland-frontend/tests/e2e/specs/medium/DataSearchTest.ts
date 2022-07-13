@@ -1,7 +1,9 @@
+import {visitAndCheckAppMount} from "../../support/commands";
+
 describe("User interactive tests for Data Search", () => {
   beforeEach(() => {
     cy.restoreLoginSession();
-    cy.visit("/search");
+    visitAndCheckAppMount("/search");
   });
 
   it("Skyminder Data Search with no input", () => {

@@ -9,6 +9,7 @@ declare global {
       retrieveCompanyIdsList: typeof retrieveCompanyIdsList;
       login: typeof login;
       restoreLoginSession: typeof restoreLoginSession;
+      visitAndCheckAppMount: typeof visitAndCheckAppMount;
       register: typeof register;
       logout: typeof logout;
       verifyTaxonomySearchResultTable: typeof verifyTaxonomySearchResultTable;
@@ -129,6 +130,10 @@ export function restoreLoginSession(username?: string, password?: string): Chain
   );
 }
 
+export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
+  return cy.visit(endpoint).get("#app").should("exist");
+}
+
 export function fillCompanyUploadFields(companyName: string) {
   cy.get("input[name=companyName]").type(companyName, { force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });
@@ -170,6 +175,7 @@ Cypress.Commands.add("retrieveDataIdsList", retrieveDataIdsList);
 Cypress.Commands.add("retrieveCompanyIdsList", retrieveCompanyIdsList);
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("restoreLoginSession", restoreLoginSession);
+Cypress.Commands.add("visitAndCheckAppMount", visitAndCheckAppMount);
 Cypress.Commands.add("register", register);
 Cypress.Commands.add("logout", logout);
 Cypress.Commands.add("verifyTaxonomySearchResultTable", verifyTaxonomySearchResultTable);

@@ -1,8 +1,10 @@
+import {visitAndCheckAppMount} from "../../../../support/commands";
+
 describe("EU Taxonomy Page", function () {
   it("page should be present", function () {
     cy.restoreLoginSession();
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visit("/companies/" + dataIdList[2] + "/eutaxonomies");
+      visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
       cy.get("#app").should("exist");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");

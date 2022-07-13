@@ -1,4 +1,8 @@
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
+import {
+  checkViewButtonWorks,
+  verifyTaxonomySearchResultTable,
+  visitAndCheckAppMount
+} from "../../../../support/commands";
 
 let companiesWithData: any;
 
@@ -14,7 +18,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Check static layout of the search page", function () {
-    cy.visit("/searchtaxonomy");
+    visitAndCheckAppMount("/searchtaxonomy");
     cy.get("#app").should("exist");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
     const placeholder = "Search company by name or PermID";
@@ -47,7 +51,7 @@ describe("Search Taxonomy", function () {
   }
 
   it("Company Search by Name", () => {
-    cy.visit("/searchtaxonomy");
+    visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
@@ -58,7 +62,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Company Search by Identifier", () => {
-    cy.visit("/searchtaxonomy");
+    visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
     verifyTaxonomySearchResultTable();
@@ -69,7 +73,7 @@ describe("Search Taxonomy", function () {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visit("/companies/" + dataIdList[7] + "/eutaxonomies");
+      visitAndCheckAppMount("/companies/" + dataIdList[7] + "/eutaxonomies");
       cy.get("input[name=eu_taxonomy_search_input]")
         .should("not.be.disabled")
         .click({ force: true })
@@ -81,7 +85,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Autocomplete functionality", () => {
-    cy.visit("/searchtaxonomy");
+    visitAndCheckAppMount("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_input]").click({ force: true }).type("b");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
@@ -96,7 +100,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Scroll functionality", () => {
-    cy.visit("/searchtaxonomy");
+    visitAndCheckAppMount("/searchtaxonomy");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
     cy.get("input[name=eu_taxonomy_search_input]").click({ force: true }).type("a").type("{enter}");
     cy.scrollTo(0, 500);
