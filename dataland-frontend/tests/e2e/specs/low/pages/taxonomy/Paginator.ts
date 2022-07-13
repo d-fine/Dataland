@@ -11,7 +11,7 @@ describe("Paginator test suite", () => {
   it("Do a search with 0 matches, then assure that the paginator is gone", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
-    cy.get("input[name=eu_taxonomy_search_input]")
+    cy.get("input[name=eu_taxonomy_search_bar_standard]")
       .should("exist")
       .type(inputValueThatWillResultInZeroMatches)
       .type("{enter}")
