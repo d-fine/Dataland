@@ -9,7 +9,7 @@
 [Environment]::SetEnvironmentVariable("DATALAND_EDC_USER", $env:GITHUB_USER, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_SKYMINDERCLIENT_TOKEN", $env:GITHUB_TOKEN, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_SKYMINDERCLIENT_USER", $env:GITHUB_USER, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("ELECTRON_EXTRA_LAUNCH_ARGS", "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("ELECTRON_EXTRA_LAUNCH_ARGS", "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("FRONTEND_DOCKERFILE", "./dataland-frontend/DockerfileTest", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("IN_MEMORY", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INITIALIZE_KEYCLOAK", "false", [System.EnvironmentVariableTarget]::User)
