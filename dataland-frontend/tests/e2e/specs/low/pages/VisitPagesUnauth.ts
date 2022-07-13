@@ -1,10 +1,8 @@
-import { visitAndCheckAppMount } from "../../../support/commands";
-
 describe("Test that if unauthenticated will be redirected to landing page", () => {
   it("test for each of given paths", () => {
     const pages = ["/upload", "/search", "/searchtaxonomy", "/companies/:companyID/eutaxonomies"];
     pages.forEach((page) => {
-      visitAndCheckAppMount(page);
+      cy.visitAndCheckAppMount(page);
       cy.url().should("eq", Cypress.config("baseUrl") + "/");
     });
   });

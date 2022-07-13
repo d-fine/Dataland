@@ -1,11 +1,8 @@
-import { visitAndCheckAppMount } from "../../../../support/commands";
-
 describe("EU Taxonomy Page", function () {
   it("page should be present", function () {
     cy.restoreLoginSession();
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
-      cy.get("#app").should("exist");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const placeholder = "Search company by name or PermID";
