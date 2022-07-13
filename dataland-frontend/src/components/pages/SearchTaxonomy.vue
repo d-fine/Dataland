@@ -9,7 +9,7 @@
 
           <EuTaxoSearchBar
               v-model="currentInput"
-              ref="euTaxoSearchBarTop"
+              ref="euTaxoSearchBar"
               @companies-received="handleCompanyQuery"
               @rendered="handleEuTaxoSearchBarRender">
           </EuTaxoSearchBar>
@@ -93,11 +93,11 @@ export default {
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.hideOverlay();
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
-        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus();
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
       }
     },
   },
@@ -119,9 +119,9 @@ export default {
     handleEuTaxoSearchBarRender() {
       if (this.route.query && this.route.query.input) {
         this.currentInput = this.route.query.input;
-        this.$refs.euTaxoSearchBarTop.queryCompany(this.currentInput);
+        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
       } else if (this.route.path === "/searchtaxonomy") {
-        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus()
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus()
         this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex);
       }
     },
