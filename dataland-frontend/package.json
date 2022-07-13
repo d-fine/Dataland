@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve --port 8090",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "lintci": "vue-cli-service lint --max-warnings 0 --no-fix",
     "teste2e": "vue-cli-service test:e2e --mode development --url http://localhost",
     "testheadless": "vue-cli-service test:e2e --mode development --url http://localhost --headless",
     "testpipeline": "vue-cli-service test:e2e --mode development --url http://proxy --headless",
@@ -24,16 +25,16 @@
     "axios": "^0.27.2",
     "json2csv": "^5.0.7",
     "keycloak-js": "^18.0.1",
-    "material-icons": "^1.11.2",
+    "material-icons": "^1.11.5",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
     "primevue": "^3.15.0",
     "vue": "^3.2.37",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.1.2"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
-    "@faker-js/faker": "^7.2.0",
+    "@faker-js/faker": "^7.3.0",
     "@jest/globals": "^28.1.2",
     "@vue/cli-plugin-babel": "~5.0.4",
     "@vue/cli-plugin-e2e-cypress": "~5.0.4",
@@ -42,19 +43,19 @@
     "@vue/cli-plugin-unit-jest": "~5.0.4",
     "@vue/cli-service": "~5.0.4",
     "@vue/eslint-config-typescript": "^10.0.0",
-    "@vue/test-utils": "^2.0.0",
+    "@vue/test-utils": "^2.0.2",
     "@vue/vue3-jest": "^27.0.0",
     "cypress": "^9.7.0",
     "depcheck": "^1.4.3",
-    "eslint": "^8.14.0",
+    "eslint": "^8.19.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-vue": "^8.7.1",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^8.7.1",
     "git-commit-id": "^2.0.1",
-    "npm-check-updates": "^14.0.1",
-    "sass-loader": "^13.0.0",
+    "npm-check-updates": "^14.1.1",
+    "sass-loader": "^13.0.2",
     "ts-jest": "^27.1.5",
-    "ts-node": "^10.8.1",
+    "ts-node": "^10.8.2",
     "typescript": "~4.7.4"
   },
   "prettier": {
@@ -65,7 +66,9 @@
     "env": {
       "node": true
     },
-    "plugins": ["prettier"],
+    "plugins": [
+      "prettier"
+    ],
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended",

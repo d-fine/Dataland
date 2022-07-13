@@ -1,8 +1,5 @@
-import Chainable = Cypress.Chainable;
-
-export function checkIfDaxTabIsHighlighted(): Chainable<JQuery> {
-  return cy
-    .get('li[class="p-tabmenuitem p-highlight"]')
+export function checkIfDaxTabIsHighlighted() {
+  cy.get('li[class="p-tabmenuitem p-highlight"]')
     .children(".p-menuitem-link")
     .children(".p-menuitem-text")
     .should("contain", "DAX");
@@ -11,7 +8,7 @@ export function checkIfDaxTabIsHighlighted(): Chainable<JQuery> {
 describe("Index Highlighting test suite", () => {
   it("Visit searchtaxonomy page, scroll to the bottom, back to the top, and check if Dax still highlighted", () => {
     cy.restoreLoginSession();
-    cy.visit("/searchtaxonomy");
+    cy.visitAndCheckAppMount("/searchtaxonomy");
 
     checkIfDaxTabIsHighlighted();
 

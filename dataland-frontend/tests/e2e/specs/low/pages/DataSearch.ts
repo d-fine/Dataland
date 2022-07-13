@@ -1,12 +1,9 @@
-import { checkViewButtonWorks, verifyCompanySearchResultTable } from "../../../support/commands";
-
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    cy.visit("/search");
-    cy.get("#app").should("exist");
+    cy.visitAndCheckAppMount("/search");
     cy.get(".p-card-title").should("contain", "Skyminder Data Search");
     const inputValueCountry = "A 3 letter country code";
     cy.get("input[name=code]")
@@ -32,8 +29,7 @@ describe("Data Search Page Company", function () {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    cy.visit("/search");
-    cy.get("#app").should("exist");
+    cy.visitAndCheckAppMount("/search");
     cy.get(".p-card-title").should("contain", "Company Search");
     const inputValue = "d-fine";
     cy.get("input[name=companyName]")
@@ -45,7 +41,7 @@ describe("Data Search Page Company", function () {
       .should("not.be.disabled")
       .should("contain", "Show all companies")
       .click({ force: true });
-    verifyCompanySearchResultTable();
-    checkViewButtonWorks();
+    cy.verifyCompanySearchResultTable();
+    cy.checkViewButtonWorks();
   });
 });
