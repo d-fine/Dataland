@@ -1,13 +1,14 @@
 /**
- * Module description todo
+ * Module to map the received stored companies of an API-call to a specific schema which is needed on the taxonomy
+ * search page
  */
 
 import { StoredCompany } from "@/../build/clients/backend/api";
 
 /**
- * description todo
+ * retrieve the value of the Perm Id of a company
  *
- * @param  {array} inputArray      description todo
+ * @param  {StoredCompany} storedCompany      is the company object for which the Perm Id should be retrieved
  */
 function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
   const permIdIdentifier = storedCompany.companyInformation.identifiers.filter(
@@ -19,13 +20,14 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
     return "";
   } else {
     console.error("More than one PermId found for a specific company");
+    return permIdIdentifier[0].identifierValue;
   }
 }
 
 /**
- * description todo
+ * map the received stored companies of an API-call
  *
- * @param  {-} response      description todo
+ * @param  {Array<StoredCompany>} responseData      the received data with the companiy objects
  */
 export function searchTaxonomyPageResponseMapper(responseData: Array<StoredCompany>): Array<object> {
   return responseData.map((company) => ({
