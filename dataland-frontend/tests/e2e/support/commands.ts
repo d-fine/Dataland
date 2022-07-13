@@ -124,7 +124,7 @@ export function restoreLoginSession(username?: string, password?: string): Chain
     },
     {
       validate: () => {
-        cy.visit("/").get("button[name='logout_dataland_button']").should("exist");
+        visitAndCheckAppMount("/").get("button[name='logout_dataland_button']").should("exist");
       },
     }
   );
