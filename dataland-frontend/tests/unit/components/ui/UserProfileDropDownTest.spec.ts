@@ -20,10 +20,10 @@ describe("UserProfileDropDownTest", () => {
   };
 
   it("Should display a profile picture if the keycloak authenticator provides one", (done) => {
-    const wrapper = mount(WrapperComponent);
-    const propic = wrapper.vm.$refs.pd;
+    const wrapper: any = mount(WrapperComponent);
+    const profilePicture = wrapper.vm.$refs.pd;
     wrapper.vm.$nextTick(() => {
-      expect(propic.$refs["profile-picture"].src).toBe("http://localhost/testimg");
+      expect(profilePicture.$refs["profile-picture"].src).toBe("http://localhost/testimg");
       done();
     });
   });
