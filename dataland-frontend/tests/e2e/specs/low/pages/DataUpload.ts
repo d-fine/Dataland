@@ -1,12 +1,9 @@
-import { visitAndCheckAppMount } from "../../../support/commands";
-
 describe("Data Upload Page", function () {
   beforeEach(() => {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    visitAndCheckAppMount("/upload");
-    cy.get("#app").should("exist");
+    cy.visitAndCheckAppMount("/upload");
     cy.get(".p-card-title").should("contain", "Create a Company");
     const inputValue = "A company name";
     cy.get('button[name="postCompanyData"]').contains("Post Company").should("be.disabled");

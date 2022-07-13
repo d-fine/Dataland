@@ -1,4 +1,4 @@
-import { fillCompanyUploadFields, visitAndCheckAppMount } from "../../support/commands";
+import { fillCompanyUploadFields } from "../../support/commands";
 
 const timeout = 120 * 1000;
 describe("EU Taxonomy Data and Cards", function () {
@@ -9,7 +9,7 @@ describe("EU Taxonomy Data and Cards", function () {
   });
   it("Create a Company providing only valid data", () => {
     companyNames.forEach((companyName) => {
-      visitAndCheckAppMount("/upload");
+      cy.visitAndCheckAppMount("/upload");
       fillCompanyUploadFields(companyName);
       cy.intercept("**/api/companies").as("postCompany");
       cy.get('button[name="postCompanyData"]').click();
@@ -18,7 +18,7 @@ describe("EU Taxonomy Data and Cards", function () {
         cy.get("span[title=companyId]").then(($companyID) => {
           const id = $companyID.text();
           companyIdList.push(id);
-          visitAndCheckAppMount(`/companies/${id}`);
+          cy.visitAndCheckAppMount(`/companies/${id}`);
           cy.get("body").should("contain", companyName);
         });
       });
@@ -36,7 +36,7 @@ describe("EU Taxonomy Data and Cards", function () {
     uploadFormFiller: () => void,
     euTaxonomyPageVerifier: () => void
   ): void {
-    visitAndCheckAppMount("/upload");
+    cy.visitAndCheckAppMount("/upload");
     uploadFormFiller();
     cy.intercept("**/api/data/eutaxonomies").as("postTaxonomyData");
     cy.get('button[name="postEUData"]').click({ force: true });
@@ -46,7 +46,7 @@ describe("EU Taxonomy Data and Cards", function () {
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
           cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
-          visitAndCheckAppMount(`/companies/${companyID}/eutaxonomies`);
+          cy.visitAndCheckAppMount(`/companies/${companyID}/eutaxonomies`);
           cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
             euTaxonomyPageVerifier();
           });
