@@ -29,7 +29,7 @@
             </Button>
             <IndexTabs
                 ref="indexTabs"
-                :initIndex="selectedIndex"
+                :initIndex="firstDisplayedIndex"
                 @tab-click="toggleIndexTabs"
                 @companies-received="handleFilterByIndex">
             </IndexTabs>
@@ -82,7 +82,7 @@ export default {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      selectedIndex: 1,
+      firstDisplayedIndex: 1,
       showSearchResultsTable: false,
       resultsArray: [],
       latestScrollPosition: 0,
@@ -122,11 +122,10 @@ export default {
         this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
       } else if (this.route.path === "/searchtaxonomy") {
         this.$refs.euTaxoSearchBar.$refs.autocomplete.focus()
-        this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex);
+        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex], this.firstDisplayedIndex);
       }
     },
     handleCompanyQuery(companiesReceived) {
-      this.selectedIndex = null;
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
@@ -137,8 +136,7 @@ export default {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
     },
-    toggleIndexTabs(stockIndex, index) {
-      this.selectedIndex = index;
+    toggleIndexTabs(stockIndex) {
       this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
