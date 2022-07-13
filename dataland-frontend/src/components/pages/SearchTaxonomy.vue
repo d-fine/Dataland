@@ -81,7 +81,7 @@ export default {
 
   data() {
     return {
-      searchBarToggled: true,
+      searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
       selectedIndex: 1,
