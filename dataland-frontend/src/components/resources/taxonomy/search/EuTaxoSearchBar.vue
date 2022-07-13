@@ -68,7 +68,6 @@ export default {
 
   mounted() {
     this.$emit("rendered", true);
-    this.$refs.autocomplete.focus();
   },
 
   data() {

@@ -123,6 +123,7 @@ export default {
         this.currentInput = this.route.query.input;
         this.$refs.euTaxoSearchBarTop.queryCompany(this.currentInput);
       } else if (this.route.path === "/searchtaxonomy") {
+        this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus()
         this.toggleIndexTabs(stockIndices[this.selectedIndex], this.selectedIndex);
       }
     },
