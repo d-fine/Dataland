@@ -1,5 +1,3 @@
-import { verifyCompanySearchResultTable } from "../../../support/commands";
-
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
     cy.restoreLoginSession();
@@ -43,7 +41,7 @@ describe("Data Search Page Company", function () {
       .should("not.be.disabled")
       .should("contain", "Show all companies")
       .click({ force: true });
-    verifyCompanySearchResultTable();
+    cy.verifyCompanySearchResultTable();
     cy.checkViewButtonWorks();
   });
 });

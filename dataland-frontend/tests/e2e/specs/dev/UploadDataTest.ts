@@ -1,5 +1,3 @@
-import { fillCompanyUploadFields, restoreLoginSession } from "../../support/commands";
-
 describe("User interactive tests for Data Upload", () => {
   let companyId: string;
   beforeEach(() => {
@@ -13,7 +11,7 @@ describe("User interactive tests for Data Upload", () => {
 
   function uploadCompanyWithEverythingFine(companyName: string) {
     cy.visitAndCheckAppMount("/upload");
-    fillCompanyUploadFields(companyName);
+    cy.fillCompanyUploadFields(companyName);
     cy.get('button[name="postCompanyData"]').click();
   }
 
@@ -70,7 +68,7 @@ describe("User interactive tests for Data Upload", () => {
   });
 
   it("Create EU Taxonomy Dataset with Reporting Obligation and insufficient rights should fail", () => {
-    restoreLoginSession();
+    cy.restoreLoginSession();
     uploadEuTaxonomyDatasetWithReportingObligation();
     cy.get("body").should("contain", "Sorry");
   });

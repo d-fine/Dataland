@@ -1,5 +1,3 @@
-import { fillCompanyUploadFields } from "../../support/commands";
-
 const timeout = 120 * 1000;
 describe("EU Taxonomy Data and Cards", function () {
   const companyIdList: Array<string> = [];
@@ -10,7 +8,7 @@ describe("EU Taxonomy Data and Cards", function () {
   it("Create a Company providing only valid data", () => {
     companyNames.forEach((companyName) => {
       cy.visitAndCheckAppMount("/upload");
-      fillCompanyUploadFields(companyName);
+      cy.fillCompanyUploadFields(companyName);
       cy.intercept("**/api/companies").as("postCompany");
       cy.get('button[name="postCompanyData"]').click();
       cy.wait("@postCompany", { timeout: timeout }).then(() => {

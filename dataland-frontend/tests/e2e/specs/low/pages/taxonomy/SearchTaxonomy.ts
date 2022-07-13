@@ -1,5 +1,3 @@
-import { verifyTaxonomySearchResultTable } from "../../../../support/commands";
-
 let companiesWithData: any;
 
 before(function () {
@@ -50,7 +48,7 @@ describe("Search Taxonomy", function () {
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
-    verifyTaxonomySearchResultTable();
+    cy.verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
     cy.checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
@@ -60,7 +58,7 @@ describe("Search Taxonomy", function () {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
-    verifyTaxonomySearchResultTable();
+    cy.verifyTaxonomySearchResultTable();
     cy.checkViewButtonWorks();
   });
 
