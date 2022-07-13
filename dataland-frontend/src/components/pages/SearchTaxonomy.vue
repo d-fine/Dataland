@@ -93,11 +93,11 @@ export default {
   },
 
   watch: {
-    pageScrolled(value) {
-      if (value) {
+    pageScrolled(pageScrolledNew) {
+      if (pageScrolledNew) {
         this.$refs.euTaxoSearchBarTop.$refs.autocomplete.hideOverlay();
       }
-      if (!value) {
+      if (!pageScrolledNew) {
         this.searchBarToggled = false;
         this.$refs.euTaxoSearchBarTop.$refs.autocomplete.focus();
       }
