@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Authentication Buttons", () => {
   it("Checks that normal and logout work", () => {

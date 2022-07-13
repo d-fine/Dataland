@@ -1,4 +1,4 @@
-import {fillCompanyUploadFields, visitAndCheckAppMount} from "../../support/commands";
+import { fillCompanyUploadFields, visitAndCheckAppMount } from "../../support/commands";
 
 const timeout = 120 * 1000;
 describe("EU Taxonomy Data and Cards", function () {

@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Test that if unauthenticated will be redirected to landing page", () => {
   it("test for each of given paths", () => {

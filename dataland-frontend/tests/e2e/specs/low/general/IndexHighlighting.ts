@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 export function checkIfDaxTabIsHighlighted(): Chainable<JQuery> {
   return cy

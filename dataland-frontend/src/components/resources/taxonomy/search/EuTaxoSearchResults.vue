@@ -7,11 +7,16 @@
     </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
-                   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                   :alwaysShowPaginator="false"
-                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                   @update:first="scrollToTop"
+        <DataTable
+          v-if="data"
+          :value="data"
+          responsive-layout="scroll"
+          :paginator="true"
+          :rows="100"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          @update:first="scrollToTop"
         >
           <Column
             field="companyInformation.companyName"

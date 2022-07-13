@@ -1,7 +1,7 @@
 import {
   checkViewButtonWorks,
   verifyTaxonomySearchResultTable,
-  visitAndCheckAppMount
+  visitAndCheckAppMount,
 } from "../../../../support/commands";
 
 let companiesWithData: any;

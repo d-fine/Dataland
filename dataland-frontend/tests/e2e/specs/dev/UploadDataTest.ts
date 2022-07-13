@@ -1,4 +1,4 @@
-import {fillCompanyUploadFields, restoreLoginSession, visitAndCheckAppMount} from "../../support/commands";
+import { fillCompanyUploadFields, restoreLoginSession, visitAndCheckAppMount } from "../../support/commands";
 
 describe("User interactive tests for Data Upload", () => {
   let companyId: string;

@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../support/commands";
+import { visitAndCheckAppMount } from "../../support/commands";
 
 describe("User interactive tests for Data Search", () => {
   beforeEach(() => {

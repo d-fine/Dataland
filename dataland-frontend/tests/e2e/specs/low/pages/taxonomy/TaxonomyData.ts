@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../../support/commands";
+import { visitAndCheckAppMount } from "../../../../support/commands";
 
 describe("EU Taxonomy Page", function () {
   it("page should be present", function () {
