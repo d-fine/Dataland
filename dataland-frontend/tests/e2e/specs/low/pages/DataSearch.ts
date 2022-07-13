@@ -1,11 +1,11 @@
-import { checkViewButtonWorks, verifyCompanySearchResultTable } from "../../../support/commands";
+import {checkViewButtonWorks, verifyCompanySearchResultTable, visitAndCheckAppMount} from "../../../support/commands";
 
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    cy.visit("/search");
+    visitAndCheckAppMount("/search");
     cy.get("#app").should("exist");
     cy.get(".p-card-title").should("contain", "Skyminder Data Search");
     const inputValueCountry = "A 3 letter country code";
@@ -32,7 +32,7 @@ describe("Data Search Page Company", function () {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    cy.visit("/search");
+    visitAndCheckAppMount("/search");
     cy.get("#app").should("exist");
     cy.get(".p-card-title").should("contain", "Company Search");
     const inputValue = "d-fine";

@@ -1,3 +1,5 @@
+import {visitAndCheckAppMount} from "../../../support/commands";
+
 describe("Tooltips test suite", () => {
   it("tooltips are present and contain text as expected", function () {
     const NFRDText = "Non financial disclosure directive";
@@ -5,7 +7,7 @@ describe("Tooltips test suite", () => {
     cy.intercept("**/api/companies/*").as("retrieveCompany");
     cy.restoreLoginSession();
     cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-      cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies");
+      visitAndCheckAppMount("/companies/" + companyIdList[0] + "/eutaxonomies");
       cy.wait("@retrieveCompany", { timeout: 2 * 1000 }).then(() => {
         cy.get("#app", { timeout: 2 * 1000 }).should("exist");
         cy.get(".p-card-content .text-left strong").contains("NFRD required");

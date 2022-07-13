@@ -1,6 +1,8 @@
+import {visitAndCheckAppMount} from "../../../support/commands";
+
 describe("Authentication Buttons", () => {
   it("Checks that normal and logout work", () => {
-    cy.visit("/");
+    visitAndCheckAppMount("/");
     cy.login();
     cy.logout();
   });
