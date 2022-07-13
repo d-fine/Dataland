@@ -1,8 +1,7 @@
 import Chainable = Cypress.Chainable;
 
-export function checkIfDaxTabIsHighlighted(): Chainable<JQuery> {
-  return cy
-    .get('li[class="p-tabmenuitem p-highlight"]')
+export function checkIfDaxTabIsHighlighted() {
+    cy.get('li[class="p-tabmenuitem p-highlight"]')
     .children(".p-menuitem-link")
     .children(".p-menuitem-text")
     .should("contain", "DAX");
