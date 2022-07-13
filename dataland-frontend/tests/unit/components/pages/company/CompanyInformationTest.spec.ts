@@ -1,22 +1,20 @@
-import CompanyInformation from '@/components/resources/company/CompanyInformation.vue'
-import {shallowMount} from "@vue/test-utils"
-import { expect } from '@jest/globals';
+import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
+import { shallowMount } from "@vue/test-utils";
+import { expect } from "@jest/globals";
 
-describe('CompanyInformation', () => {
+describe("CompanyInformation", () => {
+  const wrapper = shallowMount(CompanyInformation);
 
-    const wrapper = shallowMount(CompanyInformation)
+  it("checks field properties", () => {
+    expect(wrapper.vm.company).toBeDefined();
+    expect(wrapper.vm.response).toBeDefined();
+    expect(wrapper.vm.companyInformation).toBeDefined();
+  });
 
-    it('checks field properties', () => {
-        expect(wrapper.vm.company).toBeDefined()
-        expect(wrapper.vm.response).toBeDefined()
-        expect(wrapper.vm.companyInformation).toBeDefined()
-    })
-
-    it('checks getCompanyInformation()', async () => {
-        jest.spyOn(console, 'error');
-        expect(wrapper.vm.getCompanyInformation()).toBeDefined()
-        await wrapper.vm.getCompanyInformation();
-        expect(console.error).toHaveBeenCalled();
-    });
-
-})
+  it("checks getCompanyInformation()", async () => {
+    jest.spyOn(console, "error");
+    expect(wrapper.vm.getCompanyInformation()).toBeDefined();
+    await wrapper.vm.getCompanyInformation();
+    expect(console.error).toHaveBeenCalled();
+  });
+});

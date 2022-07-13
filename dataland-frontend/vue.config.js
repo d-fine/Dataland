@@ -1,5 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
-let preConfig = defineConfig({
+module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
    allowedHosts: ['dataland-local.duckdns.org'],
