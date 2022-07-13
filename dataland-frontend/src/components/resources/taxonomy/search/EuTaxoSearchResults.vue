@@ -14,6 +14,7 @@
           :paginator="true"
           :rows="100"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="false"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           @update:first="scrollToTop"
         >
