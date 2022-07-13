@@ -3,8 +3,9 @@ import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { expect } from "@jest/globals";
 
 describe("UserProfileDropDownTest", () => {
+  const TestImagePath = "http://url.to/testImage";
   const WrapperComponent = {
-    template: '<UserProfileDropDown ref="pd"/>',
+    template: '<UserProfileDropDown ref="profileDropdown"/>',
     components: { UserProfileDropDown },
     provide: {
       authenticated: true,
@@ -12,7 +13,7 @@ describe("UserProfileDropDownTest", () => {
         return Promise.resolve({
           authenticated: true,
           idTokenParsed: {
-            picture: "http://localhost/testimg",
+            picture: TestImagePath,
           },
         });
       },
@@ -20,10 +21,10 @@ describe("UserProfileDropDownTest", () => {
   };
 
   it("Should display a profile picture if the keycloak authenticator provides one", (done) => {
-    const wrapper = mount(WrapperComponent);
-    const propic = wrapper.vm.$refs.pd;
+    const wrapper: any = mount(WrapperComponent);
+    const profileDropdown = wrapper.vm.$refs.profileDropdown;
     wrapper.vm.$nextTick(() => {
-      expect(propic.$refs["profile-picture"].src).toBe("http://localhost/testimg");
+      expect(profileDropdown.$refs["profile-picture"].src).toBe(TestImagePath);
       done();
     });
   });
