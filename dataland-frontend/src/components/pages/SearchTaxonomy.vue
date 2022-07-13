@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader/>
     <TheContent>
-      <div :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']">
+      <div class="col-12 bg-white" :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']">
 
         <SearchTaxonomyHeader/>
         <MarginWrapper>
@@ -15,7 +15,7 @@
           </EuTaxoSearchBar>
 
           <div
-              :class="[pageScrolled ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed'] : '']">
+              :class="[pageScrolled && !searchBarToggled ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed'] : '']">
 
             <span class="mr-3 font-semibold" v-if="!searchBarToggled && pageScrolled">Search EU Taxonomy data</span>
             <Button
