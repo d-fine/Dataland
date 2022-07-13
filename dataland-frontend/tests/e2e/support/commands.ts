@@ -46,9 +46,8 @@ export function retrieveCompanyIdsList(): Chainable<Array<string>> {
 export function login(
   username: string = "data_reader",
   password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")
-): Chainable<JQuery> {
-  return cy
-    .visit("/")
+): void {
+  cy.visit("/")
     .get("button[name='login_dataland_button']")
     .click()
     .get("#username")
@@ -67,9 +66,8 @@ export function login(
     .should("be.visible");
 }
 
-export function register(email: string = "some_user", password: string = "test"): Chainable<JQuery> {
-  return cy
-    .visit("/")
+export function register(email: string = "some_user", password: string = "test"): void {
+  cy.visit("/")
     .get("button[name='join_dataland_button']")
     .click()
     .get("#email")
@@ -92,9 +90,8 @@ export function register(email: string = "some_user", password: string = "test")
     .should("be.visible");
 }
 
-export function logout(): Chainable<JQuery> {
-  return cy
-    .visit("/")
+export function logout(): void {
+  cy.visit("/")
     .get("button[name='logout_dataland_button']")
     .click()
     .get("button[name='login_dataland_button']")
@@ -102,9 +99,8 @@ export function logout(): Chainable<JQuery> {
     .should("be.visible");
 }
 
-export function logoutDropdown(): Chainable<JQuery> {
-  return cy
-    .visit("/searchtaxonomy")
+export function logoutDropdown(): void {
+  cy.visit("/searchtaxonomy")
     .get("div[name='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-toggle']")
@@ -116,8 +112,8 @@ export function logoutDropdown(): Chainable<JQuery> {
     .should("be.visible");
 }
 
-export function restoreLoginSession(username?: string, password?: string): Chainable<null> {
-  return cy.session(
+export function restoreLoginSession(username?: string, password?: string): void {
+  cy.session(
     [username, password],
     () => {
       login(username, password);
@@ -134,7 +130,7 @@ export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
   return cy.visit(endpoint).get("#app").should("exist");
 }
 
-export function fillCompanyUploadFields(companyName: string) {
+export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=companyName]").type(companyName, { force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });
   cy.get("input[name=sector]").type("Handmade", { force: true });
@@ -145,7 +141,7 @@ export function fillCompanyUploadFields(companyName: string) {
   cy.get("input[name=identifierValue]").type("IsinValueId", { force: true });
 }
 
-export function verifyTaxonomySearchResultTable() {
+export function verifyTaxonomySearchResultTable(): void {
   cy.get("table.p-datatable-table").contains("th", "COMPANY");
   cy.get("table.p-datatable-table").contains("th", "PERM ID");
   cy.get("table.p-datatable-table").contains("th", "SECTOR");
@@ -153,15 +149,14 @@ export function verifyTaxonomySearchResultTable() {
   cy.get("table.p-datatable-table").contains("th", "LOCATION");
 }
 
-export function verifyCompanySearchResultTable() {
+export function verifyCompanySearchResultTable(): void {
   cy.get("table.p-datatable-table").contains("th", "COMPANY");
   cy.get("table.p-datatable-table").contains("th", "SECTOR");
   cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
 }
 
-export function checkViewButtonWorks() {
-  return cy
-    .get("table.p-datatable-table")
+export function checkViewButtonWorks(): void {
+  cy.get("table.p-datatable-table")
     .contains("td", "VIEW")
     .contains("a", "VIEW")
     .click()
