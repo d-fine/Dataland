@@ -105,6 +105,7 @@ export default {
   methods: {
     handleScroll() {
       const windowScrollY = window.scrollY;
+      this.searchBarToggled = false;
       if (this.latestScrollPosition > windowScrollY) {
         //ScrollUP event
         this.latestScrollPosition = windowScrollY;
