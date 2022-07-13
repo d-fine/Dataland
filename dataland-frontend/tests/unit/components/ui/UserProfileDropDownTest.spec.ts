@@ -3,7 +3,7 @@ import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { expect } from "@jest/globals";
 
 describe("UserProfileDropDownTest", () => {
-  const TestImagePath = "http://url.to/testImage";
+  const TestImagePath = "https://url.to/testImage";
   const WrapperComponent = {
     template: '<UserProfileDropDown ref="profileDropdown"/>',
     components: { UserProfileDropDown },
