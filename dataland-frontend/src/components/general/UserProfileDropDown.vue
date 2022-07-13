@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { Menu as PrimeMenu } from "primevue/menu";
+import PrimeMenu from "primevue/menu";
 export default {
   name: "UserProfileDropDown",
   inject: ["authenticated", "getKeycloakInitPromise"],

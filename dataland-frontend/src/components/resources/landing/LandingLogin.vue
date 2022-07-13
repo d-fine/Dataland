@@ -80,7 +80,7 @@
 
 <script>
 import Card from "primevue/card";
-import { Button as PrimeButton } from "primevue/button";
+import PrimeButton from "primevue/button";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { Button as PrimeButton } from "primevue/button";
+import PrimeButton from "primevue/button";
 export default {
   name: "SampleSection",
   components: { PrimeButton },

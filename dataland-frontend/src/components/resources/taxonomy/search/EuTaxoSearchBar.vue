@@ -62,7 +62,7 @@ import AutoComplete from "primevue/autocomplete";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
-import { Button as PrimeButton } from "primevue/button";
+import PrimeButton from "primevue/button";
 import { useRoute } from "vue-router";
 
 export default {

@@ -30,7 +30,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { Button as PrimeButton } from "primevue/button";
+import PrimeButton from "primevue/button";
 import SkyminderTable from "@/components/tables/SkyminderTable";
 
 export default {

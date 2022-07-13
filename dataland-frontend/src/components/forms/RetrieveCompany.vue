@@ -51,7 +51,7 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 import Card from "primevue/card";
-import { Button as PrimeButton } from "primevue/button";
+import PrimeButton from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 

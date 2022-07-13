@@ -11,7 +11,7 @@ export class ApiClientProvider {
 
   constructor(keycloak_init_promise: any, keycloak_init: any) {
     this.keycloak_init_promise = keycloak_init_promise;
-    this.keycloak_init = keycloak_init
+    this.keycloak_init = keycloak_init;
   }
 
   async getConfiguration() {
