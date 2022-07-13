@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../support/commands";
+import { visitAndCheckAppMount } from "../../support/commands";
 
 describe("EU Taxonomy Data", () => {
   it("Check for a dataset, that bears decent data, that the data is present and displayed", () => {

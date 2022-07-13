@@ -1,4 +1,4 @@
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { numberFormatter } from "@/utils/CurrencyMagnitude";
 import { expect } from "@jest/globals";
 
 describe("nFormatter", () => {

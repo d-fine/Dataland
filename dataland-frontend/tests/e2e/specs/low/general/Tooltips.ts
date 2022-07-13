@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Tooltips test suite", () => {
   it("tooltips are present and contain text as expected", function () {

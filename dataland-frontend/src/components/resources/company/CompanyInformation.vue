@@ -19,7 +19,7 @@
 
 <script>
 import { ApiClientProvider } from "@/services/ApiClients";
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { numberFormatter } from "@/utils/CurrencyMagnitude";
 
 export default {
   name: "CompanyInformation",

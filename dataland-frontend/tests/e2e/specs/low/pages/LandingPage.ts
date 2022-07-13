@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Login Section", () => {
   it("Check if App is present", () => {

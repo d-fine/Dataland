@@ -39,7 +39,7 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from "primevue/progressbar";
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { numberFormatter } from "@/utils/CurrencyMagnitude";
 import { humanize } from "@/utils/StringHumanizer";
 
 export default {

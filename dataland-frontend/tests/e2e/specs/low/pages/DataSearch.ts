@@ -1,4 +1,4 @@
-import {checkViewButtonWorks, verifyCompanySearchResultTable, visitAndCheckAppMount} from "../../../support/commands";
+import { checkViewButtonWorks, verifyCompanySearchResultTable, visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Data Search Page Skyminder", function () {
   beforeEach(() => {

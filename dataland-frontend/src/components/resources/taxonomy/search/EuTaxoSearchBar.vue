@@ -43,6 +43,7 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import AutoComplete from "primevue/autocomplete";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import { searchTaxonomyPageResponseMapper } from "@/utils/SearchTaxonomyPageResponseMapper";
 
 export default {
   name: "EuTaxoSearchBar",
@@ -93,19 +94,6 @@ export default {
       this.$refs.autocomplete.hideOverlay();
     },
 
-    responseMapper(response) {
-      return response.data.map((e) => ({
-        companyName: e.companyInformation.companyName,
-        companyInformation: e.companyInformation,
-        companyId: e.companyId,
-        permId: e.companyInformation.identifiers
-          .map((identifier) => {
-            return identifier.identifierType === "PermId" ? identifier.identifierValue : "";
-          })
-          .pop(),
-      }));
-    },
-
     async queryCompany(companyName) {
       try {
         this.loading = true;
@@ -113,16 +101,14 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        this.responseArray = await companyDataControllerApi
-          .getCompanies(companyName, "", false)
-          .then(this.responseMapper);
-        this.filteredCompaniesBasic = this.responseArray.slice(0, 3);
+        const response = await companyDataControllerApi.getCompanies(companyName, "", false);
+        this.mappedResponse = searchTaxonomyPageResponseMapper(response.data);
       } catch (error) {
         console.error(error);
       } finally {
         this.loading = false;
         this.selectedIndex = null;
-        this.$emit("companies-received", this.responseArray);
+        this.$emit("companies-received", this.mappedResponse);
       }
     },
 
@@ -133,9 +119,8 @@ export default {
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        this.autocompleteArray = await companyDataControllerApi
-          .getCompanies(companyName.query, "", true)
-          .then(this.responseMapper);
+        const response = await companyDataControllerApi.getCompanies(companyName.query, "", true);
+        this.autocompleteArray = searchTaxonomyPageResponseMapper(response.data);
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       } catch (error) {
         console.error(error);

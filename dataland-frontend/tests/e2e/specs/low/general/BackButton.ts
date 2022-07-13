@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Back Button test suite", () => {
   it("company eu taxonomy page should be present and contain back button", function () {

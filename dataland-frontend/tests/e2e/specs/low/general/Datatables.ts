@@ -1,4 +1,4 @@
-import {visitAndCheckAppMount} from "../../../support/commands";
+import { visitAndCheckAppMount } from "../../../support/commands";
 
 describe("Datables test suite", () => {
   it("Search for all companies containing a and verify that results are paginated, only first 100 are shown", () => {

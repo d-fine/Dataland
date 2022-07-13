@@ -1,6 +1,6 @@
 import { doThingsInChunks, getKeycloakToken, uploadSingleElementWithRetries } from "../../support/utility";
 import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
-import {visitAndCheckAppMount} from "../../support/commands";
+import { visitAndCheckAppMount } from "../../support/commands";
 const chunkSize = 40;
 
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {

@@ -84,7 +84,7 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { numberFormatter } from "@/utils/CurrencyMagnitude";
 import Tooltip from "primevue/tooltip";
 
 export default {
