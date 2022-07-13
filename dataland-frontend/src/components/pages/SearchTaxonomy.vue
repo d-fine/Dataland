@@ -73,8 +73,6 @@ export default {
     EuTaxoSearchResults,
   },
 
-  emits: ["queryCompany", "update:modelValue"],
-
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
