@@ -1,5 +1,3 @@
-import Chainable = Cypress.Chainable;
-
 describe('Paginator test suite', () => {
     beforeEach(() => {
         cy.restoreLoginSession()
