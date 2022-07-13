@@ -1,7 +1,7 @@
 describe("User interactive tests for Data Search", () => {
   beforeEach(() => {
     cy.restoreLoginSession();
-    cy.visit("/search");
+    cy.visitAndCheckAppMount("/search");
   });
 
   it("Skyminder Data Search with no input", () => {

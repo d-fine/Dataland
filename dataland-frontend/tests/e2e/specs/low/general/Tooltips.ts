@@ -5,9 +5,8 @@ describe("Tooltips test suite", () => {
     cy.intercept("**/api/companies/*").as("retrieveCompany");
     cy.restoreLoginSession();
     cy.retrieveCompanyIdsList().then((companyIdList: any) => {
-      cy.visit("/companies/" + companyIdList[0] + "/eutaxonomies");
+      cy.visitAndCheckAppMount("/companies/" + companyIdList[0] + "/eutaxonomies");
       cy.wait("@retrieveCompany", { timeout: 2 * 1000 }).then(() => {
-        cy.get("#app", { timeout: 2 * 1000 }).should("exist");
         cy.get(".p-card-content .text-left strong").contains("NFRD required");
         cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
