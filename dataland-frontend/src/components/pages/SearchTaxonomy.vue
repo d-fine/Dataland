@@ -12,7 +12,7 @@
           <EuTaxoSearchBar
             v-model="currentInput"
             ref="euTaxoSearchBar"
-            :taxoSearchBarName=taxoSearchBarName
+            :taxoSearchBarName="taxoSearchBarName"
             @companies-received="handleCompanyQuery"
             @rendered="handleEuTaxoSearchBarRender"
           >
@@ -94,7 +94,7 @@ export default {
       currentInput: null,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
-      taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
+      taxoSearchBarName: "eu_taxonomy_search_bar_top",
     };
   },
 

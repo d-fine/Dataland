@@ -72,11 +72,10 @@ export default {
   },
 
   watch: {
-    taxoSearchBarName(taxoSearchBarNameNew) {
-      this.$refs.autocomplete.focus()
+    taxoSearchBarName() {
+      this.$refs.autocomplete.focus();
     },
   },
-
 
   data() {
     return {
@@ -146,5 +145,5 @@ export default {
   unmounted() {
     window.removeEventListener("scroll", this.handleScroll);
   },
-}
+};
 </script>
