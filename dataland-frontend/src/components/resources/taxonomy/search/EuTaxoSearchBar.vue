@@ -117,7 +117,6 @@ export default {
         console.error(error);
       } finally {
         this.loading = false;
-        this.selectedIndex = null;
         this.$emit("companies-received", this.mappedResponse);
       }
     },
@@ -137,7 +136,6 @@ export default {
         console.error(error);
       } finally {
         this.loading = false;
-        this.selectedIndex = null;
       }
     },
   },
