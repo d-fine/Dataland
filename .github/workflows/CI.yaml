@@ -82,6 +82,9 @@ jobs:
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
+        env:
+          DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
