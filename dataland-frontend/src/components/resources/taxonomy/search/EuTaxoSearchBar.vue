@@ -7,31 +7,32 @@
             <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
             <i v-else aria-hidden="true" />
-            <AutoComplete
-              :suggestions="autocompleteArrayDisplayed"
-              :name="taxoSearchBarName"
-              :modelValue="modelValue"
-              ref="autocomplete"
-              inputClass="h-3rem"
-              field="companyName"
-              style="z-index: 10"
-              placeholder="Search company by name or PermID"
-              @input="handleInput"
-              @complete="searchCompanyName"
-              @keyup.enter="handleKeyupEnter"
-              @item-select="handleItemSelect"
-            >
-              <template #footer>
-                <ul
-                  class="p-autocomplete-items pt-0"
-                  v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
-                >
-                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleViewAllResults">
-                    View all results.
-                  </li>
-                </ul>
-              </template>
-            </AutoComplete>
+            <form @submit.prevent="handleSubmit">
+              <AutoComplete
+                :suggestions="autocompleteArrayDisplayed"
+                :name="taxoSearchBarName"
+                :modelValue="modelValue"
+                ref="autocomplete"
+                inputClass="h-3rem"
+                field="companyName"
+                style="z-index: 10"
+                placeholder="Search company by name or PermID"
+                @input="handleInput"
+                @complete="searchCompanyName"
+                @item-select="handleItemSelect"
+              >
+                <template #footer>
+                  <ul
+                    class="p-autocomplete-items pt-0"
+                    v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
+                  >
+                    <li class="p-autocomplete-item text-primary font-semibold" @click="handleViewAllResults">
+                      View all results.
+                    </li>
+                  </ul>
+                </template>
+              </AutoComplete>
+            </form>
           </span>
         </span>
       </div>
@@ -88,13 +89,11 @@ export default {
     handleItemSelect(event) {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`);
     },
-
-    handleKeyupEnter(event) {
-      this.queryCompany(event.target.value);
+    handleSubmit() {
+      this.queryCompany(this.$refs.autocomplete.modelValue);
       this.$refs.autocomplete.hideOverlay();
     },
     handleViewAllResults() {
-      console.log(this.currentInput)
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
@@ -118,7 +117,7 @@ export default {
     },
 
     async searchCompanyName(companyName) {
-      this.currentInput = companyName.query
+      this.currentInput = companyName.query;
       try {
         this.loading = true;
         const companyDataControllerApi = await new ApiClientProvider(

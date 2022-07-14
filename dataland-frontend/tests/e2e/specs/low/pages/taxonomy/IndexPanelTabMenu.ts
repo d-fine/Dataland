@@ -3,8 +3,7 @@ import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 
 export function checkIfDaxTabIsHighlighted(): void {
-  cy
-    .get('li[class="p-tabmenuitem p-highlight"]')
+  cy.get('li[class="p-tabmenuitem p-highlight"]')
     .children(".p-menuitem-link")
     .children(".p-menuitem-text")
     .should("contain", "DAX");
