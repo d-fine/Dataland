@@ -43,8 +43,8 @@ Some environment variables are used within the project. Find attached the variab
 | KEYCLOAK_READER/UPLOADER_SALT     | Together with KEYCLOAK_(READER\UPLOADER)_VALUE it defines the secret for the keycloak realm json file                  |                                                                  |
 | PROXY_NGINX_URLS                  | A list of URLS for the NGINX Server config (multiple domains separated by whitespace)                                  | `www.dataland.com dataland.com`                                  |
 | PROXY_LETSENCRYPT_PATH            | The LetsEncrypt path for the domain (usually /etc/letsencrypt/FIRST_DOMAIN/                                            | `/etc/letsencrypt/dataland.com`                                  |
-| PROXY_DOCKERFILE                  | The location for the Proxy Dockerfile (either Dockerfile for production or Dockerfile.dev for local development)       | `Dockerfile` or `Dockerfile.dev`                                 |
 | PROXY_LETSENCRYPT_ARGS            | The LetsEncrypt Certbot arguments for the initial certificate request                                                  | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
+| PROXY_ENVIRONMENT                 | The environment of the proxy server (development or production). Used during Docker build process                      | `development` or `production`                                    |
 
 
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.

@@ -4,7 +4,7 @@
 # and rewrites the symlink for the nginx certificates accordingly
 
 if [ -f "/certs/custom/privkey.pem" ]; then
-  echo "Found custom certificates folder. Rewring symlink"
+  echo "Found custom certificates folder. Rewriting symlink"
   rm /certs/dataland
   ln -s /certs/custom /certs/dataland
 elif [ -f "$PROXY_LETSENCRYPT_PATH/privkey.pem" ]; then

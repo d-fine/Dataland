@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
-        run: mkdir -p ~/.ssh/ && echo "${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}" >>  ~/.ssh/known_hosts && echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && mkdir -p ./local/certs && scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local.duckdns.org/* ./local/certs
+        run: ./testing/retrieve_ssl_certs.sh
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
@@ -98,6 +98,7 @@ jobs:
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
           PROXY_NGINX_URLS: dataland-local.duckdns.org
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
+          PROXY_ENVIRONMENT: production
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2

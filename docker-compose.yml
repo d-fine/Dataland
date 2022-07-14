@@ -3,7 +3,8 @@ services:
   proxy:
     build:
       context: ./dataland-inbound-proxy
-      dockerfile: ${PROXY_DOCKERFILE:-Dockerfile}
+      args:
+        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
