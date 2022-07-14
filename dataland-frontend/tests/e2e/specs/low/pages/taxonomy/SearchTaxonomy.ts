@@ -35,10 +35,11 @@ describe("Search Taxonomy", function () {
     cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("b");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
       cy.wait(2000);
-      cy.get("#app")
-        .trigger("keydown", { keyCode: 40 })
-        .wait(500)
-        .trigger("keyup", { keyCode: 40 })
+      cy.get('li[class="p-autocomplete-item"]')
+        .eq(0)
+        //.trigger("keydown", { keyCode: 40 })
+        //.wait(500)
+        //.trigger("keyup", { keyCode: 40 })
         .wait(1000)
         .trigger("keydown", { keyCode: 13 })
         .wait(1000)
