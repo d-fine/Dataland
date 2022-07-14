@@ -29,6 +29,26 @@ describe("Search Taxonomy", function () {
     cy.restoreLoginSession();
   });
 
+  it("Use arrow+enter keys to select an autocomplete-suggestion and check if forwarded to taxonomy data page", () => {
+    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.intercept("**/api/companies*").as("searchCompany");
+    cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("b");
+    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+      cy.wait(2000);
+      cy.get("#app")
+        .trigger("keydown", { keyCode: 40 })
+        .wait(500)
+        .trigger("keyup", { keyCode: 40 })
+        .wait(1000)
+        .trigger("keydown", { keyCode: 13 })
+        .wait(1000)
+        .url()
+        .should("include", "/companies/")
+        .url()
+        .should("include", "/eutaxonomies");
+    });
+  });
+
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
@@ -75,7 +95,7 @@ describe("Search Taxonomy", function () {
     });
   });
 
-  it("Autocomplete functionality", () => {
+  it("Click on an autocomplete-suggestion and check if forwarded to taxonomy data page", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("b");
