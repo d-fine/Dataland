@@ -21,6 +21,8 @@ services:
       PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
       # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
+      # These are the config options for the initial LetsEncrypt certificate request
+      PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
