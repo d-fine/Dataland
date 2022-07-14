@@ -66,7 +66,7 @@ describe("Search Taxonomy", function () {
     const inputValue = "A company name";
     cy.retrieveDataIdsList().then((dataIdList: any) => {
       cy.visitAndCheckAppMount("/companies/" + dataIdList[7] + "/eutaxonomies");
-      cy.get("input[name=eu_taxonomy_search_bar_top]")
+      cy.get("input[name=eu_taxonomy_search_bar_standard]")
         .should("not.be.disabled")
         .type(inputValue)
         .should("have.value", inputValue)
@@ -105,17 +105,28 @@ describe("Search Taxonomy", function () {
   it("Scroll functionality", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
-    cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("a").type("{enter}");
+    cy.get("input[name=eu_taxonomy_search_bar_top]").type("a").type("{enter}");
+
     cy.scrollTo(0, 500);
+    cy.get("button[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("exist");
 
     cy.scrollTo(0, 0);
+    cy.get("button[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
     cy.scrollTo(0, 500);
+    cy.get("button[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("exist").click();
+    cy.get("button[name=eu_taxonomy_search_bar_top]").should("not.exist");
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
+
+    cy.scrollTo(0,480);
+    cy.get("button[name=search_bar_collapse]").should("not.exist");
+    cy.get("button[name=eu_taxonomy_search_bar_top]").should("exist");
+    cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("not.exist");
+
   });
 
   it("Communication between standard search bar and search bar in scrolled mode", () => {
