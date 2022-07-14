@@ -10,13 +10,10 @@ export default defineConfig({
   },
   fixturesFolder: "../testing/data",
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       return require("./tests/e2e/plugins/index.js")(on, config);
     },
     experimentalSessionAndOrigin: true,
-    specPattern: "tests/e2e/specs",
     supportFile: "tests/e2e/support/index.ts",
   },
 });
