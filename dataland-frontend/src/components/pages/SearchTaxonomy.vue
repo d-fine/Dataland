@@ -156,7 +156,7 @@ export default {
       this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
-      let height = this.$refs.searchbar.clientHeight;
+      const height = this.$refs.searchBarAndIndexTabContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
