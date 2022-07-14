@@ -8,6 +8,7 @@
           <EuTaxoSearchBar
             v-model="currentInput"
             ref="euTaxoSearchBar"
+            :taxoSearchBarName=taxoSearchBarName
             @companies-received="handleCompanyQuery"
             @rendered="handleEuTaxoSearchBarRender"
           >
@@ -88,6 +89,7 @@ export default {
       resultsArray: [],
       latestScrollPosition: 0,
       currentInput: null,
+      taxoSearchBarName: "eu_taxonomy_search_bar_top",
     };
   },
 
@@ -98,7 +100,7 @@ export default {
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
-        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
+        this.taxoSearchBarName = "eu_taxonomy_search_bar_top";
       }
     },
   },
@@ -143,6 +145,7 @@ export default {
     },
     toggleSearchBar() {
       this.searchBarToggled = !this.searchBarToggled;
+      this.taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
     },
   },
 };
