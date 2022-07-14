@@ -94,11 +94,10 @@ describe("Search Taxonomy", function () {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("b");
-    cy.get(".p-autocomplete-item").contains("View all results.").click()
+    cy.get(".p-autocomplete-item").contains("View all results.").click();
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
       cy.verifyTaxonomySearchResultTable();
-      cy.url().should("include", "/searchtaxonomy?input=b")
-
+      cy.url().should("include", "/searchtaxonomy?input=b");
     });
   });
 
@@ -121,11 +120,10 @@ describe("Search Taxonomy", function () {
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
-    cy.scrollTo(0,480);
+    cy.scrollTo(0, 480);
     cy.get("button[name=search_bar_collapse]").should("not.exist");
     cy.get("input[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("not.exist");
-
   });
 
   it("Communication between standard search bar and search bar in scrolled mode", () => {

@@ -117,7 +117,7 @@ export default {
       } else {
         if (this.searchBarToggled) {
           this.searchBarToggled = false;
-          this.taxoSearchBarName = "eu_taxonomy_search_bar_top"
+          this.taxoSearchBarName = "eu_taxonomy_search_bar_top";
           window.scrollBy(0, this.hiddenSearchBarHeight);
         }
         if (this.latestScrollPosition > windowScrollY) {
