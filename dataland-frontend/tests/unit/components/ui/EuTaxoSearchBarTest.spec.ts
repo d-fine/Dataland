@@ -29,8 +29,8 @@ describe("EuTaxoSearchBarTest", () => {
 
   it("checks getCompanyByName()", async () => {
     jest.spyOn(console, "error");
-    expect(wrapper.vm.searchCompanyName()).toBeDefined();
-    await wrapper.vm.searchCompanyName();
+    expect(wrapper.vm.searchCompanyName("someCompanyToSearchFor")).toBeDefined();
+    await wrapper.vm.searchCompanyName("someCompanyToSearchFor");
     expect(console.error).toHaveBeenCalled();
   });
 });
