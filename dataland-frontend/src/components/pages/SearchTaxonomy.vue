@@ -25,7 +25,7 @@
                 : '',
             ]"
           >
-            <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
+            <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
             <Button
               v-if="!searchBarToggled && pageScrolled"
               name="search_bar_collapse"
@@ -105,7 +105,6 @@ export default {
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
-        this.taxoSearchBarName = "eu_taxonomy_search_bar_top";
       }
     },
   },
@@ -118,6 +117,7 @@ export default {
       } else {
         if (this.searchBarToggled) {
           this.searchBarToggled = false;
+          this.taxoSearchBarName = "eu_taxonomy_search_bar_top"
           window.scrollBy(0, this.hiddenSearchBarHeight);
         }
         if (this.latestScrollPosition > windowScrollY) {
@@ -156,11 +156,11 @@ export default {
       this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
+      this.searchBarToggled = true;
       const height = this.$refs.searchBarAndIndexTabContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.searchBarToggled = !this.searchBarToggled;
       this.taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
     },
   },
