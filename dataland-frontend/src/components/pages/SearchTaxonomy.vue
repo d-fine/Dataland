@@ -2,7 +2,11 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent>
-      <div class="col-12 bg-white" :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']">
+      <div
+        class="col-12 bg-white"
+        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
+        ref="searchbar"
+      >
         <SearchTaxonomyHeader />
         <MarginWrapper>
           <EuTaxoSearchBar
@@ -21,7 +25,7 @@
                 : '',
             ]"
           >
-            <span class="mr-3 font-semibold" v-if="!searchBarToggled && pageScrolled">Search EU Taxonomy data</span>
+            <span class="mr-3 font-semibold">Search EU Taxonomy data</span>
             <Button
               v-if="!searchBarToggled && pageScrolled"
               name="search_bar_collapse"
@@ -78,7 +82,6 @@ export default {
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
-
   data() {
     return {
       searchBarToggled: false,
@@ -89,7 +92,9 @@ export default {
       resultsArray: [],
       latestScrollPosition: 0,
       currentInput: null,
-      taxoSearchBarName: "eu_taxonomy_search_bar_top",
+      scrollEmittedByToggleSearchBar: false,
+      hiddenSearchBarHeight: 0,
+      taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
     };
   },
 
@@ -108,15 +113,22 @@ export default {
   methods: {
     handleScroll() {
       const windowScrollY = window.scrollY;
-      this.searchBarToggled = false;
-      if (this.latestScrollPosition > windowScrollY) {
-        //ScrollUP event
-        this.latestScrollPosition = windowScrollY;
-        this.pageScrolled = document.documentElement.scrollTop >= 50;
+      if (this.scrollEmittedByToggleSearchBar) {
+        this.scrollEmittedByToggleSearchBar = false;
       } else {
-        //ScrollDOWN event
-        this.pageScrolled = document.documentElement.scrollTop > 80;
-        this.latestScrollPosition = windowScrollY;
+        if (this.searchBarToggled) {
+          this.searchBarToggled = false;
+          window.scrollBy(0, this.hiddenSearchBarHeight);
+        }
+        if (this.latestScrollPosition > windowScrollY) {
+          //ScrollUP event
+          this.latestScrollPosition = windowScrollY;
+          this.pageScrolled = document.documentElement.scrollTop >= 50;
+        } else {
+          //ScrollDOWN event
+          this.pageScrolled = document.documentElement.scrollTop > 80;
+          this.latestScrollPosition = windowScrollY;
+        }
       }
     },
 
@@ -144,6 +156,10 @@ export default {
       this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
+      let height = this.$refs.searchbar.clientHeight;
+      window.scrollBy(0, -height);
+      this.hiddenSearchBarHeight = height;
+      this.scrollEmittedByToggleSearchBar = true;
       this.searchBarToggled = !this.searchBarToggled;
       this.taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
     },
