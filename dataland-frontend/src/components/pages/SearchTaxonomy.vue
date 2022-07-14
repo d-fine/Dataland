@@ -5,7 +5,7 @@
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarAndIndexTabontainer"
+        ref="searchBarAndIndexTabContainer"
       >
         <SearchTaxonomyHeader />
         <MarginWrapper>
