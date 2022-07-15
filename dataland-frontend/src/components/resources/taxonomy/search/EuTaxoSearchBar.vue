@@ -7,7 +7,6 @@
             <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
             <i v-else aria-hidden="true" />
-            <form @submit.prevent="handleSubmit">
               <AutoComplete
                 :suggestions="autocompleteArrayDisplayed"
                 :name="taxoSearchBarName"
@@ -20,6 +19,7 @@
                 @input="handleInput"
                 @complete="searchCompanyName"
                 @item-select="handleItemSelect"
+                @keyup.enter="handleKeyupEnter"
               >
                 <template #footer>
                   <ul
@@ -32,7 +32,6 @@
                   </ul>
                 </template>
               </AutoComplete>
-            </form>
           </span>
         </span>
       </div>
@@ -95,7 +94,8 @@ export default {
     handleItemSelect(event) {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`);
     },
-    handleSubmit() {
+    handleKeyupEnter() {
+      console.log("KeyupEnter")
       this.queryCompany(this.$refs.autocomplete.modelValue);
       this.$refs.autocomplete.hideOverlay();
     },

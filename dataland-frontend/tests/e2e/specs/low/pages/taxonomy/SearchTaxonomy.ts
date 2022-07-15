@@ -90,23 +90,7 @@ describe("Search Taxonomy", function () {
     });
   });
 
-  it("Use arrow+enter keys to select an autocomplete-suggestion and check if forwarded to taxonomy data page", () => {
-    cy.visitAndCheckAppMount("/searchtaxonomy");
-    cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("b");
-    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.wait(1000)
-          .get("input[name=eu_taxonomy_search_bar_top]")
-          .type("{downArrow}", { force: true })
-          .type("{enter}", { force: true })
-          .url()
-          .should("include", "/companies/")
-          .url()
-          .should("include", "/eutaxonomies");
-    });
-  });
-
-  it("Click on ViewAllResults", () => {
+  it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("b");
@@ -117,7 +101,7 @@ describe("Search Taxonomy", function () {
     });
   });
 
-  it("Scroll functionality", () => {
+  it("Scroll the page and check if search icon and search bar behave as expected", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
@@ -142,7 +126,7 @@ describe("Search Taxonomy", function () {
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("not.exist");
   });
 
-  it("Communication between standard search bar and search bar in scrolled mode", () => {
+  it("Scroll the page to type into the search bar in different states and check if the input is always saved", () => {
     const inputValue1 = "ABCDEFG";
     const inputValue2 = "XYZ";
     cy.visitAndCheckAppMount("/searchtaxonomy");
