@@ -44,6 +44,7 @@ services:
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
+      ENVIRONMENT: ${ENVIRONMENT}
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
