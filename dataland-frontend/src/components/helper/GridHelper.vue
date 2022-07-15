@@ -17,6 +17,6 @@
 
 <script>
 export default {
-  name: "GridHelper"
-}
+  name: "GridHelper",
+};
 </script>

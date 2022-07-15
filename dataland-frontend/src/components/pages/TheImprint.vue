@@ -4,26 +4,23 @@
       <div class="grid align-items-center m-0">
         <div class="col-6 text-left">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2"/>
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2" />
           </router-link>
         </div>
       </div>
       <MarginWrapper class="text-left pl-2">
-        <BackButton/>
+        <BackButton />
       </MarginWrapper>
       <MarginWrapper class="text-left pl-2">
         <div class="col-6 text-justify">
-
-          <h2>
-            Imprint
-          </h2>
+          <h2>Imprint</h2>
           <p>
             Diese Beta-Version von Dataland ist ein Gemeinschaftsprojekt der d-fine GmbH, der PricewaterhouseCoopers
             GmbH Wirtschaftsprüfungsgesellschaft.
           </p>
           <p>
-            Kontakt:
-            d-fine GmbH, An der Hauptwache 7, 60313 Frankfurt am Main, Telefon: +49 69 90737-0, dataland@d-fine.com
+            Kontakt: d-fine GmbH, An der Hauptwache 7, 60313 Frankfurt am Main, Telefon: +49 69 90737-0,
+            dataland@d-fine.com
           </p>
           <p>
             Registergericht: Amtsgericht Frankfurt am Main, Registernummer: HRB 48 103,
@@ -45,8 +42,8 @@
       </MarginWrapper>
     </div>
   </div>
-
-</template>>
+</template>
+>
 
 <script>
 import BackButton from "@/components/general/BackButton";
@@ -55,7 +52,8 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 export default {
   name: "TheImprint",
   components: {
-    MarginWrapper, BackButton
-  }
-}
+    MarginWrapper,
+    BackButton,
+  },
+};
 </script>

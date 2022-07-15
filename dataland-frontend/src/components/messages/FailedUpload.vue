@@ -8,21 +8,21 @@
 </template>
 
 <script>
-import Message from 'primevue/message';
-import {humanize} from "@/utils/StringHumanizer"
+import Message from "primevue/message";
+import { humanize } from "@/utils/StringHumanizer";
 
 export default {
   name: "FailedUpload",
-  components: {Message},
+  components: { Message },
   props: {
     msg: String,
-    messageCount: Number
+    messageCount: Number,
   },
   methods: {
     humanize(text) {
-      if (typeof text == "string") return humanize(text)
-      else return null
-    }
-  }
-}
+      if (typeof text == "string") return humanize(text);
+      else return null;
+    },
+  },
+};
 </script>

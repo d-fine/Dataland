@@ -1,12 +1,12 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent>
       <MarginWrapper class="text-left">
-        <BackButton/>
+        <BackButton />
       </MarginWrapper>
-      <EuTaxoSearchBar/>
-      <TaxonomySample :companyID="companyID"/>
+      <EuTaxoSearchBar />
+      <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -29,12 +29,12 @@ export default {
     BackButton,
     MarginWrapper,
     EuTaxoSearchBar,
-    AuthenticationWrapper
+    AuthenticationWrapper,
   },
   props: {
     companyID: {
-      type: String
-    }
-  }
-}
+      type: String,
+    },
+  },
+};
 </script>
