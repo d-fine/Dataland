@@ -4,7 +4,7 @@ services:
     build:
       context: ./dataland-inbound-proxy
       args:
-        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-production}
+        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
