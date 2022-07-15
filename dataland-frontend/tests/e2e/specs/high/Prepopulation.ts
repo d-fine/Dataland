@@ -100,7 +100,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   it("Company Name Input field exists and works", () => {
     const inputValue = companiesWithData[0].companyInformation.companyName;
-    cy.visit("/search");
+    cy.visitAndCheckAppMount("/search");
     cy.get("input[name=companyName]")
       .should("not.be.disabled")
       .type(inputValue, { force: true })
@@ -113,14 +113,14 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Show all companies button exists", () => {
-    cy.visit("/search");
+    cy.visitAndCheckAppMount("/search");
     cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
   });
 
   it("Check Eu Taxonomy Data Presence and Link route", () => {
     cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
       cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
-      cy.visit("/data/eutaxonomies/" + dataIdList[0]);
+      cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdList[0]);
       cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
         cy.get("h3").should("be.visible");
         cy.get("h3").contains("Revenue");
@@ -135,7 +135,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
     cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
       cy.intercept("**/api/companies/*").as("retrieveCompany");
       cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
-      cy.visit(`/companies/${companyIdList[0]}/eutaxonomies`);
+      cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/eutaxonomies`);
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
         .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
         .then(() => {
