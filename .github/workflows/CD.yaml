@@ -107,7 +107,6 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
           PROXY_NGINX_URLS: ${{ secrets.PROXY_NGINX_URLS }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
-          PROXY_ENVIRONMENT: production
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
