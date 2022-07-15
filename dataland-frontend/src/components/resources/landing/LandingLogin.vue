@@ -57,7 +57,7 @@
                 Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.</p>
               <div class="grid">
                 <div class="col-10 col-offset-1 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="join_dataland_button" @click="register" >
+                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="join_dataland_button_center" @click="register" >
                     <span class="d-letters d-button">
                       Join Dataland
                     </span>
