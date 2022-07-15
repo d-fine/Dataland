@@ -20,12 +20,12 @@ dependencyResolutionManagement {
             library("okhttp", "com.squareup.okhttp3:okhttp:4.9.3")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
-            library("skyminder-client", "org.dataland:skyminder-client:0.1.5")
-            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.1")
+            library("skyminder-client", "org.dataland:skyminder-client:0.1.6")
+            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.3")
 
-            library("log4j", "org.apache.logging.log4j:log4j:2.17.2")
-            library("log4j-api", "org.apache.logging.log4j:log4j-api:2.17.2")
-            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.17.2")
+            library("log4j", "org.apache.logging.log4j:log4j:2.18.0")
+            library("log4j-api", "org.apache.logging.log4j:log4j-api:2.18.0")
+            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.18.0")
 
             library("logback-classic", "ch.qos.logback:logback-classic:1.2.11")
             library("logback-core", "ch.qos.logback:logback-core:1.2.11")
@@ -36,7 +36,7 @@ dependencyResolutionManagement {
             library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.3")
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3")
 
-            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:18.0.1")
+            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:18.0.2")
         }
     }
 }
