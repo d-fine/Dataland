@@ -11,7 +11,7 @@
           </router-link>
         </div>
         <div class="col-2 col-offset-4">
-          <UserAuthenticationButtons/>
+          <UserAuthenticationButtons />
         </div>
       </div>
       <div class="grid align-items-center m-0">
@@ -54,13 +54,16 @@
             </template>
             <template #content>
               <p class="text-gray-800 text-left">
-                Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.</p>
+                Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.
+              </p>
               <div class="grid">
                 <div class="col-10 col-offset-1 p-fluid pl-0">
-                  <Button class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full" name="join_dataland_button_center" @click="register" >
-                    <span class="d-letters d-button">
-                      Join Dataland
-                    </span>
+                  <Button
+                    class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full"
+                    name="join_dataland_button_center"
+                    @click="register"
+                  >
+                    <span class="d-letters d-button"> Join Dataland </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
                   </Button>
                 </div>
@@ -80,16 +83,18 @@ import UserAuthenticationButtons from "@/components/general/UserAuthenticationBu
 
 export default {
   name: "LandingLogin",
-  components: {UserAuthenticationButtons, Card, Button},
-  inject: ['authenticated', 'getKeycloakInitPromise'],
+  components: { UserAuthenticationButtons, Card, Button },
+  inject: ["authenticated", "getKeycloakInitPromise"],
   methods: {
     register() {
-      this.getKeycloakInitPromise().then((keycloak) => {
-        if (!keycloak.authenticated) {
-          return keycloak.register()
-        }
-      }).catch((error) => console.log("error: " + error))
+      this.getKeycloakInitPromise()
+        .then((keycloak) => {
+          if (!keycloak.authenticated) {
+            return keycloak.register();
+          }
+        })
+        .catch((error) => console.log("error: " + error));
     },
-  }
-}
+  },
+};
 </script>
