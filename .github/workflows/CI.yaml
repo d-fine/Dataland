@@ -80,11 +80,16 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
           password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
+      - name: Retrieve SSL certificates for dataland-local.duckdns.org
+        run: ./testing/retrieve_ssl_certs.sh
+        env:
+          DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
-          KEYCLOAK_FRONTEND_URL: "http://proxy/keycloak"
+          KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
@@ -94,6 +99,9 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: "test"
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
+          PROXY_NGINX_URLS: dataland-local.duckdns.org
+          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
+          PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
       - name: Upload JaCoCo Exec Results
         if: always()
