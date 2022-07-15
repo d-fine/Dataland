@@ -1,17 +1,28 @@
 version: "3.8"
 services:
   proxy:
+    build:
+      context: ./dataland-inbound-proxy
+      args:
+        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
       - external
       - internal
-    image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ${NGINX_CONFIG_FILE:-./dataland-inbound-proxy/nginx.conf}:/etc/nginx/nginx.conf
+      - letsencrypt:/etc/letsencrypt
+      - ./local/certs:/certs/custom
+    environment:
+      # This variable will be inserted into the NGINX server config file (URLS separated by a space e.g. dataland.com www.dataland.com)
+      PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
+      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
+      PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
+      # These are the config options for the initial LetsEncrypt certificate request
+      PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -44,6 +55,8 @@ services:
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
+    links:
+      - proxy:dataland-local.duckdns.org
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -182,4 +195,6 @@ networks:
   external:
 volumes:
   keycloak_data:
+    driver: local
+  letsencrypt:
     driver: local
