@@ -5,14 +5,7 @@ module.exports = (on, config) => {
   config.env.commit_id = require("git-commit-id")({ cwd: "../" });
   switch (process.env.ENVIRONMENT) {
     case "development": {
-      config.specPattern = [
-        "tests/e2e/specs/verify_deployment",
-        "tests/e2e/specs/high",
-        "tests/e2e/specs/low",
-        "tests/e2e/specs/medium",
-        "tests/e2e/specs/dev",
-        "tests/e2e/specs/previsit",
-      ];
+      config.specPattern = ["tests/e2e/specs/runAll.ts"];
       break;
     }
     case "preview": {
