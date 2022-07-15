@@ -1,10 +1,10 @@
 FROM node:18 as builder
 WORKDIR /theme
-COPY ./dataland-keycloak/dataland_theme .
-RUN chown -R node:node /theme
+COPY ./dataland-keycloak/dataland_theme/login .
+RUN chown -R node:node /theme && chmod +x /theme/build.sh
 USER node
 
-RUN npm install && npm run build_styles
+RUN npm install && sh ./build.sh
 
 FROM quay.io/keycloak/keycloak:18.0.1
 
