@@ -18,6 +18,23 @@ module.exports = (on, config) => {
       ];
       break;
     }
+    case "low": {
+      config.specPattern = ["tests/e2e/specs/high", "tests/e2e/specs/low"];
+      break;
+    }
+    case "dev": {
+      config.specPattern = ["tests/e2e/specs/high", "tests/e2e/specs/dev"];
+      break;
+    }
+    case "other": {
+      config.specPattern = [
+        "tests/e2e/specs/verify_deployment",
+        "tests/e2e/specs/high",
+        "tests/e2e/specs/medium",
+        "tests/e2e/specs/previsit",
+      ];
+      break;
+    }
     default: {
       config.specPattern = ["tests/e2e/specs"];
       break;
