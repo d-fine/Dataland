@@ -55,6 +55,7 @@ services:
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
+      ENVIRONMENT: ${ENVIRONMENT}
     links:
       - proxy:dataland-local.duckdns.org
   frontend:
@@ -84,7 +85,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development", "productionInMemory"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.2
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.3
     environment:
       SERVER_PORT: 9191
       SERVER_SERVLET_CONTEXT-PATH: /api

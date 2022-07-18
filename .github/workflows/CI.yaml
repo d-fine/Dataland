@@ -102,6 +102,7 @@ jobs:
           PROXY_NGINX_URLS: dataland-local.duckdns.org
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
           PROXY_ENVIRONMENT: production
+          ENVIRONMENT: "development"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
