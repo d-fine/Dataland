@@ -1,12 +1,5 @@
 <template>
-  <div class="col-12">
-    <PrimeButton
-      v-if="!authenticated"
-      label="Join"
-      class="d-letters d-button uppercase p-button p-button-sm justify-content-center w-5rem"
-      name="join_dataland_button"
-      @click="register"
-    />
+  <div>
     <PrimeButton
       v-if="!authenticated"
       label="Login"

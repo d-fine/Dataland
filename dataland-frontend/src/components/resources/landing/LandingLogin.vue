@@ -58,14 +58,14 @@
               </p>
               <div class="grid">
                 <div class="col-10 col-offset-1 p-fluid pl-0">
-                  <Button
+                  <PrimeButton
                     class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full"
                     name="join_dataland_button_center"
                     @click="register"
                   >
                     <span class="d-letters d-button"> Join Dataland </span>
                     <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
-                  </Button>
+                  </PrimeButton>
                 </div>
               </div>
             </template>
@@ -84,5 +84,17 @@ import UserAuthenticationButtons from "@/components/general/UserAuthenticationBu
 export default {
   name: "LandingLogin",
   components: { UserAuthenticationButtons, Card, PrimeButton },
+  inject: ["authenticated", "getKeycloakInitPromise"],
+  methods: {
+    register() {
+      this.getKeycloakInitPromise()
+          .then((keycloak) => {
+            if (!keycloak.authenticated) {
+              return keycloak.register();
+            }
+          })
+          .catch((error) => console.log("error: " + error));
+    },
+  }
 };
 </script>
