@@ -25,7 +25,7 @@
             ]"
           >
             <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
-            <Button
+            <PrimeButton
               v-if="!searchBarToggled && pageScrolled"
               name="search_bar_collapse"
               icon="pi pi-search"
@@ -33,7 +33,7 @@
               @click="toggleSearchBar"
             >
               <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-            </Button>
+            </PrimeButton>
             <IndexTabs
               ref="indexTabs"
               :initIndex="firstDisplayedIndex"
@@ -56,7 +56,7 @@ import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchT
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
@@ -73,7 +73,7 @@ export default {
     EuTaxoSearchBar,
     MarginWrapper,
     IndexTabs,
-    Button,
+    PrimeButton,
     EuTaxoSearchResults,
   },
 
