@@ -40,10 +40,9 @@
 </template>
 
 <script>
-import { ApiClientProvider } from "@/services/ApiClients";
 import AutoComplete from "primevue/autocomplete";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import { searchTaxonomyPageResponseMapper } from "@/utils/SearchTaxonomyPageResponseMapper";
+import { searchTaxonomyPageCompanyDataRequester } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 export default {
   name: "EuTaxoSearchBar",
@@ -87,8 +86,9 @@ export default {
 
   inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
-    handleInput(event) {
-      this.$emit("update:modelValue", event.target.value);
+    handleInput(inputEvent) {
+      this.currentInput = inputEvent.target.value;
+      this.$emit("update:modelValue", this.currentInput);
     },
 
     handleItemSelect(event) {
@@ -103,39 +103,41 @@ export default {
       this.$refs.autocomplete.hideOverlay();
     },
 
+    async filterByIndex(stockIndex) {
+      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
+        "",
+        stockIndex,
+        false,
+        this.getKeycloakInitPromise(),
+        this.keycloak_init
+      );
+      this.$emit("companies-received", resultsArray);
+    },
+
     async queryCompany(companyName) {
-      try {
-        this.loading = true;
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
-        ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompanies(companyName, "", false);
-        this.mappedResponse = searchTaxonomyPageResponseMapper(response.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.loading = false;
-        this.$emit("companies-received", this.mappedResponse);
-      }
+      this.loading = true;
+      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
+        companyName,
+        "",
+        false,
+        this.getKeycloakInitPromise(),
+        this.keycloak_init
+      );
+      this.$emit("companies-received", resultsArray);
+      this.loading = false;
     },
 
     async searchCompanyName(companyName) {
-      this.currentInput = companyName.query;
-      try {
-        this.loading = true;
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
-        ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompanies(companyName.query, "", true);
-        this.autocompleteArray = searchTaxonomyPageResponseMapper(response.data);
-        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.loading = false;
-      }
+      this.loading = true;
+      this.autocompleteArray = await searchTaxonomyPageCompanyDataRequester(
+        companyName.query,
+        "",
+        true,
+        this.getKeycloakInitPromise(),
+        this.keycloak_init
+      );
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+      this.loading = false;
     },
   },
 

@@ -6,8 +6,7 @@
 import TabMenu from "primevue/tabmenu";
 import { humanize } from "@/utils/StringHumanizer";
 import apiSpecs from "../../../../build/clients/backend/backendOpenApi.json";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { searchTaxonomyPageResponseMapper } from "@/utils/SearchTaxonomyPageResponseMapper";
+import { searchTaxonomyPageCompanyDataRequester } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
@@ -38,18 +37,14 @@ export default {
 
   methods: {
     async filterByIndex(stockIndex) {
-      try {
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
-        ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompanies("", stockIndex, false);
-        this.mappedResponse = searchTaxonomyPageResponseMapper(response.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.$emit("companies-received", this.mappedResponse);
-      }
+      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
+        "",
+        stockIndex,
+        false,
+        this.getKeycloakInitPromise(),
+        this.keycloak_init
+      );
+      this.$emit("companies-received", resultsArray);
     },
   },
 
