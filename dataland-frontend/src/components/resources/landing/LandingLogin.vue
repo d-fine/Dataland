@@ -88,13 +88,13 @@ export default {
   methods: {
     register() {
       this.getKeycloakInitPromise()
-          .then((keycloak) => {
-            if (!keycloak.authenticated) {
-              return keycloak.register();
-            }
-          })
-          .catch((error) => console.log("error: " + error));
+        .then((keycloak) => {
+          if (!keycloak.authenticated) {
+            return keycloak.register();
+          }
+        })
+        .catch((error) => console.log("error: " + error));
     },
-  }
+  },
 };
 </script>
