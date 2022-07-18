@@ -78,23 +78,11 @@
 
 <script>
 import Card from "primevue/card";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
 
 export default {
   name: "LandingLogin",
-  components: { UserAuthenticationButtons, Card, Button },
-  inject: ["authenticated", "getKeycloakInitPromise"],
-  methods: {
-    register() {
-      this.getKeycloakInitPromise()
-        .then((keycloak) => {
-          if (!keycloak.authenticated) {
-            return keycloak.register();
-          }
-        })
-        .catch((error) => console.log("error: " + error));
-    },
-  },
+  components: { UserAuthenticationButtons, Card, PrimeButton },
 };
 </script>

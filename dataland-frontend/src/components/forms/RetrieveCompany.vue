@@ -19,7 +19,7 @@
           label="Company Name"
         />
       </FormKit>
-      <Button @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
+      <PrimeButton @click="getCompanyByName(true)" label="Show all companies" name="show_all_companies_button" />
       <br />
       <template v-if="loading">
         <DataTable v-if="response" :value="response.data" responsive-layout="scroll">
@@ -51,13 +51,13 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 import Card from "primevue/card";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 
 export default {
   name: "RetrieveCompany",
-  components: { Card, Button, DataTable, Column, FormKit },
+  components: { Card, PrimeButton, DataTable, Column, FormKit },
 
   data: () => ({
     table: false,
