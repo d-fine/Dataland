@@ -20,4 +20,5 @@ ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
 
 RUN /opt/keycloak/bin/kc.sh build
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+CMD "start"
