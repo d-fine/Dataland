@@ -95,7 +95,7 @@ export default {
       this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`);
     },
     handleKeyupEnter() {
-      this.queryCompany(this.$refs.autocomplete.modelValue);
+      this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
     handleViewAllResults() {
