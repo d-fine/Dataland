@@ -15,8 +15,7 @@
             :taxoSearchBarName="taxoSearchBarName"
             @companies-received="handleCompanyQuery"
             @rendered="handleEuTaxoSearchBarRender"
-          >
-          </EuTaxoSearchBar>
+          />
 
           <div
             :class="[
@@ -40,8 +39,7 @@
               :initIndex="firstDisplayedIndex"
               @tab-click="toggleIndexTabs"
               @companies-received="handleFilterByIndex"
-            >
-            </IndexTabs>
+            />
           </div>
         </MarginWrapper>
       </div>
