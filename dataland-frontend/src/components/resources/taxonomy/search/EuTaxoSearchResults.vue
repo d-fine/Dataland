@@ -117,9 +117,9 @@ export default {
     scrollToTop() {
       window.scrollTo(0, 0);
     },
-    goToData(event){
-      const company=event.data.companyId;
-      this.$router.push(`/companies/${company}/eutaxonomies`)
+    goToData(event) {
+      const company = event.data.companyId;
+      this.$router.push(`/companies/${company}/eutaxonomies`);
     },
   },
 };
