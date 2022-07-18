@@ -176,7 +176,7 @@ services:
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/opt/keycloak/data/import
-    command: --import-realm
+    command: start --import-realm
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
