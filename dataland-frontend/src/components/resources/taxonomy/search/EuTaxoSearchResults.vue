@@ -7,19 +7,29 @@
     </div>
     <div class="grid">
       <div class="col-12 text-left">
-        <DataTable v-if="data" :value="data" responsive-layout="scroll" :paginator="true" :rows="100"
-                   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                   @update:first="scrollToTop"
-                   @row-click="goToData"
-                   class="table-cursor"
-                   id="search-result"
-                   :rowHover="true"
+        <DataTable
+          v-if="data"
+          :value="data"
+          responsive-layout="scroll"
+          :paginator="true"
+          :rows="100"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          @update:first="scrollToTop"
+          @row-click="goToData"
+          class="table-cursor"
+          id="search-result"
+          :rowHover="true"
         >
-          <Column field="companyInformation.companyName" header="COMPANY" :sortable="true"
-                  class="surface-0 w-3 d-datatable-column-left">
+          <Column
+            field="companyInformation.companyName"
+            header="COMPANY"
+            :sortable="true"
+            class="surface-0 w-3 d-datatable-column-left"
+          >
           </Column>
-          <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
+          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
             <template #header>
               <span class="uppercase">PERM ID</span>
               <i
@@ -39,22 +49,28 @@
               {{ data.permId ? data.permId : "Not available" }}
             </template>
           </Column>
-          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2">
-          </Column>
-          <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="d-bg-white w-1 text-right">
-            <template #body="{data}">
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2"> </Column>
+          <Column
+            field="companyInformation.marketCap"
+            header="MARKET CAP"
+            :sortable="true"
+            class="d-bg-white w-1 text-right"
+          >
+            <template #body="{ data }">
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
           </Column>
           <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
-            <template #body="{data}">
+            <template #body="{ data }">
               {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}
             </template>
           </Column>
           <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body="{data}">
-              <router-link :to="'/companies/' + data.companyId + '/eutaxonomies'"
-                           class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span>
+            <template #body="{ data }">
+              <router-link
+                :to="'/companies/' + data.companyId + '/eutaxonomies'"
+                class="text-primary no-underline font-bold"
+                ><span> VIEW</span> <span class="ml-3">></span>
               </router-link>
             </template>
           </Column>
