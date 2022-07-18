@@ -26,10 +26,10 @@
             field="companyInformation.companyName"
             header="COMPANY"
             :sortable="true"
-            class="surface-0 w-3 d-datatable-column-left"
+            class="d-bg-white w-3 d-datatable-column-left"
           >
           </Column>
-          <Column field="companyInformation.permId" :sortable="false" class="surface-0 w-2">
+          <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
             <template #header>
               <span class="uppercase">PERM ID</span>
               <i
@@ -124,7 +124,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 #search-result tr:hover {
   cursor: pointer;
 }
