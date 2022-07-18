@@ -5,7 +5,6 @@ describe("Login Section", () => {
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("button[name=join_dataland_button]").should("be.visible").should("contain.text", "Join Dataland");
     cy.get('i[alt="chevron_right"]').should("be.visible");
-
   });
   it("Company logos are present", () => {
     cy.visitAndCheckAppMount("/");
