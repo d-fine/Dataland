@@ -1,5 +1,3 @@
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../../../support/commands";
-
 let companiesWithData: any;
 
 before(function () {
