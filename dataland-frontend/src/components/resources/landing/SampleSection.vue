@@ -12,13 +12,13 @@
           </div>
           <div class="col-10 text-left p-fluid">
             <router-link to="/taxonomysample" class="text-primary no-underline font-bold">
-              <Button
+              <PrimeButton
                 class="bg-white border-primary border-2 text-900 mt-2 mb-3 h-3rem p-0 justify-content-center"
                 name="eu_taxonomy_sample_button"
               >
                 <span class="uppercase text-primary d-letters font-semibold"> EU Taxonomy sample data </span>
                 <i class="material-icons ml-2 text-primary" aria-hidden="true">chevron_right</i>
-              </Button>
+              </PrimeButton>
             </router-link>
           </div>
         </div>
@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 export default {
   name: "SampleSection",
-  components: { Button },
+  components: { PrimeButton },
 };
 </script>
