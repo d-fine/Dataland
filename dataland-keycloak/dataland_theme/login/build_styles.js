@@ -14,5 +14,5 @@ const result = sass.compile(
         loadPaths: ['./node_modules/']
     }
 )
-ensureDirectoryExists('./build/resources/css')
-fs.writeFileSync('./build/resources/css/dist.css', result.css);
+ensureDirectoryExists('./dist/resources/css')
+fs.writeFileSync('./dist/resources/css/dist.css', result.css);

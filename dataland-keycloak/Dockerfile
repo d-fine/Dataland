@@ -1,10 +1,8 @@
-FROM node:18 as builder
-WORKDIR /theme
-COPY ./dataland-keycloak/dataland_theme/login .
-RUN chown -R node:node /theme && chmod +x /theme/build.sh
-USER node
+FROM ghcr.io/d-fine/dataland/temurinbase:latest AS builder
+COPY . /app/
+WORKDIR /app
 
-RUN npm install && sh ./build.sh
+RUN ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
 FROM quay.io/keycloak/keycloak:18.0.1
 
@@ -15,7 +13,7 @@ ENV KC_HOSTNAME_STRICT=false
 ENV KC_HOSTNAME_STRICT_HTTPS=false
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_ADDRESS_FORWARDING=true
-COPY --from=builder /theme/build /opt/keycloak/themes/dataland_theme/login
+COPY --from=builder /app/dataland-keycloak/dataland_theme/login/dist /opt/keycloak/themes/dataland_theme/login
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
 

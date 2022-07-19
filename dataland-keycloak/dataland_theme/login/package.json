@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build_styles": "node build_styles.js"
+    "build": "node build_styles.js"
   },
   "dependencies": {
     "material-icons": "^1.11.5",
