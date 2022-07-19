@@ -18,9 +18,9 @@ describe("EuTaxoSearchBarTest", () => {
                 plugins: [router],
                 provide: {
                     getKeycloakInitPromise() {
-                        return "hi"
+                        return "dummy"
                     },
-                  keycloak_init: "his"
+                  keycloak_init: "dummy"
                 }
             },
         });
