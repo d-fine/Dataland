@@ -104,7 +104,7 @@ export default {
         companyName,
         "",
         false,
-        this.getKeycloakInitPromise(),
+        this.getKeycloakInitPromise,
         this.keycloak_init
       );
       this.$emit("companies-received", resultsArray);
@@ -117,7 +117,7 @@ export default {
         companyName.query,
         "",
         true,
-        this.getKeycloakInitPromise(),
+        this.getKeycloakInitPromise,
         this.keycloak_init
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);

@@ -48,7 +48,7 @@ export default {
     async getCompanyInformation() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
+          this.getKeycloakInitPromise,
           this.keycloak_init
         ).getCompanyDataControllerApi();
         this.company = await companyDataControllerApi.getCompanyById(this.companyID);
