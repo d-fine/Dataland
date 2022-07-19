@@ -26,7 +26,7 @@
                   class="p-autocomplete-items pt-0"
                   v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
                 >
-                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleViewAllResults">
+                  <li class="p-autocomplete-item text-primary font-semibold" @click="handleKeyupEnter">
                     View all results.
                   </li>
                 </ul>
@@ -98,11 +98,6 @@ export default {
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
-    handleViewAllResults() {
-      this.queryCompany(this.currentInput);
-      this.$refs.autocomplete.hideOverlay();
-    },
-
     async queryCompany(companyName) {
       this.loading = true;
       const resultsArray = await searchTaxonomyPageCompanyDataRequester(
