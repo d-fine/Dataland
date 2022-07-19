@@ -103,17 +103,6 @@ export default {
       this.$refs.autocomplete.hideOverlay();
     },
 
-    async filterByIndex(stockIndex) {
-      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
-        "",
-        stockIndex,
-        false,
-        this.getKeycloakInitPromise(),
-        this.keycloak_init
-      );
-      this.$emit("companies-received", resultsArray);
-    },
-
     async queryCompany(companyName) {
       this.loading = true;
       const resultsArray = await searchTaxonomyPageCompanyDataRequester(
