@@ -53,7 +53,7 @@ export default {
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise,
+          this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();

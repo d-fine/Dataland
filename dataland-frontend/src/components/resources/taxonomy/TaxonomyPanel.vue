@@ -114,7 +114,7 @@ export default {
     async getCompanyEUDataset() {
       try {
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise,
+          this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getEuTaxonomyDataControllerApi();
         this.response = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);

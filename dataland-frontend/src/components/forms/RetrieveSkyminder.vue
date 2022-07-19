@@ -52,7 +52,7 @@ export default {
       try {
         const inputArgs = Object.values(this.model);
         const skyminderControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise,
+          this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getSkyminderControllerApi();
         this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);

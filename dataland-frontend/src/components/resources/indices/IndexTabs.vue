@@ -41,7 +41,7 @@ export default {
         "",
         stockIndex,
         false,
-        this.getKeycloakInitPromise,
+        this.getKeycloakInitPromise(),
         this.keycloak_init
       );
       this.$emit("companies-received", resultsArray);
