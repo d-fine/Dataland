@@ -19,7 +19,7 @@
           @update:first="scrollToTop"
           @row-click="goToData"
           class="table-cursor"
-          id="search-result"
+          id="search-result-taxonomy"
           :rowHover="true"
         >
           <Column
@@ -125,10 +125,10 @@ export default {
 };
 </script>
 <style>
-#search-result tr:hover {
+#search-result-taxonomy tr:hover {
   cursor: pointer;
 }
-#search-result th {
+#search-result-taxonomy th {
   background: white;
 }
 </style>
