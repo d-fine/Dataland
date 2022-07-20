@@ -24,15 +24,6 @@ export default {
   components: { PrimeButton },
   inject: ["authenticated", "getKeycloakInitPromise"],
   methods: {
-    register() {
-      this.getKeycloakInitPromise()
-        .then((keycloak) => {
-          if (!keycloak.authenticated) {
-            return keycloak.register();
-          }
-        })
-        .catch((error) => console.log("error: " + error));
-    },
     login() {
       this.getKeycloakInitPromise()
         .then((keycloak) => {
