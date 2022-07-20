@@ -29,7 +29,7 @@
   "sslRequired": "none",
   "registrationAllowed": true,
   "registrationEmailAsUsername": true,
-  "rememberMe": false,
+  "rememberMe": true,
   "verifyEmail": false,
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
@@ -1518,7 +1518,7 @@
       "addReadTokenRoleOnCreate": false,
       "authenticateByDefault": false,
       "linkOnly": false,
-      "firstBrokerLoginFlowAlias": "first broker login",
+      "firstBrokerLoginFlowAlias": "Dataland First Broker Login",
       "config": {
         "syncMode": "IMPORT",
         "clientSecret": "${KEYCLOAK_GOOGLE_SECRET}",
@@ -1663,12 +1663,6 @@
         "providerId": "hmac-generated",
         "subComponents": {},
         "config": {
-          "kid": [
-            "2ae6b221-492a-4971-acf4-022c286fa53c"
-          ],
-          "secret": [
-            "DoH_9MbyGZZfbTL7qPOJwVfsZvcMN4IrIrC8QxKLT3HhWmBx05Nx4_cDLnzsW8qxl3smWKhhrzRIgmx5PL219A"
-          ],
           "priority": [
             "100"
           ],
@@ -1683,12 +1677,6 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
-          "kid": [
-            "878699ef-b811-4423-8d31-60d600a42860"
-          ],
-          "secret": [
-            "vwJQFCfALqUVenI2PvVYtA"
-          ],
           "priority": [
             "100"
           ]
@@ -1700,12 +1688,6 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
-          "privateKey": [
-            "MIIEpAIBAAKCAQEAqo9rLYPex6RpogBXZDglJVa9rAET/GmHMIExLHATMa4AFAn4wH2zqvqEtDYifkDq3VYOMjkgZyVdl6M1KlzvmVStWiEDrVpaKewZyymFDXhF8MoVVhuOU40rqmX72Z1RIDWulN93y1kUe1qSKWd6ItK7Cx4IwlVnfIGVZmcCXxVRPfpOnghXD09YfrgA099XS97KmyqpUazbhJablOdBjNoPPmIG4X3VkQ/ukOUvXFJbVF7DxMeG+bFmZvu3fB7YDD0isohb8PFu5YOhAOgQyQjENAQfBdZ3LxPH50X37qf/2tt2na/gVU4cNi2AS4Y5GpAoJe8QipLcfJBAkZJfDwIDAQABAoIBAG4p+FYLqOdWQIxMoCWxRfzaC+R/RcNw/crMh1Bmi185Pf+zeSILjvLOoMwtcxYNJCYWIVE7KLy2m78HwZ09Ldzhnp5qWI+tnjMZtodMqA3NM4+VVzao0cMRmbST7pneTLn7Mmoh9KQ5Q0txcpqfpXm8ludVXN74fsEiibb8rcFvWPsyBxulwYKGz956b/XwV3Ow4Oi5wjtoS3W4bLAMSgfuR3dAoMClHNRH9G1XGt1JacyF+FNpaOWbHL+SejSC5N7t6+T9geI7knT8UgBeTp8K6wgMiBjKAhcXPDYavcHUDkb+r2ONjALNHf3wGRdUxq3cO7b8Oh3kmg+bv2/bZ6ECgYEA73JkjJsSngWc3WDSvN82YKdrV1BpcZJQ9aTaxgcppX8dutyvzvxwXwlIkY3yIdzY+iIjL9XdPu4pQngb70kF6J2qvL8AbbwTIisjNIFZnBSabO1yxBAgy+827K6C1wqtL4GxBreBoq8uY0t2yNws/fqa4S+9kA2DbEUaff4436cCgYEAtlnn65wYUiPn89Vkxd7cuTi3Awlf9vH2jp4LSWOLvVbHNQJGUJwwwrw+eZXQqgXN7q1OI6SXHH7NIW/zA99duc1DJNkeP1Hy93bCKT5S6ofKHuSY7RncvnZknqnyElxIOVrExcmU0yuv4hI9uDmAHiPrfpr+fSAQ81eP/R6yMlkCgYEAlMZu0y5HEwhJvwM57UCDeOqNN2MvIPHYe8hCZmhs5/djcYdNdT5EU8hg3o9jssaVylULp90p6r/vwuz97l9g3Heabkv+6C/Dc6d56FW2Z9QlXyjp9ghPWGb5qXWEtjhcAviCFbpPQdW27NsmowaqrePX97LCBY9f6RXGsCIVFGECgYA1ED6T6m2NYZN6+isEBZFXePCQuqapVsn3wHfqWERuyZTYkRvjE0CBOoQ3n2gEQgImJVpqtteeXCvXQhuGkfZVPiz+yQurQ26fonhnxhIc23zutnjl7jO1XQB0x2GBBEekIQzHvZxIQxtAfyxksp7cpnk9816BDNbB6UYmU0tpqQKBgQC72ZetDtK7RGzChDwnoy90yRNMgHVs+/eWq1yeqZPzY+dicMMEPUQM+F6hhAqUqn3dacvB1hA3WJwVMi6VZv7XqRcJMu+dTj8tBAyvSIlAlUyDqy4g9iFF6VSM6gIp/F65CJ4qyEXQioxN8lrE5KsnTqCU9eTpbpEp0WKDeSzPVQ=="
-          ],
-          "certificate": [
-            "MIICrzCCAZcCBgGBTY9ryjANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDDBBkYXRhbGFuZHNlY3VyaXR5MB4XDTIyMDYxMDEyMTkxM1oXDTMyMDYxMDEyMjA1M1owGzEZMBcGA1UEAwwQZGF0YWxhbmRzZWN1cml0eTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKqPay2D3sekaaIAV2Q4JSVWvawBE/xphzCBMSxwEzGuABQJ+MB9s6r6hLQ2In5A6t1WDjI5IGclXZejNSpc75lUrVohA61aWinsGcsphQ14RfDKFVYbjlONK6pl+9mdUSA1rpTfd8tZFHtakilneiLSuwseCMJVZ3yBlWZnAl8VUT36Tp4IVw9PWH64ANPfV0veypsqqVGs24SWm5TnQYzaDz5iBuF91ZEP7pDlL1xSW1Rew8THhvmxZmb7t3we2Aw9IrKIW/DxbuWDoQDoEMkIxDQEHwXWdy8Tx+dF9+6n/9rbdp2v4FVOHDYtgEuGORqQKCXvEIqS3HyQQJGSXw8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAF28KnORjtJ69qBRE5mvjcDH1wQevyLybVc2Me3xLqqOrQmbqNFnmK7mhvZEHjNV9HCnB5X8qup8RiTu7eQ1BKBXKFeTucPVlC3C9DhZXwoqH+pTR+r00KzQgmgX2LZMGwoS5hZUq07inFgVGyvLCFuWsArqmc/2wM3l7VkrNUjUppiYQFXww5AjAWia6iD19bK6jdFpnA5VClm1xTrgh89G0avK/WfKPFqW1NmtVgyX+IRM3vzhebngupj/edYvOk+L4pOziIN+p2we6KJhers+qKU0Mr7Dr4Fo/d4Iw/+MiqDY1q1JQrFk3nrVsY9/qMfVANfs9tN4fFU0+58Mxqw=="
-          ],
           "priority": [
             "100"
           ]
@@ -1717,12 +1699,6 @@
         "providerId": "rsa-enc-generated",
         "subComponents": {},
         "config": {
-          "privateKey": [
-            "MIIEpgIBAAKCAQEAwQ4Onv7VlslDyOrOYVTV+ExmhXgHdHpU+jWOQ0BewcU78+zrlBK64CPueRNzbKMOw6e0Q1TlGvOXKaBUZX4tJZm7ywhrS37ZDpJFMYrx8QfHqvCTn+qI8lnZov1uVgE9etH/g1yVzglpyao6DM1XpGZYg+rJyxptm4Qa2d+m/19dP3ZIyk/QEBrpU/OwOcgJFBJGqpgjTxrc/UPrjlyKx45sOOrGhkEF0+HQYnkwge7mEU19fnMJOw9q9fhHbp4TVVgKiTN/+ArrRXHmSM963tkOnfjjLealy10dEyBDpvflJk+/VVB/mX8xaYeO/zdPQ7UeXFyx+kezjC0hgcGZlQIDAQABAoIBAQCQhtyNTUxLiTtU4+xDU4aoT1IFI5m5KogJlSR+1mbZ+7VpZHnsraT3fg7e15/2uY+pDBjYu2qVJb2J7TyhirdzycacNh5VM4596SUh9Noxztg88cQi2StS+88BxWbfvifvld0K07pWuBdZYTX6NZQiQHiNsa0Gfy+FWH3dlCDqVoTrSaDWhMi9OkNYaNke6nGJXb8rCUNRvAbjagnQUk/SKP3xEGg9XvStx/bad2C9/usyUkm1FaN999rhnf0aKc5QyA3hyQxafDAqkGgve56SV8q/vMGwFWP9CJi5nZOWgkODjWEnKgyHGhNTEFsKZQwkeirmol9o+pDCsXi0nCK1AoGBAPWrKo8ZkKEwuGIb1iS3k7ni0QValWQFVFzZrbLT++hibmz+ZQFA2Llrz4MPsq/2BkXw/oW6igE9EK2SRH96Ss5zWLEMY+FFfIjo3kAKFk6vR+xc1bWWlE1cQSS2wkolBMb18vaPECfMnImJO8SIEamRxsKakmc5Lqj1EUjd17e/AoGBAMksdYeRUR4s9nxfhjioHSEtgyR5mXNWkqNEnaEw/MfrORK3ezqlceNzxYjkexFNLVUNMCAYxpNAZ7pBntKdEEaF+YiS2e31QJQX9b63jBs5FmU80IAIaqpHJf//n+p4MsutBraab8OGnp0ZyDKpHLDTuZwikB5lZpGKpxioJWOrAoGBALfULTSHXMJBQrenPMac193w65emAMOneUlBWcjG92kcvqSwd8RIUePt2Imp5XvmDSuo+cv3mezzVNeM69S4HeH+Tg+txc97v4RzPFuPMMIQRzGHBiOrWa3JqrVeTGRO7xQyVmxJAT3GzhvcpOybJRxOCPz1zTeQgmnLd/OejRzhAoGBAMYMfdwr5KcHbtW8mP/YCW1rR+s1xyr0NMKFP4W8G2+ZlANoHOn8jKV2iSaegMXkq9dKd3Fx0rSOuE92YKxJsgcryCB7Kg8I3j2tZOIQAt+eEP0zpLQXFSNzjeZ7uuxyztcTDUPhwFvGgQp6oku1jyhKGDWtFSLHgvWPgbdVehGnAoGBAK9NbMneX7rgaTfHzCMh9lNoJMpDzcWrWZeAjpG9furm4mdy2KPk2B1Umz/5r6W280ZBQ2eOpfCrrpI9sm7X4Swoy8nXgXyVuobs6g/NMBoUoq+fxHw1s74DSD7xnkWhfDRy/DtZYMab0EGkSyBVFCXSRb5wUT3nmOg3T4yfL1z4"
-          ],
-          "certificate": [
-            "MIICrzCCAZcCBgGBTY9syDANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDDBBkYXRhbGFuZHNlY3VyaXR5MB4XDTIyMDYxMDEyMTkxNFoXDTMyMDYxMDEyMjA1NFowGzEZMBcGA1UEAwwQZGF0YWxhbmRzZWN1cml0eTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMEODp7+1ZbJQ8jqzmFU1fhMZoV4B3R6VPo1jkNAXsHFO/Ps65QSuuAj7nkTc2yjDsOntENU5RrzlymgVGV+LSWZu8sIa0t+2Q6SRTGK8fEHx6rwk5/qiPJZ2aL9blYBPXrR/4Nclc4JacmqOgzNV6RmWIPqycsabZuEGtnfpv9fXT92SMpP0BAa6VPzsDnICRQSRqqYI08a3P1D645ciseObDjqxoZBBdPh0GJ5MIHu5hFNfX5zCTsPavX4R26eE1VYCokzf/gK60Vx5kjPet7ZDp344y3mpctdHRMgQ6b35SZPv1VQf5l/MWmHjv83T0O1HlxcsfpHs4wtIYHBmZUCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAei8BSogYIHy6NhzdIViV/4k2EJ4NlZkzANhfMGmYj4/GvZiOT5JJjOI019a67byuDKF+TKxror6wSVj8tvSgiPt9dGcWn5AfYVZ+trtlYIFtRPkqBTpeS0ororTlm3sKcT/n8Vz/gPCH4gUahJq/bBjfcTd1SxIa23BCbfB28w1loYT4zOer3bPxwf4sEjYYA+RUqme1kD+9Asm9GSbDjLrGt1HAliyjNXBJ8+0fqm1b8vdi6RDWxoTo8mJCStQLMue13w4LQ/5bqFmw/yCualqb2iIS+gUnvUsdwL3RLCSIQdg/a77pgS3h/UbiEAFaR00IbJ8s6yVaPmy+TrTtVw=="
-          ],
           "priority": [
             "100"
           ],
@@ -1823,7 +1799,25 @@
       ]
     },
     {
-      "id": "58dbabc1-0350-43b0-86e0-017852c44a87",
+      "id": "5ebaddf9-f956-4491-8bb1-ab26fd1dedda",
+      "alias": "Dataland First Broker Login",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "idp-create-user-if-unique",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 0,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "9f660e65-d00d-46a6-8537-79420c7781ad",
       "alias": "Direct Grant - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -2346,8 +2340,8 @@
       "alias": "terms_and_conditions",
       "name": "Terms and Conditions",
       "providerId": "terms_and_conditions",
-      "enabled": false,
-      "defaultAction": false,
+      "enabled": true,
+      "defaultAction": true,
       "priority": 20,
       "config": {}
     },
@@ -2418,7 +2412,7 @@
     "clientSessionMaxLifespan": "0",
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}"
   },
-  "keycloakVersion": "18.0.0",
+  "keycloakVersion": "18.0.1",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

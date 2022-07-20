@@ -81,7 +81,17 @@ export function register(email: string = "some_user", password: string = "test")
     .should("exist")
     .type(password, { force: true })
 
-    .get("#kc-form-buttons")
+    .get("input[type='submit']")
+    .should("exist")
+    .click()
+
+    .get("#accept_terms")
+    .should("exist")
+    .click()
+    .get("#accept_privacy")
+    .should("exist")
+    .click()
+    .get("button[name='accept_button']")
     .should("exist")
     .click()
 
