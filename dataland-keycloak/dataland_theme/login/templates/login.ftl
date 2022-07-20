@@ -55,9 +55,9 @@
 
             <div class="text-left mt-4 flex align-items-center">
                 <#if login.rememberMe??>
-                    <input tabindex="3" id="rememberMe" name="receive_updates" type="checkbox" checkex>
+                    <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox" checkex>
                 <#else>
-                    <input tabindex="3" id="rememberMe" name="receive_updates" type="checkbox">
+                    <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox">
                 </#if>
                 <label for="rememberMe" class="tex-sm ml-2">Remember me</label>
             </div>
