@@ -3,6 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
 import { expect } from "@jest/globals";
+import {getInjectedKeycloakObjectsForTest} from "../../../../TestUtils";
 
 describe("EuTaxoSearchBarTest", () => {
   let wrapper: any;
@@ -16,12 +17,7 @@ describe("EuTaxoSearchBarTest", () => {
     wrapper = shallowMount(EuTaxoSearchBar, {
       global: {
         plugins: [router],
-        provide: {
-          getKeycloakInitPromise() {
-            return "dummy";
-          },
-          keycloak_init: "dummy",
-        },
+        provide: getInjectedKeycloakObjectsForTest()
       },
     });
   });

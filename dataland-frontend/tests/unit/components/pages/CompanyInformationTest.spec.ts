@@ -1,4 +1,4 @@
-import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
 
