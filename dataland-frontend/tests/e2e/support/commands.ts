@@ -168,13 +168,15 @@ export function checkViewButtonWorks(): void {
 }
 
 export function checkViewRowsWorks(): void {
-  cy.get("table.p-datatable-table")
-  cy.contains('td', 'VIEW')
-      .siblings()
-      .contains('€')
-      .click()
-      .url().should('include', '/companies/')
-      .url().should('include', '/eutaxonomies')
+  cy.get("table.p-datatable-table");
+  cy.contains("td", "VIEW")
+    .siblings()
+    .contains("€")
+    .click()
+    .url()
+    .should("include", "/companies/")
+    .url()
+    .should("include", "/eutaxonomies");
 }
 
 Cypress.Commands.add("retrieveDataIdsList", retrieveDataIdsList);

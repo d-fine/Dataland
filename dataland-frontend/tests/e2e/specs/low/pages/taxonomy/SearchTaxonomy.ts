@@ -51,9 +51,7 @@ describe("Search Taxonomy", function () {
     checkPermIdToolTip(permIdText);
     cy.checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
-    cy.get('[title=back_button')
-        .should('be.visible')
-        .click({force: true})
+    cy.get("[title=back_button").should("be.visible").click({ force: true });
     cy.checkViewRowsWorks();
     cy.get("h1").contains(inputValue);
   });
