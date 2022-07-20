@@ -28,7 +28,8 @@ export default {
       this.getKeycloakInitPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            return keycloak.login();
+            const url = keycloak.createLoginUrl();
+            location.assign(url);
           }
         })
         .catch((error) => console.log("error: " + error));
