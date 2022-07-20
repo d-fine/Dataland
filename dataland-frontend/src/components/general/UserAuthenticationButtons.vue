@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-12">
     <PrimeButton
       v-if="!authenticated"
       label="Login"
