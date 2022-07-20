@@ -8,7 +8,7 @@
     <div class="grid">
       <div class="col-12 text-left">
         <DataTable
-          v-if="data"
+          v-if="data && data.length > 0"
           :value="data"
           responsive-layout="scroll"
           :paginator="true"
@@ -84,7 +84,7 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
 
 export default {
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     orderOfMagnitudeSuffix(value) {
-      return numberFormatter(value, 2) + " €";
+      return convertCurrencyNumbersToNotationWithLetters(value, 2) + " €";
     },
     buildLocationString(headquarters, countryCode) {
       return headquarters + ", " + countryCode;
