@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeString } from "../../../src/utils/StringHumanizer";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
