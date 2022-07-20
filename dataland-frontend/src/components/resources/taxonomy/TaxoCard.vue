@@ -39,8 +39,8 @@
 <script>
 import Card from "primevue/card";
 import ProgressBar from "primevue/progressbar";
-import { numberFormatter } from "@/utils/CurrencyMagnitude";
-import { humanize } from "@/utils/StringHumanizer";
+import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default {
   name: "TaxoCard",
@@ -61,16 +61,16 @@ export default {
   },
   computed: {
     title() {
-      return humanize(this.taxonomyType + this.taxonomyKind);
+      return humanizeString(this.taxonomyType + this.taxonomyKind);
     },
     percentCalculation() {
       return Math.round(parseFloat(this.percent) * 100 * 100) / 100;
     },
     orderOfMagnitudeSuffix() {
-      return numberFormatter(parseFloat(this.total), 2);
+      return convertCurrencyNumbersToNotationWithLetters(parseFloat(this.total), 2);
     },
     amount() {
-      return numberFormatter(Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100, 2);
+      return convertCurrencyNumbersToNotationWithLetters(Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100, 2);
     },
   },
 };

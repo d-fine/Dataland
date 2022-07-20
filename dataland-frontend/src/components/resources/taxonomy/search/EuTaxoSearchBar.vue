@@ -42,7 +42,7 @@
 <script>
 import AutoComplete from "primevue/autocomplete";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import { searchTaxonomyPageCompanyDataRequester } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
+import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 export default {
   name: "EuTaxoSearchBar",
@@ -100,7 +100,7 @@ export default {
     },
     async queryCompany(companyName) {
       this.loading = true;
-      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
+      const resultsArray = await getCompanyDataForTaxonomyPage(
         companyName,
         "",
         false,
@@ -113,7 +113,7 @@ export default {
 
     async searchCompanyName(companyName) {
       this.loading = true;
-      this.autocompleteArray = await searchTaxonomyPageCompanyDataRequester(
+      this.autocompleteArray = await getCompanyDataForTaxonomyPage(
         companyName.query,
         "",
         true,

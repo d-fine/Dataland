@@ -4,9 +4,9 @@
 
 <script>
 import TabMenu from "primevue/tabmenu";
-import { humanize } from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import apiSpecs from "../../../../build/clients/backend/backendOpenApi.json";
-import { searchTaxonomyPageCompanyDataRequester } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
+import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
@@ -26,7 +26,7 @@ export default {
     model() {
       return stockIndices.map((stockIndex, index) => {
         return {
-          label: humanize(stockIndex),
+          label: humanizeString(stockIndex),
           command: () => {
             this.$emit("tab-click", stockIndex, index);
           },
@@ -37,7 +37,7 @@ export default {
 
   methods: {
     async filterByIndex(stockIndex) {
-      const resultsArray = await searchTaxonomyPageCompanyDataRequester(
+      const resultsArray = await getCompanyDataForTaxonomyPage(
         "",
         stockIndex,
         false,

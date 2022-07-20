@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { humanize } from "../../../src/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 
 const stockIndexArray = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
@@ -166,10 +166,10 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
         },
       },
       ...stockIndexArray.map((e: any) => {
-        return { label: humanize(e), value: (row: any) => getStockIndexValueForCsv(row.indices, e) };
+        return { label: humanizeString(e), value: (row: any) => getStockIndexValueForCsv(row.indices, e) };
       }),
       ...identifierTypeArray.map((e: any) => {
-        return { label: humanize(e), value: (row: any) => getIdentifierValueForCsv(row.identifiers, e) };
+        return { label: humanizeString(e), value: (row: any) => getIdentifierValueForCsv(row.identifiers, e) };
       }),
     ],
     delimiter: ";",

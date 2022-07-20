@@ -26,11 +26,11 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
 }
 
 /**
- * map the received stored companies of an API-call
+ * map the received stored companies of an API-call to the required scheme for the Taxonomy Page to display
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the companiy objects
  */
-function searchTaxonomyPageStoredCompanyResponseMapper(responseData: Array<StoredCompany>): Array<object> {
+function mapStoredCompanyToTaxonomyPage(responseData: Array<StoredCompany>): Array<object> {
   return responseData.map((company) => ({
     companyName: company.companyInformation.companyName,
     companyInformation: company.companyInformation,
@@ -40,14 +40,16 @@ function searchTaxonomyPageStoredCompanyResponseMapper(responseData: Array<Store
 }
 
 /**
- * send out an API-call to get stored companies and map the response to the required scheme
+ * send out an API-call to get stored companies and map the response to the required scheme for the Taxonomy Page
  *
  * @param  {string} searchString      the string that is used to search companies
  * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex     choose one to get companies in that index
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
+ * @param {any} getKeycloakInitPromise    gets the resulting promise from the keycloak_init() method without actually triggering it
+ * @param {any} keycloak_init    actually triggers the keycloak_init() and gets the returned promise
  */
-export async function searchTaxonomyPageCompanyDataRequester(
+export async function getCompanyDataForTaxonomyPage(
   searchString: string,
   stockIndex:
     | "Cdax"
@@ -71,7 +73,7 @@ export async function searchTaxonomyPageCompanyDataRequester(
       keycloak_init
     ).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
-    mappedResponse = searchTaxonomyPageStoredCompanyResponseMapper(response.data);
+    mappedResponse = mapStoredCompanyToTaxonomyPage(response.data);
   } catch (error) {
     console.error(error);
   }
