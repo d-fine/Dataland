@@ -19,7 +19,7 @@
 
 <script>
 import { ApiClientProvider } from "@/services/ApiClients";
-import { numberFormatter } from "@/utils/currencyMagnitude";
+import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 
 export default {
   name: "CompanyInformation",
@@ -59,7 +59,7 @@ export default {
       }
     },
     orderOfMagnitudeSuffix(value) {
-      return numberFormatter(value);
+      return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
 };

@@ -2,11 +2,11 @@
  * Format a number using the symbol and the value as break points.
  * adopted from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
  *
- * @param  {number} number      is the number to be converted such as an amount
- * @param  {number} digits      are the decimal places to be displayed
+ * @param  {number} numberToConvert      is the number to be converted such as an amount
+ * @param  {number} resultingNumberOfDigits      are the decimal places to be displayed
  */
 
-export function numberFormatter(number: number, digits?: number) {
+export function convertCurrencyNumbersToNotationWithLetters(numberToConvert: number, resultingNumberOfDigits?: number) {
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "K" },
@@ -21,7 +21,9 @@ export function numberFormatter(number: number, digits?: number) {
     .slice()
     .reverse()
     .find(function (part) {
-      return number >= part.value;
+      return numberToConvert >= part.value;
     });
-  return item ? (number / item.value).toFixed(digits).replace(regex, "$1") + " " + item.symbol : "0";
+  return item
+    ? (numberToConvert / item.value).toFixed(resultingNumberOfDigits).replace(regex, "$1") + " " + item.symbol
+    : "0";
 }

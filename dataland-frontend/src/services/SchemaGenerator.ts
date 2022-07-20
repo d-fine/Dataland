@@ -1,4 +1,4 @@
-import { humanize } from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export class SchemaGenerator {
   private readonly rawSchema: any;
@@ -24,7 +24,7 @@ export class SchemaGenerator {
   private processEnum(rawEnumProperties: any): any {
     const enumProperties: any = {};
     for (const enumItem of rawEnumProperties) {
-      enumProperties[enumItem] = humanize(enumItem);
+      enumProperties[enumItem] = humanizeString(enumItem);
     }
     return enumProperties;
   }
@@ -46,7 +46,7 @@ export class SchemaGenerator {
           /* create a select form */
           schema.push({
             $formkit: "select",
-            label: humanize(index),
+            label: humanizeString(index),
             placeholder: "Please Choose",
             name: index,
             validation: validation,
@@ -56,7 +56,7 @@ export class SchemaGenerator {
           /* create a radio form */
           schema.push({
             $formkit: "radio",
-            label: humanize(index),
+            label: humanizeString(index),
             name: index,
             validation: validation,
             classes: {
@@ -71,7 +71,7 @@ export class SchemaGenerator {
         /* create a date form */
         schema.push({
           $formkit: "date",
-          label: humanize(index),
+          label: humanizeString(index),
           name: index,
           validation: validation,
           classes: {
@@ -85,8 +85,8 @@ export class SchemaGenerator {
           const enumProperties = this.processEnum(propertiesSchema[index].items.enum);
           schema.push({
             $formkit: "checkbox",
-            label: humanize(index),
-            placeholder: humanize(index),
+            label: humanizeString(index),
+            placeholder: humanizeString(index),
             name: index,
             validation: validation,
             options: enumProperties,
@@ -102,8 +102,8 @@ export class SchemaGenerator {
           /* create a text form */
           schema.push({
             $formkit: "text",
-            label: humanize(index),
-            placeholder: humanize(index),
+            label: humanizeString(index),
+            placeholder: humanizeString(index),
             name: index,
             validation: validation,
             classes: {
