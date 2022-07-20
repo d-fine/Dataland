@@ -5,7 +5,7 @@
       <MarginWrapper class="text-left">
         <BackButton />
       </MarginWrapper>
-      <EuTaxoSearchBar />
+      <EuTaxoSearchBar v-model="currentInput" @companies-received="handleQueryCompany" />
       <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
@@ -31,9 +31,19 @@ export default {
     EuTaxoSearchBar,
     AuthenticationWrapper,
   },
+  data() {
+    return {
+      currentInput: "",
+    };
+  },
   props: {
     companyID: {
       type: String,
+    },
+  },
+  methods: {
+    handleQueryCompany() {
+      this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
     },
   },
 };

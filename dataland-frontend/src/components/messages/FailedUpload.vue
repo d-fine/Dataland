@@ -9,7 +9,7 @@
 
 <script>
 import Message from "primevue/message";
-import { humanize } from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default {
   name: "FailedUpload",
@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     humanize(text) {
-      if (typeof text == "string") return humanize(text);
+      if (typeof text == "string") return humanizeString(text);
       else return null;
     },
   },
