@@ -1,9 +1,9 @@
-import CustomEUTaxonomy from "@/components/forms/CreateEUTaxonomy.vue";
+import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
 
 describe("CreateCompanyTest", () => {
-  const wrapper = shallowMount(CustomEUTaxonomy);
+  const wrapper = shallowMount(CreateEUTaxonomy);
 
   it("checks field properties", () => {
     expect(wrapper.vm.model).toBeDefined();

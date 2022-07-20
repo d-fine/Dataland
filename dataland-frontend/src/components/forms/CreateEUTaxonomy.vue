@@ -160,7 +160,7 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 export default {
-  name: "CustomEUTaxonomy",
+  name: "CreateEUTaxonomy",
   components: { FailedUpload, Card, FormKit, SuccessUpload },
 
   data: () => ({
