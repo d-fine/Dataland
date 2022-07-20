@@ -32,7 +32,7 @@ location=/home/ubuntu/dataland
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
-ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak"
+ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak/dataland_theme/login"
 
 envsubst < environments/.env.template > .env
 
