@@ -35,4 +35,4 @@ import io.swagger.v3.oas.annotations.servers.Server
         )
     )
 )
-class OpenAPIConfiguration
+interface OpenAPIConfiguration
