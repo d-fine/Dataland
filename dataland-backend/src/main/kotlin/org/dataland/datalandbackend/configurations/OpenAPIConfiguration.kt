@@ -9,7 +9,8 @@ import io.swagger.v3.oas.annotations.servers.Server
  */
 @OpenAPIDefinition(
     info = Info(
-        title = "Dataland Backend API documentation"
+        title = "Dataland Backend API documentation",
+        version =  "1.0.0"
     ),
     servers = [Server(url = "/api")]
 )
