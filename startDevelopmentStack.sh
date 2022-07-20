@@ -6,6 +6,9 @@ docker login ghcr.io -u $DATALAND_SKYMINDERCLIENT_USER -p $DATALAND_SKYMINDERCLI
 mkdir -p ./local/certs
 scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local.duckdns.org/* ./local/certs
 
+
+./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
+
 #start containers for skyminder and edc-dummyserver
 docker-compose --profile development down
 docker-compose --profile development pull

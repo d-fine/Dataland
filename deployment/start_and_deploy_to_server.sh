@@ -32,13 +32,13 @@ location=/home/ubuntu/dataland
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
-ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak"
+ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak/dataland_theme/login"
 
 envsubst < environments/.env.template > .env
 
 scp ./.env ubuntu@"$target_server_url":$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
-scp -r ./dataland-keycloak/dataland_theme ubuntu@$target_server_url:$location/dataland-keycloak
+scp -r ./dataland-keycloak/dataland_theme/login/dist ubuntu@$target_server_url:$location/dataland-keycloak/dataland_theme/login
 scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileBackend
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
