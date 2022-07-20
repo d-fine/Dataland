@@ -43,6 +43,7 @@ export default {
       })
       .catch((error) => console.log("error: " + error));
   },
+
   data() {
     return {
       items: [
@@ -54,7 +55,7 @@ export default {
             this.getKeycloakInitPromise()
               .then((keycloak) => {
                 if (keycloak.authenticated) {
-                  keycloak.logout();
+                  keycloak.logout( {redirectUri: '/'});
                 }
               })
               .catch((error) => console.log("error: " + error));
