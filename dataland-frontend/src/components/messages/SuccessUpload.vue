@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { humanize } from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import Message from "primevue/message";
 
 export default {
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     humanize(text) {
-      if (typeof text == "string") return humanize(text);
+      if (typeof text == "string") return humanizeString(text);
       else return null;
     },
   },

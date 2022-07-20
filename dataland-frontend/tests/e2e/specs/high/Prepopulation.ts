@@ -146,7 +146,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
           cy.get("body").contains("Market Cap:");
           cy.get("body").contains("Headquarter:");
           cy.get("body").contains("Sector:");
-          cy.get("input[name=eu_taxonomy_search_input]").should("exist");
+          cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
         });
     });
   });

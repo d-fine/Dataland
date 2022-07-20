@@ -1,11 +1,9 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-import Chainable = Cypress.Chainable;
 
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 
-export function checkIfDaxTabIsHighlighted(): Chainable<JQuery> {
-  return cy
-    .get('li[class="p-tabmenuitem p-highlight"]')
+export function checkIfDaxTabIsHighlighted(): void {
+  cy.get('li[class="p-tabmenuitem p-highlight"]')
     .children(".p-menuitem-link")
     .children(".p-menuitem-text")
     .should("contain", "DAX");
