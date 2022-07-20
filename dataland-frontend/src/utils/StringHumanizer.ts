@@ -48,5 +48,7 @@ function humanizeStockIndexString(rawText: string): string {
  */
 export function humanizeString(rawText: string): string {
   const resultOfStockIndexStringHumanizing = humanizeStockIndexString(rawText);
-  return resultOfStockIndexStringHumanizing == "" ? convertCamelCaseToSentenceCase(rawText) : resultOfStockIndexStringHumanizing;
+  return resultOfStockIndexStringHumanizing == ""
+    ? convertCamelCaseToSentenceCase(rawText)
+    : resultOfStockIndexStringHumanizing;
 }

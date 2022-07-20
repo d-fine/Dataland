@@ -23,5 +23,7 @@ export function convertCurrencyNumbersToNotationWithLetters(numberToConvert: num
     .find(function (part) {
       return numberToConvert >= part.value;
     });
-  return item ? (numberToConvert / item.value).toFixed(resultingNumberOfDigits).replace(regex, "$1") + " " + item.symbol : "0";
+  return item
+    ? (numberToConvert / item.value).toFixed(resultingNumberOfDigits).replace(regex, "$1") + " " + item.symbol
+    : "0";
 }

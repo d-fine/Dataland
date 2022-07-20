@@ -70,7 +70,10 @@ export default {
       return convertCurrencyNumbersToNotationWithLetters(parseFloat(this.total), 2);
     },
     amount() {
-      return convertCurrencyNumbersToNotationWithLetters(Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100, 2);
+      return convertCurrencyNumbersToNotationWithLetters(
+        Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100,
+        2
+      );
     },
   },
 };
