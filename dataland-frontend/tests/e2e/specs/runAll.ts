@@ -6,7 +6,6 @@ import "./dev/UploadDataTest";
 import "./low/general/Authorisation";
 import "./low/general/BackButton";
 import "./low/general/Datatables";
-import "./low/general/IndexHighlighting";
 import "./low/general/Tooltips";
 import "./low/pages/taxonomy/IndexPanelTabMenu";
 import "./low/pages/taxonomy/SearchTaxonomy";

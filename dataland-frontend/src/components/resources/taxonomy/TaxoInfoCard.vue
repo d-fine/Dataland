@@ -33,7 +33,7 @@
 <script>
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
-import { humanize } from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 export default {
   name: "TaxoInfoCard",
   components: { Card },
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     humanizedValue() {
-      return humanize(this.value);
+      return humanizeString(this.value);
     },
   },
 };
