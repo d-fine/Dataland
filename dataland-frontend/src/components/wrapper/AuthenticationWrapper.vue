@@ -3,7 +3,7 @@
     <div class="col-6">
       <h1 class="text-justify text-base font-normal">
         Redirecting to Login.
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </h1>
     </div>
   </div>
@@ -16,15 +16,15 @@ export default {
   inject: ["authenticated", "getKeycloakInitPromise"],
 
   mounted: function () {
-      if (!this.authenticated && this.authenticated !== null) {
-        this.getKeycloakInitPromise()
-            .then((keycloak) => {
-              if (!keycloak.authenticated) {
-                return keycloak.login();
-              }
-            })
-            .catch((error) => console.log("error: " + error));
-      }
+    if (!this.authenticated && this.authenticated !== null) {
+      this.getKeycloakInitPromise()
+        .then((keycloak) => {
+          if (!keycloak.authenticated) {
+            return keycloak.login();
+          }
+        })
+        .catch((error) => console.log("error: " + error));
     }
+  },
 };
 </script>
