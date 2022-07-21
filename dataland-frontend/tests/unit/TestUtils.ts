@@ -1,14 +1,12 @@
 const a: Promise<any> = Promise.resolve({
-        objectName: "dummyobject"
-    }
-)
-
+  objectName: "dummyobject",
+});
 
 export function getInjectedKeycloakObjectsForTest(): any {
-    return {
-        getKeycloakInitPromise() {
-            return a;
-        },
-        keycloak_init: a,
-    };
+  return {
+    getKeycloakInitPromise() {
+      return a;
+    },
+    keycloak_init: a,
+  };
 }
