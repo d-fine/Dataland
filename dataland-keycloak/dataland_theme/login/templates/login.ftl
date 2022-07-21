@@ -77,15 +77,28 @@
 
             <div>
                 <#list social.providers as p>
-                    <div id="social-${p.alias}">
-                        <button
-                            label="Join"
-                            class="p-button cursor-pointer w-full bg-white text-primary uppercase"
-                            onclick="location.href='${p.loginUrl}'"
-                        >
-                            LOG IN WITH ${p.displayName!}
-                        </button>
-                    </div>
+                    <#if p.alias="linkedin">
+                        <div id="social-${p.alias}">
+                            <button
+                                    label="Join"
+                                    class="p-button cursor-pointer w-full p-button-linkedin uppercase flex justify-content-center align-items-center"
+                                    onclick="location.href='${p.loginUrl}'"
+                            >
+                                <img src="${url.resourcesPath}/img/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
+                                LOG IN WITH LINKEDIN
+                            </button>
+                        </div>
+                    <#else>
+                        <div id="social-${p.alias}">
+                            <button
+                                    label="Join"
+                                    class="p-button cursor-pointer w-full bg-white text-primary uppercase mt-3"
+                                    onclick="location.href='${p.loginUrl}'"
+                            >
+                                LOG IN WITH ${p.displayName!}
+                            </button>
+                        </div>
+                    </#if>
                 </#list>
             </div>
 
