@@ -54,7 +54,7 @@
             </template>
             <template #content>
               <p class="text-gray-800 text-left">
-                Register free to access Eu Taxonomy data from more than <strong>300</strong> Germany public companies.
+                Register free to access Eu Taxonomy data from more than <strong>300</strong> German public companies.
               </p>
               <div class="grid">
                 <div class="col-10 col-offset-1 p-fluid pl-0">
