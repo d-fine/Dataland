@@ -15,6 +15,7 @@ declare global {
       verifyTaxonomySearchResultTable: typeof verifyTaxonomySearchResultTable;
       verifyCompanySearchResultTable: typeof verifyCompanySearchResultTable;
       checkViewButtonWorks: typeof checkViewButtonWorks;
+      checkViewRowsWorks: typeof checkViewRowsWorks;
       fillCompanyUploadFields: typeof fillCompanyUploadFields;
       logoutDropdown: typeof logoutDropdown;
     }
@@ -176,6 +177,18 @@ export function checkViewButtonWorks(): void {
     .should("include", "/eutaxonomies");
 }
 
+export function checkViewRowsWorks(): void {
+  cy.get("table.p-datatable-table");
+  cy.contains("td", "VIEW")
+    .siblings()
+    .contains("€")
+    .click()
+    .url()
+    .should("include", "/companies/")
+    .url()
+    .should("include", "/eutaxonomies");
+}
+
 Cypress.Commands.add("retrieveDataIdsList", retrieveDataIdsList);
 Cypress.Commands.add("retrieveCompanyIdsList", retrieveCompanyIdsList);
 Cypress.Commands.add("login", login);
@@ -186,5 +199,6 @@ Cypress.Commands.add("logout", logout);
 Cypress.Commands.add("verifyTaxonomySearchResultTable", verifyTaxonomySearchResultTable);
 Cypress.Commands.add("verifyCompanySearchResultTable", verifyCompanySearchResultTable);
 Cypress.Commands.add("checkViewButtonWorks", checkViewButtonWorks);
+Cypress.Commands.add("checkViewRowsWorks", checkViewRowsWorks);
 Cypress.Commands.add("logoutDropdown", logoutDropdown);
 Cypress.Commands.add("fillCompanyUploadFields", fillCompanyUploadFields);
