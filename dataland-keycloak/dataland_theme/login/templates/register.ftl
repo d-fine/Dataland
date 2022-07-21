@@ -82,7 +82,7 @@
             <div>
                 <#list social.providers as p>
                     <#if p.alias="linkedin">
-                        <div id="social-${p.alias}">
+                        <div id="social-linkedin">
                             <button
                                     label="Join"
                                     class="p-button cursor-pointer w-full p-button-linkedin uppercase flex justify-content-center align-items-center"
