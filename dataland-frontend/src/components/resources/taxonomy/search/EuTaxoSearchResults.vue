@@ -133,7 +133,7 @@ export default {
   background: white;
 }
 
-.d-justify-content-end-inner > div {
+#search-result-taxonomy .d-justify-content-end-inner > div {
   justify-content: end;
 }
 </style>
