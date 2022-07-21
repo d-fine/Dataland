@@ -109,21 +109,21 @@ describe("Search Taxonomy", function () {
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
-    cy.scrollTo(0, 500);
+    cy.scrollTo(0, 500, {duration: 300});
     cy.get("input[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("exist");
 
-    cy.scrollTo("top");
+    cy.scrollTo("top", {duration: 300});
     cy.get("input[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
-    cy.scrollTo(0, 500);
+    cy.scrollTo(0, 500, {duration: 300});
     cy.get("button[name=search_bar_collapse]").should("exist").click();
     cy.get("input[name=eu_taxonomy_search_bar_top]").should("not.exist");
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
-    cy.scrollTo(0, 480);
+    cy.scrollTo(0, 480, {duration: 300});
     cy.get("button[name=search_bar_collapse]").should("not.exist");
     cy.get("input[name=eu_taxonomy_search_bar_top]").should("exist");
     cy.get("input[name=eu_taxonomy_search_bar_scrolled]").should("not.exist");
