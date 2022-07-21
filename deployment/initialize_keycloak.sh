@@ -10,7 +10,7 @@ ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
 scp -r "$script_dir"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$location"/dataland-keycloak
 scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
-scp -r "$script_dir"/../dataland-keycloak/dataland_theme ubuntu@"$target_server_url":$location/dataland-keycloak
+scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":$location/dataland-keycloak/dataland_theme/login
 
 old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data") || true
 if [[ -n $old_volume ]]; then

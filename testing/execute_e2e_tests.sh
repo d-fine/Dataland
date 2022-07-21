@@ -1,5 +1,6 @@
 #!/bin/sh
 set -x
+./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 #Start E2E Test and wait for E2E Test completion
 docker-compose --project-name dala-e2e-test --profile testing up -d --build || exit
 timeout 2400 sh -c "docker logs dala-e2e-test_e2etests_1 --follow"

@@ -1,0 +1,69 @@
+.input-group {
+  position: relative;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+input[type="text"], input[type="password"] {
+  font-size: 16px;
+  border-radius: 5px 5px 0px 0px;
+  padding: 20px 15px 10px 15px;
+  display: block;
+  width: 100%;
+  border: none;
+  background: #F5F5F5;
+  border-bottom: 1px solid #958D7C;
+
+  // "Sliding label"
+  &:valid,
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid #E67F3F;
+  }
+
+  ~ label {
+    color: #958D7C;
+    font-size: 16px;
+    font-weight: 400;
+    position: absolute;
+    pointer-events: none;
+    left: 15px;
+    top: 20px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+  }
+
+  &:focus ~ label,
+  &:valid ~ label {
+    top: 2px;
+    font-size: 12px;
+    font-weight: bolder;
+    color: #E67F3F;
+  }
+
+  // Error cases
+  &.error {
+    border-bottom: 1px solid #EE1A1A !important;
+
+    &:focus ~ label,
+    &:valid ~ label {
+      color: #EE1A1A !important;
+    }
+  }
+}
+
+
+span.input-error {
+  font-size: 12px;
+  color: #EE1A1A;
+  padding-left: 15px;
+  font-weight: bolder;
+}
+
+span.input-error-icon {
+  color: #EE1A1A;
+  position: absolute;
+  right: 20px;
+  top: 16px;
+}
