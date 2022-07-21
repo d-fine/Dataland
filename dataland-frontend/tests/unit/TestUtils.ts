@@ -1,12 +1,12 @@
-import Keycloak, {KeycloakError, KeycloakPromise} from "keycloak-js";
+const a: Promise<any> = new Promise(function (resolve) {
+  resolve({ object: "dummyobject" });
+});
 
-const a: string = "aaa"
-
-export function getInjectedKeycloakObjectsForTest(): any{
-    return {
-        getKeycloakInitPromise() {
-            return a;
-        },
-        keycloak_init: a,
-    }
+export function getInjectedKeycloakObjectsForTest(): any {
+  return {
+    getKeycloakInitPromise() {
+      return a;
+    },
+    keycloak_init: a,
+  };
 }

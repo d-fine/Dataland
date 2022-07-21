@@ -1,9 +1,14 @@
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
+import { getInjectedKeycloakObjectsForTest } from "../../TestUtils";
 
 describe("CreateCompanyTest", () => {
-  const wrapper = shallowMount(CreateCompany);
+  const wrapper = shallowMount(CreateCompany, {
+    global: {
+      provide: getInjectedKeycloakObjectsForTest(),
+    },
+  });
 
   it("checks field properties", () => {
     expect(wrapper.vm.model).toBeDefined();
