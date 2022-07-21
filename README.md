@@ -54,6 +54,12 @@ Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALU
 * The `startDevelopmentStack.sh` script will automatically retrieve signed SSL-Certificates for this domain.
 * Access the development stack at https://dataland-local.duckdns.org
 
+## API Documentation
+The interactive backend API documentation is available via `[URL]/api/swagger-/api/swagger-ui/index.html`.
+Requests can be authorized via two different methods:
+- Option A: Manually obtain a bearer token from KeyCloak and enter it in the `default-bearer-auth` field.
+- Option B: Automatically obtain a bearer token from KeyCloak by entering `dataland-public` for `client_id`and leaving `client_secret`empty (in the `default-oauth` section). Swagger will then redirect you two the KeyCloak Login form for authentication.
+
 ## Run Cypress Tests locally
 * start the docker-compose stack with the "development" profile. Set the env-variables (see above). 
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
