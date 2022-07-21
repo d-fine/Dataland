@@ -18,7 +18,8 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding data exchange
  */
 
-@SecurityRequirement(name = "default-auth")
+@SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "default-oauth")
 interface DataAPI<T> {
     @Operation(
         summary = "Upload new data set.",

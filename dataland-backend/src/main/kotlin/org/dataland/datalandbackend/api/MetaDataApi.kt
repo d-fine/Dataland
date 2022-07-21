@@ -19,7 +19,8 @@ import java.math.BigDecimal
  */
 
 @RequestMapping("/metadata")
-@SecurityRequirement(name = "default-auth")
+@SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
 
     @Operation(
