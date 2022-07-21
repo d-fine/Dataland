@@ -47,17 +47,18 @@
         </div>
       </div>
       <div class="grid m-0">
-        <div class="col-5 col-offset-3">
+        <div class="col-4 col-offset-3">
           <Card class="d-card">
             <template #title>
-              <h2 class="text-gray-100 text-left">Join Dataland to access our data</h2>
+              <p class="text-left text-xxl pl-3 pr-3">Join Dataland to access our data</p>
             </template>
             <template #content>
-              <p class="text-gray-800 text-left">
-                Register free to access Eu Taxonomy data from more than <strong>300</strong> German public companies.
+              <p class="d-text-register text-left text-xl pl-3 pr-3">
+                Create a free account to get <strong>EU Taxonomy</strong> data from more than
+                <strong>300</strong> German public companies.
               </p>
               <div class="grid">
-                <div class="col-10 col-offset-1 p-fluid pl-0">
+                <div class="col-12 p-fluid pl-3 pr-3">
                   <RegisterButton />
                 </div>
               </div>
@@ -79,3 +80,8 @@ export default {
   components: { UserAuthenticationButtons, Card, RegisterButton },
 };
 </script>
+<style scoped>
+.d-text-register {
+  color: #5a4f36;
+}
+</style>
