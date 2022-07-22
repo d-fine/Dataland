@@ -7,5 +7,3 @@ export default {
   name: "NoContentFound",
 };
 </script>
-
-<style scoped></style>
