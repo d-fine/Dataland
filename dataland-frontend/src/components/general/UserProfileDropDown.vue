@@ -76,16 +76,15 @@ export default {
         })
         .catch((error) => console.log("error: " + error));
     },
-
-    created() {
-      this.getKeycloakInitPromise()
-        .then((keycloak) => {
-          if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
-            this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
-          }
-        })
-        .catch((error) => console.log("error: " + error));
-    },
+  },
+  created() {
+    this.getKeycloakInitPromise()
+      .then((keycloak) => {
+        if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
+          this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
+        }
+      })
+      .catch((error) => console.log("error: " + error));
   },
 };
 </script>
