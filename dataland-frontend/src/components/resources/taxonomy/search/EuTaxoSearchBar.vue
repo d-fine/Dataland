@@ -22,7 +22,7 @@
             panelClass="d-taxo-searchbar-panel"
           >
             <template #item="slotProps">
-              <i class="pi pi-search pl-3 pr-3" />
+              <i class="pi pi-search pl-3 pr-3" aria-hidden="true"/>
               <span class="font-semibold" v-html="this.highlightSearchResults(slotProps.item.companyName)"></span>
             </template>
             <template #footer>
