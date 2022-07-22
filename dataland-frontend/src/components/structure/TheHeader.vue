@@ -1,8 +1,8 @@
 <template>
-  <div class="d-header grid mt-0 fixed top-0 col-12 surface-900 align-items-center h-4rem w-screen">
-    <div class="col-4 text-left">
+  <div class="d-header m-0 fixed top-0 surface-900 h-4rem w-full grid align-items-center">
+    <div class="col-4 text-left col-4">
       <router-link to="/">
-        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" class="pl-3 pt-2" />
+        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" class="pl-3" />
       </router-link>
     </div>
 
@@ -12,7 +12,7 @@
       </span>
     </div>
 
-    <div class="col-1 col-offset-3 max-w-full max-h-full">
+    <div class="col-4 flex justify-content-end">
       <UserProfileDropDown />
     </div>
   </div>
