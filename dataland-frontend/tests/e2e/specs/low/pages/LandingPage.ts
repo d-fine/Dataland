@@ -3,7 +3,8 @@ describe("Login Section", () => {
     cy.visitAndCheckAppMount("/");
     cy.get("h1").should("contain.text", "CREATE A DATASET");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
-    cy.get("button[name=get_started_button]").should("be.visible").should("contain.text", "Get Started");
+    cy.get("button[name=join_dataland_button]").should("be.visible").should("contain.text", "Join Dataland");
+    cy.get('i[alt="chevron_right"]').should("be.visible");
   });
   it("Company logos are present", () => {
     cy.visitAndCheckAppMount("/");

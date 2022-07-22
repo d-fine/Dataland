@@ -41,6 +41,8 @@
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_PASSWORD", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_ID", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_SECRET", "#", [System.EnvironmentVariableTarget]::User)
+# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_ID", "#", [System.EnvironmentVariableTarget]::User)
+# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_SECRET", "#", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_NGINX_URLS", "dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_LETSENCRYPT_PATH", "/etc/letsencrypt/dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_ENVIRONMENT", "development", [System.EnvironmentVariableTarget]::User)
