@@ -22,7 +22,7 @@
   >
     <template #item="{ item }">
       <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
-        <span class="p-menuitem-icon material-icons text-primary font-semibold">{{item.icon}}</span>
+        <span class="p-menuitem-icon material-icons text-primary font-semibold">{{ item.icon }}</span>
         <span class="p-menuitem-text text-primary font-semibold">{{ item.label }}</span>
       </a>
     </template>
@@ -42,7 +42,7 @@ export default {
         {
           label: "USER SETTINGS",
           icon: "settings",
-          clickAction: () => {},
+          clickAction: this.gotoUserSettings,
         },
         {
           label: "LOG OUT",
@@ -67,16 +67,25 @@ export default {
         })
         .catch((error) => console.log("error: " + error));
     },
-  },
+    gotoUserSettings() {
+      this.getKeycloakInitPromise()
+        .then((keycloak) => {
+          if (keycloak.authenticated) {
+            keycloak.accountManagement();
+          }
+        })
+        .catch((error) => console.log("error: " + error));
+    },
 
-  created() {
-    this.getKeycloakInitPromise()
-      .then((keycloak) => {
-        if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
-          this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
-        }
-      })
-      .catch((error) => console.log("error: " + error));
+    created() {
+      this.getKeycloakInitPromise()
+        .then((keycloak) => {
+          if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
+            this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
+          }
+        })
+        .catch((error) => console.log("error: " + error));
+    },
   },
 };
 </script>
