@@ -15,5 +15,6 @@ import "./low/pages/DataSearch";
 import "./low/pages/DataUpload";
 import "./low/pages/LandingPage";
 import "./low/pages/VisitPagesUnauth";
+import "./low/pages/VisitNotExistingPath";
 import "./medium/DataSearchTest";
 import "./previsit/Previsit";

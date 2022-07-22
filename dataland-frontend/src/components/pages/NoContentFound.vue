@@ -1,8 +1,8 @@
 <template>
-  <TheHeader/>
+  <TheHeader />
   <TheContent>
     <p>Whoops! Something went wrong!</p>
-    <p>Go back to <router-link to="/" class="text-primary">Dataland</router-link></p>
+    <p>Go back to <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link></p>
   </TheContent>
 </template>
 
@@ -11,6 +11,6 @@ import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 export default {
   name: "NoContentFound",
-  components: {TheContent, TheHeader},
+  components: { TheContent, TheHeader },
 };
 </script>
