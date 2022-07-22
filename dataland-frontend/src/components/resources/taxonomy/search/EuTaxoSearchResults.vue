@@ -53,6 +53,7 @@
           <Column
             field="companyInformation.marketCap"
             header="MARKET CAP"
+            headerClass="d-justify-content-end-inner"
             :sortable="true"
             class="d-bg-white w-1 text-right"
           >
@@ -130,5 +131,9 @@ export default {
 }
 #search-result-taxonomy th {
   background: white;
+}
+
+#search-result-taxonomy .d-justify-content-end-inner > div {
+  justify-content: end;
 }
 </style>
