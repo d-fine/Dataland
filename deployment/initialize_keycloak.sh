@@ -30,6 +30,8 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
                                  export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
                                  export KEYCLOAK_GOOGLE_SECRET=\"$KEYCLOAK_GOOGLE_SECRET\";
                                  export KEYCLOAK_GOOGLE_ID=\"$KEYCLOAK_GOOGLE_ID\";
+                                 export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
+                                 export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  sudo -E docker-compose --profile init up -d --build"
 message="Profile prod activated."

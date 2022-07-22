@@ -1523,6 +1523,28 @@
         "syncMode": "IMPORT",
         "clientSecret": "${KEYCLOAK_GOOGLE_SECRET}",
         "clientId": "${KEYCLOAK_GOOGLE_ID}",
+        "guiOrder": "2",
+        "useJwksUrl": "true"
+      }
+    },
+    {
+      "alias": "linkedin",
+      "internalId": "2fded455-83f2-410e-b978-26a2a721b32d",
+      "providerId": "linkedin",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": false,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "firstBrokerLoginFlowAlias": "Dataland First Broker Login",
+      "config": {
+        "clientId": "${KEYCLOAK_LINKEDIN_ID}",
+        "syncMode": "IMPORT",
+        "clientSecret": "${KEYCLOAK_LINKEDIN_SECRET}",
+        "defaultScope": "r_emailaddress,r_liteprofile",
+        "guiOrder": "1",
         "useJwksUrl": "true"
       }
     }
