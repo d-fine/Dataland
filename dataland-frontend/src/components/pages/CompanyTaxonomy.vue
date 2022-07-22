@@ -2,10 +2,10 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent>
-      <MarginWrapper class="text-left">
+      <MarginWrapper class="text-left mt-2">
         <BackButton />
+        <EuTaxoSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
-      <EuTaxoSearchBar v-model="currentInput" @companies-received="handleQueryCompany" />
       <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
