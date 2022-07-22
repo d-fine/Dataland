@@ -3,7 +3,7 @@
     <template #title>Skyminder Data Search </template>
     <template #content>
       <FormKit
-        v-model="model"
+        v-model="skyminderSearchParams"
         type="form"
         submit-label="Get Skyminder Data"
         :submit-attrs="{
@@ -16,10 +16,10 @@
       </FormKit>
       <br />
       <PrimeButton @click="clearAll" label="Clear" />
-      <div v-if="response" class="col m12">
+      <div v-if="skyminderSearchResponse" class="col m12">
         <SkyminderTable
           :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
-          :data="response.data"
+          :data="skyminderSearchResponse.data"
         />
       </div>
     </template>
@@ -38,24 +38,24 @@ export default {
   components: { Card, PrimeButton, FormKit, SkyminderTable },
 
   data: () => ({
-    model: {},
-    response: null,
+    skyminderSearchParams: {},
+    skyminderSearchResponse: null,
   }),
   inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
     clearAll() {
-      this.model = {};
-      this.response = null;
+      this.skyminderSearchParams = {};
+      this.skyminderSearchResponse = null;
     },
 
     async getSkyminderByName() {
       try {
-        const inputArgs = Object.values(this.model);
+        const inputArgs = Object.values(this.skyminderSearchParams);
         const skyminderControllerApi = await new ApiClientProvider(
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getSkyminderControllerApi();
-        this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
+        this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {
         console.error(error);
       }

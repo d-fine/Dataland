@@ -1,3 +1,5 @@
+import Keycloak from "keycloak-js";
+
 const a: Promise<any> = Promise.resolve({
   objectName: "dummyobject",
 });
