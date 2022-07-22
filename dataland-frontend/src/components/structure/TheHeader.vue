@@ -12,7 +12,7 @@
       </span>
     </div>
 
-    <div class="col-4 flex justify-content-end">
+    <div class="col-4 flex justify-content-end" v-if="!sampleData">
       <UserProfileDropDown />
     </div>
   </div>
