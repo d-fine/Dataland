@@ -9,6 +9,7 @@ import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
+import NoContentFound from "@/components/pages/NoContentFound.vue";
 
 const routes = [
   {
@@ -63,6 +64,15 @@ const routes = [
     path: "/imprint",
     name: "LandingImprint",
     component: TheImprint,
+  },
+  {
+    path: "/nocontent",
+    name: "NoContentFound",
+    component: NoContentFound
+},
+  {
+    path: "/:notFound(.*)",
+    redirect: "/nocontent",
   },
 ];
 
