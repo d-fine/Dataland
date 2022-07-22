@@ -68,8 +68,8 @@ const routes = [
   {
     path: "/nocontent",
     name: "NoContentFound",
-    component: NoContentFound
-},
+    component: NoContentFound,
+  },
   {
     path: "/:notFound(.*)",
     redirect: "/nocontent",

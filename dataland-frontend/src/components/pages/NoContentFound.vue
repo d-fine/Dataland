@@ -1,13 +1,11 @@
 <template>
-<p>Whoops! Something went wrong! Go back to <router-link to="/">Dataland</router-link></p>
+  <p>Whoops! Something went wrong! Go back to <router-link to="/">Dataland</router-link></p>
 </template>
 
 <script>
 export default {
-  name: "NoContentFound"
-}
+  name: "NoContentFound",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
