@@ -158,6 +158,7 @@ services:
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    command: ${KEYCLOAK_START_COMMAND:-start}
     expose:
       - "8080"
     environment:
@@ -175,7 +176,7 @@ services:
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/opt/keycloak/data/import
-    command: --import-realm
+    command: start --import-realm
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -187,6 +188,8 @@ services:
       KEYCLOAK_UPLOADER_SALT: ${KEYCLOAK_UPLOADER_SALT}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
+      KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
+      KEYCLOAK_LINKEDIN_SECRET: ${KEYCLOAK_LINKEDIN_SECRET}
     expose:
       - "8080"
     depends_on:

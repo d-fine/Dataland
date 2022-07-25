@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggle" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle">
+  <div @click="toggleDropDownMenu" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle">
     <img
       ref="profile-picture"
       class="d-profile-picture"
@@ -11,13 +11,13 @@
   </div>
   <PrimeMenu
     ref="menu"
-    :model="dropDownMenuItems"
+    :model="dropdownMenuItems"
     :popup="true"
     style="transform: translate(0px, 1rem)"
     class="text-primary"
   >
     <template #item="{ item }">
-      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.command()" :id="item.id"
+      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="logoutViaDropdown" :id="item.id"
         ><span class="p-menuitem-icon text-primary" :class="item.icon"></span
         ><span class="p-menuitem-text text-primary">{{ item.label }}</span></a
       >
@@ -31,11 +31,34 @@ export default {
   name: "UserProfileDropDown",
   inject: ["authenticated", "getKeycloakInitPromise"],
   components: { PrimeMenu },
+
+  data() {
+    return {
+      dropdownMenuItems: [
+        {
+          label: "Logout",
+          icon: "pi pi-sign-out",
+          id: "profile-picture-dropdown-toggle",
+        },
+      ],
+    };
+  },
+
   methods: {
-    toggle(event) {
+    toggleDropdownMenu(event) {
       this.$refs.menu.toggle(event);
     },
+    logoutViaDropdown() {
+      this.getKeycloakInitPromise()
+        .then((keycloak) => {
+          if (keycloak.authenticated) {
+            keycloak.logout({ redirectUri: "/" });
+          }
+        })
+        .catch((error) => console.log("error: " + error));
+    },
   },
+
   created() {
     this.getKeycloakInitPromise()
       .then((keycloak) => {
@@ -44,26 +67,6 @@ export default {
         }
       })
       .catch((error) => console.log("error: " + error));
-  },
-  data() {
-    return {
-      dropDownMenuItems: [
-        {
-          label: "Logout",
-          icon: "pi pi-sign-out",
-          id: "profile-picture-dropdown-toggle",
-          command: () => {
-            this.getKeycloakInitPromise()
-              .then((keycloak) => {
-                if (keycloak.authenticated) {
-                  keycloak.logout();
-                }
-              })
-              .catch((error) => console.log("error: " + error));
-          },
-        },
-      ],
-    };
   },
 };
 </script>

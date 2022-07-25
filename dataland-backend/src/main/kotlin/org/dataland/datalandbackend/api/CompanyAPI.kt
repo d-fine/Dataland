@@ -21,7 +21,8 @@ import javax.validation.Valid
  * Defines the restful dataland-backend API regarding company data.
  */
 @RequestMapping("/companies")
-@SecurityRequirement(name = "default-auth")
+@SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "default-oauth")
 interface CompanyAPI {
 
     @Operation(

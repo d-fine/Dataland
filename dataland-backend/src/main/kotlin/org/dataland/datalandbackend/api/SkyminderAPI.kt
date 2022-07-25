@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 
 @RequestMapping("/skyminder")
-@SecurityRequirement(name = "default-auth")
+@SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "default-oauth")
 interface SkyminderAPI {
     @Operation(
         summary = "Retrieve company data from Skyminder server.",

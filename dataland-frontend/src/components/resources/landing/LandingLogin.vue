@@ -10,7 +10,7 @@
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2" />
           </router-link>
         </div>
-        <div class="col-3 col-offset-3">
+        <div class="col-2 col-offset-4">
           <UserAuthenticationButtons />
         </div>
       </div>
@@ -47,27 +47,19 @@
         </div>
       </div>
       <div class="grid m-0">
-        <div class="col-6 col-offset-3">
+        <div class="col-4 col-offset-3">
           <Card class="d-card">
             <template #title>
-              <h2 class="text-gray-100 text-left">Access EU Taxonomy Data</h2>
+              <p class="text-left text-xxl pl-3 pr-3">Join Dataland to access our data</p>
             </template>
             <template #content>
-              <p class="text-gray-800 text-left">
-                Preview Dataland by looking at <strong>EU Taxonomy</strong> data from more than
-                <strong>300</strong> Germany public companies.
+              <p class="d-text-register text-left text-xl pl-3 pr-3">
+                Create a free account to get <strong>EU Taxonomy</strong> data from more than
+                <strong>300</strong> German public companies.
               </p>
               <div class="grid">
-                <div class="col-3 col-offset-4 p-fluid pl-0">
-                  <router-link to="/searchtaxonomy" class="no-underline">
-                    <PrimeButton
-                      class="uppercase p-button p-button pl-2 pr-1 pb-1 pt-1 justify-content-center h-2rem w-full"
-                      name="get_started_button"
-                    >
-                      <span class="d-letters d-button"> Get Started </span>
-                      <i class="material-icons pl-1" aria-hidden="true">chevron_right</i>
-                    </PrimeButton>
-                  </router-link>
+                <div class="col-12 p-fluid pl-3 pr-3">
+                  <RegisterButton />
                 </div>
               </div>
             </template>
@@ -80,11 +72,16 @@
 
 <script>
 import Card from "primevue/card";
-import PrimeButton from "primevue/button";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
+import RegisterButton from "@/components/general/RegisterButton";
 
 export default {
   name: "LandingLogin",
-  components: { UserAuthenticationButtons, Card, PrimeButton },
+  components: { UserAuthenticationButtons, Card, RegisterButton },
 };
 </script>
+<style scoped>
+.d-text-register {
+  color: #5a4f36;
+}
+</style>
