@@ -81,7 +81,7 @@ export default {
           this.model.companyName = "";
         }
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
+          this.getKeycloakInitPromise()
         ).getCompanyDataControllerApi();
         this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
       } catch (error) {

@@ -67,7 +67,7 @@ const createCompany = {
         this.processed = false;
         this.messageCount++;
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
+          this.getKeycloakInitPromise()
         ).getCompanyDataControllerApi();
         this.response = await companyDataControllerApi.postCompany(this.model);
         this.$formkit.reset("createCompanyForm");

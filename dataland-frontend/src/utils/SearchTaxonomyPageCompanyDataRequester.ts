@@ -62,13 +62,11 @@ export async function getCompanyDataForTaxonomyPage(
     | "Hdax"
     | "Dax50Esg",
   onlyCompanyNames: boolean,
-  getKeycloakInitPromise: any,
+  getKeycloakInitPromise: any
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
   try {
-    const companyDataControllerApi = await new ApiClientProvider(
-      getKeycloakInitPromise,
-    ).getCompanyDataControllerApi();
+    const companyDataControllerApi = await new ApiClientProvider(getKeycloakInitPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
     mappedResponse = mapStoredCompanyToTaxonomyPage(response.data);
   } catch (error) {

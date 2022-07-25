@@ -184,7 +184,7 @@ export default {
     async getCompanyIDs() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
+          this.getKeycloakInitPromise()
         ).getCompanyDataControllerApi();
         const companyList = await companyDataControllerApi.getCompanies("", "", true);
         this.idList = companyList.data.map((element) => element.companyId);
@@ -198,7 +198,7 @@ export default {
         this.processed = false;
         this.messageCount++;
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
+          this.getKeycloakInitPromise()
         ).getEuTaxonomyDataControllerApi();
         this.response = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
         this.$formkit.reset("createEuTaxonomyForm");

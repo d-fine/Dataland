@@ -37,12 +37,7 @@ export default {
 
   methods: {
     async filterByIndex(stockIndex) {
-      const resultsArray = await getCompanyDataForTaxonomyPage(
-        "",
-        stockIndex,
-        false,
-        this.getKeycloakInitPromise(),
-      );
+      const resultsArray = await getCompanyDataForTaxonomyPage("", stockIndex, false, this.getKeycloakInitPromise());
       this.$emit("companies-received", resultsArray);
     },
   },
