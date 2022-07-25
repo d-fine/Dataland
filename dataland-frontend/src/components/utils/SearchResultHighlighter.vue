@@ -25,23 +25,9 @@ export default {
       default: "",
     },
   },
-  data() {
-    return { splitString: [] };
-  },
-  methods: {
-    recomputeSplitString() {
-      this.splitString = splitStringBySearchMatch(this.text, this.searchString);
-    },
-  },
-  created() {
-    this.recomputeSplitString();
-  },
-  watch: {
-    text: function () {
-      this.recomputeSplitString();
-    },
-    searchString: function () {
-      this.recomputeSplitString();
+  computed: {
+    splitString() {
+      return splitStringBySearchMatch(this.text, this.searchString);
     },
   },
 };
