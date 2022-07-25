@@ -49,9 +49,7 @@ export default {
   methods: {
     async getCompanyInformation() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getMetaDataControllerApi();
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
         this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData");
       } catch (error) {
         console.error(error);

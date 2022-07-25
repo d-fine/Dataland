@@ -19,7 +19,7 @@ describe("EuTaxoSearchBarTest", () => {
         provide: {
           getKeycloakPromise() {
             return Promise.resolve("I should be a Keycloak Object");
-          }
+          },
         },
       },
     });
