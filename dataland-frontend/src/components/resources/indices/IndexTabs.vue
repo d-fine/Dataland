@@ -1,6 +1,36 @@
 <template>
-  <TabMenu :model="model" v-model:activeIndex="activeIndex"></TabMenu>
+  <TabMenu :model="model" v-model:activeIndex="activeIndex">
+
+  </TabMenu>
 </template>
+
+<style>
+.p-tabmenu-nav {
+  position: relative;
+  border: none !important;
+}
+
+.p-menuitem-link {
+  border: none !important;
+}
+
+.p-tabmenu-ink-bar {
+  display: block !important;
+  position: absolute !important;
+  bottom: 0;
+  height: 4px;
+}
+
+.p-tabmenu-ink-bar::after {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  content: "";
+  width: 80%;
+  height: 100%;
+  background: #e67f3f;
+}
+</style>
 
 <script>
 import TabMenu from "primevue/tabmenu";

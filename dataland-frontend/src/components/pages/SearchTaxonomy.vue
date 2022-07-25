@@ -23,7 +23,7 @@
           <div
             :class="[
               pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed']
+                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed', 'd-shadow-bottom']
                 : '',
             ]"
           >
@@ -53,6 +53,10 @@
 </template>
 
 <style scoped>
+.d-shadow-bottom {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+}
+
 .d-fixed-below-header {
   position: fixed;
   top: 4rem;
