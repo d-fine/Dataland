@@ -1,6 +1,6 @@
 export interface StringSplitSearchMatch {
-  text: String;
-  highlight: Boolean;
+  text: string;
+  highlight: boolean;
 }
 
 export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
