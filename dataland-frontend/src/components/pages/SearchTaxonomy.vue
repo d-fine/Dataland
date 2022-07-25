@@ -4,47 +4,46 @@
     <TopTabNavigationMenu class="d-fixed-below-header" :tabs="['EU Taxonomy']" />
     <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the tab nav -->
     <div class="h-2rem"></div>
-    <TheContent>
+    <TheContent class="pl-0">
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <SearchTaxonomyHeader />
-        <MarginWrapper>
-          <EuTaxoSearchBar
-            v-model="currentInput"
-            ref="euTaxoSearchBar"
-            :taxoSearchBarName="taxoSearchBarName"
-            @companies-received="handleCompanyQuery"
-            @rendered="handleEuTaxoSearchBarRender"
-          />
+        <SearchTaxonomyHeader class="pl-2"/>
+        <EuTaxoSearchBar
+          v-model="currentInput"
+          ref="euTaxoSearchBar"
+          :taxoSearchBarName="taxoSearchBarName"
+          @companies-received="handleCompanyQuery"
+          @rendered="handleEuTaxoSearchBarRender"
+          class="pl-4"
+        />
 
-          <div
-            :class="[
-              pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed', 'd-shadow-bottom']
-                : '',
-            ]"
+        <div
+          :class="[
+            pageScrolled && !searchBarToggled
+              ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed', 'd-shadow-bottom']
+              : 'pl-4',
+          ]"
+        >
+          <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
+          <PrimeButton
+            v-if="!searchBarToggled && pageScrolled"
+            name="search_bar_collapse"
+            icon="pi pi-search"
+            class="p-button-rounded surface-ground border-none m-2"
+            @click="toggleSearchBar"
           >
-            <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
-            <PrimeButton
-              v-if="!searchBarToggled && pageScrolled"
-              name="search_bar_collapse"
-              icon="pi pi-search"
-              class="p-button-rounded surface-ground border-none m-2"
-              @click="toggleSearchBar"
-            >
-              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-            </PrimeButton>
-            <IndexTabs
-              ref="indexTabs"
-              :initIndex="firstDisplayedIndex"
-              @tab-click="toggleIndexTabs"
-              @companies-received="handleFilterByIndex"
-            />
-          </div>
-        </MarginWrapper>
+            <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+          </PrimeButton>
+          <IndexTabs
+            ref="indexTabs"
+            :initIndex="firstDisplayedIndex"
+            @tab-click="toggleIndexTabs"
+            @companies-received="handleFilterByIndex"
+          />
+        </div>
       </div>
 
       <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
@@ -76,7 +75,6 @@ import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchTaxonomyHeader";
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
 import PrimeButton from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
@@ -95,7 +93,6 @@ export default {
     TheContent,
     SearchTaxonomyHeader,
     EuTaxoSearchBar,
-    MarginWrapper,
     IndexTabs,
     PrimeButton,
     EuTaxoSearchResults,
