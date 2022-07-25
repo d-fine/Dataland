@@ -1,5 +1,5 @@
 <template>
-  <div v-if="response">
+  <div v-if="dataSet">
     <div class="grid">
       <div class="col-6">
         <TaxoInfoCard
@@ -93,9 +93,7 @@ export default {
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      response: null,
       dataSet: null,
-      companyInfo: null,
     };
   },
   props: {
@@ -116,8 +114,8 @@ export default {
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakInitPromise()
         ).getEuTaxonomyDataControllerApi();
-        this.response = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);
-        this.dataSet = this.response.data.data;
+        const companyAssociatedData = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);
+        this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);
       }
