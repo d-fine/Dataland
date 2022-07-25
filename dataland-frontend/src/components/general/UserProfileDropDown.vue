@@ -2,7 +2,6 @@
   <div
     @click="toggle"
     class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle"
-    name="profile-picture-dropdown-toggle"
   >
     <img
       ref="profile-picture"
