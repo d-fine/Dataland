@@ -10,7 +10,7 @@
         :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <SearchTaxonomyHeader class="pl-2"/>
+        <SearchTaxonomyHeader class="pl-2" />
         <EuTaxoSearchBar
           v-model="currentInput"
           ref="euTaxoSearchBar"
