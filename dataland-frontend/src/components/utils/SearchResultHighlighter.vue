@@ -1,0 +1,48 @@
+<template>
+  <template  v-for="(element, index) in splitString" :key="index">
+    <span :class="element.highlight ? 'font-semibold' : 'font-normal'">{{element.text}}</span>
+  </template>
+</template>
+
+<style scoped>
+span {
+  white-space: pre;
+}
+</style>
+
+<script>
+import {splitStringBySearchMatch} from "@/utils/StringHighlighter";
+
+export default {
+  name: "SearchResultHighlighter",
+  props: {
+    text: {
+      type: String,
+      default: "Hithere",
+    },
+    searchString: {
+      type: String,
+      default: "",
+    },
+  },
+  data() {
+    return { splitString: [] };
+  },
+  methods: {
+    recomputeSplitString() {
+      this.splitString = splitStringBySearchMatch(this.text, this.searchString)
+    },
+  },
+  created() {
+    this.recomputeSplitString();
+  },
+  watch: {
+    text: function () {
+      this.recomputeSplitString();
+    },
+    searchString: function() {
+      this.recomputeSplitString();
+    },
+  },
+};
+</script>

@@ -23,7 +23,7 @@
           >
             <template #item="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true"/>
-              <span class="font-semibold" v-html="this.highlightSearchResults(slotProps.item.companyName)"></span>
+              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="this.modelValue"/>
             </template>
             <template #footer>
               <ul
@@ -70,12 +70,12 @@
 
 <script>
 import AutoComplete from "primevue/autocomplete";
-import { highlightSearchMatches } from "@/utils/StringHighlighter";
+import SearchResultHighlighter from "@/components/utils/SearchResultHighlighter";
 import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 export default {
   name: "EuTaxoSearchBar",
-  components: { AutoComplete },
+  components: { AutoComplete, SearchResultHighlighter },
 
   emits: ["companies-received", "update:modelValue", "rendered"],
 
@@ -150,9 +150,6 @@ export default {
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       this.loading = false;
-    },
-    highlightSearchResults(name) {
-      return highlightSearchMatches(name, this.modelValue, "font-normal");
     },
   },
 

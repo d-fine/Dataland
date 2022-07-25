@@ -1,13 +1,24 @@
-import DOMPurify from "dompurify";
+export interface StringSplitSearchMatch {
+  text: String;
+  highlight: Boolean;
+}
 
-/**
- * Given a (potentially user-controlled) input string and search string,
- * this function will generate XSS-Safe HTML that encapsulates all occurrences
- * of searchString in a <span class="searchMatchClass"></span>
- */
-export function highlightSearchMatches(rawText: string, searchString: string, searchMatchClass: string): string {
+export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
+  if (searchString == "") return [{ text: rawText, highlight: false }];
+  const ret = [];
   const escapedSearchString = searchString.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   const regex = new RegExp(escapedSearchString, "gi");
-  const ret = rawText.replace(regex, `<span class="${searchMatchClass}">$&</span>`);
-  return DOMPurify.sanitize(ret);
+  let match;
+  let lastIndex = 0;
+  while ((match = regex.exec(rawText)) != null) {
+    if (lastIndex < match.index) {
+      ret.push({ text: rawText.substring(lastIndex, match.index), highlight: false });
+    }
+    ret.push({ text: rawText.substring(match.index, match.index + match[0].length), highlight: true });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < rawText.length) {
+    ret.push({ text: rawText.substring(lastIndex, rawText.length), highlight: false });
+  }
+  return ret;
 }
