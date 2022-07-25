@@ -10,40 +10,42 @@
         :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav-toggled', 'd-fixed-base'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <SearchTaxonomyHeader class="pl-2" />
-        <EuTaxoSearchBar
-          v-model="currentInput"
-          ref="euTaxoSearchBar"
-          :taxoSearchBarName="taxoSearchBarName"
-          @companies-received="handleCompanyQuery"
-          @rendered="handleEuTaxoSearchBarRender"
-          class="pl-4"
-        />
+        <SearchTaxonomyHeader class="pl-4" />
+        <MarginWrapper>
+          <EuTaxoSearchBar
+              v-model="currentInput"
+              ref="euTaxoSearchBar"
+              :taxoSearchBarName="taxoSearchBarName"
+              @companies-received="handleCompanyQuery"
+              @rendered="handleEuTaxoSearchBarRender"
+              class="pl-4"
+          />
 
-        <div
-          :class="[
+          <div
+              :class="[
             pageScrolled && !searchBarToggled
               ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'd-fixed-base', 'd-shadow-bottom']
               : 'pl-4',
           ]"
-        >
-          <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
-          <PrimeButton
-            v-if="!searchBarToggled && pageScrolled"
-            name="search_bar_collapse"
-            icon="pi pi-search"
-            class="p-button-rounded surface-ground border-none m-2"
-            @click="toggleSearchBar"
           >
-            <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-          </PrimeButton>
-          <IndexTabs
-            ref="indexTabs"
-            :initIndex="firstDisplayedIndex"
-            @tab-click="toggleIndexTabs"
-            @companies-received="handleFilterByIndex"
-          />
-        </div>
+            <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
+            <PrimeButton
+                v-if="!searchBarToggled && pageScrolled"
+                name="search_bar_collapse"
+                icon="pi pi-search"
+                class="p-button-rounded surface-ground border-none m-2"
+                @click="toggleSearchBar"
+            >
+              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+            </PrimeButton>
+            <IndexTabs
+                ref="indexTabs"
+                :initIndex="firstDisplayedIndex"
+                @tab-click="toggleIndexTabs"
+                @companies-received="handleFilterByIndex"
+            />
+          </div>
+        </MarginWrapper>
       </div>
 
       <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
@@ -86,12 +88,14 @@ import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSe
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 import TopTabNavigationMenu from "@/components/menus/TopTabNavigationMenu";
+import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
   name: "SearchTaxonomy",
   components: {
+    MarginWrapper,
     TopTabNavigationMenu,
     AuthenticationWrapper,
     TheHeader,
