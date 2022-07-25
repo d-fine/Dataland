@@ -1,5 +1,9 @@
 <template>
-  <div @click="toggleDropDownMenu" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle">
+  <div
+    class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle"
+    id="profile-picture-dropdown-toggle"
+    @click="toggleDropDownMenu"
+  >
     <img
       ref="profile-picture"
       class="d-profile-picture"
