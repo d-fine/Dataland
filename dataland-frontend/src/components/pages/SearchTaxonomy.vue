@@ -13,36 +13,44 @@
         <SearchTaxonomyHeader class="pl-4" />
         <MarginWrapper>
           <EuTaxoSearchBar
-              v-model="currentInput"
-              ref="euTaxoSearchBar"
-              :taxoSearchBarName="taxoSearchBarName"
-              @companies-received="handleCompanyQuery"
-              @rendered="handleEuTaxoSearchBarRender"
-              class="pl-4"
+            v-model="currentInput"
+            ref="euTaxoSearchBar"
+            :taxoSearchBarName="taxoSearchBarName"
+            @companies-received="handleCompanyQuery"
+            @rendered="handleEuTaxoSearchBarRender"
+            class="pl-4"
           />
 
           <div
-              :class="[
-            pageScrolled && !searchBarToggled
-              ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'd-fixed-base', 'd-shadow-bottom']
-              : 'pl-4',
-          ]"
+            :class="[
+              pageScrolled && !searchBarToggled
+                ? [
+                    'col-12',
+                    'align-items-center',
+                    'grid',
+                    'bg-white',
+                    'd-fixed-below-tabnav',
+                    'd-fixed-base',
+                    'd-shadow-bottom',
+                  ]
+                : 'pl-4',
+            ]"
           >
             <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
             <PrimeButton
-                v-if="!searchBarToggled && pageScrolled"
-                name="search_bar_collapse"
-                icon="pi pi-search"
-                class="p-button-rounded surface-ground border-none m-2"
-                @click="toggleSearchBar"
+              v-if="!searchBarToggled && pageScrolled"
+              name="search_bar_collapse"
+              icon="pi pi-search"
+              class="p-button-rounded surface-ground border-none m-2"
+              @click="toggleSearchBar"
             >
               <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             </PrimeButton>
             <IndexTabs
-                ref="indexTabs"
-                :initIndex="firstDisplayedIndex"
-                @tab-click="toggleIndexTabs"
-                @companies-received="handleFilterByIndex"
+              ref="indexTabs"
+              :initIndex="firstDisplayedIndex"
+              @tab-click="toggleIndexTabs"
+              @companies-received="handleFilterByIndex"
             />
           </div>
         </MarginWrapper>
