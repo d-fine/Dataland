@@ -84,7 +84,7 @@ export default {
     };
   },
 
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     handleInput(inputEvent) {
       this.currentInput = inputEvent.target.value;
@@ -100,7 +100,7 @@ export default {
     },
     async queryCompany(companyName) {
       this.loading = true;
-      const resultsArray = await getCompanyDataForTaxonomyPage(companyName, "", false, this.getKeycloakInitPromise());
+      const resultsArray = await getCompanyDataForTaxonomyPage(companyName, "", false, this.getKeycloakPromise());
       this.$emit("companies-received", resultsArray);
       this.loading = false;
     },
@@ -111,7 +111,7 @@ export default {
         companyName.query,
         "",
         true,
-        this.getKeycloakInitPromise()
+        this.getKeycloakPromise()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       this.loading = false;

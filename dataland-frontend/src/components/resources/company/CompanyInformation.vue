@@ -43,12 +43,12 @@ export default {
       this.getCompanyInformation();
     },
   },
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise()
+          this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         this.company = await companyDataControllerApi.getCompanyById(this.companyID);
         this.companyInformation = this.company.data.companyInformation;

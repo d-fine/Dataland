@@ -17,10 +17,9 @@ describe("EuTaxoSearchBarTest", () => {
       global: {
         plugins: [router],
         provide: {
-          getKeycloakInitPromise() {
-            return "dummy";
-          },
-          keycloak_init: "dummy",
+          getKeycloakPromise() {
+            return Promise.resolve("I should be a Keycloak Object");
+          }
         },
       },
     });

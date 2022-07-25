@@ -22,10 +22,10 @@ import PrimeButton from "primevue/button";
 export default {
   name: "UserAuthenticationButtons",
   components: { PrimeButton },
-  inject: ["authenticated", "getKeycloakInitPromise"],
+  inject: ["authenticated", "getKeycloakPromise"],
   methods: {
     login() {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             const url = keycloak.createLoginUrl();
@@ -35,7 +35,7 @@ export default {
         .catch((error) => console.log("error: " + error));
     },
     logout() {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             keycloak.logout();

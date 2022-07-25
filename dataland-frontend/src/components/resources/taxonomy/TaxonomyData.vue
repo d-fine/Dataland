@@ -45,12 +45,12 @@ export default {
       this.getCompanyInformation();
     },
   },
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise()
+          this.getKeycloakPromise()
         ).getMetaDataControllerApi();
         this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData");
       } catch (error) {

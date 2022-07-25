@@ -107,12 +107,12 @@ export default {
       this.getCompanyEUDataset();
     },
   },
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyEUDataset() {
       try {
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise()
+          this.getKeycloakPromise()
         ).getEuTaxonomyDataControllerApi();
         const companyAssociatedData = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);
         this.dataSet = companyAssociatedData.data.data;

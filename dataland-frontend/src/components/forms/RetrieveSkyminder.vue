@@ -41,7 +41,7 @@ export default {
     model: {},
     response: null,
   }),
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     clearAll() {
       this.model = {};
@@ -52,7 +52,7 @@ export default {
       try {
         const inputArgs = Object.values(this.model);
         const skyminderControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise()
+          this.getKeycloakPromise()
         ).getSkyminderControllerApi();
         this.response = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {

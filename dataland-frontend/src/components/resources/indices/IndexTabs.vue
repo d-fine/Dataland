@@ -20,7 +20,7 @@ export default {
     },
   },
 
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
 
   computed: {
     model() {
@@ -37,7 +37,7 @@ export default {
 
   methods: {
     async filterByIndex(stockIndex) {
-      const resultsArray = await getCompanyDataForTaxonomyPage("", stockIndex, false, this.getKeycloakInitPromise());
+      const resultsArray = await getCompanyDataForTaxonomyPage("", stockIndex, false, this.getKeycloakPromise());
       this.$emit("companies-received", resultsArray);
     },
   },

@@ -48,12 +48,12 @@ export default {
   created() {
     this.queryCompany();
   },
-  inject: ["getKeycloakInitPromise"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise()
+          this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         console.log(companyResponse);
