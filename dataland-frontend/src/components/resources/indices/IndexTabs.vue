@@ -1,27 +1,25 @@
 <template>
-  <TabMenu :model="model" v-model:activeIndex="activeIndex">
-
-  </TabMenu>
+  <TabMenu class="d-indextabs" :model="model" v-model:activeIndex="activeIndex"></TabMenu>
 </template>
 
 <style>
-.p-tabmenu-nav {
+.d-indextabs .p-tabmenu-nav {
   position: relative;
   border: none !important;
 }
 
-.p-menuitem-link {
+.d-indextabs .p-menuitem-link {
   border: none !important;
 }
 
-.p-tabmenu-ink-bar {
+.d-indextabs .p-tabmenu-ink-bar {
   display: block !important;
   position: absolute !important;
   bottom: 0;
   height: 4px;
 }
 
-.p-tabmenu-ink-bar::after {
+.d-indextabs .p-tabmenu-ink-bar::after {
   display: block;
   margin-left: auto;
   margin-right: auto;
