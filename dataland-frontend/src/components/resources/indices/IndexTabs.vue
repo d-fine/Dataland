@@ -28,6 +28,10 @@
   height: 100%;
   background: #e67f3f;
 }
+
+.d-indextabs.p-tabmenu {
+  overflow-y: hidden !important;
+}
 </style>
 
 <script>
