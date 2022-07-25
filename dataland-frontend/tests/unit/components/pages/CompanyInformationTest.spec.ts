@@ -12,8 +12,12 @@ describe("CompanyInformation", () => {
     },
   });
 
-  it("checks field properties", () => {
+  it("checks initial data", () => {
     expect(wrapper.vm.getCompanyResponse).toBeDefined();
     expect(wrapper.vm.companyInformation).toBeDefined();
+  });
+
+  it("checks existence of required methods to communicate with backend", () => {
+    expect(wrapper.vm.getCompanyInformation()).toBeDefined();
   });
 });

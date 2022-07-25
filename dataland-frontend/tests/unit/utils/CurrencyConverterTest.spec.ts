@@ -1,7 +1,7 @@
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import { expect } from "@jest/globals";
 
-describe("nFormatter", () => {
+describe("Test CurrencyConverter", () => {
   it("verifies whether the implementation works correctly", () => {
     expect(convertCurrencyNumbersToNotationWithLetters(0, 1)).toEqual("0");
     expect(convertCurrencyNumbersToNotationWithLetters(1234, 1)).toEqual("1.2 K");

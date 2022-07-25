@@ -18,7 +18,7 @@ describe("RetrieveSkyminderTest", () => {
     },
   });
 
-  it("checks field properties", () => {
+  it("checks initial data", () => {
     expect(wrapper.vm.skyminderSearchParams).toEqual({
       countryCode: "SomeCountryCode",
       name: "SomeCountryName",

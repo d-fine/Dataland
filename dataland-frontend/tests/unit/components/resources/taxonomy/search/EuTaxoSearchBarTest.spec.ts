@@ -22,10 +22,15 @@ describe("EuTaxoSearchBarTest", () => {
     });
   });
 
-  it("checks field properties", () => {
+  it("checks initial data", () => {
     expect(wrapper.vm.autocompleteArray).toBeDefined();
     expect(wrapper.vm.autocompleteArrayDisplayed).toBeDefined();
     expect(wrapper.vm.loading).toBeDefined();
-    expect(wrapper.vm.modelValue).toBeDefined();
+    expect(wrapper.vm.currentInput).toBeDefined();
+  });
+
+  it("checks existence of required methods to communicate with backend", () => {
+    expect(wrapper.vm.queryCompany("someCompanyName")).toBeDefined();
+    expect(wrapper.vm.searchCompanyName("someCompanyName")).toBeDefined();
   });
 });
