@@ -23,8 +23,8 @@
       <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
         Remove the last identifier
       </Button>
-      <template v-if="processed">
-        <SuccessUpload v-if="response" msg="company" :messageCount="messageCount" :data="response.data" />
+      <template v-if="postCompanyCallProcessed">
+        <SuccessUpload v-if="postCompanyResponse" msg="company" :messageCount="messageCount" :data="postCompanyResponse.data" />
         <FailedUpload v-else msg="Company" :messageCount="messageCount" />
       </template>
     </template>
@@ -52,11 +52,11 @@ const createCompany = {
   components: { FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload },
 
   data: () => ({
-    processed: false,
+    postCompanyCallProcessed: false,
     model: {},
     companyInformationSchema: companyInformationSchemaGenerator.generate(),
     companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
-    response: null,
+    postCompanyResponse: null,
     messageCount: 0,
     identifierListSize: 1,
   }),
@@ -64,19 +64,19 @@ const createCompany = {
   methods: {
     async postCompanyData() {
       try {
-        this.processed = false;
+        this.postCompanyCallProcessed = false;
         this.messageCount++;
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakInitPromise(),
           this.keycloak_init
         ).getCompanyDataControllerApi();
-        this.response = await companyDataControllerApi.postCompany(this.model);
+        this.postCompanyResponse = await companyDataControllerApi.postCompany(this.model);
         this.$formkit.reset("createCompanyForm");
       } catch (error) {
         console.error(error);
-        this.response = null;
+        this.postCompanyResponse = null;
       } finally {
-        this.processed = true;
+        this.postCompanyCallProcessed = true;
       }
     },
   },
