@@ -29,7 +29,6 @@ export default {
   components: { TaxonomyPanel },
   data() {
     return {
-      response: null,
       metaDataInfo: null,
     };
   },
