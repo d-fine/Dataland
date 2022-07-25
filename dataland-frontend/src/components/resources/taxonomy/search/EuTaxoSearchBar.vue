@@ -84,7 +84,7 @@ export default {
     };
   },
 
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakInitPromise"],
   methods: {
     handleInput(inputEvent) {
       this.currentInput = inputEvent.target.value;
@@ -105,7 +105,6 @@ export default {
         "",
         false,
         this.getKeycloakInitPromise(),
-        this.keycloak_init
       );
       this.$emit("companies-received", resultsArray);
       this.loading = false;
@@ -118,7 +117,6 @@ export default {
         "",
         true,
         this.getKeycloakInitPromise(),
-        this.keycloak_init
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       this.loading = false;

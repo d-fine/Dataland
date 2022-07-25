@@ -7,11 +7,9 @@ import {
 } from "@/../build/clients/backend/api";
 export class ApiClientProvider {
   keycloak_init_promise: any;
-  keycloak_init: any;
 
-  constructor(keycloak_init_promise: any, keycloak_init: any) {
+  constructor(keycloak_init_promise: any) {
     this.keycloak_init_promise = keycloak_init_promise;
-    this.keycloak_init = keycloak_init;
   }
 
   async getConfiguration() {

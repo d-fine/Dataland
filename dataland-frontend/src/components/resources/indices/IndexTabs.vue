@@ -20,7 +20,7 @@ export default {
     },
   },
 
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakInitPromise"],
 
   computed: {
     model() {
@@ -42,7 +42,6 @@ export default {
         stockIndex,
         false,
         this.getKeycloakInitPromise(),
-        this.keycloak_init
       );
       this.$emit("companies-received", resultsArray);
     },

@@ -42,12 +42,10 @@ export default {
         });
         this.keycloak_init_promise_finished = false;
       }
-      return this.keycloak_init_promise;
     },
   },
   provide() {
     return {
-      keycloak_init: this.keycloak_init,
       getKeycloakInitPromise: () => {
         return this.keycloak_init_promise;
       },

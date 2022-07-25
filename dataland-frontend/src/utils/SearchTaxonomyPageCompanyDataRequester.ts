@@ -47,7 +47,6 @@ function mapStoredCompanyToTaxonomyPage(responseData: Array<StoredCompany>): Arr
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
  * @param {any} getKeycloakInitPromise    gets the resulting promise from the keycloak_init() method without actually triggering it
- * @param {any} keycloak_init    actually triggers the keycloak_init() and gets the returned promise
  */
 export async function getCompanyDataForTaxonomyPage(
   searchString: string,
@@ -64,13 +63,11 @@ export async function getCompanyDataForTaxonomyPage(
     | "Dax50Esg",
   onlyCompanyNames: boolean,
   getKeycloakInitPromise: any,
-  keycloak_init: any
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
   try {
     const companyDataControllerApi = await new ApiClientProvider(
       getKeycloakInitPromise,
-      keycloak_init
     ).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
     mappedResponse = mapStoredCompanyToTaxonomyPage(response.data);

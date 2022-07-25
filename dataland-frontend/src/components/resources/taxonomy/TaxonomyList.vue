@@ -49,7 +49,6 @@ export default {
     async getTaxoData() {
       const euTaxonomyDataControllerApi = await new ApiClientProvider(
         this.getKeycloakInitPromise(),
-        this.keycloak_init
       ).getEuTaxonomyDataControllerApi();
       this.response = await euTaxonomyDataControllerApi.getData();
     },

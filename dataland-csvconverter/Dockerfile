@@ -1,5 +1,5 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
-COPY ./CompanyInformationWithEuTaxonomyData.json /storedData/CompanyInformationWithEuTaxonomyData.json
+RUN apt-get update && apt-get upgrade -y && apt-get install samba && apt-get clean
 
-CMD cp /storedData/*.json /testData
+CMD ["tail","-f","/dev/null"]
