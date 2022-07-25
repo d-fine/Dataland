@@ -1,10 +1,13 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
+    <TopTabNavigationMenu class="d-fixed-below-header" :tabs="['EU Taxonomy']" />
+    <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the tab nav -->
+    <div class="h-2rem"></div>
     <TheContent>
       <div
         class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
+        :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
         <SearchTaxonomyHeader />
@@ -20,7 +23,7 @@
           <div
             :class="[
               pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed']
+                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed']
                 : '',
             ]"
           >
@@ -48,6 +51,21 @@
     </TheContent>
   </AuthenticationWrapper>
 </template>
+
+<style scoped>
+.d-fixed-below-header {
+  position: fixed;
+  top: 4rem;
+  z-index: 100;
+}
+
+.d-fixed-below-tabnav {
+  position: fixed;
+  top: 6.5rem;
+  z-index: 100;
+}
+</style>
+
 <script>
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import TheHeader from "@/components/structure/TheHeader";
@@ -60,12 +78,14 @@ import PrimeButton from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
+import TopTabNavigationMenu from "@/components/menus/TopTabNavigationMenu";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
   name: "SearchTaxonomy",
   components: {
+    TopTabNavigationMenu,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
