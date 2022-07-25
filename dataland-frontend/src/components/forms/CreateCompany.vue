@@ -23,8 +23,13 @@
       <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
         Remove the last identifier
       </Button>
-      <template v-if="postCompanyCallProcessed">
-        <SuccessUpload v-if="postCompanyResponse" msg="company" :messageCount="messageCount" :data="postCompanyResponse.data" />
+      <template v-if="postCompanyProcessed">
+        <SuccessUpload
+          v-if="postCompanyResponse"
+          msg="company"
+          :messageCount="messageCount"
+          :data="postCompanyResponse.data"
+        />
         <FailedUpload v-else msg="Company" :messageCount="messageCount" />
       </template>
     </template>
@@ -52,7 +57,7 @@ const createCompany = {
   components: { FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload },
 
   data: () => ({
-    postCompanyCallProcessed: false,
+    postCompanyProcessed: false,
     model: {},
     companyInformationSchema: companyInformationSchemaGenerator.generate(),
     companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
@@ -64,7 +69,7 @@ const createCompany = {
   methods: {
     async postCompanyData() {
       try {
-        this.postCompanyCallProcessed = false;
+        this.postCompanyProcessed = false;
         this.messageCount++;
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakInitPromise(),
@@ -76,7 +81,7 @@ const createCompany = {
         console.error(error);
         this.postCompanyResponse = null;
       } finally {
-        this.postCompanyCallProcessed = true;
+        this.postCompanyProcessed = true;
       }
     },
   },

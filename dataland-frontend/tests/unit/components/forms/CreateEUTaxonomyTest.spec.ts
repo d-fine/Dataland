@@ -10,11 +10,18 @@ describe("CreateCompanyTest", () => {
     },
   });
 
-  it("checks field properties", () => {
-    expect(wrapper.vm.model).toBeDefined();
+  it("checks initial data", () => {
+    expect(wrapper.vm.innerClass).toBeDefined();
+    expect(wrapper.vm.inputClass).toBeDefined();
+    expect(wrapper.vm.postEUDataProcessed).toEqual(false);
+    expect(wrapper.vm.messageCount).toEqual(0);
+    expect(wrapper.vm.model).toEqual({});
+    expect(wrapper.vm.postEUDataResponse).toBeNull();
+    expect(wrapper.vm.allExistingCompanyIDs.length).toEqual(0);
   });
 
-  it("checks postCompanyData()", async () => {
+  it("checks existence of required methods", () => {
+    expect(wrapper.vm.getAllExistingCompanyIDs()).toBeDefined();
     expect(wrapper.vm.postEUData()).toBeDefined();
   });
 });
