@@ -1,8 +1,5 @@
 <template>
-  <div
-    @click="toggle"
-    class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle"
-  >
+  <div @click="toggle" class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle">
     <img
       ref="profile-picture"
       class="d-profile-picture"
