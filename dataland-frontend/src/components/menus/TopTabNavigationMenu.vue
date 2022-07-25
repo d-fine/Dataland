@@ -14,7 +14,6 @@
 </template>
 
 <style scoped>
-
 .d-top-tab-nav-item-active {
   cursor: default !important;
   color: #e67f3f !important;

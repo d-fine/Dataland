@@ -17,7 +17,7 @@
     </div>
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
-  <div class="h-4rem"/>
+  <div class="h-4rem" />
 </template>
 <script>
 import UserProfileDropDown from "@/components/general/UserProfileDropDown";
