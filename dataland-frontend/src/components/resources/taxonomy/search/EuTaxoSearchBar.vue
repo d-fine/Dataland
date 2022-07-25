@@ -22,8 +22,8 @@
             panelClass="d-taxo-searchbar-panel"
           >
             <template #item="slotProps">
-              <i class="pi pi-search pl-3 pr-3" aria-hidden="true"/>
-              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="this.modelValue"/>
+              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="this.modelValue" />
             </template>
             <template #footer>
               <ul

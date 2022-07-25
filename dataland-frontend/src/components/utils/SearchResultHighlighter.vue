@@ -1,6 +1,6 @@
 <template>
-  <template  v-for="(element, index) in splitString" :key="index">
-    <span :class="element.highlight ? 'font-semibold' : 'font-normal'">{{element.text}}</span>
+  <template v-for="(element, index) in splitString" :key="index">
+    <span :class="element.highlight ? 'font-semibold' : 'font-normal'">{{ element.text }}</span>
   </template>
 </template>
 
@@ -11,7 +11,7 @@ span {
 </style>
 
 <script>
-import {splitStringBySearchMatch} from "@/utils/StringHighlighter";
+import { splitStringBySearchMatch } from "@/utils/StringHighlighter";
 
 export default {
   name: "SearchResultHighlighter",
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     recomputeSplitString() {
-      this.splitString = splitStringBySearchMatch(this.text, this.searchString)
+      this.splitString = splitStringBySearchMatch(this.text, this.searchString);
     },
   },
   created() {
@@ -40,7 +40,7 @@ export default {
     text: function () {
       this.recomputeSplitString();
     },
-    searchString: function() {
+    searchString: function () {
       this.recomputeSplitString();
     },
   },
