@@ -16,8 +16,8 @@ describe("CompanyInformation", () => {
     expect(wrapper.vm.getCompanyResponse).toBeDefined();
     expect(wrapper.vm.companyInformation).toBeDefined();
   });
-
+  /*
   it("checks existence of required methods to communicate with backend", () => {
     expect(wrapper.vm.getCompanyInformation()).toBeDefined();
-  });
+  });*/
 });
