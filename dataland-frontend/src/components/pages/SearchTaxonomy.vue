@@ -1,13 +1,13 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TopTabNavigationMenu class="d-fixed-below-header" :tabs="['EU Taxonomy']" />
+    <TopTabNavigationMenu class="d-fixed-below-header d-fixed-base" :tabs="['EU Taxonomy']" />
     <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the tab nav -->
     <div class="h-2rem"></div>
     <TheContent class="pl-0">
       <div
         class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav', 'fixed'] : '']"
+        :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav-toggled', 'd-fixed-base'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
         <SearchTaxonomyHeader class="pl-2" />
@@ -23,7 +23,7 @@
         <div
           :class="[
             pageScrolled && !searchBarToggled
-              ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'fixed', 'd-shadow-bottom']
+              ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-fixed-below-tabnav', 'd-fixed-base', 'd-shadow-bottom']
               : 'pl-4',
           ]"
         >
@@ -56,16 +56,21 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
 }
 
-.d-fixed-below-header {
+.d-fixed-base {
   position: fixed;
-  top: 4rem;
   z-index: 100;
 }
 
+.d-fixed-below-header {
+  top: 4rem;
+}
+
+.d-fixed-below-tabnav-toggled {
+  top: 6rem;
+}
+
 .d-fixed-below-tabnav {
-  position: fixed;
   top: 6.5rem;
-  z-index: 100;
 }
 </style>
 
