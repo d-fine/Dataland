@@ -46,4 +46,6 @@ server {
 
     # additional config
     include utils/general.conf;
+    include utils/error.conf;
+
 }
