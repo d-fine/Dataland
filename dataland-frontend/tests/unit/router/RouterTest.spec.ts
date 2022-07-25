@@ -23,6 +23,8 @@ describe("routerTest", () => {
     expect(routesWrapper.text()).toBeDefined();
   });
 
+  /*
+
   it("checks if the router pushes to Welcome page as expected", async () => {
     await router.push("/");
     await router.isReady();
@@ -36,4 +38,5 @@ describe("routerTest", () => {
     await router.isReady();
     expect(mountAppWithRouter(router).html()).toContain("Search EU Taxonomy data");
   });
+   */
 });
