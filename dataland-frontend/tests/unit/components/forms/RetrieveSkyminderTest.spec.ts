@@ -25,8 +25,4 @@ describe("RetrieveSkyminderTest", () => {
     });
     expect(wrapper.vm.skyminderSearchResponse).toBeNull();
   });
-
-  it("checks existence of required methods to communicate with backend", () => {
-    expect(wrapper.vm.executeSkyminderSearch()).toBeDefined();
-  });
 });
