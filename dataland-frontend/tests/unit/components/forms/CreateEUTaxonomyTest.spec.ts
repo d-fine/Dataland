@@ -20,7 +20,7 @@ describe("CreateCompanyTest", () => {
     expect(wrapper.vm.allExistingCompanyIDs.length).toEqual(0);
   });
 
-  it("checks existence of required methods", () => {
+  it("checks existence of required methods to communicate with backend", () => {
     expect(wrapper.vm.getAllExistingCompanyIDs()).toBeDefined();
     expect(wrapper.vm.postEUData()).toBeDefined();
   });

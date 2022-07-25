@@ -20,9 +20,7 @@ describe("CreateCompanyTest", () => {
     expect(wrapper.vm.identifierListSize).toEqual(1);
   });
 
-
-  it("checks existence of required methods", () => {
+  it("checks existence of required methods to communicate with backend", () => {
     expect(wrapper.vm.postCompanyData()).toBeDefined();
   });
-
 });

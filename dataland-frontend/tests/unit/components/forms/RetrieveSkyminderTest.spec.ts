@@ -8,7 +8,7 @@ describe("RetrieveSkyminderTest", () => {
     data() {
       return {
         skyminderSearchParams: {
-          code: "SomeCountryCode",
+          countryCode: "SomeCountryCode",
           name: "SomeCountryName",
         },
       };
@@ -19,11 +19,14 @@ describe("RetrieveSkyminderTest", () => {
   });
 
   it("checks field properties", () => {
-    expect(wrapper.vm.skyminderSearchParams).toBeDefined();
-    expect(wrapper.vm.skyminderSearchResponse).toBeDefined();
+    expect(wrapper.vm.skyminderSearchParams).toEqual({
+      countryCode: "SomeCountryCode",
+      name: "SomeCountryName",
+    });
+    expect(wrapper.vm.skyminderSearchResponse).toBeNull();
   });
 
-  it("checks postCompanyData()", async () => {
-    expect(wrapper.vm.getSkyminderByName()).toBeDefined();
+  it("checks existence of required methods to communicate with backend", () => {
+    expect(wrapper.vm.executeSkyminderSearch()).toBeDefined();
   });
 });

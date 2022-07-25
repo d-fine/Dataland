@@ -9,13 +9,13 @@
         :submit-attrs="{
           name: 'getSkyminderData',
         }"
-        @submit="getSkyminderByName"
+        @submit="executeSkyminderSearch"
       >
         <FormKit type="text" name="code" validation="required" label="Country Code" />
         <FormKit type="text" name="name" validation="required" label="Company Name" />
       </FormKit>
       <br />
-      <PrimeButton @click="clearAll" label="Clear" />
+      <PrimeButton @click="clearSearch" label="Clear" />
       <div v-if="skyminderSearchResponse" class="col m12">
         <SkyminderTable
           :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
@@ -43,12 +43,12 @@ export default {
   }),
   inject: ["getKeycloakInitPromise", "keycloak_init"],
   methods: {
-    clearAll() {
+    clearSearch() {
       this.skyminderSearchParams = {};
       this.skyminderSearchResponse = null;
     },
 
-    async getSkyminderByName() {
+    async executeSkyminderSearch() {
       try {
         const inputArgs = Object.values(this.skyminderSearchParams);
         const skyminderControllerApi = await new ApiClientProvider(
