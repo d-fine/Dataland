@@ -28,11 +28,4 @@ describe("EuTaxoSearchBarTest", () => {
     expect(wrapper.vm.loading).toBeDefined();
     expect(wrapper.vm.modelValue).toBeDefined();
   });
-
-  it("checks queryCompany()", async () => {
-    jest.spyOn(console, "error");
-    expect(wrapper.vm.queryCompany("someCompanyToSearchFor")).toBeDefined();
-    await wrapper.vm.queryCompany("someCompanyToSearchFor");
-    expect(console.error).toHaveBeenCalled();
-  });
 });

@@ -17,11 +17,4 @@ describe("CreateCompanyTest", () => {
     expect(wrapper.vm.response).toBeDefined();
     expect(wrapper.vm.messageCount).toBeDefined();
   });
-
-  it("checks postCompanyData()", async () => {
-    jest.spyOn(console, "error");
-    expect(wrapper.vm.postCompanyData()).toBeDefined();
-    await wrapper.vm.postCompanyData();
-    expect(console.error).toHaveBeenCalled();
-  });
 });

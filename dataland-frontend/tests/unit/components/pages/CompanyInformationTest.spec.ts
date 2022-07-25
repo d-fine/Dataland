@@ -16,11 +16,4 @@ describe("CompanyInformation", () => {
     expect(wrapper.vm.getCompanyResponse).toBeDefined();
     expect(wrapper.vm.companyInformation).toBeDefined();
   });
-
-  it("checks getCompanyInformation()", async () => {
-    jest.spyOn(console, "error");
-    expect(wrapper.vm.getCompanyInformation()).toBeDefined();
-    await wrapper.vm.getCompanyInformation();
-    expect(console.error).toHaveBeenCalled();
-  });
 });
