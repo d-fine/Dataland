@@ -1,14 +1,5 @@
-@font-face {
-  font-family: 'IBMPlexSans';
-  src: local('IBMPlexSans'),url("../fonts/IBMPlexSans-Regular.ttf") format('truetype');
-}
-@font-face {
-  font-family: "IBMPlexSans";
-  src: local('IBMPlexSans'),url("../fonts/IBMPlexSans-Bold.ttf") format('truetype');
-  font-weight: bold;
-}
 html {
-  font-family: 'IBMPlexSans', 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
