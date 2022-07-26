@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Sorry an error occurred</title>
 </head>
-<body style="margin:0px;">
-<div class="bg-black" style="height:4rem" style="padding-top:0rem; padding-left:0rem;">
-    <div style="padding-left: 1rem; padding-top: 1rem;">
+<body class="body-margin">
+<div class="bg-class">
+    <div class="logo-padding">
         <svg width="170" height="25" viewBox="0 0 170 25" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_8_619)">
                 <path d="M37.0713 23.7735L35.3734 18.1404H27.4613L25.7634 23.7735H20.5339L28.3442 0.0874329H34.7282L42.4366 23.7735H37.0713ZM31.4683 4.77034H31.2985L28.6838 13.7629H34.117L31.4683 4.77034Z" fill="#E67F3F"/>
@@ -26,15 +26,28 @@
         </svg>
     </div>
 </div>
-<div style="background-color:#FFFFFF;" class="alignment">
+<div class="alignment">
     <h2>Sorry an error occurred!</h2>
     <p>Whoops! Something went wrong!</p>
     <p>Go back to <a href="/" class="text-primary" title="back to landing page">Dataland</a></p>
 </div>
 </body>
-<style scoped>
-    .bg-black{
+<style>
+    *{
+        font-family:'Helvetica Neue', Arial, sans-serif;
+    }
+    .bg-class{
         background-color:#0B191F;
+        height:4rem;
+        padding-top:0rem;
+        padding-left:0rem;
+    }
+    .body-margin{
+        margin:0;
+    }
+    .logo-padding{
+        padding-left: 1rem;
+        padding-top: 1rem;
     }
     .text-primary{
         color:#E67F3F;
