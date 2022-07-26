@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <TheHeader :noContent="true" />
   <TheContent>
     <h2>Sorry an error occurred!</h2>
     <p>Whoops! Something went wrong!</p>

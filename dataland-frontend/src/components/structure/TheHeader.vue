@@ -11,8 +11,11 @@
         COMPANY DATA SAMPLE
       </span>
     </div>
+    <div class="col-4">
+      <span v-if="noContent"> </span>
+    </div>
 
-    <div class="col-4 flex justify-content-end" v-if="!sampleData">
+    <div class="col-4 flex justify-content-end" v-if="!sampleData && !noContent">
       <UserProfileDropDown />
     </div>
   </div>
@@ -26,6 +29,10 @@ export default {
   components: { UserProfileDropDown },
   props: {
     sampleData: {
+      type: Boolean,
+      default: false,
+    },
+    noContent: {
       type: Boolean,
       default: false,
     },
