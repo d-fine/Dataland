@@ -13,11 +13,11 @@
 <script>
 export default {
   name: "AuthenticationWrapper",
-  inject: ["authenticated", "getKeycloakInitPromise"],
+  inject: ["authenticated", "getKeycloakPromise"],
 
   mounted: function () {
     if (!this.authenticated) {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             return keycloak.login();

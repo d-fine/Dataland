@@ -5,6 +5,7 @@
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany } from "@/../build/clients/backend/api";
+import Keycloak from "keycloak-js";
 
 /**
  * retrieve the value of the Perm Id of a company
@@ -42,12 +43,12 @@ function mapStoredCompanyToTaxonomyPage(responseData: Array<StoredCompany>): Arr
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the Taxonomy Page
  *
- * @param  {string} searchString      the string that is used to search companies
- * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex     choose one to get companies in that index
+ * @param  {string} searchString           the string that is used to search companies
+ * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex
+ *                                         choose one to get companies in that index
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
- * @param {any} getKeycloakInitPromise    gets the resulting promise from the keycloak_init() method without actually triggering it
- * @param {any} keycloak_init    actually triggers the keycloak_init() and gets the returned promise
+ * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  */
 export async function getCompanyDataForTaxonomyPage(
   searchString: string,
@@ -63,15 +64,11 @@ export async function getCompanyDataForTaxonomyPage(
     | "Hdax"
     | "Dax50Esg",
   onlyCompanyNames: boolean,
-  getKeycloakInitPromise: any,
-  keycloak_init: any
+  keycloakPromise: Promise<Keycloak>
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
   try {
-    const companyDataControllerApi = await new ApiClientProvider(
-      getKeycloakInitPromise,
-      keycloak_init
-    ).getCompanyDataControllerApi();
+    const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
     mappedResponse = mapStoredCompanyToTaxonomyPage(response.data);
   } catch (error) {

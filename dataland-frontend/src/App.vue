@@ -11,48 +11,44 @@ export default {
   data() {
     return {
       keycloak: null,
-      keycloak_init_promise: null,
-      keycloak_init_promise_finished: true,
-      keycloak_authenticated: null,
+      keycloakPromise: null,
+      keycloakPromiseFinished: true,
+      keycloakAuthenticated: null,
     };
   },
   methods: {
-    keycloak_init() {
-      console.log("keycloak_init");
-      if (this.keycloak_init_promise_finished) {
-        console.log("keycloak_init promise finished...");
-        this.keycloak_init_promise = this.keycloak
+    init_keycloak() {
+      if (this.keycloakPromiseFinished) {
+        this.keycloakPromise = this.keycloak
           .init({
             onLoad: "check-sso",
             silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
           })
           .then((authenticated) => {
-            this.keycloak_authenticated = authenticated;
+            this.keycloakAuthenticated = authenticated;
             return authenticated;
           })
           .catch((error) => {
             console.log("Error in init keycloak ", error);
-            this.keycloak_authenticated = false;
+            this.keycloakAuthenticated = false;
           })
           .then(() => {
             return this.keycloak;
           });
-        this.keycloak_init_promise.finally(() => {
-          this.keycloak_init_promise_finished = true;
+        this.keycloakPromise.finally(() => {
+          this.keycloakPromiseFinished = true;
         });
-        this.keycloak_init_promise_finished = false;
+        this.keycloakPromiseFinished = false;
       }
-      return this.keycloak_init_promise;
     },
   },
   provide() {
     return {
-      keycloak_init: this.keycloak_init,
-      getKeycloakInitPromise: () => {
-        return this.keycloak_init_promise;
+      getKeycloakPromise: () => {
+        return this.keycloakPromise;
       },
       authenticated: computed(() => {
-        return this.keycloak_authenticated;
+        return this.keycloakAuthenticated;
       }),
     };
   },
@@ -64,7 +60,7 @@ export default {
       onLoad: "login-required",
     };
     this.keycloak = new Keycloak(initOptions);
-    this.keycloak_init();
+    this.init_keycloak();
   },
 };
 </script>

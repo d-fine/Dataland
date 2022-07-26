@@ -5,17 +5,16 @@ import {
   MetaDataControllerApi,
   SkyminderControllerApi,
 } from "@/../build/clients/backend/api";
+import Keycloak from "keycloak-js";
 export class ApiClientProvider {
-  keycloak_init_promise: any;
-  keycloak_init: any;
+  keycloakPromise: Promise<Keycloak>;
 
-  constructor(keycloak_init_promise: any, keycloak_init: any) {
-    this.keycloak_init_promise = keycloak_init_promise;
-    this.keycloak_init = keycloak_init;
+  constructor(keycloakPromise: Promise<Keycloak>) {
+    this.keycloakPromise = keycloakPromise;
   }
 
-  async getConfiguration() {
-    const keycloak = await this.keycloak_init_promise;
+  async getConfiguration(): Promise<Configuration | undefined> {
+    const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
       const refreshed = await keycloak.updateToken(5);
       if (refreshed) {
@@ -31,24 +30,26 @@ export class ApiClientProvider {
     }
   }
 
-  async getConstructedApi<T>(constructor: new (configuration: Configuration | undefined, basePath: string) => T) {
+  async getConstructedApi<T>(
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+  ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, `${process.env.VUE_APP_BASE_API_URL}` + `${process.env.VUE_APP_API}`);
   }
 
-  async getCompanyDataControllerApi() {
+  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApi> {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
 
-  async getEuTaxonomyDataControllerApi() {
+  async getEuTaxonomyDataControllerApi(): Promise<EuTaxonomyDataControllerApi> {
     return this.getConstructedApi(EuTaxonomyDataControllerApi);
   }
 
-  async getMetaDataControllerApi() {
+  async getMetaDataControllerApi(): Promise<MetaDataControllerApi> {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
-  async getSkyminderControllerApi() {
+  async getSkyminderControllerApi(): Promise<SkyminderControllerApi> {
     return this.getConstructedApi(SkyminderControllerApi);
   }
 }
