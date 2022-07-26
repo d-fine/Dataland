@@ -3,6 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
 import { expect } from "@jest/globals";
+import { getInjectedKeycloakObjectsForTest } from "../../../../TestUtils";
 
 describe("EuTaxoSearchBarTest", () => {
   let wrapper: any;
@@ -16,26 +17,15 @@ describe("EuTaxoSearchBarTest", () => {
     wrapper = shallowMount(EuTaxoSearchBar, {
       global: {
         plugins: [router],
-        provide: {
-          getKeycloakPromise() {
-            return Promise.resolve("I should be a Keycloak Object");
-          },
-        },
+        provide: getInjectedKeycloakObjectsForTest(),
       },
     });
   });
 
-  it("checks field properties", () => {
+  it("checks initial data", () => {
     expect(wrapper.vm.autocompleteArray).toBeDefined();
     expect(wrapper.vm.autocompleteArrayDisplayed).toBeDefined();
     expect(wrapper.vm.loading).toBeDefined();
-    expect(wrapper.vm.modelValue).toBeDefined();
-  });
-
-  it("checks queryCompany()", async () => {
-    jest.spyOn(console, "error");
-    expect(wrapper.vm.queryCompany("someCompanyToSearchFor")).toBeDefined();
-    await wrapper.vm.queryCompany("someCompanyToSearchFor");
-    expect(console.error).toHaveBeenCalled();
+    expect(wrapper.vm.currentInput).toBeDefined();
   });
 });

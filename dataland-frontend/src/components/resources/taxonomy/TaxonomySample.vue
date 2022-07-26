@@ -13,7 +13,7 @@
 
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import CompanyInformation from "@/components/resources/company/CompanyInformation";
+import CompanyInformation from "@/components/pages/CompanyInformation";
 import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 
 export default {

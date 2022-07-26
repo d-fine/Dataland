@@ -1,8 +1,8 @@
 <template>
   <div
-    @click="toggleDropdownMenu"
     class="flex align-items-center d-drop-down-toggle"
-    name="profile-picture-dropdown-toggle"
+    id="profile-picture-dropdown-toggle"
+    @click="toggleDropdownMenu"
   >
     <img
       ref="profile-picture"
