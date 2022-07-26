@@ -93,11 +93,20 @@ describe("Search Taxonomy", function () {
     });
   });
 
+  it("Check if the autocomplete entries are highlighted", () => {
+    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.intercept("**/api/companies*").as("searchCompany");
+    cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("-");
+    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+      cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("-").should("exist");
+    });
+  });
+
   it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("b");
-    cy.get(".p-autocomplete-item").contains("View all results.").click();
+    cy.get(".p-autocomplete-item").contains("View all results").click();
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
       cy.verifyTaxonomySearchResultTable();
       cy.url().should("include", "/searchtaxonomy?input=b");

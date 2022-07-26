@@ -1,6 +1,5 @@
 <template>
   <div class="d-content col-12">
-    <br />
     <slot> </slot>
   </div>
 </template>

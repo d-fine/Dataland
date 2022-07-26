@@ -1,13 +1,13 @@
 <template>
   <div
     @click="toggleDropdownMenu"
-    class="max-w-full max-h-full flex justify-content-center d-drop-down-toggle"
+    class="flex align-items-center d-drop-down-toggle"
     name="profile-picture-dropdown-toggle"
   >
     <img
       ref="profile-picture"
       class="d-profile-picture"
-      src="@/assets/images/logos/favicon-32x32.png"
+      src="@/assets/images/elements/default_user_icon.svg"
       alt="User profile picture"
       referrerpolicy="no-referrer"
     />
@@ -18,13 +18,13 @@
     :model="dropdownMenuItems"
     :popup="true"
     style="transform: translate(0px, 1rem)"
-    class="text-primary"
+    class="text-primary surface-900 p-0"
   >
     <template #item="{ item }">
-      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="logoutViaDropdown" :id="item.id"
-        ><span class="p-menuitem-icon text-primary" :class="item.icon"></span
-        ><span class="p-menuitem-text text-primary">{{ item.label }}</span></a
-      >
+      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
+        <span class="p-menuitem-icon material-icons text-primary font-semibold">{{ item.icon }}</span>
+        <span class="p-menuitem-text text-primary font-semibold">{{ item.label }}</span>
+      </a>
     </template>
   </PrimeMenu>
 </template>
@@ -40,9 +40,15 @@ export default {
     return {
       dropdownMenuItems: [
         {
-          label: "Logout",
-          icon: "pi pi-sign-out",
+          label: "USER SETTINGS",
+          icon: "settings",
+          clickAction: this.gotoUserSettings,
+        },
+        {
+          label: "LOG OUT",
+          icon: "logout",
           id: "profile-picture-dropdown-toggle",
+          clickAction: this.logoutViaDropdown,
         },
       ],
     };
@@ -61,8 +67,16 @@ export default {
         })
         .catch((error) => console.log("error: " + error));
     },
+    gotoUserSettings() {
+      this.getKeycloakPromise()
+        .then((keycloak) => {
+          if (keycloak.authenticated) {
+            keycloak.accountManagement();
+          }
+        })
+        .catch((error) => console.log("error: " + error));
+    },
   },
-
   created() {
     this.getKeycloakPromise()
       .then((keycloak) => {
@@ -82,12 +96,12 @@ export default {
 
 .d-profile-picture {
   border-radius: 50%;
-  height: 2rem;
+  height: 2.5rem;
 }
 
 .d-triangle-down {
-  height: 0.5rem;
-  margin-top: 1rem;
+  width: 0.625rem;
   margin-left: 0.5rem;
+  margin-right: 1rem;
 }
 </style>
