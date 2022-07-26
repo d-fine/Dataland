@@ -68,7 +68,7 @@ export default {
         .catch((error) => console.log("error: " + error));
     },
     gotoUserSettings() {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             keycloak.accountManagement();
