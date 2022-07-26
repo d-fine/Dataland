@@ -72,7 +72,7 @@ export default {
     filteredCompaniesBasic: null,
     additionalCompanies: null,
   }),
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyByName(all = false) {
       try {
@@ -81,8 +81,7 @@ export default {
           this.model.companyName = "";
         }
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
+          this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
       } catch (error) {

@@ -9,7 +9,7 @@ describe("UserProfileDropDownTest", () => {
     components: { UserProfileDropDown },
     provide: {
       authenticated: true,
-      getKeycloakInitPromise() {
+      getKeycloakPromise() {
         return Promise.resolve({
           authenticated: true,
           idTokenParsed: {
