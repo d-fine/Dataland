@@ -1,11 +1,12 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
+    <TopTabNavigationMenu :tabs="['EU Taxonomy']" />
     <TheContent>
-      <MarginWrapper class="text-left">
+      <MarginWrapper class="text-left mt-2">
         <BackButton />
+        <EuTaxoSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
-      <EuTaxoSearchBar v-model="currentInput" @companies-received="handleQueryCompany" />
       <TaxonomySample :companyID="companyID" />
     </TheContent>
   </AuthenticationWrapper>
@@ -19,6 +20,7 @@ import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
+import TopTabNavigationMenu from "@/components/menus/TopTabNavigationMenu";
 
 export default {
   name: "CompanyTaxonomy",
@@ -30,6 +32,7 @@ export default {
     MarginWrapper,
     EuTaxoSearchBar,
     AuthenticationWrapper,
+    TopTabNavigationMenu,
   },
   data() {
     return {

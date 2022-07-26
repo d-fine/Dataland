@@ -1,13 +1,16 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
+    <TopTabNavigationMenu class="d-fixed-below-header d-fixed-base" :tabs="['EU Taxonomy']" />
+    <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the tab nav -->
+    <div class="h-2rem"></div>
+    <TheContent class="pl-0">
       <div
         class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
+        :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav-toggled', 'd-fixed-base'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <SearchTaxonomyHeader />
+        <SearchTaxonomyHeader class="pl-4" />
         <MarginWrapper>
           <EuTaxoSearchBar
             v-model="currentInput"
@@ -15,13 +18,22 @@
             :taxoSearchBarName="taxoSearchBarName"
             @companies-received="handleCompanyQuery"
             @rendered="handleEuTaxoSearchBarRender"
+            class="pl-4"
           />
 
           <div
             :class="[
               pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed']
-                : '',
+                ? [
+                    'col-12',
+                    'align-items-center',
+                    'grid',
+                    'bg-white',
+                    'd-fixed-below-tabnav',
+                    'd-fixed-base',
+                    'd-shadow-bottom',
+                  ]
+                : 'pl-2',
             ]"
           >
             <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
@@ -48,30 +60,56 @@
     </TheContent>
   </AuthenticationWrapper>
 </template>
+
+<style scoped>
+.d-shadow-bottom {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+}
+
+.d-fixed-base {
+  position: fixed;
+  z-index: 100;
+}
+
+.d-fixed-below-header {
+  top: 4rem;
+}
+
+.d-fixed-below-tabnav-toggled {
+  top: 6rem;
+}
+
+.d-fixed-below-tabnav {
+  top: 6.5rem;
+}
+</style>
+
 <script>
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchTaxonomyHeader";
 import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import IndexTabs from "@/components/resources/indices/IndexTabs";
 import PrimeButton from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
+import TopTabNavigationMenu from "@/components/menus/TopTabNavigationMenu";
+import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
   name: "SearchTaxonomy",
   components: {
+    MarginWrapper,
+    TopTabNavigationMenu,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
     SearchTaxonomyHeader,
     EuTaxoSearchBar,
-    MarginWrapper,
     IndexTabs,
     PrimeButton,
     EuTaxoSearchResults,
