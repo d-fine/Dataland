@@ -192,7 +192,7 @@ export default {
       try {
         if (this.allExistingCompanyIDs.length === 0) {
           const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise(),
+            this.getKeycloakPromise()
           ).getCompanyDataControllerApi();
           const getCompaniesResponse = await companyDataControllerApi.getCompanies("", "", true);
           this.allExistingCompanyIDs = getCompaniesResponse.data.map((element) => element.companyId);
