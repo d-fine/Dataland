@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <title>Sorry an error occurred</title>
 </head>
-<body>
-    <div class="mt-0 fixed top-0 col-12 surface-900 align-items-center h-4rem w-screen">
-        <h2>Sorry an error occurred!</h2>
-    </div>
-
-<p>Whoops! Something went wrong!</p>
-<p>Go back to <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link></p>
+<body style="margin:0px;">
+<div class="bg-black" style="height:4rem" style="padding-top:0rem; padding-left:0rem;">
+    <img src="https://dataland-local.duckdns.org/img/logo_dataland_long.3aaeec6b.svg" style="padding-left: 1rem; padding-top: 1rem;">
+</div>
+<div style="background-color:#FFFFFF;" class="alignment">
+    <h2>Sorry an error occurred!</h2>
+    <p>Whoops! Something went wrong!</p>
+    <p>Go back to <a href="/" class="text-primary" title="back to landing page">Dataland</a></p>
+</div>
 </body>
+<style scoped>
+    .bg-black{
+        background-color:#0B191F;
+    }
+    .text-primary{
+        color:#E67F3F;
+    }
+    .alignment{
+        text-align: center;
+    }
+</style>
 </html>
