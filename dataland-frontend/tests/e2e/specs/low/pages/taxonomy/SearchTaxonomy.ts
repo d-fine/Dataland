@@ -98,11 +98,7 @@ describe("Search Taxonomy", function () {
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("-");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.get(".p-autocomplete-item")
-          .eq(0)
-          .get("span[class='font-semibold']")
-          .contains("-")
-          .should("exist")
+      cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("-").should("exist");
     });
   });
 
