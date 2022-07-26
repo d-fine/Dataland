@@ -41,7 +41,7 @@ export default {
     skyminderSearchParams: {},
     skyminderSearchResponse: null,
   }),
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakPromise"],
   methods: {
     clearSearch() {
       this.skyminderSearchParams = {};
@@ -52,8 +52,7 @@ export default {
       try {
         const inputArgs = Object.values(this.skyminderSearchParams);
         const skyminderControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
+          this.getKeycloakPromise()
         ).getSkyminderControllerApi();
         this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {

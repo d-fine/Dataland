@@ -183,12 +183,10 @@ export default {
     postEUDataResponse: null,
     allExistingCompanyIDs: [],
   }),
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
-
+  inject: ["getKeycloakPromise"],
   mounted() {
     this.getAllExistingCompanyIDs();
   },
-
   methods: {
     async getAllExistingCompanyIDs() {
       try {
@@ -210,8 +208,7 @@ export default {
         this.postEUDataProcessed = false;
         this.messageCount++;
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
+          this.getKeycloakPromise()
         ).getEuTaxonomyDataControllerApi();
         this.postEUDataResponse = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
         this.$formkit.reset("createEuTaxonomyForm");
