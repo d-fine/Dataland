@@ -29,7 +29,6 @@ export default {
   components: { TaxonomyPanel },
   data() {
     return {
-      response: null,
       metaDataInfo: null,
     };
   },
@@ -46,14 +45,11 @@ export default {
       this.getCompanyInformation();
     },
   },
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
-        ).getMetaDataControllerApi();
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
         this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData");
       } catch (error) {
         console.error(error);

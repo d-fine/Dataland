@@ -33,7 +33,7 @@
 import PrimeMenu from "primevue/menu";
 export default {
   name: "UserProfileDropDown",
-  inject: ["authenticated", "getKeycloakInitPromise"],
+  inject: ["authenticated", "getKeycloakPromise"],
   components: { PrimeMenu },
 
   data() {
@@ -59,7 +59,7 @@ export default {
       this.$refs.menu.toggle(event);
     },
     logoutViaDropdown() {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             keycloak.logout({ redirectUri: "/" });
@@ -78,7 +78,7 @@ export default {
     },
   },
   created() {
-    this.getKeycloakInitPromise()
+    this.getKeycloakPromise()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
           this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;

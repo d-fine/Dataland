@@ -17,10 +17,10 @@ import PrimeButton from "primevue/button";
 export default {
   name: "RegisterButton",
   components: { PrimeButton },
-  inject: ["authenticated", "getKeycloakInitPromise"],
+  inject: ["authenticated", "getKeycloakPromise"],
   methods: {
     register() {
-      this.getKeycloakInitPromise()
+      this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             return keycloak.register();

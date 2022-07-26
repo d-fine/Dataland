@@ -60,15 +60,14 @@ const createCompany = {
     messageCount: 0,
     identifierListSize: 1,
   }),
-  inject: ["getKeycloakInitPromise", "keycloak_init"],
+  inject: ["getKeycloakPromise"],
   methods: {
     async postCompanyData() {
       try {
         this.processed = false;
         this.messageCount++;
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakInitPromise(),
-          this.keycloak_init
+          this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         this.response = await companyDataControllerApi.postCompany(this.model);
         this.$formkit.reset("createCompanyForm");
