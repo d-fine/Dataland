@@ -18,7 +18,7 @@ export default {
   props: {
     text: {
       type: String,
-      default: "Hithere",
+      default: "",
     },
     searchString: {
       type: String,

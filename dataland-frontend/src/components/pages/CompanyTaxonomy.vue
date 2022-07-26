@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TopTabNavigationMenu class="d-fixed-below-header" :tabs="['EU Taxonomy']" />
+    <TopTabNavigationMenu :tabs="['EU Taxonomy']" />
     <TheContent>
       <MarginWrapper class="text-left mt-2">
         <BackButton />
