@@ -33,7 +33,7 @@
                     'd-fixed-base',
                     'd-shadow-bottom',
                   ]
-                : 'pl-4',
+                : 'pl-2',
             ]"
           >
             <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search EU Taxonomy data</span>
