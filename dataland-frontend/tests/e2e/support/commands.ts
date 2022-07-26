@@ -112,7 +112,7 @@ export function logout(): void {
 
 export function logoutDropdown(): void {
   cy.visit("/searchtaxonomy")
-    .get("div[name='profile-picture-dropdown-toggle']")
+    .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()

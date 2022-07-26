@@ -1,6 +1,6 @@
 <template>
   <Card class="col-5 col-offset-1">
-    <template #title>Create EU Taxonomy Dataset </template>
+    <template #title>Create EU Taxonomy Dataset</template>
     <template #content>
       <FormKit
         v-model="model"
@@ -15,10 +15,10 @@
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          @input="getCompanyIDs"
+          @input="getAllExistingCompanyIDs"
           :inner-class="innerClass"
           :input-class="inputClass"
-          :validation="[['required'], ['is', ...idList]]"
+          :validation="[['required'], ['is', ...allExistingCompanyIDs]]"
           :validation-messages="{
             is: 'The company ID you provided does not exist.',
           }"
@@ -145,8 +145,13 @@
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
         </FormKit>
       </FormKit>
-      <template v-if="processed">
-        <SuccessUpload v-if="response" msg="EU Taxonomy Data" :messageCount="messageCount" :data="response.data" />
+      <template v-if="postEUDataProcessed">
+        <SuccessUpload
+          v-if="postEUDataResponse"
+          msg="EU Taxonomy Data"
+          :messageCount="messageCount"
+          :data="postEUDataResponse.data"
+        />
         <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
       </template>
     </template>
@@ -160,7 +165,7 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 export default {
-  name: "CustomEUTaxonomy",
+  name: "CreateEUTaxonomy",
   components: { FailedUpload, Card, FormKit, SuccessUpload },
 
   data: () => ({
@@ -172,41 +177,45 @@ export default {
       "formkit-input": false,
       "p-inputtext": true,
     },
-    processed: false,
+    postEUDataProcessed: false,
     messageCount: 0,
     model: {},
-    response: null,
-    companyID: null,
-    idList: [],
+    postEUDataResponse: null,
+    allExistingCompanyIDs: [],
   }),
   inject: ["getKeycloakPromise"],
+  mounted() {
+    this.getAllExistingCompanyIDs();
+  },
   methods: {
-    async getCompanyIDs() {
+    async getAllExistingCompanyIDs() {
       try {
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getCompanyDataControllerApi();
-        const companyList = await companyDataControllerApi.getCompanies("", "", true);
-        this.idList = companyList.data.map((element) => element.companyId);
+        if (this.allExistingCompanyIDs.length === 0) {
+          const companyDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getCompanyDataControllerApi();
+          const getCompaniesResponse = await companyDataControllerApi.getCompanies("", "", true);
+          this.allExistingCompanyIDs = getCompaniesResponse.data.map((element) => element.companyId);
+        }
       } catch (error) {
-        this.idList = [];
+        this.allExistingCompanyIDs = [];
       }
     },
 
     async postEUData() {
       try {
-        this.processed = false;
+        this.postEUDataProcessed = false;
         this.messageCount++;
         const euTaxonomyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getEuTaxonomyDataControllerApi();
-        this.response = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
+        this.postEUDataResponse = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
         this.$formkit.reset("createEuTaxonomyForm");
       } catch (error) {
-        this.response = null;
+        this.postEUDataResponse = null;
         console.error(error);
       } finally {
-        this.processed = true;
+        this.postEUDataProcessed = true;
       }
     },
   },

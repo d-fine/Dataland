@@ -3,7 +3,7 @@ import UploadData from "@/components/pages/UploadData.vue";
 import SearchData from "@/components/pages/SearchData.vue";
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel.vue";
-import CompanyInformation from "@/components/resources/company/CompanyInformation.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
 import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
 import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";

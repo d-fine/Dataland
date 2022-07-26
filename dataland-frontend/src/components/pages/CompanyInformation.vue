@@ -1,5 +1,5 @@
 <template>
-  <div v-if="company" class="grid align-items-end text-left">
+  <div v-if="getCompanyResponse" class="grid align-items-end text-left">
     <div class="col-12">
       <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
     </div>
@@ -25,8 +25,7 @@ export default {
   name: "CompanyInformation",
   data() {
     return {
-      response: null,
-      company: null,
+      getCompanyResponse: null,
       companyInformation: null,
     };
   },
@@ -50,11 +49,11 @@ export default {
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
-        this.company = await companyDataControllerApi.getCompanyById(this.companyID);
-        this.companyInformation = this.company.data.companyInformation;
+        this.getCompanyResponse = await companyDataControllerApi.getCompanyById(this.companyID);
+        this.companyInformation = this.getCompanyResponse.data.companyInformation;
       } catch (error) {
         console.error(error);
-        this.company = null;
+        this.getCompanyResponse = null;
       }
     },
     orderOfMagnitudeSuffix(value) {

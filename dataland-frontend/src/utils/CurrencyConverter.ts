@@ -3,10 +3,13 @@
  * adopted from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
  *
  * @param  {number} numberToConvert      is the number to be converted such as an amount
- * @param  {number} resultingNumberOfDigits      are the decimal places to be displayed
+ * @param  {number} maxNumberOfDigitsAfterDecimalPoint      maximum number of digits to appear after the decimal point
  */
 
-export function convertCurrencyNumbersToNotationWithLetters(numberToConvert: number, resultingNumberOfDigits?: number) {
+export function convertCurrencyNumbersToNotationWithLetters(
+  numberToConvert: number,
+  maxNumberOfDigitsAfterDecimalPoint?: number
+) {
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "K" },
@@ -24,6 +27,8 @@ export function convertCurrencyNumbersToNotationWithLetters(numberToConvert: num
       return numberToConvert >= part.value;
     });
   return item
-    ? (numberToConvert / item.value).toFixed(resultingNumberOfDigits).replace(regex, "$1") + " " + item.symbol
+    ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
+        " " +
+        item.symbol
     : "0";
 }
