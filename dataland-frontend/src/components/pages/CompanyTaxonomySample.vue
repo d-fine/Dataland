@@ -1,5 +1,7 @@
 <template>
-  <TheHeader :sampleData="true" />
+  <TheHeader :showUserProfileDropdown="false">
+    <span class="p-button p-button-rounded text-primary bg-white font-semibold border-0"> COMPANY DATA SAMPLE </span>
+  </TheHeader>
   <TheContent>
     <MarginWrapper>
       <div class="grid">
