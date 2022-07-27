@@ -11,7 +11,7 @@
         COMPANY DATA SAMPLE
       </span>
     </div>
-    <div class="col-4">
+    <div>
       <span v-if="noContent"> </span>
     </div>
 
