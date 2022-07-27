@@ -7,15 +7,10 @@
     </div>
 
     <div class="col-4">
-      <span v-if="sampleData" class="p-button p-button-rounded text-primary bg-white font-semibold border-0">
-        COMPANY DATA SAMPLE
-      </span>
-    </div>
-    <div>
-      <span v-if="noContent"> </span>
+      <slot></slot>
     </div>
 
-    <div class="col-4 flex justify-content-end" v-if="!sampleData && !noContent">
+    <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown">
       <UserProfileDropDown />
     </div>
   </div>
@@ -28,14 +23,11 @@ export default {
   name: "TheHeader",
   components: { UserProfileDropDown },
   props: {
-    sampleData: {
+    showUserProfileDropdown: {
       type: Boolean,
-      default: false,
+      default: true,
     },
-    noContent: {
-      type: Boolean,
-      default: false,
-    },
+
   },
 };
 </script>
