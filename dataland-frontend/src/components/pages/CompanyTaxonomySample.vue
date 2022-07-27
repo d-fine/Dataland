@@ -1,7 +1,7 @@
 <template>
   <TheHeader :showUserProfileDropdown="false">
     <span v-if="sampleData" class="p-button p-button-rounded text-primary bg-white font-semibold border-0">
-        COMPANY DATA SAMPLE
+      COMPANY DATA SAMPLE
     </span>
   </TheHeader>
   <TheContent>
