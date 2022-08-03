@@ -90,7 +90,6 @@ jobs:
           TRUSTEE_BASE_URL: ${{ secrets.TRUSTEE_BASE_URL }}
           TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          TRUSTEE_CREDENTIALS: ${{ secrets.TRUSTEE_CREDENTIALS }}
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
