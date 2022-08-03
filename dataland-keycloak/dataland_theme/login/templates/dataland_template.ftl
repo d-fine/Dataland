@@ -17,7 +17,7 @@
     <body>
         <!-- Back button -->
 
-        <a href="<#nested "backUrl">" class="cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline">
+        <a href="<#nested "backUrl">" class="cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline" id="back_button">
             <span class="material-icons text-primary">arrow_back_ios</span>
             <span class="text-primary font-semibold d-letters">BACK</span>
         </a>
