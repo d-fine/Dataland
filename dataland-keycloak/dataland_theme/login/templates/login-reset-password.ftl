@@ -2,8 +2,8 @@
 <@layout.registrationLayout displayInfo=true displayMessage=!messagesPerField.existsError('username'); section>
     <#if section = "header">
         Reset password
-    <#elseif section = "backUrl">
-        ${url.loginUrl}
+    <#elseif section = "backUrl">${url.loginUrl}
+    <#elseif section = "backName">TO LOGIN
     <#elseif section = "form">
         <form id="kc-reset-password-form" action="${url.loginAction}" method="post">
             <div class="text-left">
