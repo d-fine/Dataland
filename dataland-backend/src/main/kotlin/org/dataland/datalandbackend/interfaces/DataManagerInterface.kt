@@ -41,11 +41,11 @@ interface DataManagerInterface {
     fun getDataMetaInfo(dataId: String): DataMetaInformation
 
     /**
-     * Method to retrieve the green asset ratio of one or all indices
+     * Method to retrieve the green asset ratio of one or all indices for non-financial companies
      * @param selectedIndex index for which the green asset ratio is to be retrieved (all indices are retrieved if null)
      * @return green asset ratio in a map form
      */
-    fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal>
+    fun getGreenAssetRatioForNonFinancials(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal>
 
     /**
      * Method to check if a data set belongs to a teaser company and hence is publicly available

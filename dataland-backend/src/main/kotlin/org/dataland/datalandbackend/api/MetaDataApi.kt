@@ -77,15 +77,16 @@ interface MetaDataApi {
         ]
     )
     @GetMapping(
-        value = ["/greenAssetRatio"],
+        value = ["/greenAssetRatioForNonFinancials"],
         produces = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
-     * A method to retrieve the green asset ratio of a specific index or for all indices (if none is selected)
+     * A method to retrieve the green asset ratio for non-financial companies of a specific index or for all indices
+     * (if none is selected)
      * @param selectedIndex determines which index the green asset ratio is retrieved for
      * @return a map of indices and the corresponding green asset ratios
      */
-    fun getGreenAssetRatio(@RequestParam selectedIndex: StockIndex? = null):
+    fun getGreenAssetRatioForNonFinancials(@RequestParam selectedIndex: StockIndex? = null):
         ResponseEntity<Map<StockIndex, BigDecimal>>
 }

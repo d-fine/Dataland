@@ -27,7 +27,7 @@ class DataManager(
 ) : DataManagerInterface {
     var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
     val allDataTypes = DataTypesExtractor().getAllDataTypes()
-    private val greenAssetRatios = ConcurrentHashMap<StockIndex, BigDecimal>()
+    private val greenAssetRatiosForNonFinancials = ConcurrentHashMap<StockIndex, BigDecimal>()
 
     private fun verifyDataIdExists(dataId: String) {
         if (!dataMetaInformationPerDataId.containsKey(dataId)) {
@@ -107,7 +107,7 @@ class DataManager(
         return dataMetaInformationPerDataId[dataId]!!
     }
 
-    override fun getGreenAssetRatio(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal> {
+    override fun getGreenAssetRatioForNonFinancials(selectedIndex: StockIndex?): Map<StockIndex, BigDecimal> {
 
         val indices = if (selectedIndex == null) {
             StockIndex.values().toList()
@@ -123,12 +123,12 @@ class DataManager(
             if (filteredCompanies.isEmpty()) {
                 continue
             }
-            updateGreenAssetRatioOnIndexLevel(index, filteredCompanies)
+            updateGreenAssetRatioForNonFinancialsOnIndexLevel(index, filteredCompanies)
         }
-        return greenAssetRatios
+        return greenAssetRatiosForNonFinancials
     }
 
-    private fun updateGreenAssetRatioOnIndexLevel(index: StockIndex, companies: List<StoredCompany>) {
+    private fun updateGreenAssetRatioForNonFinancialsOnIndexLevel(index: StockIndex, companies: List<StoredCompany>) {
         var eligibleSum = BigDecimal(0.0)
         var totalSum = BigDecimal(0.0)
         for (company in companies) {
@@ -141,7 +141,7 @@ class DataManager(
             totalSum += data.opex?.totalAmount ?: BigDecimal(0.0)
             totalSum += data.revenue?.totalAmount ?: BigDecimal(0.0)
         }
-        greenAssetRatios[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
+        greenAssetRatiosForNonFinancials[index] = eligibleSum.divide(totalSum, RATIO_PRECISION, RoundingMode.HALF_UP)
     }
 
     override fun isDataSetPublic(dataId: String): Boolean {
