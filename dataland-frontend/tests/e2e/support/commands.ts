@@ -62,9 +62,8 @@ export function login(
     .should("exist")
     .click()
 
-    .get("button[name='logout_dataland_button']")
-    .should("exist")
-    .should("be.visible");
+    .url()
+    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
 }
 
 export function register(email: string = "some_user", password: string = "test"): void {
@@ -96,9 +95,8 @@ export function register(email: string = "some_user", password: string = "test")
     .should("exist")
     .click()
 
-    .get("button[name='logout_dataland_button']")
-    .should("exist")
-    .should("be.visible");
+    .url()
+    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
 }
 
 export function logout(): void {
