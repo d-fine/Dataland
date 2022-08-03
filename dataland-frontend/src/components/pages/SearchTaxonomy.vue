@@ -21,15 +21,7 @@
           <div
             :class="[
               pageScrolled && !searchBarToggled
-                ? [
-                    'col-12',
-                    'align-items-center',
-                    'grid',
-                    'bg-white',
-                    'd-search-toggle',
-                    'fixed',
-                    'd-shadow-bottom',
-                  ]
+                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
                 : 'pl-2',
             ]"
           >
