@@ -15,7 +15,7 @@ describe("Authentication Buttons", () => {
     cy.logoutDropdown();
   });
 
-  it("Checks that the back button works as expected", () => {
+  it("Checks that the back button on the login page works as expected", () => {
     cy.visit("/searchtaxonomy")
       .get("#back_button")
       .should("exist")
