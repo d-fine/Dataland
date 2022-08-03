@@ -1,13 +1,10 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TopTabNavigationMenu class="d-fixed-below-header d-fixed-base" :tabs="['EU Taxonomy']" />
-    <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the tab nav -->
-    <div class="h-2rem"></div>
     <TheContent class="pl-0">
       <div
         class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-fixed-below-tabnav-toggled', 'd-fixed-base'] : '']"
+        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
         <SearchTaxonomyHeader class="pl-4" />
@@ -29,8 +26,8 @@
                     'align-items-center',
                     'grid',
                     'bg-white',
-                    'd-fixed-below-tabnav',
-                    'd-fixed-base',
+                    'd-search-toggle',
+                    'fixed',
                     'd-shadow-bottom',
                   ]
                 : 'pl-2',
@@ -65,23 +62,6 @@
 .d-shadow-bottom {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
 }
-
-.d-fixed-base {
-  position: fixed;
-  z-index: 100;
-}
-
-.d-fixed-below-header {
-  top: 4rem;
-}
-
-.d-fixed-below-tabnav-toggled {
-  top: 6rem;
-}
-
-.d-fixed-below-tabnav {
-  top: 6.5rem;
-}
 </style>
 
 <script>
@@ -95,7 +75,6 @@ import PrimeButton from "primevue/button";
 import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
-import TopTabNavigationMenu from "@/components/menus/TopTabNavigationMenu";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
@@ -104,7 +83,6 @@ export default {
   name: "SearchTaxonomy",
   components: {
     MarginWrapper,
-    TopTabNavigationMenu,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
