@@ -2,6 +2,8 @@
 <@layout.registrationLayout displayMessage=false; section>
     <#if section = "header">
         Terms, Conditions, and Privacy
+    <#elseif section = "backUrl">
+        /
     <#elseif section = "form">
         <div class="text-left mt-4">
             <p>To continue using Dataland you need to agree to our Terms, Conditions, and Privacy Policy</p>

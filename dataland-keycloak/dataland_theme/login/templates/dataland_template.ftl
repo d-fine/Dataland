@@ -17,10 +17,10 @@
     <body>
         <!-- Back button -->
 
-        <div class="cursor-pointer flex align-items-center absolute ml-3 mt-3" onclick="history.back();">
+        <a href="<#nested "backUrl">" class="cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline">
             <span class="material-icons text-primary">arrow_back_ios</span>
             <span class="text-primary font-semibold d-letters">BACK</span>
-        </div>
+        </a>
 
 
 

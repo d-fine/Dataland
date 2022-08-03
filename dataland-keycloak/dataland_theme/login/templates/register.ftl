@@ -3,7 +3,7 @@
     <#if section = "header">
         Create an account
     <#elseif section = "backUrl">
-        ${url.loginUrl}
+        /
     <#elseif section = "form">
         <form id="kc-register-form" action="${url.registrationAction}" method="post">
             <div class="input-group mt-5 mb-5 text-left">
