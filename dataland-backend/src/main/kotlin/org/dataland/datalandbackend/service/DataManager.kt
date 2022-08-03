@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
@@ -117,7 +117,7 @@ class DataManager(
 
         for (index in indices) {
             val filteredCompanies = companyManager.searchCompaniesByIndex(index).filter {
-                it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyData" }
+                it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyDataForNonFinancials" }
             }
 
             if (filteredCompanies.isEmpty()) {
@@ -132,8 +132,8 @@ class DataManager(
         var eligibleSum = BigDecimal(0.0)
         var totalSum = BigDecimal(0.0)
         for (company in companies) {
-            val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyData" }.dataId
-            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyData").data, EuTaxonomyData::class.java)
+            val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyDataForNonFinancials" }.dataId
+            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyDataForNonFinancials").data, EuTaxonomyDataForNonFinancials::class.java)
             eligibleSum += data.capex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.opex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.revenue?.eligiblePercentage ?: BigDecimal(0.0)

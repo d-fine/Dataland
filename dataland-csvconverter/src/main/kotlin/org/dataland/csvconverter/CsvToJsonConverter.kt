@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyData
+import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
 import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
@@ -105,10 +105,10 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to build EuTaxonomyData from the read row in the csv file.
+     * Method to build EuTaxonomyDataForNonFinancials from the read row in the csv file.
      */
-    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyData {
-        return EuTaxonomyData(
+    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
+        return EuTaxonomyDataForNonFinancials(
             reportObligation = getReportingObligation(row), attestation = getAttestation(row),
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
             opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),

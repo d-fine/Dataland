@@ -7,10 +7,10 @@ import org.dataland.datalandbackend.model.enums.YesNo
 
 /**
  * --- API model ---
- * Fields of the questionnaire for EU-Taxonomy data
+ * Fields of the questionnaire for EU-Taxonomy data for non-financial companies
  */
 @DataType
-data class EuTaxonomyData(
+data class EuTaxonomyDataForNonFinancials(
     @field:JsonProperty("Capex") val capex: EuTaxonomyDetailsPerCashFlowType? = null,
     @field:JsonProperty("Opex") val opex: EuTaxonomyDetailsPerCashFlowType? = null,
     @field:JsonProperty("Revenue") val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
