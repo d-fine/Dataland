@@ -132,8 +132,12 @@ class DataManager(
         var eligibleSum = BigDecimal(0.0)
         var totalSum = BigDecimal(0.0)
         for (company in companies) {
-            val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyDataForNonFinancials" }.dataId
-            val data = objectMapper.readValue(getDataSet(dataId, "EuTaxonomyDataForNonFinancials").data, EuTaxonomyDataForNonFinancials::class.java)
+            val dataId = company.dataRegisteredByDataland.last { it.dataType == "EuTaxonomyDataForNonFinancials" }
+                .dataId
+            val data = objectMapper.readValue(
+                getDataSet(dataId, "EuTaxonomyDataForNonFinancials").data,
+                EuTaxonomyDataForNonFinancials::class.java
+            )
             eligibleSum += data.capex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.opex?.eligiblePercentage ?: BigDecimal(0.0)
             eligibleSum += data.revenue?.eligiblePercentage ?: BigDecimal(0.0)

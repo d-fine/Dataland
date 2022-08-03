@@ -29,7 +29,8 @@ class MetaDataController(
         return ResponseEntity.ok(dataManager.getDataMetaInfo(dataId))
     }
 
-    override fun getGreenAssetRatioForNonFinancials(selectedIndex: StockIndex?): ResponseEntity<Map<StockIndex, BigDecimal>> {
+    override fun getGreenAssetRatioForNonFinancials(selectedIndex: StockIndex?):
+        ResponseEntity<Map<StockIndex, BigDecimal>> {
         return ResponseEntity.ok(dataManager.getGreenAssetRatioForNonFinancials(selectedIndex))
     }
 }
