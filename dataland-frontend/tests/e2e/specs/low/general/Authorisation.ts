@@ -14,4 +14,13 @@ describe("Authentication Buttons", () => {
     cy.login();
     cy.logoutDropdown();
   });
+
+  it("Checks that the back button on the login page works as expected", () => {
+    cy.visit("/searchtaxonomy")
+      .get("#back_button")
+      .should("exist")
+      .click()
+      .url()
+      .should("eq", Cypress.config("baseUrl") + "/");
+  });
 });
