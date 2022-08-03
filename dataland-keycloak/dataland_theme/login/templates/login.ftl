@@ -2,8 +2,8 @@
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
         Log In
-    <#elseif section = "backUrl">
-        /
+    <#elseif section = "backUrl">/
+    <#elseif section = "backName">HOME
     <#elseif section = "form">
         <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
             <div class="input-group mt-5 mb-5 text-left">
