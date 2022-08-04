@@ -16,14 +16,14 @@ class DataManagerTest(
     val testDataManager = DataManager(edcClient, objectMapper, testCompanyManager)
 
     @Test
-    fun `check that an exception is thrown when company id is provided that does not exist`() {
+    fun `check that an exception is thrown when non-existing company id is provided in meta data search`() {
         assertThrows<IllegalArgumentException> {
             testDataManager.searchDataMetaInfo(companyId = "error")
         }
     }
 
     @Test
-    fun `check that an exception is thrown when a data id is provided that does not exist`() {
+    fun `check that an exception is thrown when non-existing data id is provided to get meta data`() {
         assertThrows<IllegalArgumentException> {
             testDataManager.getDataMetaInfo(dataId = "error")
         }
