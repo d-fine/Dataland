@@ -7,7 +7,7 @@ import java.io.File
 
 class TestDataProvider(objectMapper: ObjectMapper) {
     private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
-    private val testCompanyInformationWithEuTaxonomyData:
+    private val testCompanyInformationWithEuTaxonomyDataForNonFinancials:
         List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> =
             objectMapper.readValue(
                 jsonFile,
@@ -15,7 +15,8 @@ class TestDataProvider(objectMapper: ObjectMapper) {
                     TypeReference<List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel>>() {}
             )
 
-    fun getAllCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
-        return testCompanyInformationWithEuTaxonomyData
+    fun getAllCompanyInformationWithEuTaxonomyDataForNonFinancials():
+        List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
+        return testCompanyInformationWithEuTaxonomyDataForNonFinancials
     }
 }

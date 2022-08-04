@@ -20,17 +20,22 @@ class CsvToJsonConverterTest {
 
     @Test
     fun `read csv and check that the company information and EU Taxonomy objects are as expected`() {
-        val actualCompanyInformationWithEuTaxonomyData =
+        val actualCompanyInformationWithEuTaxonomyDataForNonFinancials =
             getConverter("./build/resources/csvTestData.csv")
                 .buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
-        val expectedCompanyInformationWithEuTaxonomyData = testDataProvider.getAllCompanyInformationWithEuTaxonomyData()
+        val expectedCompanyInformationWithEuTaxonomyDataForNonFinancials = testDataProvider
+            .getAllCompanyInformationWithEuTaxonomyDataForNonFinancials()
         assertTrue(
-            actualCompanyInformationWithEuTaxonomyData.size == expectedCompanyInformationWithEuTaxonomyData.size,
-            "Size mismatch: the parsed list contains ${actualCompanyInformationWithEuTaxonomyData.size} " +
-                "and the read list contains ${expectedCompanyInformationWithEuTaxonomyData.size} elements."
+            actualCompanyInformationWithEuTaxonomyDataForNonFinancials.size ==
+                expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.size,
+            "Size mismatch: the parsed list contains " +
+                "${actualCompanyInformationWithEuTaxonomyDataForNonFinancials.size} " +
+                "and the read list contains " +
+                "${expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.size} elements."
         )
         assertEquals(
-            expectedCompanyInformationWithEuTaxonomyData, actualCompanyInformationWithEuTaxonomyData,
+            expectedCompanyInformationWithEuTaxonomyDataForNonFinancials,
+            actualCompanyInformationWithEuTaxonomyDataForNonFinancials,
             "The list of read and parsed company information did not match."
         )
     }
