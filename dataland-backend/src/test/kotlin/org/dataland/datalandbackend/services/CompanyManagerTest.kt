@@ -1,10 +1,10 @@
-package org.dataland.datalandbackend.service
+package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.TestDataProvider
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -17,8 +17,8 @@ class CompanyManagerTest(
 ) {
     val testCompanyManager = CompanyManager()
 
-    val dataProvider = TestDataProvider(objectMapper)
-    val testCompanyList = dataProvider.getCompanyInformation(4)
+    val testDataProvider = TestDataProvider(objectMapper)
+    val testCompanyList = testDataProvider.getCompanyInformation(4)
 
     private fun addAllCompanies(companies: List<CompanyInformation>) {
         for (company in companies) {

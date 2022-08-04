@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.controller
+package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper

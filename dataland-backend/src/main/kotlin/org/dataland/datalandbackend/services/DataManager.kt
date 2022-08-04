@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.service
+package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.RATIO_PRECISION

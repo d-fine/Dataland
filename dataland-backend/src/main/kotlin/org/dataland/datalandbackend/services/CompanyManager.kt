@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.service
+package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
