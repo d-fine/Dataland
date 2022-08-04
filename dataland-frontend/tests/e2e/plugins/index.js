@@ -3,12 +3,12 @@ module.exports = (on, config) => {
   config.fixturesFolder = "../testing/data";
   config.supportFile = "tests/e2e/support/index.ts";
   config.env.commit_id = require("git-commit-id")({ cwd: "../" });
-  switch (process.env.ENVIRONMENT) {
-    case "development": {
+  switch (process.env.REAL_DATA) {
+    case "false": {
       config.specPattern = ["tests/e2e/specs/runAll.ts"];
       break;
     }
-    case "preview": {
+    case "true": {
       config.specPattern = [
         "tests/e2e/specs/verify_deployment",
         "tests/e2e/specs/high",
