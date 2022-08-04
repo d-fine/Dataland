@@ -5,10 +5,12 @@ module.exports = (on, config) => {
   config.env.commit_id = require("git-commit-id")({ cwd: "../" });
   switch (process.env.REAL_DATA) {
     case "false": {
+      console.log(`Processing runAll.ts - REAL_DATA=${process.env.REAL_DATA}`)
       config.specPattern = ["tests/e2e/specs/runAll.ts"];
       break;
     }
     case "true": {
+      console.log(`Processing test for scope real data - REAL_DATA=${process.env.REAL_DATA}`)
       config.specPattern = [
         "tests/e2e/specs/verify_deployment",
         "tests/e2e/specs/high",
@@ -19,6 +21,7 @@ module.exports = (on, config) => {
       break;
     }
     default: {
+      console.log(`Defaulting to all specs - REAL_DATA=${process.env.REAL_DATA}`)
       config.specPattern = ["tests/e2e/specs"];
       break;
     }
