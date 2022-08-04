@@ -1,9 +1,12 @@
 import { doThingsInChunks, getKeycloakToken, uploadSingleElementWithRetries } from "../../support/utility";
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "../../../../build/clients/backend/api";
 const chunkSize = 40;
 
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {
-  let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
+  let companiesWithData: Array<{
+    companyInformation: CompanyInformation;
+    euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+  }>;
   const teaserCompanies: Array<{ companyIds: string }> = [];
   let teaserCompaniesPermIds: Array<{ permId: string }> = [];
 
@@ -12,7 +15,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   }
 
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
       companiesWithData = companies;
     });
   });
@@ -52,7 +55,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
                 "data/eutaxonomies",
                 {
                   companyId: json.companyId,
-                  data: element.euTaxonomyData,
+                  data: element.euTaxonomyDataForNonFinancials,
                 },
                 token
               );

@@ -206,10 +206,12 @@ export default {
       try {
         this.postEUDataProcessed = false;
         this.messageCount++;
-        const euTaxonomyDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
-        ).getEuTaxonomyDataControllerApi();
-        this.postEUDataResponse = await euTaxonomyDataControllerApi.postCompanyAssociatedData(this.model);
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        this.postEUDataResponse = await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+          this.model
+        );
         this.$formkit.reset("createEuTaxonomyForm");
       } catch (error) {
         this.postEUDataResponse = null;

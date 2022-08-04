@@ -33,7 +33,7 @@ describe("User interactive tests for Data Upload", () => {
     cy.get("body").should("contain", "Sorry");
   });
 
-  function uploadEuTaxonomyDatasetWithReportingObligation() {
+  function uploadEuTaxonomyDatasetForNonFinancialsWithReportingObligation() {
     cy.visitAndCheckAppMount("/upload");
     cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
     cy.get('input[name="companyId"]').type(companyId, { force: true });
@@ -52,7 +52,7 @@ describe("User interactive tests for Data Upload", () => {
   }
 
   it("Create EU Taxonomy Dataset with Reporting Obligation and Check the Link", () => {
-    uploadEuTaxonomyDatasetWithReportingObligation();
+    uploadEuTaxonomyDatasetForNonFinancialsWithReportingObligation();
     cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
     cy.get("span[title=dataId]").then(() => {
       cy.get("span[title=companyId]").then(($companyID) => {
@@ -69,7 +69,7 @@ describe("User interactive tests for Data Upload", () => {
 
   it("Create EU Taxonomy Dataset with Reporting Obligation and insufficient rights should fail", () => {
     cy.restoreLoginSession();
-    uploadEuTaxonomyDatasetWithReportingObligation();
+    uploadEuTaxonomyDatasetForNonFinancialsWithReportingObligation();
     cy.get("body").should("contain", "Sorry");
   });
 

@@ -50,7 +50,10 @@ export default {
     async getCompanyInformation() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
-        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, "EuTaxonomyData");
+        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(
+          this.companyID,
+          "EuTaxonomyDataForNonFinancials"
+        );
       } catch (error) {
         console.error(error);
         this.metaDataInfo = null;

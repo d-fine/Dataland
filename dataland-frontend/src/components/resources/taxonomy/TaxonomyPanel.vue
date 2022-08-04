@@ -111,10 +111,12 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        const euTaxonomyDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
-        ).getEuTaxonomyDataControllerApi();
-        const companyAssociatedData = await euTaxonomyDataControllerApi.getCompanyAssociatedData(this.dataID);
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(
+          this.dataID
+        );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);

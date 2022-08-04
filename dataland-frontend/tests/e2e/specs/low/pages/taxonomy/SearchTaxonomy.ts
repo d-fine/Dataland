@@ -1,7 +1,7 @@
 let companiesWithData: any;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
     companiesWithData = companies;
   });
 });
