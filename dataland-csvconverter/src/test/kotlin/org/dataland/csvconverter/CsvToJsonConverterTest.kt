@@ -21,7 +21,8 @@ class CsvToJsonConverterTest {
     @Test
     fun `read csv and check that the company information and EU Taxonomy objects are as expected`() {
         val actualCompanyInformationWithEuTaxonomyData =
-            getConverter("./build/resources/csvTestData.csv").buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
+            getConverter("./build/resources/csvTestData.csv")
+                .buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
         val expectedCompanyInformationWithEuTaxonomyData = testDataProvider.getAllCompanyInformationWithEuTaxonomyData()
         assertTrue(
             actualCompanyInformationWithEuTaxonomyData.size == expectedCompanyInformationWithEuTaxonomyData.size,

@@ -134,7 +134,8 @@ class CsvToJsonConverter {
     /**
      * Method to get a list of CompanyInformationWithEuTaxonomyDataForNonFinancials objects generated from the csv file
      */
-    fun buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials(): List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
+    fun buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials():
+        List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
         return rawCsvData.filter { validateLine(it) }.map {
             CompanyInformationWithEuTaxonomyDataForNonFinancialsModel(
                 buildCompanyInformation(it),
