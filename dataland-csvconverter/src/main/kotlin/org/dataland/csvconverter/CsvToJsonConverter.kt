@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.model.enums.AttestationOptions
 import org.dataland.datalandbackend.model.enums.IdentifierType
 import org.dataland.datalandbackend.model.enums.StockIndex
 import org.dataland.datalandbackend.model.enums.YesNo
-import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
+import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataForNonFinancialsModel
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
@@ -32,7 +32,7 @@ private const val ATTESTATION_NONE = "none"
 private const val NOT_AVAILABLE_STRING = "n/a"
 
 /**
- * Class to transform company information and EU Taxonomy data delivered by csv into json format
+ * Class to transform company information and EU Taxonomy data for non financials delivered by csv into json format
  */
 class CsvToJsonConverter {
 
@@ -107,7 +107,7 @@ class CsvToJsonConverter {
     /**
      * Method to build EuTaxonomyDataForNonFinancials from the read row in the csv file.
      */
-    private fun buildEuTaxonomyData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
+    private fun buildEuTaxonomyDataForNonFinancials(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
         return EuTaxonomyDataForNonFinancials(
             reportObligation = getReportingObligation(row), attestation = getAttestation(row),
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
@@ -132,13 +132,13 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to get a list of CompanyInformationWithEuTaxonomyData objects generated from the csv file
+     * Method to get a list of CompanyInformationWithEuTaxonomyDataForNonFinancials objects generated from the csv file
      */
-    fun buildListOfCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataModel> {
+    fun buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials(): List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
         return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformationWithEuTaxonomyDataModel(
+            CompanyInformationWithEuTaxonomyDataForNonFinancialsModel(
                 buildCompanyInformation(it),
-                buildEuTaxonomyData(it)
+                buildEuTaxonomyDataForNonFinancials(it)
             )
         }
     }
@@ -224,8 +224,8 @@ class CsvToJsonConverter {
     fun writeJson() {
         objectMapper.writerWithDefaultPrettyPrinter()
             .writeValue(
-                File("./CompanyInformationWithEuTaxonomyData.json"),
-                buildListOfCompanyInformationWithEuTaxonomyData()
+                File("./CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
+                buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
             )
     }
 

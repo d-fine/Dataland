@@ -21,7 +21,7 @@ class CsvToJsonConverterTest {
     @Test
     fun `read csv and check that the company information and EU Taxonomy objects are as expected`() {
         val actualCompanyInformationWithEuTaxonomyData =
-            getConverter("./build/resources/csvTestData.csv").buildListOfCompanyInformationWithEuTaxonomyData()
+            getConverter("./build/resources/csvTestData.csv").buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
         val expectedCompanyInformationWithEuTaxonomyData = testDataProvider.getAllCompanyInformationWithEuTaxonomyData()
         assertTrue(
             actualCompanyInformationWithEuTaxonomyData.size == expectedCompanyInformationWithEuTaxonomyData.size,
@@ -52,7 +52,7 @@ class CsvToJsonConverterTest {
     @Test
     fun `execute corner cases in CsvToJsonConverter`() {
         val converter = getConverter("./build/resources/csvTestDataCornerCases.csv")
-        converter.buildListOfCompanyInformationWithEuTaxonomyData()
+        converter.buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
     }
 
     private fun checkThatProcessingFileThrowsErrorWithMessage(
@@ -63,7 +63,7 @@ class CsvToJsonConverterTest {
         val exceptionThatWasThrown = assertThrows<IllegalArgumentException>(
             message = "Checking that invalid data results in failure parsing reporting obligation",
             executable = {
-                converter.buildListOfCompanyInformationWithEuTaxonomyData()
+                converter.buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
             }
         )
         val found = exceptionThatWasThrown.message!!
