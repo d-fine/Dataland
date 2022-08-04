@@ -68,7 +68,6 @@ jobs:
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data and adapt test config"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
-            cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
           fi
       - uses: actions/setup-java@v2
         with:
@@ -115,7 +114,7 @@ jobs:
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 40 || 900 }}
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 900 }}
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
