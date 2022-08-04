@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/eutaxonomies/nonfinancial")
+@RequestMapping("/data/eutaxonomy/nonfinancials")
 @RestController
 class EuTaxonomyDataForNonFinancialsController(
     @Autowired var myDataManager: DataManagerInterface,
