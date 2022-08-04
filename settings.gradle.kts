@@ -12,9 +12,9 @@ dependencyResolutionManagement {
         create("libs") {
             library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.9")
 
-            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.8.2")
-            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.8.2")
-            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.8.2")
+            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.0")
+            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.0")
+            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.0")
 
             library("moshi-kotlin", "com.squareup.moshi:moshi-kotlin:1.13.0")
             library("moshi-adapters", "com.squareup.moshi:moshi-adapters:1.13.0")
@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             library("swagger-gradle-plugin", "io.swagger.core.v3:swagger-gradle-plugin:2.2.0")
             library("swagger-annotations", "io.swagger.core.v3:swagger-annotations:2.2.0")
 
-            library("okhttp", "com.squareup.okhttp3:okhttp:4.9.3")
+            library("okhttp", "com.squareup.okhttp3:okhttp:4.10.0")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
             library("skyminder-client", "org.dataland:skyminder-client:0.1.6")
@@ -42,7 +42,7 @@ dependencyResolutionManagement {
             library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.3")
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3")
 
-            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:18.0.2")
+            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.1")
         }
     }
 }
