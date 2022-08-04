@@ -40,15 +40,18 @@ class TestDataProvider {
     private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyDataForNonFinancials>> =
         moshi.adapter(parameterizedType)
 
-    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataForNonFinancials> = jsonAdapter
-        .fromJson(jsonFileAsString) ?: emptyList()
+    private val testCompanyInformationWithEuTaxonomyDataForNonFinancials:
+        List<CompanyInformationWithEuTaxonomyDataForNonFinancials> =
+            jsonAdapter.fromJson(jsonFileAsString) ?: emptyList()
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
-        return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.companyInformation }
+        return testCompanyInformationWithEuTaxonomyDataForNonFinancials.slice(0 until requiredQuantity)
+            .map { it.companyInformation }
     }
 
     fun getEuTaxonomyDataForNonFinancials(numberOfDataSets: Int): List<EuTaxonomyDataForNonFinancials> {
-        return testCompanyInformationWithEuTaxonomyData.slice(0 until numberOfDataSets).map { it.euTaxonomyData }
+        return testCompanyInformationWithEuTaxonomyDataForNonFinancials.slice(0 until numberOfDataSets)
+            .map { it.euTaxonomyData }
     }
 
     fun getCompaniesWithEuTaxonomyDataForNonFinancials(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
@@ -60,5 +63,5 @@ class TestDataProvider {
 
 data class CompanyInformationWithEuTaxonomyDataForNonFinancials(
     val companyInformation: CompanyInformation,
-    val euTaxonomyData: EuTaxonomyDataForNonFinancials
+    val euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
 )
