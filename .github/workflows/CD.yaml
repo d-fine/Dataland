@@ -40,6 +40,21 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     steps:
+      - name: log inputs
+        run: |
+          echo Real Datal: $REALDATA
+          echo Which Environment: $ENVIRONMENT
+          echo Use in Memory Store: $IN_MEMORY
+          echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
+          if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
+            echo Reset Keycloak Security Phrase Input: UNDEFINED
+          else
+            echo Reset Keycloak Security Phrase Input: *********
+          fi
+        env:
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
+          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
+          RESET_KEYCLOAK_SECURITY_PHRASE_INPUT: ${{ github.event.inputs.resetKeycloakSecurityPhraseInput }}
       - name: verifyKeycloakPassword
         run: |
           if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
