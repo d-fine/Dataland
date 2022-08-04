@@ -52,12 +52,12 @@ function generateCompanyInformation() {
   };
 }
 
-function generateEuTaxonomyData() {
+function generateEuTaxonomyDataForNonFinancials() {
   const attestation = faker.helpers.arrayElement(
-    apiSpecs.components.schemas.EuTaxonomyData.properties["Attestation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-    apiSpecs.components.schemas.EuTaxonomyData.properties["Reporting Obligation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Reporting Obligation"].enum
   );
   const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
   const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
@@ -94,15 +94,15 @@ function generateEuTaxonomyData() {
   };
 }
 
-function generateCompanyWithEuTaxonomyData() {
-  const companiesWithEuTaxonomyData = [];
+function generateCompanyWithEuTaxonomyDataForNonFinancials() {
+  const companiesWithEuTaxonomyDataForNonFinancials = [];
   for (let id = 1; id <= 250; id++) {
-    companiesWithEuTaxonomyData.push({
+    companiesWithEuTaxonomyDataForNonFinancials.push({
       companyInformation: generateCompanyInformation(),
-      euTaxonomyData: generateEuTaxonomyData(),
+      euTaxonomyDataForNonFinancials: generateEuTaxonomyDataForNonFinancials(),
     });
   }
-  return companiesWithEuTaxonomyData;
+  return companiesWithEuTaxonomyDataForNonFinancials;
 }
 
 function getStockIndexValueForCsv(setStockIndexList: Array<string>, stockIndexToCheck: string) {
@@ -124,9 +124,9 @@ function decimalSeparatorConverter(value: number) {
   return value.toString().replace(".", ",");
 }
 
-function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
-  const mergedData = companyInformationWithEuTaxonomyData.map((element: any) => {
-    return { ...element["companyInformation"], ...element["euTaxonomyData"] };
+function generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
+  const mergedData = companyInformationWithEuTaxonomyDataForNonFinancials.map((element: any) => {
+    return { ...element["companyInformation"], ...element["euTaxonomyDataForNonFinancials"] };
   });
   const dateOptions: any = { year: "numeric", month: "numeric", day: "numeric" };
   const dateLocale = "de-DE";
@@ -178,13 +178,13 @@ function generateCSVData(companyInformationWithEuTaxonomyData: Array<Object>) {
 }
 
 function main() {
-  const companyInformationWithEuTaxonomyData = generateCompanyWithEuTaxonomyData();
-  const csv = generateCSVData(companyInformationWithEuTaxonomyData);
+  const companyInformationWithEuTaxonomyDataForNonFinancials = generateCompanyWithEuTaxonomyDataForNonFinancials();
+  const csv = generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials);
 
   fs.writeFileSync("../testing/data/csvTestData.csv", csv);
   fs.writeFileSync(
-    "../testing/data/CompanyInformationWithEuTaxonomyData.json",
-    JSON.stringify(companyInformationWithEuTaxonomyData, null, "\t")
+    "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
+    JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
   );
 }
 
