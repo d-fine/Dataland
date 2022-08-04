@@ -1,13 +1,13 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
@@ -18,21 +18,22 @@ import org.junit.jupiter.api.assertThrows
 
 class CompanyDataControllerTest {
 
-    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
+    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
+    private val euTaxonomyDataForNonFinancialsControllerApi =
+        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testDataProvider = TestDataProvider()
     private val tokenHandler = TokenHandler()
-    private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
-    private fun postOneCompanyAndData(): Map<String, String> {
+    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): Map<String, String> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         return mapOf("companyId" to testCompanyId, "dataId" to testDataId, "dataType" to testDataType)
     }
@@ -105,7 +106,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
-        val testDataInformation = postOneCompanyAndData()
+        val testDataInformation = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             testDataInformation["companyId"],

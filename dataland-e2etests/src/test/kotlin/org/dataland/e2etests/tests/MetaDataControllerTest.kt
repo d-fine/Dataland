@@ -1,13 +1,13 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedMetaDataControllerApi
@@ -19,21 +19,23 @@ import java.lang.IllegalArgumentException
 
 class MetaDataControllerTest {
 
-    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
-    private val euTaxonomyDataControllerApi = EuTaxonomyDataControllerApi(BASE_PATH_TO_DATALAND_PROXY)
+    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val euTaxonomyDataForNonFinancialsControllerApi =
+        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testDataProvider = TestDataProvider()
     private val tokenHandler = TokenHandler()
     private val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
 
-    private fun postCompaniesAndEuTaxonomyData(testData: Map<CompanyInformation, List<EuTaxonomyData>>): List<String> {
+    private fun postCompaniesAndEuTaxonomyData(testData: Map<CompanyInformation, List<EuTaxonomyDataForNonFinancials>>):
+        List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         for ((company, data) in testData) {
             val testCompanyId = companyDataControllerApi.postCompany(company).companyId
             data.forEach {
-                euTaxonomyDataControllerApi.postCompanyAssociatedData(
-                    CompanyAssociatedDataEuTaxonomyData(testCompanyId, it)
+                euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+                    CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, it)
                 )
             }
             listOfPostedTestCompanyIds.add(testCompanyId)
@@ -44,12 +46,12 @@ class MetaDataControllerTest {
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(testDataId)
@@ -67,7 +69,8 @@ class MetaDataControllerTest {
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val initialSizeOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = testDataProvider
+            .getCompaniesWithEuTaxonomyDataForNonFinancials(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
         val expectedSizeOfDataMetaInfoComplete = initialSizeOfDataMetaInfoComplete + totalNumberOfDataSets
@@ -83,7 +86,8 @@ class MetaDataControllerTest {
         val numberOfCompanies = 3
         val numberOfDataSetsToPostPerCompany = 4
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = testDataProvider
+            .getCompaniesWithEuTaxonomyDataForNonFinancials(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyId =
             metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
@@ -101,9 +105,12 @@ class MetaDataControllerTest {
         val totalNumberOfDataSets = numberOfCompanies * numberOfDataSetsToPostPerCompany
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val initialSizeOfDataMetaInfoList = metaDataControllerApi.getListOfDataMetaInfo("", "").size
-        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = testDataProvider
+            .getCompaniesWithEuTaxonomyDataForNonFinancials(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
-        val listOfDataMetaInfoPerDataType = metaDataControllerApi.getListOfDataMetaInfo("", "EuTaxonomyData")
+        val listOfDataMetaInfoPerDataType = metaDataControllerApi.getListOfDataMetaInfo(
+            "", "EuTaxonomyDataForNonFinancials"
+        )
         val expectedSizeOfDataMetaInfoList = initialSizeOfDataMetaInfoList + totalNumberOfDataSets
         assertEquals(
             expectedSizeOfDataMetaInfoList, listOfDataMetaInfoPerDataType.size,
@@ -117,10 +124,11 @@ class MetaDataControllerTest {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = testDataProvider
+            .getCompaniesWithEuTaxonomyDataForNonFinancials(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         val listOfTestCompanyIds = postCompaniesAndEuTaxonomyData(testData)
         val listOfDataMetaInfoPerCompanyIdAndDataType =
-            metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyData")
+            metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyDataForNonFinancials")
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
@@ -133,21 +141,22 @@ class MetaDataControllerTest {
         val numberOfCompanies = 2
         val numberOfDataSetsToPostPerCompany = 6
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val testData = testDataProvider.getCompaniesWithData(numberOfCompanies, numberOfDataSetsToPostPerCompany)
+        val testData = testDataProvider
+            .getCompaniesWithEuTaxonomyDataForNonFinancials(numberOfCompanies, numberOfDataSetsToPostPerCompany)
         postCompaniesAndEuTaxonomyData(testData)
-        val greenAssetRatio = metaDataControllerApi.getGreenAssetRatio(null)
+        val greenAssetRatio = metaDataControllerApi.getGreenAssetRatioForNonFinancials(null)
         assertTrue(greenAssetRatio.all { it.value.toDouble() in 0.0..1.0 })
     }
 
     @Test
     fun `post a dummy teaser company and data for it and confirm unauthorized meta info access succeeds`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
         val dataMetaInformation = unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
@@ -161,11 +170,11 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
@@ -176,12 +185,12 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
 
@@ -197,12 +206,12 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
         val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyData(1).first()
+        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        euTaxonomyDataControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyData(testCompanyId, testData)
+        euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)

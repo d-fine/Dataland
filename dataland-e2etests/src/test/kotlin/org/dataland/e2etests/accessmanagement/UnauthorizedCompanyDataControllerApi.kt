@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 class UnauthorizedCompanyDataControllerApi {
 
@@ -18,7 +18,7 @@ class UnauthorizedCompanyDataControllerApi {
 
     private fun buildGetCompanyByIdRequest(companyId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_PROXY/companies/$companyId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/companies/$companyId")
             .get()
             .build()
     }

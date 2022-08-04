@@ -7,7 +7,7 @@ import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyData
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import java.io.File
 import java.lang.reflect.ParameterizedType
 import java.math.BigDecimal
@@ -36,29 +36,29 @@ class TestDataProvider {
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
     private val parameterizedType: ParameterizedType = Types
-        .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyDataModel::class.java)
-    private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyDataModel>> =
+        .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyDataForNonFinancials::class.java)
+    private val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyDataForNonFinancials>> =
         moshi.adapter(parameterizedType)
 
-    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataModel> = jsonAdapter
+    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataForNonFinancials> = jsonAdapter
         .fromJson(jsonFileAsString) ?: emptyList()
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.companyInformation }
     }
 
-    fun getEuTaxonomyData(numberOfDataSets: Int): List<EuTaxonomyData> {
+    fun getEuTaxonomyDataForNonFinancials(numberOfDataSets: Int): List<EuTaxonomyDataForNonFinancials> {
         return testCompanyInformationWithEuTaxonomyData.slice(0 until numberOfDataSets).map { it.euTaxonomyData }
     }
 
-    fun getCompaniesWithData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
-        Map<CompanyInformation, List<EuTaxonomyData>> {
+    fun getCompaniesWithEuTaxonomyDataForNonFinancials(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
+        Map<CompanyInformation, List<EuTaxonomyDataForNonFinancials>> {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
-        return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
+        return companies.associateWith { getEuTaxonomyDataForNonFinancials(dataSetsPerCompany) }
     }
 }
 
-data class CompanyInformationWithEuTaxonomyDataModel(
+data class CompanyInformationWithEuTaxonomyDataForNonFinancials(
     val companyInformation: CompanyInformation,
-    val euTaxonomyData: EuTaxonomyData
+    val euTaxonomyData: EuTaxonomyDataForNonFinancials
 )

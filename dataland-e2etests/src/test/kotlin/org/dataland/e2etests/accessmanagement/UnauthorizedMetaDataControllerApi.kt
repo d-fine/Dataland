@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import java.lang.reflect.ParameterizedType
 
 class UnauthorizedMetaDataControllerApi {
@@ -28,16 +28,16 @@ class UnauthorizedMetaDataControllerApi {
 
     private fun buildGetDataMetaInfoRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_PROXY/metadata/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/metadata/$dataId")
             .get()
             .build()
     }
 
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: String): Request {
         val endpointUrl = HttpUrl.Builder()
-            .scheme(BASE_PATH_TO_DATALAND_PROXY.substringBefore("://"))
-            .host(BASE_PATH_TO_DATALAND_PROXY.substringAfter("//").substringBefore(":"))
-            .port(BASE_PATH_TO_DATALAND_PROXY.substringAfter(":").substringAfter(":").substringBefore("/api").toInt())
+            .scheme(BASE_PATH_TO_DATALAND_BACKEND.substringBefore("://"))
+            .host(BASE_PATH_TO_DATALAND_BACKEND.substringAfter("//").substringBefore(":"))
+            .port(BASE_PATH_TO_DATALAND_BACKEND.substringAfter(":").substringAfter(":").substringBefore("/api").toInt())
             .addPathSegment("api")
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
