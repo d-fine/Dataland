@@ -54,10 +54,10 @@ function generateCompanyInformation() {
 
 function generateEuTaxonomyDataForNonFinancials() {
   const attestation = faker.helpers.arrayElement(
-    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Attestation"].enum
+      apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Reporting Obligation"].enum
+      apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Reporting Obligation"].enum
   );
   const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
   const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
@@ -94,6 +94,46 @@ function generateEuTaxonomyDataForNonFinancials() {
   };
 }
 
+function generateEuTaxonomyDataForFinancials() {
+  const attestation = faker.helpers.arrayElement(
+      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Attestation"].enum
+  );
+  const reportingObligation = faker.helpers.arrayElement(
+      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
+  );
+  const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
+  const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleBanksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleNonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleTradingPortfolio= faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleOnDemandLoans= faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleTradingPortfolioAndLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleNonLifeInsurance = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+
+  return {
+    Exposure: {
+      totalAmount: totalAssets,
+      eligibleActivity: taxonomyEligibleEconomicActivity,
+      eligibleDerivates: eligibleDerivates,
+      eligibleBanksAndIssuers: eligibleBanksAndIssuers,
+      eligibleNonNfrd: eligibleNonNfrd,
+    },
+    CreditKpiInsurance: {
+      eligibleTradingPortfolio: eligibleNonLifeInsurance,
+    },
+    CreditKpiDualField: {
+      eligibleTradingPortfolio: eligibleTradingPortfolio,
+      eligibleOnDemandLoans: eligibleOnDemandLoans,
+    },
+    CreditKpiSingleField: {
+      eligibleTradingPortfolio: eligibleTradingPortfolioAndLoans,
+    },
+    "Reporting Obligation": reportingObligation,
+    Attestation: attestation,
+  };
+}
+
 function generateCompanyWithEuTaxonomyDataForNonFinancials() {
   const companiesWithEuTaxonomyDataForNonFinancials = [];
   for (let id = 1; id <= 250; id++) {
@@ -103,6 +143,17 @@ function generateCompanyWithEuTaxonomyDataForNonFinancials() {
     });
   }
   return companiesWithEuTaxonomyDataForNonFinancials;
+}
+
+function generateCompanyWithEuTaxonomyDataForFinancials() {
+  const companiesWithEuTaxonomyDataForFinancials = [];
+  for (let id = 1; id <= 250; id++) {
+    companiesWithEuTaxonomyDataForFinancials.push({
+      companyInformation: generateCompanyInformation(),
+      euTaxonomyDataForNonFinancials: generateEuTaxonomyDataForFinancials(),
+    });
+  }
+  return companiesWithEuTaxonomyDataForFinancials;
 }
 
 function getStockIndexValueForCsv(setStockIndexList: Array<string>, stockIndexToCheck: string) {
@@ -177,7 +228,7 @@ function generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials: A
   return parse(mergedData, options);
 }
 
-function main() {
+function mainNonFinancial() {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateCompanyWithEuTaxonomyDataForNonFinancials();
   const csv = generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials);
 
@@ -188,4 +239,17 @@ function main() {
   );
 }
 
-main();
+mainNonFinancial();
+
+function mainFinancial() {
+  const companyInformationWithEuTaxonomyDataForFinancials = generateCompanyWithEuTaxonomyDataForFinancials();
+  const csv = generateCSVData(companyInformationWithEuTaxonomyDataForFinancials);
+
+  fs.writeFileSync("../testing/data/csvTestData.csv", csv);
+  fs.writeFileSync(
+      "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
+      JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
+  );
+}
+
+mainFinancial();
