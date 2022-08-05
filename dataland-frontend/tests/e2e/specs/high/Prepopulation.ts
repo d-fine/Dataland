@@ -67,7 +67,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
       .then((token) =>
         cy.request({
-          url: `${Cypress.env("API")}/companies/teaser`,
+          url: "/api/companies/teaser",
           method: "POST",
           headers: {
             "Content-Type": "application/json",

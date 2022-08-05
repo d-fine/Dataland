@@ -14,8 +14,8 @@ module.exports = (on, config) => {
       config.specPattern = [
         "tests/e2e/specs/verify_deployment",
         "tests/e2e/specs/high",
-        "tests/e2e/specs/low",
         "tests/e2e/specs/medium",
+        "tests/e2e/specs/low",
         "tests/e2e/specs/previsit",
       ];
       break;
