@@ -37,6 +37,7 @@ describe("As a user I want to be able to create an account", () => {
       .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
     logout();
   });
+
   it("Checks that one can login to the newly registered account", () => {
     login(email, password);
     logout();
