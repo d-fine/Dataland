@@ -19,7 +19,7 @@
 			],
 			"countryCode": "NG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "852152.90",
 				"alignedPercentage": "0.0208",
@@ -64,7 +64,7 @@
 			],
 			"countryCode": "GH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "383634.59",
 				"alignedPercentage": "0.2023",
@@ -117,7 +117,7 @@
 			],
 			"countryCode": "KI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "859183.24",
 				"alignedPercentage": "0.0271",
@@ -163,7 +163,7 @@
 			],
 			"countryCode": "PT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "420206.55",
 				"alignedPercentage": "0.0354",
@@ -206,7 +206,7 @@
 			],
 			"countryCode": "GD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "426809.76",
 				"alignedPercentage": "0.4589",
@@ -252,7 +252,7 @@
 			],
 			"countryCode": "SR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "159686.17",
 				"alignedPercentage": "0.0797",
@@ -299,7 +299,7 @@
 			],
 			"countryCode": "TO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "587200.79",
 				"alignedPercentage": "0.3413",
@@ -349,7 +349,7 @@
 			],
 			"countryCode": "NE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "79199.62",
 				"alignedPercentage": "0.2058",
@@ -394,7 +394,7 @@
 			],
 			"countryCode": "LT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "819460.57",
 				"alignedPercentage": "0.4265",
@@ -445,7 +445,7 @@
 			],
 			"countryCode": "GI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "594888.86",
 				"alignedPercentage": "0.4794",
@@ -496,7 +496,7 @@
 			],
 			"countryCode": "HN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "189960.10",
 				"alignedPercentage": "0.2574",
@@ -536,7 +536,7 @@
 			],
 			"countryCode": "BJ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "626594.97",
 				"alignedPercentage": "0.4821",
@@ -574,7 +574,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "978040.52",
 				"alignedPercentage": "0.4551",
@@ -621,7 +621,7 @@
 			],
 			"countryCode": "GW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "178226.86",
 				"alignedPercentage": "0.5479",
@@ -674,7 +674,7 @@
 			],
 			"countryCode": "MN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "724285.99",
 				"alignedPercentage": "0.1031",
@@ -714,7 +714,7 @@
 			],
 			"countryCode": "JO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "784486.85",
 				"alignedPercentage": "0.0469",
@@ -757,7 +757,7 @@
 			],
 			"countryCode": "YT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "152908.18",
 				"alignedPercentage": "0.0733",
@@ -804,7 +804,7 @@
 			],
 			"countryCode": "KW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "348494.27",
 				"alignedPercentage": "0.0091",
@@ -852,7 +852,7 @@
 			],
 			"countryCode": "VG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "145940.51",
 				"alignedPercentage": "0.1357",
@@ -900,7 +900,7 @@
 			],
 			"countryCode": "CK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "424010.07",
 				"alignedPercentage": "0.2210",
@@ -942,7 +942,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "544999.92",
 				"alignedPercentage": "0.6867",
@@ -987,7 +987,7 @@
 			],
 			"countryCode": "PE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "121470.70",
 				"alignedPercentage": "0.1015",
@@ -1035,7 +1035,7 @@
 			],
 			"countryCode": "MP"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "981097.08",
 				"alignedPercentage": "0.6331",
@@ -1083,7 +1083,7 @@
 			],
 			"countryCode": "ET"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "946569.10",
 				"alignedPercentage": "0.1664",
@@ -1126,7 +1126,7 @@
 			],
 			"countryCode": "CA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "668332.50",
 				"alignedPercentage": "0.0206",
@@ -1175,7 +1175,7 @@
 			],
 			"countryCode": "TN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "185687.91",
 				"alignedPercentage": "0.0230",
@@ -1217,7 +1217,7 @@
 			],
 			"countryCode": "ME"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "627565.08",
 				"alignedPercentage": "0.0991",
@@ -1256,7 +1256,7 @@
 			],
 			"countryCode": "TW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "470165.42",
 				"alignedPercentage": "0.1966",
@@ -1301,7 +1301,7 @@
 			],
 			"countryCode": "AS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "589925.32",
 				"alignedPercentage": "0.2115",
@@ -1348,7 +1348,7 @@
 			],
 			"countryCode": "LB"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "509801.20",
 				"alignedPercentage": "0.0966",
@@ -1396,7 +1396,7 @@
 			],
 			"countryCode": "SK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "177854.59",
 				"alignedPercentage": "0.0348",
@@ -1438,7 +1438,7 @@
 			],
 			"countryCode": "DE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "188507.23",
 				"alignedPercentage": "0.1184",
@@ -1485,7 +1485,7 @@
 			],
 			"countryCode": "SD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "593830.83",
 				"alignedPercentage": "0.0345",
@@ -1534,7 +1534,7 @@
 			],
 			"countryCode": "SM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "103788.39",
 				"alignedPercentage": "0.5147",
@@ -1589,7 +1589,7 @@
 			],
 			"countryCode": "KW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "242754.34",
 				"alignedPercentage": "0.2116",
@@ -1636,7 +1636,7 @@
 			],
 			"countryCode": "MA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "682658.23",
 				"alignedPercentage": "0.2879",
@@ -1675,7 +1675,7 @@
 			],
 			"countryCode": "MS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "678128.27",
 				"alignedPercentage": "0.2626",
@@ -1715,7 +1715,7 @@
 			],
 			"countryCode": "AX"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "401088.86",
 				"alignedPercentage": "0.0104",
@@ -1755,7 +1755,7 @@
 			],
 			"countryCode": "VE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "969154.85",
 				"alignedPercentage": "0.1286",
@@ -1798,7 +1798,7 @@
 			],
 			"countryCode": "AF"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "271535.07",
 				"alignedPercentage": "0.3397",
@@ -1853,7 +1853,7 @@
 			],
 			"countryCode": "FJ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "418533.89",
 				"alignedPercentage": "0.4291",
@@ -1905,7 +1905,7 @@
 			],
 			"countryCode": "DE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "123744.17",
 				"alignedPercentage": "0.2326",
@@ -1944,7 +1944,7 @@
 			],
 			"countryCode": "HU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "816121.55",
 				"alignedPercentage": "0.0027",
@@ -1990,7 +1990,7 @@
 			],
 			"countryCode": "CR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "61076.73",
 				"alignedPercentage": "0.4461",
@@ -2036,7 +2036,7 @@
 			],
 			"countryCode": "FO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "896951.73",
 				"alignedPercentage": "0.2834",
@@ -2076,7 +2076,7 @@
 			],
 			"countryCode": "WS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "473633.82",
 				"alignedPercentage": "0.0033",
@@ -2123,7 +2123,7 @@
 			],
 			"countryCode": "MC"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "415828.35",
 				"alignedPercentage": "0.2044",
@@ -2169,7 +2169,7 @@
 			],
 			"countryCode": "KI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "696056.12",
 				"alignedPercentage": "0.0525",
@@ -2220,7 +2220,7 @@
 			],
 			"countryCode": "PF"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "792636.58",
 				"alignedPercentage": "0.8894",
@@ -2265,7 +2265,7 @@
 			],
 			"countryCode": "SR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "318933.11",
 				"alignedPercentage": "0.3283",
@@ -2308,7 +2308,7 @@
 			],
 			"countryCode": "BN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "442660.84",
 				"alignedPercentage": "0.4267",
@@ -2355,7 +2355,7 @@
 			],
 			"countryCode": "AQ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "100530.46",
 				"alignedPercentage": "0.7614",
@@ -2408,7 +2408,7 @@
 			],
 			"countryCode": "NI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "236307.30",
 				"alignedPercentage": "0.0324",
@@ -2461,7 +2461,7 @@
 			],
 			"countryCode": "JM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "691963.09",
 				"alignedPercentage": "0.1253",
@@ -2503,7 +2503,7 @@
 			],
 			"countryCode": "FR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "898984.64",
 				"alignedPercentage": "0.5555",
@@ -2548,7 +2548,7 @@
 			],
 			"countryCode": "GF"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "884802.66",
 				"alignedPercentage": "0.1247",
@@ -2598,7 +2598,7 @@
 			],
 			"countryCode": "SD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "159422.76",
 				"alignedPercentage": "0.1065",
@@ -2644,7 +2644,7 @@
 			],
 			"countryCode": "LU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "68804.98",
 				"alignedPercentage": "0.1242",
@@ -2695,7 +2695,7 @@
 			],
 			"countryCode": "US"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "215441.91",
 				"alignedPercentage": "0.0259",
@@ -2742,7 +2742,7 @@
 			],
 			"countryCode": "GE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "819237.53",
 				"alignedPercentage": "0.6583",
@@ -2785,7 +2785,7 @@
 			],
 			"countryCode": "AE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "336836.67",
 				"alignedPercentage": "0.3667",
@@ -2835,7 +2835,7 @@
 			],
 			"countryCode": "GR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "771706.71",
 				"alignedPercentage": "0.1250",
@@ -2887,7 +2887,7 @@
 			],
 			"countryCode": "SG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "291571.83",
 				"alignedPercentage": "0.6811",
@@ -2927,7 +2927,7 @@
 			],
 			"countryCode": "ML"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "421120.46",
 				"alignedPercentage": "0.5932",
@@ -2969,7 +2969,7 @@
 			],
 			"countryCode": "GS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "370035.93",
 				"alignedPercentage": "0.1513",
@@ -3019,7 +3019,7 @@
 			],
 			"countryCode": "GY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "796170.31",
 				"alignedPercentage": "0.7429",
@@ -3065,7 +3065,7 @@
 			],
 			"countryCode": "MX"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "817036.10",
 				"alignedPercentage": "0.2329",
@@ -3108,7 +3108,7 @@
 			],
 			"countryCode": "CR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "314365.56",
 				"alignedPercentage": "0.3639",
@@ -3151,7 +3151,7 @@
 			],
 			"countryCode": "OM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "326048.62",
 				"alignedPercentage": "0.2332",
@@ -3205,7 +3205,7 @@
 			],
 			"countryCode": "GT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "435210.67",
 				"alignedPercentage": "0.2588",
@@ -3260,7 +3260,7 @@
 			],
 			"countryCode": "GI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "958908.13",
 				"alignedPercentage": "0.1039",
@@ -3303,7 +3303,7 @@
 			],
 			"countryCode": "SD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "691771.89",
 				"alignedPercentage": "0.0127",
@@ -3349,7 +3349,7 @@
 			],
 			"countryCode": "DM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "154083.87",
 				"alignedPercentage": "0.0427",
@@ -3394,7 +3394,7 @@
 			],
 			"countryCode": "IT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "323787.52",
 				"alignedPercentage": "0.3823",
@@ -3442,7 +3442,7 @@
 			],
 			"countryCode": "GG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "670190.30",
 				"alignedPercentage": "0.0153",
@@ -3487,7 +3487,7 @@
 			],
 			"countryCode": "DM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "237724.97",
 				"alignedPercentage": "0.0587",
@@ -3536,7 +3536,7 @@
 			],
 			"countryCode": "PW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "898786.94",
 				"alignedPercentage": "0.0090",
@@ -3584,7 +3584,7 @@
 			],
 			"countryCode": "MP"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "308849.17",
 				"alignedPercentage": "0.4859",
@@ -3639,7 +3639,7 @@
 			],
 			"countryCode": "ST"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "631018.29",
 				"alignedPercentage": "0.2359",
@@ -3694,7 +3694,7 @@
 			],
 			"countryCode": "AI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "383590.41",
 				"alignedPercentage": "0.4278",
@@ -3743,7 +3743,7 @@
 			],
 			"countryCode": "AQ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "712655.54",
 				"alignedPercentage": "0.5318",
@@ -3786,7 +3786,7 @@
 			],
 			"countryCode": "GL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "90106.31",
 				"alignedPercentage": "0.0207",
@@ -3828,7 +3828,7 @@
 			],
 			"countryCode": "PA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "529488.67",
 				"alignedPercentage": "0.2634",
@@ -3878,7 +3878,7 @@
 			],
 			"countryCode": "YE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "852109.10",
 				"alignedPercentage": "0.0614",
@@ -3927,7 +3927,7 @@
 			],
 			"countryCode": "LY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "60519.09",
 				"alignedPercentage": "0.1186",
@@ -3965,7 +3965,7 @@
 			],
 			"countryCode": "BY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "312081.23",
 				"alignedPercentage": "0.2663",
@@ -4020,7 +4020,7 @@
 			],
 			"countryCode": "HN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "373335.43",
 				"alignedPercentage": "0.0088",
@@ -4066,7 +4066,7 @@
 			],
 			"countryCode": "PN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "788668.81",
 				"alignedPercentage": "0.2992",
@@ -4109,7 +4109,7 @@
 			],
 			"countryCode": "UG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "314000.24",
 				"alignedPercentage": "0.6874",
@@ -4155,7 +4155,7 @@
 			],
 			"countryCode": "BW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "259035.66",
 				"alignedPercentage": "0.5516",
@@ -4199,7 +4199,7 @@
 			],
 			"countryCode": "BH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "533761.14",
 				"alignedPercentage": "0.4145",
@@ -4241,7 +4241,7 @@
 			],
 			"countryCode": "FO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "348738.39",
 				"alignedPercentage": "0.4805",
@@ -4282,7 +4282,7 @@
 			],
 			"countryCode": "AT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "171543.20",
 				"alignedPercentage": "0.6599",
@@ -4327,7 +4327,7 @@
 			],
 			"countryCode": "HT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "118925.63",
 				"alignedPercentage": "0.2568",
@@ -4374,7 +4374,7 @@
 			],
 			"countryCode": "AZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "294056.13",
 				"alignedPercentage": "0.5208",
@@ -4425,7 +4425,7 @@
 			],
 			"countryCode": "CX"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "629994.24",
 				"alignedPercentage": "0.0247",
@@ -4471,7 +4471,7 @@
 			],
 			"countryCode": "OM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "90913.63",
 				"alignedPercentage": "0.2464",
@@ -4525,7 +4525,7 @@
 			],
 			"countryCode": "BL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "162247.88",
 				"alignedPercentage": "0.3939",
@@ -4577,7 +4577,7 @@
 			],
 			"countryCode": "HN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "738352.64",
 				"alignedPercentage": "0.5998",
@@ -4626,7 +4626,7 @@
 			],
 			"countryCode": "TD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "202226.38",
 				"alignedPercentage": "0.5133",
@@ -4681,7 +4681,7 @@
 			],
 			"countryCode": "EC"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "565466.25",
 				"alignedPercentage": "0.1616",
@@ -4721,7 +4721,7 @@
 			],
 			"countryCode": "ME"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "932605.58",
 				"alignedPercentage": "0.0439",
@@ -4769,7 +4769,7 @@
 			],
 			"countryCode": "CD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "792160.29",
 				"alignedPercentage": "0.2772",
@@ -4807,7 +4807,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "657958.70",
 				"alignedPercentage": "0.1133",
@@ -4861,7 +4861,7 @@
 			],
 			"countryCode": "MS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "559844.22",
 				"alignedPercentage": "0.3078",
@@ -4912,7 +4912,7 @@
 			],
 			"countryCode": "ML"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "624979.90",
 				"alignedPercentage": "0.0329",
@@ -4955,7 +4955,7 @@
 			],
 			"countryCode": "GN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "183840.82",
 				"alignedPercentage": "0.6531",
@@ -5010,7 +5010,7 @@
 			],
 			"countryCode": "CI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "592184.95",
 				"alignedPercentage": "0.4050",
@@ -5059,7 +5059,7 @@
 			],
 			"countryCode": "VU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "214831.32",
 				"alignedPercentage": "0.1291",
@@ -5104,7 +5104,7 @@
 			],
 			"countryCode": "SJ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "608891.47",
 				"alignedPercentage": "0.0959",
@@ -5154,7 +5154,7 @@
 			],
 			"countryCode": "ZW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "911626.16",
 				"alignedPercentage": "0.0393",
@@ -5203,7 +5203,7 @@
 			],
 			"countryCode": "GQ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "224192.69",
 				"alignedPercentage": "0.3072",
@@ -5250,7 +5250,7 @@
 			],
 			"countryCode": "BN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "381589.42",
 				"alignedPercentage": "0.0007",
@@ -5294,7 +5294,7 @@
 			],
 			"countryCode": "AI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "287017.65",
 				"alignedPercentage": "0.3793",
@@ -5343,7 +5343,7 @@
 			],
 			"countryCode": "GS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "547485.58",
 				"alignedPercentage": "0.0114",
@@ -5394,7 +5394,7 @@
 			],
 			"countryCode": "UZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "767273.08",
 				"alignedPercentage": "0.1510",
@@ -5441,7 +5441,7 @@
 			],
 			"countryCode": "PK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "567540.00",
 				"alignedPercentage": "0.0994",
@@ -5492,7 +5492,7 @@
 			],
 			"countryCode": "PK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "636959.83",
 				"alignedPercentage": "0.1543",
@@ -5544,7 +5544,7 @@
 			],
 			"countryCode": "IO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "691787.67",
 				"alignedPercentage": "0.0319",
@@ -5597,7 +5597,7 @@
 			],
 			"countryCode": "AL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "511151.98",
 				"alignedPercentage": "0.1674",
@@ -5648,7 +5648,7 @@
 			],
 			"countryCode": "EH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "655430.35",
 				"alignedPercentage": "0.0755",
@@ -5694,7 +5694,7 @@
 			],
 			"countryCode": "RS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "121829.19",
 				"alignedPercentage": "0.9207",
@@ -5736,7 +5736,7 @@
 			],
 			"countryCode": "TK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "843618.89",
 				"alignedPercentage": "0.3919",
@@ -5786,7 +5786,7 @@
 			],
 			"countryCode": "ME"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "511423.61",
 				"alignedPercentage": "0.4860",
@@ -5834,7 +5834,7 @@
 			],
 			"countryCode": "GN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "465432.49",
 				"alignedPercentage": "0.0018",
@@ -5882,7 +5882,7 @@
 			],
 			"countryCode": "BS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "512632.90",
 				"alignedPercentage": "0.1997",
@@ -5928,7 +5928,7 @@
 			],
 			"countryCode": "HT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "587772.81",
 				"alignedPercentage": "0.0241",
@@ -5975,7 +5975,7 @@
 			],
 			"countryCode": "CG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "225986.73",
 				"alignedPercentage": "0.0770",
@@ -6014,7 +6014,7 @@
 			],
 			"countryCode": "HM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "518387.51",
 				"alignedPercentage": "0.4534",
@@ -6060,7 +6060,7 @@
 			],
 			"countryCode": "QA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "842987.55",
 				"alignedPercentage": "0.5303",
@@ -6107,7 +6107,7 @@
 			],
 			"countryCode": "SM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "122034.10",
 				"alignedPercentage": "0.2203",
@@ -6152,7 +6152,7 @@
 			],
 			"countryCode": "SB"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "249960.74",
 				"alignedPercentage": "0.1966",
@@ -6193,7 +6193,7 @@
 			],
 			"countryCode": "AS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "176873.98",
 				"alignedPercentage": "0.1928",
@@ -6232,7 +6232,7 @@
 			],
 			"countryCode": "LI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "852735.30",
 				"alignedPercentage": "0.0434",
@@ -6274,7 +6274,7 @@
 			],
 			"countryCode": "LA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "85534.55",
 				"alignedPercentage": "0.1118",
@@ -6321,7 +6321,7 @@
 			],
 			"countryCode": "GU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "630196.45",
 				"alignedPercentage": "0.0011",
@@ -6373,7 +6373,7 @@
 			],
 			"countryCode": "PK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "115985.88",
 				"alignedPercentage": "0.0681",
@@ -6421,7 +6421,7 @@
 			],
 			"countryCode": "CL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "59649.62",
 				"alignedPercentage": "0.0735",
@@ -6462,7 +6462,7 @@
 			],
 			"countryCode": "BE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "580846.27",
 				"alignedPercentage": "0.2238",
@@ -6510,7 +6510,7 @@
 			],
 			"countryCode": "MP"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "753214.93",
 				"alignedPercentage": "0.3599",
@@ -6558,7 +6558,7 @@
 			],
 			"countryCode": "IR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "103595.65",
 				"alignedPercentage": "0.3218",
@@ -6605,7 +6605,7 @@
 			],
 			"countryCode": "GU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "615030.31",
 				"alignedPercentage": "0.0800",
@@ -6651,7 +6651,7 @@
 			],
 			"countryCode": "AZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "364575.69",
 				"alignedPercentage": "0.1180",
@@ -6700,7 +6700,7 @@
 			],
 			"countryCode": "GG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "293861.44",
 				"alignedPercentage": "0.0172",
@@ -6743,7 +6743,7 @@
 			],
 			"countryCode": "LB"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "701302.80",
 				"alignedPercentage": "0.0547",
@@ -6791,7 +6791,7 @@
 			],
 			"countryCode": "GS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "183094.03",
 				"alignedPercentage": "0.3982",
@@ -6835,7 +6835,7 @@
 			],
 			"countryCode": "QA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "687576.62",
 				"alignedPercentage": "0.0003",
@@ -6889,7 +6889,7 @@
 			],
 			"countryCode": "OM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "602270.97",
 				"alignedPercentage": "0.1721",
@@ -6933,7 +6933,7 @@
 			],
 			"countryCode": "CL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "912712.09",
 				"alignedPercentage": "0.5991",
@@ -6984,7 +6984,7 @@
 			],
 			"countryCode": "VG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "618521.98",
 				"alignedPercentage": "0.1569",
@@ -7032,7 +7032,7 @@
 			],
 			"countryCode": "BV"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "609661.43",
 				"alignedPercentage": "0.0243",
@@ -7076,7 +7076,7 @@
 			],
 			"countryCode": "MV"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "300575.56",
 				"alignedPercentage": "0.3052",
@@ -7119,7 +7119,7 @@
 			],
 			"countryCode": "BH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "249112.49",
 				"alignedPercentage": "0.2518",
@@ -7168,7 +7168,7 @@
 			],
 			"countryCode": "IR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "539126.86",
 				"alignedPercentage": "0.2481",
@@ -7211,7 +7211,7 @@
 			],
 			"countryCode": "MX"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "861532.20",
 				"alignedPercentage": "0.0614",
@@ -7254,7 +7254,7 @@
 			],
 			"countryCode": "AE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "369581.26",
 				"alignedPercentage": "0.1311",
@@ -7307,7 +7307,7 @@
 			],
 			"countryCode": "BY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "647731.33",
 				"alignedPercentage": "0.3532",
@@ -7353,7 +7353,7 @@
 			],
 			"countryCode": "TL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "55687.39",
 				"alignedPercentage": "0.0035",
@@ -7401,7 +7401,7 @@
 			],
 			"countryCode": "LS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "729708.07",
 				"alignedPercentage": "0.0444",
@@ -7444,7 +7444,7 @@
 			],
 			"countryCode": "EG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "159836.37",
 				"alignedPercentage": "0.1656",
@@ -7493,7 +7493,7 @@
 			],
 			"countryCode": "TH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "809379.79",
 				"alignedPercentage": "0.1510",
@@ -7545,7 +7545,7 @@
 			],
 			"countryCode": "TW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "332189.90",
 				"alignedPercentage": "0.4267",
@@ -7583,7 +7583,7 @@
 			],
 			"countryCode": "TC"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "760479.52",
 				"alignedPercentage": "0.0731",
@@ -7630,7 +7630,7 @@
 			],
 			"countryCode": "UM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "282621.56",
 				"alignedPercentage": "0.0053",
@@ -7675,7 +7675,7 @@
 			],
 			"countryCode": "ES"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "285064.27",
 				"alignedPercentage": "0.2493",
@@ -7729,7 +7729,7 @@
 			],
 			"countryCode": "PG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "912026.17",
 				"alignedPercentage": "0.8341",
@@ -7769,7 +7769,7 @@
 			],
 			"countryCode": "IS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "75607.94",
 				"alignedPercentage": "0.1110",
@@ -7807,7 +7807,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "853871.25",
 				"alignedPercentage": "0.2031",
@@ -7857,7 +7857,7 @@
 			],
 			"countryCode": "HM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "60892.72",
 				"alignedPercentage": "0.7710",
@@ -7899,7 +7899,7 @@
 			],
 			"countryCode": "KP"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "736674.65",
 				"alignedPercentage": "0.4191",
@@ -7945,7 +7945,7 @@
 			],
 			"countryCode": "UY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "451715.39",
 				"alignedPercentage": "0.3942",
@@ -7999,7 +7999,7 @@
 			],
 			"countryCode": "VG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "182007.71",
 				"alignedPercentage": "0.0093",
@@ -8038,7 +8038,7 @@
 			],
 			"countryCode": "NE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "159694.11",
 				"alignedPercentage": "0.1076",
@@ -8090,7 +8090,7 @@
 			],
 			"countryCode": "BI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "654241.09",
 				"alignedPercentage": "0.6493",
@@ -8139,7 +8139,7 @@
 			],
 			"countryCode": "QA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "865727.41",
 				"alignedPercentage": "0.0033",
@@ -8184,7 +8184,7 @@
 			],
 			"countryCode": "NL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "470838.94",
 				"alignedPercentage": "0.1102",
@@ -8229,7 +8229,7 @@
 			],
 			"countryCode": "GW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "694489.46",
 				"alignedPercentage": "0.0129",
@@ -8271,7 +8271,7 @@
 			],
 			"countryCode": "RO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "237050.53",
 				"alignedPercentage": "0.2731",
@@ -8317,7 +8317,7 @@
 			],
 			"countryCode": "WS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "884236.33",
 				"alignedPercentage": "0.1095",
@@ -8367,7 +8367,7 @@
 			],
 			"countryCode": "BS"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "468833.93",
 				"alignedPercentage": "0.4218",
@@ -8409,7 +8409,7 @@
 			],
 			"countryCode": "TW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "827268.16",
 				"alignedPercentage": "0.0244",
@@ -8451,7 +8451,7 @@
 			],
 			"countryCode": "SV"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "159970.42",
 				"alignedPercentage": "0.0474",
@@ -8501,7 +8501,7 @@
 			],
 			"countryCode": "VN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "244123.68",
 				"alignedPercentage": "0.2226",
@@ -8550,7 +8550,7 @@
 			],
 			"countryCode": "US"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "255700.78",
 				"alignedPercentage": "0.4971",
@@ -8604,7 +8604,7 @@
 			],
 			"countryCode": "AM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "568869.99",
 				"alignedPercentage": "0.7974",
@@ -8651,7 +8651,7 @@
 			],
 			"countryCode": "NO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "802503.92",
 				"alignedPercentage": "0.0006",
@@ -8697,7 +8697,7 @@
 			],
 			"countryCode": "SM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "567749.95",
 				"alignedPercentage": "0.1334",
@@ -8741,7 +8741,7 @@
 			],
 			"countryCode": "LT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "573129.81",
 				"alignedPercentage": "0.2236",
@@ -8789,7 +8789,7 @@
 			],
 			"countryCode": "FK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "209530.95",
 				"alignedPercentage": "0.0340",
@@ -8834,7 +8834,7 @@
 			],
 			"countryCode": "MU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "206439.62",
 				"alignedPercentage": "0.0081",
@@ -8884,7 +8884,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "642386.92",
 				"alignedPercentage": "0.5671",
@@ -8934,7 +8934,7 @@
 			],
 			"countryCode": "BM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "669940.90",
 				"alignedPercentage": "0.2149",
@@ -8978,7 +8978,7 @@
 			],
 			"countryCode": "PY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "80185.82",
 				"alignedPercentage": "0.0863",
@@ -9024,7 +9024,7 @@
 			],
 			"countryCode": "SY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "602535.22",
 				"alignedPercentage": "0.1152",
@@ -9063,7 +9063,7 @@
 			],
 			"countryCode": "TN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "999072.19",
 				"alignedPercentage": "0.2819",
@@ -9110,7 +9110,7 @@
 			],
 			"countryCode": "PL"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "397990.19",
 				"alignedPercentage": "0.0127",
@@ -9155,7 +9155,7 @@
 			],
 			"countryCode": "IO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "219103.16",
 				"alignedPercentage": "0.0812",
@@ -9206,7 +9206,7 @@
 			],
 			"countryCode": "BE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "989793.14",
 				"alignedPercentage": "0.0387",
@@ -9254,7 +9254,7 @@
 			],
 			"countryCode": "BQ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "476194.15",
 				"alignedPercentage": "0.1797",
@@ -9292,7 +9292,7 @@
 			],
 			"countryCode": "BO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "496101.65",
 				"alignedPercentage": "0.0206",
@@ -9332,7 +9332,7 @@
 			],
 			"countryCode": "CI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "160719.01",
 				"alignedPercentage": "0.4251",
@@ -9378,7 +9378,7 @@
 			],
 			"countryCode": "JP"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "112043.08",
 				"alignedPercentage": "0.4472",
@@ -9425,7 +9425,7 @@
 			],
 			"countryCode": "YT"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "653494.09",
 				"alignedPercentage": "0.1138",
@@ -9477,7 +9477,7 @@
 			],
 			"countryCode": "GW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "836809.65",
 				"alignedPercentage": "0.1732",
@@ -9524,7 +9524,7 @@
 			],
 			"countryCode": "GU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "129846.34",
 				"alignedPercentage": "0.1170",
@@ -9562,7 +9562,7 @@
 			],
 			"countryCode": "BJ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "106995.08",
 				"alignedPercentage": "0.0753",
@@ -9609,7 +9609,7 @@
 			],
 			"countryCode": "PK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "723324.00",
 				"alignedPercentage": "0.7904",
@@ -9649,7 +9649,7 @@
 			],
 			"countryCode": "MU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "429519.47",
 				"alignedPercentage": "0.0429",
@@ -9690,7 +9690,7 @@
 			],
 			"countryCode": "AR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "382356.99",
 				"alignedPercentage": "0.4288",
@@ -9733,7 +9733,7 @@
 			],
 			"countryCode": "CO"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "363525.22",
 				"alignedPercentage": "0.0489",
@@ -9782,7 +9782,7 @@
 			],
 			"countryCode": "TK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "349082.27",
 				"alignedPercentage": "0.4184",
@@ -9827,7 +9827,7 @@
 			],
 			"countryCode": "TK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "224558.34",
 				"alignedPercentage": "0.6322",
@@ -9877,7 +9877,7 @@
 			],
 			"countryCode": "ZW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "675943.92",
 				"alignedPercentage": "0.1475",
@@ -9932,7 +9932,7 @@
 			],
 			"countryCode": "KZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "601949.82",
 				"alignedPercentage": "0.0346",
@@ -9983,7 +9983,7 @@
 			],
 			"countryCode": "SR"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "829900.26",
 				"alignedPercentage": "0.1081",
@@ -10025,7 +10025,7 @@
 			],
 			"countryCode": "LU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "112820.95",
 				"alignedPercentage": "0.1543",
@@ -10076,7 +10076,7 @@
 			],
 			"countryCode": "GW"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "421604.74",
 				"alignedPercentage": "0.2845",
@@ -10121,7 +10121,7 @@
 			],
 			"countryCode": "KG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "504293.77",
 				"alignedPercentage": "0.2430",
@@ -10166,7 +10166,7 @@
 			],
 			"countryCode": "BD"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "364572.33",
 				"alignedPercentage": "0.0177",
@@ -10220,7 +10220,7 @@
 			],
 			"countryCode": "GQ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "424031.88",
 				"alignedPercentage": "0.6841",
@@ -10273,7 +10273,7 @@
 			],
 			"countryCode": "DZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "307240.57",
 				"alignedPercentage": "0.2555",
@@ -10318,7 +10318,7 @@
 			],
 			"countryCode": "DE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "492002.00",
 				"alignedPercentage": "0.5453",
@@ -10358,7 +10358,7 @@
 			],
 			"countryCode": "VE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "799079.82",
 				"alignedPercentage": "0.0006",
@@ -10404,7 +10404,7 @@
 			],
 			"countryCode": "GH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "428675.38",
 				"alignedPercentage": "0.5406",
@@ -10452,7 +10452,7 @@
 			],
 			"countryCode": "RU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "298460.57",
 				"alignedPercentage": "0.2751",
@@ -10505,7 +10505,7 @@
 			],
 			"countryCode": "BJ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "978132.64",
 				"alignedPercentage": "0.2237",
@@ -10554,7 +10554,7 @@
 			],
 			"countryCode": "AG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "407019.71",
 				"alignedPercentage": "0.1721",
@@ -10606,7 +10606,7 @@
 			],
 			"countryCode": "GE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "722088.13",
 				"alignedPercentage": "0.3682",
@@ -10652,7 +10652,7 @@
 			],
 			"countryCode": "AG"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "957545.78",
 				"alignedPercentage": "0.0250",
@@ -10701,7 +10701,7 @@
 			],
 			"countryCode": "VC"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "142691.30",
 				"alignedPercentage": "0.0357",
@@ -10741,7 +10741,7 @@
 			],
 			"countryCode": "CK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "933129.28",
 				"alignedPercentage": "0.0553",
@@ -10787,7 +10787,7 @@
 			],
 			"countryCode": "GU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "387131.38",
 				"alignedPercentage": "0.1046",
@@ -10834,7 +10834,7 @@
 			],
 			"countryCode": "JE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "535267.46",
 				"alignedPercentage": "0.0463",
@@ -10883,7 +10883,7 @@
 			],
 			"countryCode": "AF"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "800924.87",
 				"alignedPercentage": "0.3716",
@@ -10921,7 +10921,7 @@
 			],
 			"countryCode": "PY"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "385156.83",
 				"alignedPercentage": "0.2105",
@@ -10969,7 +10969,7 @@
 			],
 			"countryCode": "GU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "800481.15",
 				"alignedPercentage": "0.0274",
@@ -11019,7 +11019,7 @@
 			],
 			"countryCode": "IN"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "436288.18",
 				"alignedPercentage": "0.1320",
@@ -11074,7 +11074,7 @@
 			],
 			"countryCode": "MH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "946251.67",
 				"alignedPercentage": "0.0429",
@@ -11125,7 +11125,7 @@
 			],
 			"countryCode": "ZA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "581048.06",
 				"alignedPercentage": "0.2325",
@@ -11171,7 +11171,7 @@
 			],
 			"countryCode": "CH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "111899.86",
 				"alignedPercentage": "0.0898",
@@ -11221,7 +11221,7 @@
 			],
 			"countryCode": "US"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "327508.00",
 				"alignedPercentage": "0.1587",
@@ -11264,7 +11264,7 @@
 			],
 			"countryCode": "TH"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "855123.70",
 				"alignedPercentage": "0.0128",
@@ -11304,7 +11304,7 @@
 			],
 			"countryCode": "AI"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "410965.60",
 				"alignedPercentage": "0.0196",
@@ -11347,7 +11347,7 @@
 			],
 			"countryCode": "DZ"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "959076.29",
 				"alignedPercentage": "0.0089",
@@ -11385,7 +11385,7 @@
 			],
 			"countryCode": "LV"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "416907.56",
 				"alignedPercentage": "0.1544",
@@ -11439,7 +11439,7 @@
 			],
 			"countryCode": "LU"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "873350.73",
 				"alignedPercentage": "0.8412",
@@ -11481,7 +11481,7 @@
 			],
 			"countryCode": "MK"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "929814.66",
 				"alignedPercentage": "0.3716",
@@ -11530,7 +11530,7 @@
 			],
 			"countryCode": "JM"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "488004.82",
 				"alignedPercentage": "0.5002",
@@ -11577,7 +11577,7 @@
 			],
 			"countryCode": "SE"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "394984.65",
 				"alignedPercentage": "0.9821",
@@ -11623,7 +11623,7 @@
 			],
 			"countryCode": "SA"
 		},
-		"euTaxonomyData": {
+		"euTaxonomyDataForNonFinancials": {
 			"Capex": {
 				"totalAmount": "679286.18",
 				"alignedPercentage": "0.9979",
