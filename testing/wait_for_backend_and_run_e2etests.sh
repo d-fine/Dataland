@@ -21,8 +21,7 @@ export -f is_infrastructure_up
 ./gradlew :dataland-e2etests:compileTestKotlin :dataland-frontend:generateAPIClientFrontend :dataland-frontend:build --no-daemon --stacktrace
 timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
 ./gradlew :dataland-e2etests:test
-#:dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
-# TODO: Switch the frontend e2e tests on again as soon as ready!
+dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
 GRADLE_EXIT_CODE=$?
 echo "gradle exit code $GRADLE_EXIT_CODE"
 exit $GRADLE_EXIT_CODE
