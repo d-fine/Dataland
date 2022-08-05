@@ -7,7 +7,7 @@ describe("Visit all EuTaxonomy Data", { defaultCommandTimeout: Cypress.env("PREV
     cy.retrieveDataIdsList().then(async (dataIdList) => {
       getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then(async (token) => {
         doThingsInChunks(dataIdList, chunkSize, (dataId) =>
-          fetch(`${Cypress.env("API")}/data/eutaxonomies/${dataId}`, {
+          fetch(`${Cypress.env("API")}/data/eutaxonomy/nonfinancials/${dataId}`, {
             headers: {
               Authorization: "Bearer " + token,
             },

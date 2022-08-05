@@ -36,14 +36,14 @@ describe("EU Taxonomy Data and Cards", function () {
   ): void {
     cy.visitAndCheckAppMount("/upload");
     uploadFormFiller();
-    cy.intercept("**/api/data/eutaxonomies").as("postTaxonomyData");
+    cy.intercept("**/api/data/eutaxonomy/nonfinancials").as("postTaxonomyData");
     cy.get('button[name="postEUData"]').click({ force: true });
     cy.wait("@postTaxonomyData", { timeout: timeout }).then(() => {
       cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
       cy.get("span[title=dataId]").then(() => {
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
-          cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+          cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
           cy.visitAndCheckAppMount(`/companies/${companyID}/eutaxonomies`);
           cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
             euTaxonomyPageVerifier();

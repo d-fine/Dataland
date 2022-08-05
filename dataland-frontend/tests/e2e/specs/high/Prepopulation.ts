@@ -122,7 +122,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   it("Check Eu Taxonomy Data Presence and Link route", () => {
     cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
-      cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
       cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdList[0]);
       cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
         cy.get("h3").should("be.visible");
@@ -137,7 +137,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
     cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
       cy.intercept("**/api/companies/*").as("retrieveCompany");
-      cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
       cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/eutaxonomies`);
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
         .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
