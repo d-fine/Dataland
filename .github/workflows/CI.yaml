@@ -65,9 +65,8 @@ jobs:
         with:
           name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
-     # TODO Reactivate fakefixtures check as soon as it is repaired and runs as expected
-     # - name: Execute Frontend Scripts to check if they run successfully
-     #   run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
+      - name: Execute Frontend Scripts to check if they run successfully
+        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
 
 
   e2e-tests:

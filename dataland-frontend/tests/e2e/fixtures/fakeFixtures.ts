@@ -175,7 +175,7 @@ function decimalSeparatorConverter(value: number) {
   return value.toString().replace(".", ",");
 }
 
-function generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
+function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
   const mergedData = companyInformationWithEuTaxonomyDataForNonFinancials.map((element: any) => {
     return { ...element["companyInformation"], ...element["euTaxonomyDataForNonFinancials"] };
   });
@@ -230,7 +230,7 @@ function generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials: A
 
 function mainNonFinancial() {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateCompanyWithEuTaxonomyDataForNonFinancials();
-  const csv = generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials);
+  const csv = generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials);
 
   fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv", csv);
   fs.writeFileSync(
@@ -243,9 +243,7 @@ mainNonFinancial();
 
 function mainFinancial() {
   const companyInformationWithEuTaxonomyDataForFinancials = generateCompanyWithEuTaxonomyDataForFinancials();
-  const csv = generateCSVData(companyInformationWithEuTaxonomyDataForFinancials);
 
-  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForFinancials.csv", csv);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
