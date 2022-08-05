@@ -3,7 +3,8 @@ module.exports = (on, config) => {
   config.fixturesFolder = "../testing/data";
   config.supportFile = "tests/e2e/support/index.ts";
   config.env.commit_id = require("git-commit-id")({ cwd: "../" });
-  switch (process.env.ENVIRONMENT) {
+  config.specPattern = ["tests/e2e/specs"];
+  /*switch (process.env.ENVIRONMENT) {
     case "development": {
       config.specPattern = ["tests/e2e/specs/runAll.ts"];
       break;
@@ -22,6 +23,6 @@ module.exports = (on, config) => {
       config.specPattern = ["tests/e2e/specs"];
       break;
     }
-  }
+  }*/
   return config;
 };
