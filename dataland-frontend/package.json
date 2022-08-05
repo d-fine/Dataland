@@ -14,7 +14,7 @@
     "testdevelopment": "vue-cli-service test:e2e --url https://dev-dataland.duckdns.org --headless",
     "testremote": "vue-cli-service test:e2e --url https://dataland-local.duckdns.org",
     "testunit": "vue-cli-service test:unit",
-    "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/fakeFixtures.ts",
+    "testfakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/fakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --dev && npm audit fix",
     "checkdependencies": "depcheck --ignores='@vue/cli-plugin-*,@vue/vue3-jest,sass-loader,ts-jest'"
