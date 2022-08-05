@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums
+package org.dataland.datalandbackend.model.enums.company
 
 /**
  * A class that holds Identifier Types for a company

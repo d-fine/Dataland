@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.model.enums.company.StockIndex
 import java.math.BigDecimal
 import java.time.LocalDate
 

@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

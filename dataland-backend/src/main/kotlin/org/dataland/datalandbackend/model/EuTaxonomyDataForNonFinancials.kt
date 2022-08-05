@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.model.enums.AttestationOptions
-import org.dataland.datalandbackend.model.enums.YesNo
+import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
+import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 
 /**
  * --- API model ---
