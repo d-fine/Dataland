@@ -247,14 +247,29 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
         value: (row: any) => new Date(row.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
       },
       { label: "Total Assets EURmm", value: (row: any) => decimalSeparatorConverter(row.Exposure.totalAssets) },
-      { label: "Taxonomy-eligible economic activity", value: (row: any) => convertToPercentageString(row.Exposure.taxonomyActivity) },
+      {
+        label: "Taxonomy-eligible economic activity",
+        value: (row: any) => convertToPercentageString(row.Exposure.taxonomyActivity),
+      },
       { label: "Derivates", value: (row: any) => convertToPercentageString(row.Exposure.eligibleDerivates) },
       { label: "Banks and issuers", value: (row: any) => convertToPercentageString(row.Exposure.banksAndIssuers) },
       { label: "Non-NFRD", value: (row: any) => convertToPercentageString(row.Exposure.nonNfrd) },
-      { label: "Trading portfolio", value: (row: any) => convertToPercentageString(row.CreditKpiDualField.tradingPortfolio) },
-      { label: "On-demand interbank loans", value: (row: any) => convertToPercentageString(row.CreditKpiDualField.interBankLoans) },
-      { label: "Trading portfolio & on demand interbank loans", value: (row: any) => convertToPercentageString(row.CreditKpiSingleField.tradingPortfolioAndInterBankLoan) },
-      { label: "Taxonomy-eligible non-life insurance economic activities", value: (row: any) => convertToPercentageString(row.CreditKpiInsurance.nonLifeInsurance) },
+      {
+        label: "Trading portfolio",
+        value: (row: any) => convertToPercentageString(row.CreditKpiDualField.tradingPortfolio),
+      },
+      {
+        label: "On-demand interbank loans",
+        value: (row: any) => convertToPercentageString(row.CreditKpiDualField.interBankLoans),
+      },
+      {
+        label: "Trading portfolio & on demand interbank loans",
+        value: (row: any) => convertToPercentageString(row.CreditKpiSingleField.tradingPortfolioAndInterBankLoan),
+      },
+      {
+        label: "Taxonomy-eligible non-life insurance economic activities",
+        value: (row: any) => convertToPercentageString(row.CreditKpiInsurance.nonLifeInsurance),
+      },
       { label: "IS/FS", value: "companyType", default: "FS" },
       { label: "NFRD mandatory", value: (row: any) => row["Reporting Obligation"] },
       {

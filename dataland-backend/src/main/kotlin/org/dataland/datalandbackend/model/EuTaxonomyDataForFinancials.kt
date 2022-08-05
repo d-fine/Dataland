@@ -22,6 +22,8 @@ data class EuTaxonomyDataForFinancials(
     @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions? = null,
     @field:JsonProperty("Trading Portfolio") val tradingPortfolio: BigDecimal? = null,
     @field:JsonProperty("Interbank Loans") val interbankLoans: BigDecimal? = null,
-    @field:JsonProperty("Trading Portfolio and Interbank Loans") val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
-    @field:JsonProperty("Taxonomy Eligible non Life Insurance Activities") val taxonomyEligibleNonLifeInsuranceActivities: BigDecimal? = null
+    @field:JsonProperty("Trading Portfolio and Interbank Loans")
+    val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
+    @field:JsonProperty("Taxonomy Eligible non Life Insurance Activities")
+    val taxonomyEligibleNonLifeInsuranceActivities: BigDecimal? = null
 )
