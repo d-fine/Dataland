@@ -54,10 +54,10 @@ function generateCompanyInformation() {
 
 function generateEuTaxonomyDataForNonFinancials() {
   const attestation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Attestation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Reporting Obligation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForNonFinancials.properties["Reporting Obligation"].enum
   );
   const capexTotal = faker.finance.amount(minEuro, maxEuro, 2);
   const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
@@ -96,18 +96,18 @@ function generateEuTaxonomyDataForNonFinancials() {
 
 function generateEuTaxonomyDataForFinancials() {
   const attestation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Attestation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
   );
   const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleBanksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleNonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const eligibleTradingPortfolio= faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const eligibleOnDemandLoans= faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleTradingPortfolio = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleOnDemandLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleTradingPortfolioAndLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleNonLifeInsurance = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
 
@@ -247,8 +247,8 @@ function mainFinancial() {
 
   fs.writeFileSync("../testing/data/csvTestData.csv", csv);
   fs.writeFileSync(
-      "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
-      JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
+    "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
+    JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
   );
 }
 
