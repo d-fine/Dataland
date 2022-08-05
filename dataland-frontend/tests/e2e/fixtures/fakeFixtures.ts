@@ -232,7 +232,7 @@ function mainNonFinancial() {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateCompanyWithEuTaxonomyDataForNonFinancials();
   const csv = generateCSVData(companyInformationWithEuTaxonomyDataForNonFinancials);
 
-  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForFinancials.csv", csv);
+  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv", csv);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
@@ -245,7 +245,7 @@ function mainFinancial() {
   const companyInformationWithEuTaxonomyDataForFinancials = generateCompanyWithEuTaxonomyDataForFinancials();
   const csv = generateCSVData(companyInformationWithEuTaxonomyDataForFinancials);
 
-  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv", csv);
+  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForFinancials.csv", csv);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
