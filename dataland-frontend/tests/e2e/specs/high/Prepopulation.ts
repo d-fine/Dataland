@@ -52,7 +52,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
             .then((response) => response.json())
             .then((json) => {
               uploadSingleElementWithRetries(
-                "data/eutaxonomies",
+                "data/eutaxonomy/nonfinancials",
                 {
                   companyId: json.companyId,
                   data: element.euTaxonomyDataForNonFinancials,
