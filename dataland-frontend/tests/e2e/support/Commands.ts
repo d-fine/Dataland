@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import { ensureLoggedIn, getKeycloakToken } from "../specs/user-authentication/login.functions";
+import { ensureLoggedIn, getKeycloakToken } from "../specs/user-authentication/Login.functions";
 
 declare global {
   namespace Cypress {

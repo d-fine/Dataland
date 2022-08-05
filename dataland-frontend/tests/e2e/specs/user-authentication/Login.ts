@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import { login, logout } from "./login.functions";
+import { login, logout } from "./Login.functions";
 
 describe("As a user I want to be able to login and I want the login page to behave as I expect", () => {
   it("Checks that login works", () => {

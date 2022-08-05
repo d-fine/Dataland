@@ -1,4 +1,4 @@
-import { doThingsInChunks, retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/apiUtils";
+import { doThingsInChunks, retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/ApiUtils";
 import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
 const chunkSize = 40;
 
