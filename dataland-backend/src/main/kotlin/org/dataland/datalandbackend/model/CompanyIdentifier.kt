@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.enums.IdentifierType
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
  * --- API model ---

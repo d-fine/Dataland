@@ -57,7 +57,7 @@ describe("User interactive tests for Data Upload", () => {
     cy.get("span[title=dataId]").then(() => {
       cy.get("span[title=companyId]").then(($companyID) => {
         const companyID = $companyID.text();
-        cy.intercept("/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+        cy.intercept("/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
         cy.visitAndCheckAppMount(`/companies/${companyID}/eutaxonomies`);
       });
       cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 })
@@ -84,7 +84,7 @@ describe("User interactive tests for Data Upload", () => {
     cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
     cy.get("span[title=dataId]").then(($dataID) => {
       const dataId = $dataID.text();
-      cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
+      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
       cy.visitAndCheckAppMount(`/data/eutaxonomies/${dataId}`);
       cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.interfaces
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.model.enums.company.StockIndex
 
 /**
  * Defines the required functionalities for the Dataland data manager

@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.enums.StockIndex
+import org.dataland.datalandbackend.model.enums.company.StockIndex
 import java.math.BigDecimal
 
 /**

@@ -9,10 +9,10 @@ import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
-import org.dataland.datalandbackend.model.enums.AttestationOptions
-import org.dataland.datalandbackend.model.enums.IdentifierType
-import org.dataland.datalandbackend.model.enums.StockIndex
-import org.dataland.datalandbackend.model.enums.YesNo
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.model.enums.company.StockIndex
+import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
+import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataForNonFinancialsModel
 import java.io.File
 import java.io.FileReader

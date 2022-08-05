@@ -105,7 +105,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if the company contains that data set ID`() {
+    fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val testDataInformation = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
