@@ -30,7 +30,7 @@ object LocalDateAdapter {
 }
 
 class TestDataProvider {
-    private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
+    private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
     private val jsonFileAsString = jsonFile.inputStream().bufferedReader().readText()
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
