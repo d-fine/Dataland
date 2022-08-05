@@ -51,7 +51,7 @@ class TestDataProvider {
 
     fun getEuTaxonomyDataForNonFinancials(numberOfDataSets: Int): List<EuTaxonomyDataForNonFinancials> {
         return testCompanyInformationWithEuTaxonomyDataForNonFinancials.slice(0 until numberOfDataSets)
-            .map { it.euTaxonomyData }
+            .map { it.euTaxonomyDataForNonFinancials }
     }
 
     fun getCompaniesWithEuTaxonomyDataForNonFinancials(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
