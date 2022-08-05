@@ -38,7 +38,7 @@ dependencies {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateBackendClient")
+    dependsOn("generateBackendClient", "getTestData")
 }
 
 tasks.withType<Test> {
