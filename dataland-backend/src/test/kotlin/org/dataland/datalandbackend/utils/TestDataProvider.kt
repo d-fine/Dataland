@@ -9,7 +9,10 @@ import java.io.File
 class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
     private val testCompanyInformationWithEuTaxonomyData =
-        objectMapper.readValue(jsonFile, object : TypeReference<List<CompanyInformationWithEuTaxonomyDataModel>>() {})
+        objectMapper.readValue(
+            jsonFile,
+            object : TypeReference<List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel>>() {}
+        )
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.companyInformation }
