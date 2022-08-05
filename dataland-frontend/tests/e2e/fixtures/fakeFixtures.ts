@@ -93,6 +93,14 @@ function generateEuTaxonomyDataForNonFinancials() {
     Attestation: attestation,
   };
 }
+function generateFinancialCompanyType() {
+  const companyTypes = ["BankSf","BankDf","Insurance","Asset Manager"];
+  const companyType = companyTypes[Math.floor(Math.random() * companyTypes.length)];
+  return{
+    companyType
+  };
+}
+
 
 function generateEuTaxonomyDataForFinancials() {
   const attestation = faker.helpers.arrayElement(
@@ -101,16 +109,36 @@ function generateEuTaxonomyDataForFinancials() {
   const reportingObligation = faker.helpers.arrayElement(
     apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
   );
+  const companyType =generateFinancialCompanyType();
   const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const tradingPortfolio = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const interBankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const tradingPortfolioAndLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const eligibleNonLifeInsurance = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
 
+  if(companyType.companyType == "BankSf"){
+    var KPI1 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+    var KPI2 ="";
+    var KPI3="";
+    var KPI4="";
+  }
+ else  if(companyType.companyType== "BankDf"){
+    var KPI1="";
+    var KPI2 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+    var KPI3 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+    var KPI4="";
+ }
+  else if(companyType.companyType == "Insurance"){
+    var KPI1 = "";
+    var KPI2 = "";
+    var KPI3 ="";
+    var KPI4= faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  } else{
+      var KPI1 = "";
+      var KPI2 = "";
+      var KPI3 ="";
+      var KPI4 ="";
+  }
   return {
     Exposure: {
       totalAssets: totalAssets,
@@ -119,18 +147,15 @@ function generateEuTaxonomyDataForFinancials() {
       banksAndIssuers: banksAndIssuers,
       nonNfrd: nonNfrd,
     },
-    CreditKpiInsurance: {
-      nonLifeInsurance: eligibleNonLifeInsurance,
-    },
-    CreditKpiDualField: {
-      tradingPortfolio: tradingPortfolio,
-      interBankLoans: interBankLoans,
-    },
-    CreditKpiSingleField: {
-      tradingPortfolioAndInterBankLoans: tradingPortfolioAndLoans,
+    FinancialKPI: {
+      tradingPortfolioAndLoans: KPI1,
+      tradingPortfolio: KPI2,
+      interBankLoans: KPI3,
+      eligibleNonLifeInsurance: KPI4,
     },
     "Reporting Obligation": reportingObligation,
     Attestation: attestation,
+    "Company Type": companyType,
   };
 }
 
@@ -251,12 +276,12 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
       { label: "Derivates", value: (row: any) => convertToPercentageString(row.Exposure.eligibleDerivates) },
       { label: "Banks and issuers", value: (row: any) => convertToPercentageString(row.Exposure.banksAndIssuers) },
       { label: "Non-NFRD", value: (row: any) => convertToPercentageString(row.Exposure.nonNfrd) },
-      { label: "Trading portfolio", value: (row: any) => convertToPercentageString(row.CreditKpiDualField.tradingPortfolio) },
-      { label: "On-demand interbank loans", value: (row: any) => convertToPercentageString(row.CreditKpiDualField.interBankLoans) },
-      { label: "Trading portfolio & on demand interbank loans", value: (row: any) => convertToPercentageString(row.CreditKpiSingleField.tradingPortfolioAndInterBankLoan) },
-      { label: "Taxonomy-eligible non-life insurance economic activities", value: (row: any) => convertToPercentageString(row.CreditKpiInsurance.nonLifeInsurance) },
-      { label: "IS/FS", value: "companyType", default: "FS" },
-      { label: "NFRD mandatory", value: (row: any) => row["Reporting Obligation"] },
+      { label: "tradingPortfolioAndLoans", value: (row: any) => convertToPercentageString(row.FinancialKPI.tradingPortfolioAndLoans) },
+      { label: "tradingPortfolio", value: (row: any) => convertToPercentageString(row.FinancialKPI.tradingPortfolio) },
+      { label: "interBankLoans", value: (row: any) => convertToPercentageString(row.FinancialKPI.interBankLoans) },
+      { label: "eligibleNonLifeInsurance", value: (row: any) => convertToPercentageString(row.FinancialKPI.eligibleNonLifeInsurance) },
+      { label: "IS/FS", value: (row: any) => row["Reporting Obligation"] },
+      { label: "NFRD mandatory", value: (row: any) => row["Company Type"] },
       {
         label: "Assurance",
         value: (row: any) => {
