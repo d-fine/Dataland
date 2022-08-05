@@ -150,7 +150,7 @@ function generateCompanyWithEuTaxonomyDataForFinancials() {
   for (let id = 1; id <= 250; id++) {
     companiesWithEuTaxonomyDataForFinancials.push({
       companyInformation: generateCompanyInformation(),
-      euTaxonomyDataForNonFinancials: generateEuTaxonomyDataForFinancials(),
+      euTaxonomyDataForFinancials: generateEuTaxonomyDataForFinancials(),
     });
   }
   return companiesWithEuTaxonomyDataForFinancials;
