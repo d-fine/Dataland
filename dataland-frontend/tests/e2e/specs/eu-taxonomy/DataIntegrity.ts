@@ -15,24 +15,6 @@ describeIf(
       cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
-    it("Create a Company providing only valid data", () => {
-      companyNames.forEach((companyName) => {
-        cy.visitAndCheckAppMount("/upload");
-        fillCompanyUploadFields(companyName);
-        cy.intercept("**/api/companies").as("postCompany");
-        cy.get('button[name="postCompanyData"]').click();
-        cy.wait("@postCompany", { timeout: timeout }).then(() => {
-          cy.get("body").should("contain", "success");
-          cy.get("span[title=companyId]").then(($companyID) => {
-            const id = $companyID.text();
-            companyIdList.push(id);
-            cy.visitAndCheckAppMount(`/companies/${id}`);
-            cy.get("body").should("contain", companyName);
-          });
-        });
-      });
-    });
-
     /**
      * This function opens the upload page. Then the uploadFormFiller is executed. It's intended to fill the upload form.
      * Then, the upload button is clicked, and the resulting id is taken. Next, the EU Taxonomy Page is opened.
@@ -62,6 +44,24 @@ describeIf(
         });
       });
     }
+
+    it("Create a Company providing only valid data", () => {
+      companyNames.forEach((companyName) => {
+        cy.visitAndCheckAppMount("/upload");
+        fillCompanyUploadFields(companyName);
+        cy.intercept("**/api/companies").as("postCompany");
+        cy.get('button[name="postCompanyData"]').click();
+        cy.wait("@postCompany", { timeout: timeout }).then(() => {
+          cy.get("body").should("contain", "success");
+          cy.get("span[title=companyId]").then(($companyID) => {
+            const id = $companyID.text();
+            companyIdList.push(id);
+            cy.visitAndCheckAppMount(`/companies/${id}`);
+            cy.get("body").should("contain", companyName);
+          });
+        });
+      });
+    });
 
     it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
       const eligible = 0.67;

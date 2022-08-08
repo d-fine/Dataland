@@ -9,13 +9,6 @@ describe("As a user, I expect the index selection tabs to work on /searchtaxonom
     cy.ensureLoggedIn();
   });
 
-  function checkIfDaxTabIsHighlighted(): void {
-    cy.get('li[class="p-tabmenuitem p-highlight"]')
-      .children(".p-menuitem-link")
-      .children(".p-menuitem-text")
-      .should("contain", "DAX");
-  }
-
   it("Index tabmenu should be present", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
@@ -26,6 +19,13 @@ describe("As a user, I expect the index selection tabs to work on /searchtaxonom
   });
 
   it("Visit searchtaxonomy page, scroll to the bottom, back to the top, and check if Dax still highlighted", () => {
+    function checkIfDaxTabIsHighlighted(): void {
+      cy.get('li[class="p-tabmenuitem p-highlight"]')
+        .children(".p-menuitem-link")
+        .children(".p-menuitem-text")
+        .should("contain", "DAX");
+    }
+
     cy.visitAndCheckAppMount("/searchtaxonomy");
 
     checkIfDaxTabIsHighlighted();

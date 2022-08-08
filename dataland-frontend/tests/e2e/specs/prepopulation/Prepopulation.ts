@@ -25,27 +25,55 @@ describe(
       cy.ensureLoggedIn();
     });
 
-    function getPermId(companyInformation: CompanyInformation) {
-      const permIdArray = companyInformation.identifiers
-        .filter((identifier) => identifier.identifierType === "PermId")
-        .map((identifier) => identifier.identifierValue);
-      if (permIdArray.length >= 1) {
-        return permIdArray[0];
-      } else {
-        return "NotAvailable";
-      }
-    }
-
-    function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
-      if (
-        (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) })) ||
-        (!Cypress.env("REALDATA") && teaserCompanies.length == 0)
-      ) {
-        teaserCompanies.push(json.companyId);
-      }
-    }
-
     it("Populate Companies and Eu Taxonomy Data", () => {
+      function getPermId(companyInformation: CompanyInformation) {
+        const permIdArray = companyInformation.identifiers
+          .filter((identifier) => identifier.identifierType === "PermId")
+          .map((identifier) => identifier.identifierValue);
+        if (permIdArray.length >= 1) {
+          return permIdArray[0];
+        } else {
+          return "NotAvailable";
+        }
+      }
+
+      function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
+        if (
+          (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) })) ||
+          (!Cypress.env("REALDATA") && teaserCompanies.length == 0)
+        ) {
+          teaserCompanies.push(json.companyId);
+        }
+      }
+
+      function browserPromiseUploadSingleElementOnce(
+        endpoint: string,
+        element: object,
+        token: string
+      ): Promise<Response> {
+        return fetch(`${Cypress.env("API")}/${endpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(element),
+        }).then((response) => {
+          assert(
+            response.status.toString() === "200",
+            `Got status code ${response.status.toString()} during upload of single ` +
+              `Element to ${endpoint}. Expected: 200.`
+          );
+          return response;
+        });
+      }
+
+      function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
+        return browserPromiseUploadSingleElementOnce(endpoint, element, token)
+          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token))
+          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
+      }
+
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
           doThingsInChunks(companiesWithData, chunkSize, (element) => {
@@ -156,31 +184,3 @@ describe(
     });
   }
 );
-
-export function browserPromiseUploadSingleElementOnce(
-  endpoint: string,
-  element: object,
-  token: string
-): Promise<Response> {
-  return fetch(`${Cypress.env("API")}/${endpoint}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-    body: JSON.stringify(element),
-  }).then((response) => {
-    assert(
-      response.status.toString() === "200",
-      `Got status code ${response.status.toString()} during upload of single ` +
-        `Element to ${endpoint}. Expected: 200.`
-    );
-    return response;
-  });
-}
-
-export function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
-  return browserPromiseUploadSingleElementOnce(endpoint, element, token)
-    .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token))
-    .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
-}

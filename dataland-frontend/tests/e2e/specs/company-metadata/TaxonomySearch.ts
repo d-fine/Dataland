@@ -14,18 +14,6 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
     cy.ensureLoggedIn();
   });
 
-  function checkViewRowsWorks(): void {
-    cy.get("table.p-datatable-table");
-    cy.contains("td", "VIEW")
-      .siblings()
-      .contains("€")
-      .click()
-      .url()
-      .should("include", "/companies/")
-      .url()
-      .should("include", "/eutaxonomies");
-  }
-
   function executeCompanySearch(inputValue: string) {
     cy.get("input[name=eu_taxonomy_search_bar_top]")
       .should("not.be.disabled")
@@ -35,13 +23,6 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
       .should("have.value", inputValue);
     cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
-  }
-
-  function checkPermIdToolTip(permIdText: string) {
-    cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains(permIdText);
-    cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-    cy.get(".p-tooltip").should("not.exist");
   }
 
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
@@ -76,6 +57,25 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
   });
 
   it("Company Search by Name", () => {
+    function checkViewRowsWorks(): void {
+      cy.get("table.p-datatable-table");
+      cy.contains("td", "VIEW")
+        .siblings()
+        .contains("€")
+        .click()
+        .url()
+        .should("include", "/companies/")
+        .url()
+        .should("include", "/eutaxonomies");
+    }
+
+    function checkPermIdToolTip(permIdText: string) {
+      cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+      cy.get(".p-tooltip").should("be.visible").contains(permIdText);
+      cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+      cy.get(".p-tooltip").should("not.exist");
+    }
+
     cy.visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";

@@ -5,13 +5,13 @@ describe("As a user, I want to be able to search companies on /search", function
     cy.ensureLoggedIn();
   });
 
-  function verifyCompanySearchResultTable(): void {
-    cy.get("table.p-datatable-table").contains("th", "COMPANY");
-    cy.get("table.p-datatable-table").contains("th", "SECTOR");
-    cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
-  }
-
   it("page should be present", function () {
+    function verifyCompanySearchResultTable(): void {
+      cy.get("table.p-datatable-table").contains("th", "COMPANY");
+      cy.get("table.p-datatable-table").contains("th", "SECTOR");
+      cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
+    }
+
     cy.visitAndCheckAppMount("/search");
     cy.get(".p-card-title").should("contain", "Company Search");
     const inputValue = "d-fine";
