@@ -1,5 +1,5 @@
 describe("Datables test suite", () => {
-  it("Search for all companies containing a and verify that results are paginated, only first 100 are shown", () => {
+  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = "a";
