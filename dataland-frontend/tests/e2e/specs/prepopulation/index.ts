@@ -1,4 +1,6 @@
 /**
  * As a user, I want to be able to see some data on the DataLand webpage
  */
-import "./Prepopulation"
+describe("Prepolution tests", () => {
+  require("./Prepopulation");
+});
