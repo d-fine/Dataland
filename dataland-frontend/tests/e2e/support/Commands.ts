@@ -1,12 +1,12 @@
 import Chainable = Cypress.Chainable;
-import { ensureLoggedIn, getKeycloakToken } from "../specs/user-authentication/Login.functions";
+import { ensureLoggedIn, getKeycloakToken } from "../utils/Auth";
 
 declare global {
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
       ensureLoggedIn: typeof ensureLoggedIn;
-      getKeycloakToken: typeof getKeycloakToken
+      getKeycloakToken: typeof getKeycloakToken;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { login, logout } from "./Login.functions";
+import { login, logout } from "../../utils/Auth";
 
 describe("As a user I want to be able to create an account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
