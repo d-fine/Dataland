@@ -73,7 +73,7 @@ To do so:
 * update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
 * Note: fasterXML is managed by spring and ktlint by jlleitschuh, thus NO manual version update should be conducted
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
-* * Update node version in `dataland-frontend/build.gradle.kts`
+* Update node version in `dataland-frontend/build.gradle.kts`
 * Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues 
   (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
