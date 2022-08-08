@@ -33,56 +33,50 @@ object LocalDateAdapter {
 class TestDataProvider <T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
-        EuTaxonomyDataForNonFinancials::class.java to File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
-        EuTaxonomyDataForFinancials::class.java to File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
+        EuTaxonomyDataForNonFinancials::class.java to
+            File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
+        EuTaxonomyDataForFinancials::class.java to
+            File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
 
-
-    private fun getJsonFileForTesting(): File{
+    private fun getJsonFileForTesting(): File {
         return jsonFilesForTesting[clazz]!!
     }
 
-    private fun convertJsonToList(jsonFile: File): List<CompanyInformationWithEuTaxonomyData<T>> {
+    private fun convertJsonToList(jsonFile: File): List<CompanyInformationWithT<T>> {
         val jsonFileAsString = jsonFile.inputStream().bufferedReader().readText()
-        val parameterizedType = Types
-            .newParameterizedType(List::class.java, CompanyInformationWithEuTaxonomyData::class.java)
-        val jsonAdapter: JsonAdapter<List<CompanyInformationWithEuTaxonomyData<T>>> = moshi.adapter(parameterizedType)
+        val parameterizedTypeOfCompanyInformationWithT = Types
+            .newParameterizedType(CompanyInformationWithT::class.java, clazz)
+        val parameterizedTypeOfConverterOutput = Types
+            .newParameterizedType(List::class.java, parameterizedTypeOfCompanyInformationWithT)
+        val jsonAdapter: JsonAdapter<List<CompanyInformationWithT<T>>> =
+            moshi.adapter(parameterizedTypeOfConverterOutput)
         return jsonAdapter.fromJson(jsonFileAsString)!!
     }
 
-    private val testCompanyInformationWithEuTaxonomyData = convertJsonToList(getJsonFileForTesting())
-
-
-
-
-
+    private val testCompanyInformationWithTData = convertJsonToList(getJsonFileForTesting())
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
-        return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity)
-                .map { it.companyInformation }
-        }
-
-
-    fun getEuTaxonomyData(numberOfDataSets: Int): List<T> {
-        return testCompanyInformationWithEuTaxonomyData.slice(0 until numberOfDataSets)
-            .map { it.euTaxonomyData }
+        return testCompanyInformationWithTData.slice(0 until requiredQuantity)
+            .map { it.companyInformation }
     }
 
-    fun getCompaniesWithEuTaxonomyData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
+    fun getTData(numberOfDataSets: Int): List<T> {
+        return testCompanyInformationWithTData.slice(0 until numberOfDataSets)
+            .map { it.euTaxonomyDataForNonFinancials }
+    }
+
+    fun getCompaniesWithTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<T>> {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
-        return companies.associateWith { getEuTaxonomyData(dataSetsPerCompany) }
+        return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 }
 
-data class CompanyInformationWithEuTaxonomyData<T> (
+data class CompanyInformationWithT<T> (
     @Json var companyInformation: CompanyInformation,
-    @Json var euTaxonomyData: T
-    )
-
-
-
-
+    @Json var euTaxonomyDataForNonFinancials: T
+)

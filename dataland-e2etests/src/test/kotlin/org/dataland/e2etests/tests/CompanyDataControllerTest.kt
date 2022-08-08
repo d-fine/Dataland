@@ -24,13 +24,14 @@ class CompanyDataControllerTest {
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
     private val euTaxonomyDataForNonFinancialsControllerApi =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForEuTaxonomyDataForNonFinancials = TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    private val testDataProviderForEuTaxonomyDataForNonFinancials =
+        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     private val tokenHandler = TokenHandler()
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): Map<String, String> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getEuTaxonomyData(1).first()
+        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
