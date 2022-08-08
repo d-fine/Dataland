@@ -66,7 +66,7 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
 
     fun getTData(numberOfDataSets: Int): List<T> {
         return testCompanyInformationWithTData.slice(0 until numberOfDataSets)
-            .map { it.euTaxonomyDataForNonFinancials }
+            .map { it.t }
     }
 
     fun getCompaniesWithTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
@@ -78,5 +78,5 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
 
 data class CompanyInformationWithT<T> (
     @Json var companyInformation: CompanyInformation,
-    @Json var euTaxonomyDataForNonFinancials: T
+    @Json var t: T
 )

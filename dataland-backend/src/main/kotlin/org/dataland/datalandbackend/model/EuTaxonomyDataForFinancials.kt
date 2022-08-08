@@ -13,7 +13,7 @@ import java.math.BigDecimal
  */
 @DataType
 data class EuTaxonomyDataForFinancials(
-    @field:JsonProperty("Financial Services Type") val financialServicesType: FinancialServicesType,
+    @field:JsonProperty("Financial Services Type", required = true) val financialServicesType: FinancialServicesType?,
     @field:JsonProperty("Taxonomy Eligible Activity") val taxonomyEligibleActivity: BigDecimal? = null,
     @field:JsonProperty("Derivatives") val derivatives: BigDecimal? = null,
     @field:JsonProperty("Banks and Issuers") val banksAndIssuers: BigDecimal? = null,
