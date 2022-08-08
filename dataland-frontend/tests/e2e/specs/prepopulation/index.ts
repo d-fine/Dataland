@@ -3,4 +3,5 @@
  */
 describe("Prepolution tests", () => {
   require("./Prepopulation");
+  require("./Previsit");
 });

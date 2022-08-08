@@ -1,10 +1,11 @@
 import { describeIf } from "../../support/TestUtility";
+import { fillCompanyUploadFields } from "../../utils/CompanyUpload";
 
 const timeout = 120 * 1000;
 describeIf(
   "Test EU Taxonomy Data and Cards by creating a new demo company",
   {
-    executionEnvironments: ["preview", "development"],
+    executionEnvironments: ["development"],
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
@@ -13,17 +14,6 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
-
-    function fillCompanyUploadFields(companyName: string): void {
-      cy.get("input[name=companyName]").type(companyName, { force: true });
-      cy.get("input[name=headquarters]").type("Capitol City", { force: true });
-      cy.get("input[name=sector]").type("Handmade", { force: true });
-      cy.get("input[name=marketCap]").type("123", { force: true });
-      cy.get("input[name=countryCode]").type("DE", { force: true });
-      cy.get("input[name=reportingDateOfMarketCap]").type("2021-09-02", { force: true });
-      cy.get("select[name=identifierType]").select("ISIN");
-      cy.get("input[name=identifierValue]").type("IsinValueId", { force: true });
-    }
 
     it("Create a Company providing only valid data", () => {
       companyNames.forEach((companyName) => {

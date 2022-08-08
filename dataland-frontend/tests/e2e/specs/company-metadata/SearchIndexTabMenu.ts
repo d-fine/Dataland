@@ -1,6 +1,5 @@
 import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
-import {verifyTaxonomySearchResultTable} from "./SearchResults.functions";
-import {checkViewButtonWorks} from "../eu-taxonomy/ViewTaxonomy.functions";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 

@@ -7,4 +7,5 @@ describe("User Authentication Tests", () => {
   require("./Login");
   require("./Register");
   require("./VisitPagesUnauth");
+  require("./UserProfileDropDownLogout");
 });

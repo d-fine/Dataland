@@ -2,7 +2,10 @@ import { describeIf } from "../../support/TestUtility";
 
 describeIf(
   "As a user, I expect there to be multiple result pages if there are many results to be displayed",
-  { dataEnvironments: ["fakeFixtures"], executionEnvironments: ["development", "preview"] },
+  {
+    dataEnvironments: ["fakeFixtures"],
+    executionEnvironments: ["development"],
+  },
   () => {
     beforeEach(() => {
       cy.ensureLoggedIn();
