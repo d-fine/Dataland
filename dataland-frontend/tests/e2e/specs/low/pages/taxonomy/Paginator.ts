@@ -2,8 +2,8 @@ describe("Paginator test suite", () => {
   beforeEach(() => {
     cy.restoreLoginSession();
   });
-  it("Assure existence of paginator for Dax search", () => {
-    cy.visitAndCheckAppMount("/searchtaxonomy");
+  it("Assure existence of paginator for search to 'e'", () => {
+    cy.visitAndCheckAppMount("/searchtaxonomy?input=e");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
     cy.get("div.p-paginator").should("exist");
   });
