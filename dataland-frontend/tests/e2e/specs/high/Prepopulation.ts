@@ -5,7 +5,7 @@ const chunkSize = 40;
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {
   let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
   const teaserCompanies: Array<string> = [];
-  let teaserCompaniesPermIds: Array<{ permId: string }> = [];
+  let teaserCompaniesPermIds: Array<string> = [];
 
   if (Cypress.env("REALDATA")) {
     teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
@@ -34,7 +34,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
     if (
-      (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes({ permId: getPermId(companyInformation) })) ||
+      (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes( getPermId(companyInformation) )) ||
       (!Cypress.env("REALDATA") && teaserCompanies.length == 0)
     ) {
       teaserCompanies.push(json.companyId);
@@ -64,6 +64,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Check if the teaser company can be set", () => {
+    cy.wrap(teaserCompanies).should("have.length", 1)
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
       .then((token) =>
         cy.request({
