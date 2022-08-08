@@ -104,6 +104,8 @@ jobs:
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
