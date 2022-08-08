@@ -6,4 +6,5 @@ describe("EU Taxonomy Company Page tests", () => {
   require("./Tooltips");
   require("./Datatables");
   require("./DataIntegrity");
+  require("./SamplePage");
 });

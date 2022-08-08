@@ -1,4 +1,4 @@
-import "./backend-health";
+import "./infrastructure";
 import "./prepopulation";
 
 import "./company-metadata";
