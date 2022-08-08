@@ -132,7 +132,7 @@ function generateEuTaxonomyDataForFinancials() {
       banksAndIssuers: banksAndIssuers,
       nonNfrd: nonNfrd,
     },
-    FinancialKPI: {
+    CreditInstitutionsKPIs: {
       tradingPortfolioAndLoans: KPI1,
       tradingPortfolio: KPI2,
       interBankLoans: KPI3,
@@ -185,6 +185,16 @@ function decimalSeparatorConverter(value: number) {
   return value.toString().replace(".", ",");
 }
 
+function getAttestation(row: any) {
+  if (row["Attestation"] === "LimitedAssurance") {
+    return "limited";
+  } else if (row["Attestation"] === "ReasonableAssurance") {
+    return "reasonable";
+  } else {
+    return "none";
+  }
+}
+
 function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
   const mergedData = companyInformationWithEuTaxonomyDataForNonFinancials.map((element: any) => {
     return { ...element["companyInformation"], ...element["euTaxonomyDataForNonFinancials"] };
@@ -217,13 +227,7 @@ function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataFor
       {
         label: "Assurance",
         value: (row: any) => {
-          if (row["Attestation"] === "LimitedAssurance") {
-            return "limited";
-          } else if (row["Attestation"] === "ReasonableAssurance") {
-            return "reasonable";
-          } else {
-            return "none";
-          }
+          return getAttestation(row);
         },
       },
       ...stockIndexArray.map((e: any) => {
@@ -266,13 +270,19 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
       { label: "Non-NFRD", value: (row: any) => convertToPercentageString(row.Exposure.nonNfrd) },
       {
         label: "tradingPortfolioAndLoans",
-        value: (row: any) => convertToPercentageString(row.FinancialKPI.tradingPortfolioAndLoans),
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.tradingPortfolioAndLoans),
       },
-      { label: "tradingPortfolio", value: (row: any) => convertToPercentageString(row.FinancialKPI.tradingPortfolio) },
-      { label: "interBankLoans", value: (row: any) => convertToPercentageString(row.FinancialKPI.interBankLoans) },
+      {
+        label: "tradingPortfolio",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.tradingPortfolio),
+      },
+      {
+        label: "interBankLoans",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.interBankLoans),
+      },
       {
         label: "eligibleNonLifeInsurance",
-        value: (row: any) => convertToPercentageString(row.FinancialKPI.eligibleNonLifeInsurance),
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.eligibleNonLifeInsurance),
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
       { label: "NFRD mandatory", value: (row: any) => row["Reporting Obligation"] },
@@ -280,13 +290,7 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
       {
         label: "Assurance",
         value: (row: any) => {
-          if (row["Attestation"] === "LimitedAssurance") {
-            return "limited";
-          } else if (row["Attestation"] === "ReasonableAssurance") {
-            return "reasonable";
-          } else {
-            return "none";
-          }
+          return getAttestation(row);
         },
       },
       ...stockIndexArray.map((e: any) => {
