@@ -34,7 +34,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
     if (
-      (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes( getPermId(companyInformation) )) ||
+      (Cypress.env("REALDATA") && teaserCompaniesPermIds.includes(getPermId(companyInformation))) ||
       (!Cypress.env("REALDATA") && teaserCompanies.length == 0)
     ) {
       teaserCompanies.push(json.companyId);
@@ -64,7 +64,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Check if the teaser company can be set", () => {
-    cy.wrap(teaserCompanies).should("have.length", 1)
+    cy.wrap(teaserCompanies).should("have.length", 1);
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
       .then((token) =>
         cy.request({
