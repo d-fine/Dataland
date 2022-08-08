@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
@@ -23,13 +24,13 @@ class CompanyDataControllerTest {
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
     private val euTaxonomyDataForNonFinancialsControllerApi =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProvider = TestDataProvider()
+    private val testDataProviderForEuTaxonomyDataForNonFinancials = TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     private val tokenHandler = TokenHandler()
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): Map<String, String> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
-        val testData = testDataProvider.getEuTaxonomyDataForNonFinancials(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
+        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getEuTaxonomyData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -40,7 +41,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if post was successful`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         assertEquals(
@@ -56,7 +57,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its company Id`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
@@ -69,7 +70,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
@@ -90,7 +91,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
-        val listOfTestCompanyInformation = testDataProvider.getCompanyInformation(3)
+        val listOfTestCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(3)
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies("", null, true).size
         for (companyInformation in listOfTestCompanyInformation) {
@@ -126,7 +127,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
@@ -141,7 +142,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company as teaser company and test if it is retrievable by company ID as unauthorized user`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
@@ -159,7 +160,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and test if it cannot be retrieved by its company ID as unauthorized user`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val exception = assertThrows<IllegalArgumentException> {
@@ -170,7 +171,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company as a user type which does not have the rights to do so and receive an error code 403`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
