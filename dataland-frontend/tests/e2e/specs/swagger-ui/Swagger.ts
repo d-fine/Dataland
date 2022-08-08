@@ -1,4 +1,4 @@
-describe("As a user I want to be able to use the swagger UI to send requests to the backend", () => {
+describe("As a user, I want to be able to use the swagger UI to send requests to the backend", () => {
   it("Checks that one is able to open swagger and send a request", () => {
     cy.visit(`${Cypress.env("API")}/swagger-ui/index.html`)
       .get("#operations-Actuator-health button.opblock-summary-control")

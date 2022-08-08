@@ -1,7 +1,5 @@
 /**
- * As a user I want to be able to login and I want the login page to behave as I expect
- * As a user I want to be able to register for an account and be able to log in and out of that account
- * As a user I expect to be redirected to the login page if I am unauthenticated
+ * As a user, I expect that proper authentication procedures are in place that work like I expect them to
  */
 describe("User Authentication Tests", () => {
   require("./Login");

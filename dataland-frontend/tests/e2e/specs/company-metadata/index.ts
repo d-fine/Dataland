@@ -1,5 +1,6 @@
 /**
- * As a user I want to be able to search for companies and the search result page should behave as I expect it to
+ * As a User I want to be able to search for companies on the /search and /searchtaxonomy pages.
+ * I also want to be able to create new companies.
  */
 describe("Taxonomy Company Metadata tests", () => {
   require("./SearchPagniation");

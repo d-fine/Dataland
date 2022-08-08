@@ -1,4 +1,4 @@
-describe("Test that if a not existing page is called the redirect to error page works", () => {
+describe("As a user, I want to get redirected to a useful error page when I visit a non-existent page", () => {
   it("test for each of given paths", () => {
     cy.visitAndCheckAppMount("/ddsd");
     cy.get("body").should("contain.text", "Something went wrong");

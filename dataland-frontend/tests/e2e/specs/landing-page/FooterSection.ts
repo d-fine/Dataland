@@ -1,4 +1,4 @@
-describe("Footer Section", () => {
+describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {
     cy.visitAndCheckAppMount("/");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");

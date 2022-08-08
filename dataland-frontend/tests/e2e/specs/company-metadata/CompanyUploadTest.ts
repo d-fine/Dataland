@@ -2,7 +2,7 @@ import { describeIf } from "../../support/TestUtility";
 import { fillCompanyUploadFields } from "../../utils/CompanyUpload";
 
 describeIf(
-  "User interactive tests for Data Upload",
+  "As a user, I want to be able to create new companies",
   {
     executionEnvironments: ["development"],
     dataEnvironments: ["fakeFixtures"],

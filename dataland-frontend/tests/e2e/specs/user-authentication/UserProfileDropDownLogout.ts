@@ -1,6 +1,6 @@
 import { login } from "../../utils/Auth";
 
-describe("User Profile Dropdown logout", () => {
+describe("As a user, I want to be able to logout using the user profile dropdown menu on /searchtaxonomy", () => {
   it("Checks that user dropdown menu logout works", () => {
     login();
     cy.visit("/searchtaxonomy")

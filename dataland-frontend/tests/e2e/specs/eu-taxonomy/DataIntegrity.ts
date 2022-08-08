@@ -3,7 +3,7 @@ import { fillCompanyUploadFields } from "../../utils/CompanyUpload";
 
 const timeout = 120 * 1000;
 describeIf(
-  "Test EU Taxonomy Data and Cards by creating a new demo company",
+  "As a user, I expect data that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["development"],
     dataEnvironments: ["fakeFixtures"],

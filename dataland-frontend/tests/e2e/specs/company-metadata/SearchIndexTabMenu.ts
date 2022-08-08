@@ -3,18 +3,18 @@ import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../uti
 
 const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
 
-function checkIfDaxTabIsHighlighted(): void {
-  cy.get('li[class="p-tabmenuitem p-highlight"]')
-    .children(".p-menuitem-link")
-    .children(".p-menuitem-text")
-    .should("contain", "DAX");
-}
-
-describe("As a User, I expect the index selection tabs to work", function () {
+describe("As a user, I expect the index selection tabs to work on /searchtaxonomy", function () {
   const indexTabMenu = ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
   beforeEach(() => {
     cy.ensureLoggedIn();
   });
+
+  function checkIfDaxTabIsHighlighted(): void {
+    cy.get('li[class="p-tabmenuitem p-highlight"]')
+      .children(".p-menuitem-link")
+      .children(".p-menuitem-text")
+      .should("contain", "DAX");
+  }
 
   it("Index tabmenu should be present", () => {
     cy.visitAndCheckAppMount("/searchtaxonomy");

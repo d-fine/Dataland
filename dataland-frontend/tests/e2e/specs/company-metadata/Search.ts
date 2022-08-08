@@ -1,6 +1,6 @@
 import { checkViewButtonWorks } from "../../utils/CompanySearch";
 
-describe("Data Search Page Company on /search", function () {
+describe("As a user, I want to be able to search companies on /search", function () {
   beforeEach(() => {
     cy.ensureLoggedIn();
   });

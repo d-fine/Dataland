@@ -1,6 +1,6 @@
 import { login, logout } from "../../utils/Auth";
 
-describe("As a user I want to be able to create an account", () => {
+describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
   const password = "test";
 

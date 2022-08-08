@@ -1,6 +1,6 @@
 import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
 
-describe("Tooltips test suite", () => {
+describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
   it("tooltips are present and contain text as expected", function () {
     const NFRDText = "Non financial disclosure directive";
     const AssuranceText = "Level of Assurance specifies the confidence level";

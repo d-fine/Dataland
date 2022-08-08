@@ -1,4 +1,4 @@
-describe("Check that the deployment is ok", () => {
+describe("As a developer, I want to ensure that the deployment is okay", () => {
   it("retrieve health info and check that its up", function () {
     cy.request("GET", `${Cypress.env("API")}/actuator/health`)
       .its("body.status")

@@ -1,4 +1,4 @@
-describe("Login Section", () => {
+describe("As a user, I expect to be able to reach the login and signup page from the landing page", () => {
   it("Check if App is present", () => {
     cy.visitAndCheckAppMount("/");
     cy.get("h1").should("contain.text", "CREATE A DATASET");
