@@ -104,83 +104,83 @@ jobs:
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
-#      - name: Upload JaCoCo Exec Results
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: JaCoCoResultsE2ETest
-#          path: ./*.exec
-#      - name: Upload FE E2E lcov Exec Results
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: lcovResultsE2E
-#          path: ./lcov.info
-#      - name: Upload FE E2E Cypress Results
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: cypress
-#          path: ./cypress
-#      - name: Upload E2E Test Reports
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: e2eTestReports
-#          path: ./reports
-#      - name: Upload docker log files
-#        if: always()
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: e2eTestDockerLogs
-#          path: ./dockerLogs
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JaCoCoResultsE2ETest
+          path: ./*.exec
+      - name: Upload FE E2E lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcovResultsE2E
+          path: ./*.info
+      - name: Upload FE E2E Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress
+          path: ./cypress
+      - name: Upload E2E Test Reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestReports
+          path: ./reports
+      - name: Upload docker log files
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestDockerLogs
+          path: ./dockerLogs
 
-#  sonar:
-#    runs-on: ubuntu-latest
-#    if: always() && github.event_name != 'workflow_dispatch'
-#    needs:
-#      - e2e-tests
-#      - unit-tests-backend
-#      - unit-tests-frontend
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - uses: actions/setup-java@v2
-#        with:
-#          distribution: temurin
-#          java-version: 17
-#          cache: gradle
-#      - name: Build project
-#        run: ./gradlew assemble --no-daemon --stacktrace
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: JaCoCoResultsBackendUnitTests
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: JaCoCoResultsCsvConverterUnitTests
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: JaCoCoResultsE2ETest
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: lcovResultsUnit
-#          path: fe-coverage/unit
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: lcovResultsE2E
-#          path: fe-coverage/e2e
-#      - name: Generate jacocoTestReport and run Sonar
-#        if: always()
-#        run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#  summary:
-#    runs-on: ubuntu-latest
-#    if: success()
-#    needs:
-#      - sonar
-#    steps:
-#      - name: Summary of this workflow's overall outcome
-#        run: exit 0
+  sonar:
+    runs-on: ubuntu-latest
+    if: always() && github.event_name != 'workflow_dispatch'
+    needs:
+      - e2e-tests
+      - unit-tests-backend
+      - unit-tests-frontend
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Build project
+        run: ./gradlew assemble --no-daemon --stacktrace
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsBackendUnitTests
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsCsvConverterUnitTests
+      - uses: actions/download-artifact@v2
+        with:
+          name: JaCoCoResultsE2ETest
+      - uses: actions/download-artifact@v2
+        with:
+          name: lcovResultsUnit
+          path: fe-coverage/unit
+      - uses: actions/download-artifact@v2
+        with:
+          name: lcovResultsE2E
+          path: fe-coverage/e2e
+      - name: Generate jacocoTestReport and run Sonar
+        if: always()
+        run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  summary:
+    runs-on: ubuntu-latest
+    if: success()
+    needs:
+      - sonar
+    steps:
+      - name: Summary of this workflow's overall outcome
+        run: exit 0
