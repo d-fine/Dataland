@@ -1,6 +1,6 @@
 describe("Check that swagger ui is present and able to send requests", () => {
   it("should be able to open swagger and send a request", () => {
-    cy.visit(`${Cypress.env("API")}/swagger-ui/index.html`)
+    cy.visit("/api/swagger-ui/index.html")
       .get("#operations-Actuator-health button.opblock-summary-control")
       .should("exist")
       .click()
