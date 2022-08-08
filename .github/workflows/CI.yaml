@@ -90,6 +90,8 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - docker-compose-build
     strategy:
       matrix:
         testGroup: [1,2,3,4]
