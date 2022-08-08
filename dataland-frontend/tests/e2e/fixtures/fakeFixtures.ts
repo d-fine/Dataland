@@ -101,16 +101,29 @@ function generateEuTaxonomyDataForFinancials() {
   const reportingObligation = faker.helpers.arrayElement(
     apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
   );
+  const financialServicesType = faker.helpers.arrayElement(
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Financial Services Type"].enum
+  );
   const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const tradingPortfolio = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const interBankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const tradingPortfolioAndLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const eligibleNonLifeInsurance = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-
+  let KPI1 = "";
+  let KPI2 = "";
+  let KPI3 = "";
+  let KPI4 = "";
+  if (financialServicesType == "CreditInstitution") {
+    const singleOrDualField = Math.random();
+    if (singleOrDualField < 0.5) {
+      KPI1 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+    } else {
+      KPI2 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+      KPI3 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+    }
+  } else if (financialServicesType == "InsuranceOrReinsurance") {
+    KPI4 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  }
   return {
     Exposure: {
       totalAssets: totalAssets,
@@ -119,18 +132,15 @@ function generateEuTaxonomyDataForFinancials() {
       banksAndIssuers: banksAndIssuers,
       nonNfrd: nonNfrd,
     },
-    CreditKpiInsurance: {
-      nonLifeInsurance: eligibleNonLifeInsurance,
-    },
-    CreditKpiDualField: {
-      tradingPortfolio: tradingPortfolio,
-      interBankLoans: interBankLoans,
-    },
-    CreditKpiSingleField: {
-      tradingPortfolioAndInterBankLoans: tradingPortfolioAndLoans,
+    CreditInstitutionsKPIs: {
+      tradingPortfolioAndLoans: KPI1,
+      tradingPortfolio: KPI2,
+      interBankLoans: KPI3,
+      eligibleNonLifeInsurance: KPI4,
     },
     "Reporting Obligation": reportingObligation,
     Attestation: attestation,
+    "Financial Services Type": financialServicesType,
   };
 }
 
@@ -175,6 +185,16 @@ function decimalSeparatorConverter(value: number) {
   return value.toString().replace(".", ",");
 }
 
+function getAttestation(row: any) {
+  if (row["Attestation"] === "LimitedAssurance") {
+    return "limited";
+  } else if (row["Attestation"] === "ReasonableAssurance") {
+    return "reasonable";
+  } else {
+    return "none";
+  }
+}
+
 function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
   const mergedData = companyInformationWithEuTaxonomyDataForNonFinancials.map((element: any) => {
     return { ...element["companyInformation"], ...element["euTaxonomyDataForNonFinancials"] };
@@ -207,13 +227,7 @@ function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataFor
       {
         label: "Assurance",
         value: (row: any) => {
-          if (row["Attestation"] === "LimitedAssurance") {
-            return "limited";
-          } else if (row["Attestation"] === "ReasonableAssurance") {
-            return "reasonable";
-          } else {
-            return "none";
-          }
+          return getAttestation(row);
         },
       },
       ...stockIndexArray.map((e: any) => {
@@ -255,33 +269,28 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
       { label: "Banks and issuers", value: (row: any) => convertToPercentageString(row.Exposure.banksAndIssuers) },
       { label: "Non-NFRD", value: (row: any) => convertToPercentageString(row.Exposure.nonNfrd) },
       {
-        label: "Trading portfolio",
-        value: (row: any) => convertToPercentageString(row.CreditKpiDualField.tradingPortfolio),
+        label: "tradingPortfolioAndLoans",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.tradingPortfolioAndLoans),
       },
       {
-        label: "On-demand interbank loans",
-        value: (row: any) => convertToPercentageString(row.CreditKpiDualField.interBankLoans),
+        label: "tradingPortfolio",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.tradingPortfolio),
       },
       {
-        label: "Trading portfolio & on demand interbank loans",
-        value: (row: any) => convertToPercentageString(row.CreditKpiSingleField.tradingPortfolioAndInterBankLoan),
+        label: "interBankLoans",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.interBankLoans),
       },
       {
-        label: "Taxonomy-eligible non-life insurance economic activities",
-        value: (row: any) => convertToPercentageString(row.CreditKpiInsurance.nonLifeInsurance),
+        label: "eligibleNonLifeInsurance",
+        value: (row: any) => convertToPercentageString(row.CreditInstitutionsKPIs.eligibleNonLifeInsurance),
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
       { label: "NFRD mandatory", value: (row: any) => row["Reporting Obligation"] },
+      { label: "Financial Service Type", value: (row: any) => row["Financial Services Type"] },
       {
         label: "Assurance",
         value: (row: any) => {
-          if (row["Attestation"] === "LimitedAssurance") {
-            return "limited";
-          } else if (row["Attestation"] === "ReasonableAssurance") {
-            return "reasonable";
-          } else {
-            return "none";
-          }
+          return getAttestation(row);
         },
       },
       ...stockIndexArray.map((e: any) => {
