@@ -66,32 +66,9 @@ jobs:
           path: ./dataland-frontend/coverage/**/lcov.info
       - name: Execute Frontend Scripts Tests
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
-  docker-compose-build:
-    runs-on: ubuntu-latest
-    if: always() && github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-          password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-      - name: Cache docker build
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        with:
-          key: docker-layer-caching-initialtest-{hash}
-          restore-keys: docker-layer-caching-initialtest-
-      - name: Build docker compose images
-        run: ./testing/build_docker_compose.sh
-        env:
-          PROXY_ENVIRONMENT: production
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
-    needs:
-      - docker-compose-build
     strategy:
       matrix:
         testGroup: [1,2,3,4]
@@ -108,12 +85,6 @@ jobs:
         env:
           DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Cache docker build
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        with:
-          key: docker-layer-caching-initialtest-{hash}
-          restore-keys: docker-layer-caching-initialtest-
       - name: Execute E2E Tests
         run: ./testing/execute_e2e_tests.sh
         env:
