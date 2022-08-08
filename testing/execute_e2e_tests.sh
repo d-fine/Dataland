@@ -12,7 +12,7 @@ docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/* ./cypress/${
 docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/* ./reports/${CYPRESS_TEST_GROUP}/
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
-docker exec dala-e2e-test-e2etests-1 pkill -f spring
+docker exec dala-e2e-test-backend-1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test-backend-1 --follow" > /dev/null
 BACKEND_TIMEOUT_EXIT_CODE=$?
 docker cp dala-e2e-test-backend-1:/app/dataland-backend/build/jacoco/bootRun.exec ./bootRun-${CYPRESS_TEST_GROUP}.exec
