@@ -149,7 +149,7 @@ function generateCompanyWithEuTaxonomyDataForNonFinancials() {
   for (let id = 1; id <= 250; id++) {
     companiesWithEuTaxonomyDataForNonFinancials.push({
       companyInformation: generateCompanyInformation(),
-      euTaxonomyDataForNonFinancials: generateEuTaxonomyDataForNonFinancials(),
+      t: generateEuTaxonomyDataForNonFinancials(),
     });
   }
   return companiesWithEuTaxonomyDataForNonFinancials;
@@ -160,7 +160,7 @@ function generateCompanyWithEuTaxonomyDataForFinancials() {
   for (let id = 1; id <= 250; id++) {
     companiesWithEuTaxonomyDataForFinancials.push({
       companyInformation: generateCompanyInformation(),
-      euTaxonomyDataForFinancials: generateEuTaxonomyDataForFinancials(),
+      t: generateEuTaxonomyDataForFinancials(),
     });
   }
   return companiesWithEuTaxonomyDataForFinancials;
@@ -197,7 +197,7 @@ function getAttestation(row: any) {
 
 function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials: Array<Object>) {
   const mergedData = companyInformationWithEuTaxonomyDataForNonFinancials.map((element: any) => {
-    return { ...element["companyInformation"], ...element["euTaxonomyDataForNonFinancials"] };
+    return { ...element["companyInformation"], ...element["t"] };
   });
   const dateOptions: any = { year: "numeric", month: "numeric", day: "numeric" };
   const dateLocale = "de-DE";
@@ -244,7 +244,7 @@ function generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataFor
 
 function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials: Array<Object>) {
   const mergedData = companyInformationWithEuTaxonomyDataForFinancials.map((element: any) => {
-    return { ...element["companyInformation"], ...element["euTaxonomyDataForFinancials"] };
+    return { ...element["companyInformation"], ...element["t"] };
   });
   const dateOptions: any = { year: "numeric", month: "numeric", day: "numeric" };
   const dateLocale = "de-DE";
