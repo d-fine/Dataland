@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.StockIndex
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.Collections
 import java.util.UUID
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap
 class CompanyManager : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     private var teaserCompanyIds: List<String> = listOf<String>()
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun verifyCompanyIdExists(companyId: String) {
         if (!companyDataPerCompanyId.containsKey(companyId)) {
@@ -84,6 +86,7 @@ class CompanyManager : CompanyManagerInterface {
     }
 
     override fun setTeaserCompanies(companyIds: List<String>) {
+        logger.info("Setting Teaser Company IDs: $companyIds")
         teaserCompanyIds = companyIds
     }
 
