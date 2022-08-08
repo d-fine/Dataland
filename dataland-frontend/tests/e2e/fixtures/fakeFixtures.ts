@@ -93,40 +93,35 @@ function generateEuTaxonomyDataForNonFinancials() {
     Attestation: attestation,
   };
 }
-function generateFinancialCompanyType() {
-  const financialServicesTypes = ["CreditInstitution", "InsuranceOrReinsurance", "AssetManagement"];
-  const financialServicesType = financialServicesTypes[Math.floor(Math.random() * financialServicesTypes.length)];
-  return {
-    financialServicesType,
-  };
-}
 
 function generateEuTaxonomyDataForFinancials() {
   const attestation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Attestation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Attestation"].enum
   );
   const reportingObligation = faker.helpers.arrayElement(
-      apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Reporting Obligation"].enum
   );
-  const financialServicesType = generateFinancialCompanyType();
+  const financialServicesType = faker.helpers.arrayElement(
+    apiSpecs.components.schemas.EuTaxonomyDataForFinancials.properties["Financial Services Type"].enum
+  );
   const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
-  const taxonomyEligibleEconomicActivity = faker.datatype.float({min: 0, max: 1, precision: resolution}).toFixed(4);
-  const eligibleDerivates = faker.datatype.float({min: 0, max: 1, precision: resolution}).toFixed(4);
-  const banksAndIssuers = faker.datatype.float({min: 0, max: 1, precision: resolution}).toFixed(4);
-  const nonNfrd = faker.datatype.float({min: 0, max: 1, precision: resolution}).toFixed(4);
+  const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   let KPI1 = "";
   let KPI2 = "";
   let KPI3 = "";
   let KPI4 = "";
-  if (financialServicesType.financialServicesType == "CreditInstitution") {
+  if (financialServicesType == "CreditInstitution") {
     const singleOrDualField = Math.random();
-    if (singleOrDualField < 0.5){
+    if (singleOrDualField < 0.5) {
       KPI1 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
     } else {
       KPI2 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
       KPI3 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
     }
-  } else if (financialServicesType.financialServicesType == "InsuranceOrReinsurance") {
+  } else if (financialServicesType == "InsuranceOrReinsurance") {
     KPI4 = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   }
   return {
@@ -145,7 +140,7 @@ function generateEuTaxonomyDataForFinancials() {
     },
     "Reporting Obligation": reportingObligation,
     Attestation: attestation,
-    "Financial Services Type": financialServicesType.financialServicesType,
+    "Financial Services Type": financialServicesType,
   };
 }
 
@@ -281,7 +276,7 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
       { label: "NFRD mandatory", value: (row: any) => row["Reporting Obligation"] },
-      { label: "Financial Service Type", value: (row: any) => row[ "Financial Services Type"] },
+      { label: "Financial Service Type", value: (row: any) => row["Financial Services Type"] },
       {
         label: "Assurance",
         value: (row: any) => {
