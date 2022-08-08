@@ -61,7 +61,7 @@ plugins {
     kotlin("plugin.spring") version "1.7.10" apply false
     id("org.sonarqube") version "3.4.0.2513"
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") version "1.3.4" apply false
+    id("org.springdoc.openapi-gradle-plugin") version "1.4.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.0.1" apply false
     id("com.github.ben-manes.versions") version "0.42.0"

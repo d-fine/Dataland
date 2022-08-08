@@ -12,7 +12,7 @@
     "material-icons": "^1.11.8",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
-    "sass": "^1.54.2"
+    "sass": "^1.54.3"
   },
   "devDependencies": {
     "npm-check-updates": "^16.0.5"
