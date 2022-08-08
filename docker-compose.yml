@@ -56,6 +56,7 @@ services:
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
       ENVIRONMENT: ${ENVIRONMENT}
+      CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
     links:
       - proxy:dataland-local.duckdns.org
   frontend:
