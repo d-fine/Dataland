@@ -69,9 +69,9 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
         .should("include", "/eutaxonomies");
     }
 
-    function checkPermIdToolTip(permIdText: string) {
+    function checkPermIdToolTip(permIdTextInt: string) {
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-      cy.get(".p-tooltip").should("be.visible").contains(permIdText);
+      cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
       cy.get(".p-tooltip").should("not.exist");
     }

@@ -13,13 +13,17 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
     return describe(`${name} - Disabled`, () => {
-      it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, () => {});
+      it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, () => {
+        // Stub-Test just so its displayed why test suit wasn't executed
+      });
     });
   }
 
   if (execConfig.dataEnvironments.indexOf(dataEnvironment) === -1) {
     return describe(`${name} - Disabled`, () => {
-      it(`Has been disabled because the data environment ${dataEnvironment} has not been allowed`, () => {});
+      it(`Has been disabled because the data environment ${dataEnvironment} has not been allowed`, () => {
+        // Stub-Test just so its displayed why test suit wasn't executed
+      });
     });
   }
 
