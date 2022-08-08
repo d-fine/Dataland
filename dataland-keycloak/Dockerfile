@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:18.0.1
+FROM quay.io/keycloak/keycloak:19.0.1
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
@@ -13,4 +13,4 @@ ENV KC_HTTP_RELATIVE_PATH=keycloak
 
 RUN /opt/keycloak/bin/kc.sh build
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD "start"
+CMD "start --optimized"
