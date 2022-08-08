@@ -4,7 +4,7 @@ const chunkSize = 40;
 
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {
   let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
-  const teaserCompanies: Array<{ companyIds: string }> = [];
+  const teaserCompanies: Array<string> = [];
   let teaserCompaniesPermIds: Array<{ permId: string }> = [];
 
   if (Cypress.env("REALDATA")) {
