@@ -4,7 +4,6 @@ module.exports = (on, config) => {
   config.supportFile = "tests/e2e/support/index.ts";
   config.env.commit_id = require("git-commit-id")({ cwd: "../" });
   config.specPattern = ["tests/e2e/specs"];
-
   if (process.env.REALDATA) {
     config.env["DATA_ENVIRONMENT"] = "realData";
   }
