@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class SkyminderController(@Autowired var skyminderClient: SkyminderConnectorInterface) : SkyminderAPI {
     override fun getDataSkyminderRequest(countryCode: String, companyName: String):
         ResponseEntity<List<ContactInformation>> {
-        logger.info("This line is only here to test code coverage reporting 3")
+        System.out.println("This line is only here to test code coverage reporting 3")
         return ResponseEntity.ok(
             skyminderClient.getContactInformation(
                 countryCode = countryCode,
