@@ -21,10 +21,16 @@ class DataControllerTest {
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val euTaxonomyDataForNonFinancialsControllerApi =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForEuTaxonomyDataForNonFinancials =
-        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+
     private val tokenHandler = TokenHandler()
     private val unauthorizedEuTaxonomyDataControllerApi = UnauthorizedEuTaxonomyDataControllerApi()
+
+    private val testDataProviderForEuTaxonomyDataForNonFinancials =
+        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+
+    private val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
+        .getCompanyInformation(1).first()
+    private val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
@@ -41,8 +47,6 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(mapOfIds["dataId"]!!)
@@ -55,8 +59,6 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         companyDataControllerApi.setTeaserCompanies(listOf(mapOfIds["companyId"]!!))
         val getDataByIdResponse = unauthorizedEuTaxonomyDataControllerApi
@@ -72,8 +74,6 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedEuTaxonomyDataControllerApi
@@ -84,8 +84,6 @@ class DataControllerTest {
 
     @Test
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(1).first()
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
