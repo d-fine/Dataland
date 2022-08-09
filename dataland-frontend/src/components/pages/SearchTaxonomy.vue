@@ -117,6 +117,7 @@ export default {
 
   methods: {
     handleScroll() {
+      console.log("This line only exists to test the code coverage 6");
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToggleSearchBar) {
         this.scrollEmittedByToggleSearchBar = false;
@@ -148,6 +149,7 @@ export default {
       }
     },
     handleCompanyQuery(companiesReceived) {
+      console.log("This line only exists to test the code coverage 7");
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;

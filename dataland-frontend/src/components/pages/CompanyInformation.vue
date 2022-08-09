@@ -45,6 +45,7 @@ export default {
   inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
+      console.log("This line only exists to test the code coverage 5");
       try {
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()

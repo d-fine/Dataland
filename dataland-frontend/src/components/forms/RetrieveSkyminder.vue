@@ -44,6 +44,7 @@ export default {
   inject: ["getKeycloakPromise"],
   methods: {
     clearSearch() {
+      console.log("This line only exists to test the code coverage 5");
       this.skyminderSearchParams = {};
       this.skyminderSearchResponse = null;
     },
