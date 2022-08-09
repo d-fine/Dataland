@@ -114,7 +114,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check if all the company ids can be retrieved", () => {
     cy.retrieveCompanyIdsList().then((companyIdListForNonFinancial: Array<string>) => {
       assert(
-          companyIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        companyIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
         `Found ${companyIdListForNonFinancial.length}, expected at least ${nonFinancialCompaniesWithData.length} companies`
       );
     });
@@ -129,7 +129,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check if all the data ids can be retrieved", () => {
     cy.retrieveDataIdsList().then((dataIdListForNonFinancial: any) => {
       assert(
-          dataIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        dataIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
         `Found ${dataIdListForNonFinancial.length}, expected at least ${nonFinancialCompaniesWithData.length} datasets`
       );
     });
