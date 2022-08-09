@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== "test") {
   plugins.push([
     "babel-plugin-istanbul",
     {
-      extension: [".js", ".vue"],
+      extension: [".ts", ".js", ".vue"],
     },
   ]);
 }
