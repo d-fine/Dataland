@@ -36,6 +36,7 @@ class CompanyManager : CompanyManagerInterface {
 
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         val companyId = UUID.randomUUID().toString()
+        logger.info("Adding Company ${companyInformation.companyName} with ID $companyId")
         companyDataPerCompanyId[companyId] = StoredCompany(
             companyId = companyId,
             companyInformation,
