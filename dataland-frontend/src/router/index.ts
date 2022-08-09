@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import UploadData from "@/components/pages/UploadData.vue";
+import UploadCompanyAndEuTaxonomyDataForNonFinancials from "@/components/pages/UploadCompanyAndEuTaxonomyDataForNonFinancials.vue";
 import SearchData from "@/components/pages/SearchData.vue";
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
 import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel.vue";
@@ -10,6 +10,7 @@ import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue"
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import NoContentFound from "@/components/pages/NoContentFound.vue";
+import UploadEuTaxonomyDataForFinancials from "@/components/pages/UploadEuTaxonomyDataForFinancials.vue";
 
 const routes = [
   {
@@ -20,7 +21,12 @@ const routes = [
   {
     path: "/upload",
     name: "Create Data",
-    component: UploadData,
+    component: UploadCompanyAndEuTaxonomyDataForNonFinancials,
+  },
+  {
+    path: "/uploadEuTaxonomyDataForFinancials",
+    name: "Create Data for Non-Financials",
+    component: UploadEuTaxonomyDataForFinancials,
   },
   {
     path: "/search",
