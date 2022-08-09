@@ -106,7 +106,7 @@ function generateEuTaxonomyDataForFinancials() {
   );
   const totalAssets = faker.finance.amount(minEuro, maxEuro, 2);
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
-  const eligibleDerivates = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
+  const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution }).toFixed(4);
   let KPI1 = "";
@@ -128,7 +128,7 @@ function generateEuTaxonomyDataForFinancials() {
     Exposure: {
       totalAssets: totalAssets,
       taxonomyActivity: taxonomyEligibleEconomicActivity,
-      eligibleDerivates: eligibleDerivates,
+      eligibleDerivatives: eligibleDerivatives,
       banksAndIssuers: banksAndIssuers,
       nonNfrd: nonNfrd,
     },
@@ -265,7 +265,7 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
         label: "Taxonomy-eligible economic activity",
         value: (row: any) => convertToPercentageString(row.Exposure.taxonomyActivity),
       },
-      { label: "Derivates", value: (row: any) => convertToPercentageString(row.Exposure.eligibleDerivates) },
+      { label: "Derivatives", value: (row: any) => convertToPercentageString(row.Exposure.eligibleDerivatives) },
       { label: "Banks and issuers", value: (row: any) => convertToPercentageString(row.Exposure.banksAndIssuers) },
       { label: "Non-NFRD", value: (row: any) => convertToPercentageString(row.Exposure.nonNfrd) },
       {
