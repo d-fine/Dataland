@@ -12,9 +12,12 @@ if (testGroupingDisabled) {
   console.log(`Test grouping enabled. Loading tests for group ${cypressTestGroup}`);
 }
 
+require("./infrastructure");
+
 if (!singlePopulate || cypressTestGroup === 1) {
-  require("./infrastructure");
   require("./prepopulation");
+} else {
+  require("./prepopulation/AwaitPrepopulation");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 1) {

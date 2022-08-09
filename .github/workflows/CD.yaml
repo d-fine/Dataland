@@ -63,13 +63,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get GitHub real data image on demand
-        run: |
-          if [[ $REALDATA == true ]]; then
-            echo "Retrieving real data and adapt test config"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
-            cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
-          fi
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -124,6 +117,18 @@ jobs:
         testGroup: [ 1,2,3,4 ]
     steps:
       - uses: actions/checkout@v2
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get GitHub real data image on demand
+        run: |
+          if [[ $REALDATA == true ]]; then
+            echo "Retrieving real data
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
+          fi
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
