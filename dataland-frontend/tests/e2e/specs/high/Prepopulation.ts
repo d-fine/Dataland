@@ -112,31 +112,31 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Check if all the company ids can be retrieved", () => {
-    cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+    cy.retrieveCompanyIdsList().then((companyIdListForNonFinancial: Array<string>) => {
       assert(
-        companyIdList.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${companyIdList.length}, expected at least ${nonFinancialCompaniesWithData.length} companies`
+          companyIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${companyIdListForNonFinancial.length}, expected at least ${nonFinancialCompaniesWithData.length} companies`
       );
     });
-    cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+    cy.retrieveCompanyIdsList().then((companyIdListForFinancial: Array<string>) => {
       assert(
-        companyIdList.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${companyIdList.length}, expected at least ${financialCompaniesWithData.length} companies`
+        companyIdListForFinancial.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${companyIdListForFinancial.length}, expected at least ${financialCompaniesWithData.length} companies`
       );
     });
   });
 
   it("Check if all the data ids can be retrieved", () => {
-    cy.retrieveDataIdsList().then((dataIdList: any) => {
+    cy.retrieveDataIdsList().then((dataIdListForNonFinancial: any) => {
       assert(
-        dataIdList.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${dataIdList.length}, expected at least ${nonFinancialCompaniesWithData.length} datasets`
+          dataIdListForNonFinancial.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${dataIdListForNonFinancial.length}, expected at least ${nonFinancialCompaniesWithData.length} datasets`
       );
     });
-    cy.retrieveDataIdsList().then((dataIdList: any) => {
+    cy.retrieveDataIdsList().then((dataIdListForFinancial: any) => {
       assert(
-        dataIdList.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${dataIdList.length}, expected at least ${financialCompaniesWithData.length} datasets`
+        dataIdListForFinancial.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${dataIdListForFinancial.length}, expected at least ${financialCompaniesWithData.length} datasets`
       );
     });
   });
@@ -161,9 +161,9 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Check Eu Taxonomy Data Presence and Link route", () => {
-    cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
+    cy.retrieveDataIdsList().then((dataIdListForNonFinancial: Array<string>) => {
       cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdList[0]);
+      cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdListForNonFinancial[0]);
       cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
         cy.get("h3").should("be.visible");
         cy.get("h3").contains("Revenue");
@@ -175,10 +175,10 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
-    cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+    cy.retrieveCompanyIdsList().then((companyIdListForNonFinancial: Array<string>) => {
       cy.intercept("**/api/companies/*").as("retrieveCompany");
       cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/eutaxonomies`);
+      cy.visitAndCheckAppMount(`/companies/${companyIdListForNonFinancial[0]}/eutaxonomies`);
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
         .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
         .then(() => {
