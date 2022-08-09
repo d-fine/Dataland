@@ -24,7 +24,6 @@ class CompanyDataController(
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-        logger.info("This line is only here to test code coverage reporting 1")
         return ResponseEntity.ok(companyManager.addCompany(companyInformation))
     }
 
@@ -33,7 +32,6 @@ class CompanyDataController(
         selectedIndex: StockIndex?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
-        logger.info("This line is only here to test code coverage reporting 2")
         return if (selectedIndex == null) {
             logger.info(
                 "Received a request to get companies with " +

@@ -69,7 +69,6 @@ export default {
 
   methods: {
     async filterByIndex(stockIndex) {
-      console.log("This line only exists to test the code coverage 8");
       const resultsArray = await getCompanyDataForTaxonomyPage("", stockIndex, false, this.getKeycloakPromise());
       this.$emit("companies-received", resultsArray);
     },
