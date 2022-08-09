@@ -7,9 +7,9 @@ import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
  * --- Non-API model ---
  * Class to help to parse json file containing companyInformation and euTaxonomyData
  * @param companyInformation contains information of company
- * @param euTaxonomyDataForNonFinancials contains eu taxonomy data for non-financials for the company
+ * @param t contains eu taxonomy data for non-financials for the company
  */
 data class CompanyInformationWithEuTaxonomyDataForNonFinancialsModel(
     val companyInformation: CompanyInformation,
-    val euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
+    val t: EuTaxonomyDataForNonFinancials
 )
