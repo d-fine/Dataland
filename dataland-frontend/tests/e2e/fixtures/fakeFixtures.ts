@@ -144,26 +144,23 @@ function generateEuTaxonomyDataForFinancials() {
   };
 }
 
-function generateCompanyWithEuTaxonomyDataForNonFinancials() {
+function generateCompanyWithEuTaxonomyData() {
   const companiesWithEuTaxonomyDataForNonFinancials = [];
+  const companiesWithEuTaxonomyDataForFinancials = [];
   for (let id = 1; id <= 250; id++) {
     companiesWithEuTaxonomyDataForNonFinancials.push({
       companyInformation: generateCompanyInformation(),
       t: generateEuTaxonomyDataForNonFinancials(),
     });
-  }
-  return companiesWithEuTaxonomyDataForNonFinancials;
-}
-
-function generateCompanyWithEuTaxonomyDataForFinancials() {
-  const companiesWithEuTaxonomyDataForFinancials = [];
-  for (let id = 1; id <= 250; id++) {
     companiesWithEuTaxonomyDataForFinancials.push({
       companyInformation: generateCompanyInformation(),
       t: generateEuTaxonomyDataForFinancials(),
     });
   }
-  return companiesWithEuTaxonomyDataForFinancials;
+  return {
+    companiesWithEuTaxonomyDataForNonFinancials,
+    companiesWithEuTaxonomyDataForFinancials,
+  };
 }
 
 function getStockIndexValueForCsv(setStockIndexList: Array<string>, stockIndexToCheck: string) {
@@ -305,27 +302,24 @@ function generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFin
   return parse(mergedData, options);
 }
 
-function mainNonFinancials() {
-  const companyInformationWithEuTaxonomyDataForNonFinancials = generateCompanyWithEuTaxonomyDataForNonFinancials();
-  const csv = generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials);
+function main() {
+  const companyEuTaxonomy = generateCompanyWithEuTaxonomyData();
+  const companyInformationWithEuTaxonomyDataForNonFinancials =
+    companyEuTaxonomy.companiesWithEuTaxonomyDataForNonFinancials;
+  const csvNonFinancial = generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials);
+  const companyInformationWithEuTaxonomyDataForFinancials = companyEuTaxonomy.companiesWithEuTaxonomyDataForFinancials;
+  const csvFinancial = generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials);
 
-  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv", csv);
+  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv", csvNonFinancial);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
   );
-}
-
-mainNonFinancials();
-
-function mainFinancials() {
-  const companyInformationWithEuTaxonomyDataForFinancials = generateCompanyWithEuTaxonomyDataForFinancials();
-  const csv = generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials);
-  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForFinancials.csv", csv);
+  fs.writeFileSync("../testing/data/csvTestEuTaxonomyDataForFinancials.csv", csvFinancial);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
   );
 }
 
-mainFinancials();
+main();
