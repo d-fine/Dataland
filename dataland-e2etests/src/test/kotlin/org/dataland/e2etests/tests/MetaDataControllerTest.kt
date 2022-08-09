@@ -30,10 +30,14 @@ class MetaDataControllerTest {
         EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val tokenHandler = TokenHandler()
     private val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
-    private val testDataProviderEuTaxonomyForNonFinancials = TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    private val testDataProviderEuTaxonomyForNonFinancials =
+        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     private val testDataProviderEuTaxonomyForFinancials = TestDataProvider(EuTaxonomyDataForFinancials::class.java)
 
-    private fun postCompaniesAndEuTaxonomyDataForNonFinancials(testData: Map<CompanyInformation, List<EuTaxonomyDataForNonFinancials>>):
+    private fun postCompaniesAndEuTaxonomyDataForNonFinancials(
+        testData: Map<CompanyInformation,
+            List<EuTaxonomyDataForNonFinancials>>
+    ):
         List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
@@ -49,7 +53,10 @@ class MetaDataControllerTest {
         return listOfPostedTestCompanyIds
     }
 
-    private fun postCompaniesAndEuTaxonomyDataForFinancials(testData: Map<CompanyInformation, List<EuTaxonomyDataForFinancials>>):
+    private fun postCompaniesAndEuTaxonomyDataForFinancials(
+        testData: Map<CompanyInformation,
+            List<EuTaxonomyDataForFinancials>>
+    ):
         List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
@@ -68,7 +75,8 @@ class MetaDataControllerTest {
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
 
-        val testCompanyInformation = testDataProviderEuTaxonomyForNonFinancials.getCompanyInformation(1).first()
+        val testCompanyInformation = testDataProviderEuTaxonomyForNonFinancials
+            .getCompanyInformation(1).first()
         val testData = testDataProviderEuTaxonomyForNonFinancials.getTData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
@@ -133,15 +141,20 @@ class MetaDataControllerTest {
             testDataProviderEuTaxonomyForNonFinancials
                 .getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany)
         )
-        postCompaniesAndEuTaxonomyDataForFinancials(testDataProviderEuTaxonomyForFinancials.getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany))
+        postCompaniesAndEuTaxonomyDataForFinancials(
+            testDataProviderEuTaxonomyForFinancials
+                .getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany)
+        )
         val listOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi.getListOfDataMetaInfo(
             "", "EuTaxonomyDataForFinancials"
         )
-        val expectedSizeOfDataMetaInfoList = initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials + totalNumberOfDataSetsPerFramework
+        val expectedSizeOfDataMetaInfoList = initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials +
+            totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfoList, listOfDataMetaInfoForEuTaxonomyNonFinancials.size,
-            "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                "$expectedSizeOfDataMetaInfoList, but has the size ${listOfDataMetaInfoForEuTaxonomyNonFinancials.size}."
+            "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework " +
+                "to $expectedSizeOfDataMetaInfoList, but has the size " +
+                "${listOfDataMetaInfoForEuTaxonomyNonFinancials.size}."
         )
     }
 
