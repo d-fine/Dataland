@@ -7,7 +7,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   const teaserCompanies: Array<string> = [];
   let teaserCompaniesPermIds: Array<string> = [];
 
-  if (Cypress.env("REALDATA")) {
+  if (Cypress.env("REALDATA") === true) {
     teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
   }
 
