@@ -2,7 +2,8 @@ import { login, logout } from "../../utils/Auth";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
-  const password = "test";
+  const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
+  const randomHexPassword = [...passwordBytes].map((x) => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that registering works", () => {
     cy.visitAndCheckAppMount("/")
@@ -14,10 +15,10 @@ describe("As a user I want to be able to register for an account and be able to 
 
       .get("#password")
       .should("exist")
-      .type(password, { force: true })
+      .type(randomHexPassword, { force: true })
       .get("#password-confirm")
       .should("exist")
-      .type(password, { force: true })
+      .type(randomHexPassword, { force: true })
 
       .get("input[type='submit']")
       .should("exist")
@@ -39,7 +40,7 @@ describe("As a user I want to be able to register for an account and be able to 
   });
 
   it("Checks that one can login to the newly registered account", () => {
-    login(email, password);
+    login(email, randomHexPassword);
     logout();
   });
 });
