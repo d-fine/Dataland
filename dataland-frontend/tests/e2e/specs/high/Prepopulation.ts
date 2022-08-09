@@ -1,12 +1,16 @@
 import { doThingsInChunks, getKeycloakToken, uploadSingleElementWithRetries } from "../../support/utility";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "../../../../build/clients/backend/api";
 const chunkSize = 40;
 
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {
-  let companiesWithData: Array<{
+  let nonFinancialCompaniesWithData: Array<{
     companyInformation: CompanyInformation;
     t: EuTaxonomyDataForNonFinancials;
   }>;
+    let financialCompaniesWithData: Array<{
+        companyInformation: CompanyInformation;
+        t: EuTaxonomyDataForFinancials;
+    }>;
   const teaserCompanies: Array<{ companyIds: string }> = [];
   let teaserCompaniesPermIds: Array<{ permId: string }> = [];
 
@@ -15,10 +19,16 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   }
 
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-      companiesWithData = companies;
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (nonFinancialCompanies) {
+      nonFinancialCompaniesWithData = nonFinancialCompanies;
     });
   });
+
+    before(function () {
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (financialCompanies) {
+            financialCompaniesWithData = financialCompanies;
+        });
+    });
 
   beforeEach(function () {
     cy.restoreLoginSession();
@@ -47,7 +57,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Populate Companies and Eu Taxonomy Data", () => {
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
       .then((token) => {
-        doThingsInChunks(companiesWithData, chunkSize, (element) => {
+        doThingsInChunks(nonFinancialCompaniesWithData, chunkSize, (element) => {
           return uploadSingleElementWithRetries("companies", element.companyInformation, token)
             .then((response) => response.json())
             .then((json) => {
@@ -62,6 +72,20 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
               addCompanyIdToTeaserCompanies(element.companyInformation, json);
             });
         });
+          doThingsInChunks(financialCompaniesWithData, chunkSize, (element) => {
+              return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+                  .then((response) => response.json())
+                  .then((json) => {
+                      uploadSingleElementWithRetries(
+                          "data/eutaxonomy/financials",
+                          {
+                              companyId: json.companyId,
+                              data: element.t,
+                          },
+                          token
+                      );
+                  });
+          });
       })
       .should("eq", "done");
   });
@@ -86,23 +110,35 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check if all the company ids can be retrieved", () => {
     cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
       assert(
-        companyIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${companyIdList.length}, expected at least ${companiesWithData.length} companies`
+        companyIdList.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${companyIdList.length}, expected at least ${nonFinancialCompaniesWithData.length} companies`
       );
     });
+      cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+          assert(
+              companyIdList.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+              `Found ${companyIdList.length}, expected at least ${financialCompaniesWithData.length} companies`
+          );
+      });
   });
 
   it("Check if all the data ids can be retrieved", () => {
     cy.retrieveDataIdsList().then((dataIdList: any) => {
       assert(
-        dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-        `Found ${dataIdList.length}, expected at least ${companiesWithData.length} datasets`
+        dataIdList.length >= nonFinancialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+        `Found ${dataIdList.length}, expected at least ${nonFinancialCompaniesWithData.length} datasets`
       );
     });
+      cy.retrieveDataIdsList().then((dataIdList: any) => {
+          assert(
+              dataIdList.length >= financialCompaniesWithData.length, // >= to avoid problem with several runs in a row
+              `Found ${dataIdList.length}, expected at least ${financialCompaniesWithData.length} datasets`
+          );
+      });
   });
 
   it("Company Name Input field exists and works", () => {
-    const inputValue = companiesWithData[0].companyInformation.companyName;
+    const inputValue = nonFinancialCompaniesWithData[0].companyInformation.companyName;
     cy.visitAndCheckAppMount("/search");
     cy.get("input[name=companyName]")
       .should("not.be.disabled")
