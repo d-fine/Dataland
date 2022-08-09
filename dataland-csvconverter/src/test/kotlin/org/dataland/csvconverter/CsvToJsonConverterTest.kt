@@ -43,7 +43,7 @@ class CsvToJsonConverterTest {
     @Test
     fun `reporting obligation with incorrect input value throws exception`() {
         checkThatProcessingFileThrowsErrorWithMessage(
-            "./build/resources/csvTestDataThrowingNFRDRequiredError.csv",
+            "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingNFRDRequiredError.csv",
             "Could not determine reportObligation:"
         )
     }
@@ -51,13 +51,13 @@ class CsvToJsonConverterTest {
     @Test
     fun `assurance with incorrect input value throws exception`() {
         val expectedErrorMessage = "Could not determine attestation:"
-        val filePath = "./build/resources/csvTestDataThrowingAssuranceError.csv"
+        val filePath = "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingAssuranceError.csv"
         checkThatProcessingFileThrowsErrorWithMessage(filePath, expectedErrorMessage)
     }
 
     @Test
     fun `execute corner cases in CsvToJsonConverter`() {
-        val converter = getConverter("./build/resources/csvTestDataCornerCases.csv")
+        val converter = getConverter("./build/resources/csvTestEuTaxonomyDataForNonFinancialsCornerCases.csv")
         converter.buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
     }
 

@@ -41,7 +41,7 @@ class CsvToJsonConverter {
     private var euroUnitConversionFactor = "1"
     private var rawCsvData: List<Map<String, String>> = listOf()
 
-    private val columnMapping = mapOf(
+    private val columnMappingEuTaxonomyForNonFinancials = mapOf(
         "companyName" to "Unternehmensname",
         "headquarters" to "Headquarter",
         "countryCode" to "Countrycode",
@@ -151,7 +151,7 @@ class CsvToJsonConverter {
     }
 
     private fun getValue(property: String, csvData: Map<String, String>): String {
-        return csvData[columnMapping[property]!!]!!.trim().ifBlank {
+        return csvData[columnMappingEuTaxonomyForNonFinancials[property]!!]!!.trim().ifBlank {
             NOT_AVAILABLE_STRING
         }
     }
@@ -169,7 +169,10 @@ class CsvToJsonConverter {
     }
 
     private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return StockIndex.values().filter { (csvLineData[columnMapping[it.name]] ?: "").isNotBlank() }.toSet()
+        return StockIndex.values().filter {
+            (csvLineData[columnMappingEuTaxonomyForNonFinancials[it.name]] ?: "")
+                .isNotBlank()
+        }.toSet()
     }
 
     private fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
