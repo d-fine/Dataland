@@ -111,6 +111,19 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
           PROXY_NGINX_URLS: ${{ secrets.PROXY_NGINX_URLS }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+  e2e-tests:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - build-prod-and-deploy
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
+    strategy:
+      matrix:
+        testGroup: [ 1,2,3,4 ]
+    steps:
+      - uses: actions/checkout@v2
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
@@ -119,9 +132,13 @@ jobs:
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_SINGLE_POPULATE: true
+      - name: Move Cypress Results
+        run: mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: cypress
-          path: ./dataland-frontend/cypress/
+          path: ./dataland-frontend/cypressresult/

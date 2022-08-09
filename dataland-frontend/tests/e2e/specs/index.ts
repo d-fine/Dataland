@@ -1,16 +1,20 @@
-require("./infrastructure");
-require("./prepopulation");
-
 const testGroupingDisabled = isNaN(Cypress.env("TEST_GROUP"));
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
   cypressTestGroup = parseInt(Cypress.env("TEST_GROUP"));
 }
 
+const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
+
 if (testGroupingDisabled) {
   console.log("Test grouping disabled. Loading all tests...");
 } else {
   console.log(`Test grouping enabled. Loading tests for group ${cypressTestGroup}`);
+}
+
+if (!singlePopulate || cypressTestGroup === 1) {
+  require("./infrastructure");
+  require("./prepopulation");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 1) {
