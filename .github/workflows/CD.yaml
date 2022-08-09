@@ -40,6 +40,21 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     steps:
+      - name: log inputs
+        run: |
+          echo Real Datal: $REALDATA
+          echo Which Environment: $ENVIRONMENT
+          echo Use in Memory Store: $IN_MEMORY
+          echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
+          if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
+            echo Reset Keycloak Security Phrase Input: UNDEFINED
+          else
+            echo Reset Keycloak Security Phrase Input: *********
+          fi
+        env:
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
+          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
+          RESET_KEYCLOAK_SECURITY_PHRASE_INPUT: ${{ github.event.inputs.resetKeycloakSecurityPhraseInput }}
       - name: verifyKeycloakPassword
         run: |
           if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
@@ -68,7 +83,6 @@ jobs:
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data and adapt test config"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
-            cp ./dataland-frontend/cypress_preview.json ./dataland-frontend/cypress.json
           fi
       - uses: actions/setup-java@v2
         with:
@@ -97,7 +111,6 @@ jobs:
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           INITIALIZE_KEYCLOAK: ${{ steps.verifyKeycloakPassword.outputs.INITIALIZE_KEYCLOAK }}
-          TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
           KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
@@ -114,8 +127,9 @@ jobs:
       - name: check deployment
         run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
         env:
+          TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 40 || 900 }}
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 900 }}
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}

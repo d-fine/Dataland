@@ -21,7 +21,7 @@ export function browserPromiseUploadSingleElementOnce(
   element: object,
   token: string
 ): Promise<Response> {
-  return fetch(`${Cypress.env("API")}/${endpoint}`, {
+  return fetch(`/api/${endpoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

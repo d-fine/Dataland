@@ -1,4 +1,6 @@
-let companiesWithData: any;
+import { CompanyInformation, EuTaxonomyData } from "../../../../../../build/clients/backend/api";
+
+let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
@@ -47,6 +49,7 @@ describe("Search Taxonomy", function () {
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
+    cy.get("h1").click(); // Collapse the search autocomplete window if it exists
     cy.verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
     cy.checkViewButtonWorks();
