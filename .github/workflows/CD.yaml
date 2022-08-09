@@ -152,6 +152,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: ./dataland-frontend/build/clients/backend
+      - name: Move backendOpenApi.json to the correct location
+        run: mv ./dataland-frontend/build/clients/backend/backendOpenApiDescription/backendOpenApi.json ./dataland-frontend/build/clients/backend/backendOpenApi.json
       - name: (DEBUG) List downloaded artifacts
         run: ls -R
         working-directory: ./dataland-frontend/build/clients

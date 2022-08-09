@@ -8,8 +8,8 @@ E2ETEST_TIMEOUT_EXIT_CODE=$?
 mkdir -p ./cypress/${CYPRESS_TEST_GROUP}
 mkdir -p ./reports/${CYPRESS_TEST_GROUP}
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/e2e/lcov.info ./lcov-${CYPRESS_TEST_GROUP}.info
-docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/* ./cypress/${CYPRESS_TEST_GROUP}/
-docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/* ./reports/${CYPRESS_TEST_GROUP}/
+docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/. ./cypress/${CYPRESS_TEST_GROUP}/
+docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/. ./reports/${CYPRESS_TEST_GROUP}/
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f spring
