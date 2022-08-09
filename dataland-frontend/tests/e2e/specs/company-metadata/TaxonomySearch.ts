@@ -1,7 +1,8 @@
 import { retrieveDataIdsList } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
+import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
 
-let companiesWithData: any;
+let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
@@ -80,6 +81,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
+    cy.get("h1").click(); // Collapse the search autocomplete window if it exists
     verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
     checkViewButtonWorks();
