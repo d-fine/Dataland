@@ -34,7 +34,7 @@ export class ApiClientProvider {
     constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
     const configuration = await this.getConfiguration();
-    return new constructor(configuration, `${process.env.VUE_APP_BASE_API_URL}` + `${process.env.VUE_APP_API}`);
+    return new constructor(configuration, "/api");
   }
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApi> {

@@ -26,7 +26,7 @@ function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<strin
   return getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
     .then((token) => {
       return cy.request({
-        url: `${Cypress.env("API")}/${endpoint}`,
+        url: `/api/${endpoint}`,
         method: "GET",
         headers: { Authorization: "Bearer " + token },
       });

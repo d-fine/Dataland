@@ -73,10 +73,11 @@ To do so:
 * update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
 * Note: fasterXML is managed by spring and ktlint by jlleitschuh, thus NO manual version update should be conducted
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
-* Update Fronted packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
+* Update node version in `dataland-frontend/build.gradle.kts`
+* Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues 
   (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
-* Update Docker images: run CypressImage and TemurinImage jobs in GitHub actions
-* Update node version in `dataland-frontend/build.gradle.kts`
+  Do this in the frontend as well as in the keycloak theme
+* Update Docker images: run CypressImage and TemurinImage jobs in GitHub actions. Don't forget to update KeyCloak!
 * Do the above also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
 * After updating all components check if everything is still working
