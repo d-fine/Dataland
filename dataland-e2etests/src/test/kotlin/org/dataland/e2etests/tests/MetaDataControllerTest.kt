@@ -50,7 +50,7 @@ class MetaDataControllerTest {
     }
 
     private fun postCompaniesAndEuTaxonomyDataForFinancials(testData: Map<CompanyInformation, List<EuTaxonomyDataForFinancials>>):
-            List<String> {
+        List<String> {
         val listOfPostedTestCompanyIds = mutableListOf<String>()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         for ((company, data) in testData) {
@@ -129,8 +129,10 @@ class MetaDataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi
             .getListOfDataMetaInfo("", "EuTaxonomyDataForFinancials").size
-        postCompaniesAndEuTaxonomyDataForNonFinancials(testDataProviderEuTaxonomyForNonFinancials
-            .getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany))
+        postCompaniesAndEuTaxonomyDataForNonFinancials(
+            testDataProviderEuTaxonomyForNonFinancials
+                .getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany)
+        )
         postCompaniesAndEuTaxonomyDataForFinancials(testDataProviderEuTaxonomyForFinancials.getCompaniesWithTData(numberOfCompaniesPerFramework, numberOfDataSetsToPostPerCompany))
         val listOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi.getListOfDataMetaInfo(
             "", "EuTaxonomyDataForFinancials"
