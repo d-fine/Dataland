@@ -72,6 +72,11 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+      - name: Store backendOpenApi.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: backendOpenApiDescription
+          path: ./dataland-frontend/build/clients/backend/backendOpenApi.json
       - name: Build KeyCloak theme
         run: ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
       - name: Start server and deploy to it (either Preview or Dev)
@@ -129,6 +134,13 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
           fi
+      - name: Download backendOpenApi.json
+        uses: actions/download-artifact@v3
+        with:
+          path: ./dataland-frontend/build/clients/backend
+      - name: (DEBUG) List downloaded artifacts
+        run: ls -R
+        working-directory: ./dataland-frontend/build/clients
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
