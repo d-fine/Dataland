@@ -165,11 +165,8 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE:
-      - name: (DEBUG) List downloaded artifacts
-        run: ls -R
-        working-directory: ./
       - name: Move Cypress Results
-        run: mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+        run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2
