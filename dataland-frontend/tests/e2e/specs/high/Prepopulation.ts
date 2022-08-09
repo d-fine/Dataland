@@ -7,7 +7,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   const teaserCompanies: Array<string> = [];
   let teaserCompaniesPermIds: Array<string> = [];
 
-  if (Cypress.env("REALDATA") === "true") {
+  if (Cypress.env("REALDATA") === true) {
     teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
   }
 
@@ -34,8 +34,8 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
     if (
-      (Cypress.env("REALDATA") === "true" && teaserCompaniesPermIds.includes(getPermId(companyInformation))) ||
-      (Cypress.env("REALDATA") !== "true" && teaserCompanies.length == 0)
+      (Cypress.env("REALDATA") === true && teaserCompaniesPermIds.includes(getPermId(companyInformation))) ||
+      (Cypress.env("REALDATA") !== true && teaserCompanies.length == 0)
     ) {
       teaserCompanies.push(json.companyId);
     }
