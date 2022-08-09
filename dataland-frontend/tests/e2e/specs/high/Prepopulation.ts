@@ -5,7 +5,7 @@ const chunkSize = 40;
 describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 }, () => {
   let companiesWithData: Array<{
     companyInformation: CompanyInformation;
-    euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+    t: EuTaxonomyDataForNonFinancials;
   }>;
   const teaserCompanies: Array<{ companyIds: string }> = [];
   let teaserCompaniesPermIds: Array<{ permId: string }> = [];
@@ -55,7 +55,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
                 "data/eutaxonomy/nonfinancials",
                 {
                   companyId: json.companyId,
-                  data: element.euTaxonomyDataForNonFinancials,
+                  data: element.t,
                 },
                 token
               );
