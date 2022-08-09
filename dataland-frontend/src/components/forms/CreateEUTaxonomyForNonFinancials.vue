@@ -1,13 +1,13 @@
 <template>
   <Card class="col-5 col-offset-1">
-    <template #title>Create EU Taxonomy Dataset</template>
+    <template #title>Create EU Taxonomy Dataset for a Non-Financial Company/Service</template>
     <template #content>
       <FormKit
-        v-model="model"
+        v-model="formInputsModel"
         :actions="false"
         type="form"
-        id="createEuTaxonomyForm"
-        @submit="postEUData"
+        id="createEuTaxonomyForNonFinancialsForm"
+        @submit="postEuTaxonomyDataForNonFinancials"
         #default="{ state: { valid } }"
       >
         <FormKit
@@ -145,12 +145,12 @@
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
         </FormKit>
       </FormKit>
-      <template v-if="postEUDataProcessed">
+      <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
         <SuccessUpload
-          v-if="postEUDataResponse"
+          v-if="postEuTaxonomyDataForNonFinancialsResponse"
           msg="EU Taxonomy Data"
           :messageCount="messageCount"
-          :data="postEUDataResponse.data"
+          :data="postEuTaxonomyDataForNonFinancialsResponse.data"
         />
         <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
       </template>
@@ -165,7 +165,7 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 export default {
-  name: "CreateEUTaxonomy",
+  name: "CreateEUTaxonomyForNonFinancials",
   components: { FailedUpload, Card, FormKit, SuccessUpload },
 
   data: () => ({
@@ -177,10 +177,10 @@ export default {
       "formkit-input": false,
       "p-inputtext": true,
     },
-    postEUDataProcessed: false,
+    postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
-    model: {},
-    postEUDataResponse: null,
+    formInputsModel: {},
+    postEuTaxonomyDataForNonFinancialsResponse: null,
     allExistingCompanyIDs: [],
   }),
   inject: ["getKeycloakPromise"],
@@ -202,22 +202,21 @@ export default {
       }
     },
 
-    async postEUData() {
+    async postEuTaxonomyDataForNonFinancials() {
       try {
-        this.postEUDataProcessed = false;
+        this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        this.postEUDataResponse = await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
-          this.model
-        );
-        this.$formkit.reset("createEuTaxonomyForm");
+        this.postEuTaxonomyDataForNonFinancialsResponse =
+          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
+        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
-        this.postEUDataResponse = null;
+        this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
       } finally {
-        this.postEUDataProcessed = true;
+        this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
     },
   },
