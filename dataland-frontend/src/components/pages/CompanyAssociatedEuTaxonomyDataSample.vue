@@ -21,7 +21,16 @@
     <MarginWrapper class="text-left">
       <BackButton class="mt-3" />
     </MarginWrapper>
-    <TaxonomySample :companyID="companyID" v-if="companyID" />
+    <MarginWrapper>
+      <div class="grid align-items-end">
+        <div class="col-9">
+          <CompanyInformation :companyID="companyID" />
+        </div>
+      </div>
+    </MarginWrapper>
+    <MarginWrapper bgClass="surface-800">
+      <TaxonomyData :companyID="companyID" />
+    </MarginWrapper>
   </TheContent>
 </template>
 
@@ -31,11 +40,13 @@ import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import { ApiClientProvider } from "@/services/ApiClients";
-import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
+import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
+import CompanyInformation from "@/components/pages/CompanyInformation";
 export default {
   name: "CompanyTaxonomy",
   components: {
-    TaxonomySample,
+    CompanyInformation,
+    TaxonomyData,
     TheContent,
     TheHeader,
     BackButton,

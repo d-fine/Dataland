@@ -23,7 +23,7 @@ export default {
       this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            const url = keycloak.createRegisterUrl({ redirectUri: "/searchtaxonomy" });
+            const url = keycloak.createRegisterUrl({ redirectUri: "/search/eutaxonomy" });
             location.assign(url);
           }
         })

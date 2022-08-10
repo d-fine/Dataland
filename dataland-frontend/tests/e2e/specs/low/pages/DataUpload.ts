@@ -3,7 +3,7 @@ describe("Data Upload Page", function () {
     cy.restoreLoginSession();
   });
   it("page should be present", function () {
-    cy.visitAndCheckAppMount("/upload");
+    cy.visitAndCheckAppMount("/companies/upload");
     cy.get(".p-card-title").should("contain", "Create a Company");
     const inputValue = "A company name";
     cy.get('button[name="postCompanyData"]').contains("Post Company").should("be.disabled");

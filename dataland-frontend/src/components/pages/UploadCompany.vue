@@ -4,26 +4,23 @@
     <TheContent>
       <div class="grid">
         <CreateCompany />
-        <CreateEUTaxonomyForNonFinancials />
       </div>
     </TheContent>
   </AuthenticationWrapper>
 </template>
 
 <script>
-import CreateCompany from "@/components/forms/CreateCompany";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials";
+import CreateCompany from "@/components/forms/CreateCompany";
 
 export default {
   name: "CreateData",
   components: {
-    CreateEUTaxonomyForNonFinancials,
+    CreateCompany,
     TheContent,
     TheHeader,
-    CreateCompany,
     AuthenticationWrapper,
   },
 };

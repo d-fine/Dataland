@@ -6,7 +6,16 @@
         <BackButton />
         <EuTaxoSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
-      <TaxonomySample :companyID="companyID" />
+      <MarginWrapper>
+        <div class="grid align-items-end">
+          <div class="col-9">
+            <CompanyInformation :companyID="companyID" />
+          </div>
+        </div>
+      </MarginWrapper>
+      <MarginWrapper bgClass="surface-800">
+        <TaxonomyData :companyID="companyID" />
+      </MarginWrapper>
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -17,19 +26,21 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/structure/TheHeader";
 import TheContent from "@/components/structure/TheContent";
-import TaxonomySample from "@/components/resources/taxonomy/TaxonomySample";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
+import CompanyInformation from "@/components/pages/CompanyInformation";
+import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 
 export default {
-  name: "CompanyTaxonomy",
+  name: "CompanyAssociatedEuTaxonomyData",
   components: {
-    TaxonomySample,
     TheContent,
     TheHeader,
     BackButton,
     MarginWrapper,
     EuTaxoSearchBar,
     AuthenticationWrapper,
+    CompanyInformation,
+    TaxonomyData,
   },
   data() {
     return {
@@ -43,7 +54,7 @@ export default {
   },
   methods: {
     handleQueryCompany() {
-      this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
+      this.$router.push({ name: "Search Eu Taxonomy Data", query: { input: this.currentInput } });
     },
   },
 };

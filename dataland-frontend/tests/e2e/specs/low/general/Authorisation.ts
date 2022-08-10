@@ -16,7 +16,7 @@ describe("Authentication Buttons", () => {
   });
 
   it("Checks that the back button on the login page works as expected", () => {
-    cy.visit("/searchtaxonomy")
+    cy.visit("/search/eutaxonomy")
       .get("#back_button")
       .should("exist")
       .click()

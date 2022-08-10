@@ -69,7 +69,7 @@
           <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="{ data }">
               <router-link
-                :to="'/companies/' + data.companyId + '/eutaxonomies'"
+                :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
                 class="text-primary no-underline font-bold"
                 ><span> VIEW</span> <span class="ml-3">></span>
               </router-link>
@@ -77,8 +77,8 @@
           </Column>
         </DataTable>
         <p v-else>
-          The resource you requested does not exist yet. You can create it:
-          <router-link to="/upload">Create Data</router-link>
+          The resource you requested does not exist yet. You can create a company and add the resource to it:
+          <router-link to="/companies/upload">Create a company </router-link>
         </p>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default {
     },
     goToData(event) {
       const company = event.data.companyId;
-      this.$router.push(`/companies/${company}/eutaxonomies`);
+      this.$router.push(`/companies/${company}/frameworks/eutaxonomy`);
     },
   },
 };

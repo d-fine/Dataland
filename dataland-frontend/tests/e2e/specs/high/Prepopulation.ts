@@ -143,7 +143,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
 
   it("Company Name Input field exists and works", () => {
     const inputValue = nonFinancialCompaniesWithData[0].companyInformation.companyName;
-    cy.visitAndCheckAppMount("/search");
+    cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("input[name=companyName]")
       .should("not.be.disabled")
       .type(inputValue, { force: true })
@@ -156,29 +156,15 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   });
 
   it("Show all companies button exists", () => {
-    cy.visitAndCheckAppMount("/search");
+    cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
-  });
-
-  it("Check Eu Taxonomy Data Presence and Link route", () => {
-    cy.retrieveDataIdsList().then((dataIdListForNonFinancial: Array<string>) => {
-      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdListForNonFinancial[0]);
-      cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
-        cy.get("h3").should("be.visible");
-        cy.get("h3").contains("Revenue");
-        cy.get("h3").contains("CapEx");
-        cy.get("h3").contains("OpEx");
-        cy.get(".d-card").should("contain", "Eligible");
-      });
-    });
   });
 
   it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
     cy.retrieveCompanyIdsList().then((companyIdListForNonFinancial: Array<string>) => {
       cy.intercept("**/api/companies/*").as("retrieveCompany");
       cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount(`/companies/${companyIdListForNonFinancial[0]}/eutaxonomies`);
+      cy.visitAndCheckAppMount(`/companies/${companyIdListForNonFinancial[0]}/frameworks/eutaxonomy`);
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
         .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
         .then(() => {

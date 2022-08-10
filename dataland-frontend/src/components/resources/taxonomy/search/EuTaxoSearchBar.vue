@@ -121,7 +121,7 @@ export default {
     },
 
     handleItemSelect(event) {
-      this.$router.push(`/companies/${event.value.companyId}/eutaxonomies`);
+      this.$router.push(`/companies/${event.value.companyId}/frameworks/eutaxonomy`);
     },
     handleKeyupEnter() {
       this.queryCompany(this.currentInput);

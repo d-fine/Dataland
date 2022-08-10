@@ -142,7 +142,7 @@ export default {
       if (this.route.query && this.route.query.input) {
         this.currentInput = this.route.query.input;
         this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
-      } else if (this.route.path === "/searchtaxonomy") {
+      } else if (this.route.path === "/search/eutaxonomy") {
         this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex], this.firstDisplayedIndex);
       }
@@ -151,7 +151,7 @@ export default {
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
-      this.$router.push({ name: "Search Eu Taxonomy", query: { input: this.currentInput } });
+      this.$router.push({ name: "Search Eu Taxonomy Data", query: { input: this.currentInput } });
     },
 
     handleFilterByIndex(companiesReceived) {

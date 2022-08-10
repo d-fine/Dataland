@@ -7,7 +7,7 @@ describe("EU Taxonomy Data and Cards", function () {
   });
   it("Create a Company providing only valid data", () => {
     companyNames.forEach((companyName) => {
-      cy.visitAndCheckAppMount("/upload");
+      cy.visitAndCheckAppMount("/companies/upload");
       cy.fillCompanyUploadFields(companyName);
       cy.intercept("**/api/companies").as("postCompany");
       cy.get('button[name="postCompanyData"]').click();
@@ -34,7 +34,7 @@ describe("EU Taxonomy Data and Cards", function () {
     uploadFormFiller: () => void,
     euTaxonomyPageVerifier: () => void
   ): void {
-    cy.visitAndCheckAppMount("/upload");
+    cy.visitAndCheckAppMount("/companies/:companyID/frameworks/eutaxonomy-non-financials/upload");
     uploadFormFiller();
     cy.intercept("**/api/data/eutaxonomy/nonfinancials").as("postTaxonomyData");
     cy.get('button[name="postEUData"]').click({ force: true });
@@ -44,7 +44,7 @@ describe("EU Taxonomy Data and Cards", function () {
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
           cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-          cy.visitAndCheckAppMount(`/companies/${companyID}/eutaxonomies`);
+          cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy`);
           cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
             euTaxonomyPageVerifier();
           });

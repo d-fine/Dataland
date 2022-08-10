@@ -3,7 +3,7 @@ describe("EU Taxonomy Data", () => {
     cy.restoreLoginSession();
     cy.retrieveDataIdsList().then((dataIdList: Array<string>) => {
       cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdList[0]);
+      cy.visitAndCheckAppMount("/data/" + dataIdList[0]);
       cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
         cy.get("h3", { timeout: 90 * 1000 }).should("be.visible");
         cy.get("h3").contains("Revenue");

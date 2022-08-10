@@ -32,7 +32,7 @@ describe("routerTest", () => {
   });
 
   it("checks if the router pushes to Searchtaxonomy page as expected", async () => {
-    await router.push("/searchtaxonomy");
+    await router.push("/search/eutaxonomy");
     await router.isReady();
     expect(mountAppWithRouter(router).html()).toContain("Search EU Taxonomy data");
   });

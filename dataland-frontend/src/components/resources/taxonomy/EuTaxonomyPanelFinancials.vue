@@ -18,65 +18,21 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         ></TaxoInfoCard>
       </div>
+      <div class="col-6">
+        <TaxoInfoCard
+            title="Financial Services Type"
+            :value="dataSet['Financial Services Type']"
+            tooltipText="To Do"
+        ></TaxoInfoCard>
+      </div>
       <div class="col-12 text-left pb-0">
-        <h3>Revenue</h3>
+        <h3>Taxonomy Eligible Activity</h3>
       </div>
       <div class="col-6">
         <TaxoCard
-          taxonomyKind="Revenue"
-          taxonomyType="eligible"
-          :percent="dataSet.Revenue.eligiblePercentage"
-          :total="dataSet.Revenue.totalAmount"
-        ></TaxoCard>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          taxonomyKind="Revenue"
-          taxonomyType="aligned"
-          :percent="dataSet.Revenue.alignedPercentage"
-          :total="dataSet.Revenue.totalAmount"
-        ></TaxoCard>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-12 text-left pb-0">
-        <h3>CapEx</h3>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          taxonomyKind="CapEx"
-          taxonomyType="eligible"
-          :percent="dataSet.Capex.eligiblePercentage"
-          :total="dataSet.Capex.totalAmount"
-        ></TaxoCard>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          taxonomyKind="CapEx"
-          taxonomyType="aligned"
-          :percent="dataSet.Capex.alignedPercentage"
-          :total="dataSet.Capex.totalAmount"
-        ></TaxoCard>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-12 text-left pb-0">
-        <h3>OpEx</h3>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          taxonomyKind="OpEx"
-          taxonomyType="eligible"
-          :percent="dataSet.Opex.eligiblePercentage"
-          :total="dataSet.Opex.totalAmount"
-        ></TaxoCard>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          taxonomyKind="OpEx"
-          taxonomyType="aligned"
-          :percent="dataSet.Opex.alignedPercentage"
-          :total="dataSet.Opex.totalAmount"
+          taxonomyKind="Taxonomy Eligible Activity"
+          percent="3"
+          total="5"
         ></TaxoCard>
       </div>
     </div>
@@ -89,7 +45,7 @@ import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
 import TaxoInfoCard from "@/components/resources/taxonomy/TaxoInfoCard";
 
 export default {
-  name: "TaxonomyPanel",
+  name: "EuTaxonomyPanelFinancials",
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
@@ -99,7 +55,7 @@ export default {
   props: {
     dataID: String,
   },
-  created() {
+  mounted() {
     this.getCompanyEUDataset();
   },
   watch: {
@@ -111,10 +67,10 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(
+        ).getEuTaxonomyDataForFinancialsControllerApi();
+        const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData1(
           this.dataID
         );
         this.dataSet = companyAssociatedData.data.data;

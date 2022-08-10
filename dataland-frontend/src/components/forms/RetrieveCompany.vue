@@ -29,7 +29,7 @@
           <Column field="companyId" header="" class="surface-0">
             <template #body="{ data }">
               <router-link
-                :to="'/companies/' + data.companyId + '/eutaxonomies'"
+                :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
                 class="text-primary no-underline font-bold"
               >
                 <span> VIEW</span> <span class="ml-3">></span></router-link
@@ -39,7 +39,7 @@
         </DataTable>
         <p v-else>
           The resource you requested does not exist yet. You can create it:
-          <router-link to="/upload">Create Data</router-link>
+          <router-link to="/upload/company">Create Data</router-link>
         </p>
       </template>
     </template>

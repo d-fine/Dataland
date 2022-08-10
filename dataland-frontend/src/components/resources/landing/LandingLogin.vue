@@ -21,7 +21,7 @@
           </h1>
         </div>
         <div class="col-4 col-offset-1">
-          <router-link to="/searchtaxonomy">
+          <router-link to="/search/eutaxonomy">
             <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
           </router-link>
         </div>

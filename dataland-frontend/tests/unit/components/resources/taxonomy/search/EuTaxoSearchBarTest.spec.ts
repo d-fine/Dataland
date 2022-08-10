@@ -12,7 +12,7 @@ describe("EuTaxoSearchBarTest", () => {
       history: createMemoryHistory(),
       routes,
     });
-    router.push("/searchtaxonomy");
+    router.push("/search/eutaxonomy");
     await router.isReady();
     wrapper = shallowMount(EuTaxoSearchBar, {
       global: {

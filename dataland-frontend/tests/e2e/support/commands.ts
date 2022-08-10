@@ -63,7 +63,7 @@ export function login(
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/search/eutaxonomy");
 }
 
 export function register(email: string = "some_user", password: string = "test"): void {
@@ -96,7 +96,7 @@ export function register(email: string = "some_user", password: string = "test")
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/search/eutaxonomy");
 }
 
 export function logout(): void {
@@ -109,7 +109,7 @@ export function logout(): void {
 }
 
 export function logoutDropdown(): void {
-  cy.visit("/searchtaxonomy")
+  cy.visit("/search/eutaxonomy")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-toggle']")
@@ -172,7 +172,7 @@ export function checkViewButtonWorks(): void {
     .url()
     .should("include", "/companies/")
     .url()
-    .should("include", "/eutaxonomies");
+    .should("include", "/frameworks/eutaxonomy");
 }
 
 export function checkViewRowsWorks(): void {
@@ -184,7 +184,7 @@ export function checkViewRowsWorks(): void {
     .url()
     .should("include", "/companies/")
     .url()
-    .should("include", "/eutaxonomies");
+    .should("include", "/frameworks/eutaxonomy");
 }
 
 Cypress.Commands.add("retrieveDataIdsList", retrieveDataIdsList);

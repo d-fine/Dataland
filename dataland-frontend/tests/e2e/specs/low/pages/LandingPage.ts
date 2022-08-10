@@ -55,7 +55,7 @@ describe("Sample Section", () => {
       .should("contain.text", "EU Taxonomy")
       .click({ force: true })
       .url()
-      .should("include", "/taxonomysample");
+      .should("include", "/samples/eutaxonomy-non-financials");
     cy.get("h2").contains("EU Taxonomy Data");
     cy.get(".p-button.p-button-rounded").should("contain.text", "COMPANY DATA SAMPLE");
     cy.get("body").should("contain.text", "Join Dataland with other");
