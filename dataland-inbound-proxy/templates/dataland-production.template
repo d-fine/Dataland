@@ -48,12 +48,14 @@ server {
 }
 
 server {
-   listen                  443 ssl http2;
-   listen                  [::]:443 ssl http2;
-   server_name             _;
+   listen                  443 ssl http2 default_server;
+   listen                  [::]:443 ssl http2 default_server;
    root                    /var/www/;
 
+   ssl_certificate         /certs/dataland/fullchain.pem;
+   ssl_certificate_key     /certs/dataland/privkey.pem;
+
    location / {
-           return 301 https://${PROXY_PRIMARY_URL}$request_uri;
+       return 301 https://${PROXY_PRIMARY_URL}$request_uri;
    }
 }
