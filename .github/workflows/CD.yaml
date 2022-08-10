@@ -154,6 +154,8 @@ jobs:
           path: ./dataland-frontend/build/clients/backend
       - name: Move backendOpenApi.json to the correct location
         run: mv ./dataland-frontend/build/clients/backend/backendOpenApiDescription/backendOpenApi.json ./dataland-frontend/build/clients/backend/backendOpenApi.json
+      - name: Install UPower to disable warning messages
+        run: apt update && apt install upower
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
