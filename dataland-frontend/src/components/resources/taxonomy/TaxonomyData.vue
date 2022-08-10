@@ -10,10 +10,10 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data.dataType === EuTaxonomyDataForNonFinancials">
+      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForNonFinancials'">
         <EuTaxonomyPanelNonFinancials :dataID="metaDataInfo.data[0].dataId"/>
       </div>
-      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data.dataType === EuTaxonomyDataForFinancials">
+      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForFinancials'">
         <EuTaxonomyPanelFinancials :dataID="metaDataInfo.data[0].dataId" />
       </div>
     </div>

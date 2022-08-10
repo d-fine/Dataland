@@ -25,16 +25,16 @@
         <TaxoCard
           taxonomyKind="Revenue"
           taxonomyType="eligible"
-          :percent="dataSet.Revenue.eligiblePercentage"
-          :total="dataSet.Revenue.totalAmount"
+          :percent="dataSet.Revenue.eligiblePercentage.toString()"
+          :total="dataSet.Revenue.totalAmount.toString()"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="Revenue"
           taxonomyType="aligned"
-          :percent="dataSet.Revenue.alignedPercentage"
-          :total="dataSet.Revenue.totalAmount"
+          :percent="dataSet.Revenue.alignedPercentage.toString()"
+          :total="dataSet.Revenue.totalAmount.toString()"
         ></TaxoCard>
       </div>
     </div>
@@ -46,16 +46,16 @@
         <TaxoCard
           taxonomyKind="CapEx"
           taxonomyType="eligible"
-          :percent="dataSet.Capex.eligiblePercentage"
-          :total="dataSet.Capex.totalAmount"
+          :percent="dataSet.Capex.eligiblePercentage.toString()"
+          :total="dataSet.Capex.totalAmount.toString()"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="CapEx"
           taxonomyType="aligned"
-          :percent="dataSet.Capex.alignedPercentage"
-          :total="dataSet.Capex.totalAmount"
+          :percent="dataSet.Capex.alignedPercentage.toString()"
+          :total="dataSet.Capex.totalAmount.toString()"
         ></TaxoCard>
       </div>
     </div>
@@ -67,16 +67,16 @@
         <TaxoCard
           taxonomyKind="OpEx"
           taxonomyType="eligible"
-          :percent="dataSet.Opex.eligiblePercentage"
-          :total="dataSet.Opex.totalAmount"
+          :percent="dataSet.Opex.eligiblePercentage.toString()"
+          :total="dataSet.Opex.totalAmount.toString()"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="OpEx"
           taxonomyType="aligned"
-          :percent="dataSet.Opex.alignedPercentage"
-          :total="dataSet.Opex.totalAmount"
+          :percent="dataSet.Opex.alignedPercentage.toString()"
+          :total="dataSet.Opex.totalAmount.toString()"
         ></TaxoCard>
       </div>
     </div>
