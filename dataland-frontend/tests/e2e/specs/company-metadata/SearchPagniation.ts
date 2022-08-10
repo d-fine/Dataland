@@ -1,5 +1,3 @@
-import { describeIf } from "../../support/TestUtility";
-
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
   beforeEach(() => {
     cy.ensureLoggedIn();
