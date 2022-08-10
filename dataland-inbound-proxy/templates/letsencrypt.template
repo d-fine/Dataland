@@ -13,6 +13,6 @@ server {
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://${PROXY_PRIMARY_URL}$request_uri;
     }
 }
