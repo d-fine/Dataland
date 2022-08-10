@@ -2,7 +2,7 @@ describe("EU Taxonomy Page", function () {
   it("Page should be present", function () {
     cy.restoreLoginSession();
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/frameworks/eutaxonomy");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const placeholder = "Search company by name or PermID";
@@ -15,7 +15,7 @@ describe("EU Taxonomy Page", function () {
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
     cy.restoreLoginSession();
     cy.retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/frameworks/eutaxonomy");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const inputValue = "A";
@@ -26,7 +26,7 @@ describe("EU Taxonomy Page", function () {
       .should("have.value", inputValue)
       .wait(1000)
       .type("{enter}");
-    cy.url().should("include", "/searchtaxonomy?input=" + inputValue);
+    cy.url().should("include", "/search/eutaxonomy?input=" + inputValue);
     cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   });
