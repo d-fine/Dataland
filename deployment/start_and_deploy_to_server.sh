@@ -53,4 +53,4 @@ echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
-timeout 240 bash -c "while ! curl https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"
+timeout 240 bash -c "while ! curl -L https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"

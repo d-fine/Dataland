@@ -1,7 +1,7 @@
 server {
     listen                  443 ssl http2;
     listen                  [::]:443 ssl http2;
-    server_name             ${PROXY_NGINX_URLS};
+    server_name             ${PROXY_PRIMARY_URL};
     root                    /var/www/;
 
     # SSL
@@ -48,4 +48,17 @@ server {
     include utils/general.conf;
     include utils/error.conf;
 
+}
+
+server {
+   listen                  443 ssl http2 default_server;
+   listen                  [::]:443 ssl http2 default_server;
+   root                    /var/www/;
+
+   ssl_certificate         /certs/dataland/fullchain.pem;
+   ssl_certificate_key     /certs/dataland/privkey.pem;
+
+   location / {
+       return 301 https://${PROXY_PRIMARY_URL}$request_uri;
+   }
 }
