@@ -78,12 +78,12 @@ describe("EU Taxonomy Data and Cards", function () {
       }
     );
   });
-  /*
+
   it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
     const eligible = 0.67;
     uploadEuTaxonomyDataForNonFinancialsAndVerifyEuTaxonomyPage(
-        companyIdList[0],
-        () => {
+      companyIdList[0],
+      () => {
         cy.get('input[name="companyId"]').type(companyIdList[1], { force: true });
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({ force: true });
         cy.get('select[name="Attestation"]').select("None");
@@ -99,5 +99,5 @@ describe("EU Taxonomy Data and Cards", function () {
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
       }
     );
-  });*/
+  });
 });

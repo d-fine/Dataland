@@ -6,7 +6,7 @@ describe("Test that if unauthenticated will be redirected to login page", () => 
         `/companies/${someCompanyId}/frameworks/eutaxonomy-non-financials/upload`,
         `/companies/${someCompanyId}/frameworks/eutaxonomy`,
         "/companies-only-search",
-        "/search/eutaxonomy",
+        "/companies",
       ];
       pages.forEach((page) => {
         cy.visit(page);

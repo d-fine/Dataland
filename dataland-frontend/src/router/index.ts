@@ -1,16 +1,16 @@
 import { createWebHistory, createRouter } from "vue-router";
 import UploadEuTaxonomyDataForNonFinancials from "@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue";
-import SearchCompany from "@/components/pages/SearchCompany.vue";
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
+import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import CompanyAssociatedEuTaxonomyData from "@/components/pages/CompanyAssociatedEuTaxonomyData.vue";
-import CompanyTaxonomySample from "@/components/pages/CompanyAssociatedEuTaxonomyDataSample.vue";
+import CompanyAssociatedEuTaxonomyDataSample from "@/components/pages/CompanyAssociatedEuTaxonomyDataSample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import NoContentFound from "@/components/pages/NoContentFound.vue";
 import UploadEuTaxonomyDataForFinancials from "@/components/pages/UploadEuTaxonomyDataForFinancials.vue";
 import UploadCompany from "@/components/pages/UploadCompany.vue";
+import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 
 const routes = [
   {
@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/samples/eutaxonomy-non-financials",
     name: "Eu Taxonomy For Non-Financials Sample",
-    component: CompanyTaxonomySample,
+    component: CompanyAssociatedEuTaxonomyDataSample,
   },
   {
     path: "/companies/upload",
@@ -39,9 +39,9 @@ const routes = [
     component: UploadEuTaxonomyDataForFinancials,
   },
   {
-    path: "/search/eutaxonomy", //companies?frameworks=eutaxonomy
-    name: "Search Eu Taxonomy Data",
-    component: SearchTaxonomy,
+    path: "/companies",
+    name: "Search Companies for Framework Data",
+    component: SearchCompaniesForFrameworkData,
   },
   {
     path: "/companies/:companyID",
@@ -57,8 +57,8 @@ const routes = [
   },
   {
     path: "/companies-only-search",
-    name: "Search Company",
-    component: SearchCompany,
+    name: "Search Companies",
+    component: SearchCompanies,
   },
   {
     path: "/dataprivacy",

@@ -21,7 +21,7 @@
           </h1>
         </div>
         <div class="col-4 col-offset-1">
-          <router-link to="/search/eutaxonomy">
+          <router-link to="/companies">
             <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
           </router-link>
         </div>
@@ -59,7 +59,7 @@
               </p>
               <div class="grid">
                 <div class="col-12 p-fluid pl-3 pr-3">
-                  <RegisterButton />
+                  <JoinDatalandButton />
                 </div>
               </div>
             </template>
@@ -73,11 +73,11 @@
 <script>
 import Card from "primevue/card";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
-import RegisterButton from "@/components/general/RegisterButton";
+import JoinDatalandButton from "@/components/general/JoinDatalandButton";
 
 export default {
   name: "LandingLogin",
-  components: { UserAuthenticationButtons, Card, RegisterButton },
+  components: { JoinDatalandButton, UserAuthenticationButtons, Card },
 };
 </script>
 <style scoped>

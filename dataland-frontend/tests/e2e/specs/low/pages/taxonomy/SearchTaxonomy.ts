@@ -30,7 +30,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Check static layout of the search page", function () {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
@@ -43,7 +43,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Company Search by Name", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
@@ -57,7 +57,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Company Search by Identifier", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
     cy.verifyTaxonomySearchResultTable();
@@ -79,7 +79,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Click on an autocomplete-suggestion and check if forwarded to taxonomy data page", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("b");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
@@ -94,7 +94,7 @@ describe("Search Taxonomy", function () {
   });
 
   it("Check if the autocomplete entries are highlighted", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").click({ force: true }).type("-");
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
@@ -103,18 +103,18 @@ describe("Search Taxonomy", function () {
   });
 
   it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("b");
     cy.get(".p-autocomplete-item").contains("View all results").click();
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
       cy.verifyTaxonomySearchResultTable();
-      cy.url().should("include", "/search/eutaxonomy?input=b");
+      cy.url().should("include", "/companies?input=b");
     });
   });
 
   it("Scroll the page and check if search icon and search bar behave as expected", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
 
@@ -141,7 +141,7 @@ describe("Search Taxonomy", function () {
   it("Scroll the page to type into the search bar in different states and check if the input is always saved", () => {
     const inputValue1 = "ABCDEFG";
     const inputValue2 = "XYZ";
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=eu_taxonomy_search_bar_top]").type(inputValue1);
     cy.scrollTo(0, 500);
     cy.get("button[name=search_bar_collapse]").click();

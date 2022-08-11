@@ -15,7 +15,7 @@
 import PrimeButton from "primevue/button";
 
 export default {
-  name: "RegisterButton",
+  name: "JoinDatalandButton",
   components: { PrimeButton },
   inject: ["authenticated", "getKeycloakPromise"],
   methods: {
@@ -23,7 +23,7 @@ export default {
       this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            const url = keycloak.createRegisterUrl({ redirectUri: "/search/eutaxonomy" });
+            const url = keycloak.createRegisterUrl({ redirectUri: "/companies" });
             location.assign(url);
           }
         })

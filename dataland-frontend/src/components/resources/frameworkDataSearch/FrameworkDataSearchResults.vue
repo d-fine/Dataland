@@ -93,7 +93,7 @@ import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyCon
 import Tooltip from "primevue/tooltip";
 
 export default {
-  name: "EuTaxoSearchResults",
+  name: "FrameworkDataSearchResults",
   components: { MarginWrapper, DataTable, Column },
   directives: {
     tooltip: Tooltip,

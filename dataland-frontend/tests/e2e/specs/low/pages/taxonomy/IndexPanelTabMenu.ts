@@ -16,7 +16,7 @@ describe("Index Panel behavior", function () {
   });
 
   it("Index tabmenu should be present", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
     cy.get(indexTabMenu).should("exist").eq(1).parent(".p-tabmenuitem").should("have.css", "color", "rgb(27, 27, 27)");
     cy.verifyTaxonomySearchResultTable();
@@ -25,7 +25,7 @@ describe("Index Panel behavior", function () {
   });
 
   it("Visit searchtaxonomy page, scroll to the bottom, back to the top, and check if Dax still highlighted", () => {
-    cy.visitAndCheckAppMount("/search/eutaxonomy");
+    cy.visitAndCheckAppMount("/companies");
 
     checkIfDaxTabIsHighlighted();
 

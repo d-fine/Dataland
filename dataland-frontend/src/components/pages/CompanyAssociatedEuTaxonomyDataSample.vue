@@ -29,7 +29,7 @@
       </div>
     </MarginWrapper>
     <MarginWrapper bgClass="surface-800">
-      <TaxonomyData :companyID="companyID" />
+      <EuTaxonomyData :companyID="companyID" />
     </MarginWrapper>
   </TheContent>
 </template>
@@ -37,16 +37,16 @@
 <script>
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 import { ApiClientProvider } from "@/services/ApiClients";
-import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
+import EuTaxonomyData from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyData";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 export default {
-  name: "CompanyTaxonomy",
+  name: "CompanyAssociatedEuTaxonomyDataSample",
   components: {
     CompanyInformation,
-    TaxonomyData,
+    EuTaxonomyData,
     TheContent,
     TheHeader,
     BackButton,
