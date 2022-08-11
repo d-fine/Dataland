@@ -37,8 +37,8 @@
 
 <script>
 import { ApiClientProvider } from "@/services/ApiClients";
-import TaxoCard from "@/components/resources/taxonomy/TaxoCard";
-import TaxoInfoCard from "@/components/resources/taxonomy/TaxoInfoCard";
+import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard";
+import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard";
 
 export default {
   name: "EuTaxonomyPanelFinancials",

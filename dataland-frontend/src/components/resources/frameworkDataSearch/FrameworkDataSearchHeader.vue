@@ -14,7 +14,7 @@
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
 export default {
-  name: "SearchTaxonomyHeader",
+  name: "FrameworkDataSearchHeader",
   components: { MarginWrapper },
 };
 </script>

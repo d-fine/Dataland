@@ -4,7 +4,7 @@
     <TheContent>
       <MarginWrapper class="text-left mt-2">
         <BackButton />
-        <EuTaxoSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
+        <FrameworkDataSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
       <MarginWrapper>
         <div class="grid align-items-end">
@@ -14,21 +14,21 @@
         </div>
       </MarginWrapper>
       <MarginWrapper bgClass="surface-800">
-        <TaxonomyData :companyID="companyID" />
+        <EuTaxonomyData :companyID="companyID" />
       </MarginWrapper>
     </TheContent>
   </AuthenticationWrapper>
 </template>
 
 <script>
-import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import BackButton from "@/components/general/BackButton";
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CompanyInformation from "@/components/pages/CompanyInformation";
-import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
+import EuTaxonomyData from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyData";
 
 export default {
   name: "CompanyAssociatedEuTaxonomyData",
@@ -37,10 +37,10 @@ export default {
     TheHeader,
     BackButton,
     MarginWrapper,
-    EuTaxoSearchBar,
+    FrameworkDataSearchBar,
     AuthenticationWrapper,
     CompanyInformation,
-    TaxonomyData,
+    EuTaxonomyData,
   },
   data() {
     return {

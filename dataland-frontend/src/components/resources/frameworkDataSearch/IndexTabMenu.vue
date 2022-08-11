@@ -43,7 +43,7 @@ import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompany
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
-  name: "IndexTabs",
+  name: "IndexTabMenu",
   components: { TabMenu },
   emits: ["tab-click", "companies-received"],
   props: {

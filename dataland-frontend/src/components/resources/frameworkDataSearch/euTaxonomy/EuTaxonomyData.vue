@@ -31,8 +31,8 @@
 
 <script>
 import { ApiClientProvider } from "@/services/ApiClients";
-import EuTaxonomyPanelNonFinancials from "@/components/resources/taxonomy/EuTaxonomyPanelNonFinancials";
-import EuTaxonomyPanelFinancials from "@/components/resources/taxonomy/EuTaxonomyPanelFinancials";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
+import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials";
 
 export default {
   name: "TaxonomyData",

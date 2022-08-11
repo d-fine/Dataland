@@ -15,7 +15,7 @@
 import PrimeButton from "primevue/button";
 
 export default {
-  name: "RegisterButton",
+  name: "JoinDatalandButton",
   components: { PrimeButton },
   inject: ["authenticated", "getKeycloakPromise"],
   methods: {

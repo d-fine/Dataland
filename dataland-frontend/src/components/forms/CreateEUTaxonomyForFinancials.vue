@@ -156,7 +156,7 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 export default {
-  name: "CreateEUTaxonomyForNonFinancials",
+  name: "CreateEUTaxonomyForFinancials",
   components: { FailedUpload, Card, FormKit, SuccessUpload },
 
   data: () => ({

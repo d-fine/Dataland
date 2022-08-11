@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials";
 
 export default {
-  name: "CreateData",
+  name: "UploadEuTaxonomyDataForFinancials",
   components: {
     CreateEUTaxonomyForFinancials,
     TheContent,

@@ -70,11 +70,11 @@
 
 <script>
 import AutoComplete from "primevue/autocomplete";
-import SearchResultHighlighter from "@/components/utils/SearchResultHighlighter";
+import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
 import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 export default {
-  name: "EuTaxoSearchBar",
+  name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
   emits: ["companies-received", "update:modelValue", "rendered"],

@@ -17,12 +17,12 @@
 <script>
 import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder";
 import RetrieveCompany from "@/components/forms/RetrieveCompany";
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 
 export default {
-  name: "SearchData",
+  name: "SearchCompanies",
   components: {
     TheContent,
     TheHeader,

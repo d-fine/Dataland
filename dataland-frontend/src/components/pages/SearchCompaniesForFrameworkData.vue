@@ -7,9 +7,9 @@
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <SearchTaxonomyHeader class="pl-4" />
+        <FrameworkDataSearchHeader class="pl-4" />
         <MarginWrapper>
-          <EuTaxoSearchBar
+          <FrameworkDataSearchBar
             v-model="currentInput"
             ref="euTaxoSearchBar"
             :taxoSearchBarName="taxoSearchBarName"
@@ -35,7 +35,7 @@
             >
               <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             </PrimeButton>
-            <IndexTabs
+            <IndexTabMenu
               ref="indexTabs"
               :initIndex="firstDisplayedIndex"
               @tab-click="toggleIndexTabs"
@@ -45,7 +45,7 @@
         </MarginWrapper>
       </div>
 
-      <EuTaxoSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
+      <FrameworkDataSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -58,13 +58,13 @@
 
 <script>
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
-import SearchTaxonomyHeader from "@/components/resources/taxonomy/search/SearchTaxonomyHeader";
-import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar";
-import IndexTabs from "@/components/resources/indices/IndexTabs";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
+import FrameworkDataSearchHeader from "@/components/resources/frameworkDataSearch/FrameworkDataSearchHeader";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
+import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu";
 import PrimeButton from "primevue/button";
-import EuTaxoSearchResults from "@/components/resources/taxonomy/search/EuTaxoSearchResults";
+import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults";
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
@@ -78,11 +78,11 @@ export default {
     AuthenticationWrapper,
     TheHeader,
     TheContent,
-    SearchTaxonomyHeader,
-    EuTaxoSearchBar,
-    IndexTabs,
+    FrameworkDataSearchHeader,
+    FrameworkDataSearchBar,
+    IndexTabMenu,
     PrimeButton,
-    EuTaxoSearchResults,
+    FrameworkDataSearchResults,
   },
 
   created() {

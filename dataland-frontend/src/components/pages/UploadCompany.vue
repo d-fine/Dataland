@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CreateCompany from "@/components/forms/CreateCompany";
 
 export default {
-  name: "CreateData",
+  name: "UploadCompany",
   components: {
     CreateCompany,
     TheContent,
