@@ -31,7 +31,7 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the companiy objects
  */
-function mapStoredCompanyToTaxonomyPage(responseData: Array<StoredCompany>): Array<object> {
+function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<object> {
   return responseData.map((company) => ({
     companyName: company.companyInformation.companyName,
     companyInformation: company.companyInformation,
@@ -48,9 +48,13 @@ function mapStoredCompanyToTaxonomyPage(responseData: Array<StoredCompany>): Arr
  *                                         choose one to get companies in that index
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
+ * @param {Array<string>} frameworksToFilter
+ *                                         search for companies that hold at least one data set for at least one of
+ *                                         the frameworks mentioned in frameworksToFilter and don't filter if
+ *                                         frameworksToFilter is empty
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  */
-export async function getCompanyDataForTaxonomyPage(
+export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
   stockIndex:
     | "Cdax"
@@ -64,13 +68,26 @@ export async function getCompanyDataForTaxonomyPage(
     | "Hdax"
     | "Dax50Esg",
   onlyCompanyNames: boolean,
+  frameworksToFilter: Array<string>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
-    mappedResponse = mapStoredCompanyToTaxonomyPage(response.data);
+    const responseData: Array<StoredCompany> = response.data;
+    let storedCompaniesToMapToPage;
+    if (frameworksToFilter.length > 0) {
+      storedCompaniesToMapToPage = responseData.filter(
+        (storedCompany) =>
+          storedCompany.dataRegisteredByDataland.filter((dataMetaInfo) =>
+            frameworksToFilter.includes(dataMetaInfo.dataType)
+          ).length > 0
+      );
+    } else {
+      storedCompaniesToMapToPage = responseData;
+    }
+    mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(storedCompaniesToMapToPage);
   } catch (error) {
     console.error(error);
   }
