@@ -11,7 +11,7 @@ import { humanizeString } from "../../../src/utils/StringHumanizer";
 import { getIdentifierValueForCsv, getStockIndexValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {
-  const companyName = faker.company.name();
+  const companyName = faker.company.companyName();
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
   const marketCap = faker.mersenne.rand(10000000, 50000);

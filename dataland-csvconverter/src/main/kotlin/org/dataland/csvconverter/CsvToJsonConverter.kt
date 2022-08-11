@@ -35,6 +35,7 @@ private const val NOT_AVAILABLE_STRING = "n/a"
 class CsvToJsonConverter {
 
     private val objectMapper = ObjectMapper().registerModule(JavaTimeModule())
+        .registerModule(NoTrailingZerosBigDecimalDeserializer.module)
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     private var euroUnitConversionFactor = "1"
     private var rawCsvData: List<Map<String, String>> = listOf()
@@ -198,7 +199,7 @@ class CsvToJsonConverter {
 
     private fun getFinancialServiceType(csvLineData: Map<String, String>): FinancialServicesType {
         return FinancialServicesType.values().firstOrNull {
-            csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]] == columnMappingEuTaxonomyForFinancials[it.name]
+            csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]].equals(columnMappingEuTaxonomyForFinancials[it.name], ignoreCase = true)
         } ?: throw IllegalArgumentException("Could not determine financial services type")
     }
 

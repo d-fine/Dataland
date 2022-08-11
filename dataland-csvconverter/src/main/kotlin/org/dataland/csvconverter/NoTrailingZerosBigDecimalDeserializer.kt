@@ -10,7 +10,9 @@ import java.math.BigDecimal
 class NoTrailingZerosBigDecimalDeserializer : JsonDeserializer<BigDecimal>() {
 
     companion object {
-        val module = SimpleModule("no-trailing-zeros-bigdecimal-module").addDeserializer(BigDecimal::class.java, NoTrailingZerosBigDecimalDeserializer())
+        val module = SimpleModule("bigdecimal-formatter")
+            .addDeserializer(BigDecimal::class.java, NoTrailingZerosBigDecimalDeserializer())
+            .addSerializer(BigDecimal::class.java, HumanReadableBigDecimalSerializer())
     }
 
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext?): BigDecimal {
