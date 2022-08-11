@@ -49,12 +49,12 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
     }
   }
 
-  function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, companyId: string) {
+  function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, uploadCompanyResponseJson: any) {
     if (
       (Cypress.env("REALDATA") && teaserCompanyPermIds.includes({ permId: getFirstPermId(companyInformation) })) ||
       (!Cypress.env("REALDATA") && teaserCompanyIds.length == 0)
     ) {
-      teaserCompanyIds.push({companyId: companyId});
+      teaserCompanyIds.push(uploadCompanyResponseJson.companyId);
     }
   }
 
@@ -73,7 +73,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
                 },
                 token
               );
-              addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson.companyId);
+              addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson)
             });
         });
         doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
