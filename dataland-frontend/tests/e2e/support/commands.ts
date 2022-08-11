@@ -63,7 +63,7 @@ export function login(
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/search/eutaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/companies");
 }
 
 export function register(email: string = "some_user", password: string = "test"): void {
@@ -96,7 +96,7 @@ export function register(email: string = "some_user", password: string = "test")
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/search/eutaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/companies");
 }
 
 export function logout(): void {
@@ -109,7 +109,7 @@ export function logout(): void {
 }
 
 export function logoutDropdown(): void {
-  cy.visit("/search/eutaxonomy")
+  cy.visit("/companies")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-toggle']")

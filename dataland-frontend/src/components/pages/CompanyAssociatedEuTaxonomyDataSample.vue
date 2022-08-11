@@ -43,7 +43,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import TaxonomyData from "@/components/resources/taxonomy/TaxonomyData";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 export default {
-  name: "CompanyTaxonomy",
+  name: "CompanyAssociatedEuTaxonomyDataSample",
   components: {
     CompanyInformation,
     TaxonomyData,

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     handleQueryCompany() {
-      this.$router.push({ name: "Search Eu Taxonomy Data", query: { input: this.currentInput } });
+      this.$router.push({ name: "Search Companies for Framework Data", query: { input: this.currentInput } });
     },
   },
 };

@@ -26,7 +26,7 @@ describe("EU Taxonomy Page", function () {
       .should("have.value", inputValue)
       .wait(1000)
       .type("{enter}");
-    cy.url().should("include", "/search/eutaxonomy?input=" + inputValue);
+    cy.url().should("include", "/companies?input=" + inputValue);
     cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   });
