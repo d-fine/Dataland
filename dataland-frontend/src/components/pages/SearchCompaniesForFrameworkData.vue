@@ -10,7 +10,7 @@
         <FrameworkDataSearchHeader class="pl-4" />
         <MarginWrapper>
           <FrameworkDataSearchBar
-            v-model="currentInput"
+            v-model="currentSearchBarInput"
             ref="euTaxoSearchBar"
             :taxoSearchBarName="taxoSearchBarName"
             @companies-received="handleCompanyQuery"
@@ -97,7 +97,8 @@ export default {
       showSearchResultsTable: false,
       resultsArray: [],
       latestScrollPosition: 0,
-      currentInput: null,
+      currentSearchBarInput: null,
+      currentFilteredFrameworks: [],
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       taxoSearchBarName: "eu_taxonomy_search_bar_top",
@@ -139,19 +140,29 @@ export default {
     },
 
     handleEuTaxoSearchBarRender() {
-      if (this.route.query && this.route.query.input) {
-        this.currentInput = this.route.query.input;
-        this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
-      } else if (this.route.path === "/companies") {
+      if (this.route.path === "/companies") {
         this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
-        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex], this.firstDisplayedIndex);
+        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
+      } else {
+        this.currentSearchBarInput = this.route.query.input;
+
+        if (typeof this.route.query.frameworks === "string") {
+          this.currentFilteredFrameworks.push(this.route.query.frameworks);
+        } else {
+          this.currentFilteredFrameworks = this.route.query.frameworks;
+        }
+
+        this.$refs.euTaxoSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       }
     },
     handleCompanyQuery(companiesReceived) {
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
-      this.$router.push({ name: "Search Companies for Framework Data", query: { input: this.currentInput } });
+      this.$router.push({
+        name: "Search Companies for Framework Data",
+        query: { input: this.currentSearchBarInput, frameworks: this.currentFilteredFrameworks },
+      });
     },
 
     handleFilterByIndex(companiesReceived) {
