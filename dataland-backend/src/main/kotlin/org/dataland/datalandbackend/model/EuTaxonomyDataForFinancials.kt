@@ -13,17 +13,49 @@ import java.math.BigDecimal
  */
 @DataType
 data class EuTaxonomyDataForFinancials(
-    @field:JsonProperty("Financial Services Type", required = true) val financialServicesType: FinancialServicesType?,
-    @field:JsonProperty("Taxonomy Eligible Activity") val taxonomyEligibleActivity: BigDecimal? = null,
-    @field:JsonProperty("Derivatives") val derivatives: BigDecimal? = null,
-    @field:JsonProperty("Banks and Issuers") val banksAndIssuers: BigDecimal? = null,
-    @field:JsonProperty("Investment non Nfrd") val investmentNonNfrd: BigDecimal? = null,
-    @field:JsonProperty("Reporting Obligation", required = true) val reportObligation: YesNo? = null,
-    @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions? = null,
-    @field:JsonProperty("Trading Portfolio") val tradingPortfolio: BigDecimal? = null,
-    @field:JsonProperty("Interbank Loans") val interbankLoans: BigDecimal? = null,
-    @field:JsonProperty("Trading Portfolio and Interbank Loans")
-    val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
-    @field:JsonProperty("Taxonomy Eligible non Life Insurance Activities")
-    val taxonomyEligibleNonLifeInsuranceActivities: BigDecimal? = null
-)
+    @field:JsonProperty("financialServicesType", required = true)
+    val financialServicesType: FinancialServicesType?,
+
+    @field:JsonProperty("eligibilityKpis")
+    val eligibilityKpis: EligibilityKpis? = null,
+
+    @field:JsonProperty("creditInstitutionKpis")
+    val creditInstitutionKpis: CreditInstitutionKpis? = null,
+
+    @field:JsonProperty("insuranceKpis")
+    val insuranceKpis: InsuranceKpis? = null,
+
+    @field:JsonProperty("attestation", required = true)
+    val attestation: AttestationOptions? = null,
+
+    @field:JsonProperty("reportObligation", required = true)
+    val reportObligation: YesNo? = null,
+) {
+    data class CreditInstitutionKpis(
+        @field:JsonProperty("tradingPortfolio")
+        val tradingPortfolio: BigDecimal? = null,
+
+        @field:JsonProperty("interbankLoans")
+        val interbankLoans: BigDecimal? = null,
+
+        @field:JsonProperty("tradingPortfolioAndInterbankLoans")
+        val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
+    )
+    data class InsuranceKpis(
+        @field:JsonProperty("taxonomyEligibleNonLifeInsuranceActivities")
+        val taxonomyEligibleNonLifeInsuranceActivities: BigDecimal? = null,
+    )
+    data class EligibilityKpis(
+        @field:JsonProperty("taxonomyEligibleActivity")
+        val taxonomyEligibleActivity: BigDecimal? = null,
+
+        @field:JsonProperty("derivatives")
+        val derivatives: BigDecimal? = null,
+
+        @field:JsonProperty("banksAndIssuers")
+        val banksAndIssuers: BigDecimal? = null,
+
+        @field:JsonProperty("investmentNonNfrd")
+        val investmentNonNfrd: BigDecimal? = null,
+    )
+}

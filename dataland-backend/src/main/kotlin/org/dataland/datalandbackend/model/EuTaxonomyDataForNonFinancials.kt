@@ -11,9 +11,9 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
  */
 @DataType
 data class EuTaxonomyDataForNonFinancials(
-    @field:JsonProperty("Capex") val capex: EuTaxonomyDetailsPerCashFlowType? = null,
-    @field:JsonProperty("Opex") val opex: EuTaxonomyDetailsPerCashFlowType? = null,
-    @field:JsonProperty("Revenue") val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
-    @field:JsonProperty("Reporting Obligation", required = true) val reportObligation: YesNo? = null,
-    @field:JsonProperty("Attestation", required = true) val attestation: AttestationOptions? = null
+    @field:JsonProperty("capex") val capex: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("opex") val opex: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("revenue") val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
+    @field:JsonProperty("reportingObligation", required = true) val reportObligation: YesNo? = null,
+    @field:JsonProperty("attestation", required = true) val attestation: AttestationOptions? = null
 )
