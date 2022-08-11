@@ -166,7 +166,7 @@ jobs:
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
-          CYPRESS_SINGLE_POPULATE:
+          CYPRESS_SINGLE_POPULATE: true
       - name: Move Cypress Results
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
