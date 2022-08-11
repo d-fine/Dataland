@@ -64,7 +64,8 @@ export default {
       return humanizeString(this.taxonomyType + this.taxonomyKind);
     },
     percentCalculation() {
-      return Math.round(parseFloat(this.percent) * 100 * 100) / 100;
+      const percentage = Math.round(parseFloat(this.percent) * 100 * 100) / 100
+      return percentage.toString();
     },
     orderOfMagnitudeSuffix() {
       return convertCurrencyNumbersToNotationWithLetters(parseFloat(this.total), 2);

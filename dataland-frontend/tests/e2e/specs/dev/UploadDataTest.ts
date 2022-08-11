@@ -72,23 +72,4 @@ describe("User interactive tests for Data Upload", () => {
     uploadEuTaxonomyDatasetForNonFinancialsWithReportingObligation();
     cy.get("body").should("contain", "Sorry");
   });
-
-  it("Create EU Taxonomy Dataset without Reporting Obligation", () => {
-    cy.visitAndCheckAppMount("/companies/{companyId}/frameworks/eutaxonomy-non-financials/upload");
-    cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-    cy.get('input[name="companyId"]').type(companyId, { force: true });
-    cy.get('input[name="Reporting Obligation"][value=No]').check({ force: true });
-    cy.get('select[name="Attestation"]').select("None");
-    cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
-    cy.get('button[name="postEUData"]').click({ force: true });
-    cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
-    cy.get("span[title=dataId]").then(($dataID) => {
-      const dataId = $dataID.text();
-      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-      cy.visitAndCheckAppMount(`/data/${dataId}`);
-      cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
-        cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");
-      });
-    });
-  });
 });

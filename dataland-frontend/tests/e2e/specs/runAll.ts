@@ -1,7 +1,6 @@
 import "./verify_deployment/verify_deployment";
 import "./verify_deployment/CheckSwaggerUI";
 import "./high/Prepopulation";
-import "./dev/DataIntegrity";
 import "./dev/TaxoCard";
 import "./dev/UploadDataTest";
 import "./low/general/Authorisation";
