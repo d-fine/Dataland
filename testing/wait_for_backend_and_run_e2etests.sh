@@ -11,7 +11,7 @@ is_infrastructure_up () {
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
 
   for service in "${!services[@]}"; do
-    if ! curl ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
+    if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
       echo "$service not yet there"
       return 1
     fi
