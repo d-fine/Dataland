@@ -10,10 +10,16 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForNonFinancials'">
-        <EuTaxonomyPanelNonFinancials :dataID="metaDataInfo.data[0].dataId"/>
+      <div
+        class="col-7"
+        v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForNonFinancials'"
+      >
+        <EuTaxonomyPanelNonFinancials :dataID="metaDataInfo.data[0].dataId" />
       </div>
-      <div class="col-7" v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForFinancials'">
+      <div
+        class="col-7"
+        v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForFinancials'"
+      >
         <EuTaxonomyPanelFinancials :dataID="metaDataInfo.data[0].dataId" />
       </div>
     </div>
@@ -30,7 +36,7 @@ import EuTaxonomyPanelFinancials from "@/components/resources/taxonomy/EuTaxonom
 
 export default {
   name: "TaxonomyData",
-  components: {EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials},
+  components: { EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials },
   data() {
     return {
       metaDataInfo: null,
@@ -54,10 +60,7 @@ export default {
     async getCompanyInformation() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
-        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(
-          this.companyID
-        )
-        ;
+        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
       } catch (error) {
         console.error(error);
         this.metaDataInfo = null;

@@ -32,7 +32,7 @@ describe("EU Taxonomy Data and Cards", function () {
    * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
    */
   function uploadEuTaxonomyDataForNonFinancialsAndVerifyEuTaxonomyPage(
-      companyId: string,
+    companyId: string,
     uploadFormFiller: () => void,
     euTaxonomyPageVerifier: () => void
   ): void {
@@ -59,7 +59,7 @@ describe("EU Taxonomy Data and Cards", function () {
     const eligible = 0.67;
     const total = "15422154";
     uploadEuTaxonomyDataForNonFinancialsAndVerifyEuTaxonomyPage(
-        companyIdList[0],
+      companyIdList[0],
       () => {
         cy.get('input[name="companyId"]').type(companyIdList[0], { force: true });
         cy.get('input[name="Reporting Obligation"][value=Yes]').check({ force: true });
@@ -78,7 +78,7 @@ describe("EU Taxonomy Data and Cards", function () {
       }
     );
   });
-/*
+  /*
   it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
     const eligible = 0.67;
     uploadEuTaxonomyDataForNonFinancialsAndVerifyEuTaxonomyPage(

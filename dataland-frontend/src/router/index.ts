@@ -39,7 +39,7 @@ const routes = [
     component: UploadEuTaxonomyDataForFinancials,
   },
   {
-    path: "/search/eutaxonomy",          //companies?frameworks=eutaxonomy
+    path: "/search/eutaxonomy", //companies?frameworks=eutaxonomy
     name: "Search Eu Taxonomy Data",
     component: SearchTaxonomy,
   },

@@ -73,7 +73,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
                 },
                 token
               );
-              addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson)
+              addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson);
             });
         });
         doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
@@ -114,13 +114,13 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check if all the company ids can be retrieved", () => {
     cy.retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
       assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+        allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
         `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} companies`
       );
     });
     cy.retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
       assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+        allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
         `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} companies`
       );
     });
@@ -129,13 +129,13 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Check if all the data ids can be retrieved", () => {
     cy.retrieveDataIdsList().then((allDataIdsList: any) => {
       assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+        allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
         `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} datasets`
       );
     });
     cy.retrieveDataIdsList().then((allDataIdsList: any) => {
       assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+        allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
         `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} datasets`
       );
     });

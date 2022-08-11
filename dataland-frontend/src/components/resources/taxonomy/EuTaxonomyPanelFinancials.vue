@@ -20,20 +20,16 @@
       </div>
       <div class="col-6">
         <TaxoInfoCard
-            title="Financial Services Type"
-            :value="dataSet['Financial Services Type']"
-            tooltipText="To Do"
+          title="Financial Services Type"
+          :value="dataSet['Financial Services Type']"
+          tooltipText="To Do"
         ></TaxoInfoCard>
       </div>
       <div class="col-12 text-left pb-0">
         <h3>Taxonomy Eligible Activity</h3>
       </div>
       <div class="col-6">
-        <TaxoCard
-          taxonomyKind="Taxonomy Eligible Activity"
-          percent="3"
-          total="5"
-        ></TaxoCard>
+        <TaxoCard taxonomyKind="Taxonomy Eligible Activity" percent="3" total="5"></TaxoCard>
       </div>
     </div>
   </div>
