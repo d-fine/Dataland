@@ -71,7 +71,7 @@
 <script>
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
-import { getCompanyDataForTaxonomyPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
+import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
 
 export default {
   name: "FrameworkDataSearchBar",
@@ -127,18 +127,25 @@ export default {
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
-    async queryCompany(companyName) {
+    async queryCompany(companyName, frameworksToFilter) {
       this.loading = true;
-      const resultsArray = await getCompanyDataForTaxonomyPage(companyName, "", false, this.getKeycloakPromise());
+      const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
+        companyName,
+        "",
+        false,
+        frameworksToFilter,
+        this.getKeycloakPromise()
+      );
       this.$emit("companies-received", resultsArray);
       this.loading = false;
     },
     async searchCompanyName(companyName) {
       this.loading = true;
-      this.autocompleteArray = await getCompanyDataForTaxonomyPage(
+      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
         "",
         true,
+        [],
         this.getKeycloakPromise()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
