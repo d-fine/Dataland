@@ -5,15 +5,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
+import org.dataland.datalandbackend.model.*
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
+import org.dataland.datalandbackend.model.enums.eutaxonomy.FinancialServicesType
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
-import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataForNonFinancialsModel
+import org.dataland.datalandbackend.utils.CompanyInformationWithData
 import java.io.File
 import java.io.FileReader
 import java.math.BigDecimal
@@ -75,6 +73,24 @@ class CsvToJsonConverter {
         StockIndex.Dax50Esg.name to "DAX 50 ESG"
     )
 
+    private val columnMappingEuTaxonomyForFinancials = mapOf(
+        "financialServicesType" to "FS - company type",
+        "taxonomyEligibleActivity" to "Exposures to taxonomy-eligible economic activities",
+        "banksAndIssuers" to "Exposures to central governments, central banks, supranational issuers",
+        "derivatives" to "Exposures to derivatives",
+        "investmentNonNfrd" to "Exposures to non-NFRD entities",
+        "tradingPortfolio" to "Trading portfolio",
+        "interbankLoans" to "On-demand interbank loans",
+        "tradingPortfolio" to "Trading portfolio",
+        "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on demand interbank loans",
+        "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
+        FinancialServicesType.CreditInstitution.name to "Credit Institution",
+        FinancialServicesType.AssetManagement.name to "Asset Management Company",
+        FinancialServicesType.InsuranceOrReinsurance.name to "Insurance/Reinsurance"
+    )
+
+    private val combinedColumnMapping = columnMappingEuTaxonomyForFinancials + columnMappingEuTaxonomyForNonFinancials
+
     private inline fun <reified T> readCsvFile(fileName: String): List<T> {
         FileReader(fileName, StandardCharsets.UTF_8).use {
             return CsvMapper()
@@ -116,6 +132,29 @@ class CsvToJsonConverter {
         )
     }
 
+    private fun buildEuTaxonomyDataForFinancials(row : Map<String, String>): EuTaxonomyDataForFinancials {
+        return EuTaxonomyDataForFinancials(
+            reportObligation = getReportingObligation(row),
+            attestation = getAttestation(row),
+            financialServicesType = getFinancialServiceType(row),
+            eligibilityKpis = EuTaxonomyDataForFinancials.EligibilityKpis(
+                taxonomyEligibleActivity = getNumericValue("taxonomyEligibleActivity", row),
+                banksAndIssuers = getNumericValue("banksAndIssuers", row),
+                derivatives = getNumericValue("derivatives", row),
+                investmentNonNfrd = getNumericValue("investmentNonNfrd", row),
+            ),
+           creditInstitutionKpis = EuTaxonomyDataForFinancials.CreditInstitutionKpis(
+               interbankLoans = getNumericValue("interbankLoans", row),
+               tradingPortfolio = getNumericValue("tradingPortfolio", row),
+               tradingPortfolioAndInterbankLoans = getNumericValue("tradingPortfolioAndInterbankLoans", row)
+           ),
+            insuranceKpis = EuTaxonomyDataForFinancials.InsuranceKpis(
+                taxonomyEligibleNonLifeInsuranceActivities
+                = getNumericValue("taxonomyEligibleNonLifeInsuranceActivities", row),
+            ),
+        )
+    }
+
     /**
      * Method to read a given csv file
      */
@@ -135,23 +174,50 @@ class CsvToJsonConverter {
      * Method to get a list of CompanyInformationWithEuTaxonomyDataForNonFinancials objects generated from the csv file
      */
     fun buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials():
-        List<CompanyInformationWithEuTaxonomyDataForNonFinancialsModel> {
-        return rawCsvData.filter { validateLine(it) }.map {
-            CompanyInformationWithEuTaxonomyDataForNonFinancialsModel(
+            List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
+        return rawCsvData.filter { validateLineNonFinancial(it) }.map {
+            CompanyInformationWithData(
                 buildCompanyInformation(it),
                 buildEuTaxonomyDataForNonFinancials(it)
             )
         }
     }
 
-    private fun validateLine(csvLineData: Map<String, String>): Boolean {
+    /**
+     * Method to get a list of CompanyInformationWithEuTaxonomyDataForFinancials objects generated from the csv file
+     */
+    fun buildListOfCompanyInformationWithEuTaxonomyDataForFinancials():
+            List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
+        return rawCsvData.filter { validateLineFinancial(it) }.map {
+            CompanyInformationWithData(
+                buildCompanyInformation(it),
+                buildEuTaxonomyDataForFinancials(it)
+            )
+        }
+    }
+
+    private fun getFinancialServiceType(csvLineData: Map<String, String>): FinancialServicesType {
+        return FinancialServicesType.values().firstOrNull {
+            csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]] == columnMappingEuTaxonomyForFinancials[it.name]
+        } ?: throw IllegalArgumentException("Could not determine financial services type")
+    }
+
+    private fun validateLineNonFinancial(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
         return getValue("companyType", csvLineData) !in listOf("FS", NOT_AVAILABLE_STRING) &&
             getValue("marketCap", csvLineData) != NOT_AVAILABLE_STRING
     }
 
+    private fun validateLineFinancial(csvLineData: Map<String, String>): Boolean {
+        // Skip all lines with financial companies or without market cap
+        return getValue("companyType", csvLineData) == "FS" &&
+                getValue("marketCap", csvLineData) != NOT_AVAILABLE_STRING &&
+                // Skip Allianz until inconsistencies are resolved
+                getValue("companyName", csvLineData).trim() != "Allianz SE"
+    }
+
     private fun getValue(property: String, csvData: Map<String, String>): String {
-        return csvData[columnMappingEuTaxonomyForNonFinancials[property]!!]!!.trim().ifBlank {
+        return csvData[combinedColumnMapping[property]!!]!!.trim().ifBlank {
             NOT_AVAILABLE_STRING
         }
     }
@@ -159,7 +225,7 @@ class CsvToJsonConverter {
     private fun getScaledValue(property: String, csvData: Map<String, String>, scaleFactor: String): BigDecimal? {
         // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
         return getValue(property, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
-            .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())
+            .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())?.stripTrailingZeros()
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
@@ -183,7 +249,7 @@ class CsvToJsonConverter {
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine reportObligation: Found $rawReportObligation, " +
-                        "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO or $REPORT_OBLIGATION_NA"
+                            "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO or $REPORT_OBLIGATION_NA"
                 )
             }
         }
@@ -198,15 +264,15 @@ class CsvToJsonConverter {
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine attestation: Found $rawAttestation, " +
-                        "but expect one of $ATTESTATION_REASONABLE, $ATTESTATION_LIMITED, " +
-                        "$ATTESTATION_NA or $ATTESTATION_NONE "
+                            "but expect one of $ATTESTATION_REASONABLE, $ATTESTATION_LIMITED, " +
+                            "$ATTESTATION_NA or $ATTESTATION_NONE "
                 )
             }
         }
     }
 
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
-        EuTaxonomyDetailsPerCashFlowType {
+            EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount = getNumericValue("total$type", csvLineData),
             alignedPercentage = getNumericValue("aligned$type", csvLineData),
@@ -223,13 +289,24 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Method to write the transformed data into json
+     * Method to write the transformed data into json for non financial companies
      */
-    fun writeJson() {
+    fun writeJsonNonFinancials() {
         objectMapper.writerWithDefaultPrettyPrinter()
             .writeValue(
                 File("./CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
                 buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
+            )
+    }
+
+    /**
+     * Method to write the transformed data into json for financial companies
+     */
+    fun writeJsonFinancials() {
+        objectMapper.writerWithDefaultPrettyPrinter()
+            .writeValue(
+                File("./CompanyInformationWithEuTaxonomyDataForFinancials.json"),
+                buildListOfCompanyInformationWithEuTaxonomyDataForFinancials()
             )
     }
 
@@ -245,7 +322,8 @@ class CsvToJsonConverter {
             // euro amounts in real data csv is expected to be in units of millions
             converter.setEuroUnitConversionFactor("1000000")
             converter.parseCsvFile(File(args.first()).path)
-            converter.writeJson()
+            converter.writeJsonNonFinancials()
+            converter.writeJsonFinancials()
         }
     }
 }

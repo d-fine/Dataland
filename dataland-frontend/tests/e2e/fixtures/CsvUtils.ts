@@ -25,7 +25,12 @@ export function decimalSeparatorConverter(value: number | undefined): string {
   return value === undefined ? "" : value.toString().replace(".", ",");
 }
 export function convertToPercentageString(value: number | undefined): string {
-  return value === undefined ? "" : (Math.round(value * 100 * 100) / 100).toFixed(2).replace(".", ",") + "%";
+  if (value === undefined) return "";
+  const valueRounded = parseFloat((Math.round(value * 100 * 100) / 100).toFixed(2))
+    .toString()
+    .replace(".", ",");
+
+  return `${valueRounded}%`;
 }
 
 export function getStockIndexValueForCsv(

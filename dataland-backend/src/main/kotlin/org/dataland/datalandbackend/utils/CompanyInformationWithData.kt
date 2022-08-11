@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 
 /**
  * --- Non-API model ---
@@ -9,7 +8,7 @@ import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
  * @param companyInformation contains information of company
  * @param t contains eu taxonomy data for non-financials for the company
  */
-data class CompanyInformationWithEuTaxonomyDataForNonFinancialsModel(
+data class CompanyInformationWithData<T>(
     val companyInformation: CompanyInformation,
-    val t: EuTaxonomyDataForNonFinancials
+    val t: T
 )

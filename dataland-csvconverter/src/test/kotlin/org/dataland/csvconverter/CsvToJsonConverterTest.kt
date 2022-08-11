@@ -1,6 +1,6 @@
 package org.dataland.csvconverter
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -9,7 +9,7 @@ import java.io.File
 import java.lang.IllegalArgumentException
 
 class CsvToJsonConverterTest {
-    private val objectMapper = ObjectMapper().findAndRegisterModules()
+    private val objectMapper = jacksonObjectMapper().findAndRegisterModules().registerModule(NoTrailingZerosBigDecimalDeserializer.module)
     private val testDataProvider = TestDataProvider(objectMapper)
 
     private fun getConverter(filePath: String): CsvToJsonConverter {
@@ -19,7 +19,7 @@ class CsvToJsonConverterTest {
     }
 
     @Test
-    fun `read csv and check that the company information and EU Taxonomy objects are as expected`() {
+    fun `read csv and check that the company information and EU Taxonomy objects are as expected for non-financials`() {
         val actualCompanyInformationWithEuTaxonomyDataForNonFinancials =
             getConverter("./build/resources/csvTestEuTaxonomyDataForNonFinancials.csv")
                 .buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
@@ -36,6 +36,28 @@ class CsvToJsonConverterTest {
         assertEquals(
             expectedCompanyInformationWithEuTaxonomyDataForNonFinancials,
             actualCompanyInformationWithEuTaxonomyDataForNonFinancials,
+            "The list of read and parsed company information did not match."
+        )
+    }
+
+    @Test
+    fun `read csv and check that the company information and EU Taxonomy objects are as expected for financials`() {
+        val actualCompanyInformationWithEuTaxonomyDataForFinancials =
+            getConverter("./build/resources/csvTestEuTaxonomyDataForFinancials.csv")
+                .buildListOfCompanyInformationWithEuTaxonomyDataForFinancials()
+        val expectedCompanyInformationWithEuTaxonomyDataForFinancials = testDataProvider
+            .getAllCompanyInformationWithEuTaxonomyDataForFinancials()
+        assertTrue(
+            actualCompanyInformationWithEuTaxonomyDataForFinancials.size ==
+                    expectedCompanyInformationWithEuTaxonomyDataForFinancials.size,
+            "Size mismatch: the parsed list contains " +
+                    "${actualCompanyInformationWithEuTaxonomyDataForFinancials.size} " +
+                    "and the read list contains " +
+                    "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements."
+        )
+        assertEquals(
+            expectedCompanyInformationWithEuTaxonomyDataForFinancials,
+            actualCompanyInformationWithEuTaxonomyDataForFinancials,
             "The list of read and parsed company information did not match."
         )
     }
