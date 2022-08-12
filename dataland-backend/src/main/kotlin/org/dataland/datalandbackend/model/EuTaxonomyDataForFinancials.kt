@@ -31,6 +31,9 @@ data class EuTaxonomyDataForFinancials(
     @field:JsonProperty("reportingObligation", required = true)
     val reportingObligation: YesNo? = null,
 ) {
+    /**
+     * KPIs for credit institutions for the EuTaxonomyForFinancials Framework
+     */
     data class CreditInstitutionKpis(
         @field:JsonProperty("tradingPortfolio")
         val tradingPortfolio: BigDecimal? = null,
@@ -41,10 +44,16 @@ data class EuTaxonomyDataForFinancials(
         @field:JsonProperty("tradingPortfolioAndInterbankLoans")
         val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
     )
+    /**
+     * KPIs for Insurance / Reinsurance companies for the EuTaxonomyForFinancials Framework
+     */
     data class InsuranceKpis(
         @field:JsonProperty("taxonomyEligibleNonLifeInsuranceActivities")
         val taxonomyEligibleNonLifeInsuranceActivities: BigDecimal? = null,
     )
+    /**
+     * KPIs for all companies for the EuTaxonomyForFinancials Framework
+     */
     data class EligibilityKpis(
         @field:JsonProperty("taxonomyEligibleActivity")
         val taxonomyEligibleActivity: BigDecimal? = null,

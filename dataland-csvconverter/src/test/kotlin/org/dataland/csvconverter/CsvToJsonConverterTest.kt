@@ -9,7 +9,9 @@ import java.io.File
 import java.lang.IllegalArgumentException
 
 class CsvToJsonConverterTest {
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules().registerModule(NoTrailingZerosBigDecimalDeserializer.module)
+    private val objectMapper = jacksonObjectMapper()
+        .findAndRegisterModules()
+        .registerModule(NoTrailingZerosBigDecimalDeserializer.module)
     private val testDataProvider = TestDataProvider(objectMapper)
 
     private fun getConverter(filePath: String): CsvToJsonConverter {
@@ -49,11 +51,11 @@ class CsvToJsonConverterTest {
             .getAllCompanyInformationWithEuTaxonomyDataForFinancials()
         assertTrue(
             actualCompanyInformationWithEuTaxonomyDataForFinancials.size ==
-                    expectedCompanyInformationWithEuTaxonomyDataForFinancials.size,
+                expectedCompanyInformationWithEuTaxonomyDataForFinancials.size,
             "Size mismatch: the parsed list contains " +
-                    "${actualCompanyInformationWithEuTaxonomyDataForFinancials.size} " +
-                    "and the read list contains " +
-                    "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements."
+                "${actualCompanyInformationWithEuTaxonomyDataForFinancials.size} " +
+                "and the read list contains " +
+                "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements."
         )
         assertEquals(
             expectedCompanyInformationWithEuTaxonomyDataForFinancials,

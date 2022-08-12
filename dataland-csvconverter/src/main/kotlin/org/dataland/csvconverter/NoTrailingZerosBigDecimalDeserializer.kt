@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
 import java.math.BigDecimal
 
-
+/**
+ * Ensures that all parsed BigDecimals are scaled unambiguously. This is to ensure
+ * that BigDecimals can be compared easily
+ */
 class NoTrailingZerosBigDecimalDeserializer : JsonDeserializer<BigDecimal>() {
 
     companion object {

@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import org.dataland.datalandbackend.model.*
+import org.dataland.datalandbackend.model.CompanyIdentifier
+import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
@@ -133,7 +137,7 @@ class CsvToJsonConverter {
         )
     }
 
-    private fun buildEuTaxonomyDataForFinancials(row : Map<String, String>): EuTaxonomyDataForFinancials {
+    private fun buildEuTaxonomyDataForFinancials(row: Map<String, String>): EuTaxonomyDataForFinancials {
         return EuTaxonomyDataForFinancials(
             reportingObligation = getReportingObligation(row),
             attestation = getAttestation(row),
@@ -144,14 +148,14 @@ class CsvToJsonConverter {
                 derivatives = getNumericValue("derivatives", row),
                 investmentNonNfrd = getNumericValue("investmentNonNfrd", row),
             ),
-           creditInstitutionKpis = EuTaxonomyDataForFinancials.CreditInstitutionKpis(
-               interbankLoans = getNumericValue("interbankLoans", row),
-               tradingPortfolio = getNumericValue("tradingPortfolio", row),
-               tradingPortfolioAndInterbankLoans = getNumericValue("tradingPortfolioAndInterbankLoans", row)
-           ),
+            creditInstitutionKpis = EuTaxonomyDataForFinancials.CreditInstitutionKpis(
+                interbankLoans = getNumericValue("interbankLoans", row),
+                tradingPortfolio = getNumericValue("tradingPortfolio", row),
+                tradingPortfolioAndInterbankLoans = getNumericValue("tradingPortfolioAndInterbankLoans", row)
+            ),
             insuranceKpis = EuTaxonomyDataForFinancials.InsuranceKpis(
-                taxonomyEligibleNonLifeInsuranceActivities
-                = getNumericValue("taxonomyEligibleNonLifeInsuranceActivities", row),
+                taxonomyEligibleNonLifeInsuranceActivities =
+                getNumericValue("taxonomyEligibleNonLifeInsuranceActivities", row),
             ),
         )
     }
@@ -175,7 +179,7 @@ class CsvToJsonConverter {
      * Method to get a list of CompanyInformationWithEuTaxonomyDataForNonFinancials objects generated from the csv file
      */
     fun buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials():
-            List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
+        List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
         return rawCsvData.filter { validateLineNonFinancial(it) }.map {
             CompanyInformationWithData(
                 buildCompanyInformation(it),
@@ -188,7 +192,7 @@ class CsvToJsonConverter {
      * Method to get a list of CompanyInformationWithEuTaxonomyDataForFinancials objects generated from the csv file
      */
     fun buildListOfCompanyInformationWithEuTaxonomyDataForFinancials():
-            List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
+        List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
         return rawCsvData.filter { validateLineFinancial(it) }.map {
             CompanyInformationWithData(
                 buildCompanyInformation(it),
@@ -199,7 +203,8 @@ class CsvToJsonConverter {
 
     private fun getFinancialServiceType(csvLineData: Map<String, String>): FinancialServicesType {
         return FinancialServicesType.values().firstOrNull {
-            csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]].equals(columnMappingEuTaxonomyForFinancials[it.name], ignoreCase = true)
+            csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]
+                .equals(columnMappingEuTaxonomyForFinancials[it.name], ignoreCase = true)
         } ?: throw IllegalArgumentException("Could not determine financial services type")
     }
 
@@ -212,9 +217,9 @@ class CsvToJsonConverter {
     private fun validateLineFinancial(csvLineData: Map<String, String>): Boolean {
         // Skip all lines with financial companies or without market cap
         return getValue("companyType", csvLineData) == "FS" &&
-                getValue("marketCap", csvLineData) != NOT_AVAILABLE_STRING &&
-                // Skip Allianz until inconsistencies are resolved
-                getValue("companyName", csvLineData).trim() != "Allianz SE"
+            getValue("marketCap", csvLineData) != NOT_AVAILABLE_STRING &&
+            // Skip Allianz until inconsistencies are resolved
+            getValue("companyName", csvLineData).trim() != "Allianz SE"
     }
 
     private fun getValue(property: String, csvData: Map<String, String>): String {
@@ -250,7 +255,7 @@ class CsvToJsonConverter {
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine reportObligation: Found $rawReportObligation, " +
-                            "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO or $REPORT_OBLIGATION_NA"
+                        "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO or $REPORT_OBLIGATION_NA"
                 )
             }
         }
@@ -265,15 +270,15 @@ class CsvToJsonConverter {
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine attestation: Found $rawAttestation, " +
-                            "but expect one of $ATTESTATION_REASONABLE, $ATTESTATION_LIMITED, " +
-                            "$ATTESTATION_NA or $ATTESTATION_NONE "
+                        "but expect one of $ATTESTATION_REASONABLE, $ATTESTATION_LIMITED, " +
+                        "$ATTESTATION_NA or $ATTESTATION_NONE "
                 )
             }
         }
     }
 
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
-            EuTaxonomyDetailsPerCashFlowType {
+        EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount = getNumericValue("total$type", csvLineData),
             alignedPercentage = getNumericValue("aligned$type", csvLineData),
