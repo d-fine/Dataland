@@ -147,7 +147,6 @@ export default {
         } else {
           this.currentFilteredFrameworks = this.route.query.frameworks;
         }
-        console.log(this.currentFilteredFrameworks);
         this.$refs.euTaxoSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
         this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
