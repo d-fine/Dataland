@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsAttestationEnum,
-  EuTaxonomyDataForFinancialsReportObligationEnum,
+  EuTaxonomyDataForFinancialsReportingObligationEnum,
   EuTaxonomyDataForFinancialsFinancialServicesTypeEnum,
 } from "../../../build/clients/backend/api";
 
@@ -18,12 +18,11 @@ const resolution = 0.0001;
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
   const attestation = faker.helpers.arrayElement(Object.values(EuTaxonomyDataForFinancialsAttestationEnum));
   const reportingObligation = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForFinancialsReportObligationEnum)
+    Object.values(EuTaxonomyDataForFinancialsReportingObligationEnum)
   );
   const financialServicesType = faker.helpers.arrayElement(
     Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypeEnum)
   );
-  const totalAssets = faker.datatype.float({ min: minEuro, max: maxEuro });
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution });
@@ -45,7 +44,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
     taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   }
   return {
-    reportObligation: reportingObligation,
+    reportingObligation: reportingObligation,
     attestation: attestation,
     financialServicesType: financialServicesType,
     eligibilityKpis: {
@@ -112,7 +111,7 @@ export function generateCSVDataForFinancials(
           convertToPercentageString(row.t.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities),
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
-      { label: "NFRD mandatory", value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportObligation },
+      { label: "NFRD mandatory", value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportingObligation },
       {
         label: "FS - company type",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) => getCompanyType(row.t.financialServicesType),

@@ -28,8 +28,8 @@ data class EuTaxonomyDataForFinancials(
     @field:JsonProperty("attestation", required = true)
     val attestation: AttestationOptions? = null,
 
-    @field:JsonProperty("reportObligation", required = true)
-    val reportObligation: YesNo? = null,
+    @field:JsonProperty("reportingObligation", required = true)
+    val reportingObligation: YesNo? = null,
 ) {
     data class CreditInstitutionKpis(
         @field:JsonProperty("tradingPortfolio")

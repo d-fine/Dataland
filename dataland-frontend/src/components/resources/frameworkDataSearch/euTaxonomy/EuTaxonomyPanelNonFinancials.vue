@@ -4,14 +4,14 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet['Reporting Obligation']"
+          :value="dataSet['reportingObligation']"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         ></TaxoInfoCard>
       </div>
       <div class="col-6">
         <TaxoInfoCard
           title="Level of Assurance"
-          :value="dataSet['Attestation']"
+          :value="dataSet['attestation']"
           tooltipText="The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
@@ -25,16 +25,16 @@
         <TaxoCard
           taxonomyKind="Revenue"
           taxonomyType="eligible"
-          :percent="dataSet.Revenue.eligiblePercentage"
-          :total="dataSet.Revenue.totalAmount"
+          :percent="dataSet.revenue.eligiblePercentage"
+          :total="dataSet.revenue.totalAmount"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="Revenue"
           taxonomyType="aligned"
-          :percent="dataSet.Revenue.alignedPercentage"
-          :total="dataSet.Revenue.totalAmount"
+          :percent="dataSet.revenue.alignedPercentage"
+          :total="dataSet.revenue.totalAmount"
         ></TaxoCard>
       </div>
     </div>
@@ -46,16 +46,16 @@
         <TaxoCard
           taxonomyKind="CapEx"
           taxonomyType="eligible"
-          :percent="dataSet.Capex.eligiblePercentage"
-          :total="dataSet.Capex.totalAmount"
+          :percent="dataSet.capex.eligiblePercentage"
+          :total="dataSet.capex.totalAmount"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="CapEx"
           taxonomyType="aligned"
-          :percent="dataSet.Capex.alignedPercentage"
-          :total="dataSet.Capex.totalAmount"
+          :percent="dataSet.capex.alignedPercentage"
+          :total="dataSet.capex.totalAmount"
         ></TaxoCard>
       </div>
     </div>
@@ -67,16 +67,16 @@
         <TaxoCard
           taxonomyKind="OpEx"
           taxonomyType="eligible"
-          :percent="dataSet.Opex.eligiblePercentage"
-          :total="dataSet.Opex.totalAmount"
+          :percent="dataSet.opex.eligiblePercentage"
+          :total="dataSet.opex.totalAmount"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           taxonomyKind="OpEx"
           taxonomyType="aligned"
-          :percent="dataSet.Opex.alignedPercentage"
-          :total="dataSet.Opex.totalAmount"
+          :percent="dataSet.opex.alignedPercentage"
+          :total="dataSet.opex.totalAmount"
         ></TaxoCard>
       </div>
     </div>

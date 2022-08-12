@@ -4,14 +4,14 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet['Reporting Obligation']"
+          :value="dataSet['reportingObligation']"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         ></TaxoInfoCard>
       </div>
       <div class="col-6">
         <TaxoInfoCard
           title="Level of Assurance"
-          :value="dataSet['Attestation']"
+          :value="dataSet['attestation']"
           tooltipText="The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
@@ -21,7 +21,7 @@
       <div class="col-6">
         <TaxoInfoCard
           title="Financial Services Type"
-          :value="dataSet['Financial Services Type']"
+          :value="dataSet['financialServicesType']"
           tooltipText="To Do"
         ></TaxoInfoCard>
       </div>

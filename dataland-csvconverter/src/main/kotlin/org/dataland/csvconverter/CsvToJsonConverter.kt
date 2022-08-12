@@ -135,7 +135,7 @@ class CsvToJsonConverter {
 
     private fun buildEuTaxonomyDataForFinancials(row : Map<String, String>): EuTaxonomyDataForFinancials {
         return EuTaxonomyDataForFinancials(
-            reportObligation = getReportingObligation(row),
+            reportingObligation = getReportingObligation(row),
             attestation = getAttestation(row),
             financialServicesType = getFinancialServiceType(row),
             eligibilityKpis = EuTaxonomyDataForFinancials.EligibilityKpis(
