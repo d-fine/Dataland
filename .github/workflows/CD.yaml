@@ -191,7 +191,7 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     if: success()
     needs:
-      - deployment-e2e-tests
+      - e2e-tests
     steps:
       - name: Summary of this workflow's overall outcome
         run: exit 0
