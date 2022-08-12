@@ -18,18 +18,77 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         ></TaxoInfoCard>
       </div>
-      <div class="col-6">
-        <TaxoInfoCard
-          title="Financial Services Type"
-          :value="dataSet['financialServicesType']"
-          tooltipText="To Do"
-        ></TaxoInfoCard>
-      </div>
       <div class="col-12 text-left pb-0">
-        <h3>Taxonomy Eligible Activity</h3>
+        <h3>Exposure</h3>
       </div>
       <div class="col-6">
-        <TaxoCard taxonomyKind="Taxonomy Eligible Activity" percent="3" total="5"></TaxoCard>
+        <TaxoCard
+            taxonomyType="Taxonomy-eligible economic activity"
+            taxonomy-kind=""
+            :percent="dataSet['Taxonomy Eligible Activity']"
+            :total="2"
+        />
+      </div>
+      <div class="col-6">
+        <TaxoCard
+            taxonomyType="Derivatives"
+            taxonomy-kind=""
+            :percent="dataSet['Derivatives']"
+            :total="2"
+        />
+      </div>
+      <div class="col-6">
+        <TaxoCard
+            taxonomyType="Banks and issuers"
+            taxonomy-kind=""
+            :percent="dataSet['Banks and Issuers']"
+            :total="2"
+        />
+      </div>
+      <div class="col-6">
+        <TaxoCard
+            taxonomyType="Non-NFRD"
+            taxonomy-kind=""
+            :percent="dataSet['Investment non Nfrd']"
+            :total="2"
+        />
+      </div>
+      <div class="col-12 text-left pb-0" v-if="dataSet['Financial Services Type'] != 'AssetManagement'">
+        <h3>{{ dataSet['Financial Services Type'] }} KPIs</h3>
+      </div>
+      <div v-if="dataSet['Financial Services Type'] === 'CreditInstitution'">
+        <div class="col-6">
+          <TaxoCard
+              taxonomyType="Trading portfolio & on demand interbank loans"
+              taxonomy-kind=""
+              :percent="dataSet['Trading Portfolio and Interbank Loans']"
+              :total="2"
+          />
+        </div>
+        <div class="col-6">
+          <TaxoCard
+              taxonomyType="Trading portfolio"
+              taxonomy-kind=""
+              :percent="dataSet['Trading Portfolio']"
+              :total="2"
+          />
+        </div>
+        <div class="col-6">
+          <TaxoCard
+              taxonomyType="On demand interbank loans"
+              taxonomy-kind=""
+              :percent="dataSet['Interbank Loans']"
+              :total="2"
+          />
+        </div>
+      </div>
+      <div class="col-6" v-if="dataSet[`Financial Services Type`] === 'InsuranceOrReinsurance'">
+        <TaxoCard
+            taxonomyType="Taxonomy-eligible non-life insurance economic activities"
+            taxonomy-kind=""
+            :percent="dataSet['Taxonomy Eligible non Life Insurance Activities']"
+            :total="2"
+        />
       </div>
     </div>
   </div>

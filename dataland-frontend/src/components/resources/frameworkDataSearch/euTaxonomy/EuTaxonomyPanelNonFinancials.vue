@@ -48,7 +48,7 @@
           taxonomyType="eligible"
           :percent="dataSet.capex.eligiblePercentage"
           :total="dataSet.capex.totalAmount"
-        ></TaxoCard>
+        />
       </div>
       <div class="col-6">
         <TaxoCard
@@ -56,7 +56,7 @@
           taxonomyType="aligned"
           :percent="dataSet.capex.alignedPercentage"
           :total="dataSet.capex.totalAmount"
-        ></TaxoCard>
+        />
       </div>
     </div>
     <div class="grid">
@@ -69,7 +69,7 @@
           taxonomyType="eligible"
           :percent="dataSet.opex.eligiblePercentage"
           :total="dataSet.opex.totalAmount"
-        ></TaxoCard>
+        />
       </div>
       <div class="col-6">
         <TaxoCard
@@ -77,7 +77,7 @@
           taxonomyType="aligned"
           :percent="dataSet.opex.alignedPercentage"
           :total="dataSet.opex.totalAmount"
-        ></TaxoCard>
+        />
       </div>
     </div>
   </div>
