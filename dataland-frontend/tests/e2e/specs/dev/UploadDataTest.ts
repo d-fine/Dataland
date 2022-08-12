@@ -37,8 +37,8 @@ describe("User interactive tests for Data Upload", () => {
     cy.visitAndCheckAppMount("/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload");
     cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
     cy.get('input[name="companyId"]').type(companyId, { force: true });
-    cy.get('input[name="Reporting Obligation"][value=Yes]').check({ force: true });
-    cy.get('select[name="Attestation"]').select("None");
+    cy.get('input[name="reportingObligation"][value=Yes]').check({ force: true });
+    cy.get('select[name="attestation"]').select("None");
     for (const argument of ["capex", "opex"]) {
       cy.get(`div[title=${argument}] input`).each(($element, index) => {
         const inputNumber = 10 * index + 7;
