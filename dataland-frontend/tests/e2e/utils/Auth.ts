@@ -28,7 +28,7 @@ export function login(
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/companies");
 }
 
 export function ensureLoggedIn(username?: string, password?: string): void {

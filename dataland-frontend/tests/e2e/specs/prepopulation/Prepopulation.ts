@@ -26,11 +26,20 @@ describe(
     }
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
         teaserCompanyPermIds = companies;
       });
     });
-
+    before(function () {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+        companiesWithEuTaxonomyDataForNonFinancials = companies;
+      });
+    });
+    before(function () {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+        companiesWithEuTaxonomyDataForFinancials = companies;
+      });
+    });
     beforeEach(function () {
       cy.ensureLoggedIn();
     });
