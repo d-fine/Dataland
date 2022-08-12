@@ -85,8 +85,8 @@ describe("EU Taxonomy Data and Cards", function () {
       companyIdList[0],
       () => {
         cy.get('input[name="companyId"]').type(companyIdList[1], { force: true });
-        cy.get('input[name="Reporting Obligation"][value=Yes]').check({ force: true });
-        cy.get('select[name="Attestation"]').select("None");
+        cy.get('input[name="reportingObligation"][value=Yes]').check({ force: true });
+        cy.get('select[name="attestation"]').select("None");
         for (const argument of ["capex", "opex", "revenue"]) {
           cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
         }
