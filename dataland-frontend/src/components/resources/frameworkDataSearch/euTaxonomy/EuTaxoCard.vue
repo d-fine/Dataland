@@ -15,8 +15,7 @@
         </div>
       </div>
       <template v-if="percent != null">
-        <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar">
-        </ProgressBar>
+        <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar"/>
         <div class="grid mt-4">
           <div class="col-12 text-left p-0 pl-2" v-if="total">
             <template v-if="amount">
@@ -26,9 +25,6 @@
             <p class="left-align">
               <strong>Out of total of € {{ orderOfMagnitudeSuffix }}</strong>
             </p>
-          </div>
-          <div class="col-12 text-left p-0 pl-2" v-else>
-            <p class="left-align">In percentage of the total {{ taxonomyKind }}</p>
           </div>
         </div>
       </template>
@@ -40,16 +36,12 @@
 import Card from "primevue/card";
 import ProgressBar from "primevue/progressbar";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
-import { humanizeString } from "@/utils/StringHumanizer";
 
 export default {
   name: "TaxoCard",
   components: { Card, ProgressBar },
   props: {
-    taxonomyType: {
-      type: String,
-    },
-    taxonomyKind: {
+    title: {
       type: String,
     },
     total: {
@@ -60,9 +52,6 @@ export default {
     },
   },
   computed: {
-    title() {
-      return humanizeString(this.taxonomyType + this.taxonomyKind);
-    },
     percentCalculation() {
       const percentage = Math.round(parseFloat(this.percent) * 100 * 100) / 100;
       return percentage.toString();
