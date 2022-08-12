@@ -1,4 +1,8 @@
-let companiesWithData: any;
+import { retrieveDataIdsList } from "../../utils/ApiUtils";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
+import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+
+let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
@@ -6,27 +10,38 @@ before(function () {
   });
 });
 
-function executeCompanySearch(inputValue: string) {
-  cy.get("input[name=eu_taxonomy_search_bar_top]")
-    .should("not.be.disabled")
-    .click({ force: true })
-    .type(inputValue)
-    .type("{enter}")
-    .should("have.value", inputValue);
-  cy.get("h2").should("contain", "Results");
-  cy.get("table.p-datatable-table").should("exist");
-}
-
-function checkPermIdToolTip(permIdText: string) {
-  cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-  cy.get(".p-tooltip").should("be.visible").contains(permIdText);
-  cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-  cy.get(".p-tooltip").should("not.exist");
-}
-
-describe("Search Taxonomy", function () {
+describe("As a user, I expect the search functionality on the /searchtaxonomy page to behave as I expect", function () {
   beforeEach(function () {
-    cy.restoreLoginSession();
+    cy.ensureLoggedIn();
+  });
+
+  function executeCompanySearch(inputValue: string) {
+    cy.get("input[name=eu_taxonomy_search_bar_top]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(inputValue)
+      .type("{enter}")
+      .should("have.value", inputValue);
+    cy.get("h2").should("contain", "Results");
+    cy.get("table.p-datatable-table").should("exist");
+  }
+
+  it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
+    retrieveDataIdsList().then((dataIdList: any) => {
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
+    });
+    cy.get("h2").should("contain", "EU Taxonomy Data");
+    const inputValue = "A";
+    cy.get("input[name=eu_taxonomy_search_bar_standard]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(inputValue)
+      .should("have.value", inputValue)
+      .wait(1000)
+      .type("{enter}");
+    cy.url().should("include", "/searchtaxonomy?input=" + inputValue);
+    cy.get("h2").should("contain", "Results");
+    cy.get("table.p-datatable-table").should("exist");
   });
 
   it("Check static layout of the search page", function () {
@@ -44,15 +59,36 @@ describe("Search Taxonomy", function () {
 
   it("Company Search by Name", () => {
     cy.visitAndCheckAppMount("/companies");
+    function checkViewRowsWorks(): void {
+      cy.get("table.p-datatable-table");
+      cy.contains("td", "VIEW")
+        .siblings()
+        .contains("€")
+        .click()
+        .url()
+        .should("include", "/companies/")
+        .url()
+        .should("include", "/eutaxonomies");
+    }
+
+    function checkPermIdToolTip(permIdTextInt: string) {
+      cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+      cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
+      cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+      cy.get(".p-tooltip").should("not.exist");
+    }
+
+    cy.visitAndCheckAppMount("/searchtaxonomy");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
-    cy.verifyTaxonomySearchResultTable();
+    cy.get("h1").click(); // Collapse the search autocomplete window if it exists
+    verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
-    cy.checkViewButtonWorks();
+    checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
     cy.get("[title=back_button").should("be.visible").click({ force: true });
-    cy.checkViewRowsWorks();
+    checkViewRowsWorks();
     cy.get("h1").contains(inputValue);
   });
 
@@ -60,8 +96,8 @@ describe("Search Taxonomy", function () {
     cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
     executeCompanySearch(inputValue);
-    cy.verifyTaxonomySearchResultTable();
-    cy.checkViewButtonWorks();
+    verifyTaxonomySearchResultTable();
+    checkViewButtonWorks();
   });
 
   it("Search Input field should be always present", () => {

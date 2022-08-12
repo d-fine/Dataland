@@ -1,6 +1,8 @@
-describe("Back Button test suite", () => {
+import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
+
+describe("As a user, I expect the back button to work properly", () => {
   it("company eu taxonomy page should be present and contain back button", function () {
-    cy.restoreLoginSession();
+    cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/companies");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
     cy.retrieveDataIdsList().then((dataIdList: any) => {

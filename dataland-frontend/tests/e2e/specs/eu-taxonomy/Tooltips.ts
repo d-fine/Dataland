@@ -1,9 +1,11 @@
-describe("Tooltips test suite", () => {
+import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
+
+describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
   it("tooltips are present and contain text as expected", function () {
     const NFRDText = "Non financial disclosure directive";
     const AssuranceText = "Level of Assurance specifies the confidence level";
     cy.intercept("**/api/companies/*").as("retrieveCompany");
-    cy.restoreLoginSession();
+    cy.ensureLoggedIn();
     cy.retrieveCompanyIdsList().then((companyIdList: any) => {
       cy.visitAndCheckAppMount("/companies/" + companyIdList[0] + "/frameworks/eutaxonomy");
       cy.wait("@retrieveCompany", { timeout: 2 * 1000 }).then(() => {

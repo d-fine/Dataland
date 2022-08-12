@@ -1,7 +1,9 @@
-describe("Data Search Page Skyminder", function () {
+describe("As a developer I want to ensure that the SkyMinder integration works fine", () => {
   beforeEach(() => {
-    cy.restoreLoginSession();
+    cy.ensureLoggedIn();
+    cy.visitAndCheckAppMount("/search");
   });
+
   it("page should be present", function () {
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get(".p-card-title").should("contain", "Skyminder Data Search");
@@ -22,11 +24,10 @@ describe("Data Search Page Skyminder", function () {
     cy.get("input[name=name]").should("have.value", "");
     cy.get('button[name="getSkyminderData"]').contains("Get Skyminder Data").should("not.be.disabled");
   });
-});
 
-describe("Data Search Page Company", function () {
-  beforeEach(() => {
-    cy.restoreLoginSession();
+  it("Should display an error when I make a Skyminder search with no input", () => {
+    cy.get('button[name="getSkyminderData"]').click();
+    cy.get("body").should("contain", "Sorry");
   });
   it("page should be present", function () {
     cy.visitAndCheckAppMount("/companies-only-search");
@@ -43,5 +44,11 @@ describe("Data Search Page Company", function () {
       .click({ force: true });
     cy.verifyCompanySearchResultTable();
     cy.checkViewButtonWorks();
+
+  it("Should display results when I make a valid Skyminder search", () => {
+    cy.get("input[name=code]").type("DEU", { force: true });
+    cy.get("input[name=name]").type("BMW", { force: true });
+    cy.get('button[name="getSkyminderData"]').click();
+    cy.get("table", { timeout: 30 * 1000 }).should("exist");
   });
 });
