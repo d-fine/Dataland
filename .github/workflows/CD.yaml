@@ -35,6 +35,7 @@ on:
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
