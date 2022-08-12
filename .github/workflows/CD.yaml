@@ -33,6 +33,18 @@ on:
 
 
 jobs:
+  deployment-awaiter:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    steps:
+      - name: Wait for tests to succeed
+        uses: lewagon/wait-on-check-action@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'deployment-summary'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          allowed-conclusions: success
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -123,7 +135,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
-  e2e-tests:
+  deployment-e2e-tests:
     runs-on: ubuntu-latest
     needs:
       - build-prod-and-deploy
@@ -174,7 +186,7 @@ jobs:
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
-  summary:
+  deployment-summary:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
     if: success()
