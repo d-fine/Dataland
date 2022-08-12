@@ -1,8 +1,16 @@
 import { retrieveDataIdsList } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials, } from "../../../../build/clients/backend/api";
+import {
+  CompanyInformation,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+} from "../../../../build/clients/backend/api";
 
-let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials; euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials }>;
+let companiesWithData: Array<{
+  companyInformation: CompanyInformation;
+  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
+  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+}>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
