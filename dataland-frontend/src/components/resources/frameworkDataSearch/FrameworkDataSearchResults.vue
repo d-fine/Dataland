@@ -120,7 +120,7 @@ export default {
     },
     goToData(event) {
       const company = event.data.companyId;
-      console.log(event)
+      console.log(event);
       this.$router.push(`/companies/${company}/frameworks/eutaxonomy`);
     },
   },
