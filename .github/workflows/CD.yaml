@@ -45,7 +45,6 @@ jobs:
           ref: ${{ github.sha }}
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.whichEnvironment }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
@@ -186,7 +185,6 @@ jobs:
           path: ./dataland-frontend/cypressresult/
   deployment-summary:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.whichEnvironment }}
     if: success()
     needs:
       - deployment-e2e-tests
