@@ -19,8 +19,8 @@ describe(
       companyInformation: CompanyInformation;
       t: EuTaxonomyDataForFinancials;
     }>;
-    const teaserCompanyIds: Array<{ companyId: string }> = [];
-    let teaserCompanyPermIds: Array<{ permId: string }> = [];
+    const teaserCompanyIds: Array<string> = [];
+    let teaserCompanyPermIds: Array<string> = [];
     if (Cypress.env("REALDATA") === true) {
       teaserCompanyPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
     }
