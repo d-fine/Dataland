@@ -182,5 +182,12 @@ jobs:
       - e2e-tests
     steps:
       - name: Summary of this workflow's overall outcome
-        run: exit 0
+        run: |
+            if [[ "${{ needs.e2e-tests.result }}" == "success" ]]; then
+              echo "Everything OKAY!"
+              exit 0
+            else
+              echo "Something failed..."
+              exit 1
+            fi
     
