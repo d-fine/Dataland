@@ -35,7 +35,6 @@ on:
 jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.whichEnvironment }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
@@ -125,7 +124,6 @@ jobs:
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
   e2e-tests:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
     env:
@@ -177,7 +175,7 @@ jobs:
           path: ./dataland-frontend/cypressresult/
   summary:
     runs-on: ubuntu-latest
-    if: success()
+    environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - e2e-tests
     steps:
