@@ -175,3 +175,12 @@ jobs:
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
+  summary:
+    runs-on: ubuntu-latest
+    if: success()
+    needs:
+      - e2e-tests
+    steps:
+      - name: Summary of this workflow's overall outcome
+        run: exit 0
+    
