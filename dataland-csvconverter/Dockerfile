@@ -1,5 +1,6 @@
 FROM alpine:latest
 
 COPY ./CompanyInformationWithEuTaxonomyDataForNonFinancials.json /storedData/CompanyInformationWithEuTaxonomyDataForNonFinancials.json
+COPY ./CompanyInformationWithEuTaxonomyDataForFinancials.json /storedData/CompanyInformationWithEuTaxonomyDataForFinancials.json
 
 CMD cp /storedData/*.json /testData
