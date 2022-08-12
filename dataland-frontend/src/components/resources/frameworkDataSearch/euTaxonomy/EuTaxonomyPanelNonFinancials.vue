@@ -48,11 +48,7 @@
         />
       </div>
       <div class="col-6">
-        <TaxoCard
-          title="Aligned CapEx"
-          :percent="dataSet.capex.alignedPercentage"
-          :total="dataSet.capex.totalAmount"
-        />
+        <TaxoCard title="Aligned CapEx" :percent="dataSet.capex.alignedPercentage" :total="dataSet.capex.totalAmount" />
       </div>
     </div>
     <div class="grid">
@@ -60,18 +56,10 @@
         <h3>OpEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard
-          title="Eligible OpEx"
-          :percent="dataSet.opex.eligiblePercentage"
-          :total="dataSet.opex.totalAmount"
-        />
+        <TaxoCard title="Eligible OpEx" :percent="dataSet.opex.eligiblePercentage" :total="dataSet.opex.totalAmount" />
       </div>
       <div class="col-6">
-        <TaxoCard
-          title="Aligned OpEx"
-          :percent="dataSet.opex.alignedPercentage"
-          :total="dataSet.opex.totalAmount"
-        />
+        <TaxoCard title="Aligned OpEx" :percent="dataSet.opex.alignedPercentage" :total="dataSet.opex.totalAmount" />
       </div>
     </div>
   </div>

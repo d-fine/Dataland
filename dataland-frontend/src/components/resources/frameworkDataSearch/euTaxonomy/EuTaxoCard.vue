@@ -15,7 +15,7 @@
         </div>
       </div>
       <template v-if="percent != null">
-        <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar"/>
+        <ProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar" />
         <div class="grid mt-4">
           <div class="col-12 text-left p-0 pl-2" v-if="total">
             <template v-if="amount">

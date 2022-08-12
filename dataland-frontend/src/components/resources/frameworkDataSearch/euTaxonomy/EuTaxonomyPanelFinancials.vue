@@ -31,10 +31,7 @@
         <TaxoCard title="Derivatives" taxonomy-kind="" :percent="dataSet['Derivatives']" :total="2" />
       </div>
       <div class="col-6">
-        <TaxoCard
-          title="Banks and issuers"
-          :percent="dataSet.eligibilityKpis.banksAndIssuers"
-        />
+        <TaxoCard title="Banks and issuers" :percent="dataSet.eligibilityKpis.banksAndIssuers" />
       </div>
       <div class="col-6">
         <TaxoCard title="Non-NFRD" taxonomy-kind="" :percent="dataSet['Investment non Nfrd']" :total="2" />
@@ -43,7 +40,10 @@
         <h3>{{ dataSet.financialServicesType }} KPIs</h3>
       </div>
       <div class="col-12" v-if="dataSet.financialServicesType === 'CreditInstitution'">
-        <div class="col-6" v-if="!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans">
+        <div
+          class="col-6"
+          v-if="!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans"
+        >
           <TaxoCard
             title="Trading portfolio & on demand interbank loans"
             taxonomy-kind=""
@@ -51,16 +51,10 @@
           />
         </div>
         <div class="col-6" v-if="dataSet.creditInstitutionKpis.tradingPortfolio">
-          <TaxoCard
-            title="Trading portfolio"
-            :percent="dataSet.creditInstitutionKpis.tradingPortfolio"
-          />
+          <TaxoCard title="Trading portfolio" :percent="dataSet.creditInstitutionKpis.tradingPortfolio" />
         </div>
         <div class="col-6" v-if="dataSet.creditInstitutionKpis.interbankLoans">
-          <TaxoCard
-            title="On demand interbank loans"
-            :percent="dataSet.creditInstitutionKpis.interbankLoans"
-          />
+          <TaxoCard title="On demand interbank loans" :percent="dataSet.creditInstitutionKpis.interbankLoans" />
         </div>
       </div>
       <div class="col-6" v-if="dataSet.financialServicesType === 'InsuranceOrReinsurance'">
