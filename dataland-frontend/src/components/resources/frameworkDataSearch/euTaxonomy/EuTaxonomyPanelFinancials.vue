@@ -18,8 +18,9 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         />
       </div>
-      <div class="col-12 text-left pb-0">
-        <h3>Exposure</h3>
+      <div class="col-12 text-left pb-3">
+        <span class="font-medium text-xl">Exposure</span>
+        <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
       </div>
       <div class="col-6">
         <TaxoCard
@@ -28,18 +29,19 @@
         />
       </div>
       <div class="col-6">
-        <TaxoCard title="Derivatives" taxonomy-kind="" :percent="dataSet['Derivatives']" :total="2" />
+        <TaxoCard title="Derivatives" taxonomy-kind="" :percent="dataSet.eligibilityKpis.derivatives" />
       </div>
       <div class="col-6">
         <TaxoCard title="Banks and issuers" :percent="dataSet.eligibilityKpis.banksAndIssuers" />
       </div>
       <div class="col-6">
-        <TaxoCard title="Non-NFRD" taxonomy-kind="" :percent="dataSet['Investment non Nfrd']" :total="2" />
+        <TaxoCard title="Non-NFRD" :percent="dataSet.eligibilityKpis.investmentNonNfrd" />
       </div>
-      <div class="col-12 text-left pb-0" v-if="dataSet.financialServicesType != 'AssetManagement'">
-        <h3>{{ dataSet.financialServicesType }} KPIs</h3>
-      </div>
-      <div class="col-12" v-if="dataSet.financialServicesType === 'CreditInstitution'">
+      <template v-if="dataSet.financialServicesType === 'CreditInstitution'">
+        <div class="col-12 text-left pb-3">
+          <span class="font-medium text-xl">Credit Institution KPIs</span>
+          <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+        </div>
         <div
           class="col-6"
           v-if="!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans"
@@ -56,13 +58,19 @@
         <div class="col-6" v-if="dataSet.creditInstitutionKpis.interbankLoans">
           <TaxoCard title="On demand interbank loans" :percent="dataSet.creditInstitutionKpis.interbankLoans" />
         </div>
-      </div>
-      <div class="col-6" v-if="dataSet.financialServicesType === 'InsuranceOrReinsurance'">
-        <TaxoCard
-          title="Taxonomy-eligible non-life insurance economic activities"
-          :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
-        />
-      </div>
+      </template>
+      <template v-if="dataSet.financialServicesType === 'InsuranceOrReinsurance'">
+        <div class="col-12 text-left pb-0">
+          <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
+          <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+        </div>
+        <div class="col-12">
+          <TaxoCard
+            title="Taxonomy-eligible non-life insurance economic activities"
+            :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>
