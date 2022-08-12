@@ -26,7 +26,7 @@
         <FormKit type="group" name="data" label="data">
           <FormKit
             type="select"
-            name="Financial Services Type"
+            name="financialServicesType"
             validation="required"
             label="Financial Services Type"
             placeholder="Please choose"
@@ -40,7 +40,7 @@
           />
           <FormKit
             type="select"
-            name="Attestation"
+            name="attestation"
             validation="required"
             label="Attestation"
             placeholder="Please choose"
@@ -54,7 +54,7 @@
           />
           <FormKit
             type="radio"
-            name="Reporting Obligation"
+            name="reportingObligation"
             validation="required"
             label="Reporting Obligation"
             :outer-class="{
@@ -69,70 +69,76 @@
             }"
             :options="['Yes', 'No']"
           />
-          <FormKit
-            type="text"
-            name="taxonomyEligibleActivity"
-            validation="number"
-            label="Taxonomy Eligible Activity"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="derivatives"
-            validation="number"
-            label="Derivatives"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="banksAndIssuers"
-            validation="number"
-            label="Banks and Issuers"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="investmentNonNfrd"
-            validation="number"
-            label="Investment non Nfrd"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="tradingPortfolio"
-            validation="number"
-            label="Trading Portfolio"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="interbankLoans"
-            validation="number"
-            label="Interbank Loans"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="tradingPortfolioAndInterbankLoans"
-            validation="number"
-            label="Trading Portfolio and Interbank Loans (combined)"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
-          <FormKit
-            type="text"
-            name="taxonomyEligibleNonLifeInsuranceActivities"
-            validation="number"
-            label="Taxonomy Eligible non Life Insurance Activities"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-          />
+          <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+            <FormKit
+              type="text"
+              name="taxonomyEligibleActivity"
+              validation="number"
+              label="Taxonomy Eligible Activity"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+            <FormKit
+              type="text"
+              name="derivatives"
+              validation="number"
+              label="Derivatives"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+            <FormKit
+              type="text"
+              name="banksAndIssuers"
+              validation="number"
+              label="Banks and Issuers"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+            <FormKit
+              type="text"
+              name="investmentNonNfrd"
+              validation="number"
+              label="Investment non Nfrd"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+          </FormKit>
+          <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
+            <FormKit
+              type="text"
+              name="tradingPortfolio"
+              validation="number"
+              label="Trading Portfolio"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+            <FormKit
+              type="text"
+              name="interbankLoans"
+              validation="number"
+              label="Interbank Loans"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+            <FormKit
+              type="text"
+              name="tradingPortfolioAndInterbankLoans"
+              validation="number"
+              label="Trading Portfolio and Interbank Loans (combined)"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+          </FormKit>
+          <FormKit type="group" name="insuranceKpis" label)="Insurance KPIs">
+            <FormKit
+              type="text"
+              name="taxonomyEligibleNonLifeInsuranceActivities"
+              validation="number"
+              label="Taxonomy Eligible non Life Insurance Activities"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+            />
+          </FormKit>
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
         </FormKit>
       </FormKit>

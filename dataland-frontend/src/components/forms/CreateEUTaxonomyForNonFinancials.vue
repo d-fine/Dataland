@@ -26,7 +26,7 @@
         <FormKit type="group" name="data" label="data">
           <FormKit
             type="select"
-            name="Attestation"
+            name="attestation"
             validation="required"
             label="Attestation"
             placeholder="Please choose"
@@ -40,7 +40,7 @@
           />
           <FormKit
             type="radio"
-            name="Reporting Obligation"
+            name="reportingObligation"
             validation="required"
             label="Reporting Obligation"
             :outer-class="{
@@ -57,7 +57,7 @@
           />
           <div title="capex">
             <h3>CapEx</h3>
-            <FormKit type="group" name="Capex" label="CapEx">
+            <FormKit type="group" name="capex" label="CapEx">
               <FormKit
                 type="text"
                 name="alignedPercentage"
@@ -86,7 +86,7 @@
           </div>
           <div title="opex">
             <h3>OpEx</h3>
-            <FormKit type="group" name="Opex" label="OpEx">
+            <FormKit type="group" name="opex" label="OpEx">
               <FormKit
                 type="text"
                 name="alignedPercentage"
@@ -115,7 +115,7 @@
           </div>
           <div title="revenue">
             <h3>Revenue</h3>
-            <FormKit type="group" name="Revenue" label="Revenue">
+            <FormKit type="group" name="revenue" label="Revenue">
               <FormKit
                 type="text"
                 name="alignedPercentage"
