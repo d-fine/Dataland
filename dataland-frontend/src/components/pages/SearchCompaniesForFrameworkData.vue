@@ -140,19 +140,18 @@ export default {
     },
 
     handleEuTaxoSearchBarRender() {
-      if (this.route.path === "/companies") {
-        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
-        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
-      } else {
+      if (this.route.query.input || this.route.query.frameworks) {
         this.currentSearchBarInput = this.route.query.input;
-
         if (typeof this.route.query.frameworks === "string") {
           this.currentFilteredFrameworks.push(this.route.query.frameworks);
         } else {
           this.currentFilteredFrameworks = this.route.query.frameworks;
         }
-
+        console.log(this.currentFilteredFrameworks);
         this.$refs.euTaxoSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
+      } else {
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
+        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
       }
     },
     handleCompanyQuery(companiesReceived) {

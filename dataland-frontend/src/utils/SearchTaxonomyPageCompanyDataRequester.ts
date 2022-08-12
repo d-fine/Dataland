@@ -77,7 +77,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
     const responseData: Array<StoredCompany> = response.data;
     let storedCompaniesToMapToPage;
-    if (frameworksToFilter.length > 0) {
+    if (frameworksToFilter && frameworksToFilter.length > 0) {
       storedCompaniesToMapToPage = responseData.filter(
         (storedCompany) =>
           storedCompany.dataRegisteredByDataland.filter((dataMetaInfo) =>
