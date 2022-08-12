@@ -37,12 +37,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
     steps:
-      - name: Wait for deployment to finish
-        uses: fountainhead/action-wait-for-check@v1.0.0
+      - name: Wait for tests to succeed
+        uses: lewagon/wait-on-check-action@v1.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: deployment-summary
-          ref: ${{ github.sha }}
+          ref: ${{ github.ref }}
+          check-name: 'deployment-summary'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          allowed-conclusions: success
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
