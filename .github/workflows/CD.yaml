@@ -78,12 +78,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get GitHub real data image on demand
-        run: |
-          if [[ $REALDATA == true ]]; then
-            echo "Retrieving real data and adapt test config"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
-          fi
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -93,6 +87,11 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+      - name: Store backendOpenApi.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: backendOpenApiDescription
+          path: ./dataland-frontend/build/clients/backend/backendOpenApi.json
       - name: Build KeyCloak theme
         run: ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
       - name: Start server and deploy to it (either Preview or Dev)
@@ -124,8 +123,41 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+  e2e-tests:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - build-prod-and-deploy
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
+    strategy:
+      matrix:
+        testGroup: [ 1,2,3,4 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get GitHub real data image on demand
+        run: |
+          if [[ $REALDATA == true ]]; then
+            echo "Retrieving real data"
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
+          fi
+      - name: Download backendOpenApi.json
+        uses: actions/download-artifact@v3
+        with:
+          path: ./dataland-frontend/build/clients/backend
+      - name: Move backendOpenApi.json to the correct location
+        run: mv ./dataland-frontend/build/clients/backend/backendOpenApiDescription/backendOpenApi.json ./dataland-frontend/build/clients/backend/backendOpenApi.json
+      - name: Install UPower to disable warning messages
+        run: sudo apt update && sudo apt install upower
       - name: check deployment
-        run: ./gradlew :dataland-frontend:npm_run_test${ENVIRONMENT} --no-daemon --stacktrace
+        run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
           TEASER_COMPANY_PERM_IDS: ${{ secrets.TEASER_COMPANY_PERM_IDS }}
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
@@ -133,9 +165,13 @@ jobs:
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_SINGLE_POPULATE: true
+      - name: Move Cypress Results
+        run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: cypress
-          path: ./dataland-frontend/cypress/
+          path: ./dataland-frontend/cypressresult/
