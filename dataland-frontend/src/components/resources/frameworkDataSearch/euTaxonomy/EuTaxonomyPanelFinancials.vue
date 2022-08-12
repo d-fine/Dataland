@@ -44,7 +44,10 @@
         </div>
         <div
           class="col-6"
-          v-if="!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans"
+          v-if="
+            dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans ||
+            (!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans)
+          "
         >
           <TaxoCard
             title="Trading portfolio & on demand interbank loans"
@@ -52,10 +55,22 @@
             :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans"
           />
         </div>
-        <div class="col-6" v-if="dataSet.creditInstitutionKpis.tradingPortfolio">
+        <div
+          class="col-6"
+          v-if="
+            dataSet.creditInstitutionKpis.tradingPortfolio ||
+            !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+          "
+        >
           <TaxoCard title="Trading portfolio" :percent="dataSet.creditInstitutionKpis.tradingPortfolio" />
         </div>
-        <div class="col-6" v-if="dataSet.creditInstitutionKpis.interbankLoans">
+        <div
+          class="col-6"
+          v-if="
+            dataSet.creditInstitutionKpis.interbankLoans ||
+            !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+          "
+        >
           <TaxoCard title="On demand interbank loans" :percent="dataSet.creditInstitutionKpis.interbankLoans" />
         </div>
       </template>
@@ -64,7 +79,7 @@
           <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
           <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
         </div>
-        <div class="col-12">
+        <div class="col-6">
           <TaxoCard
             title="Taxonomy-eligible non-life insurance economic activities"
             :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
