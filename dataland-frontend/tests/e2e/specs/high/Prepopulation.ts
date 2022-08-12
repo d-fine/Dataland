@@ -184,7 +184,7 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
             .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
             .then(() => {
               cy.get("h3").should("be.visible");
-              cy.get("h3").contains("Taxonomy Eligible Activity");
+              cy.get("h3").contains("Exposure");
               cy.get("body").contains("Market Cap:");
               cy.get("body").contains("Headquarter:");
               cy.get("body").contains("Sector:");
