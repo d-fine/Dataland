@@ -29,21 +29,6 @@ describe("As a developer I want to ensure that the SkyMinder integration works f
     cy.get('button[name="getSkyminderData"]').click();
     cy.get("body").should("contain", "Sorry");
   });
-  it("page should be present", function () {
-    cy.visitAndCheckAppMount("/companies-only-search");
-    cy.get(".p-card-title").should("contain", "Company Search");
-    const inputValue = "d-fine";
-    cy.get("input[name=companyName]")
-      .should("not.be.disabled")
-      .click({ force: true })
-      .type(inputValue)
-      .should("have.value", inputValue);
-    cy.get("button[name=show_all_companies_button].p-button")
-      .should("not.be.disabled")
-      .should("contain", "Show all companies")
-      .click({ force: true });
-    cy.verifyCompanySearchResultTable();
-    cy.checkViewButtonWorks();
 
   it("Should display results when I make a valid Skyminder search", () => {
     cy.get("input[name=code]").type("DEU", { force: true });

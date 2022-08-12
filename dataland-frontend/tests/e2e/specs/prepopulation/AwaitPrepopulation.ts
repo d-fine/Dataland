@@ -1,8 +1,8 @@
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials, } from "../../../../build/clients/backend/api";
 import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
-  let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
+  let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials; euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials }>;
   before(function () {
     cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
       companiesWithData = companies;

@@ -1,8 +1,8 @@
 import { retrieveDataIdsList } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials, } from "../../../../build/clients/backend/api";
 
-let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
+let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials; euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
@@ -103,7 +103,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
   it("Search Input field should be always present", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    cy.retrieveDataIdsList().then((dataIdList: any) => {
+    retrieveDataIdsList().then((dataIdList: any) => {
       cy.visitAndCheckAppMount("/companies/" + dataIdList[7] + "/frameworks/eutaxonomy");
       cy.get("input[name=eu_taxonomy_search_bar_standard]")
         .should("not.be.disabled")
@@ -144,7 +144,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
     cy.get("input[name=eu_taxonomy_search_bar_top]").type("b");
     cy.get(".p-autocomplete-item").contains("View all results").click();
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.verifyTaxonomySearchResultTable();
+      verifyTaxonomySearchResultTable();
       cy.url().should("include", "/companies?input=b");
     });
   });

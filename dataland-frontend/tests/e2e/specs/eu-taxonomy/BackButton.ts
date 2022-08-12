@@ -5,8 +5,8 @@ describe("As a user, I expect the back button to work properly", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/companies");
     cy.get("h1").should("contain", "Search EU Taxonomy data");
-    cy.retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[5] + "/frameworks/eutaxonomy");
+    retrieveCompanyIdsList().then((dataIdList: any) => {
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[5] + "/eutaxonomies");
       cy.get("span.text-primary[title=back_button]")
         .parent(".cursor-pointer.grid.align-items-center")
         .click()
