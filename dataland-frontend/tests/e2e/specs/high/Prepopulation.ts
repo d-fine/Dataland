@@ -57,7 +57,6 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
       teaserCompanyIds.push(uploadCompanyResponseJson.companyId);
     }
   }
-
   it("Populate Companies and Eu Taxonomy Data", () => {
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
       .then((token) => {
@@ -158,5 +157,41 @@ describe("Population Test", { defaultCommandTimeout: Cypress.env("PREPOPULATE_TI
   it("Show all companies button exists", () => {
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
+  });
+
+  it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
+    cy.retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+      cy.intercept("**/api/companies/*").as("retrieveCompany");
+      cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
+      cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
+      cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
+      cy.get("h3").then(($body) => {
+        if ($body.text().includes("CapEx")) {
+          cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
+            .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
+            .then(() => {
+              cy.get("h3").should("be.visible");
+              cy.get("h3").contains("Revenue");
+              cy.get("h3").contains("CapEx");
+              cy.get("h3").contains("OpEx");
+              cy.get("body").contains("Market Cap:");
+              cy.get("body").contains("Headquarter:");
+              cy.get("body").contains("Sector:");
+              cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
+            });
+        } else {
+          cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
+            .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
+            .then(() => {
+              cy.get("h3").should("be.visible");
+              cy.get("h3").contains("Taxonomy Eligible Activity");
+              cy.get("body").contains("Market Cap:");
+              cy.get("body").contains("Headquarter:");
+              cy.get("body").contains("Sector:");
+              cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
+            });
+        }
+      });
+    });
   });
 });
