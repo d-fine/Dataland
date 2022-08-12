@@ -26,6 +26,11 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./eu-taxonomy");
+  describe("IT SHOULD JUST FAIL", () => {
+    it("SHOULD FAIL", () => {
+      throw new Error("FAILING")
+    })
+  })
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
