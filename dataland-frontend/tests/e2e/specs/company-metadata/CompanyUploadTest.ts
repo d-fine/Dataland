@@ -1,5 +1,5 @@
 import { describeIf } from "../../support/TestUtility";
-import { fillCompanyUploadFields } from "../../utils/CompanyUpload";
+import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/CompanyUpload";
 
 describeIf(
   "As a user, I want to be able to create new companies",
@@ -8,7 +8,6 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   () => {
-    let companyId: string;
     beforeEach(() => {
       cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
@@ -18,15 +17,9 @@ describeIf(
       cy.get('button[name="postCompanyData"]').should("be.disabled");
     });
 
-    function uploadCompanyWithEverythingFine(companyName: string) {
-      cy.visitAndCheckAppMount("/companies/upload");
-      fillCompanyUploadFields(companyName);
-      cy.get('button[name="postCompanyData"]').click();
-    }
-    function uploadEuTaxonomyDatasetWithReportingObligation() {
-      cy.visitAndCheckAppMount("/companies/:$companyId/frameworks/eutaxonomy-non-financials/upload");
+    function uploadEuTaxonomyDatasetWithReportingObligation(companyId: string) {
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
       cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-      cy.get('input[name="companyId"]').type(companyId, { force: true });
       cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
       cy.get('select[name="attestation"]').select("None");
       for (const argument of ["capex", "opex"]) {
@@ -42,12 +35,9 @@ describeIf(
     }
 
     it("Create a Company when everything is fine", () => {
-      const companyName = "Test company";
-      uploadCompanyWithEverythingFine(companyName);
-      cy.get("body").should("contain", "success");
-      cy.get("span[title=companyId]").then(($companyID) => {
-        companyId = $companyID.text();
-        cy.visitAndCheckAppMount(`/companies/${companyId}`);
+      const companyName = "Test company XX";
+      createCompanyAndGetId(companyName).then((id) => {
+        cy.visitAndCheckAppMount(`/companies/${id}`);
         cy.get("body").should("contain", companyName);
       });
     });
@@ -55,15 +45,16 @@ describeIf(
     it("Create a Company with insufficient rights should fail", () => {
       cy.ensureLoggedIn();
       const companyName = "Test company";
-      uploadCompanyWithEverythingFine(companyName);
+      cy.visitAndCheckAppMount("/companies/upload");
+      fillCompanyUploadFields(companyName);
+      cy.get('button[name="postCompanyData"]').click();
       cy.get("body").should("contain", "Sorry");
     });
 
     it("Create EU Taxonomy Dataset with Reporting Obligation and Check the Link", () => {
       const companyName = "Test non financial company";
-      uploadCompanyWithEverythingFine(companyName);
-      cy.get("span[title=companyId]").then(($companyID) => {
-        uploadEuTaxonomyDatasetWithReportingObligation();
+      createCompanyAndGetId(companyName).then((id) => {
+        uploadEuTaxonomyDatasetWithReportingObligation(id);
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.get("span[title=dataId]").then(() => {
           cy.get("span[title=companyId]").then(($companyID) => {
@@ -80,26 +71,29 @@ describeIf(
     });
 
     it("Create EU Taxonomy Dataset with Reporting Obligation and insufficient rights should fail", () => {
-      cy.ensureLoggedIn();
-      uploadEuTaxonomyDatasetWithReportingObligation();
-      cy.get("body").should("contain", "Sorry");
+      createCompanyAndGetId("Permission check company").then((id) => {
+        cy.ensureLoggedIn();
+        uploadEuTaxonomyDatasetWithReportingObligation(id);
+        cy.get("body").should("contain", "Sorry");
+      });
     });
 
     it("Create EU Taxonomy Dataset without Reporting Obligation", () => {
-      cy.visitAndCheckAppMount("/companies/:$companyId/frameworks/eutaxonomy-non-financials/upload");
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-      cy.get('input[name="companyId"]').type(companyId, { force: true });
-      cy.get('input[id="reportingObligation-option-no"][value=No]').check({ force: true });
-      cy.get('select[name="attestation"]').select("None");
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
-      cy.get('button[name="postEUData"]').click({ force: true });
-      cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
-      cy.get("span[title=dataId]").then(($dataID) => {
-        const dataId = $dataID.text();
-        cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
-        cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
-          cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");
+      createCompanyAndGetId("Missing field company").then((id) => {
+        cy.visitAndCheckAppMount(`/companies/${id}/frameworks/eutaxonomy-non-financials/upload`);
+        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
+        cy.get('input[id="reportingObligation-option-no"][value=No]').check({ force: true });
+        cy.get('select[name="attestation"]').select("None");
+        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
+        cy.get('button[name="postEUData"]').click({ force: true });
+        cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
+        cy.get("span[title=dataId]").then(($dataID) => {
+          const dataId = $dataID.text();
+          cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
+          cy.visitAndCheckAppMount(`/companies/${id}/frameworks/eutaxonomy`);
+          cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
+            cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");
+          });
         });
       });
     });

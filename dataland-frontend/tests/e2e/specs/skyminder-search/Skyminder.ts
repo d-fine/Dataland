@@ -1,7 +1,7 @@
 describe("As a developer I want to ensure that the SkyMinder integration works fine", () => {
   beforeEach(() => {
     cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/search");
+    cy.visitAndCheckAppMount("/companies-only-search");
   });
 
   it("page should be present", function () {
