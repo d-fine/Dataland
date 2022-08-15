@@ -36,11 +36,11 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
     retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomy");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/frameworks/eutaxonomy");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const inputValue = "A";
-    cy.get("input[name=search_bar_standard]")
+    cy.get("input[name=framework_data_search_bar_standard]")
       .should("not.be.disabled")
       .click({ force: true })
       .type(inputValue)
