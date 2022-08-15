@@ -43,7 +43,7 @@ describe(
     beforeEach(function () {
       cy.ensureLoggedIn();
     });
-
+    /*
     it("Populate Companies and Eu Taxonomy Data", () => {
       function getPermId(companyInformation: CompanyInformation) {
         const permIdArray = companyInformation.identifiers
@@ -183,7 +183,7 @@ describe(
         .should("not.be.disabled")
         .type(inputValue, { force: true })
         .should("have.value", inputValue);
-      cy.intercept("**/api/companies*").as("retrieveCompany");
+      cy.intercept("** /api/companies*").as("retrieveCompany");
       cy.get("button[name=getCompanies]").click();
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
         cy.get("td").contains("VIEW").contains("a", "VIEW").click().url().should("include", "/companies/");
@@ -194,22 +194,20 @@ describe(
       cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
     });
-
+*/
     it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
       retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
         cy.intercept("**/api/companies/*").as("retrieveCompany");
         cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
         cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
-        cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
-        cy.get("h3").then(($body) => {
-          if ($body.text().includes("CapEx")) {
+        cy.visitAndCheckAppMount(`/companies/${companyIdList[3]}/frameworks/eutaxonomy`);
+        cy.get("span").then(($body) => {
+          if ($body.text().includes("ExposureIn percentage of the total assets")) {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
-              .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
+              .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
               .then(() => {
-                cy.get("h3").should("be.visible");
-                cy.get("h3").contains("Revenue");
-                cy.get("h3").contains("CapEx");
-                cy.get("h3").contains("OpEx");
+                cy.get("span").should("be.visible");
+                cy.get("span").contains("Exposure");
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
@@ -217,10 +215,12 @@ describe(
               });
           } else {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
-              .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
+              .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
               .then(() => {
-                cy.get("span").should("be.visible");
-                cy.get("span").contains("Exposure");
+                cy.get("h3").should("be.visible");
+                cy.get("h3").contains("Revenue");
+                cy.get("h3").contains("CapEx");
+                cy.get("h3").contains("OpEx");
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
