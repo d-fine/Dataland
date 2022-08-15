@@ -7,7 +7,7 @@
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <FrameworkDataSearchHeader class="pl-4" />
+        <div class="pt-4"/>
         <MarginWrapper>
           <FrameworkDataSearchBar
             v-model="currentSearchBarInput"
@@ -61,7 +61,6 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
-import FrameworkDataSearchHeader from "@/components/resources/frameworkDataSearch/FrameworkDataSearchHeader";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
 import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu";
 import PrimeButton from "primevue/button";
@@ -79,7 +78,6 @@ export default {
     AuthenticationWrapper,
     TheHeader,
     TheContent,
-    FrameworkDataSearchHeader,
     FrameworkDataSearchBar,
     IndexTabMenu,
     PrimeButton,
