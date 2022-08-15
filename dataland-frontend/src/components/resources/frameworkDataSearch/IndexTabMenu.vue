@@ -38,7 +38,7 @@
 import TabMenu from "primevue/tabmenu";
 import { humanizeString } from "@/utils/StringHumanizer";
 import apiSpecs from "../../../../build/clients/backend/backendOpenApi.json";
-import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
+import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 

@@ -201,7 +201,7 @@ describe(
         cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
         cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
         cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
-        cy.get("h1").then(($body) => {
+        cy.get("h3").then(($body) => {
           if ($body.text().includes("CapEx")) {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
               .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
@@ -213,7 +213,7 @@ describe(
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
-                cy.get("input[name=search_bar_standard]").should("exist");
+                cy.get("input[name=framework_data_search_bar_standard]").should("exist");
               });
           } else {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
@@ -224,7 +224,7 @@ describe(
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
-                cy.get("input[name=search_bar_standard]").should("exist");
+                cy.get("input[name=framework_data_search_bar_standard]").should("exist");
               });
           }
         });

@@ -32,7 +32,7 @@
                 :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
                 class="text-primary no-underline font-bold"
               >
-                <span> VIEW</span> <span class="ml-3">></span></router-link
+                <span> VIEW EU TAXONOMY DATA</span> <span class="ml-3">></span></router-link
               >
             </template>
           </Column>
