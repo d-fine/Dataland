@@ -1,5 +1,5 @@
 <template>
-  <div v-if="metaDataInfo && metaDataInfo.data.length > 0">
+  <div v-if="getListOfMetaDataResponse && listOfMetaData.length > 0">
     <div class="grid">
       <div class="col-12 text-left">
         <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -12,15 +12,15 @@
     <div class="grid">
       <div
         class="col-7"
-        v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForNonFinancials'"
+        v-if="listOfMetaData.length > 0 && firstEuTaxonomyDataMetaInfo.dataType === 'EuTaxonomyDataForNonFinancials'"
       >
-        <EuTaxonomyPanelNonFinancials :dataID="metaDataInfo.data[0].dataId" />
+        <EuTaxonomyPanelNonFinancials :dataID="firstEuTaxonomyDataMetaInfo.dataId" />
       </div>
       <div
         class="col-7"
-        v-if="metaDataInfo.data.length > 0 && metaDataInfo.data[0].dataType === 'EuTaxonomyDataForFinancials'"
+        v-if="listOfMetaData.length > 0 && firstEuTaxonomyDataMetaInfo.dataType === 'EuTaxonomyDataForFinancials'"
       >
-        <EuTaxonomyPanelFinancials :dataID="metaDataInfo.data[0].dataId" />
+        <EuTaxonomyPanelFinancials :dataID="firstEuTaxonomyDataMetaInfo.dataId" />
       </div>
     </div>
   </div>
@@ -33,13 +33,16 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials";
+import { DataMetaInformation } from "@/../build/clients/backend/api";
 
 export default {
   name: "TaxonomyData",
   components: { EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials },
   data() {
     return {
-      metaDataInfo: null,
+      getListOfMetaDataResponse: null,
+      listOfMetaData: new Array() < DataMetaInformation > [],
+      firstEuTaxonomyDataMetaInfo: null,
     };
   },
   props: {
@@ -60,10 +63,14 @@ export default {
     async getCompanyInformation() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
-        this.metaDataInfo = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        this.getListOfMetaDataResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        this.listOfMetaData = this.getListOfMetaDataResponse.data;
+        this.firstEuTaxonomyDataMetaInfo = this.listOfMetaData.find((dataMetaInfo) =>
+          dataMetaInfo.dataType.startsWith("EuTaxonomyDataFor")
+        );
       } catch (error) {
         console.error(error);
-        this.metaDataInfo = null;
+        this.getListOfMetaDataResponse = null;
       }
     },
   },

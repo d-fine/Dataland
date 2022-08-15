@@ -7,7 +7,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       .should("contain.text", "EU Taxonomy")
       .click({ force: true })
       .url()
-      .should("include", "/taxonomysample");
+      .should("include", "/eutaxonomy-non-financials");
     cy.get("h2").contains("EU Taxonomy Data");
     cy.get(".p-button.p-button-rounded").should("contain.text", "COMPANY DATA SAMPLE");
     cy.get("body").should("contain.text", "Join Dataland with other");
