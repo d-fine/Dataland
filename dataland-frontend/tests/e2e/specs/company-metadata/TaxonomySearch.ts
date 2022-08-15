@@ -36,7 +36,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
 
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
     retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomy");
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const inputValue = "A";
@@ -69,14 +69,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
     cy.visitAndCheckAppMount("/companies");
     function checkViewRowsWorks(): void {
       cy.get("table.p-datatable-table");
-      cy.contains("td", "VIEW")
-        .siblings()
-        .contains("€")
-        .click()
-        .url()
-        .should("include", "/companies/")
-        .url()
-        .should("include", "/eutaxonomies");
+      cy.contains("td", "VIEW").siblings().contains("€").click().url().should("include", "/companies/");
     }
 
     function checkPermIdToolTip(permIdTextInt: string) {
