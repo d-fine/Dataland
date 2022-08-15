@@ -8,7 +8,7 @@
           <i v-else aria-hidden="true" />
           <AutoComplete
             :suggestions="autocompleteArrayDisplayed"
-            :name="taxoSearchBarName"
+            :name="searchBarName"
             :modelValue="modelValue"
             ref="autocomplete"
             inputClass="h-3rem d-taxo-searchbar-input"
@@ -80,7 +80,7 @@ export default {
   emits: ["companies-received", "update:modelValue", "rendered"],
 
   props: {
-    taxoSearchBarName: {
+    searchBarName: {
       type: String,
       default: "eu_taxonomy_search_bar_standard",
     },
@@ -92,6 +92,8 @@ export default {
       type: Number,
       default: 3,
     },
+    frameworksToFilterFor: {
+    }
   },
 
   mounted() {
@@ -99,7 +101,7 @@ export default {
   },
 
   watch: {
-    taxoSearchBarName() {
+    searchBarName() {
       this.$refs.autocomplete.focus();
     },
   },
@@ -127,25 +129,26 @@ export default {
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
-    async queryCompany(companyName, frameworksToFilter) {
+    async queryCompany(companyName) {
       this.loading = true;
       const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName,
         "",
         false,
-        frameworksToFilter,
+        this.frameworksToFilterFor,
         this.getKeycloakPromise()
       );
       this.$emit("companies-received", resultsArray);
       this.loading = false;
     },
     async searchCompanyName(companyName) {
+      console.log(this.frameworksToFilterFor)
       this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
         "",
         true,
-        [],
+        this.frameworksToFilterFor,
         this.getKeycloakPromise()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);

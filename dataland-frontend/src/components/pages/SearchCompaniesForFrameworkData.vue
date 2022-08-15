@@ -12,7 +12,8 @@
           <FrameworkDataSearchBar
             v-model="currentSearchBarInput"
             ref="euTaxoSearchBar"
-            :taxoSearchBarName="taxoSearchBarName"
+            :searchBarName="searchBarName"
+            :frameworksToFilterFor="currentFilteredFrameworks"
             @companies-received="handleCompanyQuery"
             @rendered="handleEuTaxoSearchBarRender"
             class="pl-4"
@@ -101,7 +102,7 @@ export default {
       currentFilteredFrameworks: [],
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
-      taxoSearchBarName: "eu_taxonomy_search_bar_top",
+      searchBarName: "search_bar_top",
     };
   },
 
@@ -124,7 +125,7 @@ export default {
       } else {
         if (this.searchBarToggled) {
           this.searchBarToggled = false;
-          this.taxoSearchBarName = "eu_taxonomy_search_bar_top";
+          this.searchBarName = "search_bar_top";
           window.scrollBy(0, this.hiddenSearchBarHeight);
         }
         if (this.latestScrollPosition > windowScrollY) {
@@ -147,7 +148,7 @@ export default {
         } else {
           this.currentFilteredFrameworks = this.route.query.frameworks;
         }
-        this.$refs.euTaxoSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
+        this.$refs.euTaxoSearchBar.queryCompany(this.currentSearchBarInput);
       } else {
         this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
@@ -176,7 +177,7 @@ export default {
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.taxoSearchBarName = "eu_taxonomy_search_bar_scrolled";
+      this.searchBarName = "search_bar_scrolled";
     },
   },
 };
