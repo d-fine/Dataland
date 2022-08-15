@@ -19,7 +19,7 @@
           @update:first="scrollToTop"
           @row-click="goToData"
           class="table-cursor"
-          id="search-result-taxonomy"
+          id="search-result-framework-data"
           :rowHover="true"
         >
           <Column
@@ -71,7 +71,7 @@
               <router-link
                 :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
                 class="text-primary no-underline font-bold"
-                ><span> VIEW</span> <span class="ml-3">></span>
+                ><span> VIEW EU TAXONOMY DATA</span> <span class="ml-3">></span>
               </router-link>
             </template>
           </Column>
@@ -127,14 +127,14 @@ export default {
 };
 </script>
 <style>
-#search-result-taxonomy tr:hover {
+#search-result-framework-data tr:hover {
   cursor: pointer;
 }
-#search-result-taxonomy th {
+#search-result-framework-data th {
   background: white;
 }
 
-#search-result-taxonomy .d-justify-content-end-inner > div {
+#search-result-framework-data .d-justify-content-end-inner > div {
   justify-content: end;
 }
 </style>
