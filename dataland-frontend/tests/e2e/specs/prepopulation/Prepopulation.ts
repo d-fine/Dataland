@@ -191,7 +191,7 @@ describe(
       });
 
       it("Show all companies button exists", () => {
-        cy.visitAndCheckAppMount("/companies");
+        cy.visitAndCheckAppMount("/companies-only-search");
         cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
       });
 
