@@ -47,14 +47,14 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("have.value", inputValue)
       .wait(1000)
       .type("{enter}");
-    cy.url().should("include", "/comapnies?input=" + inputValue);
+    cy.url().should("include", "/companies?input=" + inputValue);
     cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   });
 
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/companies");
-    cy.get("h1").should("contain", "Search EU Taxonomy data");
+    cy.get("h1").should("contain", "Search Data for Companies");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.get("input[name=search_bar_top]")
@@ -79,7 +79,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get(".p-tooltip").should("not.exist");
     }
 
-    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     executeCompanySearch(inputValue);
@@ -106,7 +106,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
     retrieveDataIdsList().then((dataIdList: any) => {
       cy.visitAndCheckAppMount("/companies/" + dataIdList[7] + "/frameworks/eutaxonomy");
-      cy.get("input[name=search_bar_standard]")
+      cy.get("input[name=framework_data_search_bar_standard]")
         .should("not.be.disabled")
         .type(inputValue)
         .should("have.value", inputValue)
