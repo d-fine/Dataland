@@ -75,7 +75,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total %"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -104,7 +104,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total %"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -133,7 +133,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total %"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
