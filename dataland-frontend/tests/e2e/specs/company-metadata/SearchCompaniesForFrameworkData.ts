@@ -186,4 +186,34 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.scrollTo(0, 0);
     cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
   });
+
+  /*
+    it("Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
+        "framework filter is set to that framework", () => {
+
+        function uploadCompanyWithEverythingFine(companyName: string) {
+            cy.visitAndCheckAppMount("/companies/upload");
+            fillCompanyUploadFields(companyName);
+            cy.get('button[name="postCompanyData"]').click();
+        }
+
+        const companyName = "CompanyWithFinancialData123456XYZXYZ";
+        uploadCompanyWithEverythingFine(companyName);
+        cy.get("body").should("contain", "success");
+        cy.get("span[title=companyId]").then(($companyID) => {
+            companyId = $companyID.text();
+            cy.visitAndCheckAppMount(`/companies/${companyId}`);
+            cy.get("body").should("contain", companyName);
+            cy.visit(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`)
+            // fill everything
+            //upload and check if it worked
+            cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForFinancials`)
+            // check if only search result is the company that has just been uploaded
+            cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForNonFinancials`)
+            // assure that no results are shown
+            cy.visit(`/companies?input=${companyName}frameworks=`)
+            // check if only search result is the company that has just been uploaded
+        });
+    )
+     */
 });
