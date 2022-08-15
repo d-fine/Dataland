@@ -7,7 +7,7 @@
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
         ref="searchBarAndIndexTabContainer"
       >
-        <div class="pt-4"/>
+        <div class="pt-4" />
         <MarginWrapper>
           <FrameworkDataSearchBar
             v-model="currentSearchBarInput"
