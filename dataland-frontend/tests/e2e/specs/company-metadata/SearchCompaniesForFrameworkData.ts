@@ -7,63 +7,63 @@ import {
 } from "../../../../build/clients/backend/api";
 
 let companiesWithData: Array<{
-    companyInformation: CompanyInformation;
-    euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
-    euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+  companyInformation: CompanyInformation;
+  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
+  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
 }>;
 
 before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-        companiesWithData = outputFromJson;
-    });
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
+    companiesWithData = outputFromJson;
+  });
 });
 
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
-    beforeEach(function () {
-        cy.ensureLoggedIn();
-    });
+  beforeEach(function () {
+    cy.ensureLoggedIn();
+  });
 
-    function executeCompanySearch(inputValue: string) {
-        cy.get("input[name=search_bar_top]")
-            .should("not.be.disabled")
-            .click({force: true})
-            .type(inputValue)
-            .type("{enter}")
-            .should("have.value", inputValue);
-        cy.get("h2").should("contain", "Results");
-        cy.get("table.p-datatable-table").should("exist");
-    }
+  function executeCompanySearch(inputValue: string) {
+    cy.get("input[name=search_bar_top]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(inputValue)
+      .type("{enter}")
+      .should("have.value", inputValue);
+    cy.get("h2").should("contain", "Results");
+    cy.get("table.p-datatable-table").should("exist");
+  }
 
-    it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
-        retrieveDataIdsList().then((dataIdList: any) => {
-            cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
-        });
-        cy.get("h2").should("contain", "EU Taxonomy Data");
-        const inputValue = "A";
-        cy.get("input[name=search_bar_standard]")
-            .should("not.be.disabled")
-            .click({force: true})
-            .type(inputValue)
-            .should("have.value", inputValue)
-            .wait(1000)
-            .type("{enter}");
-        cy.url().should("include", "/comapnies?input=" + inputValue);
-        cy.get("h2").should("contain", "Results");
-        cy.get("table.p-datatable-table").should("exist");
+  it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
+    retrieveDataIdsList().then((dataIdList: any) => {
+      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/eutaxonomies");
     });
+    cy.get("h2").should("contain", "EU Taxonomy Data");
+    const inputValue = "A";
+    cy.get("input[name=search_bar_standard]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(inputValue)
+      .should("have.value", inputValue)
+      .wait(1000)
+      .type("{enter}");
+    cy.url().should("include", "/comapnies?input=" + inputValue);
+    cy.get("h2").should("contain", "Results");
+    cy.get("table.p-datatable-table").should("exist");
+  });
 
-    it("Check static layout of the search page", function () {
-        cy.visitAndCheckAppMount("/companies");
-        cy.get("h1").should("contain", "Search EU Taxonomy data");
-        const placeholder = "Search company by name or PermID";
-        const inputValue = "A company name";
-        cy.get("input[name=search_bar_top]")
-            .should("not.be.disabled")
-            .type(inputValue)
-            .should("have.value", inputValue)
-            .invoke("attr", "placeholder")
-            .should("contain", placeholder);
-    });
+  it("Check static layout of the search page", function () {
+    cy.visitAndCheckAppMount("/companies");
+    cy.get("h1").should("contain", "Search EU Taxonomy data");
+    const placeholder = "Search company by name or PermID";
+    const inputValue = "A company name";
+    cy.get("input[name=search_bar_top]")
+      .should("not.be.disabled")
+      .type(inputValue)
+      .should("have.value", inputValue)
+      .invoke("attr", "placeholder")
+      .should("contain", placeholder);
+  });
 
   it("Company Search by Name", () => {
     cy.visitAndCheckAppMount("/companies");
@@ -175,19 +175,19 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("input[name=search_bar_scrolled]").should("not.exist");
   });
 
-    it("Scroll the page to type into the search bar in different states and check if the input is always saved", () => {
-        const inputValue1 = "ABCDEFG";
-        const inputValue2 = "XYZ";
-        cy.visitAndCheckAppMount("/companies");
-        cy.get("input[name=search_bar_top]").type(inputValue1);
-        cy.scrollTo(0, 500);
-        cy.get("button[name=search_bar_collapse]").click();
-        cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
-        cy.scrollTo(0, 0);
-        cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-    });
+  it("Scroll the page to type into the search bar in different states and check if the input is always saved", () => {
+    const inputValue1 = "ABCDEFG";
+    const inputValue2 = "XYZ";
+    cy.visitAndCheckAppMount("/companies");
+    cy.get("input[name=search_bar_top]").type(inputValue1);
+    cy.scrollTo(0, 500);
+    cy.get("button[name=search_bar_collapse]").click();
+    cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
+    cy.scrollTo(0, 0);
+    cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
+  });
 
-    /*
+  /*
     it("Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
         "framework filter is set to that framework", () => {
 
@@ -216,7 +216,4 @@ describe("As a user, I expect the search functionality on the /companies page to
         });
     )
      */
-
-})
-
-
+});
