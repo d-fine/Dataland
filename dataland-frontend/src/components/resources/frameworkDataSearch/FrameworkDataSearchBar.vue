@@ -96,7 +96,10 @@ export default {
       type: Number,
       default: 3,
     },
-    frameworksToFilterFor: {},
+    frameworksToFilterFor: {
+      type: Array < String > [],
+      default: () => [],
+    },
   },
 
   mounted() {
