@@ -1,5 +1,5 @@
 describe("As a user I expect to be redirected to the login page if I am unauthenticated", () => {
-  const pages = ["/upload", "/search", "/searchtaxonomy", "/companies/:companyID/eutaxonomies"];
+  const pages = ["/companies/upload", "/companies-only-search", "/companies", "/companies/:companyID/frameworks/eutaxonomy"];
 
   pages.forEach((page) => {
     it(`Test Login Redirect for ${page}`, () => {

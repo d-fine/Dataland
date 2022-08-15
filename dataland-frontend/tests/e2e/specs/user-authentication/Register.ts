@@ -35,7 +35,7 @@ describe("As a user I want to be able to register for an account and be able to 
       .click()
 
       .url()
-      .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+      .should("eq", Cypress.config("baseUrl") + "/companies");
     logout();
   });
 
