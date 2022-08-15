@@ -1,18 +1,16 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.CompanyInformationCsvParser.Companion.companyInformationColumnMapping
-import org.dataland.csvconverter.csv.CsvUtils.NOT_AVAILABLE_STRING
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
-import org.dataland.csvconverter.csv.EuTaxonomyUtils.getAttestation
-import org.dataland.csvconverter.csv.EuTaxonomyUtils.getReportingObligation
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.enums.eutaxonomy.FinancialServicesType
 
 /**
  * This class contains the parsing logic for the eu-taxonomy-for-financials framework
  */
-class EuTaxonomyForFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
+class EuTaxonomyForFinancialsCsvParser(
+    private val commonFieldParser: EuTaxonomyCommonFieldParser
+    ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
     private val columnMappingEuTaxonomyForFinancials = mapOf(
         "financialServicesType" to "FS - company type",
@@ -37,12 +35,9 @@ class EuTaxonomyForFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataForFin
         } ?: throw IllegalArgumentException("Could not determine financial services type")
     }
 
-    override fun validateLine(row: Map<String, String>): Boolean {
-        // Skip all lines with financial companies or without market cap
-        return companyInformationColumnMapping.getCsvValue("companyType", row) == "FS" &&
-            companyInformationColumnMapping.getCsvValue("marketCap", row) != NOT_AVAILABLE_STRING &&
-            // Skip Allianz until inconsistencies are resolved
-            companyInformationColumnMapping.getCsvValue("companyName", row).trim() != "Allianz SE"
+    override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
+        return commonFieldParser.getCompanyType(row) == "FS" &&
+                companyData.companyName != "Allianz SE"
     }
 
     private fun buildEligibilityKpis(row: Map<String, String>): EuTaxonomyDataForFinancials.EligibilityKpis {
@@ -83,8 +78,8 @@ class EuTaxonomyForFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataForFin
 
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForFinancials {
         return EuTaxonomyDataForFinancials(
-            reportingObligation = getReportingObligation(row),
-            attestation = getAttestation(row),
+            reportingObligation = commonFieldParser.getReportingObligation(row),
+            attestation = commonFieldParser.getAttestation(row),
             financialServicesType = getFinancialServiceType(row),
             eligibilityKpis = buildEligibilityKpis(row),
             creditInstitutionKpis = buildCreditInstitutionKpis(row),
