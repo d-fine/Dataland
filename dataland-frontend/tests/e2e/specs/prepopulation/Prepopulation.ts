@@ -201,7 +201,7 @@ describe(
           cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
           cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
           cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
-          cy.get("h3").then(($body) => {
+          cy.get("h1").then(($body) => {
             if ($body.text().includes("CapEx")) {
               cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
                 .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
@@ -219,8 +219,8 @@ describe(
               cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
                 .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
                 .then(() => {
-                  cy.get("h3").should("be.visible");
-                  cy.get("h3").contains("Exposure");
+                  cy.get("span").should("be.visible");
+                  cy.get("span").contains("Exposure");
                   cy.get("body").contains("Market Cap:");
                   cy.get("body").contains("Headquarter:");
                   cy.get("body").contains("Sector:");
