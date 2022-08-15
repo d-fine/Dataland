@@ -18,7 +18,7 @@ before(function () {
   });
 });
 
-describe("As a user, I expect the search functionality on the /searchtaxonomy page to behave as I expect", function () {
+describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn();
   });
@@ -47,7 +47,7 @@ describe("As a user, I expect the search functionality on the /searchtaxonomy pa
       .should("have.value", inputValue)
       .wait(1000)
       .type("{enter}");
-    cy.url().should("include", "/searchtaxonomy?input=" + inputValue);
+    cy.url().should("include", "/comapnies?input=" + inputValue);
     cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   });

@@ -142,7 +142,6 @@ export default {
       this.loading = false;
     },
     async searchCompanyName(companyName) {
-      console.log(this.frameworksToFilterFor)
       this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
