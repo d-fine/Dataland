@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-5 col-offset-1">
+  <Card class="col-12">
     <template #title>Create EU Taxonomy Dataset for a Non-Financial Company/Service</template>
     <template #content>
       <FormKit
@@ -15,13 +15,10 @@
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          @input="getAllExistingCompanyIDs"
           :inner-class="innerClass"
           :input-class="inputClass"
-          :validation="[['required'], ['is', ...allExistingCompanyIDs]]"
-          :validation-messages="{
-            is: 'The company ID you provided does not exist.',
-          }"
+          :disabled="true"
+          :model-value="companyID"
         />
         <FormKit type="group" name="data" label="data">
           <FormKit
@@ -62,7 +59,7 @@
                 type="text"
                 name="alignedPercentage"
                 validation="number"
-                label="Aligned / €"
+                label="Aligned %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -70,7 +67,7 @@
                 type="text"
                 name="eligiblePercentage"
                 validation="number"
-                label="Eligible / €"
+                label="Eligible %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -78,7 +75,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total / €"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -91,7 +88,7 @@
                 type="text"
                 name="alignedPercentage"
                 validation="number"
-                label="Aligned / €"
+                label="Aligned %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -99,7 +96,7 @@
                 type="text"
                 name="eligiblePercentage"
                 validation="number"
-                label="Eligible / €"
+                label="Eligible %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -107,7 +104,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total / €"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -120,7 +117,7 @@
                 type="text"
                 name="alignedPercentage"
                 validation="number"
-                label="Aligned / €"
+                label="Aligned %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -128,7 +125,7 @@
                 type="text"
                 name="eligiblePercentage"
                 validation="number"
-                label="Eligible / €"
+                label="Eligible %"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -136,7 +133,7 @@
                 type="text"
                 name="totalAmount"
                 validation="number"
-                label="Total / €"
+                label="Total €"
                 :inner-class="innerClass"
                 :input-class="inputClass"
               />
@@ -176,32 +173,20 @@ export default {
     inputClass: {
       "formkit-input": false,
       "p-inputtext": true,
+      "w-full": true,
     },
     postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
     formInputsModel: {},
     postEuTaxonomyDataForNonFinancialsResponse: null,
-    allExistingCompanyIDs: [],
   }),
   inject: ["getKeycloakPromise"],
-  mounted() {
-    this.getAllExistingCompanyIDs();
+  props: {
+    companyID: {
+      type: String,
+    },
   },
   methods: {
-    async getAllExistingCompanyIDs() {
-      try {
-        if (this.allExistingCompanyIDs.length === 0) {
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          const getCompaniesResponse = await companyDataControllerApi.getCompanies("", "", true);
-          this.allExistingCompanyIDs = getCompaniesResponse.data.map((element) => element.companyId);
-        }
-      } catch (error) {
-        this.allExistingCompanyIDs = [];
-      }
-    },
-
     async postEuTaxonomyDataForNonFinancials() {
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
