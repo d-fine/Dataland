@@ -3,9 +3,9 @@ package org.dataland.csvconverter
 import org.dataland.csvconverter.csv.CompanyInformationCsvParser
 import org.dataland.csvconverter.csv.CsvFrameworkParser
 import org.dataland.csvconverter.csv.CsvUtils
+import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
 import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
-import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.json.JsonConfig
 import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
@@ -43,7 +43,7 @@ class CsvToJsonConverter {
                     null
                 }
             }
-     }
+    }
 
     /**
      * Parses data for the eu-taxonomy-non-financial framework from the CSV
