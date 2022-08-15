@@ -97,7 +97,7 @@ export default {
       default: 3,
     },
     frameworksToFilterFor: {
-      type: Array < String > [],
+      type: Array,
       default: () => [],
     },
   },
