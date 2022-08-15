@@ -5,6 +5,8 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
 } from "../../../../build/clients/backend/api";
+import { createCompanyAndGetId } from "../../utils/CompanyUpload";
+import { createEuTaxonomyDataForFinancial } from "../../utils/FrameworkDataUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -54,7 +56,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/companies");
-    cy.get("h1").should("contain", "Search Data for Companies");
+    cy.get("h2").should("contain", "Results");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.get("input[name=search_bar_top]")
@@ -82,10 +84,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
-    executeCompanySearch(inputValue);
-    cy.get("h1").click(); // Collapse the search autocomplete window if it exists
-    verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
+    executeCompanySearch(inputValue);
+    cy.get("h2").click(); // Collapse the search autocomplete window if it exists
+    verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
     cy.get("[title=back_button").should("be.visible").click({ force: true });
@@ -187,38 +189,27 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
   });
 
+  it(
+    "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
+      "framework filter is set to that framework",
+    () => {
+      const companyName = "CompanyWithFinancialData123456XYZXYZ";
+      createCompanyAndGetId(companyName).then((companyId) => createEuTaxonomyDataForFinancial(companyId));
+      cy.visit(`/companies?input=${companyName}`)
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .contains(companyName)
+        .should("exist");
+      cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForFinancials`)
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .contains(companyName)
+        .should("exist");
+      cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForNonFinancials`)
+        .get("div[class='col-12 text-left']")
+        .should("have.text", "The resource you requested does not exist yet.");
+    }
+  );
+
   /*
-    it("Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
-        "framework filter is set to that framework", () => {
-
-        function uploadCompanyWithEverythingFine(companyName: string) {
-            cy.visitAndCheckAppMount("/companies/upload");
-            fillCompanyUploadFields(companyName);
-            cy.get('button[name="postCompanyData"]').click();
-        }
-
-        const companyName = "CompanyWithFinancialData123456XYZXYZ";
-        uploadCompanyWithEverythingFine(companyName);
-        cy.get("body").should("contain", "success");
-        cy.get("span[title=companyId]").then(($companyID) => {
-            companyId = $companyID.text();
-            cy.visitAndCheckAppMount(`/companies/${companyId}`);
-            cy.get("body").should("contain", companyName);
-            cy.visit(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`)
-            // fill everything
-            //upload and check if it worked
-            cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForFinancials`)
-
-
-            // check if only search result is the company that has just been uploaded
-            cy.visit(`/companies?input=${companyName}frameworks=EuTaxonomyDataForNonFinancials`)
-            // assure that no results are shown
-            cy.visit(`/companies?input=${companyName}`)
-            // check if only search result is the company that has just been uploaded
-
-        });
-    )
-
 
     it("Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
      "check if they are displayed in the autcomplete dropdown only if the framework filter is set accordingly", () => {
