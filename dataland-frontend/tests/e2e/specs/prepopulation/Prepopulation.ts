@@ -93,7 +93,6 @@ describe(
           .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
       }
 
-      it("Populate Companies and Eu Taxonomy Data", () => {
         cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
           .then((token) => {
             doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
@@ -192,7 +191,7 @@ describe(
       });
 
       it("Show all companies button exists", () => {
-        cy.visitAndCheckAppMount("/search");
+        cy.visitAndCheckAppMount("/companies");
         cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
       });
 
@@ -231,6 +230,5 @@ describe(
           });
         });
       });
-    });
   }
 );
