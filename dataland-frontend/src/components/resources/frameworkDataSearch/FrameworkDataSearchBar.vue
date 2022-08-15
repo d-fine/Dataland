@@ -3,15 +3,15 @@
     <div class="col-8 text-left">
       <span class="p-fluid">
         <span class="p-input-icon-left p-input-icon-right">
-          <i class="pi pi-search d-taxo-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+          <i class="pi pi-search d-framework-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
           <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           <i v-else aria-hidden="true" />
           <AutoComplete
             :suggestions="autocompleteArrayDisplayed"
-            :name="taxoSearchBarName"
+            :name="searchBarName"
             :modelValue="modelValue"
             ref="autocomplete"
-            inputClass="h-3rem d-taxo-searchbar-input"
+            inputClass="h-3rem d-framework-searchbar-input"
             field="companyName"
             style="z-index: 10"
             placeholder="Search company by name or PermID"
@@ -19,7 +19,7 @@
             @complete="searchCompanyName"
             @item-select="handleItemSelect"
             @keyup.enter="handleKeyupEnter"
-            panelClass="d-taxo-searchbar-panel"
+            panelClass="d-framework-searchbar-panel"
           >
             <template #item="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -43,23 +43,23 @@
 </template>
 
 <style>
-.d-taxo-searchbar-input-icon {
+.d-framework-searchbar-input-icon {
   padding-left: 0.75rem !important;
 }
 
-.d-taxo-searchbar-input {
+.d-framework-searchbar-input {
   padding-left: 3rem !important;
 }
 
-.d-taxo-searchbar-panel {
+.d-framework-searchbar-panel {
   max-height: 500px !important;
 }
 
-.d-taxo-searchbar-panel .p-autocomplete-items {
+.d-framework-searchbar-panel .p-autocomplete-items {
   padding: 0 !important;
 }
 
-.d-taxo-searchbar-panel .p-autocomplete-item {
+.d-framework-searchbar-panel .p-autocomplete-item {
   height: 3.5rem !important;
   padding: 0 !important;
   display: flex;
@@ -71,7 +71,7 @@
 <script>
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
-import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchTaxonomyPageCompanyDataRequester";
+import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default {
   name: "FrameworkDataSearchBar",
@@ -80,9 +80,9 @@ export default {
   emits: ["companies-received", "update:modelValue", "rendered"],
 
   props: {
-    taxoSearchBarName: {
+    searchBarName: {
       type: String,
-      default: "eu_taxonomy_search_bar_standard",
+      default: "framework_data_search_bar_standard",
     },
     modelValue: {
       type: String,
@@ -92,6 +92,8 @@ export default {
       type: Number,
       default: 3,
     },
+    frameworksToFilterFor: {
+    }
   },
 
   mounted() {
@@ -99,7 +101,7 @@ export default {
   },
 
   watch: {
-    taxoSearchBarName() {
+    searchBarName() {
       this.$refs.autocomplete.focus();
     },
   },
@@ -127,13 +129,13 @@ export default {
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
-    async queryCompany(companyName, frameworksToFilter) {
+    async queryCompany(companyName) {
       this.loading = true;
       const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName,
         "",
         false,
-        frameworksToFilter,
+        this.frameworksToFilterFor,
         this.getKeycloakPromise()
       );
       this.$emit("companies-received", resultsArray);
@@ -145,7 +147,7 @@ export default {
         companyName.query,
         "",
         true,
-        [],
+        this.frameworksToFilterFor,
         this.getKeycloakPromise()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);

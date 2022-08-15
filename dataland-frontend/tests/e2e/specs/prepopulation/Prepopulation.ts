@@ -213,7 +213,7 @@ describe(
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
-                cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
+                cy.get("input[name=search_bar_standard]").should("exist");
               });
           } else {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
@@ -224,7 +224,7 @@ describe(
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
-                cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
+                cy.get("input[name=search_bar_standard]").should("exist");
               });
           }
         });
