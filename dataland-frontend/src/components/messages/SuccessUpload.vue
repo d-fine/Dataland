@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     humanize(text) {
+      console.log(this.data);
       if (typeof text == "string") return humanizeString(text);
       else return null;
     },
