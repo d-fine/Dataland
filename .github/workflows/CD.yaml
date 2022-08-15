@@ -146,7 +146,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.4
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.5
           fi
       - name: Download backendOpenApi.json
         uses: actions/download-artifact@v3

@@ -1,6 +1,7 @@
 package org.dataland.csvconverter
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.csvconverter.csv.CsvUtils
+import org.dataland.csvconverter.json.JsonConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -9,12 +10,10 @@ import java.io.File
 import java.lang.IllegalArgumentException
 
 class CsvToJsonConverterTest {
-    private val objectMapper = jacksonObjectMapper()
-        .findAndRegisterModules()
-        .registerModule(NoTrailingZerosBigDecimalDeserializer.module)
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider(JsonConfig.objectMapper)
 
     private fun getConverter(filePath: String): CsvToJsonConverter {
+        CsvUtils.EURO_UNIT_CONVERSION_FACTOR = "1"
         val converter = CsvToJsonConverter()
         converter.parseCsvFile(File(filePath).path)
         return converter
@@ -24,7 +23,7 @@ class CsvToJsonConverterTest {
     fun `read csv and check that the company information and EU Taxonomy objects are as expected for non-financials`() {
         val actualCompanyInformationWithEuTaxonomyDataForNonFinancials =
             getConverter("./build/resources/csvTestEuTaxonomyDataForNonFinancials.csv")
-                .buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
+                .parseEuTaxonomyNonFinancialData()
         val expectedCompanyInformationWithEuTaxonomyDataForNonFinancials = testDataProvider
             .getAllCompanyInformationWithEuTaxonomyDataForNonFinancials()
         assertTrue(
@@ -46,7 +45,7 @@ class CsvToJsonConverterTest {
     fun `read csv and check that the company information and EU Taxonomy objects are as expected for financials`() {
         val actualCompanyInformationWithEuTaxonomyDataForFinancials =
             getConverter("./build/resources/csvTestEuTaxonomyDataForFinancials.csv")
-                .buildListOfCompanyInformationWithEuTaxonomyDataForFinancials()
+                .parseEuTaxonomyFinancialData()
         val expectedCompanyInformationWithEuTaxonomyDataForFinancials = testDataProvider
             .getAllCompanyInformationWithEuTaxonomyDataForFinancials()
         assertTrue(
@@ -82,7 +81,7 @@ class CsvToJsonConverterTest {
     @Test
     fun `execute corner cases in CsvToJsonConverter`() {
         val converter = getConverter("./build/resources/csvTestEuTaxonomyDataForNonFinancialsCornerCases.csv")
-        converter.buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
+        converter.parseEuTaxonomyNonFinancialData()
     }
 
     private fun checkThatProcessingFileThrowsErrorWithMessage(
@@ -93,7 +92,7 @@ class CsvToJsonConverterTest {
         val exceptionThatWasThrown = assertThrows<IllegalArgumentException>(
             message = "Checking that invalid data results in failure parsing reporting obligation",
             executable = {
-                converter.buildListOfCompanyInformationWithEuTaxonomyDataForNonFinancials()
+                converter.parseEuTaxonomyNonFinancialData()
             }
         )
         val found = exceptionThatWasThrown.message!!
