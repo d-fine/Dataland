@@ -5,31 +5,35 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 
 /**
- * This objects provides parsing methods for columns that are required by both eu-taxonomy frameworks
+ * This class provides parsing methods for columns that are required by both eu-taxonomy frameworks
  * but don't belong to the companyInformation parser
  */
-object EuTaxonomyUtils {
+class EuTaxonomyCommonFieldParser {
 
-    private const val REPORT_OBLIGATION_YES = "Yes"
-    private const val REPORT_OBLIGATION_NO = "No"
-    private const val REPORT_OBLIGATION_NA = "n/a"
+    companion object {
+        private const val REPORT_OBLIGATION_YES = "Yes"
+        private const val REPORT_OBLIGATION_NO = "No"
+        private const val REPORT_OBLIGATION_NA = "n/a"
 
-    private const val ATTESTATION_REASONABLE = "reasonable"
-    private const val ATTESTATION_LIMITED = "limited"
-    private const val ATTESTATION_NA = "n/a"
-    private const val ATTESTATION_NONE = "none"
+        private const val ATTESTATION_REASONABLE = "reasonable"
+        private const val ATTESTATION_LIMITED = "limited"
+        private const val ATTESTATION_NA = "n/a"
+        private const val ATTESTATION_NONE = "none"
+    }
 
     private val columnMappingEuTaxonomyUtils = mapOf(
         "reportObligation" to "NFRD mandatory",
         "attestation" to "Assurance",
+        "companyType" to "IS/FS",
     )
 
     /**
      * This function parses the reportingObligation field from the Eu-Taxonomy framework CSV file
      */
     fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
-        val rawReportObligation = columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
-        return when (rawReportObligation) {
+        return when (
+            val rawReportObligation = columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
+        ) {
             REPORT_OBLIGATION_YES -> YesNo.Yes
             REPORT_OBLIGATION_NO, REPORT_OBLIGATION_NA -> YesNo.No
             else -> {
@@ -45,8 +49,9 @@ object EuTaxonomyUtils {
      * This function parses the attestation field from the Eu-Taxonomy framework CSV file
      */
     fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
-        val rawAttestation = columnMappingEuTaxonomyUtils.getCsvValue("attestation", csvLineData)
-        return when (columnMappingEuTaxonomyUtils.getCsvValue("attestation", csvLineData)) {
+        return when (
+            val rawAttestation = columnMappingEuTaxonomyUtils.getCsvValue("attestation", csvLineData)
+        ) {
             ATTESTATION_REASONABLE -> AttestationOptions.ReasonableAssurance
             ATTESTATION_LIMITED -> AttestationOptions.LimitedAssurance
             ATTESTATION_NA, ATTESTATION_NONE -> AttestationOptions.None
@@ -58,5 +63,12 @@ object EuTaxonomyUtils {
                 )
             }
         }
+    }
+
+    /**
+     * Returns the relevant company type for the EUTaxonomy framework (IS/FS)
+     */
+    fun getCompanyType(csvLineData: Map<String, String>): String {
+        return columnMappingEuTaxonomyUtils.getCsvValue("companyType", csvLineData)
     }
 }

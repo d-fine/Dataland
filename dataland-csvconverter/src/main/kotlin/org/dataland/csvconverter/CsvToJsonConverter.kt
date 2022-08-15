@@ -5,6 +5,7 @@ import org.dataland.csvconverter.csv.CsvFrameworkParser
 import org.dataland.csvconverter.csv.CsvUtils
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
 import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
+import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.json.JsonConfig
 import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
@@ -18,8 +19,9 @@ class CsvToJsonConverter {
 
     private var rawCsvData: List<Map<String, String>> = listOf()
     private val companyParser = CompanyInformationCsvParser()
-    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser()
-    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser()
+    private val euTaxonomyCommonFieldParser = EuTaxonomyCommonFieldParser()
+    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(euTaxonomyCommonFieldParser)
+    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(euTaxonomyCommonFieldParser)
 
     /**
      * Function to parse company-associated framework data from a CSV file
@@ -29,14 +31,19 @@ class CsvToJsonConverter {
         companyParser: CompanyInformationCsvParser,
         dataParser: CsvFrameworkParser<T>
     ): List<CompanyInformationWithData<T>> {
-        return csv.filter { dataParser.validateLine(it) }
-            .map {
-                CompanyInformationWithData(
-                    companyParser.buildCompanyInformation(it),
-                    dataParser.buildData(it)
-                )
+        return csv
+            .mapNotNull {
+                val company = companyParser.buildCompanyInformation(it)
+                if (dataParser.validateLine(company, it)) {
+                    CompanyInformationWithData(
+                        company,
+                        dataParser.buildData(it)
+                    )
+                } else {
+                    null
+                }
             }
-    }
+     }
 
     /**
      * Parses data for the eu-taxonomy-non-financial framework from the CSV
