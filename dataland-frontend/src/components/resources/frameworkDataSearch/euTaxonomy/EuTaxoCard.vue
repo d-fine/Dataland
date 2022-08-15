@@ -45,25 +45,21 @@ export default {
       type: String,
     },
     total: {
-      type: String,
+      type: Number,
     },
     percent: {
-      type: String,
+      type: Number,
     },
   },
   computed: {
     percentCalculation() {
-      const percentage = Math.round(parseFloat(this.percent) * 100 * 100) / 100;
-      return percentage.toString();
+      return Math.round(this.percent * 100 * 100) / 100;
     },
     orderOfMagnitudeSuffix() {
-      return convertCurrencyNumbersToNotationWithLetters(parseFloat(this.total), 2);
+      return convertCurrencyNumbersToNotationWithLetters(this.total, 2);
     },
     amount() {
-      return convertCurrencyNumbersToNotationWithLetters(
-        Math.round(parseFloat(this.total) * parseFloat(this.percent) * 100) / 100,
-        2
-      );
+      return convertCurrencyNumbersToNotationWithLetters(Math.round(this.total * this.percent * 100) / 100, 2);
     },
   },
 };

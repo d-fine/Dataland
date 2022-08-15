@@ -22,6 +22,7 @@ export default {
   props: {
     data: Object,
     msg: String,
+    messageCount: Number,
   },
   methods: {
     humanize(text) {
