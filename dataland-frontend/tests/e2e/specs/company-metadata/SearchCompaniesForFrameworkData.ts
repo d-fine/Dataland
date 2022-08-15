@@ -54,7 +54,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/companies");
-    cy.get("h1").should("contain", "Search Data for Companies");
+    cy.get("h2").should("contain", "Results");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.get("input[name=search_bar_top]")
@@ -82,10 +82,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
-    executeCompanySearch(inputValue);
-    cy.get("h1").click(); // Collapse the search autocomplete window if it exists
-    verifyTaxonomySearchResultTable();
     checkPermIdToolTip(permIdText);
+    executeCompanySearch(inputValue);
+    cy.get("h2").click(); // Collapse the search autocomplete window if it exists
+    verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
     cy.get("[title=back_button").should("be.visible").click({ force: true });
