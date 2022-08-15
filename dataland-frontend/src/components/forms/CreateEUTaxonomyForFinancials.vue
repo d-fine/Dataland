@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-5 col-offset-1">
+  <Card class="col-12">
     <template #title>Create EU Taxonomy Dataset for a Financial Company/Service</template>
     <template #content>
       <FormKit
@@ -10,18 +10,16 @@
         @submit="postEuTaxonomyDataForFinancials"
         #default="{ state: { valid } }"
       >
+        <h4>General Information</h4>
         <FormKit
           type="text"
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          @input="getAllExistingCompanyIDs"
           :inner-class="innerClass"
           :input-class="inputClass"
-          :validation="[['required'], ['is', ...allExistingCompanyIDs]]"
-          :validation-messages="{
-            is: 'The company ID you provided does not exist.',
-          }"
+          :model-value="companyID"
+          disabled="true"
         />
         <FormKit type="group" name="data" label="data">
           <FormKit
@@ -70,6 +68,7 @@
             :options="['Yes', 'No']"
           />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+            <h4>Eligibility KPIs</h4>
             <FormKit
               type="text"
               name="taxonomyEligibleActivity"
@@ -104,6 +103,7 @@
             />
           </FormKit>
           <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
+            <h4>Credit Institution KPIs</h4>
             <FormKit
               type="text"
               name="tradingPortfolio"
@@ -130,6 +130,7 @@
             />
           </FormKit>
           <FormKit type="group" name="insuranceKpis" label)="Insurance KPIs">
+            <h4>Insurance KPIs</h4>
             <FormKit
               type="text"
               name="taxonomyEligibleNonLifeInsuranceActivities"
@@ -158,12 +159,12 @@
 import SuccessUpload from "@/components/messages/SuccessUpload";
 import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload";
-import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
+import Card from "primevue/card";
 
 export default {
   name: "CreateEUTaxonomyForFinancials",
-  components: { FailedUpload, Card, FormKit, SuccessUpload },
+  components: { FailedUpload, FormKit, SuccessUpload, Card },
 
   data: () => ({
     innerClass: {
@@ -173,32 +174,20 @@ export default {
     inputClass: {
       "formkit-input": false,
       "p-inputtext": true,
+      "w-full": true,
     },
     postEuTaxonomyDataForFinancialsProcessed: false,
     messageCount: 0,
     formInputsModel: {},
     postEuTaxonomyDataForFinancialsResponse: null,
-    allExistingCompanyIDs: [],
   }),
-  inject: ["getKeycloakPromise"],
-  mounted() {
-    this.getAllExistingCompanyIDs();
-  },
-  methods: {
-    async getAllExistingCompanyIDs() {
-      try {
-        if (this.allExistingCompanyIDs.length === 0) {
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          const getCompaniesResponse = await companyDataControllerApi.getCompanies("", "", true);
-          this.allExistingCompanyIDs = getCompaniesResponse.data.map((element) => element.companyId);
-        }
-      } catch (error) {
-        this.allExistingCompanyIDs = [];
-      }
+  props: {
+    companyID: {
+      type: String,
     },
-
+  },
+  inject: ["getKeycloakPromise"],
+  methods: {
     async postEuTaxonomyDataForFinancials() {
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;

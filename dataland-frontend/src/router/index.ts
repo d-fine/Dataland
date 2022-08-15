@@ -30,11 +30,13 @@ const routes = [
   },
   {
     path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
+    props: true,
     name: "Upload Eu Taxonomy Data For Non-Financials",
     component: UploadEuTaxonomyDataForNonFinancials,
   },
   {
     path: "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
+    props: true,
     name: "Upload Eu Taxonomy Data For Financials",
     component: UploadEuTaxonomyDataForFinancials,
   },
