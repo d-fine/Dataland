@@ -43,7 +43,7 @@ describe(
     beforeEach(function () {
       cy.ensureLoggedIn();
     });
-    /*
+
     it("Populate Companies and Eu Taxonomy Data", () => {
       function getPermId(companyInformation: CompanyInformation) {
         const permIdArray = companyInformation.identifiers
@@ -194,7 +194,7 @@ describe(
       cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
     });
-*/
+
     it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
       retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
         cy.intercept("**/api/companies/*").as("retrieveCompany");
