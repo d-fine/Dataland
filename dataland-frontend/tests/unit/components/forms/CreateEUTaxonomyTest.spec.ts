@@ -17,6 +17,5 @@ describe("CreateCompanyTest", () => {
     expect(wrapper.vm.messageCount).toEqual(0);
     expect(wrapper.vm.formInputsModel).toEqual({});
     expect(wrapper.vm.postEuTaxonomyDataForNonFinancialsResponse).toBeNull();
-    expect(wrapper.vm.allExistingCompanyIDs.length).toEqual(0);
   });
 });
