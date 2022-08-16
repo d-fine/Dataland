@@ -6,11 +6,9 @@ import {
   EuTaxonomyDataForFinancials,
 } from "../../../../build/clients/backend/api";
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import {
-  uploadEuTaxonomyDataForFinancials,
-  uploadEuTaxonomyDataForNonFinancials,
-} from "../../utils/FrameworkDataUpload";
+import { uploadEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "../../support/TestUtility";
+import { uploadEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
