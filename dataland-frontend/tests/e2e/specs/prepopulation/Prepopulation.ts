@@ -200,7 +200,7 @@ describe(
         cy.intercept("**/api/companies/*").as("retrieveCompany");
         cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
         cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
-        cy.visitAndCheckAppMount(`/companies/${companyIdList[3]}/frameworks/eutaxonomy`);
+        cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
         cy.get("span").then(($body) => {
           if ($body.text().includes("ExposureIn percentage of the total assets")) {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
@@ -217,7 +217,7 @@ describe(
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
               .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
               .then(() => {
-                cy.get("h3").should("be.visible");
+                cy.get("span").should("be.visible");
                 cy.get("h3").contains("Revenue");
                 cy.get("h3").contains("CapEx");
                 cy.get("h3").contains("OpEx");
