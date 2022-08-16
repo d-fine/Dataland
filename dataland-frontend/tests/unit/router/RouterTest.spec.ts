@@ -34,6 +34,6 @@ describe("routerTest", () => {
   it("checks if the router pushes to companies page as expected", async () => {
     await router.push("/companies");
     await router.isReady();
-    expect(mountAppWithRouter(router).html()).toContain("Results");
+    expect(mountAppWithRouter(router).html()).toContain("Search company by name or PermID");
   });
 });
