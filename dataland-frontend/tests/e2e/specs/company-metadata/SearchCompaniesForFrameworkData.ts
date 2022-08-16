@@ -213,26 +213,31 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
 
+  const companyNameMarker = "Data987654321";
+  function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
+    cy.visit(`/companies?frameworks=${frameworkToFilterFor}`);
+    cy.intercept("**/api/companies*").as("searchCompany");
+    cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
+    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+      cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(companyNamePrefix).should("exist");
+    });
+  }
+
   it(
     "Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
       "check if they are displayed in the autcomplete dropdown only if the framework filter is set accordingly",
     () => {
-      const companyNameFinancial = "CompanyWithFinancialData987654321";
-      createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForNonFinancials(companyId));
+      const companyNameFinancialPrefix = "CompanyWithFinancial";
+      const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
+      createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
+      checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "EuTaxonomyDataForFinancials");
 
-      const companyNameNonFinancial = "CompanyWithNonFinancialData987654321";
+      const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
+      const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
       createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
         uploadEuTaxonomyDataForNonFinancials(companyId)
       );
-
-      //THEN TODO
-      // check if only financial company appears in autocomplete
-      cy.visit(`/companies?frameworks=EuTaxonomyDataForFinancials`);
-      //   => input "Data987654321"
-      // => assert that only companyNameFinancial appears in the dropdown (or multiple instances of it since test may be already run several times)
-      cy.visit(`/companies?frameworks=EuTaxonomyDataForNonFinancials`);
-      // => input "Data987654321"
-      // => assert that only companyNameNonFinancial appears in the dropdown (or multiple instances of it since test may be already run several times)
+      checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "EuTaxonomyDataForNonFinancials");
     }
   );
 });
