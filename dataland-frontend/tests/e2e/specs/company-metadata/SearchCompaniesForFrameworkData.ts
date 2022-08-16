@@ -24,72 +24,6 @@ before(function () {
   });
 });
 
-describeIf(
-  "As a user, I expect the search functionality on the /companies page to adjust to the " + "framework filter",
-  {
-    executionEnvironments: ["development"],
-    dataEnvironments: ["fakeFixtures"],
-  },
-  function () {
-    beforeEach(function () {
-      cy.ensureLoggedIn("data_uploader", "test");
-    });
-
-    it(
-      "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
-        "framework filter is set to that framework",
-      () => {
-        const companyName = "CompanyWithFinancialData123456XYZXYZ";
-        createCompanyAndGetId(companyName).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
-        cy.visit(`/companies?input=${companyName}`)
-          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-          .contains(companyName)
-          .should("exist");
-        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForFinancials`)
-          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-          .contains(companyName)
-          .should("exist");
-        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForNonFinancials`)
-          .get("div[class='col-12 text-left']")
-          .should("contain.text", "The resource you requested does not exist yet.");
-      }
-    );
-
-    const companyNameMarker = "Data987654321";
-
-    function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
-      cy.visit(`/companies?frameworks=${frameworkToFilterFor}`);
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
-      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-        cy.get(".p-autocomplete-item")
-          .eq(0)
-          .get("span[class='font-normal']")
-          .contains(companyNamePrefix)
-          .should("exist");
-      });
-    }
-
-    it(
-      "Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
-        "check if they are displayed in the autcomplete dropdown only if the framework filter is set accordingly",
-      () => {
-        const companyNameFinancialPrefix = "CompanyWithFinancial";
-        const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-        createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
-        checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "EuTaxonomyDataForFinancials");
-
-        const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
-        const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
-        createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
-          uploadEuTaxonomyDataForNonFinancials(companyId)
-        );
-        checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "EuTaxonomyDataForNonFinancials");
-      }
-    );
-  }
-);
-
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn();
@@ -260,3 +194,69 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
   });
 });
+
+describeIf(
+  "As a user, I expect the search functionality on the /companies page to adjust to the framework filters",
+  {
+    executionEnvironments: ["development"],
+    dataEnvironments: ["fakeFixtures"],
+  },
+  function () {
+    beforeEach(function () {
+      cy.ensureLoggedIn("data_uploader", "test");
+    });
+
+    it(
+      "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
+        "framework filter is set to that framework",
+      () => {
+        const companyName = "CompanyWithFinancialData123456XYZXYZ";
+        createCompanyAndGetId(companyName).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
+        cy.visit(`/companies?input=${companyName}`)
+          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+          .contains(companyName)
+          .should("exist");
+        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForFinancials`)
+          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+          .contains(companyName)
+          .should("exist");
+        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForNonFinancials`)
+          .get("div[class='col-12 text-left']")
+          .should("contain.text", "The resource you requested does not exist yet.");
+      }
+    );
+
+    const companyNameMarker = "Data987654321";
+
+    function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
+      cy.visit(`/companies?frameworks=${frameworkToFilterFor}`);
+      cy.intercept("**/api/companies*").as("searchCompany");
+      cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
+      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        cy.get(".p-autocomplete-item")
+          .eq(0)
+          .get("span[class='font-normal']")
+          .contains(companyNamePrefix)
+          .should("exist");
+      });
+    }
+
+    it(
+      "Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
+        "check if they are displayed in the autcomplete dropdown only if the framework filter is set accordingly",
+      () => {
+        const companyNameFinancialPrefix = "CompanyWithFinancial";
+        const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
+        createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
+        checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "EuTaxonomyDataForFinancials");
+
+        const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
+        const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
+        createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
+          uploadEuTaxonomyDataForNonFinancials(companyId)
+        );
+        checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "EuTaxonomyDataForNonFinancials");
+      }
+    );
+  }
+);
