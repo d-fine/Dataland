@@ -206,11 +206,13 @@ describeIf(
       cy.ensureLoggedIn("data_uploader", "test");
     });
 
+    const companyNameMarker = "Data987654321";
+
     it(
       "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
         "framework filter is set to that framework",
       () => {
-        const companyName = "CompanyWithFinancialData123456XYZXYZ";
+        const companyName = "CompanyWithFinancial" + companyNameMarker;
         createCompanyAndGetId(companyName).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
         cy.visit(`/companies?input=${companyName}`)
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
@@ -225,8 +227,6 @@ describeIf(
           .should("contain.text", "The resource you requested does not exist yet.");
       }
     );
-
-    const companyNameMarker = "Data987654321";
 
     function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
       cy.visit(`/companies?frameworks=${frameworkToFilterFor}`);
