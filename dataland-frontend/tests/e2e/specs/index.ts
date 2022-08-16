@@ -25,7 +25,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
-  require("./eu-taxonomy");
+  require("./eu-taxonomy-non-financials");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
