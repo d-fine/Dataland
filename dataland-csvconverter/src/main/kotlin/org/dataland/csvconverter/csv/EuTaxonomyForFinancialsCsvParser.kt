@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.FinancialServicesType
  */
 class EuTaxonomyForFinancialsCsvParser(
     private val commonFieldParser: EuTaxonomyCommonFieldParser
-    ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
+) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
     private val columnMappingEuTaxonomyForFinancials = mapOf(
         "financialServicesType" to "FS - company type",
@@ -37,7 +37,7 @@ class EuTaxonomyForFinancialsCsvParser(
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
         return commonFieldParser.getCompanyType(row) == "FS" &&
-                companyData.companyName != "Allianz SE"
+            companyData.companyName != "Allianz SE"
     }
 
     private fun buildEligibilityKpis(row: Map<String, String>): EuTaxonomyDataForFinancials.EligibilityKpis {
