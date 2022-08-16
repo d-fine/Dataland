@@ -200,16 +200,14 @@ describe(
         cy.intercept("**/api/companies/*").as("retrieveCompany");
         cy.intercept("**/api/data/eutaxonomy/financials/*").as("retrieveTaxonomyDataForFinancials");
         cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyDataForNonFinancials");
-        cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/frameworks/eutaxonomy`);
-        cy.get("h3").then(($body) => {
-          if ($body.text().includes("CapEx")) {
+        cy.visitAndCheckAppMount(`/companies/${companyIdList[3]}/frameworks/eutaxonomy`);
+        cy.get("span").then(($body) => {
+          if ($body.text().includes("ExposureIn percentage of the total assets")) {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
-              .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
+              .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
               .then(() => {
-                cy.get("h3").should("be.visible");
-                cy.get("h3").contains("Revenue");
-                cy.get("h3").contains("CapEx");
-                cy.get("h3").contains("OpEx");
+                cy.get("span").should("be.visible");
+                cy.get("span").contains("Exposure");
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");
@@ -217,10 +215,12 @@ describe(
               });
           } else {
             cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
-              .wait("@retrieveTaxonomyDataForFinancials", { timeout: 60 * 1000 })
+              .wait("@retrieveTaxonomyDataForNonFinancials", { timeout: 60 * 1000 })
               .then(() => {
-                cy.get("span").should("be.visible");
-                cy.get("span").contains("Exposure");
+                cy.get("h3").should("be.visible");
+                cy.get("h3").contains("Revenue");
+                cy.get("h3").contains("CapEx");
+                cy.get("h3").contains("OpEx");
                 cy.get("body").contains("Market Cap:");
                 cy.get("body").contains("Headquarter:");
                 cy.get("body").contains("Sector:");

@@ -1,18 +1,16 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.CompanyInformationCsvParser.Companion.companyInformationColumnMapping
-import org.dataland.csvconverter.csv.CsvUtils.NOT_AVAILABLE_STRING
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
-import org.dataland.csvconverter.csv.EuTaxonomyUtils.getAttestation
-import org.dataland.csvconverter.csv.EuTaxonomyUtils.getReportingObligation
+import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
 
 /**
  * This class contains the parsing logic for the eu-taxonomy-non-financials framework
  */
-class EuTaxonomyForNonFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
+class EuTaxonomyForNonFinancialsCsvParser(
+    private val commonFieldParser: EuTaxonomyCommonFieldParser
+) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
     private val columnMappingEuTaxonomyForNonFinancials = mapOf(
         "totalRevenue" to "Total Revenue EURmm",
@@ -27,10 +25,8 @@ class EuTaxonomyForNonFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataFor
         "companyType" to "IS/FS"
     )
 
-    override fun validateLine(row: Map<String, String>): Boolean {
-        // Skip all lines with financial companies or without market cap
-        return companyInformationColumnMapping.getCsvValue("companyType", row) !in listOf("FS", NOT_AVAILABLE_STRING) &&
-            companyInformationColumnMapping.getCsvValue("marketCap", row) != NOT_AVAILABLE_STRING
+    override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
+        return commonFieldParser.getCompanyType(row) == "IS"
     }
 
     /**
@@ -38,8 +34,8 @@ class EuTaxonomyForNonFinancialsCsvParser : CsvFrameworkParser<EuTaxonomyDataFor
      */
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
         return EuTaxonomyDataForNonFinancials(
-            reportObligation = getReportingObligation(row),
-            attestation = getAttestation(row),
+            reportObligation = commonFieldParser.getReportingObligation(row),
+            attestation = commonFieldParser.getAttestation(row),
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
             opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
             revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)

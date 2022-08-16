@@ -7,8 +7,7 @@ import java.math.BigDecimal
 import java.nio.charset.StandardCharsets
 
 /**
- * This object provides utility functions for parsing data from
- * CSV files in the Dataland context
+ * This object provides utility functions for parsing data from CSV files in the Dataland context
  */
 object CsvUtils {
 
@@ -56,7 +55,7 @@ object CsvUtils {
     /**
      * This function uses the backing map to extract a numeric property from a CSV row.
      * If the value represents a percentage, it gets scaled accordingly. All other values get scaled using the
-     * EURO_UNBIT_CONVERSION_FACTOR
+     * EURO_UNIT_CONVERSION_FACTOR
      */
     fun Map<String, String>.getNumericCsvValue(property: String, csvLineData: Map<String, String>): BigDecimal? {
         return if (getCsvValue(property, csvLineData).contains("%")) {

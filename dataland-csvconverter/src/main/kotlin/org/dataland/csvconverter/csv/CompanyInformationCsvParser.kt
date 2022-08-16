@@ -10,35 +10,31 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
- * This class is responsible for extracting basic comapny information
- * from a CSV row
+ * This class is responsible for extracting basic company information from a CSV row
  */
 class CompanyInformationCsvParser {
 
-    companion object {
-        val companyInformationColumnMapping = mapOf(
-            "companyName" to "Unternehmensname",
-            "headquarters" to "Headquarter",
-            "countryCode" to "Countrycode",
-            "sector" to "Sector",
-            "marketCap" to "Market Capitalization EURmm",
-            "reportingDateOfMarketCap" to "Market Capitalization Date",
-            "companyType" to "IS/FS",
-            IdentifierType.Isin.name to "ISIN",
-            IdentifierType.Lei.name to "LEI",
-            IdentifierType.PermId.name to "PermID",
-            StockIndex.PrimeStandard.name to "Prime Standard",
-            StockIndex.GeneralStandard.name to "General Standard",
-            StockIndex.Hdax.name to "HDAX",
-            StockIndex.Cdax.name to "CDAX",
-            StockIndex.Gex.name to "GEX",
-            StockIndex.Dax.name to "DAX",
-            StockIndex.Mdax.name to "MDAX",
-            StockIndex.Sdax.name to "SDAX",
-            StockIndex.TecDax.name to "TecDAX",
-            StockIndex.Dax50Esg.name to "DAX 50 ESG"
-        )
-    }
+    private val companyInformationColumnMapping = mapOf(
+        "companyName" to "Unternehmensname",
+        "headquarters" to "Headquarter",
+        "countryCode" to "Countrycode",
+        "sector" to "Sector",
+        "marketCap" to "Market Capitalization EURmm",
+        "reportingDateOfMarketCap" to "Market Capitalization Date",
+        IdentifierType.Isin.name to "ISIN",
+        IdentifierType.Lei.name to "LEI",
+        IdentifierType.PermId.name to "PermID",
+        StockIndex.PrimeStandard.name to "Prime Standard",
+        StockIndex.GeneralStandard.name to "General Standard",
+        StockIndex.Hdax.name to "HDAX",
+        StockIndex.Cdax.name to "CDAX",
+        StockIndex.Gex.name to "GEX",
+        StockIndex.Dax.name to "DAX",
+        StockIndex.Mdax.name to "MDAX",
+        StockIndex.Sdax.name to "SDAX",
+        StockIndex.TecDax.name to "TecDAX",
+        StockIndex.Dax50Esg.name to "DAX 50 ESG"
+    )
 
     /**
      * Method to build CompanyInformation from the read row in the csv file.
@@ -52,7 +48,10 @@ class CompanyInformationCsvParser {
                 "marketCap",
                 row,
                 CsvUtils.EURO_UNIT_CONVERSION_FACTOR
-            )!!,
+            ) ?: throw IllegalArgumentException(
+                "Could not parse market capitalisation for company \"${
+                companyInformationColumnMapping.getCsvValue("companyName", row)}\""
+            ),
             reportingDateOfMarketCap = LocalDate.parse(
                 companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")
