@@ -4,6 +4,8 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     "/companies-only-search",
     "/companies",
     "/companies/:companyID/frameworks/eutaxonomy",
+    "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
+    "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
   ];
 
   pages.forEach((page) => {
