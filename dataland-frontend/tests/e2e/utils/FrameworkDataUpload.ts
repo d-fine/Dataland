@@ -1,7 +1,7 @@
 export function fillEuTaxonomyFinancialsUploadFields(): void {
-  cy.get("input[name=financialServicesType]").select("Credit Institution");
-  cy.get("input[name=attestation]").select("Limited Assurance");
-  cy.get("input[name=reportingObligation]").select("Yes");
+  cy.get("select[name=financialServicesType]").select("Credit Institution");
+  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
   cy.get("input[name=taxonomyEligibleActivity]").type("0.5", { force: true });
   cy.get("input[name=derivatives]").type("0.1", { force: true });
   cy.get("input[name=banksAndIssuers]").type("0.3", { force: true });
@@ -11,8 +11,8 @@ export function fillEuTaxonomyFinancialsUploadFields(): void {
 }
 
 export function fillEuTaxonomyNonFinancialsUploadFields(): void {
-  cy.get("input[name=attestation]").select("Limited Assurance");
-  cy.get("input[name=reportingObligation]").select("Yes");
+  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
   for (const argument of ["capex", "opex", "revenue"]) {
     cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type("0.657");
     cy.get(`div[title=${argument}] input[name=totalAmount]`).type("120000000");
