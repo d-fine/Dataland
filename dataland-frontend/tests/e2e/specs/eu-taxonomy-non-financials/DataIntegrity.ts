@@ -1,5 +1,5 @@
 import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/CompanyUpload";
+import { createCompanyAndGetId } from "../../utils/CompanyUpload";
 
 const timeout = 120 * 1000;
 describeIf(
