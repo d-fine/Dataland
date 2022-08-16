@@ -48,7 +48,10 @@ class CompanyInformationCsvParser {
                 "marketCap",
                 row,
                 CsvUtils.EURO_UNIT_CONVERSION_FACTOR
-            )!!,
+            ) ?: throw IllegalArgumentException(
+                "Could not parse market capitalisation for company \"${
+                companyInformationColumnMapping.getCsvValue("companyName", row)}\""
+            ),
             reportingDateOfMarketCap = LocalDate.parse(
                 companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")

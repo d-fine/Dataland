@@ -72,6 +72,14 @@ class CsvToJsonConverterTest {
     }
 
     @Test
+    fun `missing market capitalisation throws exception`() {
+        checkThatProcessingFileThrowsErrorWithMessage(
+            "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingMarketCapNaError.csv",
+            "Could not parse market capitalisation for company"
+        )
+    }
+
+    @Test
     fun `assurance with incorrect input value throws exception`() {
         val expectedErrorMessage = "Could not determine attestation:"
         val filePath = "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingAssuranceError.csv"
