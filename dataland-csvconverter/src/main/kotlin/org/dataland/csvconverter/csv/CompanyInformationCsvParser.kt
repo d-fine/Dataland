@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.enums.company.StockIndex
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -44,14 +45,7 @@ class CompanyInformationCsvParser {
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
-            marketCap = companyInformationColumnMapping.getScaledCsvValue(
-                "marketCap",
-                row,
-                CsvUtils.EURO_UNIT_CONVERSION_FACTOR
-            ) ?: throw IllegalArgumentException(
-                "Could not parse market capitalisation for company \"${
-                companyInformationColumnMapping.getCsvValue("companyName", row)}\""
-            ),
+            marketCap = getMarketCap(row),
             reportingDateOfMarketCap = LocalDate.parse(
                 companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")
@@ -59,6 +53,17 @@ class CompanyInformationCsvParser {
             identifiers = getCompanyIdentifiers(row),
             indices = getStockIndices(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row)
+        )
+    }
+
+    private fun getMarketCap(csvLineData: Map<String, String>): BigDecimal {
+        return companyInformationColumnMapping.getScaledCsvValue(
+            "marketCap",
+            csvLineData,
+            CsvUtils.EURO_UNIT_CONVERSION_FACTOR
+        ) ?: throw IllegalArgumentException(
+            "Could not parse market capitalisation for company \"${
+            companyInformationColumnMapping.getCsvValue("companyName", csvLineData)}\""
         )
     }
 

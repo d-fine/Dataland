@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 
 /**
- * Defines the required functionalities for the Dataland data manager
+ * Defines the required functionalities for the Dataland company manager
  */
 interface CompanyManagerInterface {
 
