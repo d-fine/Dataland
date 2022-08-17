@@ -46,7 +46,11 @@
         </MarginWrapper>
       </div>
 
-      <FrameworkDataSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
+      <FrameworkDataSearchResults
+        v-if="showSearchResultsTable"
+        :data="resultsArray"
+        :currentFilteredFrameworks="currentFilteredFrameworks"
+      />
     </TheContent>
   </AuthenticationWrapper>
 </template>
