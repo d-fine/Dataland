@@ -11,7 +11,7 @@ export function fillEuTaxonomyFinancialsUploadFields(): void {
 }
 
 export function submitEuTaxonomyFinancialsUploadFormAndGetDataId(): Cypress.Chainable<string> {
-  cy.intercept("**/api/data/eutaxonomy/financials").as("postCompanyAssociatedData");
+  cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy
     .wait("@postCompanyAssociatedData")

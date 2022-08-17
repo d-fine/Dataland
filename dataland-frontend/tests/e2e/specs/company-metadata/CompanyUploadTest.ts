@@ -58,7 +58,7 @@ describeIf(
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
-          cy.intercept("/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
+          cy.intercept("/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
           cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy`);
         });
         cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 })
@@ -85,7 +85,7 @@ describeIf(
         cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
         cy.get('button[name="postEUData"]').click({ force: true });
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
-        cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
+        cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
         cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
           cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");

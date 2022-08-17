@@ -30,14 +30,14 @@ describeIf(
     ): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
       uploadFormFiller();
-      cy.intercept("**/api/data/eutaxonomy/nonfinancials").as("postTaxonomyData");
+      cy.intercept("**/api/data/eutaxonomy-non-financials").as("postTaxonomyData");
       cy.get('button[name="postEUData"]').click({ force: true });
       cy.wait("@postTaxonomyData", { timeout: timeout }).then(() => {
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.get("span[title=dataId]").then(() => {
           cy.get("span[title=companyId]").then(($companyID) => {
             const companyID = $companyID.text();
-            cy.intercept("**/api/data/eutaxonomy/nonfinancials/*").as("retrieveTaxonomyData");
+            cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy`);
             cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
               euTaxonomyPageVerifier();

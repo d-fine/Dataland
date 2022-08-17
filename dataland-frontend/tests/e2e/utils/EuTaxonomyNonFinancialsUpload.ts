@@ -10,7 +10,7 @@ export function fillEuTaxonomyNonFinancialsUploadFields(): void {
 export function uploadEuTaxonomyDataForNonFinancials(companyId: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
   fillEuTaxonomyNonFinancialsUploadFields();
-  cy.intercept("**/api/data/eutaxonomy/nonfinancials").as("postCompanyAssociatedData");
+  cy.intercept("**/api/data/eutaxonomy-non-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy
     .wait("@postCompanyAssociatedData")
