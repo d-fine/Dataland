@@ -2,8 +2,8 @@ package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.model.EuTaxonomyDetailsPerCashFlowType
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
 
 /**
  * This class contains the parsing logic for the eu-taxonomy-non-financials framework

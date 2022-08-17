@@ -24,9 +24,10 @@
         <FormKit type="group" name="data" label="data">
           <FormKit
             type="select"
-            name="financialServicesType"
+            name="financialServicesTypes"
+            multiple
             validation="required"
-            label="Financial Services Type"
+            label="Financial Services Types"
             placeholder="Please choose"
             :inner-class="innerClass"
             :input-class="inputClass"
@@ -35,6 +36,7 @@
               InsuranceOrReinsurance: 'Insurance or Reinsurance',
               AssetManagement: 'Asset Management',
             }"
+            help="Select all that apply by holding command (macOS) or control (PC)."
           />
           <FormKit
             type="select"
@@ -68,39 +70,48 @@
             :options="['Yes', 'No']"
           />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
-            <h4>Eligibility KPIs</h4>
-            <FormKit
-              type="text"
-              name="taxonomyEligibleActivity"
-              validation="number"
-              label="Taxonomy Eligible Activity"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
-            <FormKit
-              type="text"
-              name="derivatives"
-              validation="number"
-              label="Derivatives"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
-            <FormKit
-              type="text"
-              name="banksAndIssuers"
-              validation="number"
-              label="Banks and Issuers"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
-            <FormKit
-              type="text"
-              name="investmentNonNfrd"
-              validation="number"
-              label="Investment non Nfrd"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
+            <template
+              v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement']"
+              :key="fsType"
+            >
+              <div :name="fsType">
+                <FormKit type="group" :name="fsType">
+                  <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
+                  <FormKit
+                    type="text"
+                    name="taxonomyEligibleActivity"
+                    validation="number"
+                    label="Taxonomy Eligible Activity"
+                    :inner-class="innerClass"
+                    :input-class="inputClass"
+                  />
+                  <FormKit
+                    type="text"
+                    name="derivatives"
+                    validation="number"
+                    label="Derivatives"
+                    :inner-class="innerClass"
+                    :input-class="inputClass"
+                  />
+                  <FormKit
+                    type="text"
+                    name="banksAndIssuers"
+                    validation="number"
+                    label="Banks and Issuers"
+                    :inner-class="innerClass"
+                    :input-class="inputClass"
+                  />
+                  <FormKit
+                    type="text"
+                    name="investmentNonNfrd"
+                    validation="number"
+                    label="Investment non Nfrd"
+                    :inner-class="innerClass"
+                    :input-class="inputClass"
+                  />
+                </FormKit>
+              </div>
+            </template>
           </FormKit>
           <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
             <h4>Credit Institution KPIs</h4>
@@ -159,6 +170,7 @@
 import SuccessUpload from "@/components/messages/SuccessUpload";
 import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload";
+import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 
@@ -180,6 +192,7 @@ export default {
     messageCount: 0,
     formInputsModel: {},
     postEuTaxonomyDataForFinancialsResponse: null,
+    humanizeString: humanizeString,
   }),
   props: {
     companyID: {

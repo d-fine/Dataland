@@ -1,9 +1,10 @@
 import { faker } from "@faker-js/faker";
 import {
   EuTaxonomyDataForFinancials,
+  EligibilityKpis,
   EuTaxonomyDataForFinancialsAttestationEnum,
   EuTaxonomyDataForFinancialsReportingObligationEnum,
-  EuTaxonomyDataForFinancialsFinancialServicesTypeEnum,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "../../../build/clients/backend/api";
 
 import { convertToPercentageString, getAttestation, getCompanyType } from "./CsvUtils";
@@ -11,8 +12,6 @@ import { FixtureData } from "./GenerateFakeFixtures";
 import { getCsvCompanyMapping } from "./CompanyFixtures";
 const { parse } = require("json2csv");
 
-const maxEuro = 1000000;
-const minEuro = 50000;
 const resolution = 0.0001;
 
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
@@ -20,19 +19,15 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   const reportingObligation = faker.helpers.arrayElement(
     Object.values(EuTaxonomyDataForFinancialsReportingObligationEnum)
   );
-  const financialServicesType = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypeEnum)
+  const financialServicesTypes = faker.helpers.arrayElements(
+    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
   );
-  const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution });
 
   let tradingPortfolioAndInterbankLoans = undefined;
   let interbankLoans = undefined;
   let tradingPortfolio = undefined;
   let taxonomyEligibleNonLifeInsuranceActivities = undefined;
-  if (financialServicesType == "CreditInstitution") {
+  if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
     const singleOrDualField = Math.random();
     if (singleOrDualField < 0.5) {
       tradingPortfolioAndInterbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
@@ -40,19 +35,17 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
       interbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
       tradingPortfolio = faker.datatype.float({ min: 0, max: 1, precision: resolution });
     }
-  } else if (financialServicesType == "InsuranceOrReinsurance") {
+  } else if (financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0) {
     taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   }
+
+  const eligibilityKpis = Object.fromEntries(financialServicesTypes.map((it) => [it, generateEligibilityKpis()]));
+
   return {
     reportingObligation: reportingObligation,
     attestation: attestation,
-    financialServicesType: financialServicesType,
-    eligibilityKpis: {
-      banksAndIssuers: banksAndIssuers,
-      derivatives: eligibleDerivatives,
-      investmentNonNfrd: nonNfrd,
-      taxonomyEligibleActivity: taxonomyEligibleEconomicActivity,
-    },
+    financialServicesTypes: financialServicesTypes,
+    eligibilityKpis: eligibilityKpis,
     creditInstitutionKpis: {
       interbankLoans: interbankLoans,
       tradingPortfolio: tradingPortfolio,
@@ -64,32 +57,54 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   };
 }
 
+export function generateEligibilityKpis(): EligibilityKpis {
+  const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+
+  return {
+    banksAndIssuers: banksAndIssuers,
+    derivatives: eligibleDerivatives,
+    investmentNonNfrd: nonNfrd,
+    taxonomyEligibleActivity: taxonomyEligibleEconomicActivity,
+  };
+}
+
+export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum) {
+  return [
+    {
+      label: `Exposures to taxonomy-eligible economic activities ${getCompanyType(type)}`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
+        convertToPercentageString(row.t.eligibilityKpis![type]?.taxonomyEligibleActivity),
+    },
+    {
+      label: `Exposures to derivatives ${getCompanyType(type)}`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
+        convertToPercentageString(row.t.eligibilityKpis![type]?.derivatives),
+    },
+    {
+      label: `Exposures to central governments, central banks, supranational issuers ${getCompanyType(type)}`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
+        convertToPercentageString(row.t.eligibilityKpis![type]?.banksAndIssuers),
+    },
+    {
+      label: `Exposures to non-NFRD entities ${getCompanyType(type)}`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
+        convertToPercentageString(row.t.eligibilityKpis![type]?.investmentNonNfrd),
+    },
+  ];
+}
+
 export function generateCSVDataForFinancials(
   companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
 ) {
   const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
-      {
-        label: "Exposures to taxonomy-eligible economic activities",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(row.t.eligibilityKpis?.taxonomyEligibleActivity),
-      },
-      {
-        label: "Exposures to derivatives",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(row.t.eligibilityKpis?.derivatives),
-      },
-      {
-        label: "Exposures to central governments, central banks, supranational issuers",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(row.t.eligibilityKpis?.banksAndIssuers),
-      },
-      {
-        label: "Exposures to non-NFRD entities",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(row.t.eligibilityKpis?.investmentNonNfrd),
-      },
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
       {
         label: "Trading portfolio & on demand interbank loans",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
@@ -114,7 +129,8 @@ export function generateCSVDataForFinancials(
       { label: "NFRD mandatory", value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportingObligation },
       {
         label: "FS - company type",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) => getCompanyType(row.t.financialServicesType),
+        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
+          row.t.financialServicesTypes.map((it) => getCompanyType(it)).join(", "),
       },
       {
         label: "Assurance",

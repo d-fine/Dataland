@@ -18,89 +18,99 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         />
       </div>
-      <div class="col-12 text-left pb-3">
-        <span class="font-medium text-xl">Exposure</span>
-        <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          name="taxonomyEligibleActivity"
-          title="Taxonomy-eligible economic activity"
-          :percent="dataSet.eligibilityKpis.taxonomyEligibleActivity"
-        />
-      </div>
-      <div class="col-6">
-        <TaxoCard
-          name="derivatives"
-          title="Derivatives"
-          taxonomy-kind=""
-          :percent="dataSet.eligibilityKpis.derivatives"
-        />
-      </div>
-      <div class="col-6">
-        <TaxoCard name="banksAndIssuers" title="Banks and issuers" :percent="dataSet.eligibilityKpis.banksAndIssuers" />
-      </div>
-      <div class="col-6">
-        <TaxoCard name="investmentNonNfrd" title="Non-NFRD" :percent="dataSet.eligibilityKpis.investmentNonNfrd" />
-      </div>
-      <template v-if="dataSet.financialServicesType === 'CreditInstitution'">
+      <template v-for="fsType in dataSet.financialServicesTypes" :key="fsType">
         <div class="col-12 text-left pb-3">
-          <span class="font-medium text-xl">Credit Institution KPIs</span>
-          <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
-        </div>
-        <div
-          class="col-6"
-          v-if="
-            dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans ||
-            (!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans)
-          "
-        >
-          <TaxoCard
-            title="Trading portfolio & on demand interbank loans"
-            name="tradingPortfolioAndOnDemandInterbankLoans"
-            taxonomy-kind=""
-            :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans"
-          />
-        </div>
-        <div
-          class="col-6"
-          v-if="
-            dataSet.creditInstitutionKpis.tradingPortfolio ||
-            !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
-          "
-        >
-          <TaxoCard
-            name="tradingPortfolio"
-            title="Trading portfolio"
-            :percent="dataSet.creditInstitutionKpis.tradingPortfolio"
-          />
-        </div>
-        <div
-          class="col-6"
-          v-if="
-            dataSet.creditInstitutionKpis.interbankLoans ||
-            !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
-          "
-        >
-          <TaxoCard
-            name="onDemandInterbankLoans"
-            title="On demand interbank loans"
-            :percent="dataSet.creditInstitutionKpis.interbankLoans"
-          />
-        </div>
-      </template>
-      <template v-if="dataSet.financialServicesType === 'InsuranceOrReinsurance'">
-        <div class="col-12 text-left pb-0">
-          <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
+          <span class="font-medium text-xl">Exposure for {{ getSectionHeading(fsType) }}</span>
           <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
         </div>
         <div class="col-6">
           <TaxoCard
-            name="taxonomyEligibleNonLifeInsuranceActivities"
-            title="Taxonomy-eligible non-life insurance economic activities"
-            :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
+            :name="`taxonomyEligibleActivity${fsType}`"
+            title="Taxonomy-eligible economic activity"
+            :percent="dataSet.eligibilityKpis[fsType].taxonomyEligibleActivity"
           />
         </div>
+        <div class="col-6">
+          <TaxoCard
+            :name="`derivatives${fsType}`"
+            title="Derivatives"
+            taxonomy-kind=""
+            :percent="dataSet.eligibilityKpis[fsType].derivatives"
+          />
+        </div>
+        <div class="col-6">
+          <TaxoCard
+            :name="`banksAndIssuers${fsType}`"
+            title="Banks and issuers"
+            :percent="dataSet.eligibilityKpis[fsType].banksAndIssuers"
+          />
+        </div>
+        <div class="col-6">
+          <TaxoCard
+            :name="`investmentNonNfrd${fsType}`"
+            title="Non-NFRD"
+            :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrd"
+          />
+        </div>
+        <template v-if="fsType === 'CreditInstitution'">
+          <div class="col-12 text-left pb-3">
+            <span class="font-medium text-xl">Credit Institution KPIs</span>
+            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          </div>
+          <div
+            class="col-6"
+            v-if="
+              dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans ||
+              (!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans)
+            "
+          >
+            <TaxoCard
+              title="Trading portfolio & on demand interbank loans"
+              name="tradingPortfolioAndOnDemandInterbankLoans"
+              taxonomy-kind=""
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans"
+            />
+          </div>
+          <div
+            class="col-6"
+            v-if="
+              dataSet.creditInstitutionKpis.tradingPortfolio ||
+              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+            "
+          >
+            <TaxoCard
+              name="tradingPortfolio"
+              title="Trading portfolio"
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolio"
+            />
+          </div>
+          <div
+            class="col-6"
+            v-if="
+              dataSet.creditInstitutionKpis.interbankLoans ||
+              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+            "
+          >
+            <TaxoCard
+              name="onDemandInterbankLoans"
+              title="On demand interbank loans"
+              :percent="dataSet.creditInstitutionKpis.interbankLoans"
+            />
+          </div>
+        </template>
+        <template v-if="fsType === 'InsuranceOrReinsurance'">
+          <div class="col-12 text-left pb-0">
+            <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
+            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          </div>
+          <div class="col-6">
+            <TaxoCard
+              name="taxonomyEligibleNonLifeInsuranceActivities"
+              title="Taxonomy-eligible non-life insurance economic activities"
+              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
+            />
+          </div>
+        </template>
       </template>
     </div>
   </div>
@@ -144,6 +154,14 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    getSectionHeading(type) {
+      const mapping = {
+        CreditInstitution: "Credit Institutions",
+        AssetManagement: "Asset Managers",
+        InsuranceOrReinsurance: "Insurance and Reinsurance companies",
+      };
+      return mapping[type];
     },
   },
 };

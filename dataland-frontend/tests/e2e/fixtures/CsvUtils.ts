@@ -1,4 +1,4 @@
-import { EuTaxonomyDataForFinancialsFinancialServicesTypeEnum } from "../../../build/clients/backend/api";
+import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from "../../../build/clients/backend/api";
 
 export function getAttestation(attestation: string) {
   if (attestation === "LimitedAssurance") {
@@ -10,15 +10,16 @@ export function getAttestation(attestation: string) {
   }
 }
 
-export function getCompanyType(type: EuTaxonomyDataForFinancialsFinancialServicesTypeEnum): string {
+export function getCompanyType(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): string {
   switch (type) {
-    case EuTaxonomyDataForFinancialsFinancialServicesTypeEnum.AssetManagement:
+    case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement:
       return "Asset Management Company";
-    case EuTaxonomyDataForFinancialsFinancialServicesTypeEnum.CreditInstitution:
+    case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution:
       return "Credit Institution";
-    case EuTaxonomyDataForFinancialsFinancialServicesTypeEnum.InsuranceOrReinsurance:
+    case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance:
       return "Insurance/Reinsurance";
   }
+  throw Error(`Unknown FS type ${type}`);
 }
 
 export function decimalSeparatorConverter(value: number | undefined): string {
