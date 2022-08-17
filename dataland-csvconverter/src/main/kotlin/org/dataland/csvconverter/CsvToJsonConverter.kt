@@ -7,8 +7,8 @@ import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
 import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
 import org.dataland.csvconverter.json.JsonConfig
-import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.utils.CompanyInformationWithData
 import java.io.File
 

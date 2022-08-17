@@ -1,11 +1,11 @@
 export function fillEuTaxonomyFinancialsUploadFields(): void {
-  cy.get("select[name=financialServicesType]").select("Credit Institution");
+  cy.get("select[name=financialServicesTypes]").select("Credit Institution");
   cy.get("select[name=attestation]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
-  cy.get("input[name=taxonomyEligibleActivity]").type("0.5", { force: true });
-  cy.get("input[name=derivatives]").type("0.1", { force: true });
-  cy.get("input[name=banksAndIssuers]").type("0.3", { force: true });
-  cy.get("input[name=investmentNonNfrd]").type("0.25", { force: true });
+  cy.get('div[name="CreditInstitution"]').find("input[name=taxonomyEligibleActivity]").type("0.5", { force: true });
+  cy.get('div[name="CreditInstitution"]').find("input[name=derivatives]").type("0.1", { force: true });
+  cy.get('div[name="CreditInstitution"]').find("input[name=banksAndIssuers]").type("0.3", { force: true });
+  cy.get('div[name="CreditInstitution"]').find("input[name=investmentNonNfrd]").type("0.25", { force: true });
   cy.get("input[name=tradingPortfolio]").type("0.6", { force: true });
   cy.get("input[name=interbankLoans]").type("0.4", { force: true });
 }

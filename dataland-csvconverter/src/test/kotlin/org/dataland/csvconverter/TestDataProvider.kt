@@ -2,8 +2,8 @@ package org.dataland.csvconverter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.model.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.utils.CompanyInformationWithData
 import java.io.File
 

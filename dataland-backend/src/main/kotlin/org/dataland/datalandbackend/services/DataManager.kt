@@ -6,10 +6,10 @@ import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
