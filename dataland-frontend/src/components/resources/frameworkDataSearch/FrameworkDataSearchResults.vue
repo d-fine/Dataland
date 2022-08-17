@@ -49,7 +49,7 @@
               {{ data.permId ? data.permId : "Not available" }}
             </template>
           </Column>
-          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2"> </Column>
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
           <Column
             field="companyInformation.marketCap"
             header="MARKET CAP"
@@ -69,9 +69,14 @@
           <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="{ data }">
               <router-link
-                :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
+                :to="
+                  '/companies/' +
+                  data.companyId +
+                  '/frameworks/' +
+                  getRouterLinkTargetFramework(data.dataRegisteredByDataland)
+                "
                 class="text-primary no-underline font-bold"
-                ><span> VIEW EU TAXONOMY DATA</span> <span class="ml-3">></span>
+                ><span> VIEW</span> <span class="ml-3">></span>
               </router-link>
             </template>
           </Column>
@@ -103,10 +108,17 @@ export default {
       type: Object,
       default: null,
     },
+    currentFilteredFrameworks: {
+      type: Array,
+      default: () => [],
+    },
     processed: {
       type: Boolean,
       default: false,
     },
+  },
+  mounted() {
+    console.log(this.data);
   },
   methods: {
     orderOfMagnitudeSuffix(value) {
@@ -119,8 +131,14 @@ export default {
       window.scrollTo(0, 0);
     },
     goToData(event) {
-      const company = event.data.companyId;
-      this.$router.push(`/companies/${company}/frameworks/eutaxonomy`);
+      const companyId = event.data.companyId;
+      this.$router.push(`/companies/${companyId}/frameworks/` + this.getRouterLinkTargetFramework(companyId));
+    },
+    getRouterLinkTargetFramework(dataRegisteredByDataland) {
+      // check ob taxonomy data set vorhanden, wenn nicht, zeig irgendwas
+      // dataRegisteredByDataland.filter ( dataType.startWith(EutTaxonomyFor) ) => kein Ergebnis
+      // return irgendeind dataType aus dataRegisteredByDataland
+      return "eutaxonomy";
     },
   },
 };
