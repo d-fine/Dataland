@@ -125,7 +125,7 @@ export default {
       this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
     getRouterLinkTargetFrameworkInt(companyData) {
-      return getRouterLinkTargetFramework(companyData, this.currentFilteredFrameworks);
+      return getRouterLinkTargetFramework(companyData);
     },
   },
 };

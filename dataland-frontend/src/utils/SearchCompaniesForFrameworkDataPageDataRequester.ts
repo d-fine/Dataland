@@ -84,39 +84,24 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   let mappedResponse: object[] = [];
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(searchString, stockIndex, onlyCompanyNames);
+    const response = await companyDataControllerApi.getCompanies(
+      searchString,
+      new Set([stockIndex]),
+      new Set(frameworksToFilter),
+      onlyCompanyNames
+    );
     const responseData: Array<StoredCompany> = response.data;
-    let storedCompaniesToMapToPage;
-    if (frameworksToFilter && frameworksToFilter.length > 0) {
-      storedCompaniesToMapToPage = responseData.filter(
-        (storedCompany) =>
-          storedCompany.dataRegisteredByDataland.filter((dataMetaInfo) =>
-            frameworksToFilter.includes(dataMetaInfo.dataType)
-          ).length > 0
-      );
-    } else {
-      storedCompaniesToMapToPage = responseData;
-    }
-    mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(storedCompaniesToMapToPage);
+    mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {
     console.error(error);
   }
   return mappedResponse;
 }
 
-export function getRouterLinkTargetFramework(
-  companyData: DataSearchStoredCompany,
-  currentFilteredFrameworks: Array<string>
-): string {
+export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
   const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
   const companyId = companyData.companyId;
   if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
-  const availableFrameworks: Set<string> = new Set(dataRegisteredByDataland.map((it) => it.dataType));
-  if (currentFilteredFrameworks.length === 0) {
-    const targetData = dataRegisteredByDataland[0];
-    return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetData.dataType)}`;
-  } else {
-    const targetFramework = currentFilteredFrameworks.filter((it) => availableFrameworks.has(it))[0];
-    return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetFramework)}`;
-  }
+  const targetData = dataRegisteredByDataland[0];
+  return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetData.dataType)}`;
 }

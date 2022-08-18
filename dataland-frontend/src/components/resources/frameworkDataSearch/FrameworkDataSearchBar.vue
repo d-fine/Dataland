@@ -163,7 +163,7 @@ export default {
       this.loading = false;
     },
     getRouterLinkTargetFrameworkInt(companyData) {
-      return getRouterLinkTargetFramework(companyData, this.frameworksToFilterFor);
+      return getRouterLinkTargetFramework(companyData);
     },
   },
 

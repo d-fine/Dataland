@@ -116,14 +116,14 @@ class DataManager(
         }
 
         for (index in indices) {
-            val filteredCompanies = companyManager.searchCompaniesByIndex(index).filter {
+            /*val filteredCompanies = companyManager.searchCompaniesByIndex(index).filter {
                 it.dataRegisteredByDataland.any { data -> data.dataType == "EuTaxonomyDataForNonFinancials" }
             }
 
             if (filteredCompanies.isEmpty()) {
                 continue
             }
-            updateGreenAssetRatioForNonFinancialsOnIndexLevel(index, filteredCompanies)
+            updateGreenAssetRatioForNonFinancialsOnIndexLevel(index, filteredCompanies)*/
         }
         return greenAssetRatiosForNonFinancials
     }
