@@ -22,16 +22,16 @@ interface CompanyManagerInterface {
      * Method to search for companies matching the company name or identifier
      * @param searchString string used for substring matching against the company name and/or identifiers
      * @param onlyCompanyNames boolean determining if the search should be solely against the company names
+     * @param dataTypeFilter if not empty, return only companies that have data reported for one of the specified dataTypes
+     * @param stockIndexFilter if not empty, return only companies that are part of one of the specified stock indices
      * @return list of all matching companies in Dataland
      */
-    fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany>
-
-    /**
-     * Method to search for companies in Dataland that are contained in the specified stock index
-     * @param selectedIndex string used to filter against a stock index
-     * @return list of all matching companies in Dataland
-     */
-    fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany>
+    fun searchCompanies(
+        searchString: String,
+        onlyCompanyNames: Boolean,
+        dataTypeFilter: Set<String>,
+        stockIndexFilter: Set<StockIndex>
+    ): List<StoredCompany>
 
     /**
      * Method to retrieve information about a specific company

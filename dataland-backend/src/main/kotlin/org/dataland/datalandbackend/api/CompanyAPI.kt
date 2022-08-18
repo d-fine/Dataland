@@ -69,11 +69,13 @@ interface CompanyAPI {
      * @param searchString string used for substring matching
      * @param selectedIndex StockIndex Enum used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
+     * @param dataTypes If set, this function only returns companies that have data for the specified dataTypes
      * @return information about all companies matching the search criteria
      */
     fun getCompanies(
         @RequestParam searchString: String? = null,
-        @RequestParam selectedIndex: StockIndex? = null,
+        @RequestParam stockIndices: Set<StockIndex>? = null,
+        @RequestParam dataTypes: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false
     ):
         ResponseEntity<List<StoredCompany>>

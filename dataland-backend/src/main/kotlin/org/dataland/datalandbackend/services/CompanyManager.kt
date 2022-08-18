@@ -45,29 +45,42 @@ class CompanyManager : CompanyManagerInterface {
         return companyDataPerCompanyId[companyId]!!
     }
 
-    override fun searchCompanies(searchString: String, onlyCompanyNames: Boolean): List<StoredCompany> {
-        val allCompanies = companyDataPerCompanyId.values.toList()
+    override fun searchCompanies(
+        searchString: String,
+        onlyCompanyNames: Boolean,
+        dataTypeFilter: Set<String>,
+        stockIndexFilter: Set<StockIndex>
+    ): List<StoredCompany> {
+        var companies = companyDataPerCompanyId.values.toList()
 
-        return if (searchString == "") {
-            allCompanies
-        } else if (onlyCompanyNames) {
-            filterCompaniesByName(searchString, allCompanies)
+        if (onlyCompanyNames) {
+            companies = filterCompaniesByNameOnly(searchString, companies)
         } else {
-            (
-                filterCompaniesByName(searchString, allCompanies) +
-                    filterCompaniesByIdentifier(searchString, allCompanies)
-                ).distinct()
+            companies = filterCompaniesByNameAndIdentifier(searchString, companies)
         }
+
+        companies = filterCompaniesByStockIndices(stockIndexFilter, companies)
+        companies = filterCompaniesByDataTypes(dataTypeFilter, companies)
+
+        return companies
     }
 
-    private fun filterCompaniesByName(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByNameAndIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+        if (searchString == "") return companies
         return (
-            companies.filter { it.companyInformation.companyName.startsWith(searchString, true) } +
-                companies.filter { it.companyInformation.companyName.contains(searchString, true) }
+            filterCompaniesByNameOnly(searchString, companies) +
+                filterCompaniesByIdentifier(searchString, companies)
+            ).distinct()
+    }
+    private fun filterCompaniesByNameOnly(name: String, companies: List<StoredCompany>): List<StoredCompany> {
+        return (
+            companies.filter { it.companyInformation.companyName.startsWith(name, true) } +
+                companies.filter { it.companyInformation.companyName.contains(name, true) }
             ).distinct()
     }
 
     private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+        if (searchString == "") return companies
         return companies.filter {
             it.companyInformation.identifiers.any { identifier ->
                 identifier.identifierValue.contains(searchString, true)
@@ -75,9 +88,22 @@ class CompanyManager : CompanyManagerInterface {
         }
     }
 
-    override fun searchCompaniesByIndex(selectedIndex: StockIndex): List<StoredCompany> {
-        return companyDataPerCompanyId.values.filter {
-            it.companyInformation.indices.any { index -> index == selectedIndex }
+    private fun filterCompaniesByStockIndices(indices: Set<StockIndex>, companies: List<StoredCompany>): List<StoredCompany> {
+        if (indices.isEmpty()) return companies
+        return companies.filter {
+            it.companyInformation.indices.any { index -> indices.contains(index) }
+        }
+    }
+
+    private fun filterCompaniesByDataTypes(dataTypes: Set<String>, companies: List<StoredCompany>): List<StoredCompany> {
+        if (dataTypes.isEmpty()) return companies
+        return companies.map {
+            company ->
+            company.copy(
+                dataRegisteredByDataland = company.dataRegisteredByDataland.filter { dataTypes.contains(it.dataType) }.toMutableList()
+            )
+        }.filter {
+            it.dataRegisteredByDataland.isNotEmpty()
         }
     }
 

@@ -29,19 +29,22 @@ class CompanyDataController(
 
     override fun getCompanies(
         searchString: String?,
-        selectedIndex: StockIndex?,
+        stockIndices: Set<StockIndex>?,
+        dataTypes: Set<String>?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
-        return if (selectedIndex == null) {
-            logger.info(
-                "Received a request to get companies with " +
-                    "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames'"
+        logger.info(
+            "Received a request to get companies with " +
+                "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames', dataTypes='$dataTypes', "
+        )
+        return ResponseEntity.ok(
+            companyManager.searchCompanies(
+                searchString ?: "",
+                onlyCompanyNames,
+                dataTypes ?: setOf(),
+                stockIndices ?: setOf()
             )
-            ResponseEntity.ok(companyManager.searchCompanies(searchString ?: "", onlyCompanyNames))
-        } else {
-            logger.info("Received a request to get companies by stock index '$selectedIndex'")
-            ResponseEntity.ok(companyManager.searchCompaniesByIndex(selectedIndex))
-        }
+        )
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
