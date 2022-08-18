@@ -75,7 +75,10 @@
 <script>
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
-import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {
+  getCompanyDataForFrameworkDataSearchPage,
+  getRouterLinkTargetFramework,
+} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default {
   name: "FrameworkDataSearchBar",
@@ -129,7 +132,7 @@ export default {
     },
 
     handleItemSelect(event) {
-      this.$router.push(`/companies/${event.value.companyId}/frameworks/eutaxonomy`);
+      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
     },
     handleKeyupEnter() {
       this.queryCompany(this.currentInput);
@@ -158,6 +161,9 @@ export default {
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       this.loading = false;
+    },
+    getRouterLinkTargetFrameworkInt(companyData) {
+      return getRouterLinkTargetFramework(companyData, this.frameworksToFilterFor);
     },
   },
 

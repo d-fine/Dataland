@@ -68,14 +68,7 @@
           </Column>
           <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="{ data }">
-              <router-link
-                :to="
-                  '/companies/' +
-                  data.companyId +
-                  '/frameworks/' +
-                  getRouterLinkTargetFramework(data.dataRegisteredByDataland)
-                "
-                class="text-primary no-underline font-bold"
+              <router-link :to="getRouterLinkTargetFrameworkInt(data)" class="text-primary no-underline font-bold"
                 ><span> VIEW</span> <span class="ml-3">></span>
               </router-link>
             </template>
@@ -96,6 +89,7 @@ import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
+import { getRouterLinkTargetFramework } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default {
   name: "FrameworkDataSearchResults",
@@ -117,9 +111,6 @@ export default {
       default: false,
     },
   },
-  mounted() {
-    console.log(this.data);
-  },
   methods: {
     orderOfMagnitudeSuffix(value) {
       return convertCurrencyNumbersToNotationWithLetters(value, 2) + " €";
@@ -131,14 +122,10 @@ export default {
       window.scrollTo(0, 0);
     },
     goToData(event) {
-      const companyId = event.data.companyId;
-      this.$router.push(`/companies/${companyId}/frameworks/` + this.getRouterLinkTargetFramework(companyId));
+      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
-    getRouterLinkTargetFramework(dataRegisteredByDataland) {
-      // check ob taxonomy data set vorhanden, wenn nicht, zeig irgendwas
-      // dataRegisteredByDataland.filter ( dataType.startWith(EutTaxonomyFor) ) => kein Ergebnis
-      // return irgendeind dataType aus dataRegisteredByDataland
-      return "eutaxonomy";
+    getRouterLinkTargetFrameworkInt(companyData) {
+      return getRouterLinkTargetFramework(companyData, this.currentFilteredFrameworks);
     },
   },
 };

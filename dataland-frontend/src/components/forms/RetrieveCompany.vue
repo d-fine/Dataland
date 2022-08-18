@@ -26,16 +26,6 @@
           <Column field="companyInformation.companyName" header="COMPANY" :sortable="true" class="surface-0"> </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="surface-0"> </Column>
           <Column field="companyInformation.marketCap" header="MARKET CAP" :sortable="true" class="surface-0"> </Column>
-          <Column field="companyId" header="" class="surface-0">
-            <template #body="{ data }">
-              <router-link
-                :to="'/companies/' + data.companyId + '/frameworks/eutaxonomy'"
-                class="text-primary no-underline font-bold"
-              >
-                <span> VIEW EU TAXONOMY DATA</span> <span class="ml-3">></span></router-link
-              >
-            </template>
-          </Column>
         </DataTable>
         <p v-else>
           The resource you requested does not exist yet. You can create it:

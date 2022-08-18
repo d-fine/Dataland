@@ -100,7 +100,7 @@ describe(
               .then((response) => response.json())
               .then((companyUploadResponseJson) => {
                 uploadSingleElementWithRetries(
-                  "data/eutaxonomy/nonfinancials",
+                  "data/eutaxonomy-non-financials",
                   {
                     companyId: companyUploadResponseJson.companyId,
                     data: element.t,
@@ -115,7 +115,7 @@ describe(
               .then((response) => response.json())
               .then((json) => {
                 uploadSingleElementWithRetries(
-                  "data/eutaxonomy/financials",
+                  "data/eutaxonomy-financials",
                   {
                     companyId: json.companyId,
                     data: element.t,
@@ -186,7 +186,7 @@ describe(
       cy.intercept("**/api/companies*").as("retrieveCompany");
       cy.get("button[name=getCompanies]").click();
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
-        cy.get("td").contains("VIEW").contains("a", "VIEW").click().url().should("include", "/companies/");
+        cy.get("td").contains(companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName);
       });
     });
 

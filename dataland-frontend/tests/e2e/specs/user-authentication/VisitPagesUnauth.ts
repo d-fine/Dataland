@@ -3,7 +3,8 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     "/companies/upload",
     "/companies-only-search",
     "/companies",
-    "/companies/:companyID/frameworks/eutaxonomy",
+    "/companies/:companyID/frameworks/eutaxonomy-financials",
+    "/companies/:companyID/frameworks/eutaxonomy-non-financials",
     "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
     "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
   ];
