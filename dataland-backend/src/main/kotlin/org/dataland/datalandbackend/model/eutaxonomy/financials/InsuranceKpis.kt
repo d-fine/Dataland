@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * KPIs for Insurance / Reinsurance companies for the EuTaxonomyForFinancials Framework
+ * KPIs for Insurance / Reinsurance companies for the EuTaxonomyForFinancials framework
  */
 data class InsuranceKpis(
     @field:JsonProperty("taxonomyEligibleNonLifeInsuranceActivities")

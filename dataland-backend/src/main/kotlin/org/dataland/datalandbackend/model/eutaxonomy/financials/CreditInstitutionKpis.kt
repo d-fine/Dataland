@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * KPIs for credit institutions for the EuTaxonomyForFinancials Framework
+ * KPIs for credit institutions for the EuTaxonomyForFinancials framework
  */
 data class CreditInstitutionKpis(
     @field:JsonProperty("tradingPortfolio")

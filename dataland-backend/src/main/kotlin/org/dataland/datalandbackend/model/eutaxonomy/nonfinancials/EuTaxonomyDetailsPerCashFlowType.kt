@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Figures to be filled out for some of the EU-Taxonomy questionnaire fields
+ * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
     @field:JsonProperty("totalAmount")

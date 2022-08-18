@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDat
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
 
 /**
- * This class contains the parsing logic for the eu-taxonomy-non-financials framework
+ * This class contains the parsing logic for the EuTaxonomyForNonFinancials framework
  */
 class EuTaxonomyForNonFinancialsCsvParser(
     private val commonFieldParser: EuTaxonomyCommonFieldParser

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.enums.eutaxonomy.financials
 
 /**
- * Possible options when uploading Eu Taxonomy Data for a financial company
+ * Possible types of financial services in the EuTaxonomyForFinancials framework
  */
 enum class FinancialServicesType { CreditInstitution, InsuranceOrReinsurance, AssetManagement }

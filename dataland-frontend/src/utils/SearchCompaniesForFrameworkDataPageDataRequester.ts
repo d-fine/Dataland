@@ -1,6 +1,6 @@
 /**
  * Module for getting stored companies by sending out an API-call and mapping the received stored companies to a
- * specific schema which is needed on the taxonomy search page
+ * specific schema which is needed on the search page
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -36,9 +36,9 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
 }
 
 /**
- * map the received stored companies of an API-call to the required scheme for the Taxonomy Page to display
+ * map the received stored companies of an API-call to the required scheme for the search page to display
  *
- * @param  {Array<StoredCompany>} responseData      the received data with the companiy objects
+ * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
 function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<object> {
   return responseData.map((company) => ({
@@ -51,7 +51,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
 }
 
 /**
- * send out an API-call to get stored companies and map the response to the required scheme for the Taxonomy Page
+ * send out an API-call to get stored companies and map the response to the required scheme for the search page
  *
  * @param  {string} searchString           the string that is used to search companies
  * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex

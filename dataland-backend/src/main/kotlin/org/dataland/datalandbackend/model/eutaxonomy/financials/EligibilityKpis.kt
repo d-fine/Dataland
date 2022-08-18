@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * KPIs for all companies for the EuTaxonomyForFinancials Framework
+ * KPIs for all companies for the EuTaxonomyForFinancials framework
  */
 data class EligibilityKpis(
     @field:JsonProperty("taxonomyEligibleActivity")
