@@ -30,9 +30,9 @@
             :inner-class="innerClass"
             :input-class="inputClass"
             :options="{
-              None: 'None',
-              LimitedAssurance: 'Limited Assurance',
-              ReasonableAssurance: 'Reasonable Assurance',
+              None: humanizeString('None'),
+              LimitedAssurance: humanizeString('LimitedAssurance'),
+              ReasonableAssurance: humanizeString('ReasonableAssurance'),
             }"
           />
           <FormKit
@@ -160,6 +160,7 @@ import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload";
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default {
   name: "CreateEUTaxonomyForNonFinancials",
@@ -179,6 +180,7 @@ export default {
     messageCount: 0,
     formInputsModel: {},
     postEuTaxonomyDataForNonFinancialsResponse: null,
+    humanizeString: humanizeString,
   }),
   inject: ["getKeycloakPromise"],
   props: {

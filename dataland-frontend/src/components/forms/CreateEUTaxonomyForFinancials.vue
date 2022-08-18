@@ -32,9 +32,9 @@
             :inner-class="innerClass"
             :input-class="inputClass"
             :options="{
-              CreditInstitution: 'Credit Institution',
-              InsuranceOrReinsurance: 'Insurance or Reinsurance',
-              AssetManagement: 'Asset Management',
+              CreditInstitution: humanizeString('CreditInstitution'),
+              InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
+              AssetManagement: humanizeString('AssetManagement'),
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
@@ -47,9 +47,9 @@
             :inner-class="innerClass"
             :input-class="inputClass"
             :options="{
-              None: 'None',
-              LimitedAssurance: 'Limited Assurance',
-              ReasonableAssurance: 'Reasonable Assurance',
+              None: humanizeString('None'),
+              LimitedAssurance: humanizeString('LimitedAssurance'),
+              ReasonableAssurance: humanizeString('ReasonableAssurance'),
             }"
           />
           <FormKit

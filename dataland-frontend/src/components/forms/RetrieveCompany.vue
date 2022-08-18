@@ -29,7 +29,7 @@
         </DataTable>
         <p v-else>
           The resource you requested does not exist yet. You can create it:
-          <router-link to="/upload/company">Create Data</router-link>
+          <router-link to="/companies/upload">Create Data</router-link>
         </p>
       </template>
     </template>

@@ -15,17 +15,17 @@ import org.springframework.stereotype.Component
 @Component
 class DataTypeSchemaCustomizer : OpenApiCustomiser {
     init {
-        val schema = Schema<Any>()
-        schema.`$ref` = "#/components/schemas/DataTypeEnum"
-        SpringDocUtils.getConfig().replaceWithSchema(DataType::class.java, schema)
+        val dataTypeEnumRefSchema = Schema<Any>()
+        dataTypeEnumRefSchema.`$ref` = "#/components/schemas/DataTypeEnum"
+        SpringDocUtils.getConfig().replaceWithSchema(DataType::class.java, dataTypeEnumRefSchema)
     }
 
     override fun customise(openApi: OpenAPI) {
         val allowedDataTypes = DataTypesExtractor().getAllDataTypes()
-        val actualTargetSchema = Schema<String>()
-        actualTargetSchema.enum = allowedDataTypes
-        actualTargetSchema.type = "string"
+        val actualDataTypeEnumSchema = Schema<String>()
+        actualDataTypeEnumSchema.enum = allowedDataTypes
+        actualDataTypeEnumSchema.type = "string"
 
-        openApi.components.addSchemas("DataTypeEnum", actualTargetSchema)
+        openApi.components.addSchemas("DataTypeEnum", actualDataTypeEnumSchema)
     }
 }

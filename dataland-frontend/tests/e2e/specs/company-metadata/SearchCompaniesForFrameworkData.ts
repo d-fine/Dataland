@@ -89,7 +89,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const permIdText = "Permanent Identifier (PermID)";
     checkPermIdToolTip(permIdText);
     executeCompanySearch(inputValue);
-    cy.get("h2").click(); // Collapse the search autocomplete window if it exists
+    cy.get("h2").click({ force: true }); // Collapse the search autocomplete window if it exists
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
