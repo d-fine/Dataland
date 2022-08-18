@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.eutaxonomy.financials.InsuranceKpis
 import java.util.EnumSet
 
 /**
- * This class contains the parsing logic for the eu-taxonomy-for-financials framework
+ * This class contains the parsing logic for the EuTaxonomyForFinancials framework
  */
 class EuTaxonomyForFinancialsCsvParser(
     private val commonFieldParser: EuTaxonomyCommonFieldParser

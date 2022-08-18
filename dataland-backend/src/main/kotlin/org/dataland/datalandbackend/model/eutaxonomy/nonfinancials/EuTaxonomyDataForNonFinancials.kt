@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 
 /**
  * --- API model ---
- * Fields of the questionnaire for EU-Taxonomy data for non-financial companies
+ * Fields of the questionnaire for the EuTaxonomyForNonFinancials framework
  */
 @DataType
 data class EuTaxonomyDataForNonFinancials(

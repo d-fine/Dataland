@@ -9,7 +9,7 @@ import java.util.EnumSet
 
 /**
  * --- API model ---
- * Fields of the questionnaire for EU-Taxonomy data for financial companies
+ * Fields of the questionnaire for the EuTaxonomyForFinancials framework
  */
 @DataType
 data class EuTaxonomyDataForFinancials(

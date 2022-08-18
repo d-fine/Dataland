@@ -46,13 +46,13 @@ class CsvToJsonConverter {
     }
 
     /**
-     * Parses data for the eu-taxonomy-non-financial framework from the CSV
+     * Parses data for the EuTaxonomyForNonFinancials framework from the CSV
      */
     fun parseEuTaxonomyNonFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
         buildListOfCompanyInformationWithFrameworkData(rawCsvData, companyParser, euTaxonomyForNonFinancialsCsvParser)
 
     /**
-     * Parses data for the eu-taxonomy-financial framework from the CSV
+     * Parses data for the EuTaxonomyForFinancials framework from the CSV
      */
     fun parseEuTaxonomyFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> =
         buildListOfCompanyInformationWithFrameworkData(rawCsvData, companyParser, euTaxonomyForFinancialsCsvParser)

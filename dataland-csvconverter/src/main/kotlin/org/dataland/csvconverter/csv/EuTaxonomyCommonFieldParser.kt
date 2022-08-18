@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 
 /**
- * This class provides parsing methods for columns that are required by both eu-taxonomy frameworks
+ * This class provides parsing methods for columns that are required by both EU-Taxonomy frameworks
  * but don't belong to the companyInformation parser
  */
 class EuTaxonomyCommonFieldParser {
@@ -28,7 +28,7 @@ class EuTaxonomyCommonFieldParser {
     )
 
     /**
-     * This function parses the reportingObligation field from the Eu-Taxonomy framework CSV file
+     * This function parses the reportingObligation field from the EU-Taxonomy framework CSV file
      */
     fun getReportingObligation(csvLineData: Map<String, String>): YesNo {
         return when (
@@ -46,7 +46,7 @@ class EuTaxonomyCommonFieldParser {
     }
 
     /**
-     * This function parses the attestation field from the Eu-Taxonomy framework CSV file
+     * This function parses the attestation field from the EU-Taxonomy framework CSV file
      */
     fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
         return when (
@@ -66,7 +66,7 @@ class EuTaxonomyCommonFieldParser {
     }
 
     /**
-     * Returns the relevant company type for the EUTaxonomy framework (IS/FS)
+     * Returns the relevant company type for the EU-Taxonomy framework (IS/FS)
      */
     fun getCompanyType(csvLineData: Map<String, String>): String {
         return columnMappingEuTaxonomyUtils.getCsvValue("companyType", csvLineData)
