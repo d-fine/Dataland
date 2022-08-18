@@ -1,4 +1,4 @@
-import { retrieveDataIdsList, retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
+import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 import {
   CompanyInformation,

@@ -1,4 +1,4 @@
-import { retrieveCompanyIdsList, retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
+import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
 
 describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
   it("tooltips are present and contain text as expected", function () {

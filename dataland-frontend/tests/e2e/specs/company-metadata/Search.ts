@@ -1,5 +1,3 @@
-import { checkViewButtonWorks } from "../../utils/CompanySearch";
-
 describe("As a user, I want to be able to search companies on /search", function () {
   beforeEach(() => {
     cy.ensureLoggedIn();
