@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
@@ -48,7 +49,7 @@ class CompanyManager : CompanyManagerInterface {
     override fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<String>,
+        dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
     ): List<StoredCompany> {
         var companies = companyDataPerCompanyId.values.toList()
@@ -65,7 +66,10 @@ class CompanyManager : CompanyManagerInterface {
         return companies
     }
 
-    private fun filterCompaniesByNameAndIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByNameAndIdentifier(
+        searchString: String,
+        companies: List<StoredCompany>
+    ): List<StoredCompany> {
         if (searchString == "") return companies
         return (
             filterCompaniesByNameOnly(searchString, companies) +
@@ -88,19 +92,26 @@ class CompanyManager : CompanyManagerInterface {
         }
     }
 
-    private fun filterCompaniesByStockIndices(indices: Set<StockIndex>, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByStockIndices(
+        indices: Set<StockIndex>,
+        companies: List<StoredCompany>
+    ): List<StoredCompany> {
         if (indices.isEmpty()) return companies
         return companies.filter {
             it.companyInformation.indices.any { index -> indices.contains(index) }
         }
     }
 
-    private fun filterCompaniesByDataTypes(dataTypes: Set<String>, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByDataTypes(
+        dataTypes: Set<DataType>,
+        companies: List<StoredCompany>
+    ): List<StoredCompany> {
         if (dataTypes.isEmpty()) return companies
         return companies.map {
             company ->
             company.copy(
-                dataRegisteredByDataland = company.dataRegisteredByDataland.filter { dataTypes.contains(it.dataType) }.toMutableList()
+                dataRegisteredByDataland = company.dataRegisteredByDataland.filter
+                { dataTypes.contains(it.dataType) }.toMutableList()
             )
         }.filter {
             it.dataRegisteredByDataland.isNotEmpty()

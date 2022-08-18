@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 
@@ -22,14 +23,15 @@ interface CompanyManagerInterface {
      * Method to search for companies matching the company name or identifier
      * @param searchString string used for substring matching against the company name and/or identifiers
      * @param onlyCompanyNames boolean determining if the search should be solely against the company names
-     * @param dataTypeFilter if not empty, return only companies that have data reported for one of the specified dataTypes
+     * @param dataTypeFilter if not empty, return only companies that have
+     * data reported for one of the specified dataTypes
      * @param stockIndexFilter if not empty, return only companies that are part of one of the specified stock indices
      * @return list of all matching companies in Dataland
      */
     fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<String>,
+        dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
     ): List<StoredCompany>
 

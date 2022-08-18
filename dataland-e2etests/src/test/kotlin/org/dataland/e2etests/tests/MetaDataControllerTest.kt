@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuT
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
@@ -95,7 +96,7 @@ class MetaDataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, testCompanyId),
+            DataMetaInformation(testDataId, DataTypeEnum.decode(testDataType)!!, testCompanyId),
             dataMetaInformation,
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
@@ -104,9 +105,9 @@ class MetaDataControllerTest {
     @Test
     fun `post companies and eu taxonomy data and check meta info search with empty filters`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val initialSizeOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "").size
+        val initialSizeOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo().size
         postCompaniesAndEuTaxonomyDataForNonFinancials(testCompaniesAndEuTaxonomyDataForNonFinancials)
-        val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo("", "")
+        val listOfDataMetaInfoComplete = metaDataControllerApi.getListOfDataMetaInfo()
         val expectedSizeOfDataMetaInfoComplete = initialSizeOfDataMetaInfoComplete + totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfoComplete, listOfDataMetaInfoComplete.size,
@@ -122,7 +123,7 @@ class MetaDataControllerTest {
             testCompaniesAndEuTaxonomyDataForNonFinancials
         )
         val listOfDataMetaInfoPerCompanyId =
-            metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "")
+            metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first())
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
@@ -134,11 +135,11 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi
-            .getListOfDataMetaInfo("", "EuTaxonomyDataForFinancials").size
+            .getListOfDataMetaInfo(dataType = DataTypeEnum.euTaxonomyDataForFinancials).size
         postCompaniesAndEuTaxonomyDataForNonFinancials(testCompaniesAndEuTaxonomyDataForNonFinancials)
         postCompaniesAndEuTaxonomyDataForFinancials(testCompaniesAndEuTaxonomyDataForFinancials)
         val listOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi.getListOfDataMetaInfo(
-            "", "EuTaxonomyDataForFinancials"
+            dataType = DataTypeEnum.euTaxonomyDataForFinancials
         )
         val expectedSizeOfDataMetaInfoList = initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials +
             totalNumberOfDataSetsPerFramework
@@ -157,20 +158,15 @@ class MetaDataControllerTest {
             testCompaniesAndEuTaxonomyDataForNonFinancials
         )
         val listOfDataMetaInfoPerCompanyIdAndDataType =
-            metaDataControllerApi.getListOfDataMetaInfo(listOfTestCompanyIds.first(), "EuTaxonomyDataForNonFinancials")
+            metaDataControllerApi.getListOfDataMetaInfo(
+                listOfTestCompanyIds.first(),
+                DataTypeEnum.euTaxonomyDataForNonFinancials
+            )
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
                 "data sets, but has meta info about ${listOfDataMetaInfoPerCompanyIdAndDataType.size} data sets."
         )
-    }
-
-    @Test
-    fun `post companies and eu taxonomy data and check if green asset ratio is in expected range`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        postCompaniesAndEuTaxonomyDataForNonFinancials(testCompaniesAndEuTaxonomyDataForNonFinancials)
-        val greenAssetRatio = metaDataControllerApi.getGreenAssetRatioForNonFinancials(null)
-        assertTrue(greenAssetRatio.all { it.value.toDouble() in 0.0..1.0 })
     }
 
     @Test
@@ -184,7 +180,7 @@ class MetaDataControllerTest {
         companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
         val dataMetaInformation = unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, testCompanyId),
+            DataMetaInformation(testDataId, DataTypeEnum.decode(testDataType)!!, testCompanyId),
             dataMetaInformation,
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
@@ -215,7 +211,11 @@ class MetaDataControllerTest {
 
         assertTrue(
             unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType).contains(
-                DataMetaInformation(dataId = testDataId, dataType = testDataType, companyId = testCompanyId)
+                DataMetaInformation(
+                    dataId = testDataId,
+                    dataType = DataTypeEnum.decode(testDataType)!!,
+                    companyId = testCompanyId
+                )
             ),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
                 "match the retrieved meta info."

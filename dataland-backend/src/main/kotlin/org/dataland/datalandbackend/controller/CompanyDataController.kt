@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
@@ -30,7 +31,7 @@ class CompanyDataController(
     override fun getCompanies(
         searchString: String?,
         stockIndices: Set<StockIndex>?,
-        dataTypes: Set<String>?,
+        dataTypes: Set<DataType>?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(

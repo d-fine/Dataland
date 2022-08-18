@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
@@ -33,7 +34,7 @@ class CompanyDataControllerTest {
     private val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformation(1).first()
 
-    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): Map<String, String> {
+    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): DataMetaInformation {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
@@ -41,7 +42,11 @@ class CompanyDataControllerTest {
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
         ).dataId
-        return mapOf("companyId" to testCompanyId, "dataId" to testDataId, "dataType" to testDataType)
+        return DataMetaInformation(
+            companyId = testCompanyId,
+            dataId = testDataId,
+            dataType = DataTypeEnum.decode(testDataType)!!
+        )
     }
 
     @Test
@@ -77,7 +82,8 @@ class CompanyDataControllerTest {
         val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
-            testCompanyInformation.companyName, null, true
+            searchString = testCompanyInformation.companyName,
+            onlyCompanyNames = true,
         )
         assertTrue(
             getCompaniesByNameResponse.contains(
@@ -95,12 +101,12 @@ class CompanyDataControllerTest {
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
         val listOfTestCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformation(3)
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies("", null, true).size
+        val allCompaniesListSizeBefore = companyDataControllerApi.getCompanies().size
         for (companyInformation in listOfTestCompanyInformation) {
             companyDataControllerApi.postCompany(companyInformation)
         }
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies("", null, true).size
+        val allCompaniesListSizeAfter = companyDataControllerApi.getCompanies().size
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${listOfTestCompanyInformation.size}."
@@ -112,15 +118,15 @@ class CompanyDataControllerTest {
         val testDataInformation = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
-            testDataInformation["companyId"],
-            testDataInformation["dataType"]
+            testDataInformation.companyId,
+            testDataInformation.dataType
         )
         assertTrue(
             listOfDataMetaInfoForTestCompany.contains(
                 DataMetaInformation(
-                    testDataInformation["dataId"]!!,
-                    testDataInformation["dataType"]!!,
-                    testDataInformation["companyId"]!!
+                    testDataInformation.dataId,
+                    testDataInformation.dataType,
+                    testDataInformation.companyId
                 )
             ),
             "The all-data-sets-list of the posted company does not contain the posted data set."
@@ -135,7 +141,6 @@ class CompanyDataControllerTest {
         assertTrue(
             companyDataControllerApi.getCompanies(
                 searchString = testCompanyInformation.identifiers.first().identifierValue,
-                selectedIndex = null,
                 onlyCompanyNames = false
             ).any { it.companyId == testCompanyId }
         )

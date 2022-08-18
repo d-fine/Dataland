@@ -4,7 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany, CompanyInformation, DataMetaInformation } from "@/../build/clients/backend/api";
+import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@/../build/clients/backend/api";
 import Keycloak from "keycloak-js";
 import { frameworkUrlMapping } from "@/utils/FrameworkUrlMapping";
 
@@ -78,7 +78,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     | "Hdax"
     | "Dax50Esg",
   onlyCompanyNames: boolean,
-  frameworksToFilter: Array<string>,
+  frameworksToFilter: Array<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];

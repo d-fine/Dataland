@@ -14,7 +14,7 @@ data class DataMetaInformation(
     val dataId: String,
 
     @field:JsonProperty(required = true)
-    val dataType: String,
+    val dataType: DataType,
 
     @field:JsonProperty(required = true)
     val companyId: String
