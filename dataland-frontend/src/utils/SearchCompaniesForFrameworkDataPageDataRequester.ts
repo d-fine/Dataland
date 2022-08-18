@@ -4,8 +4,17 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany } from "@/../build/clients/backend/api";
+import { StoredCompany, CompanyInformation, DataMetaInformation } from "@/../build/clients/backend/api";
 import Keycloak from "keycloak-js";
+import { frameworkUrlMapping } from "@/utils/FrameworkUrlMapping";
+
+export interface DataSearchStoredCompany {
+  companyName: string;
+  companyInformation: CompanyInformation;
+  companyId: string;
+  permId: string;
+  dataRegisteredByDataland: Array<DataMetaInformation>;
+}
 
 /**
  * retrieve the value of the Perm Id of a company
@@ -37,6 +46,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
     companyInformation: company.companyInformation,
     companyId: company.companyId,
     permId: retrievePermIdFromStoredCompany(company),
+    dataRegisteredByDataland: company.dataRegisteredByDataland,
   }));
 }
 
@@ -92,4 +102,21 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     console.error(error);
   }
   return mappedResponse;
+}
+
+export function getRouterLinkTargetFramework(
+  companyData: DataSearchStoredCompany,
+  currentFilteredFrameworks: Array<string>
+): string {
+  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
+  const companyId = companyData.companyId;
+  if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
+  const availableFrameworks: Set<string> = new Set(dataRegisteredByDataland.map((it) => it.dataType));
+  if (currentFilteredFrameworks.length === 0) {
+    const targetData = dataRegisteredByDataland[0];
+    return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetData.dataType)}`;
+  } else {
+    const targetFramework = currentFilteredFrameworks.filter((it) => availableFrameworks.has(it))[0];
+    return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetFramework)}`;
+  }
 }

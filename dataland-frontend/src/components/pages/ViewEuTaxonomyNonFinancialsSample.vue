@@ -29,7 +29,25 @@
       </div>
     </MarginWrapper>
     <MarginWrapper bgClass="surface-800">
-      <EuTaxonomyData :companyID="companyID" />
+      <template v-if="dataId">
+        <div class="grid">
+          <div class="col-12 text-left">
+            <h2 class="mb-0">EU Taxonomy Data</h2>
+          </div>
+          <div class="col-6 text-left">
+            <p class="font-semibold m-0">2021</p>
+            <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col-7">
+            <EuTaxonomyPanelNonFinancials :dataID="dataId" />
+          </div>
+        </div>
+      </template>
+      <div v-else class="col-12 text-left">
+        <h2>No EU-Taxonomy data for non financial companies present</h2>
+      </div>
     </MarginWrapper>
   </TheContent>
 </template>
@@ -40,20 +58,21 @@ import BackButton from "@/components/general/BackButton";
 import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
 import { ApiClientProvider } from "@/services/ApiClients";
-import EuTaxonomyData from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyData";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 export default {
-  name: "CompanyAssociatedEuTaxonomyDataSample",
+  name: "ViewEuTaxonomyNonFinancialsSample",
   components: {
     CompanyInformation,
-    EuTaxonomyData,
     TheContent,
     TheHeader,
     BackButton,
     MarginWrapper,
+    EuTaxonomyPanelNonFinancials,
   },
   data: () => ({
     companyID: null,
+    dataId: undefined,
   }),
   created() {
     this.queryCompany();
@@ -66,8 +85,18 @@ export default {
           this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
-        console.log(companyResponse);
         this.companyID = companyResponse.data[0];
+
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
+          this.companyID,
+          "EuTaxonomyDataForNonFinancials"
+        );
+        const listOfMetaData = apiResponse.data;
+
+        if (listOfMetaData.length > 0) {
+          this.dataId = listOfMetaData[0].dataId;
+        }
       } catch (error) {
         console.error(error);
       }

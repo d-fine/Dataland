@@ -22,7 +22,7 @@ describeIf(
         cy.get('input[name="reportingObligation"][value=Yes]').check();
         cy.get("input[name=tradingPortfolioAndInterbankLoans]").type("0.5");
         submitEuTaxonomyFinancialsUploadFormAndGetDataId();
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
+        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
         cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]').should(
           "contain",
           "Trading portfolio & on demand interbank loans"
@@ -40,7 +40,7 @@ describeIf(
         cy.get('input[name="reportingObligation"][value=Yes]').check();
         cy.get("input[name=tradingPortfolio]").type("0.25");
         submitEuTaxonomyFinancialsUploadFormAndGetDataId();
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
+        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
         cy.get('div[name="tradingPortfolio"]').should("contain", "Trading portfolio").should("contain", "25");
         cy.get('div[name="onDemandInterbankLoans"]')
           .should("contain", "On demand interbank loans")
@@ -57,7 +57,7 @@ describeIf(
         cy.get('input[name="reportingObligation"][value=Yes]').check();
         cy.get("input[name=taxonomyEligibleNonLifeInsuranceActivities]").type("0.22");
         submitEuTaxonomyFinancialsUploadFormAndGetDataId();
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
+        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
         cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
           .should("contain", "Taxonomy-eligible non-life insurance economic activities")
           .should("contain", "22");
@@ -77,7 +77,7 @@ describeIf(
         cy.get('div[name="AssetManagement"]').find('input[name="banksAndIssuers"]').type("0.25");
         cy.get('div[name="AssetManagement"]').find('input[name="investmentNonNfrd"]').type("0.26");
         submitEuTaxonomyFinancialsUploadFormAndGetDataId();
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy`);
+        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
         cy.get('div[name="taxonomyEligibleActivityAssetManagement"]')
           .should("contain", "Taxonomy-eligible economic activity")
           .should("contain", "23");

@@ -3,14 +3,15 @@ import UploadEuTaxonomyDataForNonFinancials from "@/components/pages/UploadEuTax
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import CompanyAssociatedEuTaxonomyData from "@/components/pages/CompanyAssociatedEuTaxonomyData.vue";
-import CompanyAssociatedEuTaxonomyDataSample from "@/components/pages/CompanyAssociatedEuTaxonomyDataSample.vue";
+import ViewEuTaxonomyNonFinancialsSample from "@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import NoContentFound from "@/components/pages/NoContentFound.vue";
 import UploadEuTaxonomyDataForFinancials from "@/components/pages/UploadEuTaxonomyDataForFinancials.vue";
 import UploadCompany from "@/components/pages/UploadCompany.vue";
 import SearchCompanies from "@/components/pages/SearchCompanies.vue";
+import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
+import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 
 const routes = [
   {
@@ -21,7 +22,7 @@ const routes = [
   {
     path: "/samples/eutaxonomy-non-financials",
     name: "Eu Taxonomy For Non-Financials Sample",
-    component: CompanyAssociatedEuTaxonomyDataSample,
+    component: ViewEuTaxonomyNonFinancialsSample,
   },
   {
     path: "/companies/upload",
@@ -52,10 +53,16 @@ const routes = [
     component: CompanyInformation,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy",
+    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials",
     props: true,
-    name: "Company EU Taxonomy",
-    component: CompanyAssociatedEuTaxonomyData,
+    name: "Company EU Taxonomy for non financials",
+    component: ViewEuTaxonomyNonFinancials,
+  },
+  {
+    path: "/companies/:companyID/frameworks/eutaxonomy-financials",
+    props: true,
+    name: "Company EU Taxonomy for financials",
+    component: ViewEuTaxonomyFinancials,
   },
   {
     path: "/companies-only-search",

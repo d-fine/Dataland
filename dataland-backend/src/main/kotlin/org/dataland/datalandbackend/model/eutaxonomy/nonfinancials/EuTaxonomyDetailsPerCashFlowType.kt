@@ -8,7 +8,12 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    @field:JsonProperty("totalAmount") val totalAmount: BigDecimal? = null,
-    @field:JsonProperty("alignedPercentage") val alignedPercentage: BigDecimal? = null,
-    @field:JsonProperty("eligiblePercentage") val eligiblePercentage: BigDecimal? = null
+    @field:JsonProperty("totalAmount")
+    val totalAmount: BigDecimal? = null,
+
+    @field:JsonProperty("alignedPercentage")
+    val alignedPercentage: BigDecimal? = null,
+
+    @field:JsonProperty("eligiblePercentage")
+    val eligiblePercentage: BigDecimal? = null
 )

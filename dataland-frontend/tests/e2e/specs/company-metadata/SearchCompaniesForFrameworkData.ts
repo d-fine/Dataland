@@ -1,4 +1,4 @@
-import { retrieveDataIdsList } from "../../utils/ApiUtils";
+import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 import {
   CompanyInformation,
@@ -39,8 +39,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   }
 
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
-    retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[2] + "/frameworks/eutaxonomy");
+    retrieveFirstCompanyIdWithFrameworkData("EuTaxonomyDataForNonFinancials").then((companyId: string) => {
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
     const inputValue = "A";
@@ -109,8 +109,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Search Input field should be always present", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    retrieveDataIdsList().then((dataIdList: any) => {
-      cy.visitAndCheckAppMount("/companies/" + dataIdList[7] + "/frameworks/eutaxonomy");
+    retrieveFirstCompanyIdWithFrameworkData("EuTaxonomyDataForNonFinancials").then((companyId: any) => {
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
       cy.get("input[name=framework_data_search_bar_standard]")
         .should("not.be.disabled")
         .type(inputValue)

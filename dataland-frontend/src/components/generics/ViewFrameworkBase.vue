@@ -14,7 +14,7 @@
         </div>
       </MarginWrapper>
       <MarginWrapper bgClass="surface-800">
-        <EuTaxonomyData :companyID="companyID" />
+        <slot></slot>
       </MarginWrapper>
     </TheContent>
   </AuthenticationWrapper>
@@ -28,10 +28,10 @@ import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CompanyInformation from "@/components/pages/CompanyInformation";
-import EuTaxonomyData from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyData";
+import { ApiClientProvider } from "@/services/ApiClients";
 
 export default {
-  name: "CompanyAssociatedEuTaxonomyData",
+  name: "ViewFrameworkBase",
   components: {
     TheContent,
     TheHeader,
@@ -40,7 +40,6 @@ export default {
     FrameworkDataSearchBar,
     AuthenticationWrapper,
     CompanyInformation,
-    EuTaxonomyData,
   },
   data() {
     return {
@@ -51,10 +50,36 @@ export default {
     companyID: {
       type: String,
     },
+    dataType: {
+      type: String,
+    },
   },
   methods: {
     handleQueryCompany() {
       this.$router.push({ name: "Search Companies for Framework Data", query: { input: this.currentInput } });
+    },
+    async getDataIdToLoad() {
+      try {
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, this.dataType);
+        const listOfMetaData = apiResponse.data;
+        if (listOfMetaData.length > 0) {
+          this.$emit("updateDataId", listOfMetaData[0].dataId);
+        } else {
+          this.$emit("updateDataId", null);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  inject: ["getKeycloakPromise"],
+  created() {
+    this.getDataIdToLoad();
+  },
+  watch: {
+    companyID() {
+      this.getDataIdToLoad();
     },
   },
 };

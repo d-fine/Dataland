@@ -38,7 +38,7 @@ describeIf(
           cy.get("span[title=companyId]").then(($companyID) => {
             const companyID = $companyID.text();
             cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
-            cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy`);
+            cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy-non-financials`);
             cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
               euTaxonomyPageVerifier();
             });
