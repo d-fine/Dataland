@@ -87,7 +87,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
-        val testDataType = DataTypeEnum.nonMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -135,11 +135,11 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi
-            .getListOfDataMetaInfo(dataType = DataTypeEnum.financials).size
+            .getListOfDataMetaInfo(dataType = DataTypeEnum.eutaxonomyMinusFinancials).size
         postCompaniesAndEuTaxonomyDataForNonFinancials(testCompaniesAndEuTaxonomyDataForNonFinancials)
         postCompaniesAndEuTaxonomyDataForFinancials(testCompaniesAndEuTaxonomyDataForFinancials)
         val listOfDataMetaInfoForEuTaxonomyNonFinancials = metaDataControllerApi.getListOfDataMetaInfo(
-            dataType = DataTypeEnum.financials
+            dataType = DataTypeEnum.eutaxonomyMinusFinancials
         )
         val expectedSizeOfDataMetaInfoList = initialSizeOfListOfDataMetaInfoForEuTaxonomyNonFinancials +
             totalNumberOfDataSetsPerFramework
@@ -160,7 +160,7 @@ class MetaDataControllerTest {
         val listOfDataMetaInfoPerCompanyIdAndDataType =
             metaDataControllerApi.getListOfDataMetaInfo(
                 listOfTestCompanyIds.first(),
-                DataTypeEnum.nonMinusFinancials
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials
             )
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoPerCompanyIdAndDataType.size,
@@ -171,7 +171,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy teaser company and data for it and confirm unauthorized meta info access succeeds`() {
-        val testDataType = DataTypeEnum.nonMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -201,7 +201,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
-        val testDataType = DataTypeEnum.nonMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -224,7 +224,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
-        val testDataType = DataTypeEnum.nonMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
