@@ -54,10 +54,10 @@ class CompanyManager : CompanyManagerInterface {
     ): List<StoredCompany> {
         var companies = companyDataPerCompanyId.values.toList()
 
-        if (onlyCompanyNames) {
-            companies = filterCompaniesByNameOnly(searchString, companies)
+        companies = if (onlyCompanyNames) {
+            filterCompaniesByNameOnly(searchString, companies)
         } else {
-            companies = filterCompaniesByNameAndIdentifier(searchString, companies)
+            filterCompaniesByNameAndIdentifier(searchString, companies)
         }
 
         companies = filterCompaniesByStockIndices(stockIndexFilter, companies)
