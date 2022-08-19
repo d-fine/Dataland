@@ -27,11 +27,6 @@ describe(
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-        teaserCompanyPermIds = companies;
-      });
-    });
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
         companiesWithEuTaxonomyDataForNonFinancials = companies;
       });
     });
