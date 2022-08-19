@@ -102,10 +102,6 @@ export default {
       type: Object,
       default: null,
     },
-    currentFilteredFrameworks: {
-      type: Array,
-      default: () => [],
-    },
     processed: {
       type: Boolean,
       default: false,

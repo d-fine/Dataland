@@ -75,18 +75,23 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     | "Sdax"
     | "TecDax"
     | "Hdax"
-    | "Dax50Esg",
+    | "Dax50Esg"
+    | undefined,
   onlyCompanyNames: boolean,
   frameworksToFilter: Array<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
+
+  const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
+  const stockIndexFilter = stockIndex ? new Set([stockIndex]) : undefined;
+
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(
       searchString,
-      new Set([stockIndex]),
-      new Set(frameworksToFilter),
+      stockIndexFilter,
+      frameworkFilter,
       onlyCompanyNames
     );
     const responseData: Array<StoredCompany> = response.data;

@@ -46,11 +46,7 @@
         </MarginWrapper>
       </div>
 
-      <FrameworkDataSearchResults
-        v-if="showSearchResultsTable"
-        :data="resultsArray"
-        :currentFilteredFrameworks="currentFilteredFrameworks"
-      />
+      <FrameworkDataSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -100,8 +96,8 @@ export default {
       showSearchResultsTable: false,
       resultsArray: [],
       latestScrollPosition: 0,
-      currentSearchBarInput: null,
-      currentFilteredFrameworks: [],
+      currentSearchBarInput: undefined,
+      currentFilteredFrameworks: undefined,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
@@ -143,14 +139,24 @@ export default {
     },
 
     handleFrameworkDataSearchBarRender() {
-      if (this.route.query.input || this.route.query.frameworks) {
-        this.currentSearchBarInput = this.route.query.input;
-        if (typeof this.route.query.frameworks === "string") {
+      let filtered = false;
+      if (this.route.query.frameworks !== undefined) {
+        this.currentFilteredFrameworks = [];
+        if (typeof this.route.query.frameworks === "string" && this.route.query.frameworks !== "") {
           this.currentFilteredFrameworks.push(this.route.query.frameworks);
-        } else {
+        } else if (Array.isArray(this.route.query.frameworks)) {
           this.currentFilteredFrameworks = this.route.query.frameworks;
         }
-        this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput);
+        filtered = true;
+      }
+
+      if (this.route.query.input) {
+        this.currentSearchBarInput = this.route.query.input;
+        filtered = true;
+      }
+
+      if (filtered) {
+        this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
         this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
@@ -160,9 +166,15 @@ export default {
       this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
+
+      const frameworksQuery =
+        this.currentFilteredFrameworks && this.currentFilteredFrameworks.length === 0
+          ? ""
+          : this.currentFilteredFrameworks;
+
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: this.currentSearchBarInput, frameworks: this.currentFilteredFrameworks },
+        query: { input: this.currentSearchBarInput, frameworks: frameworksQuery },
       });
     },
 

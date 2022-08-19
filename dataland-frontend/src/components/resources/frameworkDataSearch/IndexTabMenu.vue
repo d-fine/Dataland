@@ -73,7 +73,7 @@ export default {
         "",
         stockIndex,
         false,
-        [],
+        undefined,
         this.getKeycloakPromise()
       );
       this.$emit("companies-received", resultsArray);

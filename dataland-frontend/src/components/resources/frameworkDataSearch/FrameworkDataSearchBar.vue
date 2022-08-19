@@ -93,7 +93,7 @@ export default {
     },
     modelValue: {
       type: String,
-      default: null,
+      default: "",
     },
     maxNumAutoCompleteEntries: {
       type: Number,
@@ -101,7 +101,7 @@ export default {
     },
     frameworksToFilterFor: {
       type: Array,
-      default: () => [],
+      default: () => undefined,
     },
   },
 
@@ -138,23 +138,24 @@ export default {
       this.queryCompany(this.currentInput);
       this.$refs.autocomplete.hideOverlay();
     },
-    async queryCompany(companyName) {
+    async queryCompany(searchString, frameworkFilter) {
       this.loading = true;
       const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-        companyName,
-        "",
+        searchString,
+        undefined,
         false,
-        this.frameworksToFilterFor,
+        frameworkFilter,
         this.getKeycloakPromise()
       );
       this.$emit("companies-received", resultsArray);
       this.loading = false;
     },
     async searchCompanyName(companyName) {
+      console.log("ACTUAL SEARCH FILTER:" + this.frameworksToFilterFor);
       this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
-        "",
+        undefined,
         true,
         this.frameworksToFilterFor,
         this.getKeycloakPromise()
