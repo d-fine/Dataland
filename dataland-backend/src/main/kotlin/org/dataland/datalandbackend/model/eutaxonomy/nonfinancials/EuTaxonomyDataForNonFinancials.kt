@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
  * --- API model ---
  * Fields of the questionnaire for the EuTaxonomyForNonFinancials framework
  */
-@DataType
+@DataType("eutaxonomy-non-financials")
 data class EuTaxonomyDataForNonFinancials(
     @field:JsonProperty("capex")
     val capex: EuTaxonomyDetailsPerCashFlowType? = null,

@@ -6,7 +6,6 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@/../build/clients/backend/api";
 import Keycloak from "keycloak-js";
-import { frameworkUrlMapping } from "@/utils/FrameworkUrlMapping";
 
 export interface DataSearchStoredCompany {
   companyName: string;
@@ -103,5 +102,5 @@ export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompan
   const companyId = companyData.companyId;
   if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
   const targetData = dataRegisteredByDataland[0];
-  return `/companies/${companyId}/frameworks/${frameworkUrlMapping.get(targetData.dataType)}`;
+  return `/companies/${companyId}/frameworks/${targetData.dataType}`;
 }

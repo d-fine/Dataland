@@ -6,7 +6,7 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
     const AssuranceText = "Level of Assurance specifies the confidence level";
     cy.intercept("**/api/companies/*").as("retrieveCompany");
     cy.ensureLoggedIn();
-    retrieveFirstCompanyIdWithFrameworkData("EuTaxonomyDataForNonFinancials").then((companyId: string) => {
+    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: string) => {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
       cy.wait("@retrieveCompany", { timeout: 5 * 1000 }).then(() => {
         cy.get(".p-card-content .text-left strong").contains("NFRD required");

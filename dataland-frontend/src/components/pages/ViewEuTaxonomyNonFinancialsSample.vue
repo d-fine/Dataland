@@ -90,7 +90,7 @@ export default {
         const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,
-          "EuTaxonomyDataForNonFinancials"
+          "eutaxonomy-non-financials"
         );
         const listOfMetaData = apiResponse.data;
 

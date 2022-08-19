@@ -37,7 +37,7 @@ class CompanyDataControllerTest {
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): DataMetaInformation {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
-        val testDataType = testData.javaClass.kotlin.qualifiedName!!.substringAfterLast(".")
+        val testDataType = DataTypeEnum.nonMinusFinancials
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
@@ -45,7 +45,7 @@ class CompanyDataControllerTest {
         return DataMetaInformation(
             companyId = testCompanyId,
             dataId = testDataId,
-            dataType = DataTypeEnum.decode(testDataType)!!
+            dataType = testDataType
         )
     }
 

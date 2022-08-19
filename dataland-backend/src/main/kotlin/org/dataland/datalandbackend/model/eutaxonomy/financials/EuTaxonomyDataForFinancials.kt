@@ -11,7 +11,7 @@ import java.util.EnumSet
  * --- API model ---
  * Fields of the questionnaire for the EuTaxonomyForFinancials framework
  */
-@DataType
+@DataType("eutaxonomy-financials")
 data class EuTaxonomyDataForFinancials(
     @field:JsonProperty("financialServicesTypes", required = true)
     val financialServicesTypes: EnumSet<FinancialServicesType>?,

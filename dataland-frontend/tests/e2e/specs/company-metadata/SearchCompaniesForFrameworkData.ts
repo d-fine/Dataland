@@ -39,7 +39,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   }
 
   it("Type smth into search bar, wait 1 sec, type enter, and expect to see search results on new page", function () {
-    retrieveFirstCompanyIdWithFrameworkData("EuTaxonomyDataForNonFinancials").then((companyId: string) => {
+    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: string) => {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
     });
     cy.get("h2").should("contain", "EU Taxonomy Data");
@@ -109,7 +109,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Search Input field should be always present", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    retrieveFirstCompanyIdWithFrameworkData("EuTaxonomyDataForNonFinancials").then((companyId: any) => {
+    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
       cy.get("input[name=framework_data_search_bar_standard]")
         .should("not.be.disabled")
@@ -216,11 +216,11 @@ describeIf(
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
           .should("exist");
-        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForFinancials`)
+        cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-financials`)
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
           .should("exist");
-        cy.visit(`/companies?input=${companyName}&frameworks=EuTaxonomyDataForNonFinancials`)
+        cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
           .should("contain.text", "The resource you requested does not exist yet.");
       }
@@ -246,14 +246,14 @@ describeIf(
         const companyNameFinancialPrefix = "CompanyWithFinancial";
         const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
         createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
-        checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "EuTaxonomyDataForFinancials");
+        checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
 
         const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
         const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
         createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
           uploadEuTaxonomyDataForNonFinancials(companyId)
         );
-        checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "EuTaxonomyDataForNonFinancials");
+        checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "eutaxonomy-non-financials");
       }
     );
   }

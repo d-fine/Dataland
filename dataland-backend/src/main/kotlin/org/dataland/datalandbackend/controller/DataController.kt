@@ -20,7 +20,7 @@ abstract class DataController<T>(
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = DataType(clazz.simpleName)
+    private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):

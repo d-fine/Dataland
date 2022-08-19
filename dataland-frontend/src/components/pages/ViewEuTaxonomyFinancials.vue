@@ -1,5 +1,5 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="EuTaxonomyDataForFinancials" @updateDataId="receiveDataId">
+  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-financials" @updateDataId="receiveDataId">
     <template v-if="frameworkDataId">
       <div class="grid">
         <div class="col-12 text-left">
