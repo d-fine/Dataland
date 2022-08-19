@@ -40,7 +40,7 @@ class CompanyManagerTest(
     @Test
     fun `add all companies then retrieve them as a list and check for each company if it can be found as expected`() {
         addAllCompanies(testCompanyList)
-        val allCompaniesInStore = testCompanyManager.searchCompanies("", true)
+        val allCompaniesInStore = testCompanyManager.searchCompanies("", true, setOf(), setOf())
         assertTrue(
             allCompaniesInStore.all { testCompanyList.contains(it.companyInformation) },
             "Not all the companyInformation of the posted companies could be found in the stored companies."
@@ -51,7 +51,7 @@ class CompanyManagerTest(
     fun `add all companies and search for them one by one by using their names`() {
         addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompanies(company.companyName, true)
+            val searchResponse = testCompanyManager.searchCompanies(company.companyName, true, setOf(), setOf())
             assertTrue(
                 searchResponse.any { it.companyInformation.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name."
@@ -64,7 +64,12 @@ class CompanyManagerTest(
         addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
-                val searchResponse = testCompanyManager.searchCompanies(identifier.identifierValue, false)
+                val searchResponse = testCompanyManager.searchCompanies(
+                    identifier.identifierValue,
+                    false,
+                    setOf(),
+                    setOf()
+                )
                     .toMutableList()
                 // The response list is filtered to exclude results that match in account of another identifier having
                 // the required value but the looked for identifier type does not exist (This happens due to the test
@@ -93,7 +98,7 @@ class CompanyManagerTest(
         }
 
         for (stockIndex in stockIndiciesInTestData) {
-            val searchResponse = testCompanyManager.searchCompaniesByIndex(stockIndex)
+            val searchResponse = testCompanyManager.searchCompanies("", false, setOf(), setOf(stockIndex))
             assertTrue(
                 searchResponse.all { it.companyInformation.indices.contains(stockIndex) },
                 "The search result for the stock index $stockIndex contains at least one company " +
@@ -117,7 +122,7 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, false)
+        val searchResponse = testCompanyManager.searchCompanies(searchString, false, setOf(), setOf())
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -134,7 +139,7 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true)
+        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf())
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -145,7 +150,7 @@ class CompanyManagerTest(
     fun `upload all companies and search for name substring to check the ordering of results`() {
         addAllCompanies(testCompanyList)
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true)
+        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf())
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
         val otherResponses = searchResponse.dropWhile { it.companyInformation.companyName.startsWith(searchString) }
@@ -172,7 +177,7 @@ class CompanyManagerTest(
                 expectedResult ++
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesByIndex(testIndex)
+        val searchResponse = testCompanyManager.searchCompanies("", false, setOf(), setOf(testIndex))
         assertEquals(
             expectedResult, searchResponse.size,
             "There are $expectedResult companies with DAX index but found ${searchResponse.size}."

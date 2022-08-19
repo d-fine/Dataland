@@ -36,6 +36,7 @@ function humanizeStockIndexString(rawText: string): string {
     eligibleopex: "Eligible OpEx",
     alignedcapex: "Aligned CapEx",
     alignedopex: "Aligned OpEx",
+    InsuranceOrReinsurance: "Insurance or Reinsurance",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
