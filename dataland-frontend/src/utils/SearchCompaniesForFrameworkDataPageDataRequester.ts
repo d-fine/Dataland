@@ -85,11 +85,12 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 
   const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
   const stockIndexFilter = stockIndex ? new Set([stockIndex]) : undefined;
+  const searchFilter = searchString ? searchString : "";
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(
-      searchString,
+      searchFilter,
       stockIndexFilter,
       frameworkFilter,
       onlyCompanyNames

@@ -1,4 +1,4 @@
-import { performSimpleGet, retrieveDataIdsList } from "../../utils/ApiUtils";
+import { performSimpleGet } from "../../utils/ApiUtils";
 import { getKeycloakToken } from "../../utils/Auth";
 import { doThingsInChunks } from "../../utils/Cypress";
 
