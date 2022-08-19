@@ -90,8 +90,8 @@ jobs:
       - name: Store backendOpenApi.json
         uses: actions/upload-artifact@v2
         with:
-          name: backendOpenApiDescription
-          path: ./dataland-frontend/build/clients/backend/backendOpenApi.json
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
       - name: Build KeyCloak theme
         run: ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
       - name: Start server and deploy to it (either Preview or Dev)
@@ -151,9 +151,10 @@ jobs:
       - name: Download backendOpenApi.json
         uses: actions/download-artifact@v3
         with:
-          path: ./dataland-frontend/build/clients/backend
-      - name: Move backendOpenApi.json to the correct location
-        run: mv ./dataland-frontend/build/clients/backend/backendOpenApiDescription/backendOpenApi.json ./dataland-frontend/build/clients/backend/backendOpenApi.json
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
+      - name: (DEBUG) DISPLAY DOWNLOAD FOLDER STRUCTURE
+        run: ls -R
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: check deployment
