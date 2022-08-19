@@ -87,7 +87,7 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
-      - name: Store backendOpenApi.json
+      - name: Store generated frontend API client for use by cpress
         uses: actions/upload-artifact@v2
         with:
           name: frontendApiClient
@@ -148,13 +148,11 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.6
           fi
-      - name: Download backendOpenApi.json
+      - name: Download frontend API client
         uses: actions/download-artifact@v3
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
-      - name: (DEBUG) DISPLAY DOWNLOAD FOLDER STRUCTURE
-        run: ls -R
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: check deployment
