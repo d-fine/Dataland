@@ -1,8 +1,3 @@
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend/api";
 import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
@@ -59,32 +60,36 @@ class CompanyManagerTest(
         }
     }
 
+    private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
+        val searchResponse = testCompanyManager.searchCompanies(
+            identifier.identifierValue,
+            false,
+            setOf(),
+            setOf()
+        )
+            .toMutableList()
+        // The response list is filtered to exclude results that match in account of another identifier having
+        // the required value but the looked for identifier type does not exist (This happens due to the test
+        // data having non-unique identifier values for different identifier types)
+        searchResponse.retainAll {
+            it.companyInformation.identifiers.any {
+                identifierInResponse ->
+                identifierInResponse.identifierType == identifier.identifierType
+            }
+        }
+        assertTrue(
+            searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
+            "The search by identifier returns at least one company that does not contain the looked" +
+                "for value $identifier."
+        )
+    }
+
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
         addAllCompanies(testCompanyList)
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
-                val searchResponse = testCompanyManager.searchCompanies(
-                    identifier.identifierValue,
-                    false,
-                    setOf(),
-                    setOf()
-                )
-                    .toMutableList()
-                // The response list is filtered to exclude results that match in account of another identifier having
-                // the required value but the looked for identifier type does not exist (This happens due to the test
-                // data having non-unique identifier values for different identifier types)
-                searchResponse.retainAll {
-                    it.companyInformation.identifiers.any {
-                        identifierInResponse ->
-                        identifierInResponse.identifierType == identifier.identifierType
-                    }
-                }
-                assertTrue(
-                    searchResponse.all { it.companyInformation.identifiers.contains(identifier) },
-                    "The search by identifier returns at least one company that does not contain the looked" +
-                        "for value $identifier."
-                )
+                testThatSearchForCompanyIdentifierWorks(identifier)
             }
         }
     }
