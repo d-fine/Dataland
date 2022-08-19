@@ -34,10 +34,19 @@ class UnauthorizedMetaDataControllerApi {
     }
 
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: String): Request {
+        val regex = "(http|https)://([a-z.-]*):([0-9]*)/api"
+        val matchResult = regex.toRegex().findAll(BASE_PATH_TO_DATALAND_BACKEND)
+        if (matchResult.none()) {
+            throw IllegalArgumentException(
+                "Unable to extract required scheme, host and port information from $BASE_PATH_TO_DATALAND_BACKEND " +
+                    "using $regex"
+            )
+        }
+        val (scheme, host, port) = matchResult.first().groupValues.drop(1)
         val endpointUrl = HttpUrl.Builder()
-            .scheme(BASE_PATH_TO_DATALAND_BACKEND.substringBefore("://"))
-            .host(BASE_PATH_TO_DATALAND_BACKEND.substringAfter("//").substringBefore(":"))
-            .port(BASE_PATH_TO_DATALAND_BACKEND.substringAfter(":").substringAfter(":").substringBefore("/api").toInt())
+            .scheme(scheme)
+            .host(host)
+            .port(port.toInt())
             .addPathSegment("api")
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
