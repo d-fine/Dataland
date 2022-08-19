@@ -16,8 +16,13 @@ export function doThingsInChunks<T>(
   });
 }
 
-export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T> {
+export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
   return new Cypress.Promise((resolve, reject) => {
-    promise.then((result) => resolve(result)).catch((error) => reject(error));
+    promise
+      .then(
+        () => resolve("done"),
+        (reason) => reject(reason)
+      )
+      .catch((reason) => reject(reason));
   });
 }
