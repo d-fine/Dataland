@@ -201,7 +201,7 @@ describeIf(
   },
   function () {
     beforeEach(function () {
-      cy.ensureLoggedIn("data_uploader", "test");
+      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
     const companyNameMarker = "Data987654321";
