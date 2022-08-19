@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.annotations
 
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.core.type.filter.AnnotationTypeFilter

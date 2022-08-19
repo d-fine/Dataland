@@ -2,7 +2,7 @@ package org.dataland.e2etests.accessmanagement
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Types
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
@@ -35,20 +35,8 @@ class UnauthorizedMetaDataControllerApi {
     }
 
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: DataTypeEnum): Request {
-        val regex = "(http|https)://([a-z.-]*):([0-9]*)/api"
-        val matchResult = regex.toRegex().findAll(BASE_PATH_TO_DATALAND_BACKEND)
-        if (matchResult.none()) {
-            throw IllegalArgumentException(
-                "Unable to extract required scheme, host and port information from $BASE_PATH_TO_DATALAND_BACKEND " +
-                    "using $regex"
-            )
-        }
-        val (scheme, host, port) = matchResult.first().groupValues.drop(1)
-        val endpointUrl = HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
-            .port(port.toInt())
-            .addPathSegment("api")
+        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
+            .toHttpUrl().newBuilder()
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
             .addQueryParameter("dataType", dataType.value)
