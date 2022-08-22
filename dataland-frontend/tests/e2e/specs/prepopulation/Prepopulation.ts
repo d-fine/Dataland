@@ -4,7 +4,7 @@ import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend/api";
+} from "../../../../build/clients/backend";
 const chunkSize = 40;
 
 describe(

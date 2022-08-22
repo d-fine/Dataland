@@ -1,10 +1,15 @@
 import { Configuration } from "@/../build/clients/backend/configuration";
 import {
   CompanyDataControllerApi,
+  CompanyDataControllerApiInterface,
   EuTaxonomyDataForNonFinancialsControllerApi,
+  EuTaxonomyDataForNonFinancialsControllerApiInterface,
   EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
+  MetaDataControllerApiInterface,
   SkyminderControllerApi,
+  SkyminderControllerApiInterface,
 } from "@/../build/clients/backend/api";
 import Keycloak from "keycloak-js";
 export class ApiClientProvider {
@@ -38,23 +43,23 @@ export class ApiClientProvider {
     return new constructor(configuration, "/api");
   }
 
-  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApi> {
+  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
 
-  async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApi> {
+  async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
   }
 
-  async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApi> {
+  async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
   }
 
-  async getMetaDataControllerApi(): Promise<MetaDataControllerApi> {
+  async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
-  async getSkyminderControllerApi(): Promise<SkyminderControllerApi> {
+  async getSkyminderControllerApi(): Promise<SkyminderControllerApiInterface> {
     return this.getConstructedApi(SkyminderControllerApi);
   }
 }
