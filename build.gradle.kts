@@ -1,6 +1,8 @@
 // main
 
 val jacocoVersion: String by project
+val ktlintVersion:String by project
+
 allprojects {
     repositories {
         mavenCentral()
@@ -38,6 +40,9 @@ subprojects {
     }
     sonarqube {
         isSkipProject = true
+    }
+    ktlint {
+        version.set(ktlintVersion)
     }
 }
 
@@ -132,4 +137,8 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 }
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = java.sourceCompatibility.toString()
+}
+
+ktlint {
+    version.set(ktlintVersion)
 }
