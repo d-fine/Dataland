@@ -1,4 +1,4 @@
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend";
 import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {

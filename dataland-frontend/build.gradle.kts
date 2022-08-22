@@ -53,6 +53,17 @@ tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.pl
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
     generatorName.set("typescript-axios")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
+    )
     dependsOn("getBackendOpenApiSpec")
 }
 

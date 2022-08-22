@@ -1,6 +1,6 @@
 import { retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/ApiUtils";
 import { doThingsInChunks } from "../../utils/Cypress";
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend";
 const chunkSize = 40;
 
 describe(
