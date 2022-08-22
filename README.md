@@ -66,8 +66,8 @@ Requests can be authorized via two different methods:
 * start the frontend - using `npm run serve`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
 * start the E2E cypress tests using `npm run teste2e`
 
-## Dependency Management
-we try to keep our dependencies up to date. Therefore, every sprint we update dependency versions in a separate PR.
+## Manual maintenance
+We execute quite some things manually regularly. Included is to try to keep our dependencies up to date. Every sprint we execute the following steps, and create a seperate PR for the code changes
 To do so:
 * Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 * update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
@@ -81,3 +81,5 @@ To do so:
 * Update Docker images: run CypressImage and TemurinImage jobs in GitHub actions. Don't forget to update KeyCloak!
 * Do the above also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
 * After updating all components check if everything is still working
+* Update Sever Versions (apt-get update && apt-get upgrade)
+* Execute a deployment with real data
