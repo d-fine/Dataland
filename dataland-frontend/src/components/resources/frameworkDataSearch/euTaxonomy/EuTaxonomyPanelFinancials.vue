@@ -20,7 +20,7 @@
       </div>
       <template v-for="fsType in dataSet.financialServicesTypes" :key="fsType">
         <div class="col-12 text-left pb-3">
-          <span class="font-medium text-xl">Exposure for {{ getSectionHeading(fsType) }}</span>
+          <span class="font-medium text-xl">Exposures for {{ getSectionHeading(fsType) }}</span>
           <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
         </div>
         <div class="col-6">
@@ -157,9 +157,9 @@ export default {
     },
     getSectionHeading(type) {
       const mapping = {
-        CreditInstitution: "Credit Institutions",
-        AssetManagement: "Asset Managers",
-        InsuranceOrReinsurance: "Insurance and Reinsurance companies",
+        CreditInstitution: "Credit Institution",
+        AssetManagement: "Asset Management",
+        InsuranceOrReinsurance: "Insurance and Reinsurance",
       };
       return mapping[type];
     },
