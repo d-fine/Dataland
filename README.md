@@ -70,8 +70,8 @@ Requests can be authorized via two different methods:
 we try to keep our dependencies up to date. Therefore, every sprint we update dependency versions in a separate PR.
 To do so:
 * Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-* update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
-* Note: fasterXML is managed by spring and ktlint by jlleitschuh, thus NO manual version update should be conducted
+* update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
+* Note: fasterXML is managed by spring, thus NO manual version update should be conducted
 * update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 * Update node version in `dataland-frontend/build.gradle.kts`
 * Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
