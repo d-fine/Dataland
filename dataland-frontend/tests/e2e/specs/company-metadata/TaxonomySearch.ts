@@ -1,6 +1,6 @@
 import { retrieveDataIdsList } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend/api";
+import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend";
 
 let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
 
