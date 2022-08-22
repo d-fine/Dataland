@@ -104,7 +104,7 @@ describeIf(
       });
     }
 
-    function formatPercentNumber(value?: any): Number {
+    function formatPercentNumber(value?: any): number {
       return Math.round((value || 0) * 100 * 100) / 100;
     }
 
