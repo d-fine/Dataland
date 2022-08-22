@@ -71,7 +71,7 @@ class CompanyManagerTest(
                 // data having non-unique identifier values for different identifier types)
                 searchResponse.retainAll {
                     it.companyInformation.identifiers.any {
-                        identifierInResponse ->
+                            identifierInResponse ->
                         identifierInResponse.identifierType == identifier.identifierType
                     }
                 }

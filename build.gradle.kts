@@ -1,7 +1,7 @@
 // main
 
 val jacocoVersion: String by project
-val ktlintVersion:String by project
+val ktlintVersion: String by project
 
 allprojects {
     repositories {
