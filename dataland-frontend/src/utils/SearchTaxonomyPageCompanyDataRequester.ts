@@ -4,7 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany } from "@/../build/clients/backend/api";
+import { StoredCompany } from "@/../build/clients/backend";
 import Keycloak from "keycloak-js";
 
 /**

@@ -1,9 +1,13 @@
 import { Configuration } from "@/../build/clients/backend/configuration";
 import {
   CompanyDataControllerApi,
+  CompanyDataControllerApiInterface,
   EuTaxonomyDataControllerApi,
+  EuTaxonomyDataControllerApiInterface,
   MetaDataControllerApi,
+  MetaDataControllerApiInterface,
   SkyminderControllerApi,
+  SkyminderControllerApiInterface,
 } from "@/../build/clients/backend/api";
 import Keycloak from "keycloak-js";
 export class ApiClientProvider {
@@ -37,19 +41,19 @@ export class ApiClientProvider {
     return new constructor(configuration, "/api");
   }
 
-  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApi> {
+  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
 
-  async getEuTaxonomyDataControllerApi(): Promise<EuTaxonomyDataControllerApi> {
+  async getEuTaxonomyDataControllerApi(): Promise<EuTaxonomyDataControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataControllerApi);
   }
 
-  async getMetaDataControllerApi(): Promise<MetaDataControllerApi> {
+  async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
-  async getSkyminderControllerApi(): Promise<SkyminderControllerApi> {
+  async getSkyminderControllerApi(): Promise<SkyminderControllerApiInterface> {
     return this.getConstructedApi(SkyminderControllerApi);
   }
 }
