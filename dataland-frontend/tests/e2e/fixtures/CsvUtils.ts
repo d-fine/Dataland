@@ -1,4 +1,4 @@
-import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from "../../../build/clients/backend/api";
+import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from "../../../build/clients/backend";
 
 export function getAttestation(attestation: string) {
   if (attestation === "LimitedAssurance") {

@@ -5,7 +5,8 @@ import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-} from "../../../../build/clients/backend/api";
+  EligibilityKpis,
+} from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -56,9 +57,15 @@ describeIf(
       cy.get("select[name=attestation]").select(data.attestation.toString());
       cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
       if (data.eligibilityKpis !== undefined) {
-        fillEligibilityKpis("CreditInstitution", data.eligibilityKpis.CreditInstitution);
-        fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis.InsuranceOrReinsurance);
-        fillEligibilityKpis("AssetManagement", data.eligibilityKpis.AssetManagement);
+        if (data.eligibilityKpis.CreditInstitution !== undefined) {
+          fillEligibilityKpis("CreditInstitution", data.eligibilityKpis.CreditInstitution);
+        }
+        if (data.eligibilityKpis.InsuranceOrReinsurance !== undefined) {
+          fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis.InsuranceOrReinsurance);
+        }
+        if (data.eligibilityKpis.AssetManagement !== undefined) {
+          fillEligibilityKpis("AssetManagement", data.eligibilityKpis.AssetManagement);
+        }
       }
       if (data.insuranceKpis !== undefined) {
         fillField(
@@ -78,7 +85,7 @@ describeIf(
       }
     }
 
-    function fillEligibilityKpis(divName: string, data: EuTaxonomyDataForFinancials.eligibilityKpis) {
+    function fillEligibilityKpis(divName: string, data: EligibilityKpis) {
       fillField(divName, "taxonomyEligibleActivity", data.taxonomyEligibleActivity);
       fillField(divName, "derivatives", data.derivatives);
       fillField(divName, "banksAndIssuers", data.banksAndIssuers);
@@ -101,55 +108,26 @@ describeIf(
       return Math.round((value || 0) * 100 * 100) / 100;
     }
 
-    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials) {
-      cy.get('div[name="taxonomyEligibleActivityInsuranceOrReinsurance"]')
+    function checkCommonFields(type: string, data: EligibilityKpis) {
+      cy.get(`div[name="taxonomyEligibleActivity${type}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
-        .should(
-          "contain",
-          formatPercentNumber(testData.eligibilityKpis!.InsuranceOrReinsurance.taxonomyEligibleActivity)
-        );
-      cy.get('div[name="derivativesInsuranceOrReinsurance"]')
+        .should("contain", formatPercentNumber(data.taxonomyEligibleActivity));
+      cy.get(`div[name="derivatives${type}"]`)
         .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.InsuranceOrReinsurance.derivatives));
-      cy.get('div[name="banksAndIssuersInsuranceOrReinsurance"]')
+        .should("contain", formatPercentNumber(data.derivatives));
+      cy.get(`div[name="banksAndIssuers${type}"]`)
         .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.InsuranceOrReinsurance.banksAndIssuers));
-      cy.get('div[name="investmentNonNfrdInsuranceOrReinsurance"]')
+        .should("contain", formatPercentNumber(data.banksAndIssuers));
+      cy.get(`div[name="investmentNonNfrd${type}"]`)
         .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.InsuranceOrReinsurance.investmentNonNfrd));
+        .should("contain", formatPercentNumber(data.investmentNonNfrd));
+    }
+
+    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials) {
+      checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
-    }
-
-    function checkAssetManagementValues(testData: EuTaxonomyDataForFinancials) {
-      cy.get('div[name="taxonomyEligibleActivityAssetManagement"]')
-        .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.AssetManagement.taxonomyEligibleActivity));
-      cy.get('div[name="derivativesAssetManagement"]')
-        .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.AssetManagement.derivatives));
-      cy.get('div[name="banksAndIssuersAssetManagement"]')
-        .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.AssetManagement.banksAndIssuers));
-      cy.get('div[name="investmentNonNfrdAssetManagement"]')
-        .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.AssetManagement.investmentNonNfrd));
-    }
-
-    function checkGeneralCreditInstitutionValues(testData: EuTaxonomyDataForFinancials) {
-      cy.get('div[name="taxonomyEligibleActivityCreditInstitution"]')
-        .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.CreditInstitution.taxonomyEligibleActivity));
-      cy.get('div[name="derivativesCreditInstitution"]')
-        .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.CreditInstitution.derivatives));
-      cy.get('div[name="banksAndIssuersCreditInstitution"]')
-        .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.CreditInstitution.banksAndIssuers));
-      cy.get('div[name="investmentNonNfrdCreditInstitution"]')
-        .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(testData.eligibilityKpis!.CreditInstitution.investmentNonNfrd));
     }
 
     it("Create a CreditInstitution (combined field submission)", () => {
@@ -159,7 +137,7 @@ describeIf(
         return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans !== undefined;
       })[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
-      checkGeneralCreditInstitutionValues(testData.t);
+      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
         .should("contain", "Trading portfolio & on demand interbank loans")
         .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
@@ -174,7 +152,7 @@ describeIf(
         return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans === undefined;
       })[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
-      checkGeneralCreditInstitutionValues(testData.t);
+      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolio"]')
         .should("contain", "Trading portfolio")
         .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolio));
@@ -199,7 +177,7 @@ describeIf(
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
       ])[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
-      checkAssetManagementValues(testData.t);
+      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
       cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
@@ -212,7 +190,7 @@ describeIf(
       ])[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
-      checkAssetManagementValues(testData.t);
+      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
     });

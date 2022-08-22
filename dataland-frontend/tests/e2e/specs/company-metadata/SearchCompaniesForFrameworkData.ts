@@ -4,7 +4,7 @@ import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend/api";
+} from "../../../../build/clients/backend";
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
 import { uploadEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "../../support/TestUtility";
