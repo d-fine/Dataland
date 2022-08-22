@@ -1,18 +1,19 @@
 import Chainable = Cypress.Chainable;
 
 export function logout(): void {
-  cy.visitAndCheckAppMount("/")
-    .get("button[name='logout_dataland_button']")
+  cy.visitAndCheckAppMount("/searchtaxonomy")
+    .get("div[id='profile-picture-dropdown-toggle']")
     .click()
+    .get("a[id='profile-picture-dropdown-toggle']")
+    .click()
+    .url()
+    .should("eq", Cypress.config("baseUrl") + "/")
     .get("button[name='login_dataland_button']")
     .should("exist")
     .should("be.visible");
 }
 
-export function login(
-  username: string = "data_reader",
-  password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")
-): void {
+export function login(username = "data_reader", password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
     .click()
@@ -39,7 +40,9 @@ export function ensureLoggedIn(username?: string, password?: string): void {
     },
     {
       validate: () => {
-        cy.visitAndCheckAppMount("/").get("button[name='logout_dataland_button']").should("exist");
+        cy.visit("/")
+          .url()
+          .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
       },
     }
   );
