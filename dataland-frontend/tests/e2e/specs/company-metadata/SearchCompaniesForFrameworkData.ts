@@ -86,7 +86,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     const permIdText = "Permanent Identifier (PermID)";
     checkPermIdToolTip(permIdText);
     executeCompanySearch(inputValue);
-    cy.get("h2").click({ force: true }); // Collapse the search autocomplete window if it exists
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
@@ -219,7 +218,7 @@ describeIf(
           .should("exist");
         cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
-          .should("contain.text", "The resource you requested does not exist yet.");
+          .should("contain.text", "Sorry! The company you searched for was not found in our database");
       }
     );
 
