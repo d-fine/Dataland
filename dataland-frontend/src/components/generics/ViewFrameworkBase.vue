@@ -17,6 +17,7 @@
         <slot></slot>
       </MarginWrapper>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -29,10 +30,12 @@ import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 import { ApiClientProvider } from "@/services/ApiClients";
+import DatalandFooter from "@/components/general/DatalandFooter";
 
 export default {
   name: "ViewFrameworkBase",
   components: {
+    DatalandFooter,
     TheContent,
     TheHeader,
     BackButton,

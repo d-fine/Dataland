@@ -8,7 +8,7 @@
 <script>
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection";
-import DatalandFooter from "@/components/structure/DatalandFooter";
+import DatalandFooter from "@/components/general/DatalandFooter";
 import SampleSection from "@/components/resources/landing/SampleSection";
 export default {
   name: "WelcomeDataland",
@@ -26,7 +26,7 @@ export default {
   methods: {
     checkAuthenticatedAndRedirectIfLoggedIn() {
       if (this.authenticated === true) {
-        this.$router.push({ path: "/searchtaxonomy", replace: true });
+        this.$router.push({ path: "/companies", replace: true });
       }
     },
   },

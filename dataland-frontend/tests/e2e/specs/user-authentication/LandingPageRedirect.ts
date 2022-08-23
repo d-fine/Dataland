@@ -3,6 +3,6 @@ describe("As a user, I expect to get redirected to the company search page when 
     cy.ensureLoggedIn();
     cy.visit("/")
       .url()
-      .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+      .should("eq", Cypress.config("baseUrl") + "/companies");
   });
 });
