@@ -34,7 +34,6 @@
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "${{ secrets.TARGETSERVER_URL }}", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("TEASER_COMPANY_PERM_IDS", "4295869227", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_BASE_URL", "${{ secrets.TRUSTEE_BASE_URL }}", [System.EnvironmentVariableTarget]::User)
-# If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_CREDENTIALS", "${{ secrets.TRUSTEE_CREDENTIALS }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_ENVIRONMENT_NAME", "${{ github.event.inputs.trusteeEnvironmentName }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_ACCOUNT_NAME", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_PASSWORD", "#", [System.EnvironmentVariableTarget]::User)
