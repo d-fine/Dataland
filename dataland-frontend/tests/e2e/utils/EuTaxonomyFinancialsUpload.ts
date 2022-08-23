@@ -1,7 +1,7 @@
 import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
-} from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+} from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
