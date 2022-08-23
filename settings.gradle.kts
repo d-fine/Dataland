@@ -41,6 +41,7 @@ dependencyResolutionManagement {
             library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.3")
             library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.3")
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3")
+            library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
             library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.1")
         }

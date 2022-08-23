@@ -1,0 +1,50 @@
+<template>
+  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-non-financials" @updateDataId="receiveDataId">
+    <template v-if="frameworkDataId">
+      <div class="grid">
+        <div class="col-12 text-left">
+          <h2 class="mb-0">EU Taxonomy Data</h2>
+        </div>
+        <div class="col-6 text-left">
+          <p class="font-semibold m-0">2021</p>
+          <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-7">
+          <EuTaxonomyPanelNonFinancials :dataID="frameworkDataId" />
+        </div>
+      </div>
+    </template>
+    <div v-if="frameworkDataId === null" class="col-12 text-left">
+      <h2>No EU-Taxonomy data for non financial companies present</h2>
+    </div>
+    <div v-if="frameworkDataId === undefined" class="col-12 text-left">
+      <h2>Loading...</h2>
+    </div>
+  </ViewFrameworkBase>
+</template>
+
+<script>
+import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
+export default {
+  name: "ViewEuTaxonomyNonFinancials",
+  components: { ViewFrameworkBase, EuTaxonomyPanelNonFinancials },
+  props: {
+    companyID: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      frameworkDataId: undefined,
+    };
+  },
+  methods: {
+    receiveDataId(id) {
+      this.frameworkDataId = id;
+    },
+  },
+};
+</script>

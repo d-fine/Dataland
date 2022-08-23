@@ -38,7 +38,7 @@ dependencies {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateBackendClient")
+    dependsOn("generateBackendClient", "getTestData")
 }
 
 tasks.withType<Test> {
@@ -63,6 +63,12 @@ tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.Generate
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
     generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
     configOptions.set(
         mapOf(
             "dateLibrary" to "java17",

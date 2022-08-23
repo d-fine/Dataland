@@ -28,7 +28,7 @@ export default {
       this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            const url = keycloak.createLoginUrl({ redirectUri: "/searchtaxonomy" });
+            const url = keycloak.createLoginUrl({ redirectUri: "/companies" });
             location.assign(url);
           }
         })

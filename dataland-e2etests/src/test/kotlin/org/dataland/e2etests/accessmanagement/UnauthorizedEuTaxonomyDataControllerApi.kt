@@ -4,31 +4,33 @@ import com.squareup.moshi.JsonAdapter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyData
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 class UnauthorizedEuTaxonomyDataControllerApi {
 
     private val client = OkHttpClient()
 
-    private fun transferJsonToCompanyAssociatedDataEuTaxonomyData(inputString: String):
-        CompanyAssociatedDataEuTaxonomyData {
-        val jsonAdapter: JsonAdapter<CompanyAssociatedDataEuTaxonomyData> =
-            moshi.adapter(CompanyAssociatedDataEuTaxonomyData::class.java)
+    private fun transferJsonToCompanyAssociatedDataEuTaxonomyDataForNonFinancials(inputString: String):
+        CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+        val jsonAdapter: JsonAdapter<CompanyAssociatedDataEuTaxonomyDataForNonFinancials> =
+            moshi.adapter(CompanyAssociatedDataEuTaxonomyDataForNonFinancials::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun buildGetCompanyAssociatedDataEuTaxonomyDataRequest(dataId: String): Request {
+    private fun buildGetCompanyAssociatedDataEuTaxonomyDataForNonFinancialsRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_PROXY/data/eutaxonomies/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/eutaxonomy-non-financials/$dataId")
             .get()
             .build()
     }
 
-    fun getCompanyAssociatedDataEuTaxonomyData(dataId: String): CompanyAssociatedDataEuTaxonomyData {
-        val response = client.newCall(buildGetCompanyAssociatedDataEuTaxonomyDataRequest(dataId)).execute()
+    fun getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(dataId: String):
+        CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+        val response = client.newCall(buildGetCompanyAssociatedDataEuTaxonomyDataForNonFinancialsRequest(dataId))
+            .execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
         val responseBodyAsString = response.body!!.string()
-        return transferJsonToCompanyAssociatedDataEuTaxonomyData(responseBodyAsString)
+        return transferJsonToCompanyAssociatedDataEuTaxonomyDataForNonFinancials(responseBodyAsString)
     }
 }

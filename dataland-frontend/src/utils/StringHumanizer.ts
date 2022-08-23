@@ -19,7 +19,7 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
  *
  * @param  {string} rawText      is the string to be converted to a human-readable string
  */
-function humanizeStockIndexString(rawText: string): string {
+function humaniseViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
     cdax: "CDAX",
     dax: "DAX",
@@ -36,6 +36,7 @@ function humanizeStockIndexString(rawText: string): string {
     eligibleopex: "Eligible OpEx",
     alignedcapex: "Aligned CapEx",
     alignedopex: "Aligned OpEx",
+    insuranceorreinsurance: "Insurance or Reinsurance",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
@@ -47,8 +48,8 @@ function humanizeStockIndexString(rawText: string): string {
  * @param  {string} rawText      is the string to be converted to a human-readable string
  */
 export function humanizeString(rawText: string): string {
-  const resultOfStockIndexStringHumanizing = humanizeStockIndexString(rawText);
-  return resultOfStockIndexStringHumanizing == ""
+  const resultOfCustomMappingHumanisation = humaniseViaMapping(rawText);
+  return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawText)
-    : resultOfStockIndexStringHumanizing;
+    : resultOfCustomMappingHumanisation;
 }

@@ -2,12 +2,13 @@ package org.dataland.e2etests.accessmanagement
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Types
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_PROXY
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import java.lang.reflect.ParameterizedType
 
 class UnauthorizedMetaDataControllerApi {
@@ -28,20 +29,17 @@ class UnauthorizedMetaDataControllerApi {
 
     private fun buildGetDataMetaInfoRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_PROXY/metadata/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/metadata/$dataId")
             .get()
             .build()
     }
 
-    private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: String): Request {
-        val endpointUrl = HttpUrl.Builder()
-            .scheme(BASE_PATH_TO_DATALAND_PROXY.substringBefore("://"))
-            .host(BASE_PATH_TO_DATALAND_PROXY.substringAfter("//").substringBefore(":"))
-            .port(BASE_PATH_TO_DATALAND_PROXY.substringAfter(":").substringAfter(":").substringBefore("/api").toInt())
-            .addPathSegment("api")
+    private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: DataTypeEnum): Request {
+        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
+            .toHttpUrl().newBuilder()
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
-            .addQueryParameter("dataType", dataType)
+            .addQueryParameter("dataType", dataType.value)
             .build()
         return Request.Builder()
             .url(endpointUrl)
@@ -56,7 +54,7 @@ class UnauthorizedMetaDataControllerApi {
         return transferJsonToDataMetaInformation(responseBodyAsString)
     }
 
-    fun getListOfDataMetaInfo(companyId: String, dataType: String): List<DataMetaInformation> {
+    fun getListOfDataMetaInfo(companyId: String, dataType: DataTypeEnum): List<DataMetaInformation> {
         val response = client.newCall(buildGetListOfDataMetaInfoRequest(companyId, dataType)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
         val responseBodyAsString = response.body!!.string()

@@ -1,26 +1,40 @@
 import { retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/ApiUtils";
 import { doThingsInChunks } from "../../utils/Cypress";
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend";
+import {
+  CompanyInformation,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+} from "../../../../build/clients/backend";
 const chunkSize = 40;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
   { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 },
   () => {
-    let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
-    const teaserCompanies: Array<string> = [];
-    let teaserCompaniesPermIds: Array<string> = [];
-
+    let companiesWithEuTaxonomyDataForNonFinancials: Array<{
+      companyInformation: CompanyInformation;
+      t: EuTaxonomyDataForNonFinancials;
+    }>;
+    let companiesWithEuTaxonomyDataForFinancials: Array<{
+      companyInformation: CompanyInformation;
+      t: EuTaxonomyDataForFinancials;
+    }>;
+    const teaserCompanyIds: Array<string> = [];
+    let teaserCompanyPermIds: Array<string> = [];
     if (Cypress.env("REALDATA") === true) {
-      teaserCompaniesPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
+      teaserCompanyPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
     }
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
-        companiesWithData = companies;
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+        companiesWithEuTaxonomyDataForNonFinancials = companies;
       });
     });
-
+    before(function () {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+        companiesWithEuTaxonomyDataForFinancials = companies;
+      });
+    });
     beforeEach(function () {
       cy.ensureLoggedIn();
     });
@@ -39,10 +53,10 @@ describe(
 
       function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
         if (
-          (Cypress.env("REALDATA") === true && teaserCompaniesPermIds.includes(getPermId(companyInformation))) ||
-          (Cypress.env("REALDATA") !== true && teaserCompanies.length == 0)
+          (Cypress.env("REALDATA") === true && teaserCompanyPermIds.includes(getPermId(companyInformation))) ||
+          (Cypress.env("REALDATA") !== true && teaserCompanyIds.length == 0)
         ) {
-          teaserCompanies.push(json.companyId);
+          teaserCompanyIds.push(json.companyId);
         }
       }
 
@@ -76,19 +90,33 @@ describe(
 
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
-          doThingsInChunks(companiesWithData, chunkSize, (element) => {
+          doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
+            return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+              .then((response) => response.json())
+              .then((companyUploadResponseJson) => {
+                uploadSingleElementWithRetries(
+                  "data/eutaxonomy-non-financials",
+                  {
+                    companyId: companyUploadResponseJson.companyId,
+                    data: element.t,
+                  },
+                  token
+                );
+                addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson);
+              });
+          });
+          doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
             return uploadSingleElementWithRetries("companies", element.companyInformation, token)
               .then((response) => response.json())
               .then((json) => {
                 uploadSingleElementWithRetries(
-                  "data/eutaxonomies",
+                  "data/eutaxonomy-financials",
                   {
                     companyId: json.companyId,
-                    data: element.euTaxonomyData,
+                    data: element.t,
                   },
                   token
                 );
-                addCompanyIdToTeaserCompanies(element.companyInformation, json);
               });
           });
         })
@@ -96,7 +124,7 @@ describe(
     });
 
     it("Check if the teaser company can be set", () => {
-      cy.wrap(teaserCompanies).should("have.length", 1);
+      cy.wrap(teaserCompanyIds).should("have.length", 1);
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) =>
           cy.request({
@@ -106,7 +134,7 @@ describe(
               "Content-Type": "application/json",
               Authorization: "Bearer " + token,
             },
-            body: JSON.stringify(teaserCompanies),
+            body: JSON.stringify(teaserCompanyIds),
           })
         )
         .its("status")
@@ -114,26 +142,38 @@ describe(
     });
 
     it("Check if all the company ids can be retrieved", () => {
-      retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
+      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
         assert(
-          companyIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-          `Found ${companyIdList.length}, expected at least ${companiesWithData.length} companies`
+          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+          `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} companies`
+        );
+      });
+      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
+        assert(
+          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+          `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} companies`
         );
       });
     });
 
     it("Check if all the data ids can be retrieved", () => {
-      retrieveDataIdsList().then((dataIdList: any) => {
+      retrieveDataIdsList().then((allDataIdsList: any) => {
         assert(
-          dataIdList.length >= companiesWithData.length, // >= to avoid problem with several runs in a row
-          `Found ${dataIdList.length}, expected at least ${companiesWithData.length} datasets`
+          allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+          `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} datasets`
+        );
+      });
+      retrieveDataIdsList().then((allDataIdsList: any) => {
+        assert(
+          allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+          `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} datasets`
         );
       });
     });
 
     it("Company Name Input field exists and works", () => {
-      const inputValue = companiesWithData[0].companyInformation.companyName;
-      cy.visitAndCheckAppMount("/search");
+      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+      cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("input[name=companyName]")
         .should("not.be.disabled")
         .type(inputValue, { force: true })
@@ -141,47 +181,13 @@ describe(
       cy.intercept("**/api/companies*").as("retrieveCompany");
       cy.get("button[name=getCompanies]").click();
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
-        cy.get("td").contains("VIEW").contains("a", "VIEW").click().url().should("include", "/companies/");
+        cy.get("td").contains(companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName);
       });
     });
 
     it("Show all companies button exists", () => {
-      cy.visitAndCheckAppMount("/search");
+      cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
-    });
-
-    it("Check Eu Taxonomy Data Presence and Link route", () => {
-      retrieveDataIdsList().then((dataIdList: Array<string>) => {
-        cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
-        cy.visitAndCheckAppMount("/data/eutaxonomies/" + dataIdList[0]);
-        cy.wait("@retrieveTaxonomyData", { timeout: 60 * 1000 }).then(() => {
-          cy.get("h3").should("be.visible");
-          cy.get("h3").contains("Revenue");
-          cy.get("h3").contains("CapEx");
-          cy.get("h3").contains("OpEx");
-          cy.get(".d-card").should("contain", "Eligible");
-        });
-      });
-    });
-
-    it("Check Company associated EU Taxonomy Data Presence and Link route", () => {
-      retrieveCompanyIdsList().then((companyIdList: Array<string>) => {
-        cy.intercept("**/api/companies/*").as("retrieveCompany");
-        cy.intercept("**/api/data/eutaxonomies/*").as("retrieveTaxonomyData");
-        cy.visitAndCheckAppMount(`/companies/${companyIdList[0]}/eutaxonomies`);
-        cy.wait("@retrieveCompany", { timeout: 60 * 1000 })
-          .wait("@retrieveTaxonomyData", { timeout: 60 * 1000 })
-          .then(() => {
-            cy.get("h3").should("be.visible");
-            cy.get("h3").contains("Revenue");
-            cy.get("h3").contains("CapEx");
-            cy.get("h3").contains("OpEx");
-            cy.get("body").contains("Market Cap:");
-            cy.get("body").contains("Headquarter:");
-            cy.get("body").contains("Sector:");
-            cy.get("input[name=eu_taxonomy_search_bar_standard]").should("exist");
-          });
-      });
     });
   }
 );

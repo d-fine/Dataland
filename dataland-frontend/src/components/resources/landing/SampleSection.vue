@@ -11,7 +11,7 @@
             <p>Preview EU Taxonomy Data of <strong>BMW</strong>, before joining Dataland.</p>
           </div>
           <div class="col-10 text-left p-fluid">
-            <router-link to="/taxonomysample" class="text-primary no-underline font-bold">
+            <router-link to="/samples/eutaxonomy-non-financials" class="text-primary no-underline font-bold">
               <PrimeButton
                 class="bg-white border-primary border-2 text-900 mt-2 mb-3 h-3rem p-0 justify-content-center"
                 name="eu_taxonomy_sample_button"
