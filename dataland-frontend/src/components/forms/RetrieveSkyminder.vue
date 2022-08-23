@@ -31,7 +31,7 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import PrimeButton from "primevue/button";
-import SkyminderTable from "@/components/tables/SkyminderTable";
+import SkyminderTable from "@/components/resources/skyminderCompaniesSearch/SkyminderTable";
 
 export default {
   name: "RetrieveSkyminder",

@@ -1,4 +1,4 @@
-import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar.vue";
+import EuTaxoSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { shallowMount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
@@ -12,7 +12,7 @@ describe("EuTaxoSearchBarTest", () => {
       history: createMemoryHistory(),
       routes,
     });
-    router.push("/searchtaxonomy");
+    router.push("/companies");
     await router.isReady();
     wrapper = shallowMount(EuTaxoSearchBar, {
       global: {

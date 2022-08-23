@@ -2,8 +2,10 @@ import { Configuration } from "@/../build/clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
-  EuTaxonomyDataControllerApi,
-  EuTaxonomyDataControllerApiInterface,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+  EuTaxonomyDataForNonFinancialsControllerApiInterface,
+  EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   MetaDataControllerApiInterface,
   SkyminderControllerApi,
@@ -45,8 +47,12 @@ export class ApiClientProvider {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
 
-  async getEuTaxonomyDataControllerApi(): Promise<EuTaxonomyDataControllerApiInterface> {
-    return this.getConstructedApi(EuTaxonomyDataControllerApi);
+  async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
+    return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
+  }
+
+  async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
+    return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
   }
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {

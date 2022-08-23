@@ -1,10 +1,11 @@
 describe("As a developer I want to ensure that the SkyMinder integration works fine", () => {
   beforeEach(() => {
     cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/search");
+    cy.visitAndCheckAppMount("/companies-only-search");
   });
 
   it("page should be present", function () {
+    cy.visitAndCheckAppMount("/companies-only-search");
     cy.get(".p-card-title").should("contain", "Skyminder Data Search");
     const inputValueCountry = "A 3 letter country code";
     cy.get("input[name=code]")
