@@ -1,3 +1,6 @@
+import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
+import { DataTypeEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {
     cy.visitAndCheckAppMount("/");
@@ -17,5 +20,44 @@ describe("As a user, I expect the footer section to be present and contain relev
       .url()
       .should("include", "/dataprivacy");
     cy.get("h2").contains("Data Privacy");
+  });
+
+  describe("Checks that the footer section is present on many pages", () => {
+    beforeEach(() => {
+      cy.ensureLoggedIn();
+    });
+
+    const pagesToCheck = [
+      "/companies",
+      "/companies/upload",
+      "/companies-only-search",
+      "/samples/eutaxonomy-non-financials",
+    ];
+
+    function assertFooterPresence() {
+      cy.get('a p[title="data privacy"]')
+        .should("contain.text", "Data Privacy")
+        .click({ force: true })
+        .url()
+        .should("include", "/dataprivacy");
+    }
+
+    pagesToCheck.forEach((page) => {
+      it(`Checks that the footer is present on ${page}`, () => {
+        cy.visitAndCheckAppMount(page);
+        assertFooterPresence();
+      });
+    });
+
+    const frameworksToCheck = Object.values(DataTypeEnum);
+
+    frameworksToCheck.forEach((framework) => {
+      it(`Checks that the footer is present on framework ${framework}`, () => {
+        retrieveFirstCompanyIdWithFrameworkData(framework).then((companyId) => {
+          cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
+          assertFooterPresence();
+        });
+      });
+    });
   });
 });
