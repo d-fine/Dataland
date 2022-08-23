@@ -29,7 +29,7 @@ export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chai
     .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
     .then((token) => {
       return cy.request({
-        url: `/api/companies?frameworks=${framework}`,
+        url: `/api/companies?dataTypes=${framework}`,
         method: "GET",
         headers: { Authorization: "Bearer " + token },
       });
