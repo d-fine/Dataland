@@ -1,7 +1,6 @@
 import { describeIf } from "../../support/TestUtility";
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import { submitEuTaxonomyFinancialsUploadForm } from "../../utils/EuTaxonomyFinancialsUpload";
-import { generateEuTaxonomyUpload } from "../../utils/EuTaxonomyFinancialsUpload";
+import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "../../utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
