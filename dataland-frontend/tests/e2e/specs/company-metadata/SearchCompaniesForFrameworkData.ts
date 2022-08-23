@@ -8,7 +8,7 @@ import {
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
 import { uploadEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "../../support/TestUtility";
-import { uploadEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
+import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -211,7 +211,7 @@ describeIf(
         "framework filter is set to that framework",
       () => {
         const companyName = "CompanyWithFinancial" + companyNameMarker;
-        createCompanyAndGetId(companyName).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
+        createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
         cy.visit(`/companies?input=${companyName}`)
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
@@ -241,11 +241,13 @@ describeIf(
 
     it(
       "Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
-        "check if they are displayed in the autcomplete dropdown only if the framework filter is set accordingly",
+        "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
       () => {
         const companyNameFinancialPrefix = "CompanyWithFinancial";
         const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-        createCompanyAndGetId(companyNameFinancial).then((companyId) => uploadEuTaxonomyDataForFinancials(companyId));
+        createCompanyAndGetId(companyNameFinancial).then((companyId) =>
+          uploadDummyEuTaxonomyDataForFinancials(companyId)
+        );
         checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
 
         const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
