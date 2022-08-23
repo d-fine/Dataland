@@ -4,9 +4,9 @@ describe("As a user, I expect there to be multiple result pages if there are man
   });
 
   it("Do a search with 0 matches, then assure that the paginator is gone", () => {
-    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
-    cy.get("input[name=eu_taxonomy_search_bar_top]")
+    cy.get("input[name=search_bar_top]")
       .should("exist")
       .type(inputValueThatWillResultInZeroMatches)
       .type("{enter}")
@@ -15,9 +15,9 @@ describe("As a user, I expect there to be multiple result pages if there are man
   });
 
   it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
-    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     const inputValue = "a";
-    cy.get("input[name=eu_taxonomy_search_bar_top]")
+    cy.get("input[name=search_bar_top]")
       .should("not.be.disabled")
       .click({ force: true })
       .type(inputValue)

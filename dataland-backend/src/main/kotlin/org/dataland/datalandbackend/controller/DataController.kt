@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -19,7 +20,7 @@ abstract class DataController<T>(
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>
 ) : DataAPI<T> {
-    private val dataType = clazz.simpleName
+    private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):

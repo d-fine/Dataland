@@ -10,7 +10,7 @@ describe("As a user, I expect the index selection tabs to work on /searchtaxonom
   });
 
   it("Index tabmenu should be present", () => {
-    cy.visitAndCheckAppMount("/searchtaxonomy");
+    cy.visitAndCheckAppMount("/companies");
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
     cy.get(indexTabMenu).should("exist").eq(1).parent(".p-tabmenuitem").should("have.css", "color", "rgb(27, 27, 27)");
     verifyTaxonomySearchResultTable();
@@ -18,15 +18,14 @@ describe("As a user, I expect the index selection tabs to work on /searchtaxonom
     cy.get(indexTabMenu).should("not.exist");
   });
 
-  it("Visit searchtaxonomy page, scroll to the bottom, back to the top, and check if Dax still highlighted", () => {
+  it("Visit companies search page, scroll to the bottom, back to the top, and check if Dax still highlighted", () => {
+    cy.visitAndCheckAppMount("/companies");
     function checkIfDaxTabIsHighlighted(): void {
       cy.get('li[class="p-tabmenuitem p-highlight"]')
         .children(".p-menuitem-link")
         .children(".p-menuitem-text")
         .should("contain", "DAX");
     }
-
-    cy.visitAndCheckAppMount("/searchtaxonomy");
 
     checkIfDaxTabIsHighlighted();
 

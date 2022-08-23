@@ -1,15 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
-import UploadData from "@/components/pages/UploadData.vue";
-import SearchData from "@/components/pages/SearchData.vue";
+import UploadEuTaxonomyDataForNonFinancials from "@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue";
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
-import TaxonomyPanel from "@/components/resources/taxonomy/TaxonomyPanel.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import SearchTaxonomy from "@/components/pages/SearchTaxonomy.vue";
-import CompanyTaxonomy from "@/components/pages/CompanyTaxonomy.vue";
-import CompanyTaxonomySample from "@/components/pages/CompanyTaxonomySample.vue";
+import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
+import ViewEuTaxonomyNonFinancialsSample from "@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue";
 import TheImprint from "@/components/pages/TheImprint.vue";
 import DataPrivacy from "@/components/pages/DataPrivacy.vue";
 import NoContentFound from "@/components/pages/NoContentFound.vue";
+import UploadEuTaxonomyDataForFinancials from "@/components/pages/UploadEuTaxonomyDataForFinancials.vue";
+import UploadCompany from "@/components/pages/UploadCompany.vue";
+import SearchCompanies from "@/components/pages/SearchCompanies.vue";
+import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
+import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 
 const routes = [
   {
@@ -18,30 +20,31 @@ const routes = [
     component: WelcomeDataland,
   },
   {
-    path: "/upload",
-    name: "Create Data",
-    component: UploadData,
+    path: "/samples/eutaxonomy-non-financials",
+    name: "Eu Taxonomy For Non-Financials Sample",
+    component: ViewEuTaxonomyNonFinancialsSample,
   },
   {
-    path: "/search",
-    name: "Search Data",
-    component: SearchData,
+    path: "/companies/upload",
+    name: "Upload Company",
+    component: UploadCompany,
   },
   {
-    path: "/searchtaxonomy",
-    name: "Search Eu Taxonomy",
-    component: SearchTaxonomy,
-  },
-  {
-    path: "/taxonomysample",
-    name: "Eu Taxonomy Sample",
-    component: CompanyTaxonomySample,
-  },
-  {
-    path: "/data/eutaxonomies/:dataID",
+    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
     props: true,
-    name: "EU Taxonomy",
-    component: TaxonomyPanel,
+    name: "Upload Eu Taxonomy Data For Non-Financials",
+    component: UploadEuTaxonomyDataForNonFinancials,
+  },
+  {
+    path: "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
+    props: true,
+    name: "Upload Eu Taxonomy Data For Financials",
+    component: UploadEuTaxonomyDataForFinancials,
+  },
+  {
+    path: "/companies",
+    name: "Search Companies for Framework Data",
+    component: SearchCompaniesForFrameworkData,
   },
   {
     path: "/companies/:companyID",
@@ -50,10 +53,21 @@ const routes = [
     component: CompanyInformation,
   },
   {
-    path: "/companies/:companyID/eutaxonomies",
+    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials",
     props: true,
-    name: "Company EU Taxonomy",
-    component: CompanyTaxonomy,
+    name: "Company EU Taxonomy for non financials",
+    component: ViewEuTaxonomyNonFinancials,
+  },
+  {
+    path: "/companies/:companyID/frameworks/eutaxonomy-financials",
+    props: true,
+    name: "Company EU Taxonomy for financials",
+    component: ViewEuTaxonomyFinancials,
+  },
+  {
+    path: "/companies-only-search",
+    name: "Search Companies",
+    component: SearchCompanies,
   },
   {
     path: "/dataprivacy",

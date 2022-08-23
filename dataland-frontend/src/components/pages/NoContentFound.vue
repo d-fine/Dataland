@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import TheHeader from "@/components/structure/TheHeader";
-import TheContent from "@/components/structure/TheContent";
+import TheHeader from "@/components/generics/TheHeader";
+import TheContent from "@/components/generics/TheContent";
 export default {
   name: "NoContentFound",
   components: { TheContent, TheHeader },

@@ -9,6 +9,6 @@ package org.dataland.datalandbackend.model
  */
 data class StorableDataSet(
     val companyId: String,
-    val dataType: String,
+    val dataType: DataType,
     val data: String
 )

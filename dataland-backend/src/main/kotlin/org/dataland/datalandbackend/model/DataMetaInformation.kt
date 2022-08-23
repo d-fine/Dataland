@@ -10,7 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param companyId unique identifier to identify the company the data is associated with
  */
 data class DataMetaInformation(
-    @field:JsonProperty(required = true) val dataId: String,
-    @field:JsonProperty(required = true) val dataType: String,
-    @field:JsonProperty(required = true) val companyId: String
+    @field:JsonProperty(required = true)
+    val dataId: String,
+
+    @field:JsonProperty(required = true)
+    val dataType: DataType,
+
+    @field:JsonProperty(required = true)
+    val companyId: String
 )

@@ -31,9 +31,9 @@ describe("routerTest", () => {
     );
   });
 
-  it("checks if the router pushes to Searchtaxonomy page as expected", async () => {
-    await router.push("/searchtaxonomy");
+  it("checks if the router pushes to companies page as expected", async () => {
+    await router.push("/companies");
     await router.isReady();
-    expect(mountAppWithRouter(router).html()).toContain("Search EU Taxonomy data");
+    expect(mountAppWithRouter(router).html()).toContain("Search company by name or PermID");
   });
 });

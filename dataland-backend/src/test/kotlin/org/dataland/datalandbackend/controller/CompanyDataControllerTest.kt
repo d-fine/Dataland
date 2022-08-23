@@ -1,7 +1,8 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.TestDataProvider
+import org.dataland.datalandbackend.utils.CompanyUploader
+import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -21,8 +22,8 @@ internal class CompanyDataControllerTest(
     @Autowired var objectMapper: ObjectMapper
 ) {
 
-    val dataProvider = TestDataProvider(objectMapper)
-    val testCompanyInformation = dataProvider.getCompanyInformation(1).last()
+    val testDataProvider = TestDataProvider(objectMapper)
+    val testCompanyInformation = testDataProvider.getCompanyInformation(1).last()
 
     @Test
     fun `company can be posted`() {

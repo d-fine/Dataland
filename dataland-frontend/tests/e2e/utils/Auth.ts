@@ -29,7 +29,7 @@ export function login(username = "data_reader", password: string = Cypress.env("
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/searchtaxonomy");
+    .should("eq", Cypress.config("baseUrl") + "/companies");
 }
 
 export function ensureLoggedIn(username?: string, password?: string): void {

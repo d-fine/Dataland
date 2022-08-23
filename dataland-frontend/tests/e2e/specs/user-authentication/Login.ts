@@ -7,7 +7,7 @@ describe("As a user I want to be able to login and I want the login page to beha
   });
 
   it("Checks that the back button on the login page works as expected", () => {
-    cy.visit("/searchtaxonomy")
+    cy.visit("/companies")
       .get("#back_button")
       .should("exist")
       .click()

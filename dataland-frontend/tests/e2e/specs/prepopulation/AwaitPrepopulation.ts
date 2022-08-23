@@ -1,11 +1,13 @@
-import { CompanyInformation, EuTaxonomyData } from "../../../../build/clients/backend";
 import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
-  let companiesWithData: Array<{ companyInformation: CompanyInformation; euTaxonomyData: EuTaxonomyData }>;
+  let minimumCompanySum = 0;
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyData").then(function (companies) {
-      companiesWithData = companies;
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+      minimumCompanySum += companies.length;
+    });
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+      minimumCompanySum += companies.length;
     });
   });
 
@@ -21,8 +23,8 @@ describe("I want to ensure that the prepopulation has finished before executing 
       cy.wait(5000)
         .then(() => retrieveCompanyIdsList())
         .then((ids) => {
-          if (ids.length < companiesWithData.length) {
-            throw Error(`Only found ${ids.length} companies (Expecting ${companiesWithData.length})`);
+          if (ids.length < minimumCompanySum) {
+            throw Error(`Only found ${ids.length} companies (Expecting ${minimumCompanySum})`);
           }
         });
     }

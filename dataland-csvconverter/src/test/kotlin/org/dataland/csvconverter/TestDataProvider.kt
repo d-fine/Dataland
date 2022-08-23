@@ -1,16 +1,32 @@
 package org.dataland.csvconverter
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.utils.CompanyInformationWithEuTaxonomyDataModel
+import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.utils.CompanyInformationWithData
 import java.io.File
 
-class TestDataProvider(objectMapper: ObjectMapper) {
-    private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyData.json")
-    private val testCompanyInformationWithEuTaxonomyData: List<CompanyInformationWithEuTaxonomyDataModel> =
-        objectMapper.readValue(jsonFile, object : TypeReference<List<CompanyInformationWithEuTaxonomyDataModel>>() {})
+class TestDataProvider(private val objectMapper: ObjectMapper) {
+    fun getAllCompanyInformationWithEuTaxonomyDataForNonFinancials():
+        List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
+        val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
+        val testCompanyInformationWithEuTaxonomyDataForNonFinancials:
+            List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
+            objectMapper.readValue(
+                jsonFile,
+            )
+        return testCompanyInformationWithEuTaxonomyDataForNonFinancials
+    }
 
-    fun getAllCompanyInformationWithEuTaxonomyData(): List<CompanyInformationWithEuTaxonomyDataModel> {
-        return testCompanyInformationWithEuTaxonomyData
+    fun getAllCompanyInformationWithEuTaxonomyDataForFinancials():
+        List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
+        val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
+        val testCompanyInformationWithEuTaxonomyDataForFinancials:
+            List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> =
+            objectMapper.readValue(
+                jsonFile,
+            )
+        return testCompanyInformationWithEuTaxonomyDataForFinancials
     }
 }
