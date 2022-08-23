@@ -1,7 +1,7 @@
-import apiSpecs from "@/../build/clients/backend/backendOpenApi.json";
+import { CompanyInformationIndicesEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 
-const numberOfStockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum.length;
+const numberOfStockIndices = Object.keys(CompanyInformationIndicesEnum).length;
 
 describe("As a user, I expect the index selection tabs to work on /searchtaxonomy", function () {
   const indexTabMenu = ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
