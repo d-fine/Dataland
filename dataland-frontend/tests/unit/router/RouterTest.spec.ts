@@ -3,11 +3,12 @@ import { shallowMount, mount } from "@vue/test-utils";
 import App from "@/App.vue";
 import { createRouter, createWebHistory, Router } from "vue-router";
 import { expect } from "@jest/globals";
+import { getRequiredPlugins } from "../TestUtils";
 
 function mountAppWithRouter(routerToBeUsedWithMount: Router) {
   return mount(App, {
     global: {
-      plugins: [routerToBeUsedWithMount],
+      plugins: [routerToBeUsedWithMount, ...getRequiredPlugins()],
     },
   });
 }

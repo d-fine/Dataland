@@ -107,7 +107,7 @@ export default {
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.$refs.euTaxoSearchBar.$refs.autocomplete.hideOverlay();
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.hide();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -143,7 +143,7 @@ export default {
         this.currentInput = this.route.query.input;
         this.$refs.euTaxoSearchBar.queryCompany(this.currentInput);
       } else if (this.route.path === "/searchtaxonomy") {
-        this.$refs.euTaxoSearchBar.$refs.autocomplete.focus();
+        this.$refs.euTaxoSearchBar.$refs.autocomplete.show(true);
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex], this.firstDisplayedIndex);
       }
     },

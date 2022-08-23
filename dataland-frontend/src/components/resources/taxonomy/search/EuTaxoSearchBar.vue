@@ -100,7 +100,7 @@ export default {
 
   watch: {
     taxoSearchBarName() {
-      this.$refs.autocomplete.focus();
+      this.$refs.autocomplete.show(true);
     },
   },
 
@@ -125,7 +125,7 @@ export default {
     },
     handleKeyupEnter() {
       this.queryCompany(this.currentInput);
-      this.$refs.autocomplete.hideOverlay();
+      this.$refs.autocomplete.hide();
     },
     async queryCompany(companyName) {
       this.loading = true;

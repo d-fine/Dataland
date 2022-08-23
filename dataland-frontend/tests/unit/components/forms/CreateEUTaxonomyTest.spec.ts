@@ -1,11 +1,12 @@
 import CreateEUTaxonomy from "@/components/forms/CreateEUTaxonomy.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
-import { getInjectedKeycloakObjectsForTest } from "../../TestUtils";
+import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../TestUtils";
 
 describe("CreateCompanyTest", () => {
   const wrapper = shallowMount(CreateEUTaxonomy, {
     global: {
+      plugins: getRequiredPlugins(),
       provide: getInjectedKeycloakObjectsForTest(),
     },
   });
