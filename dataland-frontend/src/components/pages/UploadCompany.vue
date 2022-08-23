@@ -6,6 +6,7 @@
         <CreateCompany />
       </div>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -14,10 +15,12 @@ import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CreateCompany from "@/components/forms/CreateCompany";
+import DatalandFooter from "@/components/general/DatalandFooter";
 
 export default {
   name: "UploadCompany",
   components: {
+    DatalandFooter,
     CreateCompany,
     TheContent,
     TheHeader,

@@ -11,6 +11,7 @@
         </div>
       </div>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -20,10 +21,12 @@ import RetrieveCompany from "@/components/forms/RetrieveCompany";
 import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
+import DatalandFooter from "@/components/general/DatalandFooter";
 
 export default {
   name: "SearchCompanies",
   components: {
+    DatalandFooter,
     TheContent,
     TheHeader,
     RetrieveCompany,

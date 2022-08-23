@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0">
+    <TheContent class="pl-0 min-h-screen surface-800 relative">
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
@@ -48,6 +48,7 @@
 
       <FrameworkDataSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -68,12 +69,14 @@ import FrameworkDataSearchResults from "@/components/resources/frameworkDataSear
 import { useRoute } from "vue-router";
 import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import DatalandFooter from "@/components/general/DatalandFooter";
 
 const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
 
 export default {
   name: "SearchCompaniesForFrameworkData",
   components: {
+    DatalandFooter,
     MarginWrapper,
     AuthenticationWrapper,
     TheHeader,
