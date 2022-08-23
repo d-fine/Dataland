@@ -35,11 +35,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     ];
 
     function assertFooterPresence() {
-      cy.get('a p[title="data privacy"]')
-        .should("contain.text", "Data Privacy")
-        .click({ force: true })
-        .url()
-        .should("include", "/dataprivacy");
+      cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }
 
     pagesToCheck.forEach((page) => {
