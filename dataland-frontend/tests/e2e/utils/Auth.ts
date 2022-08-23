@@ -1,7 +1,7 @@
 import Chainable = Cypress.Chainable;
 
 export function logout(): void {
-  cy.visitAndCheckAppMount("/searchtaxonomy")
+  cy.visitAndCheckAppMount("/companies")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-toggle']")
