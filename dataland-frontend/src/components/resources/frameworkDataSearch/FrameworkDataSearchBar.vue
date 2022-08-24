@@ -111,7 +111,7 @@ export default {
 
   watch: {
     searchBarName() {
-      this.$refs.autocomplete.show(true);
+      this.$refs.autocomplete.focus();
     },
   },
 
@@ -136,7 +136,7 @@ export default {
     },
     handleKeyupEnter() {
       this.queryCompany(this.currentInput);
-      this.$refs.autocomplete.hide();
+      this.$refs.autocomplete.hideOverlay();
     },
     async queryCompany(searchString, frameworkFilter) {
       this.loading = true;

@@ -66,10 +66,10 @@ import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMen
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults";
 import { useRoute } from "vue-router";
-import apiSpecs from "../../../build/clients/backend/backendOpenApi.json";
+import { CompanyInformationIndicesEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
 
-const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
+const stockIndices = Object.keys(CompanyInformationIndicesEnum);
 
 export default {
   name: "SearchCompaniesForFrameworkData",
@@ -107,7 +107,7 @@ export default {
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.hide();
+        this.$refs.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -158,7 +158,7 @@ export default {
       if (filtered) {
         this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.show(true);
+        this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
       }
     },

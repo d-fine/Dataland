@@ -29,7 +29,7 @@
     "material-icons": "^1.11.10",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
-    "primevue": "^3.16.1",
+    "primevue": "^3.16.2",
     "vue": "^3.2.37",
     "vue-router": "^4.1.4"
   },
@@ -51,7 +51,7 @@
     "eslint": "^8.22.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.3.0",
+    "eslint-plugin-vue": "^9.4.0",
     "git-commit-id": "^2.0.1",
     "mocha": "^10.0.0",
     "npm-check-updates": "^16.0.5",
