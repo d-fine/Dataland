@@ -50,7 +50,6 @@
       </div>
     </MarginWrapper>
   </TheContent>
-  <DatalandFooter />
 </template>
 
 <script>
@@ -61,11 +60,9 @@ import TheContent from "@/components/generics/TheContent";
 import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
 import CompanyInformation from "@/components/pages/CompanyInformation";
-import DatalandFooter from "@/components/general/DatalandFooter";
 export default {
   name: "ViewEuTaxonomyNonFinancialsSample",
   components: {
-    DatalandFooter,
     CompanyInformation,
     TheContent,
     TheHeader,

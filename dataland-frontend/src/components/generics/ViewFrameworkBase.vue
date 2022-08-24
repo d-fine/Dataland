@@ -1,23 +1,22 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
-      <MarginWrapper class="text-left mt-2">
+    <TheContent class="surface-800 min-h-screen">
+      <MarginWrapper class="text-left mt-2 surface-0">
         <BackButton />
         <FrameworkDataSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
-      <MarginWrapper>
+      <MarginWrapper class="surface-0">
         <div class="grid align-items-end">
           <div class="col-9">
             <CompanyInformation :companyID="companyID" />
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper bgClass="surface-800">
+      <MarginWrapper>
         <slot></slot>
       </MarginWrapper>
     </TheContent>
-    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -30,12 +29,9 @@ import TheContent from "@/components/generics/TheContent";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 import { ApiClientProvider } from "@/services/ApiClients";
-import DatalandFooter from "@/components/general/DatalandFooter";
-
 export default {
   name: "ViewFrameworkBase",
   components: {
-    DatalandFooter,
     TheContent,
     TheHeader,
     BackButton,

@@ -13,7 +13,6 @@
         <CreateEUTaxonomyForFinancials :companyID="companyID" />
       </MarginWrapper>
     </TheContent>
-    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -24,12 +23,10 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials";
 import CompanyInformation from "@/components/pages/CompanyInformation";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import DatalandFooter from "@/components/general/DatalandFooter";
 
 export default {
   name: "UploadEuTaxonomyDataForFinancials",
   components: {
-    DatalandFooter,
     CreateEUTaxonomyForFinancials,
     TheContent,
     TheHeader,
