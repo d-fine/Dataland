@@ -37,10 +37,10 @@
 <script>
 import TabMenu from "primevue/tabmenu";
 import { humanizeString } from "@/utils/StringHumanizer";
-import apiSpecs from "../../../../build/clients/backend/backendOpenApi.json";
+import { CompanyInformationIndicesEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
-const stockIndices = apiSpecs.components.schemas.CompanyInformation.properties["indices"].items.enum;
+const stockIndices = Object.keys(CompanyInformationIndicesEnum);
 
 export default {
   name: "IndexTabMenu",
