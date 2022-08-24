@@ -42,6 +42,7 @@ server {
     }
 
     # additional config
+    include utils/keycloak.conf;
     include utils/general.conf;
     include utils/error.conf;
 }

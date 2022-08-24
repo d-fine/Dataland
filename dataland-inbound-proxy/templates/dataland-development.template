@@ -37,13 +37,8 @@ server {
       include utils/proxy.conf;
     }
 
-    location /keycloak {
-      proxy_pass http://keycloak:8080/keycloak;
-      include utils/proxy.conf;
-    }
-
-
     # additional config
+    include utils/keycloak.conf;
     include utils/general.conf;
     include utils/error.conf;
 
