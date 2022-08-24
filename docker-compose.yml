@@ -164,20 +164,6 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
-  backend-db:
-    restart: always
-    profiles: [ "production", "productionInMemory", "testing", "development", "init" ]
-    networks:
-      - internal
-    image: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - backend_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: backend_storage
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
   keycloak-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
