@@ -33,6 +33,7 @@ Update versions in the following dockerfiles
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
+- [ ] Update versions in the `docker-compose.yml` file
 
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
