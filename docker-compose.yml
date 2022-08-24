@@ -1,4 +1,13 @@
 version: "3.8"
+# Docker-compose file for the dataland stack.
+# Things can be configured by using docker-compose profiles. Valid profiles:
+# production: The profile to be used if the stack is deployed in a production-like setup
+# testing: The profile to be used for testing in the CI (i.e.: starts a testing-container along with the rest of the stack)
+# productionInMemory: The profile to be used if the stack is deployed in a production-like setup but DatalandEDC should be replaced by an in-memory storage
+# development: The profile to be used for local development. Leaves out frontend and backend
+# init: The profile to be used if keycloak-db should be re-initialized
+# devcontainer: starts a dev container
+
 services:
   proxy:
     build:
@@ -28,6 +37,7 @@ services:
     profiles: ["production", "testing", "productionInMemory"]
     networks:
       - internal
+      - backend-db
     build:
       context: ./
       dockerfile: ${BACKEND_DOCKERFILE:-./dataland-backend/DockerfileTest}
@@ -41,6 +51,18 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+  backend-db:
+    restart: always
+    profiles: ["production", "productionInMemory", "testing", "development"]
+    networks:
+      - backend-db
+    image: postgres
+    volumes:
+      - backend_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: backend
+      POSTGRES_USER: backend
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
   e2etests:
     profiles: ["testing"]
     build:
@@ -144,7 +166,7 @@ services:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
-      - internal
+      - keycloak-db
     image: postgres
     volumes:
       - keycloak_data:/var/lib/postgresql/data
@@ -157,6 +179,7 @@ services:
     profiles: ["production", "productionInMemory", "development"]
     networks:
       - internal
+      - keycloak-db
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
@@ -199,6 +222,8 @@ services:
 networks:
   internal:
   external:
+  keycloak-db:
+  backend-db:
 volumes:
   keycloak_data:
     driver: local
