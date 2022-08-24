@@ -45,7 +45,11 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 ## Conclusion
 - [ ] After updating all components check if everything still works
   - [ ] Document any conflicts and skipped update by placing comments on this PR
-- [ ] Execute a deployment with real data
+- [ ] The new version is deployed to the dev server using this branch and real data
+  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that real data has been used
+  - [ ] It's verified that everything seems to be working fine by manually using the website
+  - [ ] All implemented Social Logins have been tested manually in the UI
 
 # Review (to be completed by the reviewer)
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
@@ -56,11 +60,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] The automated deployment is updated if required
 - [ ] The new version is deployed to the dev server using this branch
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
-  - [ ] It's verified that everything seems to be working fine by manually using the website
-  - [ ] All implemented Social Logins have been tested manually in the UI
-- [ ] The new version is deployed to the dev server using this branch and real data
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
-  - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
