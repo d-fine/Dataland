@@ -59,6 +59,9 @@ services:
     networks:
       - backend-db
     image: postgres
+    # Todo: Find a better solution for local development than exposing the port in production setup
+    ports:
+      - "5432:5432"
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -147,7 +150,7 @@ services:
     profiles: ["devcontainer"]
     build:
       context: ./
-      dockerfile: ./devcontainer/Dockerfile
+      dockerfile: ./development/Dockerfile
     volumes:
       - "./:/code:rw"
     expose:
@@ -220,6 +223,21 @@ services:
       - "8080"
     depends_on:
       - keycloak-db
+  pgadmin:
+    image: dpage/pgadmin4
+    networks:
+      - keycloak-db
+      - backend-db
+    profiles: ["development"]
+    ports:
+      - "8096:80"
+    volumes:
+      - ./development/servers.json:/pgadmin4/servers.json
+      - ./development/passfile:/pgadmin4/passfile
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@dataland.com
+      PGADMIN_DEFAULT_PASSWORD: test
+      PGADMIN_DEFAULT_PASSWORD_FILE: /pgadmin4/passfile
 networks:
   internal:
   external:
