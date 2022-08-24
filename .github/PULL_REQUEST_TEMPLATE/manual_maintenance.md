@@ -1,4 +1,5 @@
 # Manual Maintenance Sprint [NR]
+Note: To create a PR using this template add the query parameter `template=manual_maintenance.md` to the merge request creation URL (or simply copy this md file into the description)
 # Maintenance tasks (to be completed by the assignee)
 ## Skyminder
 - [ ] Complete manual maintenance in the Skyminder Repo
@@ -10,7 +11,7 @@
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
-Note: fasterXML is managed by spring and ktlint by jlleitschuh, thus NO manual version update should be conducted
+Note: fasterXML is managed by spring, thus NO manual version update should be conducted
 - [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
