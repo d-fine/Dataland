@@ -23,7 +23,6 @@ describe("As a user, I expect there to be multiple result pages if there are man
       .type(inputValue)
       .type("{enter}")
       .should("have.value", inputValue);
-    cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
     cy.get(".p-paginator-current").should("contain.text", "Showing 1 to 100 of").contains("entries");
   });

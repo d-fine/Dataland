@@ -33,7 +33,7 @@ class EuTaxonomyForFinancialsCsvParser(
         val split = csvData.split(",").map { it.trim() }
         return EnumSet.copyOf(
             split.map {
-                candidate ->
+                    candidate ->
                 FinancialServicesType.values().firstOrNull {
                     candidate.equals(columnMappingEuTaxonomyForFinancials[it.name], ignoreCase = true)
                 } ?: throw IllegalArgumentException("Could not determine financial services type")

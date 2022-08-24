@@ -113,7 +113,7 @@ class CompanyManager(
     ): List<StoredCompany> {
         if (dataTypes.isEmpty()) return companies
         return companies.map {
-            company ->
+                company ->
             company.copy(
                 dataRegisteredByDataland = company.dataRegisteredByDataland.filter
                 { dataTypes.contains(it.dataType) }.toMutableList()

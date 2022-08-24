@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0">
+    <TheContent class="pl-0 pt-0 min-h-screen surface-800 relative">
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"

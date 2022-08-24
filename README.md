@@ -66,21 +66,3 @@ Requests can be authorized via two different methods:
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
 * start the frontend - using `npm run serve`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
 * start the E2E cypress tests using `npm run teste2e`
-
-## Manual maintenance
-We execute quite some things manually regularly. Included is to try to keep our dependencies up to date. Every sprint we execute the following steps, and create a seperate PR for the code changes
-To do so:
-* Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-* update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco)
-* Note: fasterXML is managed by spring and ktlint by jlleitschuh, thus NO manual version update should be conducted
-* update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
-* Update node version in `dataland-frontend/build.gradle.kts`
-* Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json  
-  Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues 
-  (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
-  Do this in the frontend as well as in the keycloak theme
-* Update Docker images: run CypressImage and TemurinImage jobs in GitHub actions. Don't forget to update KeyCloak!
-* Do the above also for the connected Repos (SkyminderClient, DatalandEDC). Publish new versions of artifacts if required. Use the new artifacts wherever relevant
-* After updating all components check if everything is still working
-* Update Sever Versions (apt-get update && apt-get upgrade)
-* Execute a deployment with real data

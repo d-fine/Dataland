@@ -1,11 +1,12 @@
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
-import { getInjectedKeycloakObjectsForTest } from "../../TestUtils";
+import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../TestUtils";
 
 describe("CreateCompanyTest", () => {
   const wrapper = shallowMount(CreateCompany, {
     global: {
+      plugins: getRequiredPlugins(),
       provide: getInjectedKeycloakObjectsForTest(),
     },
   });

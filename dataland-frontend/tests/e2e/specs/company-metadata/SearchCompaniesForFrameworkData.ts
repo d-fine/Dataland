@@ -34,7 +34,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       .type(inputValue)
       .type("{enter}")
       .should("have.value", inputValue);
-    cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   }
 
@@ -52,13 +51,11 @@ describe("As a user, I expect the search functionality on the /companies page to
       .wait(1000)
       .type("{enter}");
     cy.url().should("include", "/companies?input=" + inputValue);
-    cy.get("h2").should("contain", "Results");
     cy.get("table.p-datatable-table").should("exist");
   });
 
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/companies");
-    cy.get("h2").should("contain", "Results");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     cy.get("input[name=search_bar_top]")
@@ -89,7 +86,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     const permIdText = "Permanent Identifier (PermID)";
     checkPermIdToolTip(permIdText);
     executeCompanySearch(inputValue);
-    cy.get("h2").click({ force: true }); // Collapse the search autocomplete window if it exists
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
@@ -222,7 +218,7 @@ describeIf(
           .should("exist");
         cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
-          .should("contain.text", "The resource you requested does not exist yet.");
+          .should("contain.text", "Sorry! The company you searched for was not found in our database");
       }
     );
 

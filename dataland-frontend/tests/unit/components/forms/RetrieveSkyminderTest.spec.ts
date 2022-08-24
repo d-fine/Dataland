@@ -1,7 +1,7 @@
 import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder.vue";
 import { shallowMount } from "@vue/test-utils";
 import { expect } from "@jest/globals";
-import { getInjectedKeycloakObjectsForTest } from "../../TestUtils";
+import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../TestUtils";
 
 describe("RetrieveSkyminderTest", () => {
   const wrapper = shallowMount(RetrieveSkyminder, {
@@ -14,6 +14,7 @@ describe("RetrieveSkyminderTest", () => {
       };
     },
     global: {
+      plugins: getRequiredPlugins(),
       provide: getInjectedKeycloakObjectsForTest(),
     },
   });
