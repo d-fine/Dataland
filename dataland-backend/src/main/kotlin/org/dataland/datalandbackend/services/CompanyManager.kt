@@ -13,7 +13,6 @@ import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-
 /**
  * Implementation of a company manager for Dataland
  */
