@@ -7,16 +7,20 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
+
 /**
  * Implementation of a company manager for Dataland
  */
 @Component("CompanyManager")
-class CompanyManager : CompanyManagerInterface {
+class CompanyManager(
+    @Autowired val storedCompaniesRepository: StoredCompaniesRepository
+) : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     private var teaserCompanyIds: List<String> = listOf<String>()
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -38,11 +42,13 @@ class CompanyManager : CompanyManagerInterface {
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         val companyId = UUID.randomUUID().toString()
         logger.info("Adding Company ${companyInformation.companyName} with ID $companyId")
-        companyDataPerCompanyId[companyId] = StoredCompany(
+        val newStoredCompany = StoredCompany(
             companyId = companyId,
             companyInformation,
             dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
         )
+        companyDataPerCompanyId[companyId] = newStoredCompany
+        storedCompaniesRepository.save(newStoredCompany)
         return companyDataPerCompanyId[companyId]!!
     }
 
