@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.data.jpa.repository.JpaRepository
 
 /**
@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository
  * This interface here exists to trigger the creation of a table which can hold the content of DataMetaInformation
  * objects.
  */
-interface DataMetaInformationRepository : JpaRepository<StoredCompany?, String?> {
+interface DataMetaInformationRepository : JpaRepository<DataMetaInformation?, String?> {
     // non-empty
 }
