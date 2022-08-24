@@ -41,6 +41,6 @@
 
 <script>
 export default {
-  name: "LandingFooter",
+  name: "DatalandFooter",
 };
 </script>
