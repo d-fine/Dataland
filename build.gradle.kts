@@ -1,6 +1,8 @@
 // main
 
 val jacocoVersion: String by project
+val ktlintVersion: String by project
+
 allprojects {
     repositories {
         mavenCentral()
@@ -39,6 +41,9 @@ subprojects {
     sonarqube {
         isSkipProject = true
     }
+    ktlint {
+        version.set(ktlintVersion)
+    }
 }
 
 tasks.dependencyUpdates.configure {
@@ -55,7 +60,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.4.0" apply false
-    id("org.springframework.boot") version "2.7.2" apply false
+    id("org.springframework.boot") version "2.7.3" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.7.10" apply false
@@ -132,4 +137,8 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 }
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = java.sourceCompatibility.toString()
+}
+
+ktlint {
+    version.set(ktlintVersion)
 }
