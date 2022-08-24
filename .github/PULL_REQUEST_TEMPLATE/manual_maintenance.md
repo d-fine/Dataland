@@ -65,4 +65,3 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, npm serve, npm teste2e and execute Cypress Tests locally
-
