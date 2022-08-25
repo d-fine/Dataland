@@ -19,7 +19,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
-    id("org.jetbrains.kotlinplugin.jpa")
+    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
