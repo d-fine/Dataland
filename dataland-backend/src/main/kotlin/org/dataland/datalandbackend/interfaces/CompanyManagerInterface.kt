@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.interfaces
 
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
@@ -17,7 +18,7 @@ interface CompanyManagerInterface {
      * @return information of the newly created entry in the company data store of Dataland,
      * including the generated company ID
      */
-    fun addCompany(companyInformation: CompanyInformation): StoredCompany
+    fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity
 
     /**
      * Method to search for companies matching the company name or identifier

@@ -1,12 +1,17 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.*
 import org.dataland.datalandbackend.model.enums.company.StockIndex
+import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
-import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import javax.transaction.Transactional
@@ -16,8 +21,8 @@ import javax.transaction.Transactional
  */
 @Component("CompanyManager")
 class CompanyManager(
-    @Autowired val storedCompaniesRepository: StoredCompaniesRepository,
-    @Autowired val companyIdentifierRepository: CompanyIdentifierRepository
+    @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository
 ) : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     private var teaserCompanyIds: List<String> = listOf<String>()
@@ -37,22 +42,58 @@ class CompanyManager(
         return teaserCompanyIds
     }
 
-    @Transactional
-    override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
-        val companyId = UUID.randomUUID().toString()
-        logger.info("Adding Company ${companyInformation.companyName} with ID $companyId")
-        val newStoredCompany = StoredCompany(
+    private fun createStoredCompanyEntityWithoutIdentifiers(
+        companyId: String,
+        companyInformation: CompanyInformation
+    ) : StoredCompanyEntity {
+        val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
-            companyInformation = companyInformation,
-            dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
+            companyName = companyInformation.companyName,
+            headquarters = companyInformation.headquarters,
+            sector = companyInformation.sector,
+            marketCap = companyInformation.marketCap,
+            reportingDateOfMarketCap = companyInformation.reportingDateOfMarketCap,
+            indices = companyInformation.indices,
+            countryCode = companyInformation.countryCode,
+            identifiers = mutableListOf(),
         )
-        val identifierCopy = companyInformation.identifiers
-        newStoredCompany.companyInformation.identifiers = mutableListOf()
-        storedCompaniesRepository.save(newStoredCompany)
-        identifierCopy.forEach { it.company = newStoredCompany }
-        companyIdentifierRepository.saveAll(identifierCopy)
-        newStoredCompany.companyInformation.identifiers = identifierCopy
-        return newStoredCompany
+
+        val savedCompanyEntity = companyRepository.save(newCompanyEntity)
+        return savedCompanyEntity
+    }
+
+    private fun createAndAssociateIdentifiers(savedCompanyEntity: StoredCompanyEntity,
+                                              companyInformation: CompanyInformation
+    ): List<CompanyIdentifierEntity> {
+        val newIdentifiers = companyInformation.identifiers.map {
+            CompanyIdentifierEntity(
+                identifierType = it.identifierType,
+                identifierValue = it.identifierValue,
+                company = savedCompanyEntity,
+                isNew = true,
+            )
+        }
+
+        try {
+            return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
+        } catch (ex : DataIntegrityViolationException) {
+            val cause = ex.cause
+            if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
+                throw IllegalArgumentException("Could not insert company as one company identifier is already used to identify another company")
+            }
+            throw ex
+        }
+    }
+
+    @Transactional
+    override fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
+        val companyId = UUID.randomUUID().toString()
+        logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
+        val savedCompany = createStoredCompanyEntityWithoutIdentifiers(companyId, companyInformation)
+        val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation)
+        savedCompany.identifiers = identifiers.toMutableList()
+
+        return savedCompany
     }
 
     override fun searchCompanies(

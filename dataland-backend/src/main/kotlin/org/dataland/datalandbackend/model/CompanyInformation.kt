@@ -19,7 +19,6 @@ import javax.persistence.OneToMany
  * @param marketCap For publicly traded companies: The total monetary value of the outstanding shares of the company
  * @param reportingDateOfMarketCap date to which the market cap value refers
  */
-@Embeddable
 data class CompanyInformation(
     @Column(name = "company_name")
     @field:JsonProperty(required = true)
@@ -41,9 +40,8 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     var reportingDateOfMarketCap: LocalDate,
 
-    @Transient
     @field:JsonProperty(required = false)
-    var indices: EnumSet<StockIndex>,
+    var indices: MutableSet<StockIndex>,
 
     @OneToMany(mappedBy = "company")
     @field:JsonProperty(required = true)

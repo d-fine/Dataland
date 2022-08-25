@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackend.entities
 
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import java.io.Serializable
