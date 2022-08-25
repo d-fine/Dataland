@@ -47,9 +47,12 @@ dependencies {
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 
-tasks.withType<org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask> {
+openApi {
     outputFileName.set("$backendOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb"))
+    }
 }
 
 val openApiSpec by configurations.creating {
