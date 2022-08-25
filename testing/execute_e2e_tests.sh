@@ -28,10 +28,12 @@ done
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
 grep "Searching for known Datatypes2" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
+LOG_TEST_EXIT_CODE=$?
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
 echo "E2ETEST Timeout exited with exit code $E2ETEST_TIMEOUT_EXIT_CODE"
 echo "BACKEND Timeout exited with exit code $BACKEND_TIMEOUT_EXIT_CODE"
 echo "Docker E2E Testcontainer exited with code $TEST_EXIT_CODE"
-exit $((TEST_EXIT_CODE+E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE))
+echo "Log-Existence test existed with exit code $LOG_TEST_EXIT_CODE"
+exit $((E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE+TEST_EXIT_CODE+LOG_TEST_EXIT_CODE))
