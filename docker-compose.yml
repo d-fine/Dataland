@@ -172,8 +172,6 @@ services:
     networks:
       - keycloak-db
     image: postgres
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:

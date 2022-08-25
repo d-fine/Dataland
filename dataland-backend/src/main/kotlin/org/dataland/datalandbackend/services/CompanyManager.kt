@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.*
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,13 +9,15 @@ import org.springframework.stereotype.Component
 import java.util.Collections
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import javax.transaction.Transactional
 
 /**
  * Implementation of a company manager for Dataland
  */
 @Component("CompanyManager")
 class CompanyManager(
-    @Autowired val storedCompaniesRepository: StoredCompaniesRepository
+    @Autowired val storedCompaniesRepository: StoredCompaniesRepository,
+    @Autowired val companyIdentifierRepository: CompanyIdentifierRepository
 ) : CompanyManagerInterface {
     var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
     private var teaserCompanyIds: List<String> = listOf<String>()
@@ -38,17 +37,22 @@ class CompanyManager(
         return teaserCompanyIds
     }
 
+    @Transactional
     override fun addCompany(companyInformation: CompanyInformation): StoredCompany {
         val companyId = UUID.randomUUID().toString()
         logger.info("Adding Company ${companyInformation.companyName} with ID $companyId")
         val newStoredCompany = StoredCompany(
             companyId = companyId,
-            companyInformation,
+            companyInformation = companyInformation,
             dataRegisteredByDataland = Collections.synchronizedList(mutableListOf())
         )
-        companyDataPerCompanyId[companyId] = newStoredCompany
+        val identifierCopy = companyInformation.identifiers
+        newStoredCompany.companyInformation.identifiers = mutableListOf()
         storedCompaniesRepository.save(newStoredCompany)
-        return companyDataPerCompanyId[companyId]!!
+        identifierCopy.forEach { it.company = newStoredCompany }
+        companyIdentifierRepository.saveAll(identifierCopy)
+        newStoredCompany.companyInformation.identifiers = identifierCopy
+        return newStoredCompany
     }
 
     override fun searchCompanies(

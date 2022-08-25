@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository
  * This interface here exists to trigger the creation of a table which can hold the content of StoredCompany
  * objects.
  */
-interface StoredCompaniesRepository : JpaRepository<StoredCompany?, String?> {
+interface StoredCompaniesRepository : JpaRepository<StoredCompany, String> {
     // non-empty
 }

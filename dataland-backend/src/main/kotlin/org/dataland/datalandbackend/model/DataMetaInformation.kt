@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.Immutable
 import javax.persistence.*
@@ -28,4 +29,9 @@ data class DataMetaInformation(
     @Column(name = "company_id", nullable = false)
     @field:JsonProperty(required = true)
     val companyId: String
-)
+) {
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", updatable = false, insertable = false )
+    var company : StoredCompany? = null
+}
