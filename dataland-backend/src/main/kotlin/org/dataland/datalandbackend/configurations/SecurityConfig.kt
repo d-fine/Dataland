@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
 import org.springframework.stereotype.Component
 
 /**
@@ -73,5 +74,9 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
             .antMatchers(*publicLinks).permitAll()
             .anyRequest().fullyAuthenticated()
             .and().csrf().disable()
+        http
+            .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
+            .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+            .and().permissionsPolicy().policy("none")
     }
 }

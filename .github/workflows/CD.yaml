@@ -87,7 +87,7 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
-      - name: Store generated frontend API client for use by cpress
+      - name: Store generated frontend API client for use by cypress
         uses: actions/upload-artifact@v2
         with:
           name: frontendApiClient

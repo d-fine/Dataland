@@ -10,4 +10,5 @@ RUN DATALAND_EDC_USER=${DATALAND_EDC_USER} \
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
+COPY ./dataland-inbound-proxy/config/utils/defaultHeaders.conf /etc/nginx/utils/defaultHeaders.conf
 CMD ["nginx", "-g", "daemon off;"]
