@@ -25,6 +25,10 @@ do
   docker logs "$docker_service" > ./dockerLogs/${CYPRESS_TEST_GROUP}/"$docker_service".log 2>&1
 done
 
+# This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
+# This was discovered only after the PR was merged.
+grep "Searching for known Datatypes2" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
+
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
 echo "E2ETEST Timeout exited with exit code $E2ETEST_TIMEOUT_EXIT_CODE"
