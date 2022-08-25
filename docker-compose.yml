@@ -19,9 +19,12 @@ services:
     networks:
       - external
       - internal
+      - backend-db
+      - keycloak-db
     ports:
       - "80:80"
       - "443:443"
+      - "54320-54321:54320-54321"
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
@@ -59,9 +62,6 @@ services:
     networks:
       - backend-db
     image: postgres
-    # Todo: Find a better solution for local development than exposing the port in production setup
-    ports:
-      - "5432:5432"
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -228,6 +228,7 @@ services:
     networks:
       - keycloak-db
       - backend-db
+      - internal
     profiles: ["development"]
     ports:
       - "8096:80"
