@@ -39,6 +39,9 @@ data class StoredCompanyEntity(
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
+    @OneToMany(mappedBy = "company")
+    val dataRegisteredByDataland: MutableList<DataMetaInformationEntity>,
+
     @Column(name = "country_code")
     var countryCode: String
 ) {
@@ -56,7 +59,7 @@ data class StoredCompanyEntity(
                 identifiers = identifiers.map { it.toApiModel() }.toMutableList(),
                 countryCode = countryCode,
             ),
-            dataRegisteredByDataland = mutableListOf() // TODO: Implement
+            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList()
         )
     }
 }

@@ -56,6 +56,7 @@ class CompanyManager(
             indices = companyInformation.indices,
             countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
+            dataRegisteredByDataland = mutableListOf()
         )
 
         val savedCompanyEntity = companyRepository.save(newCompanyEntity)

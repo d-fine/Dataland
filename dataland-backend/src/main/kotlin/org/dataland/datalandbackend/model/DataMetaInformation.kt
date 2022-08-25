@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonValue
 import org.hibernate.annotations.Immutable
 import javax.persistence.*
 
