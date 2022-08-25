@@ -27,7 +27,7 @@ done
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
-grep "Searching for known Datatypes2" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
+grep "Searching for known Datatypes" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
 LOG_TEST_EXIT_CODE=$?
 
 # Check execution success of Test Container
