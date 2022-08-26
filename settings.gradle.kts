@@ -10,7 +10,7 @@ include(
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.9")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.11")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.0")
             library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.0")
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             library("okhttp", "com.squareup.okhttp3:okhttp:4.10.0")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
-            library("skyminder-client", "org.dataland:skyminder-client:0.1.7")
+            library("skyminder-client", "org.dataland:skyminder-client:0.1.8")
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.3")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.18.0")

@@ -1,11 +1,6 @@
 <template>
-  <MarginWrapper bgClass="surface-800">
-    <div class="grid align-items-center pr-2">
-      <div class="col-1 text-left">
-        <h2>Results</h2>
-      </div>
-    </div>
-    <div class="grid">
+  <MarginWrapper>
+    <div class="grid mt-2">
       <div class="col-12 text-left">
         <DataTable
           v-if="data && data.length > 0"
@@ -74,14 +69,24 @@
             </template>
           </Column>
         </DataTable>
-        <p v-else>
-          The resource you requested does not exist yet. You can create a company and add the resource to it:
-          <router-link to="/companies/upload">Create a company </router-link>
-        </p>
+        <div class="d-center-div text-center px-7 py-4" v-else>
+          <p class="font-medium text-xl">Sorry! The company you searched for was not found in our database.</p>
+          <p class="font-medium">Try again please!</p>
+        </div>
       </div>
     </div>
   </MarginWrapper>
 </template>
+
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+</style>
 
 <script>
 import DataTable from "primevue/datatable";
