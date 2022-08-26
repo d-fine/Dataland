@@ -790,7 +790,9 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "/companies*",
-        "https://dataland-local.duckdns.org/silent-check-sso.html"
+        "https://dataland-local.duckdns.org/silent-check-sso.html",
+        "https://dataland.com/silent-check-sso.html",
+        "https://dev-dataland.duckdns.org/silent-check-sso.html"
       ],
       "webOrigins": [
         "+"
@@ -809,7 +811,7 @@
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
         "frontchannel.logout.session.required": "false",
-        "post.logout.redirect.uris": "https://dataland-local.duckdns.org/*",
+        "post.logout.redirect.uris": "https://dataland-local.duckdns.org/*##https://dev-dataland.duckdns.org/*##https://dataland.com/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature.keyinfo.ext": "false",
