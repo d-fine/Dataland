@@ -29,8 +29,6 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
           Authorization: "Bearer " + token,
         },
       }).then((response) => {
-        console.log("headers:");
-        console.log(response.headers);
         expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
         expect(response.headers).to.have.property(
           "content-security-policy",
