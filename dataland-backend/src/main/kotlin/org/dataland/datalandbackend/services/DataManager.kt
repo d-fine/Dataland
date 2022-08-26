@@ -18,7 +18,6 @@ class DataManager(
     @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,
-    @Autowired val dataMetaInformationRepository: DataMetaInformationRepository
 ) : DataManagerInterface {
     var dataMetaInformationPerDataId = ConcurrentHashMap<String, DataMetaInformation>()
 
@@ -50,7 +49,6 @@ class DataManager(
         val dataMetaInformation =
             DataMetaInformation(dataId, storableDataSet.dataType, storableDataSet.companyId)
         dataMetaInformationPerDataId[dataId] = dataMetaInformation
-        dataMetaInformationRepository.save(dataMetaInformation)
         companyManager.addMetaDataInformationToCompanyStore(storableDataSet.companyId, dataMetaInformation)
 
         return dataId

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 @Controller
 class TestService {
     @Autowired
-    lateinit var repo : DataMetaInformationRepository
+    //lateinit var repo : DataMetaInformationRepository
 
     @EventListener(ApplicationReadyEvent::class)
     fun doSomethingAfterStartup() {

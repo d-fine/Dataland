@@ -25,7 +25,7 @@ class CompanyDataController(
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-        return ResponseEntity.ok(companyManager.addCompany(companyInformation))
+        return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
     }
 
     override fun getCompanies(
