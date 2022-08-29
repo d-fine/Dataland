@@ -22,9 +22,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "ORDER BY (CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END), company.companyName")
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
-    @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.indices LEFT JOIN FETCH company.identifiers WHERE company in :companies")
+    @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.indices WHERE company in :companies")
     @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
-    fun fetchStockIndicesAndIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+    fun fetchStockIndices(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+
+    @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.identifiers WHERE company in :companies")
+    @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
+    fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies")
     @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))

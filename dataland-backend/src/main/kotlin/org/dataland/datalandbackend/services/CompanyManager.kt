@@ -122,7 +122,8 @@ class CompanyManager(
             stockIndexFilter = stockIndexFilter.toList(),
         )
         var filteredResults = companyRepository.searchCompanies(searchFilter)
-        filteredResults = companyRepository.fetchStockIndicesAndIdentifiers(filteredResults)
+        filteredResults = companyRepository.fetchIdentifiers(filteredResults)
+        filteredResults = companyRepository.fetchStockIndices(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
         return filteredResults
     }
