@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.*
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,10 +31,6 @@ class CompanyManager(
         if (!companyRepository.existsById(companyId)) {
             throw IllegalArgumentException("Dataland does not know the company ID $companyId")
         }
-    }
-
-    override fun getTeaserCompanyIds(): List<String> {
-        return listOf()
     }
 
     private fun createStoredCompanyEntityWithoutIdentifiers(
@@ -97,70 +94,13 @@ class CompanyManager(
         dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
     ): List<StoredCompanyEntity> {
-        var companies = companyRepository.findAll()
-
-        companies = if (onlyCompanyNames) {
-            filterCompaniesByNameOnly(searchString, companies)
-        } else {
-            filterCompaniesByNameAndIdentifier(searchString, companies)
-        }
-
-        companies = filterCompaniesByStockIndices(stockIndexFilter, companies)
-        companies = filterCompaniesByDataTypes(dataTypeFilter, companies)
-
-        return companies
-    }
-
-    private fun filterCompaniesByNameAndIdentifier(
-        searchString: String,
-        companies: List<StoredCompanyEntity>
-    ): List<StoredCompanyEntity> {
-        if (searchString == "") return companies
-        return (
-            filterCompaniesByNameOnly(searchString, companies) +
-                filterCompaniesByIdentifier(searchString, companies)
-            ).distinct()
-    }
-    private fun filterCompaniesByNameOnly(name: String, companies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
-        return (
-            companies.filter { it.companyName.startsWith(name, true) } +
-                companies.filter { it.companyName.contains(name, true) }
-            ).distinct()
-    }
-
-    private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
-        if (searchString == "") return companies
-        return companies.filter {
-            it.identifiers.any { identifier ->
-                identifier.identifierValue.contains(searchString, true)
-            }
-        }
-    }
-
-    private fun filterCompaniesByStockIndices(
-        indices: Set<StockIndex>,
-        companies: List<StoredCompanyEntity>
-    ): List<StoredCompanyEntity> {
-        if (indices.isEmpty()) return companies
-        return companies.filter {
-            it.indices.any { index -> indices.contains(index) }
-        }
-    }
-
-    private fun filterCompaniesByDataTypes(
-        dataTypes: Set<DataType>,
-        companies: List<StoredCompanyEntity>
-    ): List<StoredCompanyEntity> {
-        if (dataTypes.isEmpty()) return companies
-        return companies.map {
-                company ->
-            company.copy(
-                dataRegisteredByDataland = company.dataRegisteredByDataland.filter
-                { dataTypes.contains(DataType.valueOf(it.dataType)) }.toMutableList()
-            )
-        }.filter {
-            it.dataRegisteredByDataland.isNotEmpty()
-        }
+        var searchFilter = StoredCompanySearchFilter(
+            searchString = searchString,
+            nameOnlyFilter = onlyCompanyNames,
+            dataTypeFilter = dataTypeFilter.map { it.name },
+            stockIndexFilter = stockIndexFilter.toList(),
+        )
+        return companyRepository.searchCompanies(searchFilter)
     }
 
     override fun getCompanyById(companyId: String): StoredCompanyEntity {
@@ -175,6 +115,9 @@ class CompanyManager(
 
     }
 
+    override fun getTeaserCompanyIds(): List<String> {
+        return listOf()
+    }
     override fun isCompanyPublic(companyId: String): Boolean {
         return false
     }
