@@ -1,7 +1,5 @@
-describe("As a user, I want to ensure that security relevant headers are set.", () => {
+describe("As a developer, I want to ensure that security relevant headers are set.", () => {
   function checkCommonHeaders(response: Cypress.Response<any>) {
-    expect(response.headers).to.have.property("cross-origin-embedder-policy", "require-corp");
-    expect(response.headers).to.have.property("cross-origin-resource-policy", "same-site");
     expect(response.headers).to.have.property("feature-policy", "none");
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
     expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
@@ -12,7 +10,7 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
     cy.request("GET", Cypress.config("baseUrl") + "/").then((response) => {
       expect(response.headers).to.have.property(
         "content-security-policy",
-        "frame-ancestors 'self'; form-action 'self'"
+        "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:"
       );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
@@ -35,7 +33,7 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
     cy.request("GET", Cypress.config("baseUrl") + "/keycloak/robots.txt").then((response) => {
       expect(response.headers).to.have.property(
         "content-security-policy",
-        "frame-ancestors 'self'; form-action 'self'"
+        "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:"
       );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
