@@ -138,7 +138,7 @@ class CompanyManager(
     }
 
     override fun getTeaserCompanyIds(): List<String> {
-        return companyRepository.getAllByTeaserCompanyIsTrue().map { it.companyId }
+        return companyRepository.getAllByIsTeaserCompanyIsTrue().map { it.companyId }
     }
     override fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany

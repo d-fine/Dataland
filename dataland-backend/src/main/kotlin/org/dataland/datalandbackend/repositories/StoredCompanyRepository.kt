@@ -34,5 +34,5 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
-    fun getAllByTeaserCompanyIsTrue(): List<StoredCompanyEntity>
+    fun getAllByIsTeaserCompanyIsTrue(): List<StoredCompanyEntity>
 }

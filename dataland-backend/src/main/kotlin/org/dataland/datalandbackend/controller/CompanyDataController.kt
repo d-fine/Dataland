@@ -52,10 +52,6 @@ class CompanyDataController(
         return ResponseEntity.ok(companyManager.getCompanyById(companyId).toApiModel())
     }
 
-    override fun setTeaserCompanies(companyIds: List<String>) {
-        companyManager.setTeaserCompanies(companyIds)
-    }
-
     override fun getTeaserCompanies(): List<String> {
         return companyManager.getTeaserCompanyIds()
     }
