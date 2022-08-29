@@ -4,4 +4,6 @@
  */
 describe("Backend Health Checks", () => {
   require("./VerifyDeployment");
+  require("./VerifyHeaders");
+  require("./VisitNotExistingPath");
 });
