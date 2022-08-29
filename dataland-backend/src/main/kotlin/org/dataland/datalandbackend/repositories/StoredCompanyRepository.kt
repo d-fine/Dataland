@@ -23,15 +23,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.indices WHERE company in :companies")
-    @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
+    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value =  "false"))
     fun fetchStockIndices(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.identifiers WHERE company in :companies")
-    @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
+    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value =  "false"))
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies")
-    @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
+    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value =  "false"))
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     fun getAllByIsTeaserCompanyIsTrue(): List<StoredCompanyEntity>
