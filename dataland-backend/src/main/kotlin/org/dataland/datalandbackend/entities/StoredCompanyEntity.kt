@@ -30,11 +30,8 @@ data class StoredCompanyEntity(
     @Column(name = "reporting_date_of_market_capitalisation")
     var reportingDateOfMarketCap: LocalDate,
 
-    @ElementCollection(targetClass = StockIndex::class)
-    @JoinTable(name = "stored_company_stock_indices", joinColumns = [JoinColumn(name = "company_id")])
-    @Column(name = "stock_index", nullable = false)
-    @Enumerated(EnumType.STRING)
-    var indices: MutableSet<StockIndex>,
+    @OneToMany(mappedBy = "company")
+    var indices: MutableSet<StoredCompanyStockIndexEntity>,
 
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
@@ -55,7 +52,7 @@ data class StoredCompanyEntity(
                 sector = sector,
                 marketCap = marketCap,
                 reportingDateOfMarketCap = reportingDateOfMarketCap,
-                indices = indices,
+                indices = indices.map { it.toApiModel() }.toMutableSet(),
                 identifiers = identifiers.map { it.toApiModel() }.toMutableList(),
                 countryCode = countryCode,
             ),

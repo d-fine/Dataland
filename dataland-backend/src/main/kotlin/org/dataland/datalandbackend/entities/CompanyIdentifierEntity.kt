@@ -22,7 +22,6 @@ data class CompanyIdentifierEntity(
     @Column(name="identifier_type")
     val identifierType: IdentifierType,
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
     var company:StoredCompanyEntity?,
