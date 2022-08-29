@@ -10,8 +10,10 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
 
   it("test for frontend response", () => {
     cy.request("GET", Cypress.config("baseUrl") + "/").then((response) => {
-      expect(response.headers).to.have.property("cache-control", "no-store");
-      expect(response.headers).to.have.property("content-security-policy", "frame-ancestors 'self'");
+      expect(response.headers).to.have.property(
+        "content-security-policy",
+        "default-src 'self'; frame-ancestors 'self'; form-action 'self'"
+      );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
