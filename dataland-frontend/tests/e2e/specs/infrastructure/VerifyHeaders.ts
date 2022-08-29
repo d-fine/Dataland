@@ -4,7 +4,7 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
     expect(response.headers).to.have.property("cross-origin-resource-policy", "same-site");
     expect(response.headers).to.have.property("feature-policy", "none");
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
-    expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000 ; includeSubDomains");
+    expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
     expect(response.headers).to.have.property("x-content-type-options", "nosniff");
   }
 
@@ -12,7 +12,7 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
     cy.request("GET", Cypress.config("baseUrl") + "/").then((response) => {
       expect(response.headers).to.have.property(
         "content-security-policy",
-        "default-src 'self'; frame-ancestors 'self'; form-action 'self'"
+        "frame-ancestors 'self'; form-action 'self'"
       );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
@@ -28,6 +28,17 @@ describe("As a user, I want to ensure that security relevant headers are set.", 
       );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "DENY");
+    });
+  });
+
+  it("test for keycloak response", () => {
+    cy.request("GET", Cypress.config("baseUrl") + "/keycloak/robots.txt").then((response) => {
+      expect(response.headers).to.have.property(
+        "content-security-policy",
+        "frame-ancestors 'self'; form-action 'self'"
+      );
+      checkCommonHeaders(response);
+      expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
   });
 });
