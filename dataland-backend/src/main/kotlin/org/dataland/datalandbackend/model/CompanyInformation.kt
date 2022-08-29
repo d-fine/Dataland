@@ -42,5 +42,8 @@ data class CompanyInformation(
     var identifiers: MutableList<CompanyIdentifier>,
 
     @field:JsonProperty(required = true)
-    var countryCode: String
+    var countryCode: String,
+
+    @field:JsonProperty(required = true)
+    var isTeaserCompany: Boolean
 )

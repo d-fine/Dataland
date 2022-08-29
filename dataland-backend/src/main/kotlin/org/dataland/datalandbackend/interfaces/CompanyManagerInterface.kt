@@ -44,12 +44,6 @@ interface CompanyManagerInterface {
     fun getCompanyById(companyId: String): StoredCompanyEntity
 
     /**
-     * Method to set a list of teaser companies
-     * @param companyIds the list of company IDs to be used as teaser companies
-     */
-    fun setTeaserCompanies(companyIds: List<String>)
-
-    /**
      * Method to retrieve the list of currently set teaser company IDs
      * @return a list of company IDs that are currently labeled as teaser companies
      */

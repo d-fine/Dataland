@@ -33,4 +33,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies")
     @QueryHints(QueryHint(name = "PASS_DISTINCT_THROUGH", value =  "false"))
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+
+    fun getAllByTeaserCompanyIsTrue(): List<StoredCompanyEntity>
 }

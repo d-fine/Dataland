@@ -50,7 +50,8 @@ class CompanyManager(
             indices = mutableSetOf(),
             countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
-            dataRegisteredByDataland = mutableListOf()
+            dataRegisteredByDataland = mutableListOf(),
+            isTeaserCompany = companyInformation.isTeaserCompany
         )
 
         val savedCompanyEntity = companyRepository.save(newCompanyEntity)
@@ -136,14 +137,10 @@ class CompanyManager(
         return storedCompanySearchResult.get()
     }
 
-    override fun setTeaserCompanies(companyIds: List<String>) {
-
-    }
-
     override fun getTeaserCompanyIds(): List<String> {
-        return listOf()
+        return companyRepository.getAllByTeaserCompanyIsTrue().map { it.companyId }
     }
     override fun isCompanyPublic(companyId: String): Boolean {
-        return false
+        return getCompanyById(companyId).isTeaserCompany
     }
 }

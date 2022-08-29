@@ -40,7 +40,10 @@ data class StoredCompanyEntity(
     val dataRegisteredByDataland: MutableList<DataMetaInformationEntity>,
 
     @Column(name = "country_code")
-    var countryCode: String
+    var countryCode: String,
+
+    @Column(name = "is_teaser_company")
+    var isTeaserCompany: Boolean
 ) {
     @JsonValue
     fun toApiModel(): StoredCompany {
@@ -55,6 +58,7 @@ data class StoredCompanyEntity(
                 indices = indices.map { it.toApiModel() }.toMutableSet(),
                 identifiers = identifiers.map { it.toApiModel() }.toMutableList(),
                 countryCode = countryCode,
+                isTeaserCompany = isTeaserCompany,
             ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList()
         )
