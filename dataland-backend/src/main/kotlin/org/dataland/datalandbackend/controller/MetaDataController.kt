@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class MetaDataController(
-    @Autowired var dataManager: DataManagerInterface,
+    @Autowired var dataMetaInformationManager: DataMetaInformationManagerInterface,
 ) : MetaDataApi {
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: DataType?):
         ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(dataManager.searchDataMetaInfo(companyId ?: "", dataType))
+        return ResponseEntity.ok(dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel() })
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
-        return ResponseEntity.ok(dataManager.getDataMetaInfo(dataId))
+        return ResponseEntity.ok(dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel())
     }
 }

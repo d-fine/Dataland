@@ -44,12 +44,12 @@ class CompanyDataController(
                 onlyCompanyNames,
                 dataTypes ?: setOf(),
                 stockIndices ?: setOf()
-            )
+            ).map { it.toApiModel() }
         )
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
-        return ResponseEntity.ok(companyManager.getCompanyById(companyId))
+        return ResponseEntity.ok(companyManager.getCompanyById(companyId).toApiModel())
     }
 
     override fun setTeaserCompanies(companyIds: List<String>) {

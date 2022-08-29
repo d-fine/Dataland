@@ -25,21 +25,6 @@ interface DataManagerInterface {
     fun getDataSet(dataId: String, dataType: DataType): StorableDataSet
 
     /**
-     * Method to make the data manager search for meta info
-     * @param companyId if not empty, it filters the requested meta info to a specific company
-     * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @return a list of meta info about data depending on the filters:
-     */
-    fun searchDataMetaInfo(companyId: String = "", dataType: DataType? = null): List<DataMetaInformation>
-
-    /**
-     * Method to make the data manager get meta info about one specific data set
-     * @param dataId filters the requested meta info to one specific data ID
-     * @return meta info about data behind the dataId
-     */
-    fun getDataMetaInfo(dataId: String): DataMetaInformation
-
-    /**
      * Method to check if a data set belongs to a teaser company and hence is publicly available
      * @param dataId the ID of the data set to be checked
      * @return a boolean signalling if the data is public or not

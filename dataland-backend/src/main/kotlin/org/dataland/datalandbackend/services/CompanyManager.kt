@@ -24,22 +24,16 @@ class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository
 ) : CompanyManagerInterface {
-    var companyDataPerCompanyId = ConcurrentHashMap<String, StoredCompany>()
-    private var teaserCompanyIds: List<String> = listOf<String>()
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun verifyCompanyIdExists(companyId: String) {
-        if (!companyDataPerCompanyId.containsKey(companyId)) {
+        if (!companyRepository.existsById(companyId)) {
             throw IllegalArgumentException("Dataland does not know the company ID $companyId")
         }
     }
 
-    override fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation) {
-        companyDataPerCompanyId[companyId]!!.dataRegisteredByDataland.add(dataMetaInformation)
-    }
-
     override fun getTeaserCompanyIds(): List<String> {
-        return teaserCompanyIds
+        return listOf()
     }
 
     private fun createStoredCompanyEntityWithoutIdentifiers(
@@ -102,8 +96,8 @@ class CompanyManager(
         onlyCompanyNames: Boolean,
         dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
-    ): List<StoredCompany> {
-        var companies = companyDataPerCompanyId.values.toList()
+    ): List<StoredCompanyEntity> {
+        var companies = companyRepository.findAll()
 
         companies = if (onlyCompanyNames) {
             filterCompaniesByNameOnly(searchString, companies)
@@ -119,25 +113,25 @@ class CompanyManager(
 
     private fun filterCompaniesByNameAndIdentifier(
         searchString: String,
-        companies: List<StoredCompany>
-    ): List<StoredCompany> {
+        companies: List<StoredCompanyEntity>
+    ): List<StoredCompanyEntity> {
         if (searchString == "") return companies
         return (
             filterCompaniesByNameOnly(searchString, companies) +
                 filterCompaniesByIdentifier(searchString, companies)
             ).distinct()
     }
-    private fun filterCompaniesByNameOnly(name: String, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByNameOnly(name: String, companies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
         return (
-            companies.filter { it.companyInformation.companyName.startsWith(name, true) } +
-                companies.filter { it.companyInformation.companyName.contains(name, true) }
+            companies.filter { it.companyName.startsWith(name, true) } +
+                companies.filter { it.companyName.contains(name, true) }
             ).distinct()
     }
 
-    private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompany>): List<StoredCompany> {
+    private fun filterCompaniesByIdentifier(searchString: String, companies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
         if (searchString == "") return companies
         return companies.filter {
-            it.companyInformation.identifiers.any { identifier ->
+            it.identifiers.any { identifier ->
                 identifier.identifierValue.contains(searchString, true)
             }
         }
@@ -145,41 +139,43 @@ class CompanyManager(
 
     private fun filterCompaniesByStockIndices(
         indices: Set<StockIndex>,
-        companies: List<StoredCompany>
-    ): List<StoredCompany> {
+        companies: List<StoredCompanyEntity>
+    ): List<StoredCompanyEntity> {
         if (indices.isEmpty()) return companies
         return companies.filter {
-            it.companyInformation.indices.any { index -> indices.contains(index) }
+            it.indices.any { index -> indices.contains(index) }
         }
     }
 
     private fun filterCompaniesByDataTypes(
         dataTypes: Set<DataType>,
-        companies: List<StoredCompany>
-    ): List<StoredCompany> {
+        companies: List<StoredCompanyEntity>
+    ): List<StoredCompanyEntity> {
         if (dataTypes.isEmpty()) return companies
         return companies.map {
                 company ->
             company.copy(
                 dataRegisteredByDataland = company.dataRegisteredByDataland.filter
-                { dataTypes.contains(it.dataType) }.toMutableList()
+                { dataTypes.contains(DataType.valueOf(it.dataType)) }.toMutableList()
             )
         }.filter {
             it.dataRegisteredByDataland.isNotEmpty()
         }
     }
 
-    override fun getCompanyById(companyId: String): StoredCompany {
-        verifyCompanyIdExists(companyId)
-        return companyDataPerCompanyId[companyId]!!
+    override fun getCompanyById(companyId: String): StoredCompanyEntity {
+        val storedCompanySearchResult = companyRepository.findById(companyId)
+        if (storedCompanySearchResult.isEmpty) {
+            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
+        }
+        return storedCompanySearchResult.get()
     }
 
     override fun setTeaserCompanies(companyIds: List<String>) {
-        logger.info("Setting Teaser Company IDs: $companyIds")
-        teaserCompanyIds = companyIds
+
     }
 
     override fun isCompanyPublic(companyId: String): Boolean {
-        return teaserCompanyIds.contains(companyId)
+        return false
     }
 }

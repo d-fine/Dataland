@@ -20,34 +20,27 @@ import javax.persistence.OneToMany
  * @param reportingDateOfMarketCap date to which the market cap value refers
  */
 data class CompanyInformation(
-    @Column(name = "company_name")
     @field:JsonProperty(required = true)
     var companyName: String,
 
-    @Column(name = "headquarters")
     @field:JsonProperty(required = true)
     var headquarters: String,
 
-    @Column(name = "sector")
     @field:JsonProperty(required = true)
     var sector: String,
 
-    @Column(name = "market_capitalisation")
     @field:JsonProperty(required = true)
     var marketCap: BigDecimal,
 
-    @Column(name = "reporting_date_of_market_capitalisation")
     @field:JsonProperty(required = true)
     var reportingDateOfMarketCap: LocalDate,
 
     @field:JsonProperty(required = false)
     var indices: MutableSet<StockIndex>,
 
-    @OneToMany(mappedBy = "company")
     @field:JsonProperty(required = true)
     var identifiers: MutableList<CompanyIdentifier>,
 
-    @Column(name = "country_code")
     @field:JsonProperty(required = true)
     var countryCode: String
 )

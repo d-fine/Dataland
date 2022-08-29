@@ -34,14 +34,14 @@ interface CompanyManagerInterface {
         onlyCompanyNames: Boolean,
         dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
-    ): List<StoredCompany>
+    ): List<StoredCompanyEntity>
 
     /**
      * Method to retrieve information about a specific company
      * @param companyId
      * @return information about the retrieved company
      */
-    fun getCompanyById(companyId: String): StoredCompany
+    fun getCompanyById(companyId: String): StoredCompanyEntity
 
     /**
      * Method to set a list of teaser companies
@@ -67,11 +67,4 @@ interface CompanyManagerInterface {
      * @param companyId the ID of the to be verified company
      */
     fun verifyCompanyIdExists(companyId: String)
-
-    /**
-     * Method to add the data meta information to a company in the company store
-     * @param companyId the ID of the company the data belong to
-     * @param dataMetaInformation the information to be linked to the company in the store
-     */
-    fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation)
 }

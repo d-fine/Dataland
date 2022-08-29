@@ -38,7 +38,6 @@ data class CompanyIdentifierEntity(
         return CompanyIdentifier(
             identifierValue = identifierValue,
             identifierType = identifierType,
-
         )
     }
 }
