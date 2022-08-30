@@ -7,6 +7,9 @@ import javax.persistence.Embeddable
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
 
+/**
+ * The composite ID for the StoredCompanyStockIndex Entity
+ */
 @Embeddable
 data class StoredCompanyStockIndexEntityId(
     @Column(name = "company_id")
@@ -15,4 +18,8 @@ data class StoredCompanyStockIndexEntityId(
     @Enumerated(EnumType.STRING)
     @Column(name = "stock_index")
     var stockIndex: StockIndex,
-) : Serializable
+) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 1
+    }
+}

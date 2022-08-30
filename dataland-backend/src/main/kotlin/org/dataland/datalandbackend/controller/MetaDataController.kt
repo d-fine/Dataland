@@ -21,7 +21,9 @@ class MetaDataController(
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: DataType?):
         ResponseEntity<List<DataMetaInformation>> {
-        return ResponseEntity.ok(dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel() })
+        return ResponseEntity.ok(
+            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel() }
+        )
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {

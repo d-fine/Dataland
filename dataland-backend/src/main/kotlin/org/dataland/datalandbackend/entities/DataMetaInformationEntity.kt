@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.entities
 
-import com.fasterxml.jackson.annotation.JsonValue
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import javax.persistence.Column
@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
+/**
+ * The database entity for storing metadata regarding data uploaded to dataland
+ */
 @Entity
 @Table(name = "data_meta_information")
 data class DataMetaInformationEntity(
@@ -24,10 +27,9 @@ data class DataMetaInformationEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     var company: StoredCompanyEntity,
-) {
+) : ApiModelConversion<DataMetaInformation> {
 
-    @JsonValue
-    fun toApiModel(): DataMetaInformation {
+    override fun toApiModel(): DataMetaInformation {
         return DataMetaInformation(
             dataId = dataId,
             dataType = DataType.valueOf(dataType),

@@ -1,8 +1,6 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.persistence.*
-// import javax.persistence.ElementCollection
 
 /**
  * --- API model ---

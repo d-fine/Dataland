@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.entities
 
-import com.fasterxml.jackson.annotation.JsonValue
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.hibernate.annotations.Immutable
@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
+/**
+ * The database entity for storing company identifiers
+ */
 @Entity
 @Immutable
 @Table(name = "company_identifiers")
@@ -36,12 +39,11 @@ data class CompanyIdentifierEntity(
 
     @Transient
     private var isNew: Boolean = false
-) : Persistable<CompanyIdentifierId> {
+) : Persistable<CompanyIdentifierId>, ApiModelConversion<CompanyIdentifier> {
     override fun getId(): CompanyIdentifierId = CompanyIdentifierId(identifierValue, identifierType)
     override fun isNew(): Boolean = isNew
 
-    @JsonValue
-    fun toApiModel(): CompanyIdentifier {
+    override fun toApiModel(): CompanyIdentifier {
         return CompanyIdentifier(
             identifierValue = identifierValue,
             identifierType = identifierType,

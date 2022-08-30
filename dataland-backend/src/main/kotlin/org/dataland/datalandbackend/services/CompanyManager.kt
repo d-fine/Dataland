@@ -77,7 +77,10 @@ class CompanyManager(
         } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                throw IllegalArgumentException("Could not insert company as one company identifier is already used to identify another company")
+                throw IllegalArgumentException(
+                    "Could not insert company as one company identifier " +
+                        "is already used to identify another company"
+                )
             }
             throw ex
         }
@@ -125,7 +128,10 @@ class CompanyManager(
             stockIndexFilter = stockIndexFilter.toList(),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilter)
-        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity -> storedCompanyEntity.companyId to index }.toMap()
+        val sortingMap = filteredAndSortedResults.mapIndexed {
+                index, storedCompanyEntity ->
+            storedCompanyEntity.companyId to index
+        }.toMap()
 
         var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
         filteredResults = companyRepository.fetchStockIndices(filteredResults)

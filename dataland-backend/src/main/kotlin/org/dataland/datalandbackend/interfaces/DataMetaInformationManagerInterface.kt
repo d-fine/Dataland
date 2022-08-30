@@ -4,6 +4,9 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 
+/**
+ * A service for manging meta information for data stored in dataland
+ */
 interface DataMetaInformationManagerInterface {
     /**
      * Method to make the data manager search for meta info
@@ -26,5 +29,9 @@ interface DataMetaInformationManagerInterface {
      * @param dataId The id of the dataset to associate with the company
      * @param dataType The dataType of the dataId
      */
-    fun storeDataMetaInformation(company: StoredCompanyEntity, dataId: String, dataType: DataType): DataMetaInformationEntity
+    fun storeDataMetaInformation(
+        company: StoredCompanyEntity,
+        dataId: String,
+        dataType: DataType
+    ): DataMetaInformationEntity
 }

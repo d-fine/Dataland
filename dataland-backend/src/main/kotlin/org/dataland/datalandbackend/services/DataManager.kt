@@ -22,7 +22,10 @@ class DataManager(
     @Autowired var companyManager: CompanyManagerInterface,
     @Autowired var metaDataManager: DataMetaInformationManagerInterface
 ) : DataManagerInterface {
-    private fun getDataMetaInformationByIdAndVerifyDataType(dataId: String, dataType: DataType): DataMetaInformationEntity {
+    private fun getDataMetaInformationByIdAndVerifyDataType(
+        dataId: String,
+        dataType: DataType
+    ): DataMetaInformationEntity {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
             throw IllegalArgumentException(

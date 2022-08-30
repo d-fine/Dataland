@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.entities
 
-import com.fasterxml.jackson.annotation.JsonValue
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.hibernate.annotations.Immutable
 import javax.persistence.EmbeddedId
@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne
 import javax.persistence.MapsId
 import javax.persistence.Table
 
+/**
+ * The entity storing which stock indices a company is listed in
+ */
 @Entity
 @Immutable
 @Table(name = "stored_company_stock_indices")
@@ -23,9 +26,8 @@ data class StoredCompanyStockIndexEntity(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
     var company: StoredCompanyEntity
-) {
-    @JsonValue
-    fun toApiModel(): StockIndex {
+) : ApiModelConversion<StockIndex> {
+    override fun toApiModel(): StockIndex {
         return id.stockIndex
     }
 

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.entities
 
 import com.fasterxml.jackson.annotation.JsonValue
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import java.math.BigDecimal
@@ -11,6 +12,9 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
+/**
+ * The entity storing data regarding a company stored in dataland
+ */
 @Entity
 @Table(name = "stored_companies")
 data class StoredCompanyEntity(
@@ -47,9 +51,9 @@ data class StoredCompanyEntity(
 
     @Column(name = "is_teaser_company")
     var isTeaserCompany: Boolean
-) {
+) : ApiModelConversion<StoredCompany> {
     @JsonValue
-    fun toApiModel(): StoredCompany {
+    override fun toApiModel(): StoredCompany {
         return StoredCompany(
             companyId = companyId,
             companyInformation = CompanyInformation(
