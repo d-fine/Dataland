@@ -7,6 +7,7 @@ env:
   SKYMINDER_URL: ${{ secrets.SKYMINDER_URL }}
   SKYMINDER_PW: ${{ secrets.SKYMINDER_PW }}
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
+  FRONTEND_BASE_URL: ${{ secrets.FRONTEND_BASE_URL }}
   REALDATA: false
 
 on:
@@ -91,7 +92,6 @@ jobs:
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
-          FRONTEND_BASE_URL: "https://dev-dataland.duckdns.org"
           KEYCLOAK_DB_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
