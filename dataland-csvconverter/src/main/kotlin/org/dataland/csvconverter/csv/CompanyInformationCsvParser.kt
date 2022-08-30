@@ -52,7 +52,8 @@ class CompanyInformationCsvParser {
             ),
             identifiers = getCompanyIdentifiers(row),
             indices = getStockIndices(row),
-            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row)
+            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
+            isTeaserCompany = false
         )
     }
 

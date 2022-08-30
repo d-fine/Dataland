@@ -16,29 +16,29 @@ import java.time.LocalDate
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
-    var companyName: String,
+    val companyName: String,
 
     @field:JsonProperty(required = true)
-    var headquarters: String,
+    val headquarters: String,
 
     @field:JsonProperty(required = true)
-    var sector: String,
+    val sector: String,
 
     @field:JsonProperty(required = true)
-    var marketCap: BigDecimal,
+    val marketCap: BigDecimal,
 
     @field:JsonProperty(required = true)
-    var reportingDateOfMarketCap: LocalDate,
+    val reportingDateOfMarketCap: LocalDate,
 
     @field:JsonProperty(required = false)
-    var indices: MutableSet<StockIndex>,
+    val indices: Set<StockIndex>,
 
     @field:JsonProperty(required = true)
-    var identifiers: MutableList<CompanyIdentifier>,
+    val identifiers: List<CompanyIdentifier>,
 
     @field:JsonProperty(required = true)
-    var countryCode: String,
+    val countryCode: String,
 
     @field:JsonProperty(required = true)
-    var isTeaserCompany: Boolean
+    val isTeaserCompany: Boolean
 )
