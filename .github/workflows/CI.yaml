@@ -91,6 +91,7 @@ jobs:
         run: ./testing/execute_e2e_tests.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
+          FRONTEND_BASE_URL: "https://dataland-local.duckdns.org"
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
