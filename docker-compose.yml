@@ -23,6 +23,21 @@ services:
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
+  admin-proxy:
+    build:
+      context: ./dataland-inbound-admin-proxy
+      args:
+        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
+    image: nginx:latest
+    restart: always
+    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    networks:
+      - external
+      - internal
+    ports:
+      - "127.0.0.1:6789:80"
+    volumes:
+      - ${NGINX_CONFIG_FILE:-./dataland-inbound-admin-proxy/nginx.conf}:/etc/nginx/nginx.conf
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
