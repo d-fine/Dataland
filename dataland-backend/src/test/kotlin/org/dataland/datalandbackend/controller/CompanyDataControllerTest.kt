@@ -1,10 +1,14 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -15,8 +19,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import javax.transaction.Transactional
 
-@SpringBootTest
+@SpringBootTest(classes = [DatalandBackend::class])
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles(profiles = ["unprotected"])
 internal class CompanyDataControllerTest(
@@ -25,16 +32,16 @@ internal class CompanyDataControllerTest(
 ) {
 
     val testDataProvider = TestDataProvider(objectMapper)
-    val testCompanyInformation = testDataProvider.getCompanyInformation(1).last()
+    val testCompanyInformation = testDataProvider.getCompanyInformation(2)
 
     @Test
     fun `company can be posted`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation[0])
     }
 
     @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
-        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
+        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation[1])
         mockMvc.perform(
             get("/companies/${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)

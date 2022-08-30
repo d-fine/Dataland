@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
+    @Autowired private val companyManager: CompanyManagerInterface
 ) : DataMetaInformationManagerInterface {
     override fun storeDataMetaInformation(company: StoredCompanyEntity, dataId: String, dataType: DataType): DataMetaInformationEntity {
         val dataMetaInformationEntity = DataMetaInformationEntity(
@@ -35,6 +37,7 @@ class DataMetaInformationManager(
     }
 
     override fun searchDataMetaInfo(companyId: String, dataType: DataType?): List<DataMetaInformationEntity> {
+        companyManager.verifyCompanyIdExists(companyId)
         return if (dataType === null) {
             dataMetaInformationRepository.getByCompanyCompanyId(companyId)
         } else {

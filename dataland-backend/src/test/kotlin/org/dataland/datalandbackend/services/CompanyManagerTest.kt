@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +25,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class CompanyManagerTest(
     @Autowired val objectMapper: ObjectMapper,
@@ -34,7 +35,7 @@ class CompanyManagerTest(
     val extendedTestCompanyList = testDataProvider.getCompanyInformation(5)
     val testCompanyList = extendedTestCompanyList.subList(0, 4)
 
-    @BeforeAll
+    @BeforeEach
     fun addTestCompanies() {
         for (company in testCompanyList) { // 5th company used by add
             testCompanyManager.addCompany(company)
