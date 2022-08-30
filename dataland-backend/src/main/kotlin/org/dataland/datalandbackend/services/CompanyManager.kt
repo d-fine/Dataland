@@ -122,10 +122,14 @@ class CompanyManager(
             dataTypeFilter = dataTypeFilter.map { it.name },
             stockIndexFilter = stockIndexFilter.toList(),
         )
-        var filteredResults = companyRepository.searchCompanies(searchFilter)
-        filteredResults = companyRepository.fetchIdentifiers(filteredResults)
+        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilter)
+        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity -> storedCompanyEntity.companyId to index }.toMap()
+
+        var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
         filteredResults = companyRepository.fetchStockIndices(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
+        filteredResults = filteredResults.sortedBy { sortingMap[it.companyId]!! }
+
         return filteredResults
     }
 

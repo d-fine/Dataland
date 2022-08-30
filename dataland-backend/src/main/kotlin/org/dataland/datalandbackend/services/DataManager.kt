@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -20,7 +21,7 @@ import javax.transaction.Transactional
 class DataManager(
     @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper,
-    @Autowired var companyManager: CompanyManager,
+    @Autowired var companyManager: CompanyManagerInterface,
     @Autowired var metaDataManager: DataMetaInformationManagerInterface
 ) : DataManagerInterface {
     private fun getDataMetaInformationByIdAndVerifyDataType(dataId: String, dataType: DataType): DataMetaInformationEntity {

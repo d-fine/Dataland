@@ -44,6 +44,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(libs.database.h2)
 }
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]

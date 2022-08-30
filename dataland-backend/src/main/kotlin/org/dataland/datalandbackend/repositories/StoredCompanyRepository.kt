@@ -19,7 +19,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "(:#{#searchFilter.searchStringLength} = 0 OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) or " +
             "(:#{#searchFilter.nameOnlyFilter} = false AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
             "GROUP BY company.companyId " +
-            "ORDER BY (CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END), company.companyName")
+            "ORDER BY (CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END) ASC, company.companyName ASC")
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
     @Query("SELECT DISTINCT company FROM StoredCompanyEntity company LEFT JOIN FETCH company.indices WHERE company in :companies")

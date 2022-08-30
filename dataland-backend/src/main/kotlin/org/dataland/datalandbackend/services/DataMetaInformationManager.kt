@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 
-@Component("MetaDataManager")
+@Component("DataMetaInformationManager")
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
 ) : DataMetaInformationManagerInterface {
