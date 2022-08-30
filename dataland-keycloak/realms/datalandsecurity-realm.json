@@ -788,7 +788,6 @@
       "enabled": true,
       "alwaysDisplayInConsole": true,
       "clientAuthenticatorType": "client-secret",
-      "rootUrl": "${FRONTEND_BASE_URL}",
       "redirectUris": [
         "/*"
       ],
