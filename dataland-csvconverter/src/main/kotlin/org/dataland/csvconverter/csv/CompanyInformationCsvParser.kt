@@ -34,7 +34,8 @@ class CompanyInformationCsvParser {
         StockIndex.Mdax.name to "MDAX",
         StockIndex.Sdax.name to "SDAX",
         StockIndex.TecDax.name to "TecDAX",
-        StockIndex.Dax50Esg.name to "DAX 50 ESG"
+        StockIndex.Dax50Esg.name to "DAX 50 ESG",
+        "isTeaserCompany" to "Teaser Company",
     )
 
     /**
@@ -53,7 +54,8 @@ class CompanyInformationCsvParser {
             identifiers = getCompanyIdentifiers(row),
             indices = getStockIndices(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
-            isTeaserCompany = false
+            isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
+                .equals("Yes", true)
         )
     }
 
