@@ -9,10 +9,10 @@ import javax.persistence.Enumerated
 
 @Embeddable
 data class StoredCompanyStockIndexEntityId(
-    @Column(name="company_id")
+    @Column(name = "company_id")
     var companyId: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(name="stock_index")
+    @Column(name = "stock_index")
     var stockIndex: StockIndex,
-): Serializable
+) : Serializable

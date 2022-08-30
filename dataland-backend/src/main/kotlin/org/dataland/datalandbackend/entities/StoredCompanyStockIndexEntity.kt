@@ -1,11 +1,15 @@
 package org.dataland.datalandbackend.entities
 
 import com.fasterxml.jackson.annotation.JsonValue
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.hibernate.annotations.Immutable
-import javax.persistence.*
+import javax.persistence.EmbeddedId
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.MapsId
+import javax.persistence.Table
 
 @Entity
 @Immutable

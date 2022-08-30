@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType

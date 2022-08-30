@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection

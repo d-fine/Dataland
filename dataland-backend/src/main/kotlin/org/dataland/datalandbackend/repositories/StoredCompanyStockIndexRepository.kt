@@ -4,4 +4,4 @@ import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntity
 import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntityId
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface StoredCompanyStockIndexRepository: JpaRepository<StoredCompanyStockIndexEntity, StoredCompanyStockIndexEntityId>
+interface StoredCompanyStockIndexRepository : JpaRepository<StoredCompanyStockIndexEntity, StoredCompanyStockIndexEntityId>

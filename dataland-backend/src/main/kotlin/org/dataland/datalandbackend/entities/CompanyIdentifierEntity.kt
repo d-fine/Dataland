@@ -1,12 +1,20 @@
 package org.dataland.datalandbackend.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.hibernate.annotations.Immutable
 import org.springframework.data.domain.Persistable
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Immutable
@@ -14,17 +22,17 @@ import javax.persistence.*
 @IdClass(CompanyIdentifierId::class)
 data class CompanyIdentifierEntity(
     @Id
-    @Column(name="identifier_value")
+    @Column(name = "identifier_value")
     val identifierValue: String,
 
     @Id
     @Enumerated(EnumType.STRING)
-    @Column(name="identifier_type")
+    @Column(name = "identifier_type")
     val identifierType: IdentifierType,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
-    var company:StoredCompanyEntity?,
+    var company: StoredCompanyEntity?,
 
     @Transient
     private var isNew: Boolean = false

@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.hibernate.annotations.Immutable
-import javax.persistence.*
 
 /**
  * --- API model ---

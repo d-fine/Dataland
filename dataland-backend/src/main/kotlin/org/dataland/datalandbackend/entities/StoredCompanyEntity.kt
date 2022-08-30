@@ -3,10 +3,13 @@ package org.dataland.datalandbackend.entities
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "stored_companies")

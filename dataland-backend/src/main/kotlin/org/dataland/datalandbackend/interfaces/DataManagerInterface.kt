@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.interfaces
 
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 

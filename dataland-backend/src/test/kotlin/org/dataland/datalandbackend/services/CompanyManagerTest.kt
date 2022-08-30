@@ -4,24 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.support.AnnotationConfigContextLoader
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -124,7 +117,7 @@ class CompanyManagerTest(
         for (stockIndex in stockIndiciesInTestData) {
             val searchResponse = testCompanyManager.searchCompanies("", false, setOf(), setOf(stockIndex))
             assertTrue(
-                searchResponse.all { it.indices.any { index -> index.toApiModel() == stockIndex} },
+                searchResponse.all { it.indices.any { index -> index.toApiModel() == stockIndex } },
                 "The search result for the stock index $stockIndex contains at least one company " +
                     "that does not have $stockIndex as index attribute."
             )

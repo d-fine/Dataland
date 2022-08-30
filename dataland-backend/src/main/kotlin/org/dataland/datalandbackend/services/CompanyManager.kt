@@ -5,7 +5,8 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntity
 import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntityId
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
-import org.dataland.datalandbackend.model.*
+import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -39,7 +40,7 @@ class CompanyManager(
     private fun createStoredCompanyEntityWithoutForeignReferences(
         companyId: String,
         companyInformation: CompanyInformation
-    ) : StoredCompanyEntity {
+    ): StoredCompanyEntity {
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
             companyName = companyInformation.companyName,
@@ -58,8 +59,9 @@ class CompanyManager(
         return savedCompanyEntity
     }
 
-    private fun createAndAssociateIdentifiers(savedCompanyEntity: StoredCompanyEntity,
-                                              companyInformation: CompanyInformation
+    private fun createAndAssociateIdentifiers(
+        savedCompanyEntity: StoredCompanyEntity,
+        companyInformation: CompanyInformation
     ): List<CompanyIdentifierEntity> {
         val newIdentifiers = companyInformation.identifiers.map {
             CompanyIdentifierEntity(
@@ -72,7 +74,7 @@ class CompanyManager(
 
         try {
             return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
-        } catch (ex : DataIntegrityViolationException) {
+        } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
                 throw IllegalArgumentException("Could not insert company as one company identifier is already used to identify another company")

@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 
 interface DataMetaInformationManagerInterface {

@@ -4,13 +4,10 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
-import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(

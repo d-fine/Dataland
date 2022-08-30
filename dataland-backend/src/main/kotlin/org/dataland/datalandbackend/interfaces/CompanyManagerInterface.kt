@@ -2,9 +2,7 @@ package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 
 /**

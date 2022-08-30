@@ -6,12 +6,10 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.concurrent.ConcurrentHashMap
 import javax.transaction.Transactional
 
 /**
@@ -40,7 +38,7 @@ class DataManager(
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
-        metaDataManager.storeDataMetaInformation(company, dataId,  storableDataSet.dataType)
+        metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
 

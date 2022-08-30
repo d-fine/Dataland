@@ -2,13 +2,8 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.company.StockIndex
-import org.hibernate.annotations.NotFound
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.EnumSet
-import javax.persistence.Column
-import javax.persistence.Embeddable
-import javax.persistence.OneToMany
 
 /**
  * --- API model ---
