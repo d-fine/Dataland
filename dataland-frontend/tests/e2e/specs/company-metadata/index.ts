@@ -4,7 +4,6 @@
  */
 describe("Taxonomy Company Metadata tests", () => {
   require("./SearchPagniation");
-  require("./SearchIndexTabMenu");
   require("./CompanyUploadTest");
   require("./SearchCompaniesForFrameworkData");
   require("./Search");
