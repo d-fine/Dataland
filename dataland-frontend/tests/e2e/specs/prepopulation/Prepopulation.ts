@@ -9,7 +9,13 @@ const chunkSize = 40;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
-  { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 },
+  {
+    defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000,
+    retries: {
+      runMode: 0,
+      openMode: 0,
+    },
+  },
   () => {
     let companiesWithEuTaxonomyDataForNonFinancials: Array<{
       companyInformation: CompanyInformation;
