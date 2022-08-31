@@ -13,17 +13,23 @@ if (testGroupingDisabled) {
   console.log(`Test grouping enabled. Loading tests for group ${cypressTestGroup}`);
 }
 
+/**
+ * Test grouping overview
+ * 1 - 4      : Traditional E2E-Tests
+ * 101 - 102  : Restartability E2E-Tests
+ */
+
 require("./infrastructure");
 
 if (runPrepopulation) {
-  if (!singlePopulate || cypressTestGroup === 1) {
+  if (!singlePopulate || cypressTestGroup === 1 || cypressTestGroup === 101) {
     require("./prepopulation");
   } else {
     require("./prepopulation/AwaitPrepopulation");
   }
 }
 
-if (testGroupingDisabled || cypressTestGroup === 1) {
+if (testGroupingDisabled || cypressTestGroup === 1 || cypressTestGroup === 102) {
   require("./company-metadata");
 }
 

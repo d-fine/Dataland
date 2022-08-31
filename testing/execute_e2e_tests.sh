@@ -11,6 +11,9 @@ docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/e2e/lcov.info
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/. ./cypress/${CYPRESS_TEST_GROUP}/
 docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/. ./reports/${CYPRESS_TEST_GROUP}/
 
+mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
+docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > /dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql
+
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test-backend-1 --follow" > /dev/null
