@@ -49,6 +49,11 @@ if [[ $INITIALIZE_KEYCLOAK == true ]]; then
   "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
 fi
 
+if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
+  echo "Resetting backend database"
+  "$(dirname "$0")"/reset_backend_database.sh "$target_server_url" "$location" || exit 1
+fi
+
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
 

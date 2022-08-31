@@ -13,6 +13,10 @@ on:
         description: 'Use real data'
         required: false
         type: boolean
+      resetBackendAndRepopulate:
+        description: 'Reset backend database & Re-populate'
+        required: false
+        type: boolean
       whichEnvironment:
         description: "Choose environment"
         required: true
@@ -46,6 +50,7 @@ jobs:
           echo Which Environment: $ENVIRONMENT
           echo Use in Memory Store: $IN_MEMORY
           echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
+          echo Reset backend Database and repopulate: $RESET_BACKEND_DATABASE_AND_REPOPULATE
           if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
             echo Reset Keycloak Security Phrase Input: UNDEFINED
           else
@@ -55,6 +60,7 @@ jobs:
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           RESET_KEYCLOAK_SECURITY_PHRASE_INPUT: ${{ github.event.inputs.resetKeycloakSecurityPhraseInput }}
+          RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
       - name: verifyKeycloakPassword
         run: |
           if [[ -z "$RESET_KEYCLOAK_SECURITY_PHRASE_INPUT" ]]; then
@@ -123,6 +129,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+          RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -165,6 +172,7 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
+          CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
       - name: Move Cypress Results
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results

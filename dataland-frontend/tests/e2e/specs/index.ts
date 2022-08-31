@@ -5,6 +5,7 @@ if (!testGroupingDisabled) {
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
+const runPrepopulation = Cypress.env("RUN_PREPOPULATION") === true;
 
 if (testGroupingDisabled) {
   console.log("Test grouping disabled. Loading all tests...");
@@ -14,10 +15,12 @@ if (testGroupingDisabled) {
 
 require("./infrastructure");
 
-if (!singlePopulate || cypressTestGroup === 1) {
-  require("./prepopulation");
-} else {
-  require("./prepopulation/AwaitPrepopulation");
+if (runPrepopulation) {
+  if (!singlePopulate || cypressTestGroup === 1) {
+    require("./prepopulation");
+  } else {
+    require("./prepopulation/AwaitPrepopulation");
+  }
 }
 
 if (testGroupingDisabled || cypressTestGroup === 1) {
