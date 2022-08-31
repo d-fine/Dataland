@@ -91,7 +91,7 @@ class CompanyDataControllerTest {
             searchString = testCompanyInformation.companyName,
             onlyCompanyNames = true,
         ).map { it.copyNormalised() }
-        val expectedCompany =  StoredCompany(postCompanyResponse.companyId, testCompanyInformation, emptyList())
+        val expectedCompany = StoredCompany(postCompanyResponse.companyId, testCompanyInformation, emptyList())
             .copyNormalised()
         assertTrue(
             getCompaniesByNameResponse.contains(expectedCompany),
