@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 
 /**
  * Defines the required functionalities for the Dataland company manager
@@ -25,14 +24,12 @@ interface CompanyManagerInterface {
      * @param onlyCompanyNames boolean determining if the search should be solely against the company names
      * @param dataTypeFilter if not empty, return only companies that have
      * data reported for one of the specified dataTypes
-     * @param stockIndexFilter if not empty, return only companies that are part of one of the specified stock indices
      * @return list of all matching companies in Dataland
      */
     fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<DataType>,
-        stockIndexFilter: Set<StockIndex>
+        dataTypeFilter: Set<DataType>
     ): List<StoredCompany>
 
     /**

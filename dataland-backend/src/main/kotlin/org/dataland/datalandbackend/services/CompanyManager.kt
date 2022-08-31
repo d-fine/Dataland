@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.Collections
@@ -49,8 +48,7 @@ class CompanyManager : CompanyManagerInterface {
     override fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<DataType>,
-        stockIndexFilter: Set<StockIndex>
+        dataTypeFilter: Set<DataType>
     ): List<StoredCompany> {
         var companies = companyDataPerCompanyId.values.toList()
 
@@ -60,7 +58,6 @@ class CompanyManager : CompanyManagerInterface {
             filterCompaniesByNameAndIdentifier(searchString, companies)
         }
 
-        companies = filterCompaniesByStockIndices(stockIndexFilter, companies)
         companies = filterCompaniesByDataTypes(dataTypeFilter, companies)
 
         return companies
@@ -89,16 +86,6 @@ class CompanyManager : CompanyManagerInterface {
             it.companyInformation.identifiers.any { identifier ->
                 identifier.identifierValue.contains(searchString, true)
             }
-        }
-    }
-
-    private fun filterCompaniesByStockIndices(
-        indices: Set<StockIndex>,
-        companies: List<StoredCompany>
-    ): List<StoredCompany> {
-        if (indices.isEmpty()) return companies
-        return companies.filter {
-            it.companyInformation.indices.any { index -> indices.contains(index) }
         }
     }
 
