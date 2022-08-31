@@ -139,6 +139,7 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     strategy:
+      fail-fast: false
       matrix:
         testGroup: [ 1,2,3,4 ]
     steps:
