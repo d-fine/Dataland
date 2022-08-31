@@ -11,6 +11,7 @@ COPY ./dataland-keycloak/dataland_theme/login/dist /opt/keycloak/themes/dataland
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
 ENV KC_HOSTNAME_ADMIN=localhost:6789
+COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
 
 RUN /opt/keycloak/bin/kc.sh build
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+ENTRYPOINT ["/opt/keycloak/bin/start_keycloak.sh"]

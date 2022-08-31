@@ -120,7 +120,7 @@ services:
     profiles: ["production"]
     image: ghcr.io/d-fine/datalandedc/edcserver:0.2.2
     networks:
-     - internal
+      - internal
     expose:
       - "9191"
       - "9292"
@@ -192,7 +192,7 @@ services:
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/opt/keycloak/data/import
-    command: start --import-realm
+    command: initialize
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
