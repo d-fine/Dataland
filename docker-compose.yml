@@ -201,6 +201,9 @@ services:
       internal:
         aliases:
           - keycloak
+      keycloak-db:
+        aliases:
+          - keycloak
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
