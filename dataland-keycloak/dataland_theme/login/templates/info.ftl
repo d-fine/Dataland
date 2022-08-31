@@ -6,6 +6,7 @@
         <#else>
             ${message.summary}
         </#if>
+    <#elseif section = "backUrl">/<#elseif section = "backName">HOME
     <#elseif section = "form">
         <div id="kc-info-message">
             <p class="instruction">${message.summary}<#if requiredActions??><#list requiredActions>: <b><#items as reqActionItem>${msg("requiredAction.${reqActionItem}")}<#sep>, </#items></b></#list><#else></#if></p>

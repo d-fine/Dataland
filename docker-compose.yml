@@ -17,8 +17,8 @@ services:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
     environment:
-      # This variable will be inserted into the NGINX server config file (URLS separated by a space e.g. dataland.com www.dataland.com)
-      PROXY_NGINX_URLS: ${PROXY_NGINX_URLS}
+      # The primary server URL all other URLS get redirected to
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
       # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
@@ -56,6 +56,8 @@ services:
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
       ENVIRONMENT: ${ENVIRONMENT}
+      CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
+      REALDATA: ${REALDATA}
     links:
       - proxy:dataland-local.duckdns.org
   frontend:

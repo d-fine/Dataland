@@ -1,6 +1,8 @@
 // main
 
 val jacocoVersion: String by project
+val ktlintVersion: String by project
+
 allprojects {
     repositories {
         mavenCentral()
@@ -39,6 +41,9 @@ subprojects {
     sonarqube {
         isSkipProject = true
     }
+    ktlint {
+        version.set(ktlintVersion)
+    }
 }
 
 tasks.dependencyUpdates.configure {
@@ -47,23 +52,23 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.10")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
-    id("com.github.node-gradle.node") version "3.3.0" apply false
-    id("org.springframework.boot") version "2.7.1" apply false
+    id("com.github.node-gradle.node") version "3.4.0" apply false
+    id("org.springframework.boot") version "2.7.3" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.7.10" apply false
     id("org.sonarqube") version "3.4.0.2513"
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") version "1.3.4" apply false
+    id("org.springdoc.openapi-gradle-plugin") version "1.4.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
-    id("org.openapi.generator") version "5.4.0" apply false
+    id("org.openapi.generator") version "6.0.1" apply false
     id("com.github.ben-manes.versions") version "0.42.0"
 }
 
@@ -132,4 +137,8 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 }
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = java.sourceCompatibility.toString()
+}
+
+ktlint {
+    version.set(ktlintVersion)
 }

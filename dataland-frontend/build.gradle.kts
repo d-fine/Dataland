@@ -14,7 +14,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("18.6.0")
+    version.set("18.7.0")
 }
 
 val backendOpenApiSpecConfig by configurations.creating {
@@ -53,6 +53,17 @@ tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.pl
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
     generatorName.set("typescript-axios")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
+    )
     dependsOn("getBackendOpenApiSpec")
 }
 

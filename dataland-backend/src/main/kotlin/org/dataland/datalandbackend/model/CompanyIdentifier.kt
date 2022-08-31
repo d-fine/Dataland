@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.enums.IdentifierType
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
  * --- API model ---
@@ -10,6 +10,9 @@ import org.dataland.datalandbackend.model.enums.IdentifierType
  * @param identifierValue value of the identifier
  */
 data class CompanyIdentifier(
-    @field:JsonProperty("identifierType", required = true) val identifierType: IdentifierType,
-    @field:JsonProperty("identifierValue", required = true) val identifierValue: String
+    @field:JsonProperty("identifierType", required = true)
+    val identifierType: IdentifierType,
+
+    @field:JsonProperty("identifierValue", required = true)
+    val identifierValue: String
 )

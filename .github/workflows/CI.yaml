@@ -7,6 +7,7 @@ env:
   SKYMINDER_URL: ${{ secrets.SKYMINDER_URL }}
   SKYMINDER_PW: ${{ secrets.SKYMINDER_PW }}
   SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
+  REALDATA: false
 
 on:
   push:
@@ -46,7 +47,6 @@ jobs:
         with:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
-
   unit-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -65,13 +65,14 @@ jobs:
         with:
           name: lcovResultsUnit
           path: ./dataland-frontend/coverage/**/lcov.info
-      - name: Execute Frontend Scripts Tests
+      - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
-
-
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    strategy:
+      matrix:
+        testGroup: [1,2,3,4]
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -99,10 +100,13 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: "test"
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
-          PROXY_NGINX_URLS: dataland-local.duckdns.org
+          PROXY_PRIMARY_URL: dataland-local.duckdns.org
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
+          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v2
@@ -114,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: lcovResultsE2E
-          path: ./lcov.info
+          path: ./*.info
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2

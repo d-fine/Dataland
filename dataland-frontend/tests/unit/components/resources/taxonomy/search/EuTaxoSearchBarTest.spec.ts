@@ -1,9 +1,9 @@
-import EuTaxoSearchBar from "@/components/resources/taxonomy/search/EuTaxoSearchBar.vue";
+import EuTaxoSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { shallowMount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
 import { expect } from "@jest/globals";
-import { getInjectedKeycloakObjectsForTest } from "../../../../TestUtils";
+import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../../../TestUtils";
 
 describe("EuTaxoSearchBarTest", () => {
   let wrapper: any;
@@ -12,11 +12,11 @@ describe("EuTaxoSearchBarTest", () => {
       history: createMemoryHistory(),
       routes,
     });
-    router.push("/searchtaxonomy");
+    router.push("/companies");
     await router.isReady();
     wrapper = shallowMount(EuTaxoSearchBar, {
       global: {
-        plugins: [router],
+        plugins: [router, ...getRequiredPlugins()],
         provide: getInjectedKeycloakObjectsForTest(),
       },
     });

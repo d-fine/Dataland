@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.jackson.databind)
     implementation(libs.jackson.datatype.jsr310)
+    implementation(libs.jackson.kotlin)
     implementation(project(":dataland-backend"))
 }
 
