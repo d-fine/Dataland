@@ -63,19 +63,13 @@ describe(
         });
       }
 
-      function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
-        return browserPromiseUploadSingleElementOnce(endpoint, element, token)
-          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token))
-          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
-      }
-
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
           doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
-            return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
               .then((response) => response.json())
               .then((companyUploadResponseJson) => {
-                uploadSingleElementWithRetries(
+                browserPromiseUploadSingleElementOnce(
                   "data/eutaxonomy-non-financials",
                   {
                     companyId: companyUploadResponseJson.companyId,
@@ -86,10 +80,10 @@ describe(
               });
           });
           doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
-            return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
               .then((response) => response.json())
               .then((json) => {
-                uploadSingleElementWithRetries(
+                browserPromiseUploadSingleElementOnce(
                   "data/eutaxonomy-financials",
                   {
                     companyId: json.companyId,
