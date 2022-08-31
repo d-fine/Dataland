@@ -166,8 +166,8 @@ jobs:
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 900 }}
-          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 90 || 1200 }}
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
+          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
