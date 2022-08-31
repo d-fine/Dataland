@@ -65,13 +65,10 @@ class CompanyManager(
     ): List<CompanyIdentifierEntity> {
         val newIdentifiers = companyInformation.identifiers.map {
             CompanyIdentifierEntity(
-                identifierType = it.identifierType,
-                identifierValue = it.identifierValue,
-                company = savedCompanyEntity,
-                isNew = true,
+                identifierType = it.identifierType, identifierValue = it.identifierValue,
+                company = savedCompanyEntity, isNew = true,
             )
         }
-
         try {
             return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
         } catch (ex: DataIntegrityViolationException) {

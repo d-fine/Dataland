@@ -91,14 +91,10 @@ class CompanyDataControllerTest {
             searchString = testCompanyInformation.companyName,
             onlyCompanyNames = true,
         ).map { it.copyNormalised() }
+        val expectedCompany =  StoredCompany(postCompanyResponse.companyId, testCompanyInformation, emptyList())
+            .copyNormalised()
         assertTrue(
-            getCompaniesByNameResponse.contains(
-                StoredCompany(
-                    postCompanyResponse.companyId,
-                    testCompanyInformation,
-                    dataRegisteredByDataland = emptyList()
-                ).copyNormalised()
-            ),
+            getCompaniesByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company."
         )
     }

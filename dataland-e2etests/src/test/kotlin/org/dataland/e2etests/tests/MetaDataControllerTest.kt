@@ -222,14 +222,10 @@ class MetaDataControllerTest {
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
         ).dataId
 
+        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, testCompanyId)
         assertTrue(
-            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType).contains(
-                DataMetaInformation(
-                    dataId = testDataId,
-                    dataType = testDataType,
-                    companyId = testCompanyId
-                )
-            ),
+            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
+                .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
                 "match the retrieved meta info."
         )
