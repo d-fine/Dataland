@@ -5,7 +5,7 @@
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarAndIndexTabContainer"
+        ref="searchBarContainer"
       >
         <div class="pt-4" />
         <MarginWrapper>
@@ -36,12 +36,6 @@
             >
               <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             </PrimeButton>
-            <IndexTabMenu
-              ref="indexTabs"
-              :initIndex="firstDisplayedIndex"
-              @tab-click="toggleIndexTabs"
-              @companies-received="handleFilterByIndex"
-            />
           </div>
         </MarginWrapper>
       </div>
@@ -62,14 +56,10 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
 import TheHeader from "@/components/generics/TheHeader";
 import TheContent from "@/components/generics/TheContent";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
-import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults";
 import { useRoute } from "vue-router";
-import { CompanyInformationIndicesEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import MarginWrapper from "@/components/wrapper/MarginWrapper";
-
-const stockIndices = Object.keys(CompanyInformationIndicesEnum);
 
 export default {
   name: "SearchCompaniesForFrameworkData",
@@ -79,7 +69,6 @@ export default {
     TheHeader,
     TheContent,
     FrameworkDataSearchBar,
-    IndexTabMenu,
     PrimeButton,
     FrameworkDataSearchResults,
   },
@@ -92,7 +81,6 @@ export default {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      firstDisplayedIndex: 1,
       showSearchResultsTable: false,
       resultsArray: [],
       latestScrollPosition: 0,
@@ -158,12 +146,11 @@ export default {
       if (filtered) {
         this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
+        this.$refs.frameworkDataSearchBar.queryCompany("", "");
         this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
-        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
       }
     },
     handleCompanyQuery(companiesReceived) {
-      this.$refs.indexTabs.activeIndex = null;
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
@@ -177,17 +164,9 @@ export default {
         query: { input: this.currentSearchBarInput, frameworks: frameworksQuery },
       });
     },
-
-    handleFilterByIndex(companiesReceived) {
-      this.resultsArray = companiesReceived;
-      this.showSearchResultsTable = true;
-    },
-    toggleIndexTabs(stockIndex) {
-      this.$refs.indexTabs.filterByIndex(stockIndex);
-    },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.$refs.searchBarAndIndexTabContainer.clientHeight;
+      const height = this.$refs.searchBarContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
