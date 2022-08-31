@@ -49,7 +49,7 @@ import Message from "primevue/message";
 
 const companyInformation = backend.components.schemas.CompanyInformation;
 const companyIdentifier = backend.components.schemas.CompanyIdentifier;
-const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation);
+const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation, ["isTeaserCompany"]);
 const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
 
 const createCompany = {

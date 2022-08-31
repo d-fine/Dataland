@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -41,11 +42,14 @@ class DataMetaInformationManager(
     }
 
     override fun searchDataMetaInfo(companyId: String, dataType: DataType?): List<DataMetaInformationEntity> {
-        companyManager.verifyCompanyIdExists(companyId)
-        return if (dataType === null) {
-            dataMetaInformationRepository.getByCompanyCompanyId(companyId)
-        } else {
-            dataMetaInformationRepository.getByCompanyCompanyIdAndDataType(companyId, dataType.name)
-        }
+        if (companyId != "")
+            companyManager.verifyCompanyIdExists(companyId)
+        val dataTypeFilter = dataType?.name ?: ""
+        return dataMetaInformationRepository.searchDataMetaInformation(
+            DataMetaInformationSearchFilter(
+                dataTypeFilter = dataTypeFilter,
+                companyIdFilter = companyId
+            )
+        )
     }
 }

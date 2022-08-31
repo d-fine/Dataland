@@ -1,21 +1,32 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 /**
  * A JPA repository for accessing DataMetaInformationEntities
  */
 interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntity, String> {
-    /**
-     * Retrieves all meta information for a given company.
-     * DOES NOT throw a not-found error if called with a non-existent company ID
-     */
-    fun getByCompanyCompanyId(companyId: String): List<DataMetaInformationEntity>
 
     /**
-     * Retrieves all meta information for a given company and dataType.
-     * DOES NOT throw errors when called with invalid company ids or dataTypes
+     * A function for searching for dataMetaInformation by dataType and companyId.
+     * If dataType is not empty, then only metaInformation for data with that dataType is returned
+     * If an invalid dataType is supplied, no results are returned (but no error is thrown)
+     * If companyId is not empty, then only metaInformation for data with that companyId is returned
+     * If an invalid companyId is supplied, no results are returned (but no errors is thrown)
      */
-    fun getByCompanyCompanyIdAndDataType(companyId: String, dataType: String): List<DataMetaInformationEntity>
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "WHERE " +
+            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
+            "OR dataMetaInformation.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
+            "(:#{#searchFilter.companyIdFilterLength} = 0 " +
+            "OR dataMetaInformation.company.companyId = :#{#searchFilter.companyIdFilter})"
+    )
+    fun searchDataMetaInformation(
+        @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter
+    ): List<DataMetaInformationEntity>
 }

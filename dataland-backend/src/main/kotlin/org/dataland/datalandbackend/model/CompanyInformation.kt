@@ -39,6 +39,6 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val countryCode: String,
 
-    @field:JsonProperty(required = true)
-    val isTeaserCompany: Boolean
+    @get:JsonProperty(value = "isTeaserCompany")
+    val isTeaserCompany: Boolean = false,
 )

@@ -29,20 +29,20 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "LEFT JOIN company.dataRegisteredByDataland data " +
             "LEFT JOIN company.identifiers identifier " +
             "LEFT JOIN company.indices stockIndex " +
-            "WHERE" +
-            "(:#{#searchFilter.dataTypeFilterSize} = 0" +
-            " OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND" +
-            "(:#{#searchFilter.stockIndexFilterSize} = 0" +
-            " OR (stockIndex.id.stockIndex in :#{#searchFilter.stockIndexFilter})) AND " +
-            "(:#{#searchFilter.searchStringLength} = 0" +
-            " OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) or " +
-            "(:#{#searchFilter.nameOnlyFilter} = false" +
-            " AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
+            "WHERE " +
+            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
+            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
+            "(:#{#searchFilter.stockIndexFilterSize} = 0 " +
+            "OR (stockIndex.id.stockIndex in :#{#searchFilter.stockIndexFilter})) AND " +
+            "(:#{#searchFilter.searchStringLength} = 0 " +
+            "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            "(:#{#searchFilter.nameOnlyFilter} = false " +
+            "AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
             "GROUP BY company.companyId " +
             "ORDER BY " +
-            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1" +
-            " WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END) ASC," +
-            " company.companyName ASC"
+            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
+            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END) ASC, " +
+            "company.companyName ASC"
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
