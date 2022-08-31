@@ -7,12 +7,14 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.util.*
 
 object BigDecimalAdapter {
     @FromJson
@@ -64,6 +66,20 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             .map { it.companyInformation }
     }
 
+    fun getCompanyInformationWithUniqueIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
+        return testCompanyInformationWithTData.slice(0 until requiredQuantity)
+            .map {
+                it.companyInformation.copy(
+                    identifiers = it.companyInformation.identifiers.map { ident ->
+                        CompanyIdentifier(
+                            identifierType = ident.identifierType,
+                            identifierValue = "${ident.identifierValue}${UUID.randomUUID()}"
+                        )
+                    }
+                )
+            }
+    }
+
     fun getTData(numberOfDataSets: Int): List<T> {
         return testCompanyInformationWithTData.slice(0 until numberOfDataSets)
             .map { it.t }
@@ -72,6 +88,12 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
     fun getCompaniesWithTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<T>> {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
+        return companies.associateWith { getTData(dataSetsPerCompany) }
+    }
+
+    fun getCompaniesWithUniqueIdentifiersAndTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
+        Map<CompanyInformation, List<T>> {
+        val companies = getCompanyInformationWithUniqueIdentifiers(requiredNumberOfCompanies)
         return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 }
