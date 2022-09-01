@@ -4,5 +4,4 @@ describe("As a user I expect the admin console only to be reachable from localho
     cy.get("h2").should("exist").should("contain", "Sorry an error occurred!");
     cy.url().should("contain", "nocontent");
   });
-
 });
