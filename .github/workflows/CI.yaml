@@ -149,8 +149,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - name: Elevate permissions to fix failing docker build
-        run: sudo su
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         uses: docker/login-action@v1
