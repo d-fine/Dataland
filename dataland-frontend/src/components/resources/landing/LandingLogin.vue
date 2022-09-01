@@ -21,9 +21,7 @@
           </h1>
         </div>
         <div class="col-4 col-offset-1">
-          <router-link to="/companies">
-            <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
-          </router-link>
+          <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
         </div>
       </div>
       <div class="grid text-left m-0">
@@ -47,7 +45,7 @@
         </div>
       </div>
       <div class="grid m-0">
-        <div class="col-4 col-offset-3">
+        <div class="col-4 col-offset-4">
           <Card class="d-card">
             <template #title>
               <p class="text-left text-xxl pl-3 pr-3">Join Dataland to access our data</p>
