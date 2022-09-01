@@ -2,6 +2,7 @@
 set -ux
 
 environment=$1
+source ./deployment_utils.sh
 
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
@@ -51,7 +52,7 @@ fi
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
-  "$(dirname "$0")"/reset_backend_database.sh "$target_server_url" "$location" || exit 1
+  delete_docker_volume_if_existent "$target_server_url" "$location" "backend_data"
 fi
 
 echo "Starting docker compose stack."

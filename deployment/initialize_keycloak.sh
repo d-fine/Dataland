@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eux
+source ./deployment_utils.sh
 
 target_server_url=$1
 location=$2
@@ -12,11 +13,7 @@ scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$l
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
 scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":$location/dataland-keycloak/dataland_theme/login
 
-old_volume=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep keycloak_data") || true
-if [[ -n $old_volume ]]; then
-  echo "Removing old keycloak volume with name $old_volume."
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $old_volume"
-fi
+delete_docker_volume_if_existent "$target_server_url" "$location" "keycloak_data"
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
