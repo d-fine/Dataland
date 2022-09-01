@@ -33,7 +33,7 @@ services:
       - external
       - internal
     ports:
-      - "127.0.0.1:6789:80"
+      - "127.0.0.1:6789:6789"
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
