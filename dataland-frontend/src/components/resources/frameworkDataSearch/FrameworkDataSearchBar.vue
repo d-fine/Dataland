@@ -142,7 +142,6 @@ export default {
       this.loading = true;
       const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
         searchString,
-        undefined,
         false,
         frameworkFilter,
         this.getKeycloakPromise()
@@ -154,7 +153,6 @@ export default {
       this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
-        undefined,
         true,
         this.frameworksToFilterFor,
         this.getKeycloakPromise()

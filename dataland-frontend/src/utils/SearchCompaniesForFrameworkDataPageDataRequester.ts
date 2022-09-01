@@ -53,8 +53,6 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  *
  * @param  {string} searchString           the string that is used to search companies
- * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex
- *                                         choose one to get companies in that index
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
  * @param {Array<string>} frameworksToFilter
@@ -65,18 +63,6 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
-  stockIndex:
-    | "Cdax"
-    | "Dax"
-    | "GeneralStandard"
-    | "Gex"
-    | "Mdax"
-    | "PrimeStandard"
-    | "Sdax"
-    | "TecDax"
-    | "Hdax"
-    | "Dax50Esg"
-    | undefined,
   onlyCompanyNames: boolean,
   frameworksToFilter: Array<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
@@ -84,14 +70,12 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   let mappedResponse: object[] = [];
 
   const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
-  const stockIndexFilter = stockIndex ? new Set([stockIndex]) : undefined;
   const searchFilter = searchString ? searchString : "";
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(
       searchFilter,
-      stockIndexFilter,
       frameworkFilter,
       onlyCompanyNames
     );
