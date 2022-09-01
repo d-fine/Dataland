@@ -76,6 +76,7 @@ services:
       dockerfile: ./dataland-e2etests/Dockerfile
     networks:
       - external
+      - internal
     environment:
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
