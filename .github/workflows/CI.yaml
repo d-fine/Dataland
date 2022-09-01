@@ -100,7 +100,7 @@ jobs:
           DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
-        run: ./testing/execute_e2e_tests.sh
+        run: ./testing/e2e_test_launcher.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
