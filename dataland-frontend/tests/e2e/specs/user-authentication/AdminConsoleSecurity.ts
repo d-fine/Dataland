@@ -1,22 +1,20 @@
 describe("As a user I expect the admin console only to be reachable using admin-proxy and not from remote", () => {
-  function checkThatUrlDoesNotWork(url: string) {
+  function checkThatUrlResolvesToErrorPage(url: string) {
     cy.visit(url);
     cy.get("h2").should("exist").should("contain", "Sorry an error occurred!");
     cy.url().should("contain", "nocontent");
   }
 
   it(`Test Admin Console not reachable from remote`, () => {
-    checkThatUrlDoesNotWork("/keycloak/datalandsecurity");
+    checkThatUrlResolvesToErrorPage("/keycloak/admin");
   });
 
   it(`Master Realm not reachable from remote`, () => {
-    checkThatUrlDoesNotWork("/keycloak/realms/master");
+    checkThatUrlResolvesToErrorPage("/keycloak/realms/datalandsecurity");
   });
 
   it(`Datalandsecurity Realm is reachable from remote`, () => {
-    cy.request("/keycloak/realms/master")
-        .get("body")
-        .should("contain", "{\"realm\":\"datalandsecurity\",\"public_key\":")
+    cy.request("/keycloak/realms/master").its("body").should("contain", '{"realm":"datalandsecurity","public_key":');
   });
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
