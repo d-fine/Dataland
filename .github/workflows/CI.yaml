@@ -195,6 +195,12 @@ jobs:
         with:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
+      - name: Upload FE E2E Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress
+          path: ./cypress
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
