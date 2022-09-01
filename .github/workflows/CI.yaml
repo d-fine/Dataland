@@ -180,7 +180,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
-          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_AWAIT_PREPOPULATION_RETRIES: 3
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
       - name: Upload docker log files
