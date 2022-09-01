@@ -73,7 +73,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        testGroup: [1,2,3,4]
+        testGroup: [0,1,2,3,4]
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
