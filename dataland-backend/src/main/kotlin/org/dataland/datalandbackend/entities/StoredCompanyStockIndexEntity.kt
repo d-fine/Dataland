@@ -15,7 +15,6 @@ import javax.persistence.Table
  * The entity storing which stock indices a company is listed in
  */
 @Entity
-@Immutable
 @Table(name = "stored_company_stock_indices")
 data class StoredCompanyStockIndexEntity(
 

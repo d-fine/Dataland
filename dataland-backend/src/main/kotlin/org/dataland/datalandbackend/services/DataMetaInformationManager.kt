@@ -29,8 +29,7 @@ class DataMetaInformationManager(
             company = company,
         )
 
-        val savedDataMetaInformationEntity = dataMetaInformationRepository.save(dataMetaInformationEntity)
-        return savedDataMetaInformationEntity
+        return  dataMetaInformationRepository.save(dataMetaInformationEntity)
     }
 
     override fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {

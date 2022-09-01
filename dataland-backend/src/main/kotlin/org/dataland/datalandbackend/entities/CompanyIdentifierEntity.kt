@@ -20,7 +20,6 @@ import javax.persistence.Table
  * The database entity for storing company identifiers
  */
 @Entity
-@Immutable
 @Table(name = "company_identifiers")
 @IdClass(CompanyIdentifierId::class)
 data class CompanyIdentifierEntity(

@@ -22,7 +22,7 @@ data class DataMetaInformationEntity(
     val dataId: String,
 
     @Column(name = "data_type", nullable = false)
-    val dataType: String,
+    var dataType: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
