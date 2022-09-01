@@ -73,7 +73,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        testGroup: [0,1,2,3,4]
+        include:
+          - testExecutor: "CYPRESS"
+            testGroup: 1
+          - testExecutor: "CYPRESS"
+            testGroup: 2
+          - testExecutor: "CYPRESS"
+            testGroup: 3
+          - testExecutor: "CYPRESS"
+            testGroup: 4
+          - testExecutor: "E2ETESTS"
+            testGroup: 0
+          - testExecutor: "RESTARTABILITY"
+            testGroup: 100
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -107,6 +119,7 @@ jobs:
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
@@ -145,62 +158,6 @@ jobs:
         with:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
-  restartability-test:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-          password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-      - name: Retrieve SSL certificates for dataland-local.duckdns.org
-        run: ./testing/retrieve_ssl_certs.sh
-        env:
-          DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Execute Restartability test
-        run: ./testing/execute_backend_restartability_test.sh
-        env:
-          SKYMINDER_URL: "http://skyminder-dummyserver:8080"
-          KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
-          KEYCLOAK_DB_PASSWORD: "password"
-          BACKEND_DB_PASSWORD: "password"
-          KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
-          KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
-          KEYCLOAK_READER_PASSWORD: "test"
-          KEYCLOAK_UPLOADER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
-          KEYCLOAK_UPLOADER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
-          KEYCLOAK_UPLOADER_PASSWORD: "test"
-          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
-          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
-          PROXY_PRIMARY_URL: dataland-local.duckdns.org
-          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
-          PROXY_ENVIRONMENT: production
-          ENVIRONMENT: "development"
-          CYPRESS_AWAIT_PREPOPULATION_RETRIES: 3
-          COMPOSE_DOCKER_CLI_BUILD: 1
-          DOCKER_BUILDKIT: 1
-      - name: Upload docker log files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2eTestDockerLogs
-          path: ./dockerLogs
-      - name: Upload database dumps
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2eTestDatabaseDumps
-          path: ./dbdumps/
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: cypress
-          path: ./cypress
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
