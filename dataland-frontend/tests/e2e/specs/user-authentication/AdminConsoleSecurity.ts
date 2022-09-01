@@ -6,11 +6,11 @@ describe("As a user I expect the admin console only to be reachable using admin-
   }
 
   it(`Test Admin Console not reachable from remote`, () => {
-    checkThatUrlDoesNotWork("/keycloak/admin");
+    checkThatUrlDoesNotWork("/keycloak/datalandsecurity");
   });
 
   it(`Master Realm not reachable from remote`, () => {
-    checkThatUrlDoesNotWork("/keycloak/realms/datalandsecurity");
+    checkThatUrlDoesNotWork("/keycloak/realms/master");
   });
 
   it(`Datalandsecurity Realm is reachable from remote`, () => {
