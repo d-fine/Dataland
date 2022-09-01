@@ -183,30 +183,6 @@ jobs:
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
-      - name: Upload JaCoCo Exec Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: JaCoCoResultsE2ETest
-          path: ./*.exec
-      - name: Upload FE E2E lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: lcovResultsE2E
-          path: ./*.info
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: cypress
-          path: ./cypress
-      - name: Upload E2E Test Reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2eTestReports
-          path: ./reports
       - name: Upload docker log files
         if: always()
         uses: actions/upload-artifact@v2
