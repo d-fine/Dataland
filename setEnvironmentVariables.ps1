@@ -35,8 +35,6 @@
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "${{ secrets.TARGETSERVER_URL }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_BASE_URL", "${{ secrets.TRUSTEE_BASE_URL }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_ENVIRONMENT_NAME", "${{ github.event.inputs.trusteeEnvironmentName }}", [System.EnvironmentVariableTarget]::User)
-# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_ACCOUNT_NAME", "#", [System.EnvironmentVariableTarget]::User)
-# If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("GOOGLE_PASSWORD", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_ID", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_SECRET", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_ID", "#", [System.EnvironmentVariableTarget]::User)
