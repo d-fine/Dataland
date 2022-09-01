@@ -16,11 +16,6 @@ is_infrastructure_up () {
       return 1
     fi
   done
-
-  if ! curl -L "http://keycloak:8080/keycloak/realms/datalandsecurity/" 2>/dev/null | grep -q "datalandsecurity"; then
-    echo "Keycloak not yet there"
-    return 1
-  fi
 }
 export -f is_infrastructure_up
 
