@@ -74,11 +74,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(
-      searchFilter,
-      frameworkFilter,
-      onlyCompanyNames
-    );
+    const response = await companyDataControllerApi.getCompanies(searchFilter, frameworkFilter, onlyCompanyNames);
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {
