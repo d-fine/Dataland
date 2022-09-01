@@ -71,7 +71,7 @@ services:
       REALDATA: ${REALDATA}
     links:
       - proxy:dataland-local.duckdns.org
-      - admin-proxy:localhost
+      - admin-proxy:localhost:6789
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
