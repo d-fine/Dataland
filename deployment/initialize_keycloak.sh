@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eux
-source ./deployment_utils.sh
+source ./deployment/deployment_utils.sh
 
 target_server_url=$1
 location=$2

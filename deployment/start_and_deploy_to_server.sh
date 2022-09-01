@@ -2,7 +2,7 @@
 set -ux
 
 environment=$1
-source ./deployment_utils.sh
+source ./deployment/deployment_utils.sh
 
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory

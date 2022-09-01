@@ -29,7 +29,7 @@ class DataMetaInformationManager(
             company = company,
         )
 
-        return  dataMetaInformationRepository.save(dataMetaInformationEntity)
+        return dataMetaInformationRepository.save(dataMetaInformationEntity)
     }
 
     override fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {

@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.entities
 
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.enums.company.StockIndex
-import org.hibernate.annotations.Immutable
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.FetchType

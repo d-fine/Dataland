@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.entities
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.hibernate.annotations.Immutable
 import org.springframework.data.domain.Persistable
 import javax.persistence.Column
 import javax.persistence.Entity
