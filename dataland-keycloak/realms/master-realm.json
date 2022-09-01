@@ -2384,7 +2384,7 @@
     "oauth2DeviceCodeLifespan": "600",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
-    "frontendUrl": "http://localhost:6789/keycloak",
+    "frontendUrl": "http://dataland-admin:6789/keycloak",
     "acr.loa.map": "[]"
   },
   "keycloakVersion": "19.0.1",

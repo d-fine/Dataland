@@ -30,15 +30,10 @@ done
 grep "Searching for known Datatypes" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
 LOG_TEST_EXIT_CODE=$?
 
-#Run test to check if keycloak admin console is there
-./testing/check_if_keycloak_admin_console_is_there.sh
-LOG_KEYCLOAK_ADMIN_TEST_EXIT_CODE=$?
-
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
 echo "E2ETEST Timeout exited with exit code $E2ETEST_TIMEOUT_EXIT_CODE"
 echo "BACKEND Timeout exited with exit code $BACKEND_TIMEOUT_EXIT_CODE"
 echo "Docker E2E Testcontainer exited with code $TEST_EXIT_CODE"
 echo "Log-Existence test existed with exit code $LOG_TEST_EXIT_CODE"
-echo "Result of keycloak admin console test existed with exit code $LOG_KEYCLOAK_ADMIN_TEST_EXIT_CODE"
-exit $((E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE+TEST_EXIT_CODE+LOG_TEST_EXIT_CODE+LOG_KEYCLOAK_ADMIN_TEST_EXIT_CODE))
+exit $((E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE+TEST_EXIT_CODE+LOG_TEST_EXIT_CODE))
