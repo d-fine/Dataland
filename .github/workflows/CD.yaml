@@ -156,6 +156,10 @@ jobs:
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
         run: ./deployment/setup_admin_ssh_tunnel.sh
+        env:
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
