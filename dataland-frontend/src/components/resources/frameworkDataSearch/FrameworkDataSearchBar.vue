@@ -136,24 +136,22 @@ export default defineComponent({
 
   methods: {
     handleInput(inputEvent: { target: { value: string } }) {
-      console.log(inputEvent);
       this.currentInput = inputEvent.target.value;
       this.$emit("update:modelValue", this.currentInput);
     },
 
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      console.log(event);
       this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
     },
     handleKeyupEnter() {
-      this.queryCompany(this.currentInput, []);
+      this.queryCompany([]);
       this.autocomplete.hideOverlay();
     },
-    async queryCompany(searchString: string, frameworkFilter: Array<DataTypeEnum>) {
+    async queryCompany(frameworkFilter: Array<DataTypeEnum>) {
       if (this.getKeycloakPromise !== undefined) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-          searchString,
+          this.currentInput,
           false,
           new Set(frameworkFilter),
           this.getKeycloakPromise()
