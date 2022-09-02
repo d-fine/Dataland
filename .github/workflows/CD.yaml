@@ -154,6 +154,8 @@ jobs:
           path: ./dataland-frontend/build/clients/backend/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
+      - name: Setup SSH tunnel to admin NGINX
+        run: ./deployment/setup_admin_ssh_tunnel.sh
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
