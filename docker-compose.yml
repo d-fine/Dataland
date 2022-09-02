@@ -24,7 +24,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "54320-54321:54320-54321"
+      - "127.0.0.1:5433-5434:5433-5434"
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom

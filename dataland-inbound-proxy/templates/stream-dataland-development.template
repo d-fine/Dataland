@@ -4,7 +4,7 @@ upstream backend-db {
 }
 
 server {
-    listen 54320 so_keepalive=on;
+    listen 5433 so_keepalive=on;
     proxy_pass backend-db;
 }
 
@@ -14,6 +14,6 @@ upstream keycloak-db {
 }
 
 server {
-    listen 54321 so_keepalive=on;
+    listen 5434 so_keepalive=on;
     proxy_pass keycloak-db;
 }
