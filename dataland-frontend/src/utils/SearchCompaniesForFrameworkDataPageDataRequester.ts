@@ -39,7 +39,7 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
-function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<object> {
+function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<DataSearchStoredCompany> {
   return responseData.map((company) => ({
     companyName: company.companyInformation.companyName,
     companyInformation: company.companyInformation,
@@ -66,14 +66,12 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   onlyCompanyNames: boolean,
   frameworksToFilter: Set<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
-): Promise<Array<object>> {
-  let mappedResponse: object[] = [];
-
-  const searchFilter = searchString ? searchString : "";
+): Promise<Array<DataSearchStoredCompany>> {
+  let mappedResponse: Array<DataSearchStoredCompany> = [];
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(searchFilter, frameworksToFilter, onlyCompanyNames);
+    const response = await companyDataControllerApi.getCompanies(searchString, frameworksToFilter, onlyCompanyNames);
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {
