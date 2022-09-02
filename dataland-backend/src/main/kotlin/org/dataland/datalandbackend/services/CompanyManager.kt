@@ -55,8 +55,7 @@ class CompanyManager(
             isTeaserCompany = companyInformation.isTeaserCompany
         )
 
-        val savedCompanyEntity = companyRepository.save(newCompanyEntity)
-        return savedCompanyEntity
+        return  companyRepository.save(newCompanyEntity)
     }
 
     private fun createAndAssociateIdentifiers(

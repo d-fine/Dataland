@@ -11,4 +11,3 @@ delete_docker_volume_if_existent () {
     ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $old_volume"
   fi
 }
-export -f is_edc_server_up_and_healthy
