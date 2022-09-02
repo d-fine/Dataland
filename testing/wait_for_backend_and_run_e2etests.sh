@@ -9,18 +9,14 @@ is_infrastructure_up () {
   services["backend"]=https://dataland-local.duckdns.org/api/actuator/health/ping
   services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
+  services["keycloak"]=http://dataland-local.duckdns.org/keycloak/realms/datalandsecurity/
 
   for service in "${!services[@]}"; do
-    if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive'; then
+    if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then
       echo "$service not yet there"
       return 1
     fi
   done
-
-  if ! curl -L "http://dataland-local.duckdns.org/keycloak/realms/datalandsecurity/" 2>/dev/null | grep -q "datalandsecurity"; then
-    echo "Keycloak not yet there"
-    return 1
-  fi
 }
 export -f is_infrastructure_up
 
