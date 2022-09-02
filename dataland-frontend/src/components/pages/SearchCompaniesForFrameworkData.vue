@@ -85,7 +85,7 @@ export default defineComponent({
       pageScrolled: false,
       route: useRoute(),
       showSearchResultsTable: false,
-      resultsArray: [] as Array<DataSearchStoredCompany>,
+      resultsArray: Object.values(DataTypeEnum),
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
@@ -133,7 +133,6 @@ export default defineComponent({
         }
       }
     },
-
     handleFrameworkDataSearchBarRender() {
       let queryFrameworks = this.route.query.frameworks;
       if (queryFrameworks) {
