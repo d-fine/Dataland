@@ -13,10 +13,11 @@ describe("As a user I expect the admin console only to be reachable using admin-
     checkThatUrlResolvesToErrorPage("/keycloak/realms/master");
   });
 
-  it(`Datalandsecurity Realm is reachable from remote`, () => {
+  it.only(`Datalandsecurity Realm is reachable from remote`, () => {
     cy.request("/keycloak/realms/datalandsecurity")
       .its("body")
-      .should("contain", '{"realm":"datalandsecurity","public_key":');
+      .its("realm")
+      .should("eq", "datalandsecurity");
   });
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
