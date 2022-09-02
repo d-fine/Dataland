@@ -51,17 +51,20 @@
 }
 </style>
 
-<script>
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
+<script lang="ts">
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
-import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults";
+import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { useRoute } from "vue-router";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import { defineComponent, ref } from "vue";
+import { DataTypeEnum } from "build/clients/backend";
+import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
-export default {
+export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     MarginWrapper,
@@ -82,20 +85,25 @@ export default {
       pageScrolled: false,
       route: useRoute(),
       showSearchResultsTable: false,
-      resultsArray: [],
+      resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
-      currentSearchBarInput: undefined,
-      currentFilteredFrameworks: undefined,
+      currentSearchBarInput: "",
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
     };
   },
-
+  setup() {
+    return {
+      frameworkDataSearchBar: ref(),
+      searchBarContainer: ref(),
+    };
+  },
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
+        this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -127,30 +135,23 @@ export default {
     },
 
     handleFrameworkDataSearchBarRender() {
-      let filtered = false;
-      if (this.route.query.frameworks !== undefined) {
-        this.currentFilteredFrameworks = [];
-        if (typeof this.route.query.frameworks === "string" && this.route.query.frameworks !== "") {
-          this.currentFilteredFrameworks.push(this.route.query.frameworks);
-        } else if (Array.isArray(this.route.query.frameworks)) {
-          this.currentFilteredFrameworks = this.route.query.frameworks;
+      let queryFrameworks = this.route.query.frameworks;
+      if (queryFrameworks) {
+        if (typeof queryFrameworks === "string" && queryFrameworks !== "") {
+          this.currentFilteredFrameworks = [queryFrameworks as DataTypeEnum];
+        } else if (Array.isArray(queryFrameworks)) {
+          this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>;
         }
-        filtered = true;
       }
 
-      if (this.route.query.input) {
-        this.currentSearchBarInput = this.route.query.input;
-        filtered = true;
+      let queryInput = this.route.query.input as string;
+      if (queryInput) {
+        this.currentSearchBarInput = queryInput;
       }
 
-      if (filtered) {
-        this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
-      } else {
-        this.$refs.frameworkDataSearchBar.queryCompany("", undefined);
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
-      }
+      this.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
     },
-    handleCompanyQuery(companiesReceived) {
+    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
@@ -166,12 +167,15 @@ export default {
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.$refs.searchBarContainer.clientHeight;
+      const height = this.searchBarContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
       this.searchBarName = "search_bar_scrolled";
     },
+    unmounted() {
+      window.removeEventListener("scroll", this.handleScroll);
+    },
   },
-};
+});
 </script>
