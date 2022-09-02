@@ -29,16 +29,16 @@ internal class CompanyDataControllerTest(
 ) {
 
     val testDataProvider = TestDataProvider(objectMapper)
-    val testCompanyInformation = testDataProvider.getCompanyInformation(2)
+    val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).first()
 
     @Test
     fun `company can be posted`() {
-        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation[0])
+        CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
     }
 
     @Test
     fun `meta info about a specific company can be retrieved by its company Id`() {
-        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation[1])
+        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
         mockMvc.perform(
             get("/companies/${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)

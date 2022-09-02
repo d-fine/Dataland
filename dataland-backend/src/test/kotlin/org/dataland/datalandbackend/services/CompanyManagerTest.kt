@@ -25,12 +25,11 @@ class CompanyManagerTest(
     @Autowired val testCompanyManager: CompanyManagerInterface
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
-    val extendedTestCompanyList = testDataProvider.getCompanyInformation(5)
-    val testCompanyList = extendedTestCompanyList.subList(0, 4)
+    val testCompanyList = testDataProvider.getCompanyInformation(4)
 
     @BeforeEach
     fun addTestCompanies() {
-        for (company in testCompanyList) { // 5th company used by add
+        for (company in testCompanyList) {
             testCompanyManager.addCompany(company)
         }
     }
@@ -38,9 +37,10 @@ class CompanyManagerTest(
     @Test
     @Transactional
     fun `add 5th company company and check if it can be retrieved by using the company ID that is returned`() {
-        val testCompanyId = testCompanyManager.addCompany(extendedTestCompanyList[4]).companyId
+        val testCompanyData = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
+        val testCompanyId = testCompanyManager.addCompany(testCompanyData).companyId
         assertEquals(
-            StoredCompany(testCompanyId, extendedTestCompanyList[4], mutableListOf()),
+            StoredCompany(testCompanyId, testCompanyData, mutableListOf()),
             testCompanyManager.getCompanyById(testCompanyId).toApiModel(),
             "The company behind the company ID in the post-response " +
                 "does not contain company information of the posted company."

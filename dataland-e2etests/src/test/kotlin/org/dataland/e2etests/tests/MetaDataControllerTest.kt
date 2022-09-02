@@ -45,12 +45,12 @@ class MetaDataControllerTest {
     private val testEuTaxonomyDataForNonFinancials =
         testDataProviderEuTaxonomyForNonFinancials.getTData(1).first()
     private val testCompaniesAndEuTaxonomyDataForNonFinancials = testDataProviderEuTaxonomyForNonFinancials
-        .getCompaniesWithUniqueIdentifiersAndTData(
+        .getCompaniesWithTDataAndNoIdentifiers(
             numberOfCompaniesToPostPerFramework,
             numberOfDataSetsToPostPerCompany
         )
     private val testCompaniesAndEuTaxonomyDataForFinancials = testDataProviderEuTaxonomyForFinancials
-        .getCompaniesWithUniqueIdentifiersAndTData(
+        .getCompaniesWithTDataAndNoIdentifiers(
             numberOfCompaniesToPostPerFramework,
             numberOfDataSetsToPostPerCompany
         )
@@ -94,7 +94,7 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation =
-            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithUniqueIdentifiers(1).first()
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
@@ -180,7 +180,7 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation =
-            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithUniqueIdentifiers(1).first()
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -198,7 +198,7 @@ class MetaDataControllerTest {
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation =
-            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithUniqueIdentifiers(1).first()
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = false)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -215,7 +215,7 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation =
-            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithUniqueIdentifiers(1).first()
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
@@ -236,7 +236,7 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation =
-            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithUniqueIdentifiers(1).first()
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)

@@ -46,7 +46,7 @@ class DataControllerTest {
     @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithUniqueIdentifiers(1).first()
+            .getCompanyInformationWithoutIdentifiers(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(mapOfIds["dataId"]!!)
@@ -60,7 +60,7 @@ class DataControllerTest {
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithUniqueIdentifiers(1).first()
+            .getCompanyInformationWithoutIdentifiers(1).first()
             .copy(isTeaserCompany = true)
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val getDataByIdResponse = unauthorizedEuTaxonomyDataControllerApi
@@ -77,7 +77,7 @@ class DataControllerTest {
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithUniqueIdentifiers(1).first()
+            .getCompanyInformationWithoutIdentifiers(1).first()
             .copy(isTeaserCompany = false)
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val exception = assertThrows<IllegalArgumentException> {
@@ -91,7 +91,7 @@ class DataControllerTest {
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithUniqueIdentifiers(1).first()
+            .getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =

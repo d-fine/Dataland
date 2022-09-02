@@ -7,14 +7,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.*
 
 object BigDecimalAdapter {
     @FromJson
@@ -66,18 +64,9 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             .map { it.companyInformation }
     }
 
-    fun getCompanyInformationWithUniqueIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
+    fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
-            .map {
-                it.companyInformation.copy(
-                    identifiers = it.companyInformation.identifiers.map { ident ->
-                        CompanyIdentifier(
-                            identifierType = ident.identifierType,
-                            identifierValue = "${ident.identifierValue}${UUID.randomUUID()}"
-                        )
-                    }
-                )
-            }
+            .map {it.companyInformation.copy(identifiers = emptyList()) }
     }
 
     fun getTData(numberOfDataSets: Int): List<T> {
@@ -91,9 +80,9 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
         return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 
-    fun getCompaniesWithUniqueIdentifiersAndTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
+    fun getCompaniesWithTDataAndNoIdentifiers(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<T>> {
-        val companies = getCompanyInformationWithUniqueIdentifiers(requiredNumberOfCompanies)
+        val companies = getCompanyInformationWithoutIdentifiers(requiredNumberOfCompanies)
         return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 }
