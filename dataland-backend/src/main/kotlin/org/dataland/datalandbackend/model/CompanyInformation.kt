@@ -16,7 +16,7 @@ import java.time.LocalDate
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
-    val companyName: String = "",
+    val companyName: String,
 
     @field:JsonProperty(required = true)
     val headquarters: String,
@@ -37,5 +37,8 @@ data class CompanyInformation(
     val identifiers: List<CompanyIdentifier>,
 
     @field:JsonProperty(required = true)
-    val countryCode: String
+    val countryCode: String,
+
+    @get:JsonProperty(value = "isTeaserCompany")
+    val isTeaserCompany: Boolean = false,
 )

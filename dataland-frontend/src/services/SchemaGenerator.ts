@@ -2,9 +2,11 @@ import { humanizeString } from "@/utils/StringHumanizer";
 
 export class SchemaGenerator {
   private readonly rawSchema: any;
+  private readonly hiddenIndices: Array<string>;
 
-  constructor(rawSchema: any) {
+  constructor(rawSchema: any, hiddenIndices: Array<string> = []) {
     this.rawSchema = rawSchema;
+    this.hiddenIndices = hiddenIndices;
   }
 
   private getType(param: string): string {
@@ -39,6 +41,7 @@ export class SchemaGenerator {
     const propertiesSchema = this.rawSchema.properties;
     const schema = [];
     for (const index in propertiesSchema) {
+      if (this.hiddenIndices.indexOf(index) >= 0) continue;
       const validation = this.getValidationStatus(index);
       if ("enum" in propertiesSchema[index]) {
         const enumProperties = this.processEnum(propertiesSchema[index].enum);
