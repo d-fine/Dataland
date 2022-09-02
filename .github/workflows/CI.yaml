@@ -71,8 +71,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     strategy:
+      fail-fast: false
       matrix:
-        testGroup: [1,2,3,4]
+        include:
+          - testExecutor: "CYPRESS"
+            testGroup: 1
+          - testExecutor: "CYPRESS"
+            testGroup: 2
+          - testExecutor: "CYPRESS"
+            testGroup: 3
+          - testExecutor: "CYPRESS"
+            testGroup: 4
+          - testExecutor: "E2ETESTS"
+            testGroup: 0
+          - testExecutor: "RESTARTABILITY"
+            testGroup: 100
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
@@ -87,11 +100,12 @@ jobs:
           DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
-        run: ./testing/execute_e2e_tests.sh
+        run: ./testing/e2e_test_launcher.sh
         env:
           SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
+          BACKEND_DB_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
           KEYCLOAK_READER_PASSWORD: "test"
@@ -107,6 +121,7 @@ jobs:
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
@@ -139,7 +154,12 @@ jobs:
         with:
           name: e2eTestDockerLogs
           path: ./dockerLogs
-
+      - name: Upload database dumps
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2eTestDatabaseDumps
+          path: ./dbdumps/
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
