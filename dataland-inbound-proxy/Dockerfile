@@ -8,7 +8,7 @@ RUN echo "0 0 * * * root sh /scripts/renew-certificates.sh" > /etc/cron.d/certbo
 
 COPY config /etc/nginx
 COPY templates/*-dataland-$PROXY_ENVIRONMENT.template /etc/nginx/templates/
-COPY templates/letsencrypt.template /etc/nginx/templates/letsencrypt.template
+COPY templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.template
 COPY dhparam.pem /certs/dhparam.pem
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY scripts /scripts
