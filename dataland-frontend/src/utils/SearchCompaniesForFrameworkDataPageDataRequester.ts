@@ -64,17 +64,16 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
   onlyCompanyNames: boolean,
-  frameworksToFilter: Array<DataTypeEnum>,
+  frameworksToFilter: Set<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
 
-  const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
   const searchFilter = searchString ? searchString : "";
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(searchFilter, frameworkFilter, onlyCompanyNames);
+    const response = await companyDataControllerApi.getCompanies(searchFilter, frameworksToFilter, onlyCompanyNames);
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {

@@ -72,15 +72,25 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import AutoComplete from "primevue/autocomplete";
-import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
+import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import {
+  DataSearchStoredCompany,
   getCompanyDataForFrameworkDataSearchPage,
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { defineComponent, inject, ref } from "vue";
+import { DataTypeEnum } from "build/clients/backend";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      autocomplete: ref(),
+    };
+  },
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
@@ -100,73 +110,74 @@ export default {
       default: 3,
     },
     frameworksToFilterFor: {
-      type: Array,
-      default: () => undefined,
+      type: Array as () => Array<DataTypeEnum>,
+      default: () => [],
     },
   },
-
+  $refs: {},
   mounted() {
     this.$emit("rendered", true);
   },
 
   watch: {
     searchBarName() {
-      this.$refs.autocomplete.focus();
+      this.autocomplete.focus();
     },
   },
 
-  data() {
+  data: function () {
     return {
-      autocompleteArray: [],
-      autocompleteArrayDisplayed: null,
+      autocompleteArray: [] as Array<object>,
+      autocompleteArrayDisplayed: [] as Array<object>,
       loading: false,
-      currentInput: null,
+      currentInput: "",
     };
   },
 
-  inject: ["getKeycloakPromise"],
   methods: {
-    handleInput(inputEvent) {
+    handleInput(inputEvent: { target: { value: string } }) {
+      console.log(inputEvent);
       this.currentInput = inputEvent.target.value;
       this.$emit("update:modelValue", this.currentInput);
     },
 
-    handleItemSelect(event) {
+    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+      console.log(event);
       this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
     },
     handleKeyupEnter() {
-      this.queryCompany(this.currentInput);
-      this.$refs.autocomplete.hideOverlay();
+      this.queryCompany(this.currentInput, []);
+      this.autocomplete.hideOverlay();
     },
-    async queryCompany(searchString, frameworkFilter) {
-      this.loading = true;
-      const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-        searchString,
-        false,
-        frameworkFilter,
-        this.getKeycloakPromise()
-      );
-      this.$emit("companies-received", resultsArray);
-      this.loading = false;
+    async queryCompany(searchString: string, frameworkFilter: Array<DataTypeEnum>) {
+      if (this.getKeycloakPromise !== undefined) {
+        this.loading = true;
+        const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
+          searchString,
+          false,
+          new Set(frameworkFilter),
+          this.getKeycloakPromise()
+        );
+        this.$emit("companies-received", resultsArray);
+        this.loading = false;
+      }
     },
-    async searchCompanyName(companyName) {
-      this.loading = true;
-      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
-        companyName.query,
-        true,
-        this.frameworksToFilterFor,
-        this.getKeycloakPromise()
-      );
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
-      this.loading = false;
+    async searchCompanyName(companyName: { query: string }) {
+      if (this.getKeycloakPromise !== undefined) {
+        this.loading = true;
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
+          companyName.query,
+          true,
+          new Set(),
+          this.getKeycloakPromise()
+        );
+        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+        this.loading = false;
+      }
     },
-    getRouterLinkTargetFrameworkInt(companyData) {
+    getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);
     },
   },
-
-  unmounted() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-};
+});
 </script>

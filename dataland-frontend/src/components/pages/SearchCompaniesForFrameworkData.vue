@@ -146,7 +146,7 @@ export default {
       if (filtered) {
         this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
-        this.$refs.frameworkDataSearchBar.queryCompany("", "");
+        this.$refs.frameworkDataSearchBar.queryCompany("", undefined);
         this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
       }
     },
