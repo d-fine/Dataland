@@ -25,7 +25,7 @@ describe("As a user I expect the admin console only to be reachable using admin-
     cy.url().should("contain", "realms/master");
     cy.get("#username")
       .should("exist")
-      .type("admin", { force: true })
+      .type(Cypress.env("KEYCLOAK_ADMIN"), { force: true })
       .get("#password")
       .should("exist")
       .type(Cypress.env("KEYCLOAK_ADMIN_PASSWORD"), { force: true })
