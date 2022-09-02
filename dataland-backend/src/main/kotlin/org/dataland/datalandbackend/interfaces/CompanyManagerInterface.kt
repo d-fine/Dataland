@@ -1,9 +1,8 @@
 package org.dataland.datalandbackend.interfaces
 
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 
 /**
@@ -17,7 +16,7 @@ interface CompanyManagerInterface {
      * @return information of the newly created entry in the company data store of Dataland,
      * including the generated company ID
      */
-    fun addCompany(companyInformation: CompanyInformation): StoredCompany
+    fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity
 
     /**
      * Method to search for companies matching the company name or identifier
@@ -33,20 +32,14 @@ interface CompanyManagerInterface {
         onlyCompanyNames: Boolean,
         dataTypeFilter: Set<DataType>,
         stockIndexFilter: Set<StockIndex>
-    ): List<StoredCompany>
+    ): List<StoredCompanyEntity>
 
     /**
      * Method to retrieve information about a specific company
      * @param companyId
      * @return information about the retrieved company
      */
-    fun getCompanyById(companyId: String): StoredCompany
-
-    /**
-     * Method to set a list of teaser companies
-     * @param companyIds the list of company IDs to be used as teaser companies
-     */
-    fun setTeaserCompanies(companyIds: List<String>)
+    fun getCompanyById(companyId: String): StoredCompanyEntity
 
     /**
      * Method to retrieve the list of currently set teaser company IDs
@@ -66,11 +59,4 @@ interface CompanyManagerInterface {
      * @param companyId the ID of the to be verified company
      */
     fun verifyCompanyIdExists(companyId: String)
-
-    /**
-     * Method to add the data meta information to a company in the company store
-     * @param companyId the ID of the company the data belong to
-     * @param dataMetaInformation the information to be linked to the company in the store
-     */
-    fun addMetaDataInformationToCompanyStore(companyId: String, dataMetaInformation: DataMetaInformation)
 }

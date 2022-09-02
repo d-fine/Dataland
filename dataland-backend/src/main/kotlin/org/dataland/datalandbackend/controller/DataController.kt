@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
+import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity
 
 abstract class DataController<T>(
     var dataManager: DataManagerInterface,
+    var dataMetaInformationManager: DataMetaInformationManagerInterface,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>
 ) : DataAPI<T> {
@@ -41,7 +43,7 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val companyId = dataManager.getDataMetaInfo(dataId).companyId
+        val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
         logger.info("Received a request to get company data with dataId '$dataId' for companyId '$companyId'")
         return ResponseEntity.ok(
             CompanyAssociatedData(

@@ -44,6 +44,9 @@ dependencyResolutionManagement {
             library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
             library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.1")
+
+            library("database-h2", "com.h2database:h2:2.1.214")
+            library("database-postgres", "org.postgresql:postgresql:42.5.0")
         }
     }
 }

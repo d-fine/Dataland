@@ -17,12 +17,12 @@ server {
 
     # reverse proxy
     location / {
-      proxy_pass http://frontend;
+      proxy_pass http://host.docker.internal:8090;
       include utils/proxy.conf;
     }
 
     location /api {
-      proxy_pass http://backend:8080/api;
+      proxy_pass http://host.docker.internal:8080/api;
       include utils/proxy.conf;
     }
 
@@ -39,6 +39,14 @@ server {
     location /keycloak {
       proxy_pass http://keycloak:8080/keycloak;
       include utils/proxy.conf;
+    }
+
+    location /pgadmin {
+        proxy_set_header X-Script-Name /pgadmin;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header Host ${PROXY_PRIMARY_URL};
+        proxy_pass http://pgadmin;
+        proxy_redirect off;
     }
 
     # additional config
