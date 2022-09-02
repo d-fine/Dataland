@@ -55,7 +55,7 @@ class CompanyManager(
             isTeaserCompany = companyInformation.isTeaserCompany
         )
 
-        return  companyRepository.save(newCompanyEntity)
+        return companyRepository.save(newCompanyEntity)
     }
 
     private fun createAndAssociateIdentifiers(

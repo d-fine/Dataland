@@ -66,7 +66,7 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
-            .map {it.companyInformation.copy(identifiers = emptyList()) }
+            .map { it.companyInformation.copy(identifiers = emptyList()) }
     }
 
     fun getTData(numberOfDataSets: Int): List<T> {
