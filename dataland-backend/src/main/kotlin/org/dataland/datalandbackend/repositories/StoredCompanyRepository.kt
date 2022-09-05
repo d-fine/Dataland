@@ -16,8 +16,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * A function for querying companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
-     * - stockIndexFilter: If set, only companies that are listed in at least one
-     * of the supplied stock indices are returned
      * - searchString: If not empty, only companies that contain the search string in their name are returned
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
@@ -28,12 +26,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT company FROM StoredCompanyEntity company " +
             "LEFT JOIN company.dataRegisteredByDataland data " +
             "LEFT JOIN company.identifiers identifier " +
-            "LEFT JOIN company.indices stockIndex " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
             "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
-            "(:#{#searchFilter.stockIndexFilterSize} = 0 " +
-            "OR (stockIndex.id.stockIndex in :#{#searchFilter.stockIndexFilter})) AND " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(:#{#searchFilter.nameOnlyFilter} = false " +
