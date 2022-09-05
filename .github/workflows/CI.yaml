@@ -106,6 +106,7 @@ jobs:
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
+          PGADMIN_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
           KEYCLOAK_READER_PASSWORD: "test"

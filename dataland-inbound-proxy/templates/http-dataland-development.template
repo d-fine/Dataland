@@ -36,14 +36,6 @@ server {
       include utils/proxy.conf;
     }
 
-    location /pgadmin {
-      proxy_set_header X-Script-Name /pgadmin;
-      proxy_set_header X-Scheme $scheme;
-      proxy_set_header Host ${PROXY_PRIMARY_URL};
-      proxy_pass http://pgadmin;
-      proxy_redirect off;
-    }
-
     # additional config
     include utils/keycloak.conf;
     include utils/general.conf;

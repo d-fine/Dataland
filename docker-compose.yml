@@ -243,21 +243,21 @@ services:
     depends_on:
       - keycloak-db
   pgadmin:
-    image: dpage/pgadmin4
+    build: dataland-pgadmin
     networks:
       - keycloak-db
       - backend-db
       - internal
-    profiles: ["development"]
-    ports:
-      - "8096:80"
+    profiles: [ "production", "testing", "productionInMemory", "development" ]
     volumes:
-      - ./development/servers.json:/pgadmin4/servers.json
-      - ./development/passfile:/pgadmin4/passfile
+      - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
-      PGADMIN_DEFAULT_PASSWORD: test
-      PGADMIN_DEFAULT_PASSWORD_FILE: /pgadmin4/passfile
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      PGADMIN_DISABLE_POSTFIX: "true"
 networks:
   internal:
   external:

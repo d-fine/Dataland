@@ -39,6 +39,7 @@ envsubst < environments/.env.template > .env
 scp ./.env ubuntu@"$target_server_url":$location
 scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
 scp -r ./dataland-keycloak/dataland_theme/login/dist ubuntu@$target_server_url:$location/dataland-keycloak/dataland_theme/login
+scp -r ./dataland-pgadmin ubuntu@$target_server_url:$location
 scp ./dataland-keycloak/start_keycloak.sh ubuntu@"$target_server_url":$location/dataland-keycloak/start_keycloak.sh
 scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileBackend

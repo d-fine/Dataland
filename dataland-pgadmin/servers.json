@@ -8,7 +8,7 @@
       "Host": "keycloak-db",
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
-      "PassFile": "/pgadmin4/passfile"
+      "PassFile": "../../pgpass"
     },
     "2": {
       "Name": "BackendDb",
@@ -18,7 +18,7 @@
       "Host": "backend-db",
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
-      "PassFile": "/pgadmin4/passfile"
+      "PassFile": "../../pgpass"
     }
   }
 }
