@@ -1,4 +1,13 @@
 version: "3.8"
+# Docker-compose file for the dataland stack.
+# Things can be configured by using docker-compose profiles. Valid profiles:
+# production: The profile to be used if the stack is deployed in a production-like setup
+# testing: The profile to be used for testing in the CI (i.e.: starts a testing-container along with the rest of the stack)
+# productionInMemory: The profile to be used if the stack is deployed in a production-like setup but DatalandEDC should be replaced by an in-memory storage
+# development: The profile to be used for local development. Leaves out frontend and backend
+# init: The profile to be used if keycloak-db should be re-initialized
+# devcontainer: starts a dev container
+
 services:
   proxy:
     build:
@@ -10,9 +19,12 @@ services:
     networks:
       - external
       - internal
+      - backend-db
+      - keycloak-db
     ports:
       - "80:80"
       - "443:443"
+      - "127.0.0.1:5433-5434:5433-5434"
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
@@ -28,12 +40,16 @@ services:
     profiles: ["production", "testing", "productionInMemory"]
     networks:
       - internal
+      - backend-db
     build:
       context: ./
       dockerfile: ${BACKEND_DOCKERFILE:-./dataland-backend/DockerfileTest}
     expose:
       - "8080"
+    depends_on:
+      - backend-db
     environment:
+      BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
       DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
@@ -41,6 +57,18 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+  backend-db:
+    restart: always
+    profiles: ["production", "productionInMemory", "testing", "development"]
+    networks:
+      - backend-db
+    image: postgres
+    volumes:
+      - backend_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: backend
+      POSTGRES_USER: backend
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
   e2etests:
     profiles: ["testing"]
     build:
@@ -57,6 +85,7 @@ services:
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
       ENVIRONMENT: ${ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
+      CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
       REALDATA: ${REALDATA}
     links:
       - proxy:dataland-local.duckdns.org
@@ -123,7 +152,7 @@ services:
     profiles: ["devcontainer"]
     build:
       context: ./
-      dockerfile: ./devcontainer/Dockerfile
+      dockerfile: ./development/Dockerfile
     volumes:
       - "./:/code:rw"
     expose:
@@ -143,7 +172,7 @@ services:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
-      - internal
+      - keycloak-db
     image: postgres
     volumes:
       - keycloak_data:/var/lib/postgresql/data
@@ -156,6 +185,7 @@ services:
     profiles: ["production", "productionInMemory", "development"]
     networks:
       - internal
+      - keycloak-db
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
@@ -170,6 +200,9 @@ services:
     profiles: [ "init", "testing" ]
     networks:
       internal:
+        aliases:
+          - keycloak
+      keycloak-db:
         aliases:
           - keycloak
     build:
@@ -195,11 +228,31 @@ services:
       - "8080"
     depends_on:
       - keycloak-db
+  pgadmin:
+    image: dpage/pgadmin4
+    networks:
+      - keycloak-db
+      - backend-db
+      - internal
+    profiles: ["development"]
+    ports:
+      - "8096:80"
+    volumes:
+      - ./development/servers.json:/pgadmin4/servers.json
+      - ./development/passfile:/pgadmin4/passfile
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@dataland.com
+      PGADMIN_DEFAULT_PASSWORD: test
+      PGADMIN_DEFAULT_PASSWORD_FILE: /pgadmin4/passfile
 networks:
   internal:
   external:
+  keycloak-db:
+  backend-db:
 volumes:
   keycloak_data:
+    driver: local
+  backend_data:
     driver: local
   letsencrypt:
     driver: local

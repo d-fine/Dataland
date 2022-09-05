@@ -15,15 +15,14 @@ server {
     # security
     include                 utils/security.conf;
 
-
     # reverse proxy
     location / {
-      proxy_pass http://host.docker.internal:8090;
+      proxy_pass http://frontend;
       include utils/proxy.conf;
     }
 
     location /api {
-      proxy_pass http://host.docker.internal:8080/api;
+      proxy_pass http://backend:8080/api;
       include utils/proxy.conf;
     }
 
@@ -42,11 +41,9 @@ server {
       include utils/proxy.conf;
     }
 
-
     # additional config
     include utils/general.conf;
     include utils/error.conf;
-
 }
 
 server {

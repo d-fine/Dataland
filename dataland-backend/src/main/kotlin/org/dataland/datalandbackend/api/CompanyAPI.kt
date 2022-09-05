@@ -101,28 +101,6 @@ interface CompanyAPI {
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Set the teaser companies.",
-        description = "A list of company IDs can be posted, declaring all contained companies as teaser companies, " +
-            "making their information available without authentication."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully set teaser companies.")
-        ]
-    )
-    @PostMapping(
-        value = ["/teaser"],
-        produces = ["application/json"],
-        consumes = ["application/json"]
-    )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
-    /**
-     * A method to set the teaser companies
-     * @param companyIds a list of dataland company identifiers specifying the teaser companies
-     */
-    fun setTeaserCompanies(@Valid @RequestBody companyIds: List<String>)
-
-    @Operation(
         summary = "Get the company IDs of the teaser companies.",
         description = "A list of all company IDs that are currently set as teaser companies (accessible without " +
             "authentication)."

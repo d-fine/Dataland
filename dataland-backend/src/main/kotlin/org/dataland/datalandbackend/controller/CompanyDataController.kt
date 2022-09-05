@@ -24,7 +24,7 @@ class CompanyDataController(
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-        return ResponseEntity.ok(companyManager.addCompany(companyInformation))
+        return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
     }
 
     override fun getCompanies(
@@ -41,16 +41,12 @@ class CompanyDataController(
                 searchString ?: "",
                 onlyCompanyNames,
                 dataTypes ?: setOf(),
-            )
+            ).map { it.toApiModel() }
         )
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
-        return ResponseEntity.ok(companyManager.getCompanyById(companyId))
-    }
-
-    override fun setTeaserCompanies(companyIds: List<String>) {
-        companyManager.setTeaserCompanies(companyIds)
+        return ResponseEntity.ok(companyManager.getCompanyById(companyId).toApiModel())
     }
 
     override fun getTeaserCompanies(): List<String> {
