@@ -11,7 +11,7 @@ import {
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
   {
-    executionEnvironments: ["development"],
+    executionEnvironments: ["developmentLocal", "developmentCi"],
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
