@@ -83,6 +83,7 @@ import {
 import { defineComponent, inject, ref } from "vue";
 import { DataTypeEnum } from "build/clients/backend";
 import Keycloak from "keycloak-js";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   setup() {
@@ -117,6 +118,9 @@ export default defineComponent({
   $refs: {},
   mounted() {
     this.$emit("rendered", true);
+    if (!this.route.query.input) {
+      this.autocomplete.focus();
+    }
   },
 
   watch: {
@@ -130,30 +134,29 @@ export default defineComponent({
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       loading: false,
-      currentInput: "",
+      route: useRoute(),
     };
   },
 
   methods: {
     handleInput(inputEvent: { target: { value: string } }) {
-      this.currentInput = inputEvent.target.value;
-      this.$emit("update:modelValue", this.currentInput);
+      this.$emit("update:modelValue", inputEvent.target.value);
     },
 
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
       this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
     },
     handleKeyupEnter() {
-      this.queryCompany([]);
+      this.queryCompany();
       this.autocomplete.hideOverlay();
     },
-    async queryCompany(frameworkFilter: Array<DataTypeEnum>) {
+    async queryCompany() {
       if (this.getKeycloakPromise !== undefined) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-          this.currentInput,
+          this.modelValue,
           false,
-          new Set(frameworkFilter),
+          new Set(this.frameworksToFilterFor),
           this.getKeycloakPromise()
         );
         this.$emit("companies-received", resultsArray);
@@ -166,7 +169,7 @@ export default defineComponent({
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
           companyName.query,
           true,
-          new Set(),
+          new Set(this.frameworksToFilterFor),
           this.getKeycloakPromise()
         );
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);

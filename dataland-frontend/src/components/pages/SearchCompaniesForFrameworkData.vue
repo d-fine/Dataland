@@ -78,6 +78,7 @@ export default defineComponent({
 
   created() {
     window.addEventListener("scroll", this.handleScroll);
+    this.scanQueryParams();
   },
   data() {
     return {
@@ -88,7 +89,7 @@ export default defineComponent({
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: Object.values(DataTypeEnum),
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
@@ -133,7 +134,7 @@ export default defineComponent({
         }
       }
     },
-    handleFrameworkDataSearchBarRender() {
+    scanQueryParams() {
       let queryFrameworks = this.route.query.frameworks;
       if (queryFrameworks) {
         if (typeof queryFrameworks === "string" && queryFrameworks !== "") {
@@ -147,21 +148,19 @@ export default defineComponent({
       if (queryInput) {
         this.currentSearchBarInput = queryInput;
       }
-
-      this.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
+    },
+    handleFrameworkDataSearchBarRender() {
+      this.frameworkDataSearchBar.queryCompany();
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
-      const frameworksQuery =
-        this.currentFilteredFrameworks && this.currentFilteredFrameworks.length === 0
-          ? ""
-          : this.currentFilteredFrameworks;
+      const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: this.currentSearchBarInput, frameworks: frameworksQuery },
+        query: { input: queryInput, frameworks: this.currentFilteredFrameworks },
       });
     },
     toggleSearchBar() {
