@@ -80,6 +80,9 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
         http
             .antMatcher("/swagger-ui/**")
-            .headers().contentSecurityPolicy("default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data:")
+            .headers().contentSecurityPolicy(
+                "default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self';" +
+                    " form-action 'self'; font-src 'self' data:; img-src 'self' data:"
+            )
     }
 }
