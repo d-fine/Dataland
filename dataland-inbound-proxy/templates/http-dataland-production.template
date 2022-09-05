@@ -15,10 +15,7 @@ server {
     # security
     include                 utils/security.conf;
 
-    map $upstream_http_content_security_policy $default_content_security_policy {
-     "" "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' https://lh3.googleusercontent.com/";
-    }
-    add_header Content-Security-Policy $default_content_security_policy always;
+    add_header Content-Security-Policy $default_content_security_policy_production always;
 
     # reverse proxy
     location / {
