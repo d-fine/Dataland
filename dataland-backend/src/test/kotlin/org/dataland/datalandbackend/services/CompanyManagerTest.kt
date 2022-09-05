@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -50,7 +49,7 @@ class CompanyManagerTest(
     @Test
     @Transactional
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompanies("", true, setOf(), setOf())
+        val allCompaniesInStore = testCompanyManager.searchCompanies("", true, setOf())
         assertTrue(
             allCompaniesInStore.all {
                 val apiModel = it.toApiModel().companyInformation
@@ -64,7 +63,7 @@ class CompanyManagerTest(
     @Transactional
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompanies(company.companyName, true, setOf(), setOf())
+            val searchResponse = testCompanyManager.searchCompanies(company.companyName, true, setOf())
             assertTrue(
                 searchResponse.any { it.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name."
@@ -76,7 +75,6 @@ class CompanyManagerTest(
         val searchResponse = testCompanyManager.searchCompanies(
             identifier.identifierValue,
             false,
-            setOf(),
             setOf()
         )
             .toMutableList()
@@ -108,24 +106,6 @@ class CompanyManagerTest(
 
     @Test
     @Transactional
-    fun `verify that searching for stock indices returns correct results`() {
-        val stockIndiciesInTestData = mutableSetOf<StockIndex>()
-        for (company in testCompanyList) {
-            stockIndiciesInTestData += company.indices
-        }
-
-        for (stockIndex in stockIndiciesInTestData) {
-            val searchResponse = testCompanyManager.searchCompanies("", false, setOf(), setOf(stockIndex))
-            assertTrue(
-                searchResponse.all { it.indices.any { index -> index.toApiModel() == stockIndex } },
-                "The search result for the stock index $stockIndex contains at least one company " +
-                    "that does not have $stockIndex as index attribute."
-            )
-        }
-    }
-
-    @Test
-    @Transactional
     fun `search for identifier substring to verify substring matching in company search`() {
         val searchString = testCompanyList.first().identifiers.first().identifierValue.drop(1).dropLast(1)
         var occurencesOfSearchString = 0
@@ -139,7 +119,7 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, false, setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString, false, setOf())
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -156,7 +136,7 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf())
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -167,7 +147,7 @@ class CompanyManagerTest(
     @Transactional
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf())
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyName.startsWith(searchString) }
         val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
@@ -184,20 +164,4 @@ class CompanyManagerTest(
         )
     }
 
-    @Test
-    @Transactional
-    fun `check that the number of results when searching for DAX index is as expected`() {
-        var expectedResult = 0
-        val testIndex = StockIndex.Dax
-        for (company in testCompanyList) {
-            if (company.indices.contains(testIndex)) {
-                expectedResult ++
-            }
-        }
-        val searchResponse = testCompanyManager.searchCompanies("", false, setOf(), setOf(testIndex))
-        assertEquals(
-            expectedResult, searchResponse.size,
-            "There are $expectedResult companies with DAX index but found ${searchResponse.size}."
-        )
-    }
 }
