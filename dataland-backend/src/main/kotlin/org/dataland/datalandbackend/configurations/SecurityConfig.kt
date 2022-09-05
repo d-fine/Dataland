@@ -78,5 +78,9 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
             .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
             .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
             .and().permissionsPolicy().policy("none")
+
+        http
+            .antMatcher("/swagger-ui/**")
+            .headers().contentSecurityPolicy("default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data:")
     }
 }
