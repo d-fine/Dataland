@@ -163,5 +163,4 @@ class CompanyManagerTest(
                 "$searchString were returned. At least one was expected."
         )
     }
-
 }
