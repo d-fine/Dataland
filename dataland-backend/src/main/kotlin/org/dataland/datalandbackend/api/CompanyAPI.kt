@@ -48,10 +48,9 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name/identifier/index or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier/index are retrieved. " +
-            "If only an empty string is passed as search argument, all companies in the data store are returned." +
-            "If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned."
+        summary = "Retrieve specific companies by name/identifier or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier are retrieved. " +
+            "If only an empty string is passed as search argument, all companies in the data store are returned."
     )
     @ApiResponses(
         value = [
@@ -63,9 +62,8 @@ interface CompanyAPI {
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
-     * A method to retrieve specific companies identified by their company names identifier or stock index
+     * A method to retrieve specific companies identified by their company names or identifiers
      * If only an empty string is passed as search argument, all companies in the data store are returned.
-     * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
      * @param searchString string used for substring matching
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param dataTypes If set, this function only returns companies that have data for the specified dataTypes

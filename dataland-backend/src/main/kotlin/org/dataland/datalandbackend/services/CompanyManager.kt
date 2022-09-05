@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntityId
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyStockIndexRepository
@@ -114,14 +113,12 @@ class CompanyManager(
     override fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<DataType>,
-        stockIndexFilter: Set<StockIndex>
+        dataTypeFilter: Set<DataType>
     ): List<StoredCompanyEntity> {
         val searchFilter = StoredCompanySearchFilter(
             searchString = searchString,
             nameOnlyFilter = onlyCompanyNames,
             dataTypeFilter = dataTypeFilter.map { it.name },
-            stockIndexFilter = stockIndexFilter.toList(),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilter)
         val sortingMap = filteredAndSortedResults.mapIndexed {
