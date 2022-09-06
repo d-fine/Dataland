@@ -115,7 +115,6 @@ export default defineComponent({
       default: () => [],
     },
   },
-  $refs: {},
   mounted() {
     this.$emit("rendered", true);
     if (!this.route.query.input) {
