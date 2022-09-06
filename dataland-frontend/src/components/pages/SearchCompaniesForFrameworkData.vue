@@ -142,6 +142,8 @@ export default defineComponent({
         } else if (Array.isArray(queryFrameworks)) {
           this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>;
         }
+      } else {
+        this.currentFilteredFrameworks = Object.values(DataTypeEnum);
       }
 
       let queryInput = this.route.query.input as string;
@@ -157,10 +159,11 @@ export default defineComponent({
       this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
+      const queryFrameworks = !this.route.query.frameworks ? undefined : this.currentFilteredFrameworks;
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: queryInput, frameworks: this.currentFilteredFrameworks },
+        query: { input: queryInput, frameworks: queryFrameworks },
       });
     },
     toggleSearchBar() {
