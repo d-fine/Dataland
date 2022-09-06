@@ -180,6 +180,7 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
