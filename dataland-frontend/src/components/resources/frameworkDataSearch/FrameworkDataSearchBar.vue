@@ -149,6 +149,7 @@ export default defineComponent({
     handleKeyupEnter() {
       this.queryCompany();
       this.autocomplete.hideOverlay();
+      this.autocomplete.$refs.input.blur();
     },
     async queryCompany() {
       if (this.getKeycloakPromise !== undefined) {
