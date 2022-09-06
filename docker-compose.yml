@@ -35,7 +35,6 @@ services:
   admin-proxy:
     build:
       context: ./dataland-inbound-admin-proxy
-    image: nginx:latest
     restart: always
     profiles: [ "production", "testing", "productionInMemory", "development" ]
     networks:

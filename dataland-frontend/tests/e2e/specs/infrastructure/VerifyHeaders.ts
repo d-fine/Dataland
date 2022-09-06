@@ -2,7 +2,6 @@ import { describeIf } from "../../support/TestUtility";
 
 describe("As a developer, I want to ensure that security relevant headers are set.", () => {
   function checkCommonHeaders(response: Cypress.Response<any>) {
-    console.log(response.headers);
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
     expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
     expect(response.headers).to.have.property("x-content-type-options", "nosniff");

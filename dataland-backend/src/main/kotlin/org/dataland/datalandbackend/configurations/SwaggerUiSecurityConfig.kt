@@ -18,7 +18,7 @@ class SwaggerUiSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
             .antMatcher("/swagger-ui/**")
-                // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
+            // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
             .headers().contentSecurityPolicy(
                 "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
                     " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
