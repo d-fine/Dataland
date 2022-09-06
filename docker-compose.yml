@@ -19,12 +19,9 @@ services:
     networks:
       - external
       - internal
-      - backend-db
-      - keycloak-db
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:5433-5434:5433-5434"
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
@@ -44,8 +41,11 @@ services:
     networks:
       - external
       - internal
+      - backend-db
+      - keycloak-db
     ports:
       - "127.0.0.1:6789:6789"
+      - "127.0.0.1:5433-5434:5433-5434"
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
