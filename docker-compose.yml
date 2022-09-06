@@ -68,6 +68,7 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
   backend-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]

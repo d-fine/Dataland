@@ -73,8 +73,9 @@ describe("As a developer, I want to ensure that security relevant headers are se
     cy.request("GET", Cypress.config("baseUrl") + "/api/swagger-ui/index.html").then((response) => {
       expect(response.headers).to.have.property(
         "content-security-policy",
-        "default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self';" +
-          " form-action 'self'; font-src 'self' data:; img-src 'self' data:"
+        "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
+          " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
+          " img-src 'self' data:"
       );
       checkCommonHeaders(response);
     });
