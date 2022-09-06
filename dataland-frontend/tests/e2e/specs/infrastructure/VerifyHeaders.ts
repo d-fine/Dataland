@@ -37,7 +37,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   describeIf(
     "Check CSP headers in the CI/CD environment",
     {
-      executionEnvironments: ["developmentCi", "preview"],
+      executionEnvironments: ["development", "preview"],
       dataEnvironments: ["realData", "fakeFixtures"],
     },
     () => {

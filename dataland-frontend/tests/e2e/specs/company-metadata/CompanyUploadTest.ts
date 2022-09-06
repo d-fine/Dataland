@@ -4,7 +4,7 @@ import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/Comp
 describeIf(
   "As a user, I want to be able to create new companies",
   {
-    executionEnvironments: ["developmentLocal", "developmentCi"],
+    executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
   () => {

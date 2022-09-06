@@ -1,2 +1,2 @@
-keycloak-db:5432:*:keycloak:${KEYCLOAK_DB_PASSWORD}
+keycloak-db:5432:*:keycloak:${KEYCLOAK_DB_PASSWORD}s
 backend-db:5432:*:backend:${BACKEND_DB_PASSWORD}
