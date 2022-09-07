@@ -97,12 +97,13 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Company Search by Identifier", () => {
     cy.visitAndCheckAppMount("/companies");
     const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
+    // TODO Test ist nicht streng genug. Sollte assuren dass die tatsächliche Firma gefunden wird.
     executeCompanySearch(inputValue);
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
   });
 
-  it("Search Input field should be always present", () => {
+  it("Search Input field should always be present", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
@@ -116,7 +117,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Click on an autocomplete-suggestion and check if forwarded to taxonomy data page", () => {
+  it("Click on an autocomplete-suggestion and check if forwarded to company framework data page", () => {
     cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=search_bar_top]").click({ force: true }).type("b");
@@ -201,6 +202,24 @@ describeIf(
     });
 
     const companyNameMarker = "Data987654321";
+
+    it(
+      "Upload a company without uploading framework data for it and check if it does not appear in the results " +
+        "even though no framework filter is set. Afterwards upload framework data and assure that it appears now.",
+      () => {
+        const companyName = "SomeCompany19944991" + companyNameMarker;
+        createCompanyAndGetId(companyName).then((companyId) => {
+          cy.visit(`/companies?input=${companyName}`)
+            .get("div[class='col-12 text-left']")
+            .should("contain.text", "Sorry! The company you searched for was not found in our database");
+          uploadDummyEuTaxonomyDataForFinancials(companyId);
+          cy.visit(`/companies?input=${companyName}`)
+            .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .contains(companyName)
+            .should("exist");
+        });
+      }
+    );
 
     it(
       "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
