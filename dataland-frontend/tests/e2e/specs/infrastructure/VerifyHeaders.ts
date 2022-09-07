@@ -81,7 +81,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   });
 
   it("test for keycloak response", () => {
-    cy.request("GET", Cypress.config("baseUrl") + "/keycloak/robots.txt").then((response) => {
+    cy.request("GET", Cypress.config("baseUrl") + "/keycloak/realms/datalandsecurity").then((response) => {
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
