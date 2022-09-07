@@ -6,5 +6,5 @@ describe("User Authentication Tests", () => {
   require("./Register");
   require("./VisitPagesUnauth");
   require("./LandingPageRedirect");
-  require("./VerifyPkceFlow")
+  require("./VerifyPkceFlow");
 });
