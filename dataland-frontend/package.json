@@ -7,7 +7,7 @@
     "build": "run-p type-check build-only",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --max-warnings 0 --no-fix",
-    "teste2e": "cypress run --e2e --mode development --url https://dataland-local.duckdns.org",
+    "teste2e": "cypress open",
     "testheadless": "cypress run --e2e --mode development --url https://dataland-local.duckdns.org --headless",
     "testpipeline": "cypress run --e2e --mode development --url https://dataland-local.duckdns.org --headless",
     "testdevelopment": "cypress run --e2e --mode development --url https://dev-dataland.duckdns.org --headless",
@@ -17,7 +17,7 @@
     "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --dev && npm audit fix",
-    "checkdependencies": "depcheck --ignores='@vue/cli-plugin-*,@vue/vue3-jest,sass-loader,ts-jest'",
+    "checkdependencies": "depcheck --ignores='@vue/vue3-jest,sass-loader,ts-jest'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit"
   },

@@ -11,6 +11,7 @@ export default defineConfig({
   },
   fixturesFolder: "../testing/data",
   e2e: {
+    baseUrl: "https://dataland-local.duckdns.org",
     setupNodeEvents(on, config) {
       return require("./tests/e2e/plugins/index.js")(on, config);
     },
