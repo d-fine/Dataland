@@ -8,7 +8,10 @@ describe("As a developer, I want to ensure that security relevant headers are se
   }
 
   function checkCommonCspHeaders(expectedHeader: string) {
-    const urlsToCheck = [Cypress.config("baseUrl") + "/", Cypress.config("baseUrl") + "/keycloak/robots.txt"];
+    const urlsToCheck = [
+      Cypress.config("baseUrl") + "/",
+      Cypress.config("baseUrl") + "/keycloak/realms/datalandsecurity",
+    ];
     urlsToCheck.forEach((url) => {
       it(`Check for local CSP headers in ${url}`, () => {
         cy.request("GET", url).then((response) => {
@@ -83,7 +86,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   it("test for keycloak response", () => {
     cy.request("GET", Cypress.config("baseUrl") + "/keycloak/realms/datalandsecurity").then((response) => {
       checkCommonHeaders(response);
-      expect(response.headers).to.have.property("x-frame-options", "sameorigin");
+      assert.equal(`${response.headers["x-frame-options"]}`.toLowerCase(), "sameorigin");
     });
   });
 });
