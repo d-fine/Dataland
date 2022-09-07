@@ -14,5 +14,5 @@ export function checkViewButtonWorks(): void {
     .url()
     .should("include", "/companies/")
     .url()
-    .should("include", "/eutaxonomy");
+    .should("include", "/frameworks");
 }

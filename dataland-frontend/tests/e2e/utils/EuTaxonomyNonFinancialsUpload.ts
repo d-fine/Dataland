@@ -1,4 +1,4 @@
-export function fillEuTaxonomyNonFinancialsUploadFields(): void {
+export function fillEuTaxonomyNonFinancialsDummyUploadFields(): void {
   cy.get("select[name=attestation]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
   for (const argument of ["capex", "opex", "revenue"]) {
@@ -7,9 +7,9 @@ export function fillEuTaxonomyNonFinancialsUploadFields(): void {
   }
 }
 
-export function uploadEuTaxonomyDataForNonFinancials(companyId: string): Cypress.Chainable<string> {
+export function uploadDummyEuTaxonomyDataForNonFinancials(companyId: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
-  fillEuTaxonomyNonFinancialsUploadFields();
+  fillEuTaxonomyNonFinancialsDummyUploadFields();
   cy.intercept("**/api/data/eutaxonomy-non-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy

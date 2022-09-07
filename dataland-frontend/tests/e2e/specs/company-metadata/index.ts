@@ -3,8 +3,8 @@
  * I also want to be able to create new companies.
  */
 describe("Taxonomy Company Metadata tests", () => {
-  require("./SearchPagniation");
-  require("./CompanyUploadTest");
+  require("./SearchPagination");
+  require("./CompanyUpload");
   require("./SearchCompaniesForFrameworkData");
-  require("./Search");
+  require("./CompaniesOnlySearch");
 });
