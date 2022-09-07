@@ -1,5 +1,4 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
@@ -27,6 +26,14 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.ensureLoggedIn();
   });
 
+  function verifyTaxonomySearchResultTable(): void {
+    cy.get("table.p-datatable-table").contains("th", "COMPANY");
+    cy.get("table.p-datatable-table").contains("th", "PERM ID");
+    cy.get("table.p-datatable-table").contains("th", "SECTOR");
+    cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
+    cy.get("table.p-datatable-table").contains("th", "LOCATION");
+  }
+
   function executeCompanySearchWithStandardSearchBar(inputValue: string) {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
@@ -37,7 +44,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .type("{enter}")
       .should("have.value", inputValue);
     cy.url().should("include", "/companies?input=" + inputValueUntilFirstSpace);
-    cy.get("table.p-datatable-table").should("exist");
+    verifyTaxonomySearchResultTable();
   }
 
   it("Check static layout of the search page", function () {
@@ -55,16 +62,20 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Check PermId tooltip, execute company search by name, check result table and assure VIEW button works", () => {
     cy.visitAndCheckAppMount("/companies");
 
-    function checkViewRowsWorks(): void {
-      cy.get("table.p-datatable-table");
-      cy.contains("td", "VIEW").siblings().contains("€").click().url().should("include", "/companies/");
-    }
-
     function checkPermIdToolTip(permIdTextInt: string) {
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
       cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
       cy.get(".p-tooltip").should("not.exist");
+    }
+
+    function checkViewButtonWorks() {
+      cy.get("table.p-datatable-table")
+        .contains("td", "VIEW")
+        .contains("a", "VIEW")
+        .click()
+        .url()
+        .should("include", "/frameworks");
     }
 
     cy.visitAndCheckAppMount("/companies");
@@ -76,7 +87,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
     cy.get("[title=back_button").should("be.visible").click({ force: true });
-    checkViewRowsWorks();
+    checkViewButtonWorks();
     cy.get("h1").contains(inputValue);
   });
 
