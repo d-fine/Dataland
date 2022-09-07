@@ -192,16 +192,16 @@ describeIf(
         "autocomplete suggestions nor in the search results, even though no framework filter is set.",
       () => {
         const companyName = "ThisCompanyShouldNeverBeFound12349876";
-        createCompanyAndGetId(companyName)
-          cy.visit(`/companies`);
-          cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName);
-          cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-            cy.get(".p-autocomplete-item").should("not.exist");
-          });
-          cy.visit(`/companies?input=${companyName}`)
-            .get("div[class='col-12 text-left']")
-            .should("contain.text", "Sorry! The company you searched for was not found in our database")
+        createCompanyAndGetId(companyName);
+        cy.visit(`/companies`);
+        cy.intercept("**/api/companies*").as("searchCompany");
+        cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName);
+        cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+          cy.get(".p-autocomplete-item").should("not.exist");
+        });
+        cy.visit(`/companies?input=${companyName}`)
+          .get("div[class='col-12 text-left']")
+          .should("contain.text", "Sorry! The company you searched for was not found in our database");
       }
     );
 
