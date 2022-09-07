@@ -82,7 +82,7 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
-        property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage/lcov-1.info").files)
+        property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
