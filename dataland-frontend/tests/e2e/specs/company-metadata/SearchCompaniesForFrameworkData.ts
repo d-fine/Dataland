@@ -93,8 +93,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Execute a company Search by identifier and assure that the company is found", () => {
     cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[1].companyInformation.identifiers[0].identifierValue;
-    const expectedCompanyName = companiesWithData[1].companyInformation.companyName;
+    const inputValue = companiesWithData[0].companyInformation.identifiers[0].identifierValue;
+    const expectedCompanyName = companiesWithData[0].companyInformation.companyName;
     executeCompanySearchWithStandardSearchBar(inputValue);
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });
