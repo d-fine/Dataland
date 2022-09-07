@@ -33,10 +33,18 @@ done
 grep "Searching for known Datatypes" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log
 LOG_TEST_EXIT_CODE=$?
 
+# Testing admin-tunnel database connections
+pg_isready -d backend -h "localhost" -p 5433
+BACKEND_DB_CHECK_EXIT_CODE=$?
+pg_isready -d keycloak -h "localhost" -p 5434
+KEYCLOAK_DB_CHECK_EXIT_CODE=$?
+
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
 echo "E2ETEST Timeout exited with exit code $E2ETEST_TIMEOUT_EXIT_CODE"
 echo "BACKEND Timeout exited with exit code $BACKEND_TIMEOUT_EXIT_CODE"
 echo "Docker E2E Testcontainer exited with code $TEST_EXIT_CODE"
 echo "Log-Existence test existed with exit code $LOG_TEST_EXIT_CODE"
-exit $((E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE+TEST_EXIT_CODE+LOG_TEST_EXIT_CODE))
+echo "Backend DB admin-proxy test existed with exit code $BACKEND_DB_CHECK_EXIT_CODE"
+echo "Keycloak DB admin-proxy test existed with exit code  $KEYCLOAK_DB_CHECK_EXIT_CODE"
+exit $((E2ETEST_TIMEOUT_EXIT_CODE+BACKEND_TIMEOUT_EXIT_CODE+TEST_EXIT_CODE+LOG_TEST_EXIT_CODE+BACKEND_DB_CHECK_EXIT_CODE+KEYCLOAK_DB_CHECK_EXIT_CODE))

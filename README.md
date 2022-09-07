@@ -46,7 +46,7 @@ Some environment variables are used within the project. Find attached the variab
 | PROXY_LETSENCRYPT_PATH            | The LetsEncrypt path for the domain (usually /etc/letsencrypt/FIRST_DOMAIN/                                                                         | `/etc/letsencrypt/live/dataland.com`                             |
 | PROXY_LETSENCRYPT_ARGS            | The LetsEncrypt Certbot arguments for the initial certificate request                                                                               | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
 | PROXY_ENVIRONMENT                 | The environment of the proxy server (development or production). Used during Docker build process                                                   | `development` or `production`                                    |
-
+| PGADMIN_PASSWORD                  | The password for the PGAdmin interface                                                                                                              | `password`                                                       |
 
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.
 

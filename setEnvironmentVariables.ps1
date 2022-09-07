@@ -4,6 +4,7 @@
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DOCKERFILE", "./dataland-backend/DockerfileTest", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_EDC_TOKEN", $env:GITHUB_TOKEN, [System.EnvironmentVariableTarget]::User)

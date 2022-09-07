@@ -40,6 +40,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
   require("./user-authentication");
+  require("./admin-tools");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
