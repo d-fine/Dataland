@@ -3,7 +3,8 @@ if (process.env.NODE_ENV !== "test") {
   plugins.push([
     "babel-plugin-istanbul",
     {
-      extension: [".ts", ".js", ".vue"],
+      extends: "@istanbuljs/nyc-config-typescript",
+      extension: [".ts", ".tsx", ".js", ".vue"],
     },
   ]);
 }

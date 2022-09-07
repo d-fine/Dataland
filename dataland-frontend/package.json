@@ -36,6 +36,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@faker-js/faker": "^7.4.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jest/globals": "^27.5.1",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-e2e-cypress": "~5.0.8",

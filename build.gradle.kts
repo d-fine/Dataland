@@ -88,8 +88,8 @@ sonarqube {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "./dataland-frontend/src/main.ts" +
-                "./dataland-frontend/src/components/helper/*"
+                "./dataland-frontend/src/main.ts," +
+                "./dataland-frontend/build"
         )
         property(
             "sonar.sources",
