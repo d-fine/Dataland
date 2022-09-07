@@ -70,6 +70,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.0.1" apply false
     id("com.github.ben-manes.versions") version "0.42.0"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.7.10" apply false
 }
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"

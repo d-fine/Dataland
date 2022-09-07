@@ -64,6 +64,11 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             .map { it.companyInformation }
     }
 
+    fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
+        return testCompanyInformationWithTData.slice(0 until requiredQuantity)
+            .map { it.companyInformation.copy(identifiers = emptyList()) }
+    }
+
     fun getTData(numberOfDataSets: Int): List<T> {
         return testCompanyInformationWithTData.slice(0 until numberOfDataSets)
             .map { it.t }
@@ -72,6 +77,12 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
     fun getCompaniesWithTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<T>> {
         val companies = getCompanyInformation(requiredNumberOfCompanies)
+        return companies.associateWith { getTData(dataSetsPerCompany) }
+    }
+
+    fun getCompaniesWithTDataAndNoIdentifiers(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
+        Map<CompanyInformation, List<T>> {
+        val companies = getCompanyInformationWithoutIdentifiers(requiredNumberOfCompanies)
         return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 }

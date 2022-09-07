@@ -18,4 +18,8 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.companyInformation }
     }
+
+    fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
+        return getCompanyInformation(requiredQuantity).map { it.copy(identifiers = emptyList()) }
+    }
 }

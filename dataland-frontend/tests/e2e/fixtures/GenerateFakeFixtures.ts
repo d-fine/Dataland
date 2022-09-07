@@ -41,6 +41,7 @@ function exportFixturesEuTaxonomyNonFinancial() {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials
   );
+  companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany = true;
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
