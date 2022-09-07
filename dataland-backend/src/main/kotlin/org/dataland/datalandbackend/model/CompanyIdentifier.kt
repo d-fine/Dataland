@@ -14,5 +14,5 @@ data class CompanyIdentifier(
     val identifierType: IdentifierType,
 
     @field:JsonProperty("identifierValue", required = true)
-    val identifierValue: String
+    val identifierValue: String,
 )

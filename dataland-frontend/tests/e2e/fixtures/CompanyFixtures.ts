@@ -47,6 +47,7 @@ export function generateCompanyInformation(): CompanyInformation {
     indices: new JSONSet(indices),
     identifiers: identifiers,
     countryCode: countryCode,
+    isTeaserCompany: false,
   };
 }
 
@@ -76,6 +77,10 @@ export function getCsvCompanyMapping<T>() {
       label: "Market Capitalization Date",
       value: (row: FixtureData<T>) =>
         new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
+    },
+    {
+      label: "Teaser Company",
+      value: (row: FixtureData<T>) => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
     ...Object.values(CompanyInformationIndicesEnum).map((e) => {
       return {

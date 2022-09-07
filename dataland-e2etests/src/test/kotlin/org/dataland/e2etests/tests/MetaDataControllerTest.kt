@@ -42,14 +42,18 @@ class MetaDataControllerTest {
     private val totalNumberOfDataSetsPerFramework =
         numberOfCompaniesToPostPerFramework * numberOfDataSetsToPostPerCompany
 
-    private val testCompanyInformation = testDataProviderEuTaxonomyForNonFinancials
-        .getCompanyInformation(1).first()
     private val testEuTaxonomyDataForNonFinancials =
         testDataProviderEuTaxonomyForNonFinancials.getTData(1).first()
     private val testCompaniesAndEuTaxonomyDataForNonFinancials = testDataProviderEuTaxonomyForNonFinancials
-        .getCompaniesWithTData(numberOfCompaniesToPostPerFramework, numberOfDataSetsToPostPerCompany)
+        .getCompaniesWithTDataAndNoIdentifiers(
+            numberOfCompaniesToPostPerFramework,
+            numberOfDataSetsToPostPerCompany
+        )
     private val testCompaniesAndEuTaxonomyDataForFinancials = testDataProviderEuTaxonomyForFinancials
-        .getCompaniesWithTData(numberOfCompaniesToPostPerFramework, numberOfDataSetsToPostPerCompany)
+        .getCompaniesWithTDataAndNoIdentifiers(
+            numberOfCompaniesToPostPerFramework,
+            numberOfDataSetsToPostPerCompany
+        )
 
     private fun postCompaniesAndEuTaxonomyDataForNonFinancials(
         testData: Map<CompanyInformation,
@@ -89,6 +93,8 @@ class MetaDataControllerTest {
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
@@ -173,11 +179,13 @@ class MetaDataControllerTest {
     fun `post a dummy teaser company and data for it and confirm unauthorized meta info access succeeds`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
+                .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
         ).dataId
-        companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
         val dataMetaInformation = unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
             DataMetaInformation(testDataId, testDataType, testCompanyId),
@@ -189,6 +197,9 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
+                .copy(isTeaserCompany = false)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
@@ -203,20 +214,18 @@ class MetaDataControllerTest {
     fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
+                .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
         ).dataId
-        companyDataControllerApi.setTeaserCompanies(listOf(testCompanyId))
 
+        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, testCompanyId)
         assertTrue(
-            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType).contains(
-                DataMetaInformation(
-                    dataId = testDataId,
-                    dataType = testDataType,
-                    companyId = testCompanyId
-                )
-            ),
+            unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
+                .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
                 "match the retrieved meta info."
         )
@@ -226,6 +235,8 @@ class MetaDataControllerTest {
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)

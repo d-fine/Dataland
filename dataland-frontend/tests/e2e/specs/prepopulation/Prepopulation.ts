@@ -9,7 +9,13 @@ const chunkSize = 40;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
-  { defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000 },
+  {
+    defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000,
+    retries: {
+      runMode: 0,
+      openMode: 0,
+    },
+  },
   () => {
     let companiesWithEuTaxonomyDataForNonFinancials: Array<{
       companyInformation: CompanyInformation;
@@ -19,11 +25,6 @@ describe(
       companyInformation: CompanyInformation;
       t: EuTaxonomyDataForFinancials;
     }>;
-    const teaserCompanyIds: Array<string> = [];
-    let teaserCompanyPermIds: Array<string> = [];
-    if (Cypress.env("REALDATA") === true) {
-      teaserCompanyPermIds = Cypress.env("TEASER_COMPANY_PERM_IDS").toString().split(",");
-    }
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
@@ -40,26 +41,6 @@ describe(
     });
 
     it("Populate Companies and Eu Taxonomy Data", () => {
-      function getPermId(companyInformation: CompanyInformation) {
-        const permIdArray = companyInformation.identifiers
-          .filter((identifier) => identifier.identifierType === "PermId")
-          .map((identifier) => identifier.identifierValue);
-        if (permIdArray.length >= 1) {
-          return permIdArray[0];
-        } else {
-          return "NotAvailable";
-        }
-      }
-
-      function addCompanyIdToTeaserCompanies(companyInformation: CompanyInformation, json: any) {
-        if (
-          (Cypress.env("REALDATA") === true && teaserCompanyPermIds.includes(getPermId(companyInformation))) ||
-          (Cypress.env("REALDATA") !== true && teaserCompanyIds.length == 0)
-        ) {
-          teaserCompanyIds.push(json.companyId);
-        }
-      }
-
       function browserPromiseUploadSingleElementOnce(
         endpoint: string,
         element: object,
@@ -82,19 +63,13 @@ describe(
         });
       }
 
-      function uploadSingleElementWithRetries(endpoint: string, element: object, token: string): Promise<Response> {
-        return browserPromiseUploadSingleElementOnce(endpoint, element, token)
-          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token))
-          .catch((_) => browserPromiseUploadSingleElementOnce(endpoint, element, token));
-      }
-
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
           doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
-            return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
               .then((response) => response.json())
               .then((companyUploadResponseJson) => {
-                uploadSingleElementWithRetries(
+                browserPromiseUploadSingleElementOnce(
                   "data/eutaxonomy-non-financials",
                   {
                     companyId: companyUploadResponseJson.companyId,
@@ -102,14 +77,13 @@ describe(
                   },
                   token
                 );
-                addCompanyIdToTeaserCompanies(element.companyInformation, companyUploadResponseJson);
               });
           });
           doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
-            return uploadSingleElementWithRetries("companies", element.companyInformation, token)
+            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
               .then((response) => response.json())
               .then((json) => {
-                uploadSingleElementWithRetries(
+                browserPromiseUploadSingleElementOnce(
                   "data/eutaxonomy-financials",
                   {
                     companyId: json.companyId,
@@ -121,24 +95,6 @@ describe(
           });
         })
         .should("eq", "done");
-    });
-
-    it("Check if the teaser company can be set", () => {
-      cy.wrap(teaserCompanyIds).should("have.length", 1);
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-        .then((token) =>
-          cy.request({
-            url: "/api/companies/teaser",
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(teaserCompanyIds),
-          })
-        )
-        .its("status")
-        .should("eq", 200);
     });
 
     it("Check if all the company ids can be retrieved", () => {

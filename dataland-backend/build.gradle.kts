@@ -19,6 +19,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -37,6 +38,9 @@ dependencies {
     implementation(libs.keycloak.spring.boot.starter)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly(libs.database.postgres)
+    runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -44,9 +48,12 @@ dependencies {
 
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
 
-tasks.withType<org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask> {
+openApi {
     outputFileName.set("$backendOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb"))
+    }
 }
 
 val openApiSpec by configurations.creating {
