@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
@@ -22,6 +23,8 @@ class DataManager(
     @Autowired var companyManager: CompanyManagerInterface,
     @Autowired var metaDataManager: DataMetaInformationManagerInterface
 ) : DataManagerInterface {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     private fun getDataMetaInformationByIdAndVerifyDataType(
         dataId: String,
         dataType: DataType
@@ -40,14 +43,22 @@ class DataManager(
     @Transactional
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
+        logger.info("Sending StorableDataSet of type ${storableDataSet.dataType} " +
+                "for company ID ${storableDataSet.companyId}, " +
+                "Company Name ${company.companyName} to EuroDaT Interface")
         val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
+        logger.info("Stored StorableDataSet of type ${storableDataSet.dataType} " +
+                "for company ID ${storableDataSet.companyId}, " +
+                "Company Name ${company.companyName} received ID $dataId from EuroDaT")
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
 
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
         val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
+        logger.info("Requesting Data with ID $dataId and type $dataType from EuroDat")
         val dataAsString = edcClient.selectDataById(dataId)
+        logger.info("Received Dataset of length ${dataAsString.length}")
         if (dataAsString == "") {
             throw IllegalArgumentException(
                 "No data set with the id: $dataId could be found in the data store."
