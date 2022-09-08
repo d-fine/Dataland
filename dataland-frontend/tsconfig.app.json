@@ -4,6 +4,11 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
+
+    // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
+    // But are required as otherwise the openApi client wont compile properly
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],

@@ -1,15 +1,17 @@
-// REF: https://docs.cypress.io/guides/tooling/typescript-support#Install-TypeScript
 {
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["ESNext", "dom"],
+    "moduleResolution": "Node",
+    "target": "ES2019",
+    "lib": ["ES2019", "dom"],
     "types": ["cypress", "node"],
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./cypress/*"],
-      "@clients/*": ["./build/clients/*"]
+      "@/*": ["./src/*"],
+      "@clients/*": ["./build/clients/*"],
+      "@e2e/*": ["./tests/e2e/*"]
     }
   },
-  "include": ["cypress/**/*.ts", "build/clients/**/*"]
+  "include": ["tests/e2e/**/*.ts"]
 }

@@ -16,10 +16,10 @@ export default defineConfig({
   e2e: {
     baseUrl: "https://dataland-local.duckdns.org",
     setupNodeEvents(on, config) {
-      return require("./cypress/e2e/plugins/index.js")(on, config);
+      return require("./tests/e2e/plugins/index.js")(on, config);
     },
     experimentalSessionAndOrigin: true,
-    supportFile: "cypress/e2e/support/index.ts",
+    supportFile: "tests/e2e/support/index.ts",
   },
 
   component: {
