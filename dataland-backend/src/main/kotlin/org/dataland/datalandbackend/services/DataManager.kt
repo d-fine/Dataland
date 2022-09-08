@@ -43,13 +43,17 @@ class DataManager(
     @Transactional
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
-        logger.info("Sending StorableDataSet of type ${storableDataSet.dataType} " +
+        logger.info(
+            "Sending StorableDataSet of type ${storableDataSet.dataType} " +
                 "for company ID ${storableDataSet.companyId}, " +
-                "Company Name ${company.companyName} to EuroDaT Interface")
+                "Company Name ${company.companyName} to EuroDaT Interface"
+        )
         val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
-        logger.info("Stored StorableDataSet of type ${storableDataSet.dataType} " +
+        logger.info(
+            "Stored StorableDataSet of type ${storableDataSet.dataType} " +
                 "for company ID ${storableDataSet.companyId}, " +
-                "Company Name ${company.companyName} received ID $dataId from EuroDaT")
+                "Company Name ${company.companyName} received ID $dataId from EuroDaT"
+        )
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
