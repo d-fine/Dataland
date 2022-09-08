@@ -37,6 +37,9 @@ abstract class DataController<T>(
                 data = objectMapper.writeValueAsString(companyAssociatedData.data)
             )
         )
+        logger.info(
+            "Posted company associated data for companyId '${companyAssociatedData.companyId}'"
+        )
         return ResponseEntity.ok(
             DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId)
         )
@@ -45,14 +48,14 @@ abstract class DataController<T>(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
         logger.info("Received a request to get company data with dataId '$dataId' for companyId '$companyId'")
-        return ResponseEntity.ok(
-            CompanyAssociatedData(
-                companyId = companyId,
-                data = objectMapper.readValue(
-                    dataManager.getDataSet(dataId, dataType).data,
-                    clazz
-                )
+        val companyAssociatedData = CompanyAssociatedData(
+            companyId = companyId,
+            data = objectMapper.readValue(
+                dataManager.getDataSet(dataId, dataType).data,
+                clazz
             )
         )
+        logger.info("Received company data with dataId '$dataId' for companyId '$companyId' from EuroDaT")
+        return ResponseEntity.ok(companyAssociatedData)
     }
 }
