@@ -11,4 +11,9 @@ export default defineConfig({
       "@clients": resolve(__dirname, "./build/clients"),
     },
   },
+  server: {
+    watch: {
+      ignored: ["**/coverage/**"],
+    },
+  },
 });

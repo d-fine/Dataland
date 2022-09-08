@@ -1,5 +1,8 @@
-import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/CompanyUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import {
+  createCompanyAndGetId,
+  fillCompanyUploadFields,
+} from "@e2e/utils/CompanyUpload";
 
 describeIf(
   "As a user, I want to be able to create new companies",
@@ -9,7 +12,10 @@ describeIf(
   },
   () => {
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(
+        "data_uploader",
+        Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")
+      );
     });
 
     it("cannot create a Company with no input", () => {
@@ -18,9 +24,15 @@ describeIf(
     });
 
     function uploadEuTaxonomyDatasetWithReportingObligation(companyId: string) {
-      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-      cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
+      cy.visitAndCheckAppMount(
+        `/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`
+      );
+      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should(
+        "be.visible"
+      );
+      cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
+        force: true,
+      });
       cy.get('select[name="attestation"]').select("None");
       for (const argument of ["capex", "opex"]) {
         cy.get(`div[title=${argument}] input`).each(($element, index) => {
@@ -30,7 +42,9 @@ describeIf(
       }
       cy.get("div[title=revenue] input").eq(0).type("0");
       cy.get("div[title=revenue] input").eq(1).type("0");
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
+      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should(
+        "not.be.disabled"
+      );
       cy.get('button[name="postEUData"]').click({ force: true });
     }
 
@@ -55,11 +69,17 @@ describeIf(
       const companyName = "Test non financial company";
       createCompanyAndGetId(companyName).then((id) => {
         uploadEuTaxonomyDatasetWithReportingObligation(id);
-        cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
+        cy.get("body")
+          .should("contain", "success")
+          .should("contain", "EU Taxonomy Data");
         cy.get("span[title=companyId]").then(($companyID) => {
           const companyID = $companyID.text();
-          cy.intercept("/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
-          cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy-non-financials`);
+          cy.intercept("/api/data/eutaxonomy-non-financials/*").as(
+            "retrieveTaxonomyData"
+          );
+          cy.visitAndCheckAppMount(
+            `/companies/${companyID}/frameworks/eutaxonomy-non-financials`
+          );
         });
         cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 })
           .get("body")
@@ -78,17 +98,33 @@ describeIf(
 
     it("Create EU Taxonomy Dataset without Reporting Obligation", () => {
       createCompanyAndGetId("Missing field company").then((companyId) => {
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-        cy.get('input[id="reportingObligation-option-no"][value=No]').check({ force: true });
+        cy.visitAndCheckAppMount(
+          `/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`
+        );
+        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should(
+          "be.visible"
+        );
+        cy.get('input[id="reportingObligation-option-no"][value=No]').check({
+          force: true,
+        });
         cy.get('select[name="attestation"]').select("None");
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
+        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should(
+          "not.be.disabled"
+        );
         cy.get('button[name="postEUData"]').click({ force: true });
-        cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
-        cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
+        cy.get("body")
+          .should("contain", "success")
+          .should("contain", "EU Taxonomy Data");
+        cy.intercept("**/api/data/eutaxonomy-non-financials/*").as(
+          "retrieveTaxonomyData"
+        );
+        cy.visitAndCheckAppMount(
+          `/companies/${companyId}/frameworks/eutaxonomy-non-financials`
+        );
         cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
-          cy.get("body").should("contain", "Eligible Revenue").should("contain", "No data has been reported");
+          cy.get("body")
+            .should("contain", "Eligible Revenue")
+            .should("contain", "No data has been reported");
         });
       });
     });
