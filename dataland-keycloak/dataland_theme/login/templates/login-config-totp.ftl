@@ -1,58 +1,78 @@
-<#import "dataland_template.ftl" as layout>
+<#import "dataland_template_full_width.ftl" as layout>
 <@layout.registrationLayout displayRequiredFields=false displayMessage=!messagesPerField.existsError('totp','userLabel'); section>
 
     <#if section = "header">
-        ${msg("loginTotpTitle")}
+        <div class="ml-3 mb-5">
+            ${msg("loginTotpTitle")}
+        </div>
     <#elseif section = "form">
-        <ol id="kc-totp-settings">
-            <li>
-                <p>${msg("loginTotpStep1")}</p>
-
-                <ul id="kc-totp-supported-apps">
-                    <#list totp.policy.supportedApplications as app>
-                        <li>${app}</li>
-                    </#list>
-                </ul>
+        <ol class="ml-3 p-0" style="list-style-type: none" id="kc-totp-settings">
+            <li class="flex bg-white font-semibold mb-4">
+                <h2 class="font-medium mt-2">Step 1</h2>
+                <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                    <p class="m-0">${msg("loginTotpStep1")}</p>
+                    <ul style="list-style-image: url('${url.resourcesPath}/img/check.svg')" id="kc-totp-supported-apps">
+                        <#list totp.policy.supportedApplications as app>
+                            <li>${app}</li>
+                        </#list>
+                    </ul>
+                </div>
             </li>
 
             <#if mode?? && mode = "manual">
-                <li>
-                    <p>${msg("loginTotpManualStep2")}</p>
-                    <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
-                    <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("loginTotpScanBarcode")}</a></p>
+                <li class="flex bg-white font-semibold mb-4">
+                    <h2 class="font-medium mt-2">Step 2</h2>
+                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                        <p class="m-0">${msg("loginTotpManualStep2")}</p>
+                        <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
+                        <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("loginTotpScanBarcode")}</a></p>
+                    </div>
                 </li>
-                <li>
-                    <p>${msg("loginTotpManualStep3")}</p>
-                    <p>
-                    <ul>
-                        <li id="kc-totp-type">${msg("loginTotpType")}: ${msg("loginTotp." + totp.policy.type)}</li>
-                        <li id="kc-totp-algorithm">${msg("loginTotpAlgorithm")}: ${totp.policy.getAlgorithmKey()}</li>
-                        <li id="kc-totp-digits">${msg("loginTotpDigits")}: ${totp.policy.digits}</li>
-                        <#if totp.policy.type = "totp">
-                            <li id="kc-totp-period">${msg("loginTotpInterval")}: ${totp.policy.period}</li>
-                        <#elseif totp.policy.type = "hotp">
-                            <li id="kc-totp-counter">${msg("loginTotpCounter")}: ${totp.policy.initialCounter}</li>
-                        </#if>
-                    </ul>
-                    </p>
+                <li class="flex bg-white font-semibold mb-4">
+                    <h2 class="font-medium mt-2">Step 3</h2>
+                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                        <p class="m-0">${msg("loginTotpManualStep3")}</p>
+                        <p>
+                        <ul>
+                            <li id="kc-totp-type">${msg("loginTotpType")}: ${msg("loginTotp." + totp.policy.type)}</li>
+                            <li id="kc-totp-algorithm">${msg("loginTotpAlgorithm")}
+                                : ${totp.policy.getAlgorithmKey()}</li>
+                            <li id="kc-totp-digits">${msg("loginTotpDigits")}: ${totp.policy.digits}</li>
+                            <#if totp.policy.type = "totp">
+                                <li id="kc-totp-period">${msg("loginTotpInterval")}: ${totp.policy.period}</li>
+                            <#elseif totp.policy.type = "hotp">
+                                <li id="kc-totp-counter">${msg("loginTotpCounter")}: ${totp.policy.initialCounter}</li>
+                            </#if>
+                        </ul>
+                        </p>
+                    </div>
                 </li>
             <#else>
-                <li>
-                    <p>${msg("loginTotpStep2")}</p>
-                    <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode"><br/>
-                    <p><a href="${totp.manualUrl}" id="mode-manual">${msg("loginTotpUnableToScan")}</a></p>
+                <li class="flex bg-white font-semibold mb-4">
+                    <h2 class="font-medium mt-2">Step 2</h2>
+                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                        <p class="m-0">${msg("loginTotpStep2")}</p>
+                        <div class="flex">
+                            <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode">
+                            <a href="${totp.manualUrl}" id="mode-manual">${msg("loginTotpUnableToScan")}</a>
+                        </div>
+                    </div>
                 </li>
             </#if>
-            <li>
-                <p>${msg("loginTotpStep3")}</p>
-                <p>${msg("loginTotpStep3DeviceName")}</p>
+            <li class="flex bg-white font-semibold mb-4">
+                <h2 class="font-medium mt-2">Step 3</h2>
+                <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                    <p class="m-0">${msg("loginTotpStep3")}</p>
+                    <p>${msg("loginTotpStep3DeviceName")}</p>
+                </div>
             </li>
         </ol>
 
         <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form" method="post">
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="w-5">
                 <div class="${properties.kcInputWrapperClass!}">
-                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span class="required">*</span>
+                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
+                            class="required">*</span>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
                     <input type="text" id="totp" name="totp" autocomplete="off" class="${properties.kcInputClass!}"
@@ -60,28 +80,33 @@
                     />
 
                     <#if messagesPerField.existsError('totp')>
-                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
+                              aria-live="polite">
                             ${kcSanitize(messagesPerField.get('totp'))?no_esc}
                         </span>
                     </#if>
 
                 </div>
-                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}" />
+                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
                 <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>
             </div>
 
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="w-5">
                 <div class="${properties.kcInputWrapperClass!}">
-                    <label for="userLabel" class="control-label">${msg("loginTotpDeviceName")}</label> <#if totp.otpCredentials?size gte 1><span class="required">*</span></#if>
+                    <label for="userLabel"
+                           class="control-label">${msg("loginTotpDeviceName")}</label> <#if totp.otpCredentials?size gte 1>
+                        <span class="required">*</span></#if>
                 </div>
 
                 <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" class="${properties.kcInputClass!}" id="userLabel" name="userLabel" autocomplete="off"
+                    <input type="text" class="${properties.kcInputClass!}" id="userLabel" name="userLabel"
+                           autocomplete="off"
                            aria-invalid="<#if messagesPerField.existsError('userLabel')>true</#if>"
                     />
 
                     <#if messagesPerField.existsError('userLabel')>
-                        <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                        <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!}"
+                              aria-live="polite">
                             ${kcSanitize(messagesPerField.get('userLabel'))?no_esc}
                         </span>
                     </#if>
@@ -89,14 +114,14 @@
             </div>
 
             <#if isAppInitiatedAction??>
+                <button type="submit"
+                        class="p-button cursor-pointer bg-white text-primary uppercase mt-3"
+                        id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
+                </button>
                 <input type="submit"
-                       class="p-button w-full cursor-pointer uppercase mt-3"
+                       class="p-button cursor-pointer uppercase mt-3"
                        id="saveTOTPBtn" value="${msg("doSubmit")}"
                 />
-                <button type="submit"
-                        class="p-button w-full cursor-pointer bg-white text-primary uppercase mt-3"
-                        id="cancelTOTPBtn" name="cancel-aia" value="true" />${msg("doCancel")}
-                </button>
             <#else>
                 <input type="submit"
                        class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
