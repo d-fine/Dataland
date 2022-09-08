@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import javax.transaction.Transactional
 
 /**
  * A service class for managing data meta-information
@@ -18,6 +19,8 @@ class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
     @Autowired private val companyManager: CompanyManagerInterface
 ) : DataMetaInformationManagerInterface {
+
+    @Transactional
     override fun storeDataMetaInformation(
         company: StoredCompanyEntity,
         dataId: String,

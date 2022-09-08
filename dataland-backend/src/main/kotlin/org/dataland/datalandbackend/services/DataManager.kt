@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import javax.transaction.Transactional
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -40,7 +39,6 @@ class DataManager(
         return dataMetaInformation
     }
 
-    @Transactional
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
