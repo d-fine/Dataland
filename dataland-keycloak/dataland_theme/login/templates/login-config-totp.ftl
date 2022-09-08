@@ -90,11 +90,11 @@
 
             <#if isAppInitiatedAction??>
                 <input type="submit"
-                       class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
+                       class="p-button w-full cursor-pointer uppercase mt-3"
                        id="saveTOTPBtn" value="${msg("doSubmit")}"
                 />
                 <button type="submit"
-                        class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!} ${properties.kcButtonLargeClass!}"
+                        class="p-button w-full cursor-pointer bg-white text-primary uppercase mt-3"
                         id="cancelTOTPBtn" name="cancel-aia" value="true" />${msg("doCancel")}
                 </button>
             <#else>
