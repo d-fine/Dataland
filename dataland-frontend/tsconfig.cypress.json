@@ -1,0 +1,15 @@
+// REF: https://docs.cypress.io/guides/tooling/typescript-support#Install-TypeScript
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext", "dom"],
+    "types": ["cypress", "node"],
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./cypress/*"],
+      "@clients/*": ["./build/clients/*"]
+    }
+  },
+  "include": ["cypress/**/*.ts", "build/clients/**/*"]
+}

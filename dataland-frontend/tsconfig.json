@@ -8,7 +8,7 @@
       "path": "./tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.cypress-ct.json"
+      "path": "./tsconfig.cypress.json"
     }
   ]
 }
