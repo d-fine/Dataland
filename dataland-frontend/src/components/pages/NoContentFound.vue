@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
 export default {
   name: "NoContentFound",
   components: { TheContent, TheHeader },
