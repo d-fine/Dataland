@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
+import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
@@ -46,7 +47,13 @@ class DataManager(
                 "for company ID ${storableDataSet.companyId}, " +
                 "Company Name ${company.companyName} to EuroDaT Interface"
         )
-        val dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
+        val dataId: String
+        try {
+            dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
+        } catch (e: ServerException) {
+            logger.error("Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}")
+            throw e
+        }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} " +
                 "for company ID ${storableDataSet.companyId}, " +
@@ -59,7 +66,13 @@ class DataManager(
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
         val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
         logger.info("Requesting Data with ID $dataId and type $dataType from EuroDat")
-        val dataAsString = edcClient.selectDataById(dataId)
+        val dataAsString: String
+        try {
+            dataAsString = edcClient.selectDataById(dataId)
+        } catch (e: ServerException) {
+            logger.error("Error receiving selectDataById Request to Eurodat. Received ServerException with Message: ${e.message}")
+            throw e
+        }
         logger.info("Received Dataset of length ${dataAsString.length}")
         if (dataAsString == "") {
             throw IllegalArgumentException(
