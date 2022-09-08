@@ -4,7 +4,12 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@/../build/clients/backend";
+import {
+  StoredCompany,
+  CompanyInformation,
+  DataMetaInformation,
+  DataTypeEnum,
+} from "@clients/backend";
 import Keycloak from "keycloak-js";
 
 export interface DataSearchStoredCompany {
@@ -39,7 +44,9 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
-function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<object> {
+function mapStoredCompanyToFrameworkDataSearchPage(
+  responseData: Array<StoredCompany>
+): Array<object> {
   return responseData.map((company) => ({
     companyName: company.companyInformation.companyName,
     companyInformation: company.companyInformation,
@@ -83,12 +90,16 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 ): Promise<Array<object>> {
   let mappedResponse: object[] = [];
 
-  const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
+  const frameworkFilter = frameworksToFilter
+    ? new Set(frameworksToFilter)
+    : new Set(Object.values(DataTypeEnum));
   const stockIndexFilter = stockIndex ? new Set([stockIndex]) : undefined;
   const searchFilter = searchString ? searchString : "";
 
   try {
-    const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
+    const companyDataControllerApi = await new ApiClientProvider(
+      keycloakPromise
+    ).getCompanyDataControllerApi();
     const response = await companyDataControllerApi.getCompanies(
       searchFilter,
       stockIndexFilter,
@@ -103,7 +114,9 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   return mappedResponse;
 }
 
-export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
+export function getRouterLinkTargetFramework(
+  companyData: DataSearchStoredCompany
+): string {
   const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
   const companyId = companyData.companyId;
   if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;

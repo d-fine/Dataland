@@ -32,76 +32,22 @@
     "@faker-js/faker": "^7.5.0",
     "@jest/globals": "^29.0.2",
     "@types/node": "^18.7.16",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vue/eslint-config-typescript": "^11.0.1",
     "@vue/test-utils": "^2.0.2",
     "cypress": "^10.7.0",
+    "eslint": "8.22.0",
     "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.4.0",
     "git-commit-id": "^2.0.1",
     "mocha": "^10.0.0",
     "npm-check-updates": "^16.1.0",
     "sass": "^1.54.9",
+    "typescript": "^4.8.2",
     "vite": "^3.1.0"
-  },
-  "prettier": {
-    "printWidth": 120
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "plugins": [
-      "prettier"
-    ],
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "@vue/typescript"
-    ],
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    },
-    "rules": {
-      "prettier/prettier": "warn"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "nyc": {
-    "report-dir": "coverage/e2e",
-    "reporter": [
-      "lcov",
-      "json"
-    ],
-    "all": true,
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "**/*.test.js",
-      "**/test.js",
-      "**/*.stories.js",
-      "**/stories.js",
-      "src/main.ts",
-      "src/components/helper/*"
-    ]
   }
 }
