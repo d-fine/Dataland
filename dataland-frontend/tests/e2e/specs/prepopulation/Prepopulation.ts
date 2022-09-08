@@ -5,7 +5,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
 } from "../../../../build/clients/backend";
-const chunkSize = 10;
+const chunkSize = 5;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
