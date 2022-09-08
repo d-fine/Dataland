@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ux
 
+source ./deployment/deployment_utils.sh
+
 environment=$1
 source ./deployment/deployment_utils.sh
 
@@ -21,10 +23,7 @@ curl "$TARGETSERVER_STARTUP_URL" > /dev/null
 echo "Setting $environment server as deployment target"
 target_server_url="$TARGETSERVER_URL"
 
-mkdir -p ~/.ssh/
-echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
-echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+setup_ssh
 
 timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
 
@@ -38,8 +37,10 @@ ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; 
 envsubst < environments/.env.template > .env
 
 scp ./.env ubuntu@"$target_server_url":$location
-scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
+scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
 scp -r ./dataland-keycloak/dataland_theme/login/dist ubuntu@$target_server_url:$location/dataland-keycloak/dataland_theme/login
+scp -r ./dataland-pgadmin ubuntu@$target_server_url:$location
+scp ./dataland-keycloak/start_keycloak.sh ubuntu@"$target_server_url":$location/dataland-keycloak/start_keycloak.sh
 scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileFrontend
 scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileBackend
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
@@ -59,4 +60,4 @@ echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
-timeout 240 bash -c "while ! curl -L https://$target_server_url/api/actuator/health/ping 2>/dev/null | grep -q UP; do echo 'Waiting for backend to finish boot process.'; sleep 5; done; echo 'Backend available!'"
+wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
