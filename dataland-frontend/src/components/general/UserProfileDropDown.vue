@@ -62,7 +62,9 @@ export default {
       this.getKeycloakPromise()
         .then((keycloak) => {
           if (keycloak.authenticated) {
-            keycloak.logout({ redirectUri: "/" });
+            let baseUrl = window.location.origin;
+            const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}` });
+            location.assign(url);
           }
         })
         .catch((error) => console.log("error: " + error));

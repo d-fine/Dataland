@@ -19,22 +19,32 @@ services:
     networks:
       - external
       - internal
-      - backend-db
-      - keycloak-db
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:5433-5434:5433-5434"
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
     environment:
       # The primary server URL all other URLS get redirected to
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
-      # This is the path to the letsencrypt directory (usualy /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
+      # This is the path to the letsencrypt directory (usually /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
+  admin-proxy:
+    build:
+      context: ./dataland-inbound-admin-proxy
+    restart: always
+    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    networks:
+      - external
+      - internal
+      - backend-db
+      - keycloak-db
+    ports:
+      - "127.0.0.1:6789:6789"
+      - "127.0.0.1:5433-5434:5433-5434"
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -57,6 +67,7 @@ services:
       SKYMINDER_URL: ${SKYMINDER_URL}
       SKYMINDER_USER: ${SKYMINDER_USER}
       SKYMINDER_PW: ${SKYMINDER_PW}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
   backend-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
@@ -83,12 +94,17 @@ services:
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       ENVIRONMENT: ${ENVIRONMENT}
+      CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
       REALDATA: ${REALDATA}
     links:
       - proxy:dataland-local.duckdns.org
+      - admin-proxy:dataland-admin
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
@@ -134,7 +150,7 @@ services:
     profiles: ["production"]
     image: ghcr.io/d-fine/datalandedc/edcserver:0.2.2
     networks:
-     - internal
+      - internal
     expose:
       - "9191"
       - "9292"
@@ -210,7 +226,7 @@ services:
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/opt/keycloak/data/import
-    command: start --import-realm
+    command: initialize
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -229,21 +245,21 @@ services:
     depends_on:
       - keycloak-db
   pgadmin:
-    image: dpage/pgadmin4
+    build: dataland-pgadmin
     networks:
       - keycloak-db
       - backend-db
       - internal
-    profiles: ["development"]
-    ports:
-      - "8096:80"
+    profiles: [ "production", "testing", "productionInMemory", "development" ]
     volumes:
-      - ./development/servers.json:/pgadmin4/servers.json
-      - ./development/passfile:/pgadmin4/passfile
+      - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
-      PGADMIN_DEFAULT_PASSWORD: test
-      PGADMIN_DEFAULT_PASSWORD_FILE: /pgadmin4/passfile
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      PGADMIN_DISABLE_POSTFIX: "true"
 networks:
   internal:
   external:

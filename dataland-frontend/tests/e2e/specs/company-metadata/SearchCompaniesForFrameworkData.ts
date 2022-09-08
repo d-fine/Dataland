@@ -190,7 +190,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 describeIf(
   "As a user, I expect the search functionality on the /companies page to adjust to the framework filters",
   {
-    executionEnvironments: ["development"],
+    executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
