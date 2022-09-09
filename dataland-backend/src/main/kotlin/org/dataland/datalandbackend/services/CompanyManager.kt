@@ -108,6 +108,7 @@ class CompanyManager(
         val stockIndices = createAndAssociateStockIndices(savedCompany, companyInformation)
         savedCompany.identifiers = identifiers.toMutableList()
         savedCompany.indices = stockIndices.toMutableSet()
+        logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
         return savedCompany
     }
 
