@@ -51,7 +51,8 @@ class DataManager(
         try {
             dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
-            logger.error("Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}")
+            logger.error("Error sending insertData Request to Eurodat. " +
+                    "Received ServerException with Message: ${e.message}")
             throw e
         }
         logger.info(
@@ -70,7 +71,8 @@ class DataManager(
         try {
             dataAsString = edcClient.selectDataById(dataId)
         } catch (e: ServerException) {
-            logger.error("Error receiving selectDataById Request to Eurodat. Received ServerException with Message: ${e.message}")
+            logger.error("Error receiving selectDataById Request to Eurodat. " +
+                    "Received ServerException with Message: ${e.message}")
             throw e
         }
         logger.info("Received Dataset of length ${dataAsString.length}")
