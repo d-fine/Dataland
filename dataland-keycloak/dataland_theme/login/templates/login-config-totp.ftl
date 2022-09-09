@@ -6,13 +6,13 @@
             ${msg("loginTotpTitle")}
         </div>
     <#elseif section = "form">
-        <ol class="ml-3 p-0" style="list-style-type: none" id="kc-totp-settings">
+        <ol class="ml-3 p-0 p-tfa-list" id="kc-totp-settings">
 
-            <li class="flex bg-white font-semibold mb-4">
-                <h2 class="font-medium mt-2">Step 1</h2>
-                <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+            <li class="bg-white font-semibold mb-4">
+                <div class="p-3 ml-3 p-tfa-instruction-box">
                     <p class="m-0">${msg("loginTotpStep1")}</p>
-                    <ul style="list-style-image: url('${url.resourcesPath}/img/check.svg')" id="kc-totp-supported-apps">
+                    <ul style="list-style-type:none; list-style-image: url('${url.resourcesPath}/img/check.svg')"
+                        id="kc-totp-supported-apps">
                         <#list totp.policy.supportedApplications as app>
                             <li>${app}</li>
                         </#list>
@@ -21,30 +21,29 @@
             </li>
 
 
-
             <#if mode?? && mode = "manual">
 
-                <li class="flex bg-white font-semibold mb-4">
-                    <h2 class="font-medium mt-2">Step 2</h2>
-                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                <li class="bg-white font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
-                        <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("loginTotpScanBarcode")}</a></p>
+                        <p class="flex flex-row-reverse">
+                            <a class="text-primary" href="${totp.qrUrl}" id="mode-barcode">${msg("loginTotpScanBarcode")}</a>
+                        </p>
                     </div>
                 </li>
 
-                <li class="flex bg-white font-semibold mb-4">
-                    <h2 class="font-medium mt-2">Step 3</h2>
-                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                <li class="bg-white font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box">
                         <p class="m-0">${msg("loginTotpManualStep3")}</p>
                         <p>
-                        <ul>
+                        <ul style="list-style-type:none">
                             <li id="kc-totp-type">${msg("loginTotpType")}: ${msg("loginTotp." + totp.policy.type)}</li>
                             <li id="kc-totp-algorithm">${msg("loginTotpAlgorithm")}
                                 : ${totp.policy.getAlgorithmKey()}</li>
-                            <li id="kc-totp-digits">${msg("loginTotpDigits")}: ${totp.policy.digits}</li>
+                            <li id="kc-totp-digits">${msg("loginTogiotpDigits")}: ${totp.policy.digits}</li>
                             <#if totp.policy.type = "totp">
-                                <li id="kc-totp-period">${msg("loginTotpInterval")}: ${totp.policy.period}</li>
+                                <li id="kc-totp-period">${msg("lnTotpInterval")}: ${totp.policy.period}</li>
                             <#elseif totp.policy.type = "hotp">
                                 <li id="kc-totp-counter">${msg("loginTotpCounter")}: ${totp.policy.initialCounter}</li>
                             </#if>
@@ -57,13 +56,15 @@
 
             <#else>
 
-                <li class="flex bg-white font-semibold mb-4">
-                    <h2 class="font-medium mt-2">Step 2</h2>
-                    <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+                <li class="bg-white font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box">
                         <p class="m-0">${msg("loginTotpStep2")}</p>
                         <div class="flex">
-                            <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode">
-                            <a href="${totp.manualUrl}" id="mode-manual">${msg("loginTotpUnableToScan")}</a>
+                            <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}"
+                                 alt="Figure: Barcode">
+                            <div class="w-full mb-5 flex flex-wrap align-content-end flex-row-reverse">
+                                <a class="text-primary" href="${totp.manualUrl}" id="mode-manual">${msg("loginTotpUnableToScan")}</a>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -71,10 +72,8 @@
             </#if>
 
 
-
-            <li class="flex bg-white font-semibold mb-4">
-                <h2 class="font-medium mt-2">Step 3</h2>
-                <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
+            <li class="bg-white font-semibold mb-4">
+                <div class="p-3 ml-3 p-tfa-instruction-box">
                     <p class="m-0">${msg("loginTotpStep3")}</p>
                     <p>${msg("loginTotpStep3DeviceName")}</p>
                 </div>
@@ -134,9 +133,6 @@
                 <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
                 <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>
             </div>
-
-
-
 
 
             <#if isAppInitiatedAction??>

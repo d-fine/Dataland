@@ -1,0 +1,14 @@
+.p-tfa-list {
+  list-style-position: inside;
+}
+
+ol > li::marker {
+  content: "Step "counter(list-item);
+  font-size: 1.2rem;
+}
+
+.p-tfa-instruction-box {
+  width: 463px;
+  border: 1px solid #E0DFDE;
+  border-radius: 4px
+}
