@@ -8,13 +8,15 @@
     <#elseif section = "form">
         <ol class="ml-3 p-0 p-tfa-list" id="kc-totp-settings">
 
-            <li class="bg-white font-semibold mb-4">
-                <div class="p-3 ml-3 p-tfa-instruction-box">
+            <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+                <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                     <p class="m-0">${msg("loginTotpStep1")}</p>
-                    <ul style="list-style-type:none; list-style-image: url('${url.resourcesPath}/img/check.svg')"
+                    <ul class="p-tfa-no-markers pl-0" style="list-style-image: url('${url.resourcesPath}/img/check.svg')"
                         id="kc-totp-supported-apps">
                         <#list totp.policy.supportedApplications as app>
-                            <li>${app}</li>
+                            <li>
+                                &ensp;${app}
+                            </li>
                         </#list>
                     </ul>
                 </div>
@@ -23,8 +25,8 @@
 
             <#if mode?? && mode = "manual">
 
-                <li class="bg-white font-semibold mb-4">
-                    <div class="p-3 ml-3 p-tfa-instruction-box">
+                <li class="font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
                         <p class="flex flex-row-reverse">
@@ -34,19 +36,33 @@
                     </div>
                 </li>
 
-                <li class="bg-white font-semibold mb-4">
-                    <div class="p-3 ml-3 p-tfa-instruction-box">
+                <li class="font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep3")}</p>
                         <p>
-                        <ul style="list-style-type:none">
-                            <li id="kc-totp-type">${msg("loginTotpType")}: ${msg("loginTotp." + totp.policy.type)}</li>
-                            <li id="kc-totp-algorithm">${msg("loginTotpAlgorithm")}
-                                : ${totp.policy.getAlgorithmKey()}</li>
-                            <li id="kc-totp-digits">${msg("loginTogiotpDigits")}: ${totp.policy.digits}</li>
+                        <ul class="p-tfa-no-markers pl-0">
+                            <li id="kc-totp-type">
+                                <span class="font-normal">${msg("loginTotpType")}:</span>
+                                ${msg("loginTotp." + totp.policy.type)}
+                            </li>
+                            <li id="kc-totp-algorithm">
+                                <span class="font-normal">${msg("loginTotpAlgorithm")}:</span>
+                                ${totp.policy.getAlgorithmKey()}
+                            </li>
+                            <li id="kc-totp-digits">
+                                <span class="font-normal">${msg("loginTotpDigits")}:</span>
+                                ${totp.policy.digits}
+                            </li>
                             <#if totp.policy.type = "totp">
-                                <li id="kc-totp-period">${msg("lnTotpInterval")}: ${totp.policy.period}</li>
+                                <li id="kc-totp-period">
+                                    <span class="font-normal">${msg("loginTotpInterval")}:</span>
+                                    ${totp.policy.period}
+                                </li>
                             <#elseif totp.policy.type = "hotp">
-                                <li id="kc-totp-counter">${msg("loginTotpCounter")}: ${totp.policy.initialCounter}</li>
+                                <li id="kc-totp-counter">
+                                    <span class="font-normal">${msg("loginTotpCounter")}:</span>
+                                    ${totp.policy.initialCounter}
+                                </li>
                             </#if>
                         </ul>
                         </p>
@@ -57,8 +73,8 @@
 
             <#else>
 
-                <li class="bg-white font-semibold mb-4">
-                    <div class="p-3 ml-3 p-tfa-instruction-box">
+                <li class="font-semibold mb-4">
+                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpStep2")}</p>
                         <div class="flex">
                             <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}"
@@ -74,8 +90,8 @@
             </#if>
 
 
-            <li class="bg-white font-semibold mb-4">
-                <div class="p-3 ml-3 p-tfa-instruction-box">
+            <li class="font-semibold mb-4">
+                <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
 
                     <p class="m-0">${msg("loginTotpStep3")}</p>
                     <p class="p-tfa-text-devicename">${msg("loginTotpStep3DeviceName")}</p>

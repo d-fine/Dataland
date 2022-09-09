@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" href="${url.resourcesPath}/css/dist.css"/>
     </head>
-    <body style="text-align: left">
+    <body style="text-align: left; background: #F7F9FA">
         <!-- Back button -->
 
         <a href="<#nested "backUrl">" class="cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline" id="back_button">

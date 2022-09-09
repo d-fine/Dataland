@@ -2,9 +2,17 @@
   list-style-position: inside;
 }
 
+.p-tfa-spaced-list-item {
+  line-height: 200%;
+}
+
 ol > li::marker {
   content: "Step "counter(list-item);
   font-size: 1.2rem;
+}
+
+.p-tfa-no-markers {
+ list-style-type:none;
 }
 
 .p-tfa-instruction-box {
