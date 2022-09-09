@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -28,6 +29,7 @@ class CompanyDataController(
         return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
     }
 
+    @Transactional
     override fun getCompanies(
         searchString: String?,
         stockIndices: Set<StockIndex>?,
