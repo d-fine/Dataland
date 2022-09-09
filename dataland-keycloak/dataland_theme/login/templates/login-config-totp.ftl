@@ -11,11 +11,12 @@
             <li class="font-semibold mb-4 p-tfa-spaced-list-item">
                 <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                     <p class="m-0">${msg("loginTotpStep1")}</p>
-                    <ul class="p-tfa-no-markers pl-0" style="list-style-image: url('${url.resourcesPath}/img/check.svg')"
+                    <ul class="p-tfa-no-markers pl-0"
                         id="kc-totp-supported-apps">
                         <#list totp.policy.supportedApplications as app>
-                            <li>
-                                &ensp;${app}
+                            <li class="flex align-items-center">
+                                <img src="${url.resourcesPath}/img/check.svg">
+                                &emsp;${app}
                             </li>
                         </#list>
                     </ul>
