@@ -7,6 +7,7 @@
         </div>
     <#elseif section = "form">
         <ol class="ml-3 p-0" style="list-style-type: none" id="kc-totp-settings">
+
             <li class="flex bg-white font-semibold mb-4">
                 <h2 class="font-medium mt-2">Step 1</h2>
                 <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
@@ -19,7 +20,10 @@
                 </div>
             </li>
 
+
+
             <#if mode?? && mode = "manual">
+
                 <li class="flex bg-white font-semibold mb-4">
                     <h2 class="font-medium mt-2">Step 2</h2>
                     <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
@@ -28,6 +32,7 @@
                         <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("loginTotpScanBarcode")}</a></p>
                     </div>
                 </li>
+
                 <li class="flex bg-white font-semibold mb-4">
                     <h2 class="font-medium mt-2">Step 3</h2>
                     <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
@@ -47,7 +52,11 @@
                         </p>
                     </div>
                 </li>
+
+
+
             <#else>
+
                 <li class="flex bg-white font-semibold mb-4">
                     <h2 class="font-medium mt-2">Step 2</h2>
                     <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
@@ -58,7 +67,11 @@
                         </div>
                     </div>
                 </li>
+
             </#if>
+
+
+
             <li class="flex bg-white font-semibold mb-4">
                 <h2 class="font-medium mt-2">Step 3</h2>
                 <div class="p-3 ml-3" style="width: 463px; border: 1px solid #E0DFDE; border-radius: 4px">
@@ -68,28 +81,14 @@
             </li>
         </ol>
 
+
+
+
+
+
+
         <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form" method="post">
-            <div class="w-5">
-                <div class="${properties.kcInputWrapperClass!}">
-                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
-                            class="required">*</span>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="totp" name="totp" autocomplete="off" class="${properties.kcInputClass!}"
-                           aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
-                    />
 
-                    <#if messagesPerField.existsError('totp')>
-                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
-                              aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('totp'))?no_esc}
-                        </span>
-                    </#if>
-
-                </div>
-                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
-                <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>
-            </div>
 
             <div class="w-5">
                 <div class="${properties.kcInputWrapperClass!}">
@@ -113,6 +112,33 @@
                 </div>
             </div>
 
+
+            <div class="w-5">
+                <div class="${properties.kcInputWrapperClass!}">
+                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
+                            class="required">*</span>
+                </div>
+                <div class="${properties.kcInputWrapperClass!}">
+                    <input type="text" id="totp" name="totp" autocomplete="off" class="${properties.kcInputClass!}"
+                           aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
+                    />
+
+                    <#if messagesPerField.existsError('totp')>
+                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
+                              aria-live="polite">
+                            ${kcSanitize(messagesPerField.get('totp'))?no_esc}
+                        </span>
+                    </#if>
+
+                </div>
+                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
+                <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>
+            </div>
+
+
+
+
+
             <#if isAppInitiatedAction??>
                 <button type="submit"
                         class="p-button cursor-pointer bg-white text-primary uppercase mt-3"
@@ -128,6 +154,8 @@
                        id="saveTOTPBtn" value="${msg("doSubmit")}"
                 />
             </#if>
+
+
         </form>
     </#if>
 </@layout.registrationLayout>
