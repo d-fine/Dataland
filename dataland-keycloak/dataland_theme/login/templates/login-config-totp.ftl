@@ -26,7 +26,7 @@
 
             <#if mode?? && mode = "manual">
 
-                <li class="font-semibold mb-4">
+                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
                     <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
@@ -37,7 +37,7 @@
                     </div>
                 </li>
 
-                <li class="font-semibold mb-4">
+                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
                     <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep3")}</p>
                         <p>
@@ -74,7 +74,7 @@
 
             <#else>
 
-                <li class="font-semibold mb-4">
+                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
                     <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpStep2")}</p>
                         <div class="flex">
@@ -91,7 +91,7 @@
             </#if>
 
 
-            <li class="font-semibold mb-4">
+            <li class="font-semibold mb-4 p-tfa-spaced-list-item">
                 <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
 
                     <p class="m-0">${msg("loginTotpStep3")}</p>
