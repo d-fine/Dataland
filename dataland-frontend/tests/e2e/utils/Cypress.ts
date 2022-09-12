@@ -8,6 +8,7 @@ export function doThingsInChunks<T>(
 ): Chainable<any> {
   let promise: Promise<any> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
+    console.log(`Processing chunk ${i} to ${i + chunkSize}`);
     const chunk = dataArray.slice(i, i + chunkSize);
     promise = promise.then(() => Promise.all(chunk.map((element) => processor(element))));
   }
