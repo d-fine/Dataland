@@ -10,7 +10,8 @@ ENV KC_PROXY_ADDRESS_FORWARDING=true
 COPY ./dataland-keycloak/dataland_theme/login/dist /opt/keycloak/themes/dataland_theme/login
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
+ENV KC_HOSTNAME_ADMIN=dataland-admin:6789
+COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
 
 RUN /opt/keycloak/bin/kc.sh build
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD "start --optimized"
+ENTRYPOINT ["/opt/keycloak/bin/start_keycloak.sh"]
