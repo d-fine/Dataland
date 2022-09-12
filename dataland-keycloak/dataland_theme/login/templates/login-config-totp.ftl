@@ -9,9 +9,9 @@
         <ol class="ml-3 p-0 p-tfa-list" id="kc-totp-settings">
 
             <li class="font-semibold mb-4 p-tfa-spaced-list-item">
-                <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
-                    <p class="m-0">${msg("loginTotpStep1")}</p>
-                    <ul class="p-tfa-no-markers pl-0"
+                <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
+                    <p class="m-0 mb-3">${msg("loginTotpStep1")}</p>
+                    <ul class="p-tfa-no-markers-first pl-0"
                         id="kc-totp-supported-apps">
                         <#list totp.policy.supportedApplications as app>
                             <li class="flex align-items-center">
@@ -27,7 +27,7 @@
             <#if mode?? && mode = "manual">
 
                 <li class="font-semibold mb-4 p-tfa-spaced-list-item">
-                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
+                    <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
                         <p class="flex flex-row-reverse">
@@ -38,7 +38,7 @@
                 </li>
 
                 <li class="font-semibold mb-4 p-tfa-spaced-list-item">
-                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
+                    <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep3")}</p>
                         <p>
                         <ul class="p-tfa-no-markers pl-0">
@@ -75,7 +75,7 @@
             <#else>
 
                 <li class="font-semibold mb-4 p-tfa-spaced-list-item">
-                    <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
+                    <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpStep2")}</p>
                         <div class="flex">
                             <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}"
@@ -92,79 +92,92 @@
 
 
             <li class="font-semibold mb-4 p-tfa-spaced-list-item">
-                <div class="p-3 ml-3 p-tfa-instruction-box bg-white">
 
-                    <p class="m-0">${msg("loginTotpStep3")}</p>
-                    <p class="p-tfa-text-devicename">${msg("loginTotpStep3DeviceName")}</p>
+                <div class="w-11">
+                    <div class="p-3 pt-2 pb-0 ml-3 p-tfa-instruction-box bg-white p-tfa-remove-border-bottom">
+
+                        <p class="m-0">${msg("loginTotpStep3")}</p>
+                        <p class="mb-0 p-tfa-text-devicename">${msg("loginTotpStep3DeviceName")}</p>
+
+                    </div>
+
 
                     <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form"
                           method="post">
 
+                        <div class="p-3 pt-2 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-remove-border-top">
 
-                        <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
-                            <input type="text" class="${properties.kcInputClass!} p-tfa-input-field" id="userLabel"
-                                   name="userLabel"
-                                   autocomplete="off"
-                                   aria-invalid="<#if messagesPerField.existsError('userLabel')>true</#if>"
-                                   placeholder="Device name<#if totp.otpCredentials?size gte 1>*</#if>"
-                            />
+                            <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
+                                <input type="text" class="${properties.kcInputClass!} p-tfa-input-field" id="userLabel"
+                                       name="userLabel"
+                                       autocomplete="off"
+                                       aria-invalid="<#if messagesPerField.existsError('userLabel')>true</#if>"
+                                       placeholder="Device name<#if totp.otpCredentials?size gte 1>*</#if>"
+                                />
 
-                            <#if messagesPerField.existsError('userLabel')>
-                                <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!}"
-                                      aria-live="polite">
+                                <#if messagesPerField.existsError('userLabel')>
+                                    <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!}"
+                                          aria-live="polite">
                                      ${kcSanitize(messagesPerField.get('userLabel'))?no_esc}
                                 </span>
-                            </#if>
+                                </#if>
+                            </div>
 
                         </div>
 
 
-                        <div class="${properties.kcInputWrapperClass!}">
-                            <label for="totp" class="control-label">${msg("authenticatorCode")}</label>
-                            <span class="required p-tfa-asterisk-red">*</span>
+                        <div class="flex justify-content-between">
+
+
+                            <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
+                                <div class="${properties.kcInputWrapperClass!}">
+                                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label>
+                                    <span class="required p-tfa-asterisk-red">*</span>
+                                </div>
+
+                                <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
+                                    <input type="text" id="totp" name="totp" autocomplete="off"
+                                           class="${properties.kcInputClass!} p-tfa-input-field"
+                                           aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
+                                           placeholder="Enter the code"
+                                    />
+
+                                    <#if messagesPerField.existsError('totp')>
+                                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
+                                              aria-live="polite">
+                                            ${kcSanitize(messagesPerField.get('totp'))?no_esc}
+                                    </span>
+                                    </#if>
+                                </div>
+
+
+                                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
+                                <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/>
+                                </#if>
+                            </div>
+
+
+                            <div class="flex align-items-end flex-row-reverse">
+                                <#if isAppInitiatedAction??>
+                                    <input type="submit"
+                                           class="p-button p-tfa-button cursor-pointer uppercase mt-3 ml-3"
+                                           id="saveTOTPBtn" value="${msg("doSubmit")}"
+                                    />
+                                    <button type="submit"
+                                            class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
+                                            id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
+                                    </button>
+                                <#else>
+                                    <input type="submit"
+                                           class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
+                                           id="saveTOTPBtn" value="${msg("doSubmit")}"
+                                    />
+                                </#if>
+                            </div>
+
                         </div>
-
-                        <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
-                            <input type="text" id="totp" name="totp" autocomplete="off"
-                                   class="${properties.kcInputClass!} p-tfa-input-field"
-                                   aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
-                                   placeholder="Enter the code"
-                            />
-
-                            <#if messagesPerField.existsError('totp')>
-                                <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
-                                      aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('totp'))?no_esc}
-                        </span>
-                            </#if>
-                        </div>
-
-
-                        <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
-                        <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/>
-                        </#if>
-
-                        <div class="w-full flex align-content-end flex-row-reverse">
-                            <#if isAppInitiatedAction??>
-                                <input type="submit"
-                                       class="p-button p-tfa-button cursor-pointer uppercase mt-3 ml-3"
-                                       id="saveTOTPBtn" value="${msg("doSubmit")}"
-                                />
-                                <button type="submit"
-                                        class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
-                                        id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
-                                </button>
-                            <#else>
-                                <input type="submit"
-                                       class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
-                                       id="saveTOTPBtn" value="${msg("doSubmit")}"
-                                />
-                            </#if>
-                        </div>
-
 
                     </form>
-
 
                 </div>
 

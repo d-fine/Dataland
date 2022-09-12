@@ -3,7 +3,7 @@
 }
 
 .p-tfa-spaced-list-item {
-  line-height: 200%;
+  line-height: 130%;
   display: flex;
   counter-increment: Li-count 1;
 }
@@ -11,16 +11,34 @@
 ol > li::before {
   content: "Step "counter(Li-count);
   font-size: 1.2rem;
+  padding-top: 0.5rem;
+}
+
+.p-tfa-no-markers-first {
+ list-style-type:none;
+  line-height: 200%;
 }
 
 .p-tfa-no-markers {
- list-style-type:none;
+  list-style-type:none;
 }
 
 .p-tfa-instruction-box {
   width: 463px;
   border: 1px solid #E0DFDE;
   border-radius: 4px
+}
+
+.p-tfa-remove-border-top {
+  border-top: none;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.p-tfa-remove-border-bottom {
+  border-bottom: none;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .p-tfa-text-devicename {
@@ -42,4 +60,5 @@ ol > li::before {
 .p-tfa-button {
   font-size: 0.65rem;
   font-weight: 600;
+  height: 40%;
 }
