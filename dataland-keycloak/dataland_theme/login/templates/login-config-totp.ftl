@@ -116,7 +116,7 @@
                                 />
 
                                 <#if messagesPerField.existsError('userLabel')>
-                                    <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!}"
+                                    <span id="input-error-otp-label" class="${properties.kcInputErrorMessageClass!} input-error"
                                           aria-live="polite">
                                      ${kcSanitize(messagesPerField.get('userLabel'))?no_esc}
                                 </span>
@@ -143,7 +143,7 @@
                                     />
 
                                     <#if messagesPerField.existsError('totp')>
-                                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!}"
+                                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!} input-error"
                                               aria-live="polite">
                                             ${kcSanitize(messagesPerField.get('totp'))?no_esc}
                                     </span>
