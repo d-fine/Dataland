@@ -28,7 +28,7 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
         logger.info(
-            "Received a request to post company associated data " +
+            "Received a request to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"
         )
         val dataIdOfPostedData = dataManager.addDataSet(
