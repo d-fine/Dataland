@@ -1,4 +1,4 @@
-<#import "dataland_template_full_width.ftl" as layout>
+<#import "dataland_template_tfa.ftl" as layout>
 <@layout.registrationLayout displayRequiredFields=false displayMessage=!messagesPerField.existsError('totp','userLabel'); section>
 
     <#if section = "header">
@@ -6,12 +6,12 @@
             ${msg("loginTotpTitle")}
         </div>
     <#elseif section = "form">
-        <ol class="ml-3 p-0 p-tfa-list" id="kc-totp-settings">
+        <ol class="ml-3 p-0 p-tfa-ordered-list" id="kc-totp-settings">
 
-            <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+            <li class="font-semibold mb-4 p-tfa-ordered-list-item">
                 <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                     <p class="m-0 mb-3">${msg("loginTotpStep1")}</p>
-                    <ul class="p-tfa-no-markers-first pl-0"
+                    <ul class="p-tfa-unordered-list-with-linebreak pl-0"
                         id="kc-totp-supported-apps">
                         <#list totp.policy.supportedApplications as app>
                             <li class="flex align-items-center">
@@ -26,7 +26,7 @@
 
             <#if mode?? && mode = "manual">
 
-                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+                <li class="font-semibold mb-4 p-tfa-ordered-list-item">
                     <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
@@ -37,11 +37,11 @@
                     </div>
                 </li>
 
-                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+                <li class="font-semibold mb-4 p-tfa-ordered-list-item">
                     <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep3")}</p>
                         <p>
-                        <ul class="p-tfa-no-markers pl-0">
+                        <ul class="p-tfa-unordered-list pl-0">
                             <li id="kc-totp-type">
                                 <span class="font-normal">${msg("loginTotpType")}:</span>
                                 ${msg("loginTotp." + totp.policy.type)}
@@ -74,7 +74,7 @@
 
             <#else>
 
-                <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+                <li class="font-semibold mb-4 p-tfa-ordered-list-item">
                     <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpStep2")}</p>
                         <div class="flex">
@@ -91,13 +91,13 @@
             </#if>
 
 
-            <li class="font-semibold mb-4 p-tfa-spaced-list-item">
+            <li class="font-semibold mb-4 p-tfa-ordered-list-item">
 
                 <div class="w-11">
-                    <div class="p-3 pt-2 pb-0 ml-3 p-tfa-instruction-box bg-white p-tfa-remove-border-bottom">
+                    <div class="p-3 pt-2 pb-0 ml-3 p-tfa-instruction-box bg-white p-tfa-instruction-box-remove-border-bottom">
 
                         <p class="m-0">${msg("loginTotpStep3")}</p>
-                        <p class="mb-0 p-tfa-text-devicename">${msg("loginTotpStep3DeviceName")}</p>
+                        <p class="mb-0 p-tfa-text-devicename-color">${msg("loginTotpStep3DeviceName")}</p>
 
                     </div>
 
@@ -105,10 +105,10 @@
                     <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form"
                           method="post">
 
-                        <div class="p-3 pt-3 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-remove-border-top">
+                        <div class="p-3 pt-3 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-instruction-box-remove-border-top">
 
-                            <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
-                                <input type="text" class="${properties.kcInputClass!} p-tfa-input-field" id="userLabel"
+                            <div class="${properties.kcInputWrapperClass!} p-tfa-input-width-limit">
+                                <input type="text" class="${properties.kcInputClass!} p-tfa-input-grey-bottom-border" id="userLabel"
                                        name="userLabel"
                                        autocomplete="off"
                                        aria-invalid="<#if messagesPerField.existsError('userLabel')>true</#if>"
@@ -130,14 +130,14 @@
 
 
                             <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
-                                <div class="${properties.kcInputWrapperClass!} p-tfa-one-time-code">
+                                <div class="${properties.kcInputWrapperClass!} p-tfa-text-one-time-code-title-size">
                                     <label for="totp" class="control-label">${msg("authenticatorCode")}</label>
-                                    <span class="required p-tfa-asterisk-red">*</span>
+                                    <span class="required p-tfa-text-asterisk-red">*</span>
                                 </div>
 
-                                <div class="${properties.kcInputWrapperClass!} pt-3 p-tfa-input-wrapper">
+                                <div class="${properties.kcInputWrapperClass!} pt-3 p-tfa-input-width-limit">
                                     <input type="text" id="totp" name="totp" autocomplete="off"
-                                           class="${properties.kcInputClass!} p-tfa-input-field"
+                                           class="${properties.kcInputClass!} p-tfa-input-grey-bottom-border"
                                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
                                            placeholder="Enter the code"
                                     />

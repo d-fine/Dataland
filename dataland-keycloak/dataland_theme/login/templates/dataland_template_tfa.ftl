@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" href="${url.resourcesPath}/css/dist.css"/>
     </head>
-    <body style="text-align: left; background: #F7F9FA">
+    <body class="p-tfa-body">
     <!-- Back button -->
 
 
@@ -23,7 +23,7 @@
 
 
         <button type="submit"
-                class="p-tfa-back-button cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline"
+                class="p-tfa-button-back cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline"
                 id="cancelTOTPBtn" name="cancel-aia" value="true"/>
         <span class="material-icons text-primary">arrow_back_ios</span>
         <span class="ml-2 text-primary font-semibold d-letters">BACK</span>

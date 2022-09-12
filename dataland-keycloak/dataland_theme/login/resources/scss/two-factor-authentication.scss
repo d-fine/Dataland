@@ -1,26 +1,27 @@
-.p-tfa-list {
-  list-style-position: inside;
+.p-tfa-body {
+  text-align: left;
+  background: #F7F9FA;
 }
 
-.p-tfa-spaced-list-item {
-  line-height: 130%;
-  display: flex;
-  counter-increment: Li-count 1;
-}
-
-ol > li::before {
+.p-tfa-ordered-list > li::before {
   content: "Step "counter(Li-count);
   font-size: 1.2rem;
   padding-top: 0.5rem;
 }
 
-.p-tfa-no-markers-first {
- list-style-type:none;
-  line-height: 200%;
+.p-tfa-ordered-list-item {
+  line-height: 130%;
+  display: flex;
+  counter-increment: Li-count 1;
 }
 
-.p-tfa-no-markers {
+.p-tfa-unordered-list {
   list-style-type:none;
+}
+
+.p-tfa-unordered-list-with-linebreak {
+ list-style-type:none;
+  line-height: 200%;
 }
 
 .p-tfa-instruction-box {
@@ -29,32 +30,36 @@ ol > li::before {
   border-radius: 4px
 }
 
-.p-tfa-remove-border-top {
+.p-tfa-instruction-box-remove-border-top {
   border-top: none;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
 
-.p-tfa-remove-border-bottom {
+.p-tfa-instruction-box-remove-border-bottom {
   border-bottom: none;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
 
-.p-tfa-text-devicename {
-  color: #958D7C;
-}
-
-.p-tfa-input-field {
+.p-tfa-input-grey-bottom-border {
   border-bottom: 1px solid #958D7C !important;
 }
 
-.p-tfa-input-wrapper {
+.p-tfa-input-width-limit {
   width: 364px;
 }
 
-.p-tfa-asterisk-red {
+.p-tfa-text-asterisk-red {
   color: #EE1A1A;
+}
+
+.p-tfa-text-devicename-color {
+  color: #958D7C;
+}
+
+.p-tfa-text-one-time-code-title-size {
+  font-size: 1.3125rem;
 }
 
 .p-tfa-button {
@@ -63,11 +68,7 @@ ol > li::before {
   height: 30%;
 }
 
-.p-tfa-one-time-code {
-  font-size: 1.3125rem;
-}
-
-.p-tfa-back-button {
+.p-tfa-button-back {
   border: none;
   background: none;
 }
