@@ -9,7 +9,11 @@ export function doThingsInChunks<T>(
   let promise: Promise<any> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
-    promise = promise.then(() => Promise.all(chunk.map((element) => processor(element))));
+    promise = promise.then(() => {
+      console.log("Chunksize: " + chunk.length);
+      console.log("index "+i)
+      return Promise.all(chunk.map((element) => processor(element)));
+    });
   }
   return cy.then(() => {
     return wrapPromiseToCypressPromise(promise);

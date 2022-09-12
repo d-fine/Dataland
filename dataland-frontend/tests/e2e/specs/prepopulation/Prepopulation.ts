@@ -5,7 +5,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
 } from "../../../../build/clients/backend";
-const chunkSize = 2;
+const chunkSize = 15;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
@@ -72,7 +72,7 @@ describe(
           return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
             .then((response) => response.json())
             .then((companyUploadResponseJson) => {
-              browserPromiseUploadSingleElementOnce(
+              return browserPromiseUploadSingleElementOnce(
                 endpoint,
                 {
                   companyId: companyUploadResponseJson.companyId,
