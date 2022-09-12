@@ -30,7 +30,7 @@
                     <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
                         <p class="m-0">${msg("loginTotpManualStep2")}</p>
                         <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
-                        <p class="flex flex-row-reverse">
+                        <p class="flex flex-row-reverse m-0">
                             <a class="text-primary" href="${totp.qrUrl}"
                                id="mode-barcode">${msg("loginTotpScanBarcode")}</a>
                         </p>
@@ -105,7 +105,7 @@
                     <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form"
                           method="post">
 
-                        <div class="p-3 pt-2 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-remove-border-top">
+                        <div class="p-3 pt-3 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-remove-border-top">
 
                             <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
                                 <input type="text" class="${properties.kcInputClass!} p-tfa-input-field" id="userLabel"
@@ -130,12 +130,12 @@
 
 
                             <div class="p-3 pt-2 ml-3 p-tfa-instruction-box bg-white">
-                                <div class="${properties.kcInputWrapperClass!}">
+                                <div class="${properties.kcInputWrapperClass!} p-tfa-one-time-code">
                                     <label for="totp" class="control-label">${msg("authenticatorCode")}</label>
                                     <span class="required p-tfa-asterisk-red">*</span>
                                 </div>
 
-                                <div class="${properties.kcInputWrapperClass!} p-tfa-input-wrapper">
+                                <div class="${properties.kcInputWrapperClass!} pt-3 p-tfa-input-wrapper">
                                     <input type="text" id="totp" name="totp" autocomplete="off"
                                            class="${properties.kcInputClass!} p-tfa-input-field"
                                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
@@ -169,7 +169,7 @@
                                     </button>
                                 <#else>
                                     <input type="submit"
-                                           class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
+                                           class="p-button p-tfa-button cursor-pointer uppercase mt-3 ml-3"
                                            id="saveTOTPBtn" value="${msg("doSubmit")}"
                                     />
                                 </#if>
