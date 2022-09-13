@@ -1,4 +1,4 @@
-import { login, logout } from "../../utils/Auth";
+import {getKeycloakToken, login, logout} from "../../utils/Auth";
 
 describe("As a user I want to be able to login and I want the login page to behave as I expect", () => {
   it("Checks that login & logout works", () => {
@@ -14,4 +14,10 @@ describe("As a user I want to be able to login and I want the login page to beha
       .url()
       .should("eq", Cypress.config("baseUrl") + "/");
   });
+
+  it.only("Checks that the code verifier is included in the request token", ( )=> {
+
+    getKeycloakToken()
+  });
+
 });
