@@ -50,6 +50,7 @@ class CompanyDataController(
         )
     }
 
+    @Transactional
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(companyManager.getCompanyById(companyId).toApiModel())
     }
