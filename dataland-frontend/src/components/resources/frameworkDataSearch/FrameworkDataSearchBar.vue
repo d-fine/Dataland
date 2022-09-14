@@ -8,12 +8,7 @@
             aria-hidden="true"
             style="z-index: 20; color: #958d7c"
           />
-          <i
-            v-if="loading"
-            class="pi pi-spinner pi-spin"
-            aria-hidden="true"
-            style="z-index: 20; color: #e67f3f"
-          />
+          <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           <i v-else aria-hidden="true" />
           <AutoComplete
             :suggestions="autocompleteArrayDisplayed"
@@ -32,23 +27,15 @@
           >
             <template #item="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter
-                :text="slotProps.item.companyName"
-                :searchString="this.modelValue"
-              />
+              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="this.modelValue" />
             </template>
             <template #footer>
               <ul
                 class="p-autocomplete-items pt-0"
-                v-if="
-                  autocompleteArray &&
-                  autocompleteArray.length >= maxNumAutoCompleteEntries
-                "
+                v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
               >
                 <li class="p-autocomplete-item" @click="handleKeyupEnter">
-                  <span class="text-primary font-medium underline pl-3">
-                    View all results
-                  </span>
+                  <span class="text-primary font-medium underline pl-3"> View all results </span>
                 </li>
               </ul>
             </template>
@@ -172,10 +159,7 @@ export default {
         this.frameworksToFilterFor,
         this.getKeycloakPromise()
       );
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(
-        0,
-        this.maxNumAutoCompleteEntries
-      );
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
       this.loading = false;
     },
     getRouterLinkTargetFrameworkInt(companyData) {

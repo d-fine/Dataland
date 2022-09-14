@@ -8,9 +8,7 @@ describe("Unit test for StringHumanizer", () => {
   });
 
   it("Check if strings other than stock indices and specific keywords are converted from camel case to sentence case", () => {
-    expect(humanizeString("ThisIsACamelCaseString")).to.equal(
-      "This Is A Camel Case String"
-    );
+    expect(humanizeString("ThisIsACamelCaseString")).to.equal("This Is A Camel Case String");
     expect(humanizeString("companyFullName")).to.equal("Company Full Name");
     expect(humanizeString("PrimeStandards")).to.equal("Prime Standards");
   });

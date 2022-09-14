@@ -7,11 +7,7 @@ import {
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "../../../build/clients/backend";
 
-import {
-  convertToPercentageString,
-  getAttestation,
-  getCompanyType,
-} from "./CsvUtils";
+import { convertToPercentageString, getAttestation, getCompanyType } from "./CsvUtils";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { getCsvCompanyMapping } from "./CompanyFixtures";
 const { parse } = require("json2csv");
@@ -19,9 +15,7 @@ const { parse } = require("json2csv");
 const resolution = 0.0001;
 
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
-  const attestation = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForFinancialsAttestationEnum)
-  );
+  const attestation = faker.helpers.arrayElement(Object.values(EuTaxonomyDataForFinancialsAttestationEnum));
   const reportingObligation = faker.helpers.arrayElement(
     Object.values(EuTaxonomyDataForFinancialsReportingObligationEnum)
   );
@@ -61,9 +55,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
     });
   }
 
-  const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis()])
-  );
+  const eligibilityKpis = Object.fromEntries(financialServicesTypes.map((it) => [it, generateEligibilityKpis()]));
 
   return {
     reportingObligation: reportingObligation,
@@ -76,8 +68,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
       tradingPortfolioAndInterbankLoans: tradingPortfolioAndInterbankLoans,
     },
     insuranceKpis: {
-      taxonomyEligibleNonLifeInsuranceActivities:
-        taxonomyEligibleNonLifeInsuranceActivities,
+      taxonomyEligibleNonLifeInsuranceActivities: taxonomyEligibleNonLifeInsuranceActivities,
     },
   };
 }
@@ -112,18 +103,12 @@ export function generateEligibilityKpis(): EligibilityKpis {
   };
 }
 
-export function getCsvEligibilityKpiMapping(
-  type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-) {
+export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum) {
   return [
     {
-      label: `Exposures to taxonomy-eligible economic activities ${getCompanyType(
-        type
-      )}`,
+      label: `Exposures to taxonomy-eligible economic activities ${getCompanyType(type)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-        convertToPercentageString(
-          row.t.eligibilityKpis![type]?.taxonomyEligibleActivity
-        ),
+        convertToPercentageString(row.t.eligibilityKpis![type]?.taxonomyEligibleActivity),
     },
     {
       label: `Exposures to derivatives ${getCompanyType(type)}`,
@@ -131,81 +116,56 @@ export function getCsvEligibilityKpiMapping(
         convertToPercentageString(row.t.eligibilityKpis![type]?.derivatives),
     },
     {
-      label: `Exposures to central governments, central banks, supranational issuers ${getCompanyType(
-        type
-      )}`,
+      label: `Exposures to central governments, central banks, supranational issuers ${getCompanyType(type)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-        convertToPercentageString(
-          row.t.eligibilityKpis![type]?.banksAndIssuers
-        ),
+        convertToPercentageString(row.t.eligibilityKpis![type]?.banksAndIssuers),
     },
     {
       label: `Exposures to non-NFRD entities ${getCompanyType(type)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-        convertToPercentageString(
-          row.t.eligibilityKpis![type]?.investmentNonNfrd
-        ),
+        convertToPercentageString(row.t.eligibilityKpis![type]?.investmentNonNfrd),
     },
   ];
 }
 
 export function generateCSVDataForFinancials(
-  companyInformationWithEuTaxonomyDataForFinancials: Array<
-    FixtureData<EuTaxonomyDataForFinancials>
-  >
+  companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
 ) {
   const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
-      ...getCsvEligibilityKpiMapping(
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
-      ),
-      ...getCsvEligibilityKpiMapping(
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution
-      ),
-      ...getCsvEligibilityKpiMapping(
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement
-      ),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
       {
         label: "Trading portfolio & on demand interbank loans",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(
-            row.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
-          ),
+          convertToPercentageString(row.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans),
       },
       {
         label: "Trading portfolio",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(
-            row.t.creditInstitutionKpis?.tradingPortfolio
-          ),
+          convertToPercentageString(row.t.creditInstitutionKpis?.tradingPortfolio),
       },
       {
         label: "On-demand interbank loans",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(
-            row.t.creditInstitutionKpis?.interbankLoans
-          ),
+          convertToPercentageString(row.t.creditInstitutionKpis?.interbankLoans),
       },
       {
         label: "Taxonomy-eligible non-life insurance economic activities",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          convertToPercentageString(
-            row.t.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities
-          ),
+          convertToPercentageString(row.t.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities),
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
       {
         label: "NFRD mandatory",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          row.t.reportingObligation,
+        value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportingObligation,
       },
       {
         label: "FS - company type",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          row.t.financialServicesTypes
-            .map((it) => getCompanyType(it))
-            .join(", "),
+          row.t.financialServicesTypes.map((it) => getCompanyType(it)).join(", "),
       },
       {
         label: "Assurance",

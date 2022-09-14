@@ -11,31 +11,14 @@
         }"
         @submit="executeSkyminderSearch"
       >
-        <FormKit
-          type="text"
-          name="code"
-          validation="required"
-          label="Country Code"
-        />
-        <FormKit
-          type="text"
-          name="name"
-          validation="required"
-          label="Company Name"
-        />
+        <FormKit type="text" name="code" validation="required" label="Country Code" />
+        <FormKit type="text" name="name" validation="required" label="Company Name" />
       </FormKit>
       <br />
       <PrimeButton @click="clearSearch" label="Clear" />
       <div v-if="skyminderSearchResponse" class="col m12">
         <SkyminderTable
-          :headers="[
-            'Name',
-            'Address',
-            'Website',
-            'Email',
-            'Phone',
-            'Identifier',
-          ]"
+          :headers="['Name', 'Address', 'Website', 'Email', 'Phone', 'Identifier']"
           :data="skyminderSearchResponse.data"
         />
       </div>
@@ -71,8 +54,7 @@ export default {
         const skyminderControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getSkyminderControllerApi();
-        this.skyminderSearchResponse =
-          await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
+        this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {
         console.error(error);
       }

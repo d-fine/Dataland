@@ -4,20 +4,11 @@ export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
   dataEnvironments: Array<DataEnvironment>;
 }
-export type ExecutionEnvironment =
-  | "developmentLocal"
-  | "development"
-  | "preview";
+export type ExecutionEnvironment = "developmentLocal" | "development" | "preview";
 export type DataEnvironment = "fakeFixtures" | "realData";
 
-export function describeIf(
-  name: string,
-  execConfig: ExecutionConfig,
-  fn: (this: Suite) => void
-): Suite {
-  const executionEnvironment = Cypress.env(
-    "EXECUTION_ENVIRONMENT"
-  ) as ExecutionEnvironment;
+export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
+  const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment;
   const dataEnvironment = Cypress.env("DATA_ENVIRONMENT") as DataEnvironment;
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {

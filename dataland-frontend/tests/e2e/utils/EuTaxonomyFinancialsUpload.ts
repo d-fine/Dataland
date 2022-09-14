@@ -1,52 +1,30 @@
 import { EuTaxonomyDataForFinancials, EligibilityKpis } from "@clients/backend";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept("**/api/data/eutaxonomy-financials").as(
-    "postCompanyAssociatedData"
-  );
+  cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
-  return cy
-    .wait("@postCompanyAssociatedData")
-    .get("body")
-    .should("contain", "success");
+  return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }
 
-export function uploadDummyEuTaxonomyDataForFinancials(
-  companyId: string
-): Cypress.Chainable {
-  cy.visitAndCheckAppMount(
-    `/companies/${companyId}/frameworks/eutaxonomy-financials/upload`
-  );
+export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypress.Chainable {
+  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
   fillEuTaxonomyFinancialsDummyUploadFields();
   return submitEuTaxonomyFinancialsUploadForm();
 }
 
 export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
-  cy.get("select[name=financialServicesTypes]").select(
-    data.financialServicesTypes
-  );
+  cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes);
   cy.get("select[name=attestation]").select(data.attestation.toString());
-  cy.get(
-    `input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`
-  ).check();
+  cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
   if (data.eligibilityKpis !== undefined) {
     if (data.eligibilityKpis.CreditInstitution !== undefined) {
-      fillEligibilityKpis(
-        "CreditInstitution",
-        data.eligibilityKpis.CreditInstitution
-      );
+      fillEligibilityKpis("CreditInstitution", data.eligibilityKpis.CreditInstitution);
     }
     if (data.eligibilityKpis.InsuranceOrReinsurance !== undefined) {
-      fillEligibilityKpis(
-        "InsuranceOrReinsurance",
-        data.eligibilityKpis.InsuranceOrReinsurance
-      );
+      fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis.InsuranceOrReinsurance);
     }
     if (data.eligibilityKpis.AssetManagement !== undefined) {
-      fillEligibilityKpis(
-        "AssetManagement",
-        data.eligibilityKpis.AssetManagement
-      );
+      fillEligibilityKpis("AssetManagement", data.eligibilityKpis.AssetManagement);
     }
   }
   if (data.insuranceKpis !== undefined) {
@@ -57,16 +35,8 @@ export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
     );
   }
   if (data.creditInstitutionKpis !== undefined) {
-    fillField(
-      "",
-      "tradingPortfolioAndInterbankLoans",
-      data.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
-    );
-    fillField(
-      "",
-      "tradingPortfolio",
-      data.creditInstitutionKpis.tradingPortfolio
-    );
+    fillField("", "tradingPortfolioAndInterbankLoans", data.creditInstitutionKpis.tradingPortfolioAndInterbankLoans);
+    fillField("", "tradingPortfolio", data.creditInstitutionKpis.tradingPortfolio);
     fillField("", "interbankLoans", data.creditInstitutionKpis.interbankLoans);
   }
 }
@@ -84,9 +54,7 @@ function fillField(divName: string, inputName: string, value?: any) {
     if (divName === "") {
       cy.get(`input[name="${inputName}"]`).type(input);
     } else {
-      cy.get(`div[name="${divName}"]`)
-        .find(`input[name="${inputName}"]`)
-        .type(input);
+      cy.get(`div[name="${divName}"]`).find(`input[name="${inputName}"]`).type(input);
     }
   }
 }

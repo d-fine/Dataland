@@ -1,14 +1,10 @@
 import { CompanyInformationIndicesEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
-import {
-  checkViewButtonWorks,
-  verifyTaxonomySearchResultTable,
-} from "../../utils/CompanySearch";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 
 const numberOfStockIndices = Object.keys(CompanyInformationIndicesEnum).length;
 
 describe("As a user, I expect the index selection tabs to work on /searchtaxonomy", function () {
-  const indexTabMenu =
-    ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
+  const indexTabMenu = ".p-tabmenu > .p-tabmenu-nav > .p-tabmenuitem > .p-menuitem-link";
   beforeEach(() => {
     cy.ensureLoggedIn();
   });
@@ -16,11 +12,7 @@ describe("As a user, I expect the index selection tabs to work on /searchtaxonom
   it("Index tabmenu should be present", () => {
     cy.visitAndCheckAppMount("/companies");
     cy.get(".p-tabmenuitem").should("have.length", numberOfStockIndices);
-    cy.get(indexTabMenu)
-      .should("exist")
-      .eq(1)
-      .parent(".p-tabmenuitem")
-      .should("have.css", "color", "rgb(27, 27, 27)");
+    cy.get(indexTabMenu).should("exist").eq(1).parent(".p-tabmenuitem").should("have.css", "color", "rgb(27, 27, 27)");
     verifyTaxonomySearchResultTable();
     checkViewButtonWorks();
     cy.get(indexTabMenu).should("not.exist");

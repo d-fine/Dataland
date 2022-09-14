@@ -85,9 +85,7 @@ export class SchemaGenerator {
       } else if (this.getType(index) == "array") {
         /* create a checkbox form */
         if ("enum" in propertiesSchema[index].items) {
-          const enumProperties = this.processEnum(
-            propertiesSchema[index].items.enum
-          );
+          const enumProperties = this.processEnum(propertiesSchema[index].items.enum);
           schema.push({
             $formkit: "checkbox",
             label: humanizeString(index),

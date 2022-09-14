@@ -27,8 +27,6 @@ describe("Component test for SchemaGenerator", () => {
       },
     };
     const dataStore = new SchemaGenerator(testSchema);
-    expect(Object.keys(dataStore.generate()).length).to.equal(
-      Object.keys(testSchema.properties).length
-    );
+    expect(Object.keys(dataStore.generate()).length).to.equal(Object.keys(testSchema.properties).length);
   });
 });

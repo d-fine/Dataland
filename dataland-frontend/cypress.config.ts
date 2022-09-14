@@ -31,7 +31,7 @@ export default defineConfig({
     supportFile: "tests/component/component.ts",
     indexHtmlFile: "tests/component/component-index.html",
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config);
+      require("@cypress/code-coverage/task")(on, config);
       return config;
     },
   },

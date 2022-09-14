@@ -24,11 +24,7 @@
             class="d-bg-white w-3 d-datatable-column-left"
           >
           </Column>
-          <Column
-            field="companyInformation.permId"
-            :sortable="false"
-            class="d-bg-white w-2"
-          >
+          <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
             <template #header>
               <span class="uppercase">PERM ID</span>
               <i
@@ -48,12 +44,7 @@
               {{ data.permId ? data.permId : "Not available" }}
             </template>
           </Column>
-          <Column
-            field="companyInformation.sector"
-            header="SECTOR"
-            :sortable="true"
-            class="d-bg-white w-2"
-          />
+          <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
           <Column
             field="companyInformation.marketCap"
             header="MARKET CAP"
@@ -65,39 +56,21 @@
               {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
             </template>
           </Column>
-          <Column
-            field="companyInformation.headquarters"
-            header="LOCATION"
-            :sortable="true"
-            class="d-bg-white w-2"
-          >
+          <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
             <template #body="{ data }">
-              {{
-                buildLocationString(
-                  data.companyInformation.headquarters,
-                  data.companyInformation.countryCode
-                )
-              }}
+              {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}
             </template>
           </Column>
-          <Column
-            field="companyId"
-            header=""
-            class="d-bg-white w-1 d-datatable-column-right"
-          >
+          <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="{ data }">
-              <router-link
-                :to="getRouterLinkTargetFrameworkInt(data)"
-                class="text-primary no-underline font-bold"
+              <router-link :to="getRouterLinkTargetFrameworkInt(data)" class="text-primary no-underline font-bold"
                 ><span> VIEW</span> <span class="ml-3">></span>
               </router-link>
             </template>
           </Column>
         </DataTable>
         <div class="d-center-div text-center px-7 py-4" v-else>
-          <p class="font-medium text-xl">
-            Sorry! The company you searched for was not found in our database.
-          </p>
+          <p class="font-medium text-xl">Sorry! The company you searched for was not found in our database.</p>
           <p class="font-medium">Try again please!</p>
         </div>
       </div>

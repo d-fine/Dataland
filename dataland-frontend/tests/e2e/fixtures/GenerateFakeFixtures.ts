@@ -37,46 +37,31 @@ function generateFixtureDataset<T>(generator: () => T): Array<FixtureData<T>> {
 }
 
 function exportFixturesEuTaxonomyNonFinancial() {
-  const companyInformationWithEuTaxonomyDataForNonFinancials =
-    generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
-      generateEuTaxonomyDataForNonFinancials
-    );
-  companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany =
-    true;
+  const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
+    generateEuTaxonomyDataForNonFinancials
+  );
+  companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany = true;
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
-    JSON.stringify(
-      companyInformationWithEuTaxonomyDataForNonFinancials,
-      null,
-      "\t"
-    )
+    JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
   );
   fs.writeFileSync(
     "../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv",
-    generateCSVDataForNonFinancials(
-      companyInformationWithEuTaxonomyDataForNonFinancials
-    )
+    generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials)
   );
 }
 
 function exportFixturesEuTaxonomyFinancial() {
-  const companyInformationWithEuTaxonomyDataForFinancials =
-    generateFixtureDataset<EuTaxonomyDataForFinancials>(
-      generateEuTaxonomyDataForFinancials
-    );
+  const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
+    generateEuTaxonomyDataForFinancials
+  );
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
-    JSON.stringify(
-      companyInformationWithEuTaxonomyDataForFinancials,
-      null,
-      "\t"
-    )
+    JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
   );
   fs.writeFileSync(
     "../testing/data/csvTestEuTaxonomyDataForFinancials.csv",
-    generateCSVDataForFinancials(
-      companyInformationWithEuTaxonomyDataForFinancials
-    )
+    generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials)
   );
 }
 

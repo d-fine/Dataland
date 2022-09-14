@@ -3,11 +3,7 @@
     <div class="d-center-div">
       <h1 class="text-justify text-base font-normal">
         Checking Log-In status.
-        <i
-          class="pi pi-spinner pi-spin"
-          aria-hidden="true"
-          style="z-index: 20; color: #e67f3f"
-        />
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </h1>
     </div>
   </div>

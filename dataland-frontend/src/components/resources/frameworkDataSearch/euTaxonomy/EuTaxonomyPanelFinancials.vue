@@ -20,12 +20,8 @@
       </div>
       <template v-for="fsType in dataSet.financialServicesTypes" :key="fsType">
         <div class="col-12 text-left pb-3">
-          <span class="font-medium text-xl"
-            >Exposures for {{ getSectionHeading(fsType) }}</span
-          >
-          <span class="pl-2 font-italic text-gray-100"
-            >In percentage of the total assets</span
-          >
+          <span class="font-medium text-xl">Exposures for {{ getSectionHeading(fsType) }}</span>
+          <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
         </div>
         <div class="col-6">
           <TaxoCard
@@ -59,25 +55,20 @@
         <template v-if="fsType === 'CreditInstitution'">
           <div class="col-12 text-left pb-3">
             <span class="font-medium text-xl">Credit Institution KPIs</span>
-            <span class="pl-2 font-italic text-gray-100"
-              >In percentage of the total assets</span
-            >
+            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
           </div>
           <div
             class="col-6"
             v-if="
               dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans ||
-              (!dataSet.creditInstitutionKpis.tradingPortfolio &&
-                !dataSet.creditInstitutionKpis.interbankLoans)
+              (!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans)
             "
           >
             <TaxoCard
               title="Trading portfolio & on demand interbank loans"
               name="tradingPortfolioAndOnDemandInterbankLoans"
               taxonomy-kind=""
-              :percent="
-                dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
-              "
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans"
             />
           </div>
           <div
@@ -109,20 +100,14 @@
         </template>
         <template v-if="fsType === 'InsuranceOrReinsurance'">
           <div class="col-12 text-left pb-0">
-            <span class="font-medium text-xl"
-              >Insurance and Reinsurance KPIs</span
-            >
-            <span class="pl-2 font-italic text-gray-100"
-              >In percentage of the total assets</span
-            >
+            <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
+            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
           </div>
           <div class="col-6">
             <TaxoCard
               name="taxonomyEligibleNonLifeInsuranceActivities"
               title="Taxonomy-eligible non-life insurance economic activities"
-              :percent="
-                dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities
-              "
+              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
             />
           </div>
         </template>
@@ -159,14 +144,12 @@ export default {
   methods: {
     async getCompanyEUDataset() {
       try {
-        const euTaxonomyDataForFinancialsControllerApi =
-          await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-        const companyAssociatedData =
-          await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData1(
-            this.dataID
-          );
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+          this.getKeycloakPromise()
+        ).getEuTaxonomyDataForFinancialsControllerApi();
+        const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData1(
+          this.dataID
+        );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);

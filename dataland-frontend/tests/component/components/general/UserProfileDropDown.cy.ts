@@ -1,9 +1,6 @@
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { mount } from "@vue/test-utils";
-import {
-  getInjectedKeycloakObjectsForTest,
-  getRequiredPlugins,
-} from "../../TestUtils";
+import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../TestUtils";
 
 describe("Component test for UserProfileDropDown", () => {
   const TestImagePath = "https://url.to/testImage";

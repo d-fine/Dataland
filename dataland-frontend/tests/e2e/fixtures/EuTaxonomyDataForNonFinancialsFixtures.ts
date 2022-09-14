@@ -5,11 +5,7 @@ import {
   EuTaxonomyDataForNonFinancialsReportingObligationEnum,
 } from "../../../build/clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
-import {
-  convertToPercentageString,
-  decimalSeparatorConverter,
-  getAttestation,
-} from "./CsvUtils";
+import { convertToPercentageString, decimalSeparatorConverter, getAttestation } from "./CsvUtils";
 
 import { getCsvCompanyMapping } from "./CompanyFixtures";
 const { parse } = require("json2csv");
@@ -19,9 +15,7 @@ const minEuro = 50000;
 const resolution = 0.0001;
 
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const attestation = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForNonFinancialsAttestationEnum)
-  );
+  const attestation = faker.helpers.arrayElement(Object.values(EuTaxonomyDataForNonFinancialsAttestationEnum));
   const reportingObligation = faker.helpers.arrayElement(
     Object.values(EuTaxonomyDataForNonFinancialsReportingObligationEnum)
   );
@@ -81,9 +75,7 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
 }
 
 export function generateCSVDataForNonFinancials(
-  companyInformationWithEuTaxonomyDataForNonFinancials: Array<
-    FixtureData<EuTaxonomyDataForNonFinancials>
-  >
+  companyInformationWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
 ) {
   const options = {
     fields: [
@@ -100,8 +92,7 @@ export function generateCSVDataForNonFinancials(
       },
       {
         label: "Total OpEx EURmm",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          decimalSeparatorConverter(row.t.opex?.totalAmount),
+        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) => decimalSeparatorConverter(row.t.opex?.totalAmount),
       },
       {
         label: "Eligible Revenue",
@@ -136,8 +127,7 @@ export function generateCSVDataForNonFinancials(
       { label: "IS/FS", value: "companyType", default: "IS" },
       {
         label: "NFRD mandatory",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          row.t.reportingObligation,
+        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) => row.t.reportingObligation,
       },
       {
         label: "Assurance",

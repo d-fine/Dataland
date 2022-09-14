@@ -4,11 +4,7 @@
     <TheContent class="surface-800 min-h-screen">
       <MarginWrapper class="text-left mt-2 surface-0">
         <BackButton />
-        <FrameworkDataSearchBar
-          class="mt-2"
-          v-model="currentInput"
-          @companies-received="handleQueryCompany"
-        />
+        <FrameworkDataSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
       </MarginWrapper>
       <MarginWrapper class="surface-0">
         <div class="grid align-items-end">
@@ -66,13 +62,8 @@ export default {
     },
     async getDataIdToLoad() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-          this.companyID,
-          this.dataType
-        );
+        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, this.dataType);
         const listOfMetaData = apiResponse.data;
         if (listOfMetaData.length > 0) {
           this.$emit("updateDataId", listOfMetaData[0].dataId);

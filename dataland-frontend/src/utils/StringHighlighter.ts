@@ -3,16 +3,10 @@ export interface StringSplitSearchMatch {
   highlight: boolean;
 }
 
-export function splitStringBySearchMatch(
-  rawText: string,
-  searchString: string
-): Array<StringSplitSearchMatch> {
+export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
   if (searchString == "") return [{ text: rawText, highlight: false }];
   const ret = [];
-  const escapedSearchString = searchString.replace(
-    /[-/\\^$*+?.()|[\]{}]/g,
-    "\\$&"
-  );
+  const escapedSearchString = searchString.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   const regex = new RegExp(escapedSearchString, "gi");
   let match;
   let lastIndex = 0;

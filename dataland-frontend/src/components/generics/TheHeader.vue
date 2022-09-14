@@ -1,14 +1,8 @@
 <template>
-  <div
-    class="d-header m-0 fixed top-0 surface-900 h-4rem w-full grid align-items-center"
-  >
+  <div class="d-header m-0 fixed top-0 surface-900 h-4rem w-full grid align-items-center">
     <div class="col-4 text-left">
       <router-link to="/">
-        <img
-          src="@/assets/images/logos/logo_dataland_long.svg"
-          alt="image"
-          class="pl-3"
-        />
+        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="image" class="pl-3" />
       </router-link>
     </div>
 

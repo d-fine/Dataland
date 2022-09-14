@@ -1,8 +1,6 @@
 <template>
   <template v-for="(element, index) in splitString" :key="index">
-    <span :class="element.highlight ? 'font-semibold' : 'font-normal'">{{
-      element.text
-    }}</span>
+    <span :class="element.highlight ? 'font-semibold' : 'font-normal'">{{ element.text }}</span>
   </template>
 </template>
 

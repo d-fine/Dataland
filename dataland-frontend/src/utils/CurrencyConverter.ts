@@ -27,9 +27,7 @@ export function convertCurrencyNumbersToNotationWithLetters(
       return numberToConvert >= part.value;
     });
   return item
-    ? (numberToConvert / item.value)
-        .toFixed(maxNumberOfDigitsAfterDecimalPoint)
-        .replace(regex, "$1") +
+    ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
         " " +
         item.symbol
     : "0";

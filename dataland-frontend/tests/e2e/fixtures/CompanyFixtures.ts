@@ -15,13 +15,8 @@ export function generateCompanyInformation(): CompanyInformation {
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
   const marketCap = faker.mersenne.rand(10000000, 50000);
-  const reportingDateOfMarketCap = faker.date
-    .past()
-    .toISOString()
-    .split("T")[0];
-  const indices = faker.helpers.arrayElements(
-    Object.values(CompanyInformationIndicesEnum)
-  );
+  const reportingDateOfMarketCap = faker.date.past().toISOString().split("T")[0];
+  const indices = faker.helpers.arrayElements(Object.values(CompanyInformationIndicesEnum));
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
     .arrayElements([
@@ -88,27 +83,22 @@ export function getCsvCompanyMapping<T>() {
     {
       label: "Market Capitalization Date",
       value: (row: FixtureData<T>) =>
-        new Date(
-          row.companyInformation.reportingDateOfMarketCap
-        ).toLocaleDateString(dateLocale, dateOptions),
+        new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
     },
     {
       label: "Teaser Company",
-      value: (row: FixtureData<T>) =>
-        row.companyInformation.isTeaserCompany ? "Yes" : "No",
+      value: (row: FixtureData<T>) => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
     ...Object.values(CompanyInformationIndicesEnum).map((e) => {
       return {
         label: humanizeString(e),
-        value: (row: FixtureData<T>) =>
-          getStockIndexValueForCsv(row.companyInformation.indices, e),
+        value: (row: FixtureData<T>) => getStockIndexValueForCsv(row.companyInformation.indices, e),
       };
     }),
     ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((e) => {
       return {
         label: humanizeString(e),
-        value: (row: FixtureData<T>) =>
-          getIdentifierValueForCsv(row.companyInformation.identifiers, e),
+        value: (row: FixtureData<T>) => getIdentifierValueForCsv(row.companyInformation.identifiers, e),
       };
     }),
   ];

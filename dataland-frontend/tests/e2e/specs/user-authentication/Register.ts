@@ -3,9 +3,7 @@ import { login, logout } from "../../utils/Auth";
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
   const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
-  const randomHexPassword = [...passwordBytes]
-    .map((x) => x.toString(16).padStart(2, "0"))
-    .join("");
+  const randomHexPassword = [...passwordBytes].map((x) => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that registering works", () => {
     cy.visitAndCheckAppMount("/")

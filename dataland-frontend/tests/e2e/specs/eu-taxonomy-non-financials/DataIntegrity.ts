@@ -12,10 +12,7 @@ describeIf(
     const companyIdList: Array<string> = [];
     const companyNames: Array<string> = ["eligible & total", "eligible"];
     beforeEach(() => {
-      cy.ensureLoggedIn(
-        "data_uploader",
-        Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")
-      );
+      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
     /**
@@ -31,27 +28,17 @@ describeIf(
       uploadFormFiller: () => void,
       euTaxonomyPageVerifier: () => void
     ): void {
-      cy.visitAndCheckAppMount(
-        `/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`
-      );
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
       uploadFormFiller();
-      cy.intercept("**/api/data/eutaxonomy-non-financials").as(
-        "postTaxonomyData"
-      );
+      cy.intercept("**/api/data/eutaxonomy-non-financials").as("postTaxonomyData");
       cy.get('button[name="postEUData"]').click({ force: true });
       cy.wait("@postTaxonomyData", { timeout: timeout }).then(() => {
-        cy.get("body")
-          .should("contain", "success")
-          .should("contain", "EU Taxonomy Data");
+        cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.get("span[title=dataId]").then(() => {
           cy.get("span[title=companyId]").then(($companyID) => {
             const companyID = $companyID.text();
-            cy.intercept("**/api/data/eutaxonomy-non-financials/*").as(
-              "retrieveTaxonomyData"
-            );
-            cy.visitAndCheckAppMount(
-              `/companies/${companyID}/frameworks/eutaxonomy-non-financials`
-            );
+            cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
+            cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy-non-financials`);
             cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
               euTaxonomyPageVerifier();
             });
@@ -81,18 +68,12 @@ describeIf(
           });
           cy.get('select[name="attestation"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(
-              `div[title=${argument}] input[name=eligiblePercentage]`
-            ).type(eligible.toString());
-            cy.get(`div[title=${argument}] input[name=totalAmount]`).type(
-              total
-            );
+            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
+            cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
           }
         },
         () => {
-          cy.get("body")
-            .should("contain", "Eligible Revenue")
-            .should("contain", `Out of total of`);
+          cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
           cy.get("body")
             .should("contain", "Eligible Revenue")
             .should("contain", `${100 * eligible}%`);
@@ -111,18 +92,14 @@ describeIf(
           });
           cy.get('select[name="attestation"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(
-              `div[title=${argument}] input[name=eligiblePercentage]`
-            ).type(eligible.toString());
+            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
           }
         },
         () => {
           cy.get("body")
             .should("contain", "Eligible OpEx")
             .should("contain", `${100 * eligible}%`);
-          cy.get("body")
-            .should("contain", "Eligible Revenue")
-            .should("not.contain", `Out of total of`);
+          cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
           cy.get(".font-medium.text-3xl").should("not.contain", "€");
         }
       );

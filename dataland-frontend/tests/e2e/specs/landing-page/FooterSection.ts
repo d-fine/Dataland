@@ -4,10 +4,7 @@ import { DataTypeEnum } from "../../../../build/clients/backend/org/dataland/dat
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {
     cy.visitAndCheckAppMount("/");
-    cy.get('img[alt="Dataland logo"]')
-      .should("be.visible")
-      .should("have.attr", "src")
-      .should("include", "vision");
+    cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("body").should("contain.text", "Legal");
     cy.get("body").should("contain.text", "Copyright © 2022 Dataland");
     cy.get('a span[title="imprint"]')
@@ -38,10 +35,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     ];
 
     function assertFooterPresence() {
-      cy.get('a p[title="data privacy"]').should(
-        "contain.text",
-        "Data Privacy"
-      );
+      cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }
 
     pagesToCheck.forEach((page) => {
@@ -56,9 +50,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on framework ${framework}`, () => {
         retrieveFirstCompanyIdWithFrameworkData(framework).then((companyId) => {
-          cy.visitAndCheckAppMount(
-            `/companies/${companyId}/frameworks/${framework}`
-          );
+          cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
           assertFooterPresence();
         });
       });
