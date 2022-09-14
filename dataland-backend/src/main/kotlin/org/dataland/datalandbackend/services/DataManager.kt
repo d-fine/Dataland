@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
@@ -47,22 +48,30 @@ class DataManager(
                 "for company ID ${storableDataSet.companyId}, " +
                 "Company Name ${company.companyName} to EuroDaT Interface"
         )
+        val dataId: String = storeDataSet(storableDataSet, company)
+        metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
+        return dataId
+    }
+
+    private fun storeDataSet(
+        storableDataSet: StorableDataSet,
+        company: StoredCompanyEntity
+    ): String {
         val dataId: String
         try {
             dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             logger.error(
                 "Error sending insertData Request to Eurodat. " +
-                    "Received ServerException with Message: ${e.message}"
+                        "Received ServerException with Message: ${e.message}"
             )
             throw e
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} " +
-                "for company ID ${storableDataSet.companyId}, " +
-                "Company Name ${company.companyName} received ID $dataId from EuroDaT"
+                    "for company ID ${storableDataSet.companyId}, " +
+                    "Company Name ${company.companyName} received ID $dataId from EuroDaT"
         )
-        metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
 
