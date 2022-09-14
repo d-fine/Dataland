@@ -1,4 +1,7 @@
-import { retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/ApiUtils";
+import {
+  retrieveDataIdsList,
+  retrieveCompanyIdsList,
+} from "../../utils/ApiUtils";
 import { doThingsInChunks } from "../../utils/Cypress";
 import {
   CompanyInformation,
@@ -27,14 +30,18 @@ describe(
     }>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-        companiesWithEuTaxonomyDataForNonFinancials = companies;
-      });
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(
+        function (companies) {
+          companiesWithEuTaxonomyDataForNonFinancials = companies;
+        }
+      );
     });
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-        companiesWithEuTaxonomyDataForFinancials = companies;
-      });
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(
+        function (companies) {
+          companiesWithEuTaxonomyDataForFinancials = companies;
+        }
+      );
     });
     beforeEach(function () {
       cy.ensureLoggedIn();
@@ -63,36 +70,55 @@ describe(
         });
       }
 
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+      cy.getKeycloakToken(
+        "data_uploader",
+        Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")
+      )
         .then((token) => {
-          doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
-            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-              .then((response) => response.json())
-              .then((companyUploadResponseJson) => {
-                browserPromiseUploadSingleElementOnce(
-                  "data/eutaxonomy-non-financials",
-                  {
-                    companyId: companyUploadResponseJson.companyId,
-                    data: element.t,
-                  },
-                  token
-                );
-              });
-          });
-          doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
-            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-              .then((response) => response.json())
-              .then((json) => {
-                browserPromiseUploadSingleElementOnce(
-                  "data/eutaxonomy-financials",
-                  {
-                    companyId: json.companyId,
-                    data: element.t,
-                  },
-                  token
-                );
-              });
-          });
+          doThingsInChunks(
+            companiesWithEuTaxonomyDataForNonFinancials,
+            chunkSize,
+            (element) => {
+              return browserPromiseUploadSingleElementOnce(
+                "companies",
+                element.companyInformation,
+                token
+              )
+                .then((response) => response.json())
+                .then((companyUploadResponseJson) => {
+                  browserPromiseUploadSingleElementOnce(
+                    "data/eutaxonomy-non-financials",
+                    {
+                      companyId: companyUploadResponseJson.companyId,
+                      data: element.t,
+                    },
+                    token
+                  );
+                });
+            }
+          );
+          doThingsInChunks(
+            companiesWithEuTaxonomyDataForFinancials,
+            chunkSize,
+            (element) => {
+              return browserPromiseUploadSingleElementOnce(
+                "companies",
+                element.companyInformation,
+                token
+              )
+                .then((response) => response.json())
+                .then((json) => {
+                  browserPromiseUploadSingleElementOnce(
+                    "data/eutaxonomy-financials",
+                    {
+                      companyId: json.companyId,
+                      data: element.t,
+                    },
+                    token
+                  );
+                });
+            }
+          );
         })
         .should("eq", "done");
     });
@@ -100,13 +126,15 @@ describe(
     it("Check if all the company ids can be retrieved", () => {
       retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
         assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+          allCompanyIdsList.length >=
+            companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} companies`
         );
       });
       retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
         assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+          allCompanyIdsList.length >=
+            companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} companies`
         );
       });
@@ -115,20 +143,24 @@ describe(
     it("Check if all the data ids can be retrieved", () => {
       retrieveDataIdsList().then((allDataIdsList: any) => {
         assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
+          allDataIdsList.length >=
+            companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} datasets`
         );
       });
       retrieveDataIdsList().then((allDataIdsList: any) => {
         assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
+          allDataIdsList.length >=
+            companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} datasets`
         );
       });
     });
 
     it("Company Name Input field exists and works", () => {
-      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+      const inputValue =
+        companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation
+          .companyName;
       cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("input[name=companyName]")
         .should("not.be.disabled")
@@ -137,13 +169,19 @@ describe(
       cy.intercept("**/api/companies*").as("retrieveCompany");
       cy.get("button[name=getCompanies]").click();
       cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
-        cy.get("td").contains(companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName);
+        cy.get("td").contains(
+          companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation
+            .companyName
+        );
       });
     });
 
     it("Show all companies button exists", () => {
       cy.visitAndCheckAppMount("/companies-only-search");
-      cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
+      cy.get("button.p-button")
+        .contains("Show all companies")
+        .should("not.be.disabled")
+        .click();
     });
   }
 );

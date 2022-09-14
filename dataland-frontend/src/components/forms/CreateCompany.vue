@@ -12,15 +12,28 @@
       >
         <FormKitSchema :schema="companyInformationSchema" />
         <FormKit type="list" name="identifiers">
-          <FormKit v-for="nIdentifier in identifierListSize" :key="nIdentifier" type="group">
+          <FormKit
+            v-for="nIdentifier in identifierListSize"
+            :key="nIdentifier"
+            type="group"
+          >
             <FormKitSchema :schema="companyIdentifierSchema" />
           </FormKit>
         </FormKit>
-        <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
+        <FormKit
+          type="submit"
+          :disabled="!valid"
+          label="Post Company"
+          name="postCompanyData"
+        />
       </FormKit>
       <p>{{ model }}</p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
-      <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
+      <Button
+        v-if="identifierListSize > 1"
+        @click="identifierListSize--"
+        class="ml-2"
+      >
         Remove the last identifier
       </Button>
       <template v-if="postCompanyProcessed">
@@ -49,12 +62,23 @@ import Message from "primevue/message";
 
 const companyInformation = backend.components.schemas.CompanyInformation;
 const companyIdentifier = backend.components.schemas.CompanyIdentifier;
-const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation, ["isTeaserCompany"]);
+const companyInformationSchemaGenerator = new SchemaGenerator(
+  companyInformation,
+  ["isTeaserCompany"]
+);
 const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
 
 const createCompany = {
   name: "CreateCompany",
-  components: { FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload },
+  components: {
+    FailedUpload,
+    Card,
+    Message,
+    Button,
+    FormKit,
+    FormKitSchema,
+    SuccessUpload,
+  },
 
   data: () => ({
     postCompanyProcessed: false,
@@ -74,7 +98,9 @@ const createCompany = {
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
-        this.postCompanyResponse = await companyDataControllerApi.postCompany(this.model);
+        this.postCompanyResponse = await companyDataControllerApi.postCompany(
+          this.model
+        );
         this.$formkit.reset("createCompanyForm");
       } catch (error) {
         console.error(error);

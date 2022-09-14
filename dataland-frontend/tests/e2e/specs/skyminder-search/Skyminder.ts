@@ -19,10 +19,15 @@ describe("As a developer I want to ensure that the SkyMinder integration works f
       .click({ force: true })
       .type(inputValueCompany)
       .should("have.value", inputValueCompany);
-    cy.get("button.p-button").contains("Clear").should("not.be.disabled").click();
+    cy.get("button.p-button")
+      .contains("Clear")
+      .should("not.be.disabled")
+      .click();
     cy.get("input[name=code]").should("have.value", "");
     cy.get("input[name=name]").should("have.value", "");
-    cy.get('button[name="getSkyminderData"]').contains("Get Skyminder Data").should("not.be.disabled");
+    cy.get('button[name="getSkyminderData"]')
+      .contains("Get Skyminder Data")
+      .should("not.be.disabled");
   });
 
   it("Should display an error when I make a Skyminder search with no input", () => {

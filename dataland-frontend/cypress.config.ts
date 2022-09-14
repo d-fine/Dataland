@@ -27,5 +27,12 @@ export default defineConfig({
       framework: "vue",
       bundler: "vite",
     },
+    specPattern: ["tests/component/**/*.cy.ts"],
+    supportFile: "tests/component/component.ts",
+    indexHtmlFile: "tests/component/component-index.html",
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config);
+      return config;
+    },
   },
 });

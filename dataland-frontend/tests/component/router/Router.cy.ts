@@ -2,7 +2,6 @@ import { routes } from "@/router";
 import { shallowMount, mount } from "@vue/test-utils";
 import App from "@/App.vue";
 import { createRouter, createWebHistory, Router } from "vue-router";
-import { expect } from "@jest/globals";
 import { getRequiredPlugins } from "../TestUtils";
 
 function mountAppWithRouter(routerToBeUsedWithMount: Router) {
@@ -21,13 +20,13 @@ describe("routerTest", () => {
 
   it("checks if the router is mounted", () => {
     const routesWrapper = shallowMount(routes);
-    expect(routesWrapper.text()).toBeDefined();
+    expect(routesWrapper.text()).to.exist;
   });
 
   it("checks if the router pushes to Welcome page as expected", async () => {
     await router.push("/");
     await router.isReady();
-    expect(mountAppWithRouter(router).html()).toContain(
+    expect(mountAppWithRouter(router).html()).to.contain(
       "COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE COSTS"
     );
   });
@@ -35,6 +34,8 @@ describe("routerTest", () => {
   it("checks if the router pushes to companies page as expected", async () => {
     await router.push("/companies");
     await router.isReady();
-    expect(mountAppWithRouter(router).html()).toContain("Search company by name or PermID");
+    expect(mountAppWithRouter(router).html()).to.contain(
+      "Search company by name or PermID"
+    );
   });
 });

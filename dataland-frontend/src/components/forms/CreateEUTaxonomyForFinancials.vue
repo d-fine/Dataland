@@ -1,6 +1,8 @@
 <template>
   <Card class="col-12">
-    <template #title>Create EU Taxonomy Dataset for a Financial Company/Service</template>
+    <template #title
+      >Create EU Taxonomy Dataset for a Financial Company/Service</template
+    >
     <template #content>
       <FormKit
         v-model="formInputsModel"
@@ -71,7 +73,11 @@
           />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
             <template
-              v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement']"
+              v-for="fsType in [
+                'CreditInstitution',
+                'InsuranceOrReinsurance',
+                'AssetManagement',
+              ]"
               :key="fsType"
             >
               <div :name="fsType">
@@ -113,7 +119,11 @@
               </div>
             </template>
           </FormKit>
-          <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
+          <FormKit
+            type="group"
+            name="creditInstitutionKpis"
+            label="Credit Institution KPIs"
+          >
             <h4>Credit Institution KPIs</h4>
             <FormKit
               type="text"
@@ -151,7 +161,12 @@
               :input-class="inputClass"
             />
           </FormKit>
-          <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+          <FormKit
+            type="submit"
+            :disabled="!valid"
+            label="Post EU-Taxonomy Dataset"
+            name="postEUData"
+          />
         </FormKit>
       </FormKit>
       <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -161,7 +176,11 @@
           :data="postEuTaxonomyDataForFinancialsResponse.data"
           :messageCount="messageCount"
         />
-        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+        <FailedUpload
+          v-else
+          msg="EU Taxonomy Data"
+          :messageCount="messageCount"
+        />
       </template>
     </template>
   </Card>
@@ -205,11 +224,14 @@ export default {
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getEuTaxonomyDataForFinancialsControllerApi();
+        const euTaxonomyDataForFinancialsControllerApi =
+          await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
+          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(
+            this.formInputsModel
+          );
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;

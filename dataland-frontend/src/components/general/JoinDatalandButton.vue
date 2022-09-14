@@ -6,7 +6,9 @@
       @click="register"
     >
       <span class="d-letters d-button"> Join Dataland </span>
-      <i class="material-icons pl-1" aria-hidden="true" alt="chevron_right">chevron_right</i>
+      <i class="material-icons pl-1" aria-hidden="true" alt="chevron_right"
+        >chevron_right</i
+      >
     </PrimeButton>
   </div>
 </template>
@@ -24,7 +26,9 @@ export default {
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             let baseUrl = window.location.origin;
-            const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+            const url = keycloak.createRegisterUrl({
+              redirectUri: `${baseUrl}/companies`,
+            });
             location.assign(url);
           }
         })

@@ -14,12 +14,16 @@ module.exports = (on, config) => {
   switch (process.env.ENVIRONMENT) {
     case "preview":
     case "development": {
-      console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
+      console.log(
+        "Detected preview / development CI environment. Only loading index.ts to run all tests"
+      );
       config.specPattern = ["tests/e2e/specs/index.ts"];
       break;
     }
     default: {
-      console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+      console.log(
+        "Detected local development run. Loading all spec files to allow the user to pick the tests to run"
+      );
       config.specPattern = ["tests/e2e/specs"];
       break;
     }

@@ -1,5 +1,9 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-non-financials" @updateDataId="receiveDataId">
+  <ViewFrameworkBase
+    :companyID="companyID"
+    dataType="eutaxonomy-non-financials"
+    @updateDataId="receiveDataId"
+  >
     <template v-if="frameworkDataId">
       <div class="grid">
         <div class="col-12 text-left">
@@ -7,7 +11,9 @@
         </div>
         <div class="col-6 text-left">
           <p class="font-semibold m-0">2021</p>
-          <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+          <p class="font-semibold text-gray-800 mt-0">
+            Data from company report.
+          </p>
         </div>
       </div>
       <div class="grid">

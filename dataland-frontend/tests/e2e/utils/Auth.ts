@@ -13,7 +13,10 @@ export function logout(): void {
     .should("be.visible");
 }
 
-export function login(username = "data_reader", password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")): void {
+export function login(
+  username = "data_reader",
+  password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")
+): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
     .click()

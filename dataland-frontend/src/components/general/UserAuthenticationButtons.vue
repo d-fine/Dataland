@@ -21,7 +21,9 @@ export default {
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             let baseUrl = window.location.origin;
-            const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+            const url = keycloak.createLoginUrl({
+              redirectUri: `${baseUrl}/companies`,
+            });
             location.assign(url);
           }
         })

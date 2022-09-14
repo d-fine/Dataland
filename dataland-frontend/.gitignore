@@ -20,6 +20,7 @@ node_modules
 *.sw?
 
 # Coverage
+cypress
 reports
 /tests/e2e/videos/
 /.nyc_output/

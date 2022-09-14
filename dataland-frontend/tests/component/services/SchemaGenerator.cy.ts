@@ -1,7 +1,6 @@
 import { SchemaGenerator } from "@/services/SchemaGenerator";
-import { expect } from "@jest/globals";
 
-describe("SchemaGenerator", () => {
+describe("Component test for SchemaGenerator", () => {
   it("checks if the schema can be generated automatically", () => {
     const testSchema = {
       required: ["listProp", "yesNoProp"],
@@ -28,6 +27,8 @@ describe("SchemaGenerator", () => {
       },
     };
     const dataStore = new SchemaGenerator(testSchema);
-    expect(Object.keys(dataStore.generate()).length).toEqual(Object.keys(testSchema.properties).length);
+    expect(Object.keys(dataStore.generate()).length).to.equal(
+      Object.keys(testSchema.properties).length
+    );
   });
 });

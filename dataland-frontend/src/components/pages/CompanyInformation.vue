@@ -6,13 +6,17 @@
 
     <div class="col-4">
       <span>Market Cap:</span>
-      <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
+      <span class="font-semibold"
+        >€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span
+      >
     </div>
     <div class="col-4">
-      <span>Headquarter: </span> <span class="font-semibold">{{ companyInformation.headquarters }}</span>
+      <span>Headquarter: </span>
+      <span class="font-semibold">{{ companyInformation.headquarters }}</span>
     </div>
     <div class="col-4">
-      <span>Sector: </span> <span class="font-semibold">{{ companyInformation.sector }}</span>
+      <span>Sector: </span>
+      <span class="font-semibold">{{ companyInformation.sector }}</span>
     </div>
   </div>
 </template>
@@ -49,8 +53,11 @@ export default {
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
-        this.getCompanyResponse = await companyDataControllerApi.getCompanyById(this.companyID);
-        this.companyInformation = this.getCompanyResponse.data.companyInformation;
+        this.getCompanyResponse = await companyDataControllerApi.getCompanyById(
+          this.companyID
+        );
+        this.companyInformation =
+          this.getCompanyResponse.data.companyInformation;
       } catch (error) {
         console.error(error);
         this.getCompanyResponse = null;

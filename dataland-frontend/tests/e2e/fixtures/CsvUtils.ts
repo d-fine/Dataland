@@ -10,7 +10,9 @@ export function getAttestation(attestation: string) {
   }
 }
 
-export function getCompanyType(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): string {
+export function getCompanyType(
+  type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+): string {
   switch (type) {
     case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement:
       return "Asset Management Company";
@@ -27,7 +29,9 @@ export function decimalSeparatorConverter(value: number | undefined): string {
 }
 export function convertToPercentageString(value: number | undefined): string {
   if (value === undefined) return "";
-  const valueRounded = parseFloat((Math.round(value * 100 * 100) / 100).toFixed(2))
+  const valueRounded = parseFloat(
+    (Math.round(value * 100 * 100) / 100).toFixed(2)
+  )
     .toString()
     .replace(".", ",");
 
@@ -38,10 +42,15 @@ export function getStockIndexValueForCsv(
   setStockIndexList: Set<string> | undefined,
   stockIndexToCheck: string
 ): string {
-  return setStockIndexList && setStockIndexList.has(stockIndexToCheck) ? "x" : "";
+  return setStockIndexList && setStockIndexList.has(stockIndexToCheck)
+    ? "x"
+    : "";
 }
 
-export function getIdentifierValueForCsv(identifierArray: Array<Object>, identifierType: string): string {
+export function getIdentifierValueForCsv(
+  identifierArray: Array<Object>,
+  identifierType: string
+): string {
   const identifierObject: any = identifierArray.find((identifier: any) => {
     return identifier.identifierType === identifierType;
   });

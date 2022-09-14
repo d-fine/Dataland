@@ -4,7 +4,9 @@
     <TheContent class="pl-0 pt-0 min-h-screen surface-800 relative">
       <div
         class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
+        :class="[
+          searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '',
+        ]"
         ref="searchBarAndIndexTabContainer"
       >
         <div class="pt-4" />
@@ -22,11 +24,23 @@
           <div
             :class="[
               pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
+                ? [
+                    'col-12',
+                    'align-items-center',
+                    'grid',
+                    'bg-white',
+                    'd-search-toggle',
+                    'fixed',
+                    'd-shadow-bottom',
+                  ]
                 : 'pl-2',
             ]"
           >
-            <span v-if="!searchBarToggled && pageScrolled" class="mr-3 font-semibold">Search Data for Companies</span>
+            <span
+              v-if="!searchBarToggled && pageScrolled"
+              class="mr-3 font-semibold"
+              >Search Data for Companies</span
+            >
             <PrimeButton
               v-if="!searchBarToggled && pageScrolled"
               name="search_bar_collapse"
@@ -34,7 +48,11 @@
               class="p-button-rounded surface-ground border-none m-2"
               @click="toggleSearchBar"
             >
-              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+              <i
+                class="pi pi-search"
+                aria-hidden="true"
+                style="z-index: 20; color: #958d7c"
+              />
             </PrimeButton>
             <IndexTabMenu
               ref="indexTabs"
@@ -46,7 +64,10 @@
         </MarginWrapper>
       </div>
 
-      <FrameworkDataSearchResults v-if="showSearchResultsTable" :data="resultsArray" />
+      <FrameworkDataSearchResults
+        v-if="showSearchResultsTable"
+        :data="resultsArray"
+      />
     </TheContent>
   </AuthenticationWrapper>
 </template>
@@ -142,7 +163,10 @@ export default {
       let filtered = false;
       if (this.route.query.frameworks !== undefined) {
         this.currentFilteredFrameworks = [];
-        if (typeof this.route.query.frameworks === "string" && this.route.query.frameworks !== "") {
+        if (
+          typeof this.route.query.frameworks === "string" &&
+          this.route.query.frameworks !== ""
+        ) {
           this.currentFilteredFrameworks.push(this.route.query.frameworks);
         } else if (Array.isArray(this.route.query.frameworks)) {
           this.currentFilteredFrameworks = this.route.query.frameworks;
@@ -156,7 +180,10 @@ export default {
       }
 
       if (filtered) {
-        this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
+        this.$refs.frameworkDataSearchBar.queryCompany(
+          this.currentSearchBarInput,
+          this.currentFilteredFrameworks
+        );
       } else {
         this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
         this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
@@ -168,13 +195,17 @@ export default {
       this.showSearchResultsTable = true;
 
       const frameworksQuery =
-        this.currentFilteredFrameworks && this.currentFilteredFrameworks.length === 0
+        this.currentFilteredFrameworks &&
+        this.currentFilteredFrameworks.length === 0
           ? ""
           : this.currentFilteredFrameworks;
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: this.currentSearchBarInput, frameworks: frameworksQuery },
+        query: {
+          input: this.currentSearchBarInput,
+          frameworks: frameworksQuery,
+        },
       });
     },
 

@@ -1,9 +1,11 @@
-import { mount } from "@vue/test-utils";
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
-import { expect } from "@jest/globals";
-import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../TestUtils";
+import { mount } from "@vue/test-utils";
+import {
+  getInjectedKeycloakObjectsForTest,
+  getRequiredPlugins,
+} from "../../TestUtils";
 
-describe("UserProfileDropDownTest", () => {
+describe("Component test for UserProfileDropDown", () => {
   const TestImagePath = "https://url.to/testImage";
   const WrapperComponent = {
     template: '<UserProfileDropDown ref="profileDropdown"/>',
@@ -30,7 +32,7 @@ describe("UserProfileDropDownTest", () => {
     });
     const profileDropdown = wrapper.vm.$refs.profileDropdown;
     wrapper.vm.$nextTick(() => {
-      expect(profileDropdown.$refs["profile-picture"].src).toBe(TestImagePath);
+      expect(profileDropdown.$refs["profile-picture"].src).to.be(TestImagePath);
       done();
     });
   });

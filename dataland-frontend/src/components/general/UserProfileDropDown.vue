@@ -11,7 +11,11 @@
       alt="User profile picture"
       referrerpolicy="no-referrer"
     />
-    <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
+    <img
+      src="@/assets/images/elements/triangle_down.svg"
+      class="d-triangle-down"
+      alt="Open drop down menu icon"
+    />
   </div>
   <PrimeMenu
     ref="menu"
@@ -21,9 +25,20 @@
     class="text-primary surface-900 p-0"
   >
     <template #item="{ item }">
-      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
-        <span class="p-menuitem-icon material-icons text-primary font-semibold">{{ item.icon }}</span>
-        <span class="p-menuitem-text text-primary font-semibold">{{ item.label }}</span>
+      <a
+        class="p-menuitem-link"
+        role="menuitem"
+        tabindex="0"
+        @click="item.clickAction()"
+        :id="item.id"
+      >
+        <span
+          class="p-menuitem-icon material-icons text-primary font-semibold"
+          >{{ item.icon }}</span
+        >
+        <span class="p-menuitem-text text-primary font-semibold">{{
+          item.label
+        }}</span>
       </a>
     </template>
   </PrimeMenu>

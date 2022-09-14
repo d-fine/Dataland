@@ -4,7 +4,11 @@
       <div class="grid align-items-center m-0">
         <div class="col-6 text-left">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2" />
+            <img
+              src="@/assets/images/logos/logo_dataland_long.svg"
+              alt="Dataland Logo"
+              class="pl-3 pt-2"
+            />
           </router-link>
         </div>
       </div>

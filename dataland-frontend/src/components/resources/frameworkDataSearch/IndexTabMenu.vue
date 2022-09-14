@@ -1,5 +1,9 @@
 <template>
-  <TabMenu class="d-indextabs" :model="model" v-model:activeIndex="activeIndex"></TabMenu>
+  <TabMenu
+    class="d-indextabs"
+    :model="model"
+    v-model:activeIndex="activeIndex"
+  ></TabMenu>
 </template>
 
 <style>

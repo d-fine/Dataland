@@ -1,6 +1,8 @@
 <template>
   <Card class="col-12">
-    <template #title>Create EU Taxonomy Dataset for a Non-Financial Company/Service</template>
+    <template #title
+      >Create EU Taxonomy Dataset for a Non-Financial Company/Service</template
+    >
     <template #content>
       <FormKit
         v-model="formInputsModel"
@@ -139,7 +141,12 @@
               />
             </FormKit>
           </div>
-          <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+          <FormKit
+            type="submit"
+            :disabled="!valid"
+            label="Post EU-Taxonomy Dataset"
+            name="postEUData"
+          />
         </FormKit>
       </FormKit>
       <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
@@ -149,7 +156,11 @@
           :data="postEuTaxonomyDataForNonFinancialsResponse.data"
           :messageCount="messageCount"
         />
-        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+        <FailedUpload
+          v-else
+          msg="EU Taxonomy Data"
+          :messageCount="messageCount"
+        />
       </template>
     </template>
   </Card>
@@ -193,11 +204,14 @@ export default {
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        const euTaxonomyDataForNonFinancialsControllerApi =
+          await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
-          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
+          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+            this.formInputsModel
+          );
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;

@@ -1,6 +1,5 @@
-import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
+import path from "path";
 import vue from "@vitejs/plugin-vue";
 import istanbul from "vite-plugin-istanbul";
 
@@ -17,8 +16,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-      "@clients": fileURLToPath(new URL("./build/clients", import.meta.url)),
+      "@": path.resolve(__dirname, "./src"),
+      "@clients": path.resolve(__dirname, "./build/clients"),
     },
   },
   build: {

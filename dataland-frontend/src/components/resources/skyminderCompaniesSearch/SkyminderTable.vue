@@ -16,7 +16,8 @@
         <td>{{ dataset.emails[0] }}</td>
         <td>{{ dataset.phones[0] }}</td>
         <td>
-          Type: {{ dataset.identifiers[0].type }}, Name: {{ dataset.identifiers[0].name }} Number:
+          Type: {{ dataset.identifiers[0].type }}, Name:
+          {{ dataset.identifiers[0].name }} Number:
           {{ dataset.identifiers[0].number }}
         </td>
       </tr>

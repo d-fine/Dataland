@@ -10,7 +10,10 @@ describe(
   () => {
     it("Visit all EuTaxonomy Data", () => {
       performSimpleGet("metadata").then((metaDataResponse) => {
-        getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then(async (token) => {
+        getKeycloakToken(
+          "data_reader",
+          Cypress.env("KEYCLOAK_READER_PASSWORD")
+        ).then(async (token) => {
           doThingsInChunks(metaDataResponse.body, chunkSize, (element: any) =>
             fetch(`/api/data/${element.dataType}/${element.dataId}`, {
               headers: {

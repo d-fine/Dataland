@@ -1,16 +1,26 @@
 export function fillEuTaxonomyNonFinancialsUploadFields(): void {
   cy.get("select[name=attestation]").select("Limited Assurance");
-  cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
+  cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
+    force: true,
+  });
   for (const argument of ["capex", "opex", "revenue"]) {
-    cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type("0.657");
+    cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(
+      "0.657"
+    );
     cy.get(`div[title=${argument}] input[name=totalAmount]`).type("120000000");
   }
 }
 
-export function uploadEuTaxonomyDataForNonFinancials(companyId: string): Cypress.Chainable<string> {
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
+export function uploadEuTaxonomyDataForNonFinancials(
+  companyId: string
+): Cypress.Chainable<string> {
+  cy.visitAndCheckAppMount(
+    `/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`
+  );
   fillEuTaxonomyNonFinancialsUploadFields();
-  cy.intercept("**/api/data/eutaxonomy-non-financials").as("postCompanyAssociatedData");
+  cy.intercept("**/api/data/eutaxonomy-non-financials").as(
+    "postCompanyAssociatedData"
+  );
   cy.get('button[name="postEUData"]').click();
   return cy
     .wait("@postCompanyAssociatedData")

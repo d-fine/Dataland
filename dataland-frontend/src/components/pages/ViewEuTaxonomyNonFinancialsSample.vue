@@ -1,14 +1,24 @@
 <template>
   <TheHeader :showUserProfileDropdown="false">
-    <span class="p-button p-button-rounded text-primary bg-white font-semibold border-0"> COMPANY DATA SAMPLE </span>
+    <span
+      class="p-button p-button-rounded text-primary bg-white font-semibold border-0"
+    >
+      COMPANY DATA SAMPLE
+    </span>
   </TheHeader>
   <TheContent>
     <MarginWrapper>
       <div class="grid">
         <div class="col-12 bg-green-500 p-0 mt-3">
           <p class="text-white font-semibold flex justify-content-center">
-            <i class="material-icons pr-2 flex align-items-center" aria-hidden="true">check_circle</i>
-            <span class="pr-2 flex align-items-center">Join Dataland with other people to access all the data.</span>
+            <i
+              class="material-icons pr-2 flex align-items-center"
+              aria-hidden="true"
+              >check_circle</i
+            >
+            <span class="pr-2 flex align-items-center"
+              >Join Dataland with other people to access all the data.</span
+            >
             <router-link
               to="/"
               class="p-button bg-white border-0 uppercase text-green-500 d-letters flex align-items-center no-underline"
@@ -36,7 +46,9 @@
           </div>
           <div class="col-6 text-left">
             <p class="font-semibold m-0">2021</p>
-            <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+            <p class="font-semibold text-gray-800 mt-0">
+              Data from company report.
+            </p>
           </div>
         </div>
         <div class="grid">
@@ -84,10 +96,13 @@ export default {
         const companyDataControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
-        const companyResponse = await companyDataControllerApi.getTeaserCompanies();
+        const companyResponse =
+          await companyDataControllerApi.getTeaserCompanies();
         this.companyID = companyResponse.data[0];
 
-        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
+        const metaDataControllerApi = await new ApiClientProvider(
+          this.getKeycloakPromise()
+        ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,
           "eutaxonomy-non-financials"

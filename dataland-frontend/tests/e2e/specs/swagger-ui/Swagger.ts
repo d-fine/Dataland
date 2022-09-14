@@ -10,7 +10,9 @@ describe("As a user, I want to be able to use the swagger UI to send requests to
       .get("#operations-Actuator-health button.execute")
       .should("exist")
       .click()
-      .get("#operations-Actuator-health .live-responses-table td.response-col_status")
+      .get(
+        "#operations-Actuator-health .live-responses-table td.response-col_status"
+      )
       .contains("200");
   });
 });

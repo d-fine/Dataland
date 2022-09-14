@@ -4,13 +4,16 @@ if (!testGroupingDisabled) {
   cypressTestGroup = parseInt(Cypress.env("TEST_GROUP"));
 }
 
-const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
+const singlePopulate =
+  !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
 const runPrepopulation = Cypress.env("RUN_PREPOPULATION") !== false;
 
 if (testGroupingDisabled) {
   console.log("Test grouping disabled. Loading all tests...");
 } else {
-  console.log(`Test grouping enabled. Loading tests for group ${cypressTestGroup}`);
+  console.log(
+    `Test grouping enabled. Loading tests for group ${cypressTestGroup}`
+  );
 }
 
 /**
@@ -29,7 +32,11 @@ if (runPrepopulation) {
   }
 }
 
-if (testGroupingDisabled || cypressTestGroup === 1 || cypressTestGroup === 102) {
+if (
+  testGroupingDisabled ||
+  cypressTestGroup === 1 ||
+  cypressTestGroup === 102
+) {
   require("./company-metadata");
 }
 
