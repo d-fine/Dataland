@@ -76,15 +76,21 @@ class DataManager(
     }
 
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
-        val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
-        logger.info("Requesting Data with ID $dataId and type $dataType from EuroDat")
+        val dataTypeNameExpectedByDataland = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType).dataType
+        logger.info("Requesting Data with ID $dataId and expected type $dataType from EuroDat")
         val dataAsString: String = getDataFromEdcClient(dataId)
+        if (dataAsString == "") {
+            throw IllegalArgumentException(
+                "No data set with the id: $dataId could be found in the data store."
+            )
+        }
+        logger.info("Received Dataset of length ${dataAsString.length}")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        if (dataAsStorableDataSet.dataType != dataType) {
+        if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
                 "The data set with the id: $dataId " +
                     "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformation.dataType} as registered by Dataland."
+                    "$dataTypeNameExpectedByDataland as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
@@ -96,16 +102,9 @@ class DataManager(
             dataAsString = edcClient.selectDataById(dataId)
         } catch (e: ServerException) {
             logger.error(
-                "Error receiving selectDataById Request to Eurodat. " +
-                    "Received ServerException with Message: ${e.message}"
+                "Error sending selectDataById request to Eurodat. Received ServerException with Message: ${e.message}"
             )
             throw e
-        }
-        logger.info("Received Dataset of length ${dataAsString.length}")
-        if (dataAsString == "") {
-            throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store."
-            )
         }
         return dataAsString
     }
