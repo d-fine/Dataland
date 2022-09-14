@@ -160,16 +160,16 @@
                             <div class="flex align-items-end flex-row-reverse">
                                 <#if isAppInitiatedAction??>
                                     <input type="submit"
-                                           class="p-button p-tfa-button cursor-pointer uppercase mt-3 ml-3"
+                                           class="p-button font-semibold cursor-pointer uppercase ml-3"
                                            id="saveTOTPBtn" value="${msg("doSubmit")}"
                                     />
                                     <button type="submit"
-                                            class="p-button p-tfa-button cursor-pointer bg-white text-primary uppercase mt-3"
+                                            class="p-button font-semibold cursor-pointer bg-white text-primary uppercase"
                                             id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
                                     </button>
                                 <#else>
                                     <input type="submit"
-                                           class="p-button p-tfa-button cursor-pointer uppercase mt-3 ml-3"
+                                           class="p-button font-semibold cursor-pointer uppercase ml-3"
                                            id="saveTOTPBtn" value="${msg("doSubmit")}"
                                     />
                                 </#if>
