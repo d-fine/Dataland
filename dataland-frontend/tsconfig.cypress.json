@@ -13,5 +13,5 @@
       "@e2e/*": ["./tests/e2e/*"]
     }
   },
-  "include": ["tests/e2e/**/*.ts"]
+  "include": ["tests/**/*.ts"]
 }
