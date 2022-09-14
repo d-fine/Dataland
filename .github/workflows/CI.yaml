@@ -58,13 +58,13 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testunitci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: lcovResultsUnit
-          path: ./dataland-frontend/coverage/**/lcov.info
+          path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
   e2e-tests:
