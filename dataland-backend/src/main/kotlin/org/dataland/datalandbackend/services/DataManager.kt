@@ -78,6 +78,19 @@ class DataManager(
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
         val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
         logger.info("Requesting Data with ID $dataId and type $dataType from EuroDat")
+        val dataAsString: String = getDataFromEdcClient(dataId)
+        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
+        if (dataAsStorableDataSet.dataType != dataType) {
+            throw IllegalArgumentException(
+                "The data set with the id: $dataId " +
+                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
+                    "${dataMetaInformation.dataType} as registered by Dataland."
+            )
+        }
+        return dataAsStorableDataSet
+    }
+
+    private fun getDataFromEdcClient(dataId: String): String {
         val dataAsString: String
         try {
             dataAsString = edcClient.selectDataById(dataId)
@@ -94,15 +107,7 @@ class DataManager(
                 "No data set with the id: $dataId could be found in the data store."
             )
         }
-        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        if (dataAsStorableDataSet.dataType != dataType) {
-            throw IllegalArgumentException(
-                "The data set with the id: $dataId " +
-                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformation.dataType} as registered by Dataland."
-            )
-        }
-        return dataAsStorableDataSet
+        return dataAsString
     }
 
     override fun isDataSetPublic(dataId: String): Boolean {
