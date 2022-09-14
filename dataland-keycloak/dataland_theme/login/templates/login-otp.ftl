@@ -12,7 +12,7 @@
                 <div class="mb-5">
                     <div class="${properties.kcLabelWrapperClass!} text-left mb-2">
                         <label for="otp" class="${properties.kcLabelClass!} font-medium">
-                            <div class="mb-2"> Multiple devices for 2-Factor-Authentication have been registered to your account. </div>
+                            <div class="mb-2"> Multiple devices for 2-Factor-Authentication have been registered with your account. </div>
                             Please choose the one device you wish to use now:
                         </label>
                     </div>
