@@ -1,7 +1,7 @@
 <#import "dataland_template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('totp'); section>
     <#if section="header">
-        Mobile Authenticator
+        Two-factor authentication
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section="form">

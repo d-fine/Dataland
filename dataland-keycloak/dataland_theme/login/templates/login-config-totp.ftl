@@ -3,7 +3,7 @@
 
     <#if section = "header">
         <div class="ml-3 mb-5">
-            ${msg("loginTotpTitle")}
+            Two-factor authentication Setup
         </div>
     <#elseif section = "form">
         <ol class="ml-3 p-0 p-tfa-ordered-list" id="kc-totp-settings">
