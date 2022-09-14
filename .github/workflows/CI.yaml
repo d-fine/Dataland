@@ -132,11 +132,11 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
-      - name: Upload FE E2E lcov Exec Results
+      - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: lcovResultsE2E
+          name: lcovResults
           path: ./*.info
       - name: Upload FE E2E Cypress Results
         if: always()
@@ -191,12 +191,8 @@ jobs:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v2
         with:
-          name: lcovResultsUnit
-          path: fe-coverage/unit
-      - uses: actions/download-artifact@v2
-        with:
-          name: lcovResultsE2E
-          path: fe-coverage/e2e
+          name: lcovResults
+          path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace
