@@ -33,9 +33,8 @@ class DataManager(
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
             throw IllegalArgumentException(
-                "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                    " type $dataType."
+                "The data with the id: $dataId is registered as type ${dataMetaInformation.dataType} by Dataland " +
+                    "instead of your requested type $dataType."
             )
         }
         return dataMetaInformation
@@ -44,9 +43,8 @@ class DataManager(
     override fun addDataSet(storableDataSet: StorableDataSet): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
-            "Sending StorableDataSet of type ${storableDataSet.dataType} " +
-                "for company ID ${storableDataSet.companyId}, " +
-                "Company Name ${company.companyName} to EuroDaT Interface"
+            "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
+                "${storableDataSet.companyId}, Company Name ${company.companyName} to EuroDaT Interface"
         )
         val dataId: String = storeDataSet(storableDataSet, company)
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
@@ -62,15 +60,13 @@ class DataManager(
             dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             logger.error(
-                "Error sending insertData Request to Eurodat. " +
-                    "Received ServerException with Message: ${e.message}"
+                "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}"
             )
             throw e
         }
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} " +
-                "for company ID ${storableDataSet.companyId}, " +
-                "Company Name ${company.companyName} received ID $dataId from EuroDaT"
+            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
+                " Company Name ${company.companyName} received ID $dataId from EuroDaT"
         )
         return dataId
     }
@@ -88,9 +84,8 @@ class DataManager(
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
-                "The data set with the id: $dataId " +
-                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "$dataTypeNameExpectedByDataland as registered by Dataland."
+                "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the" +
+                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
