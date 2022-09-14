@@ -63,14 +63,14 @@ class DataManager(
         } catch (e: ServerException) {
             logger.error(
                 "Error sending insertData Request to Eurodat. " +
-                        "Received ServerException with Message: ${e.message}"
+                    "Received ServerException with Message: ${e.message}"
             )
             throw e
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} " +
-                    "for company ID ${storableDataSet.companyId}, " +
-                    "Company Name ${company.companyName} received ID $dataId from EuroDaT"
+                "for company ID ${storableDataSet.companyId}, " +
+                "Company Name ${company.companyName} received ID $dataId from EuroDaT"
         )
         return dataId
     }
