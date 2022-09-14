@@ -2,7 +2,7 @@
 // For fake fixtures commonjs is needed, for the VUE App esnext.
 
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.cypress.json",
   "compilerOptions": {
     "module": "commonjs"
   }
