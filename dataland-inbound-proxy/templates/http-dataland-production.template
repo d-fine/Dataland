@@ -15,6 +15,8 @@ server {
     # security
     include                 utils/security.conf;
 
+    add_header Content-Security-Policy $default_content_security_policy_production always;
+
     # reverse proxy
     location / {
       proxy_pass http://frontend;
@@ -36,12 +38,8 @@ server {
       include utils/proxy.conf;
     }
 
-    location /keycloak {
-      proxy_pass http://keycloak:8080/keycloak;
-      include utils/proxy.conf;
-    }
-
     # additional config
+    include utils/keycloak.conf;
     include utils/general.conf;
     include utils/error.conf;
 }

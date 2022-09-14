@@ -93,7 +93,7 @@ jobs:
         run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
-      - name: Store generated frontend API client for use by cpress
+      - name: Store generated frontend API client for use by cypress
         uses: actions/upload-artifact@v2
         with:
           name: frontendApiClient
@@ -115,6 +115,7 @@ jobs:
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           BACKEND_DB_PASSWORD: ${{ secrets.BACKEND_DB_PASSWORD }}
+          PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           INITIALIZE_KEYCLOAK: ${{ steps.verifyKeycloakPassword.outputs.INITIALIZE_KEYCLOAK }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
@@ -163,6 +164,12 @@ jobs:
           path: ./dataland-frontend/build/clients/backend/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
+      - name: Setup SSH tunnel to admin NGINX
+        run: ./deployment/setup_admin_ssh_tunnel.sh
+        env:
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
         env:
@@ -171,9 +178,13 @@ jobs:
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       - name: Move Cypress Results
         if: always()
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/

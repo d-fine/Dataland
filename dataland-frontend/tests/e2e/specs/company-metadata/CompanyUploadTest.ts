@@ -7,7 +7,7 @@ import {
 describeIf(
   "As a user, I want to be able to create new companies",
   {
-    executionEnvironments: ["development"],
+    executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
   () => {
