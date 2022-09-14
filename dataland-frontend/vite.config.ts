@@ -23,4 +23,12 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  server: {
+    port: 8090,
+    host: "0.0.0.0",
+    strictPort: true,
+    watch: {
+      ignored: ["**/coverage/**"],
+    },
+  },
 });

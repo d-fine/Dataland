@@ -17,10 +17,14 @@ describe(
                 Authorization: "Bearer " + token,
               },
             }).then((dataGetResponse) => {
-              assert(
-                dataGetResponse.status.toString() === "200",
-                `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
-              );
+              // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
+              // every assert
+              if (dataGetResponse.status !== 200) {
+                assert(
+                  dataGetResponse.status === 200,
+                  `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
+                );
+              }
             })
           );
         });
