@@ -1,4 +1,4 @@
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"]{
   display: grid;
   place-content: center;
   -webkit-appearance: none;
@@ -9,6 +9,7 @@ input[type="checkbox"] {
   background-color: white;
   border: 3px solid #E67F3F;
   border-radius: 5px;
+  cursor: pointer;
 
 
   &::before {
