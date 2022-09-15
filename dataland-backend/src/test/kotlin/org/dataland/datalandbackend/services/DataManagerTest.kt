@@ -32,21 +32,21 @@ class DataManagerTest(
     val edcClientMock = mock(DefaultApi::class.java)
     val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
 
-    private fun getNonMatchingDataIdDataTypeMessage(dataId: String, registereTypeName: String): String {
-        return "The data with the id: $dataId is registered as type $registereTypeName by " +
+    private fun getNonMatchingDataIdDataTypeMessage(registeredDataId: String, registereTypeName: String): String {
+        return "The data with the id: $registeredDataId is registered as type $registereTypeName by " +
             "Dataland instead of your requested type eutaxonomy-financials."
     }
 
-    private fun getNoDataFoundMessage(dataId: String): String {
-        return "No data set with the id: $dataId could be found in the data store."
+    private fun getNoDataFoundMessage(requestedDataId: String): String {
+        return "No data set with the id: $requestedDataId could be found in the data store."
     }
 
     private fun getWrongDataTypeMessage(
-        dataId: String,
+        requestedDataId: String,
         unexpectedDataTypeName: String,
         expectedDataTypeName: String
     ): String {
-        return "The data set with the id: $dataId came back as type $unexpectedDataTypeName from thedata " +
+        return "The data set with the id: $requestedDataId came back as type $unexpectedDataTypeName from thedata " +
             "store instead of type $expectedDataTypeName as registered by Dataland."
     }
 

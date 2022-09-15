@@ -17,6 +17,15 @@ import javax.transaction.Transactional
 class DataMetaInformationManagerTest(
     @Autowired val dataMetaInformationManager: DataMetaInformationManagerInterface,
 ) {
+
+    private fun getNonExistingCompanyIdMessage(requestedCompanyId: String): String {
+        return "Dataland does not know the company ID $requestedCompanyId"
+    }
+
+    private fun getNonExistingDataIdMessage(requestedDataId: String): String {
+        return "Dataland does not know the data ID: $requestedDataId"
+    }
+
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
@@ -24,7 +33,7 @@ class DataMetaInformationManagerTest(
             dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId)
         }
         assertEquals(
-            "Dataland does not know the company ID $nonExistingCompanyId",
+            getNonExistingCompanyIdMessage(nonExistingCompanyId),
             thrown.message
         )
     }
@@ -36,7 +45,7 @@ class DataMetaInformationManagerTest(
             dataMetaInformationManager.getDataMetaInformationByDataId(dataId = nonExistingDataId)
         }
         assertEquals(
-            "Dataland does not know the data ID: $nonExistingDataId",
+            getNonExistingDataIdMessage(nonExistingDataId),
             thrown.message
         )
     }
