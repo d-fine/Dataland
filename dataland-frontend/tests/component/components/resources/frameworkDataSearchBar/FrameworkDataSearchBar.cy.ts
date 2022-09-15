@@ -2,7 +2,6 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import { shallowMount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
-import { getInjectedKeycloakObjectsForTest, getRequiredPlugins } from "../../../TestUtils";
 
 describe("Component test for FrameworkDataSearchBar", () => {
   let wrapper: any;
@@ -15,8 +14,7 @@ describe("Component test for FrameworkDataSearchBar", () => {
     await router.isReady();
     wrapper = shallowMount(FrameworkDataSearchBar, {
       global: {
-        plugins: [router, ...getRequiredPlugins()],
-        provide: getInjectedKeycloakObjectsForTest(),
+        plugins: [router],
       },
     });
   });
