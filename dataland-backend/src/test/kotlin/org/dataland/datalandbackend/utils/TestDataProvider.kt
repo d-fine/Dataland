@@ -22,4 +22,8 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return getCompanyInformation(requiredQuantity).map { it.copy(identifiers = emptyList()) }
     }
+
+    fun getEuTaxonomyDataForNonFinancials(requiredQuantity: Int): List<EuTaxonomyDataForNonFinancials> {
+        return testCompanyInformationWithEuTaxonomyData.slice(0 until requiredQuantity).map { it.t }
+    }
 }
