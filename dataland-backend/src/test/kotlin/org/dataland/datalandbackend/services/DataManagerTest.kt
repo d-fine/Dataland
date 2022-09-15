@@ -32,6 +32,24 @@ class DataManagerTest(
     val edcClientMock = mock(DefaultApi::class.java)
     val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
 
+    private fun getNonMatchingDataIdDataTypeMessage(dataId: String, registereTypeName: String): String {
+        return "The data with the id: $dataId is registered as type $registereTypeName by " +
+            "Dataland instead of your requested type eutaxonomy-financials."
+    }
+
+    private fun getNoDataFoundMessage(dataId: String): String {
+        return "No data set with the id: $dataId could be found in the data store."
+    }
+
+    private fun getWrongDataTypeMessage(
+        dataId: String,
+        unexpectedDataTypeName: String,
+        expectedDataTypeName: String
+    ): String {
+        return "The data set with the id: $dataId came back as type $unexpectedDataTypeName from thedata " +
+            "store instead of type $expectedDataTypeName as registered by Dataland."
+    }
+
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val companyId = companyManager.addCompany(companyInformation).companyId
@@ -61,7 +79,6 @@ class DataManagerTest(
         }
     }
 
-
     @Test
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
@@ -72,12 +89,10 @@ class DataManagerTest(
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"))
         }
         assertEquals(
-            "The data with the id: $dataId is registered as type ${storableDataSet.dataType.name} by " +
-                    "Dataland instead of your requested type eutaxonomy-financials.",
+            getNonMatchingDataIdDataTypeMessage(dataId, storableDataSet.dataType.name),
             thrown.message
         )
     }
-
 
     @Test
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
@@ -89,7 +104,7 @@ class DataManagerTest(
         val thrown = assertThrows<IllegalArgumentException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"))
         }
-        assertEquals("No data set with the id: $dataId could be found in the data store.", thrown.message)
+        assertEquals(getNoDataFoundMessage(dataId), thrown.message)
     }
 
     @Test
@@ -99,6 +114,7 @@ class DataManagerTest(
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
         val dataId = dataManager.addDataSet(storableDataSet)
         val unexpectedDataTypeName = "eutaxonomy-financials"
+        val expectedDataTypeName = storableDataSet.dataType.name
         `when`(edcClientMock.selectDataById(dataId)).thenReturn(
             objectMapper.writeValueAsString(
                 StorableDataSet(
@@ -108,12 +124,8 @@ class DataManagerTest(
                 )
             )
         )
-        val thrown = assertThrows<IllegalArgumentException> {
-            dataManager.getDataSet(dataId, DataType(storableDataSet.dataType.name))
-        }
-        assertEquals(
-            "The data set with the id: $dataId came back as type $unexpectedDataTypeName from thedata " +
-                    "store instead of type ${storableDataSet.dataType.name} as registered by Dataland.", thrown.message
-        )
+        val thrown =
+            assertThrows<IllegalArgumentException> { dataManager.getDataSet(dataId, DataType(expectedDataTypeName)) }
+        assertEquals(getWrongDataTypeMessage(dataId, unexpectedDataTypeName, expectedDataTypeName), thrown.message)
     }
 }
