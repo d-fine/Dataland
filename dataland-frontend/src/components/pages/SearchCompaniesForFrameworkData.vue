@@ -66,7 +66,7 @@ import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMen
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { useRoute } from "vue-router";
-import { CompanyInformationIndicesEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { CompanyInformationIndicesEnum } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 const stockIndices = Object.keys(CompanyInformationIndicesEnum);
