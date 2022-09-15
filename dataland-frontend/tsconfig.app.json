@@ -1,12 +1,11 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "build/clients/**/*"],
-  "exclude": ["src/**/__tests__/*"],
+  "include": ["src/**/*", "src/**/*.vue", "build/clients/**/*"],
   "compilerOptions": {
     "composite": true,
 
     // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
-    // But are required as otherwise the openApi client wont compile properly
+    // But are required as otherwise the openApi client won't compile properly
     "importsNotUsedAsValues": "remove",
     "preserveValueImports": false,
     "baseUrl": ".",

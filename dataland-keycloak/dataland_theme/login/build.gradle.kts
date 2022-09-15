@@ -39,6 +39,6 @@ tasks.register<Copy>("copyIbmPlexSans") {
 
 tasks.register<Copy>("copyTemplates") {
     from(layout.projectDirectory.dir("templates"))
-    include("*")
+    include("*/**")
     into(layout.projectDirectory.dir("dist"))
 }
