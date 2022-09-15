@@ -3,7 +3,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsAttestationEnum,
   EuTaxonomyDataForNonFinancialsReportingObligationEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { convertToPercentageString, decimalSeparatorConverter, getAttestation } from "./CsvUtils";
 

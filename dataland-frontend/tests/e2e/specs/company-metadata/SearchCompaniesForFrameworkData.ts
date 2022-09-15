@@ -1,10 +1,6 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
 import { uploadEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "../../support/TestUtility";

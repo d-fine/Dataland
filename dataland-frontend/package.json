@@ -12,7 +12,7 @@
     "testpipeline": "cypress run",
     "testdevelopment": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev-dataland.duckdns.org\"}}'",
     "testpreview": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dataland.com\"}}'",
-    "fakefixtures": "ts-node -P tsconfig.commonjs.json tests/e2e/fixtures/GenerateFakeFixtures.ts",
+    "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix",
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@vue/tsconfig,axios'"
@@ -49,6 +49,7 @@
     "mocha": "^10.0.0",
     "npm-check-updates": "^16.1.2",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.3",
     "vite": "^3.1.0",
     "vite-plugin-istanbul": "^3.0.1"

@@ -5,7 +5,7 @@ import {
   EuTaxonomyDataForFinancialsAttestationEnum,
   EuTaxonomyDataForFinancialsReportingObligationEnum,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 
 import { convertToPercentageString, getAttestation, getCompanyType } from "./CsvUtils";
 import { FixtureData } from "./GenerateFakeFixtures";

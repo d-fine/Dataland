@@ -4,10 +4,10 @@ import {
   CompanyIdentifier,
   CompanyIdentifierIdentifierTypeEnum,
   CompanyInformationIndicesEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 import { JSONSet } from "./Utils";
 import { FixtureData } from "./GenerateFakeFixtures";
-import { humanizeString } from "../../../src/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv, getStockIndexValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {

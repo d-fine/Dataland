@@ -1,5 +1,5 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
-import { DataTypeEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {

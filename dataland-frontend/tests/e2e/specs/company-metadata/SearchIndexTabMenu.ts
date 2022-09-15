@@ -1,4 +1,4 @@
-import { CompanyInformationIndicesEnum } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { CompanyInformationIndicesEnum } from "@clients/backend";
 import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
 
 const numberOfStockIndices = Object.keys(CompanyInformationIndicesEnum).length;

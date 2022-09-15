@@ -1,10 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../build/clients/backend";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
 
 import { generateCompanyInformation } from "./CompanyFixtures";
 import {
