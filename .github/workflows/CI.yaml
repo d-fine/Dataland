@@ -63,7 +63,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: lcovResultsUnit
+          name: lcovResults
           path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
