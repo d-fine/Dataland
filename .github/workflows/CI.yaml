@@ -47,7 +47,7 @@ jobs:
         with:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
-  unit-tests-frontend:
+  component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
@@ -57,7 +57,7 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Execute Frontend Unit Tests
+      - name: Execute Frontend Component Tests
         run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
@@ -168,7 +168,7 @@ jobs:
     needs:
       - e2e-tests
       - unit-tests-backend
-      - unit-tests-frontend
+      - component-tests-frontend
     steps:
       - uses: actions/checkout@v2
         with:
