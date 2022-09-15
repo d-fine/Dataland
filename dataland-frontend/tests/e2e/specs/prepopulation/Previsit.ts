@@ -1,6 +1,6 @@
-import { performSimpleGet } from "../../utils/ApiUtils";
-import { getKeycloakToken } from "../../utils/Auth";
-import { doThingsInChunks } from "../../utils/Cypress";
+import { performSimpleGet } from "@e2e/utils/ApiUtils";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { doThingsInChunks } from "@e2e/utils/Cypress";
 
 const chunkSize = 40;
 

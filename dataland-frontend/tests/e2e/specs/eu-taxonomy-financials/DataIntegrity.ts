@@ -1,12 +1,12 @@
-import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "../../utils/EuTaxonomyFinancialsUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EligibilityKpis,
-} from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+} from "@clients/backend";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",

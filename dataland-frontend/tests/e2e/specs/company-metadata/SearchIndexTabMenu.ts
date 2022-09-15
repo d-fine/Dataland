@@ -1,5 +1,5 @@
 import { CompanyInformationIndicesEnum } from "@clients/backend";
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "@e2e/utils/CompanySearch";
 
 const numberOfStockIndices = Object.keys(CompanyInformationIndicesEnum).length;
 

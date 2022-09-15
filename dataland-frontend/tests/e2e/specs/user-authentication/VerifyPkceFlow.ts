@@ -1,4 +1,4 @@
-import { login } from "../../utils/Auth";
+import { login } from "@e2e/utils/Auth";
 
 describe("As a user I expect Dataland to use PKCE flow to prevent auth loss", () => {
   it(`Test that code_verifier is sent along with token request`, () => {
