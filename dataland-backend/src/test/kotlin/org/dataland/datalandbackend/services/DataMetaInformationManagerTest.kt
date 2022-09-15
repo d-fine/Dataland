@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,16 +18,26 @@ class DataMetaInformationManagerTest(
     @Autowired val dataMetaInformationManager: DataMetaInformationManagerInterface,
 ) {
     @Test
-    fun `check that an exception is thrown when non-matching dataId to dataType pair is requested from storage`() {
-        assertThrows<IllegalArgumentException> {
-            dataMetaInformationManager.searchDataMetaInfo(companyId = "error")
+    fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
+        val nonExistingCompanyId = "nonExistingCompanyId"
+        val thrown = assertThrows<IllegalArgumentException> {
+            dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId)
         }
+        assertEquals(
+            "Dataland does not know the company ID $nonExistingCompanyId",
+            thrown.message
+        )
     }
 
     @Test
     fun `check that an exception is thrown when non existing data id is provided to get meta data`() {
-        assertThrows<IllegalArgumentException> {
-            dataMetaInformationManager.getDataMetaInformationByDataId(dataId = "error")
+        val nonExistingDataId = "nonExistingCompanyId"
+        val thrown = assertThrows<IllegalArgumentException> {
+            dataMetaInformationManager.getDataMetaInformationByDataId(dataId = nonExistingDataId)
         }
+        assertEquals(
+            "Dataland does not know the data ID: $nonExistingDataId",
+            thrown.message
+        )
     }
 }
