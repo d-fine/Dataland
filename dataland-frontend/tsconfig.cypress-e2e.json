@@ -1,17 +1,21 @@
+// Config file for cypress E2E tests
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["src/**/*", "src/**/*.vue", "build/clients/**/*"],
+  "include": ["tests/e2e/**/*", "build/clients/**/*"],
   "compilerOptions": {
-    "composite": true,
+    "isolatedModules": false,
     "baseUrl": ".",
-    "lib": ["ESNext", "DOM"],
+    "target": "ES2019",
+    "lib": ["ES2019", "dom"],
+    "types": ["cypress", "node"],
     // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
     // But are required as otherwise the openApi client won't compile properly
     "importsNotUsedAsValues": "remove",
     "preserveValueImports": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@clients/*": ["./build/clients/*"]
+      "@clients/*": ["./build/clients/*"],
+      "@e2e/*": ["./tests/e2e/*"]
     }
   }
 }

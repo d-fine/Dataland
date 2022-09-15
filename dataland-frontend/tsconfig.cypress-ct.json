@@ -1,0 +1,15 @@
+// Config file for Cypress component tests
+{
+  "extends": "./tsconfig.app.json",
+  "include": [
+    "src/**/*",
+    "src/**/*.vue",
+    "build/clients/**/*",
+    "tests/component/**/*"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "composite": true,
+    "types": ["cypress"]
+  },
+}

@@ -1,4 +1,5 @@
 {
+  "files": [], // This is required to override the default import pattern "**/*"
   "references": [
     {
       "path": "./tsconfig.config.json"
@@ -7,7 +8,10 @@
       "path": "./tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.cypress.json"
+      "path": "./tsconfig.cypress-ct.json"
+    },
+    {
+      "path": "./tsconfig.cypress-e2e.json"
     }
   ]
 }

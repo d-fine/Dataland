@@ -1,3 +1,3 @@
 {
-  "extends": "../tsconfig.cypress.json"
+  "extends": "../tsconfig.cypress-e2e.json"
 }
