@@ -1,4 +1,4 @@
-import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
+import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {

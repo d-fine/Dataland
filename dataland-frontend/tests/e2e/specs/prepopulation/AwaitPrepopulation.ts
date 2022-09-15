@@ -1,4 +1,4 @@
-import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
+import { retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
   let minimumCompanySum = 0;
