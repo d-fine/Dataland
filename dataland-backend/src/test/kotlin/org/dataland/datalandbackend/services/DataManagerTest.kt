@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.edcClient.model.InsertDataResponse
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
@@ -42,11 +43,16 @@ class DataManagerTest(
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableDataSet = addOneCompanyAndReturnAStorableDataSetForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("abcdefghijkl"))
+        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
         val dataId = dataManager.addDataSet(storableDataSet)
-        assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<IllegalArgumentException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"))
         }
+        assertEquals(
+            "The data with the id: $dataId is registered as type ${storableDataSet.dataType.name} by " +
+                "Dataland instead of your requested type eutaxonomy-financials.",
+            thrown.message
+        )
     }
 
     @Test
@@ -57,5 +63,18 @@ class DataManagerTest(
         assertThrows<ServerException> {
             dataManager.addDataSet(storableDataSet)
         }
+    }
+
+    @Test
+    fun `check that an exception is thrown if the received data from the data storage is empty`() {
+        val storableDataSet = addOneCompanyAndReturnAStorableDataSetForIt()
+        val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
+        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
+        val dataId = dataManager.addDataSet(storableDataSet)
+        `when`(edcClientMock.selectDataById(dataId)).thenReturn("")
+        val thrown = assertThrows<IllegalArgumentException> {
+            dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"))
+        }
+        assertEquals("No data set with the id: $dataId could be found in the data store.", thrown.message)
     }
 }
