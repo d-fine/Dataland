@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
-import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
+import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 
 /**
@@ -48,13 +48,13 @@ class EuTaxonomyCommonFieldParser {
     /**
      * This function parses the attestation field from the EU-Taxonomy framework CSV file
      */
-    fun getAttestation(csvLineData: Map<String, String>): AttestationOptions {
+    fun getAttestation(csvLineData: Map<String, String>): AssuranceOptions {
         return when (
             val rawAttestation = columnMappingEuTaxonomyUtils.getCsvValue("attestation", csvLineData)
         ) {
-            ATTESTATION_REASONABLE -> AttestationOptions.ReasonableAssurance
-            ATTESTATION_LIMITED -> AttestationOptions.LimitedAssurance
-            ATTESTATION_NA, ATTESTATION_NONE -> AttestationOptions.None
+            ATTESTATION_REASONABLE -> AssuranceOptions.ReasonableAssurance
+            ATTESTATION_LIMITED -> AssuranceOptions.LimitedAssurance
+            ATTESTATION_NA, ATTESTATION_NONE -> AssuranceOptions.None
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine attestation: Found $rawAttestation, " +

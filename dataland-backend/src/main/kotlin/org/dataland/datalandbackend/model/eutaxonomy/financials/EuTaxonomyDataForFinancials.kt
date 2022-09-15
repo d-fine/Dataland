@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
+import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import java.util.EnumSet
 
 /**
@@ -26,8 +26,11 @@ data class EuTaxonomyDataForFinancials(
     val insuranceKpis: InsuranceKpis? = null,
 
     @field:JsonProperty("attestation", required = true)
-    val attestation: AttestationOptions? = null,
+    val attestation: AssuranceData? = null,
 
     @field:JsonProperty("reportingObligation", required = true)
     val reportingObligation: YesNo? = null,
+
+    @field:JsonProperty("activityLevelReporting", required = true)
+    val activityLevelReporting: YesNo? = null
 )

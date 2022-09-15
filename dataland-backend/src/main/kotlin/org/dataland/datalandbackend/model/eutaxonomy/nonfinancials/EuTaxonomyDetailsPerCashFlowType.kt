@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.math.BigDecimal
+import org.dataland.datalandbackend.model.DataPoint
 
 /**
  * --- API model ---
@@ -9,11 +9,11 @@ import java.math.BigDecimal
  */
 data class EuTaxonomyDetailsPerCashFlowType(
     @field:JsonProperty("totalAmount")
-    val totalAmount: BigDecimal? = null,
+    val totalAmount: DataPoint? = null,
 
     @field:JsonProperty("alignedPercentage")
-    val alignedPercentage: BigDecimal? = null,
+    val alignedPercentage: DataPoint? = null,
 
     @field:JsonProperty("eligiblePercentage")
-    val eligiblePercentage: BigDecimal? = null
+    val eligiblePercentage: DataPoint? = null
 )
