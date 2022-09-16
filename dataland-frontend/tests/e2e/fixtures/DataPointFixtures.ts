@@ -8,9 +8,9 @@ function generateDataSource(): CompanyReportReference {
   };
 }
 
-export function generateDatapoint(value: number | undefined): DataPoint {
+export function generateDatapoint(value: number | null): DataPoint {
   const qualityBucket =
-    value === undefined
+    value === null
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
@@ -25,7 +25,7 @@ export function generateDatapoint(value: number | undefined): DataPoint {
   }
 
   return {
-    value: value,
+    value: value || undefined,
     dataSource: dataSource,
     quality: qualityBucket,
   };

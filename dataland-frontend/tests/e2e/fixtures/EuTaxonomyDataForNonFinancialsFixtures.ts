@@ -1,13 +1,12 @@
 import { faker } from "@faker-js/faker";
-import {
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForNonFinancialsAttestationEnum,
-  EuTaxonomyDataForNonFinancialsReportingObligationEnum,
-} from "../../../build/clients/backend";
+import { EuTaxonomyDataForNonFinancials } from "../../../build/clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { convertToPercentageString, decimalSeparatorConverter, getAttestation } from "./CsvUtils";
 
 import { getCsvCompanyMapping } from "./CompanyFixtures";
+import { generateDatapoint, generateDatapointOrNotReportedAtRandom } from "./DataPointFixtures";
+import { randomYesNo } from "./YesNoFixtures";
+import { generateAssuranceData } from "./AssuranceDataFixture";
 const { parse } = require("json2csv");
 
 const maxEuro = 1000000;
@@ -15,10 +14,6 @@ const minEuro = 50000;
 const resolution = 0.0001;
 
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const attestation = faker.helpers.arrayElement(Object.values(EuTaxonomyDataForNonFinancialsAttestationEnum));
-  const reportingObligation = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForNonFinancialsReportingObligationEnum)
-  );
   const capexTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
   const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const capexAligned = faker.datatype.float({ min: 0, max: capexEligible, precision: resolution });
@@ -30,30 +25,31 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
   const revenueAligned = faker.datatype.float({ min: 0, max: revenueEligible, precision: resolution });
 
   return {
+    reportingObligation: randomYesNo(),
+    activityLevelReporting: randomYesNo(),
+    assurance: generateAssuranceData(),
     capex: {
-      totalAmount: capexTotal,
-      alignedPercentage: capexAligned,
-      eligiblePercentage: capexEligible,
+      totalAmount: generateDatapointOrNotReportedAtRandom(capexTotal),
+      alignedPercentage: generateDatapointOrNotReportedAtRandom(capexAligned),
+      eligiblePercentage: generateDatapointOrNotReportedAtRandom(capexEligible),
     },
     opex: {
-      totalAmount: opexTotal,
-      alignedPercentage: opexAligned,
-      eligiblePercentage: opexEligible,
+      totalAmount: generateDatapointOrNotReportedAtRandom(opexTotal),
+      alignedPercentage: generateDatapointOrNotReportedAtRandom(opexAligned),
+      eligiblePercentage: generateDatapointOrNotReportedAtRandom(opexEligible),
     },
     revenue: {
-      totalAmount: revenueTotal,
-      alignedPercentage: revenueAligned,
-      eligiblePercentage: revenueEligible,
+      totalAmount: generateDatapointOrNotReportedAtRandom(revenueTotal),
+      alignedPercentage: generateDatapointOrNotReportedAtRandom(revenueAligned),
+      eligiblePercentage: generateDatapointOrNotReportedAtRandom(revenueEligible),
     },
-    reportingObligation: reportingObligation,
-    attestation: attestation,
   };
 }
 
 export function generateCSVDataForNonFinancials(
   companyInformationWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
 ) {
-  const options = {
+  /*const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForNonFinancials>(),
       {
@@ -114,5 +110,6 @@ export function generateCSVDataForNonFinancials(
     ],
     delimiter: ";",
   };
-  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
+  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);*/
+  return "";
 }

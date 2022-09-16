@@ -2,23 +2,20 @@ import { faker } from "@faker-js/faker";
 import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
-  EuTaxonomyDataForFinancialsAttestationEnum,
-  EuTaxonomyDataForFinancialsReportingObligationEnum,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "../../../build/clients/backend";
 
 import { convertToPercentageString, getAttestation, getCompanyType } from "./CsvUtils";
 import { FixtureData } from "./GenerateFakeFixtures";
+import { generateDatapointOrNotReportedAtRandom } from "./DataPointFixtures";
 import { getCsvCompanyMapping } from "./CompanyFixtures";
+import { generateAssuranceData } from "./AssuranceDataFixture";
+import { randomYesNo } from "./YesNoFixtures";
 const { parse } = require("json2csv");
 
 const resolution = 0.0001;
 
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
-  const attestation = faker.helpers.arrayElement(Object.values(EuTaxonomyDataForFinancialsAttestationEnum));
-  const reportingObligation = faker.helpers.arrayElement(
-    Object.values(EuTaxonomyDataForFinancialsReportingObligationEnum)
-  );
   const financialServicesTypes = faker.helpers.arrayElements(
     Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
   );
@@ -28,8 +25,8 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   let tradingPortfolio = undefined;
   let taxonomyEligibleNonLifeInsuranceActivities = undefined;
   if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
-    const singleOrDualField = Math.random();
-    if (singleOrDualField < 0.5) {
+    const singleFieldReporting = faker.datatype.boolean();
+    if (singleFieldReporting) {
       tradingPortfolioAndInterbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
     } else {
       interbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
@@ -42,17 +39,20 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   const eligibilityKpis = Object.fromEntries(financialServicesTypes.map((it) => [it, generateEligibilityKpis()]));
 
   return {
-    reportingObligation: reportingObligation,
-    attestation: attestation,
+    reportingObligation: randomYesNo(),
+    activityLevelReporting: randomYesNo(),
+    assurance: generateAssuranceData(),
     financialServicesTypes: financialServicesTypes,
     eligibilityKpis: eligibilityKpis,
     creditInstitutionKpis: {
-      interbankLoans: interbankLoans,
-      tradingPortfolio: tradingPortfolio,
-      tradingPortfolioAndInterbankLoans: tradingPortfolioAndInterbankLoans,
+      interbankLoans: generateDatapointOrNotReportedAtRandom(interbankLoans),
+      tradingPortfolio: generateDatapointOrNotReportedAtRandom(tradingPortfolio),
+      tradingPortfolioAndInterbankLoans: generateDatapointOrNotReportedAtRandom(tradingPortfolioAndInterbankLoans),
     },
     insuranceKpis: {
-      taxonomyEligibleNonLifeInsuranceActivities: taxonomyEligibleNonLifeInsuranceActivities,
+      taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
+        taxonomyEligibleNonLifeInsuranceActivities
+      ),
     },
   };
 }
@@ -64,15 +64,15 @@ export function generateEligibilityKpis(): EligibilityKpis {
   const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution });
 
   return {
-    banksAndIssuers: banksAndIssuers,
-    derivatives: eligibleDerivatives,
-    investmentNonNfrd: nonNfrd,
-    taxonomyEligibleActivity: taxonomyEligibleEconomicActivity,
+    banksAndIssuers: generateDatapointOrNotReportedAtRandom(banksAndIssuers),
+    derivatives: generateDatapointOrNotReportedAtRandom(eligibleDerivatives),
+    investmentNonNfrd: generateDatapointOrNotReportedAtRandom(nonNfrd),
+    taxonomyEligibleActivity: generateDatapointOrNotReportedAtRandom(taxonomyEligibleEconomicActivity),
   };
 }
 
 export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum) {
-  return [
+  /*return [
     {
       label: `Exposures to taxonomy-eligible economic activities ${getCompanyType(type)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
@@ -93,13 +93,15 @@ export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFin
       value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
         convertToPercentageString(row.t.eligibilityKpis![type]?.investmentNonNfrd),
     },
-  ];
+  ];*/
+  return [];
 }
 
 export function generateCSVDataForFinancials(
   companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
 ) {
-  const options = {
+  return "";
+  /*const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
@@ -141,5 +143,5 @@ export function generateCSVDataForFinancials(
     ],
     delimiter: ";",
   };
-  return parse(companyInformationWithEuTaxonomyDataForFinancials, options);
+  return parse(companyInformationWithEuTaxonomyDataForFinancials, options);*/
 }
