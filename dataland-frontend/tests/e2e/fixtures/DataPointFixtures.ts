@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { DataPoint, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
+import { generateDataSource } from "./DataSourceFixtures";
 
 export function generateDatapointOrNotReportedAtRandom(value: number | undefined): DataPoint | undefined {
   if (value === undefined) return undefined;

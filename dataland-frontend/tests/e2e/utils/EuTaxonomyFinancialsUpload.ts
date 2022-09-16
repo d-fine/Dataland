@@ -16,9 +16,9 @@ export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypre
 }
 
 export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
-  cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes);
-  cy.get("select[name=attestation]").select(data.attestation.toString());
-  cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes!!);
+  cy.get("select[name=attestation]").select(data.assurance!!.assurance.toString());
+  cy.get(`input[name="reportingObligation"][value=${data.reportingObligation!!.toString()}]`).check();
   if (data.eligibilityKpis !== undefined) {
     if (data.eligibilityKpis.CreditInstitution !== undefined) {
       fillEligibilityKpis("CreditInstitution", data.eligibilityKpis.CreditInstitution);

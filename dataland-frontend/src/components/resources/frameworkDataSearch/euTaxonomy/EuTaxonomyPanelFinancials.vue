@@ -11,7 +11,7 @@
       <div class="col-6">
         <TaxoInfoCard
           title="Level of Assurance"
-          :value="dataSet.attestation"
+          :value="dataSet.assurance?.assurance"
           tooltipText="The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
@@ -27,7 +27,7 @@
           <TaxoCard
             :name="`taxonomyEligibleActivity${fsType}`"
             title="Taxonomy-eligible economic activity"
-            :percent="dataSet.eligibilityKpis[fsType].taxonomyEligibleActivity"
+            :percent="dataSet.eligibilityKpis[fsType].taxonomyEligibleActivity?.value"
           />
         </div>
         <div class="col-6">
@@ -35,21 +35,21 @@
             :name="`derivatives${fsType}`"
             title="Derivatives"
             taxonomy-kind=""
-            :percent="dataSet.eligibilityKpis[fsType].derivatives"
+            :percent="dataSet.eligibilityKpis[fsType].derivatives?.value"
           />
         </div>
         <div class="col-6">
           <TaxoCard
             :name="`banksAndIssuers${fsType}`"
             title="Banks and issuers"
-            :percent="dataSet.eligibilityKpis[fsType].banksAndIssuers"
+            :percent="dataSet.eligibilityKpis[fsType].banksAndIssuers?.value"
           />
         </div>
         <div class="col-6">
           <TaxoCard
             :name="`investmentNonNfrd${fsType}`"
             title="Non-NFRD"
-            :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrd"
+            :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrd?.value"
           />
         </div>
         <template v-if="fsType === 'CreditInstitution'">
@@ -68,7 +68,7 @@
               title="Trading portfolio & on demand interbank loans"
               name="tradingPortfolioAndOnDemandInterbankLoans"
               taxonomy-kind=""
-              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans"
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans?.value"
             />
           </div>
           <div
@@ -81,7 +81,7 @@
             <TaxoCard
               name="tradingPortfolio"
               title="Trading portfolio"
-              :percent="dataSet.creditInstitutionKpis.tradingPortfolio"
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolio?.value"
             />
           </div>
           <div
@@ -94,7 +94,7 @@
             <TaxoCard
               name="onDemandInterbankLoans"
               title="On demand interbank loans"
-              :percent="dataSet.creditInstitutionKpis.interbankLoans"
+              :percent="dataSet.creditInstitutionKpis.interbankLoans?.value"
             />
           </div>
         </template>
@@ -107,7 +107,7 @@
             <TaxoCard
               name="taxonomyEligibleNonLifeInsuranceActivities"
               title="Taxonomy-eligible non-life insurance economic activities"
-              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities"
+              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities?.value"
             />
           </div>
         </template>

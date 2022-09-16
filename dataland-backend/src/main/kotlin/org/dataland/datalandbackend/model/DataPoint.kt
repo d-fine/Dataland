@@ -13,7 +13,7 @@ data class DataPoint(
     val value: BigDecimal? = null,
 
     @field:JsonProperty("quality", required = true)
-    val qualityOptions: QualityOptions,
+    val quality: QualityOptions,
 
     @field:JsonProperty("dataSource")
     val dataSource: CompanyReportReference? = null

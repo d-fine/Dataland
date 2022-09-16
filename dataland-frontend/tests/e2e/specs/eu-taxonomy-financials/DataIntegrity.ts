@@ -35,8 +35,8 @@ describeIf(
     ) {
       return element.filter((it) => {
         return (
-          serviceTypes.every((serviceType) => it.t.financialServicesTypes.includes(serviceType)) &&
-          serviceTypes.length === it.t.financialServicesTypes.length
+          serviceTypes.every((serviceType) => it.t.financialServicesTypes?.includes(serviceType)) &&
+          serviceTypes.length === it.t.financialServicesTypes?.length
         );
       });
     }
