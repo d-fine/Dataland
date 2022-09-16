@@ -46,7 +46,7 @@ class DataManagerTest(
         unexpectedDataTypeName: String,
         expectedDataTypeName: String
     ): String {
-        return "The data set with the id: $requestedDataId came back as type $unexpectedDataTypeName from thedata " +
+        return "The data set with the id: $requestedDataId came back as type $unexpectedDataTypeName from the data " +
             "store instead of type $expectedDataTypeName as registered by Dataland."
     }
 

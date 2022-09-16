@@ -84,7 +84,7 @@ class DataManager(
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
-                "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the" +
+                "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the " +
                     "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland."
             )
         }
