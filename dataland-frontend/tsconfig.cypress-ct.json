@@ -7,7 +7,6 @@
     "build/clients/**/*",
     "tests/component/**/*"
   ],
-  "exclude": [],
   "compilerOptions": {
     "composite": true,
     "types": ["cypress"]
