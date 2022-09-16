@@ -24,15 +24,15 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible Revenue"
-          :percent="dataSet.revenue.eligiblePercentage?.value"
-          :total="dataSet.revenue.totalAmount?.value"
+          :percent="dataSet.revenue?.eligiblePercentage?.value"
+          :total="dataSet.revenue?.totalAmount?.value"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned Revenue"
-          :percent="dataSet.revenue.alignedPercentage?.value"
-          :total="dataSet.revenue.totalAmount?.value"
+          :percent="dataSet.revenue?.alignedPercentage?.value"
+          :total="dataSet.revenue?.totalAmount?.value"
         ></TaxoCard>
       </div>
     </div>
@@ -43,15 +43,15 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible CapEx"
-          :percent="dataSet.capex.eligiblePercentage?.value"
-          :total="dataSet.capex.totalAmount?.value"
+          :percent="dataSet.capex?.eligiblePercentage?.value"
+          :total="dataSet.capex?.totalAmount?.value"
         />
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned CapEx"
-          :percent="dataSet.capex.alignedPercentage?.value"
-          :total="dataSet.capex.totalAmount?.value"
+          :percent="dataSet.capex?.alignedPercentage?.value"
+          :total="dataSet.capex?.totalAmount?.value"
         />
       </div>
     </div>
@@ -62,15 +62,15 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible OpEx"
-          :percent="dataSet.opex.eligiblePercentage?.value"
-          :total="dataSet.opex.totalAmount?.value"
+          :percent="dataSet.opex?.eligiblePercentage?.value"
+          :total="dataSet.opex?.totalAmount?.value"
         />
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned OpEx"
-          :percent="dataSet.opex.alignedPercentage?.value"
-          :total="dataSet.opex.totalAmount?.value"
+          :percent="dataSet.opex?.alignedPercentage?.value"
+          :total="dataSet.opex?.totalAmount?.value"
         />
       </div>
     </div>
