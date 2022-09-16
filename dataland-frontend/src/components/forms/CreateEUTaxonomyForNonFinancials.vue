@@ -21,20 +21,22 @@
           :model-value="companyID"
         />
         <FormKit type="group" name="data" label="data">
-          <FormKit
-            type="select"
-            name="attestation"
-            validation="required"
-            label="Attestation"
-            placeholder="Please choose"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-            :options="{
-              None: humanizeString('None'),
-              LimitedAssurance: humanizeString('LimitedAssurance'),
-              ReasonableAssurance: humanizeString('ReasonableAssurance'),
-            }"
-          />
+          <FormKit type="group" name="assurance" label="Assurance">
+            <FormKit
+              type="select"
+              name="assurance"
+              validation="required"
+              label="Assurance"
+              placeholder="Please choose"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+              :options="{
+                None: humanizeString('None'),
+                LimitedAssurance: humanizeString('LimitedAssurance'),
+                ReasonableAssurance: humanizeString('ReasonableAssurance'),
+              }"
+            />
+          </FormKit>
           <FormKit
             type="radio"
             name="reportingObligation"
@@ -55,88 +57,105 @@
           <div title="capex">
             <h3>CapEx</h3>
             <FormKit type="group" name="capex" label="CapEx">
-              <FormKit
-                type="text"
-                name="alignedPercentage"
-                validation="number"
-                label="Aligned %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="eligiblePercentage"
-                validation="number"
-                label="Eligible %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="totalAmount"
-                validation="number"
-                label="Total €"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
+              <DataPointFormElement name="alignedPercentage" label="Aligned %" />
+              <FormKit type="group" name="eligiblePercentage" label="CapEx - Eligible %">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Eligible %"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
+              <FormKit type="group" name="totalAmount" label="CapEx - Total Amount">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Total Amount"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
             </FormKit>
           </div>
           <div title="opex">
             <h3>OpEx</h3>
             <FormKit type="group" name="opex" label="OpEx">
-              <FormKit
-                type="text"
-                name="alignedPercentage"
-                validation="number"
-                label="Aligned %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="eligiblePercentage"
-                validation="number"
-                label="Eligible %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="totalAmount"
-                validation="number"
-                label="Total €"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
+              <FormKit type="group" name="alignedPercentage" label="OpEx - Aligned %">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Aligned %"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
+              <FormKit type="group" name="eligiblePercentage" label="OpEx - Eligible %">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Eligible %"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
+              <FormKit type="group" name="totalAmount" label="OpEx - Total Amount">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Total Amount"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
             </FormKit>
           </div>
           <div title="revenue">
             <h3>Revenue</h3>
             <FormKit type="group" name="revenue" label="Revenue">
-              <FormKit
-                type="text"
-                name="alignedPercentage"
-                validation="number"
-                label="Aligned %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="eligiblePercentage"
-                validation="number"
-                label="Eligible %"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
-              <FormKit
-                type="text"
-                name="totalAmount"
-                validation="number"
-                label="Total €"
-                :inner-class="innerClass"
-                :input-class="inputClass"
-              />
+              <FormKit type="group" name="alignedPercentage" label="Revenue - Aligned %">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Aligned %"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
+              <FormKit type="group" name="eligiblePercentage" label="Revenue - Eligible %">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Eligible %"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
+              <FormKit type="group" name="totalAmount" label="Revenue - Total Amount">
+                <FormKit
+                  type="text"
+                  name="value"
+                  validation="number"
+                  label="Total Amount"
+                  :inner-class="innerClass"
+                  :input-class="inputClass"
+                />
+                <FormKit type="hidden" name="quality" value="Reported" />
+              </FormKit>
             </FormKit>
           </div>
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
@@ -161,10 +180,11 @@ import FailedUpload from "@/components/messages/FailedUpload";
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
+import DataPointFormElement from "@/components/forms/DataPointFormElement";
 
 export default {
   name: "CreateEUTaxonomyForNonFinancials",
-  components: { FailedUpload, Card, FormKit, SuccessUpload },
+  components: { DataPointFormElement, FailedUpload, Card, FormKit, SuccessUpload },
 
   data: () => ({
     innerClass: {
