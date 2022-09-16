@@ -55,7 +55,7 @@ describe(
           if (response.status !== 200) {
             assert(
               response.status === 200,
-              `Got status code ${response.status} during upload of single ` + `Element to ${endpoint}. Expected: 200.`
+              `Got status code ${response.status} during upload of single element to ${endpoint}. Expected: 200.`
             );
           }
 
