@@ -1,11 +1,9 @@
 import { faker } from "@faker-js/faker";
 import { DataPoint, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
 
-function generateDataSource(): CompanyReportReference {
-  return {
-    page: faker.mersenne.rand(1200, 1),
-    report: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
-  };
+export function generateDatapointOrNotReportedAtRandom(value: number | undefined): DataPoint | undefined {
+  if (value === undefined) return undefined;
+  return generateDatapoint(Math.random() > 0.1 ? value : null);
 }
 
 export function generateDatapoint(value: number | null): DataPoint {
