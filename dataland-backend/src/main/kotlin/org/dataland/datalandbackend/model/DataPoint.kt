@@ -9,11 +9,11 @@ import java.math.BigDecimal
  * Fields of a generic data point and its source
  */
 data class DataPoint(
-    @field:JsonProperty("value", required = true)
-    val value: BigDecimal,
+    @field:JsonProperty("value")
+    val value: BigDecimal? = null,
 
-    @field:JsonProperty("quality")
-    val qualityOptions: QualityOptions? = QualityOptions.NA,
+    @field:JsonProperty("quality", required = true)
+    val qualityOptions: QualityOptions,
 
     @field:JsonProperty("dataSource")
     val dataSource: CompanyReportReference? = null

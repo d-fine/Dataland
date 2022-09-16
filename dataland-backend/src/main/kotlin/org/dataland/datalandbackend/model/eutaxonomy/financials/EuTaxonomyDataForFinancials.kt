@@ -13,8 +13,8 @@ import java.util.EnumSet
  */
 @DataType("eutaxonomy-financials")
 data class EuTaxonomyDataForFinancials(
-    @field:JsonProperty("financialServicesTypes", required = true)
-    val financialServicesTypes: EnumSet<FinancialServicesType>?,
+    @field:JsonProperty("financialServicesTypes")
+    val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
     @field:JsonProperty("eligibilityKpis")
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
@@ -25,12 +25,12 @@ data class EuTaxonomyDataForFinancials(
     @field:JsonProperty("insuranceKpis")
     val insuranceKpis: InsuranceKpis? = null,
 
-    @field:JsonProperty("attestation", required = true)
-    val attestation: AssuranceData? = null,
+    @field:JsonProperty("assurance")
+    val assurance: AssuranceData? = null,
 
-    @field:JsonProperty("reportingObligation", required = true)
+    @field:JsonProperty("reportingObligation")
     val reportingObligation: YesNo? = null,
 
-    @field:JsonProperty("activityLevelReporting", required = true)
+    @field:JsonProperty("activityLevelReporting")
     val activityLevelReporting: YesNo? = null
 )

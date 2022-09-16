@@ -20,12 +20,12 @@ data class EuTaxonomyDataForNonFinancials(
     @field:JsonProperty("revenue")
     val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("attestation", required = true)
-    val attestation: AssuranceData? = null,
+    @field:JsonProperty("assurance")
+    val assurance: AssuranceData? = null,
 
-    @field:JsonProperty("reportingObligation", required = true)
+    @field:JsonProperty("reportingObligation")
     val reportObligation: YesNo? = null,
 
-    @field:JsonProperty("activityLevelReporting", required = true)
+    @field:JsonProperty("activityLevelReporting")
     val activityLevelReporting: YesNo? = null
 )
