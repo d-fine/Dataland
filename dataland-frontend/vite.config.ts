@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import fs from "fs";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 import istanbul from "vite-plugin-istanbul";

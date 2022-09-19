@@ -109,6 +109,16 @@ services:
     links:
       - proxy:dataland-local.duckdns.org
       - admin-proxy:dataland-admin
+  frontend-dev:
+    restart: always
+    profiles: ["development"]
+    image: node:bullseye
+    networks:
+      - internal
+    volumes:
+      - ./dataland-frontend:/app
+      - /app/node_modules
+    command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
