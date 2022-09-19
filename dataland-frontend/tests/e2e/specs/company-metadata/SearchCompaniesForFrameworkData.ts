@@ -1,13 +1,10 @@
-import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend";
-import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import { uploadDummyEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
-import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
-import { describeIf } from "../../support/TestUtility";
+import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "@e2e/utils/CompanySearch";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -104,7 +101,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
     retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
-      cy.get("h2").should("contain", "EU Taxonomy Data");
       cy.get("input[name=framework_data_search_bar_standard]")
         .should("not.be.disabled")
         .type(inputValue)

@@ -1,5 +1,5 @@
-import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/CompanyUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { createCompanyAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
 
 describeIf(
   "As a user, I want to be able to create new companies",
@@ -20,7 +20,9 @@ describeIf(
     function uploadEuTaxonomyDataForNonFinancials(companyId: string) {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
       cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-      cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({ force: true });
+      cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
+        force: true,
+      });
       cy.get('select[name="attestation"]').select("None");
       for (const argument of ["capex", "opex"]) {
         cy.get(`div[title=${argument}] input`).each(($element, index) => {
@@ -81,7 +83,9 @@ describeIf(
       createCompanyAndGetId("Missing field company").then((companyId) => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
         cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
-        cy.get('input[id="reportingObligation-option-no"][value=No]').check({ force: true });
+        cy.get('input[id="reportingObligation-option-no"][value=No]').check({
+          force: true,
+        });
         cy.get('select[name="attestation"]').select("None");
         cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
         cy.get('button[name="postEUData"]').click({ force: true });

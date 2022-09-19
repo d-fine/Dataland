@@ -70,8 +70,8 @@
 
 <script>
 import Card from "primevue/card";
-import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons";
-import JoinDatalandButton from "@/components/general/JoinDatalandButton";
+import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
+import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 
 export default {
   name: "LandingLogin",

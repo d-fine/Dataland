@@ -1,7 +1,4 @@
-import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-} from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { EuTaxonomyDataForFinancials, EligibilityKpis } from "@clients/backend";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
@@ -19,36 +16,24 @@ export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes);
   cy.get("select[name=attestation]").select(data.attestation.toString());
   cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
-  if (data.eligibilityKpis !== undefined) {
-    if (data.eligibilityKpis.CreditInstitution !== undefined) {
-      fillEligibilityKpis("CreditInstitution", data.eligibilityKpis.CreditInstitution);
-    }
-    if (data.eligibilityKpis.InsuranceOrReinsurance !== undefined) {
-      fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis.InsuranceOrReinsurance);
-    }
-    if (data.eligibilityKpis.AssetManagement !== undefined) {
-      fillEligibilityKpis("AssetManagement", data.eligibilityKpis.AssetManagement);
-    }
-  }
-  if (data.insuranceKpis !== undefined) {
-    fillField(
-      "",
-      "taxonomyEligibleNonLifeInsuranceActivities",
-      data.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities
-    );
-  }
-  if (data.creditInstitutionKpis !== undefined) {
-    fillField("", "tradingPortfolioAndInterbankLoans", data.creditInstitutionKpis.tradingPortfolioAndInterbankLoans);
-    fillField("", "tradingPortfolio", data.creditInstitutionKpis.tradingPortfolio);
-    fillField("", "interbankLoans", data.creditInstitutionKpis.interbankLoans);
-  }
+  fillEligibilityKpis("CreditInstitution", data.eligibilityKpis?.CreditInstitution);
+  fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis?.InsuranceOrReinsurance);
+  fillEligibilityKpis("AssetManagement", data.eligibilityKpis?.AssetManagement);
+  fillField(
+    "",
+    "taxonomyEligibleNonLifeInsuranceActivities",
+    data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities
+  );
+  fillField("", "tradingPortfolioAndInterbankLoans", data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans);
+  fillField("", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
+  fillField("", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
 }
 
-function fillEligibilityKpis(divName: string, data: EligibilityKpis) {
-  fillField(divName, "taxonomyEligibleActivity", data.taxonomyEligibleActivity);
-  fillField(divName, "derivatives", data.derivatives);
-  fillField(divName, "banksAndIssuers", data.banksAndIssuers);
-  fillField(divName, "investmentNonNfrd", data.investmentNonNfrd);
+function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined) {
+  fillField(divName, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
+  fillField(divName, "derivatives", data?.derivatives);
+  fillField(divName, "banksAndIssuers", data?.banksAndIssuers);
+  fillField(divName, "investmentNonNfrd", data?.investmentNonNfrd);
 }
 
 function fillField(divName: string, inputName: string, value?: any) {

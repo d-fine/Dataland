@@ -6,6 +6,8 @@ WORKDIR /app
 COPY . .
 RUN DATALAND_EDC_USER=${DATALAND_EDC_USER} \
     DATALAND_EDC_TOKEN=${DATALAND_EDC_TOKEN} \
+    VITE_COVERAGE=true \
+    BUILD_INSTRUMENTED=true \
     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html

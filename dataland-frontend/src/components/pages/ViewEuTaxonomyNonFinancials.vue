@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase";
-import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
+import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 export default {
   name: "ViewEuTaxonomyNonFinancials",
   components: { ViewFrameworkBase, EuTaxonomyPanelNonFinancials },

@@ -12,13 +12,22 @@ export function splitStringBySearchMatch(rawText: string, searchString: string):
   let lastIndex = 0;
   while ((match = regex.exec(rawText)) != null) {
     if (lastIndex < match.index) {
-      ret.push({ text: rawText.substring(lastIndex, match.index), highlight: false });
+      ret.push({
+        text: rawText.substring(lastIndex, match.index),
+        highlight: false,
+      });
     }
-    ret.push({ text: rawText.substring(match.index, match.index + match[0].length), highlight: true });
+    ret.push({
+      text: rawText.substring(match.index, match.index + match[0].length),
+      highlight: true,
+    });
     lastIndex = match.index + match[0].length;
   }
   if (lastIndex < rawText.length) {
-    ret.push({ text: rawText.substring(lastIndex, rawText.length), highlight: false });
+    ret.push({
+      text: rawText.substring(lastIndex, rawText.length),
+      highlight: false,
+    });
   }
   return ret;
 }

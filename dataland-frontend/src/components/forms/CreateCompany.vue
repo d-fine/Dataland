@@ -38,11 +38,11 @@
 
 <script>
 import { FormKit, FormKitSchema } from "@formkit/vue";
-import SuccessUpload from "@/components/messages/SuccessUpload";
+import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { SchemaGenerator } from "@/services/SchemaGenerator";
 import { ApiClientProvider } from "@/services/ApiClients";
-import backend from "@/../build/clients/backend/backendOpenApi.json";
-import FailedUpload from "@/components/messages/FailedUpload";
+import backend from "@clients/backend/backendOpenApi.json";
+import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Message from "primevue/message";
@@ -54,7 +54,15 @@ const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
 
 const createCompany = {
   name: "CreateCompany",
-  components: { FailedUpload, Card, Message, Button, FormKit, FormKitSchema, SuccessUpload },
+  components: {
+    FailedUpload,
+    Card,
+    Message,
+    Button,
+    FormKit,
+    FormKitSchema,
+    SuccessUpload,
+  },
 
   data: () => ({
     postCompanyProcessed: false,
