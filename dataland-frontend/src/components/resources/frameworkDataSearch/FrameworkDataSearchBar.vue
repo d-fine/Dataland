@@ -74,7 +74,7 @@
 
 <script>
 import AutoComplete from "primevue/autocomplete";
-import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter";
+import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import {
   getCompanyDataForFrameworkDataSearchPage,
   getRouterLinkTargetFramework,

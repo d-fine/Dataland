@@ -1,4 +1,4 @@
-import { Configuration } from "@/../build/clients/backend/configuration";
+import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
@@ -10,7 +10,7 @@ import {
   MetaDataControllerApiInterface,
   SkyminderControllerApi,
   SkyminderControllerApiInterface,
-} from "@/../build/clients/backend/api";
+} from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;

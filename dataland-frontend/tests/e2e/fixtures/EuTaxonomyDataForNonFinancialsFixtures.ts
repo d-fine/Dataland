@@ -3,7 +3,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsAttestationEnum,
   EuTaxonomyDataForNonFinancialsReportingObligationEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { convertToPercentageString, decimalSeparatorConverter, getAttestation } from "./CsvUtils";
 
@@ -20,14 +20,38 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
     Object.values(EuTaxonomyDataForNonFinancialsReportingObligationEnum)
   );
   const capexTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const capexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const capexAligned = faker.datatype.float({ min: 0, max: capexEligible, precision: resolution });
+  const capexEligible = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const capexAligned = faker.datatype.float({
+    min: 0,
+    max: capexEligible,
+    precision: resolution,
+  });
   const opexTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const opexEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const opexAligned = faker.datatype.float({ min: 0, max: opexEligible, precision: resolution });
+  const opexEligible = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const opexAligned = faker.datatype.float({
+    min: 0,
+    max: opexEligible,
+    precision: resolution,
+  });
   const revenueTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const revenueEligible = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const revenueAligned = faker.datatype.float({ min: 0, max: revenueEligible, precision: resolution });
+  const revenueEligible = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const revenueAligned = faker.datatype.float({
+    min: 0,
+    max: revenueEligible,
+    precision: resolution,
+  });
 
   return {
     capex: {

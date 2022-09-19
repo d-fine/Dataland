@@ -1,14 +1,10 @@
-import { retrieveFirstCompanyIdWithFrameworkData } from "../../utils/ApiUtils";
-import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "../../utils/CompanySearch";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend";
-import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import { uploadEuTaxonomyDataForNonFinancials } from "../../utils/EuTaxonomyNonFinancialsUpload";
-import { describeIf } from "../../support/TestUtility";
-import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
+import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
+import { checkViewButtonWorks, verifyTaxonomySearchResultTable } from "@e2e/utils/CompanySearch";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;

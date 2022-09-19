@@ -1,5 +1,5 @@
-import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId } from "../../utils/CompanyUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 
 const timeout = 120 * 1000;
 describeIf(
@@ -63,7 +63,9 @@ describeIf(
       uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
         companyIdList[0],
         () => {
-          cy.get('input[name="reportingObligation"][value=Yes]').check({ force: true });
+          cy.get('input[name="reportingObligation"][value=Yes]').check({
+            force: true,
+          });
           cy.get('select[name="attestation"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
@@ -85,7 +87,9 @@ describeIf(
       uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
         companyIdList[1],
         () => {
-          cy.get('input[name="reportingObligation"][value=Yes]').check({ force: true });
+          cy.get('input[name="reportingObligation"][value=Yes]').check({
+            force: true,
+          });
           cy.get('select[name="attestation"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
