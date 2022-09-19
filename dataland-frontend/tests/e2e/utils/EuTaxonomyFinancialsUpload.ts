@@ -1,6 +1,7 @@
 import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
+  DataPoint,
 } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
@@ -17,7 +18,7 @@ export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypre
 
 export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes!!);
-  cy.get("select[name=attestation]").select(data.assurance!!.assurance.toString());
+  cy.get("select[name=assurance]").select(data.assurance!!.assurance.toString());
   cy.get(`input[name="reportingObligation"][value=${data.reportingObligation!!.toString()}]`).check();
   if (data.eligibilityKpis !== undefined) {
     if (data.eligibilityKpis.CreditInstitution !== undefined) {
@@ -51,19 +52,19 @@ function fillEligibilityKpis(divName: string, data: EligibilityKpis) {
   fillField(divName, "investmentNonNfrd", data.investmentNonNfrd);
 }
 
-function fillField(divName: string, inputName: string, value?: any) {
-  if (value !== undefined) {
-    const input = value.toString();
+function fillField(divName: string, inputName: string, value?: DataPoint) {
+  if (value !== undefined && value.value !== undefined) {
+    const input = value.value.toString();
     if (divName === "") {
-      cy.get(`input[name="${inputName}"]`).type(input);
+      cy.get(`div[name="${inputName}"]`).find('input[name="value"]').type(input);
     } else {
-      cy.get(`div[name="${divName}"]`).find(`input[name="${inputName}"]`).type(input);
+      cy.get(`div[name="${divName}"]`).find(`div[name="${inputName}"]`).find('input[name="value"]').type(input);
     }
   }
 }
 
 function fillEuTaxonomyFinancialsDummyUploadFields(): void {
   cy.get("select[name=financialServicesTypes]").select("Credit Institution");
-  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[name="reportingObligation"][value=Yes]').check();
 }

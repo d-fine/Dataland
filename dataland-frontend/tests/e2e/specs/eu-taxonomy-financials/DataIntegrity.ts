@@ -6,6 +6,7 @@ import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EligibilityKpis,
+  DataPoint,
 } from "../../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 
 describeIf(
@@ -53,8 +54,10 @@ describeIf(
       });
     }
 
-    function formatPercentNumber(value?: any): number {
-      return Math.round((value || 0) * 100 * 100) / 100;
+    function formatPercentNumber(value?: DataPoint): string {
+      if (value === undefined || value === null || value.value === undefined || value.value === null)
+        return "No data has been reported";
+      return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
     function checkCommonFields(type: string, data: EligibilityKpis) {

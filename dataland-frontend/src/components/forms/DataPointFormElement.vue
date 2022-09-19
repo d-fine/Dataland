@@ -1,15 +1,17 @@
 <template>
-  <FormKit type="group" :name="name">
-    <FormKit
-      type="text"
-      name="value"
-      validation="number"
-      :label="label"
-      :inner-class="innerClass"
-      :input-class="inputClass"
-    />
-    <FormKit type="hidden" name="quality" value="Estimated" />
-  </FormKit>
+  <div :name="name">
+    <FormKit type="group" :name="name">
+      <FormKit
+        type="text"
+        name="value"
+        validation="number"
+        :label="label"
+        :inner-class="innerClass"
+        :input-class="inputClass"
+      />
+      <FormKit type="hidden" name="quality" value="Estimated" />
+    </FormKit>
+  </div>
 </template>
 
 <script>
