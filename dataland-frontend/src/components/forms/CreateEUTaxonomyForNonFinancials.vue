@@ -64,7 +64,7 @@
           </div>
           <div title="opex">
             <h3>OpEx</h3>
-            <FormKit type="group" name="capex" label="OpEx">
+            <FormKit type="group" name="opex" label="OpEx">
               <DataPointFormElement name="alignedPercentage" label="Aligned %" />
               <DataPointFormElement name="eligiblePercentage" label="Eligible %" />
               <DataPointFormElement name="totalAmount" label="Total Amount" />

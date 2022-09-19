@@ -18,7 +18,7 @@ export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypre
 
 export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes!!);
-  cy.get("select[name=assurance]").select(data.assurance!!.assurance.toString());
+  cy.get("select[name=assurance]").select(data.assurance!!.assurance);
   cy.get(`input[name="reportingObligation"][value=${data.reportingObligation!!.toString()}]`).check();
   if (data.eligibilityKpis !== undefined) {
     if (data.eligibilityKpis.CreditInstitution !== undefined) {
@@ -56,9 +56,9 @@ function fillField(divName: string, inputName: string, value?: DataPoint) {
   if (value !== undefined && value.value !== undefined) {
     const input = value.value.toString();
     if (divName === "") {
-      cy.get(`div[name="${inputName}"]`).find('input[name="value"]').type(input);
+      cy.get(`input[name="${inputName}"]`).type(input);
     } else {
-      cy.get(`div[name="${divName}"]`).find(`div[name="${inputName}"]`).find('input[name="value"]').type(input);
+      cy.get(`div[name="${divName}"]`).find(`input[name="${inputName}"]`).type(input);
     }
   }
 }
