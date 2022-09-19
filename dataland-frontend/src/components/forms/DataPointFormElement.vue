@@ -28,7 +28,14 @@ export default {
       "w-full": true,
     },
   }),
-  props: { name: { type: String }, label: { type: String } },
+  props: {
+    name: {
+      type: String,
+    },
+    label: {
+      type: String,
+    },
+  },
 };
 </script>
 
