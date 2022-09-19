@@ -8,7 +8,7 @@
       :inner-class="innerClass"
       :input-class="inputClass"
     />
-    <FormKit type="hidden" name="quality" value="Reported" />
+    <FormKit type="hidden" name="quality" value="Estimated" />
   </FormKit>
 </template>
 
