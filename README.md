@@ -64,5 +64,6 @@ Requests can be authorized via two different methods:
 ## Run Cypress Tests locally
 * start the docker-compose stack with the "development" profile. Set the env-variables (see above). 
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
-* start the frontend - using `npm run serve`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
-* start the E2E cypress tests using `npm run teste2e`
+* start the frontend - using `npm run dev`. to be safe do an `npm install` and a `./gradlew generateAPIClientFrontend` beforehand.
+* start the cypress UI by using `npm run cypress`
+* Select `E2E Testing` or `Component Testing` and run the tests
