@@ -110,6 +110,9 @@ services:
       - proxy:dataland-local.duckdns.org
       - admin-proxy:dataland-admin
   frontend-dev:
+    # This container has been introduced to work around a docker bug where requests from a docker network to the host
+    # don't work anymore after a certain amount of requests
+    # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
     image: node:bullseye
