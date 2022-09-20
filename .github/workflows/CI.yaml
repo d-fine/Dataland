@@ -47,7 +47,7 @@ jobs:
         with:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
-  unit-tests-frontend:
+  component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
@@ -57,14 +57,14 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Execute Frontend Unit Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testunit :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+      - name: Execute Frontend Component Tests
+        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: lcovResultsUnit
-          path: ./dataland-frontend/coverage/**/lcov.info
+          name: lcovResults
+          path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
   e2e-tests:
@@ -132,11 +132,11 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
-      - name: Upload FE E2E lcov Exec Results
+      - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: lcovResultsE2E
+          name: lcovResults
           path: ./*.info
       - name: Upload FE E2E Cypress Results
         if: always()
@@ -168,7 +168,7 @@ jobs:
     needs:
       - e2e-tests
       - unit-tests-backend
-      - unit-tests-frontend
+      - component-tests-frontend
     steps:
       - uses: actions/checkout@v2
         with:
@@ -191,12 +191,8 @@ jobs:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v2
         with:
-          name: lcovResultsUnit
-          path: fe-coverage/unit
-      - uses: actions/download-artifact@v2
-        with:
-          name: lcovResultsE2E
-          path: fe-coverage/e2e
+          name: lcovResults
+          path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace

@@ -18,7 +18,7 @@
   <div class="h-4rem" />
 </template>
 <script>
-import UserProfileDropDown from "@/components/general/UserProfileDropDown";
+import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 export default {
   name: "TheHeader",
   components: { UserProfileDropDown },

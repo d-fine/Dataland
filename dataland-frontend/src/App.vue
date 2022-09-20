@@ -6,7 +6,7 @@
 <script>
 import Keycloak from "keycloak-js";
 import { computed } from "vue";
-import DatalandFooter from "@/components/general/DatalandFooter";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default {
   name: "app",

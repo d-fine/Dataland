@@ -1,6 +1,6 @@
-import { performSimpleGet } from "../../utils/ApiUtils";
-import { getKeycloakToken } from "../../utils/Auth";
-import { doThingsInChunks } from "../../utils/Cypress";
+import { performSimpleGet } from "@e2e/utils/ApiUtils";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { doThingsInChunks } from "@e2e/utils/Cypress";
 
 const chunkSize = 40;
 
@@ -17,10 +17,14 @@ describe(
                 Authorization: "Bearer " + token,
               },
             }).then((dataGetResponse) => {
-              assert(
-                dataGetResponse.status.toString() === "200",
-                `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
-              );
+              // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
+              // every assert
+              if (dataGetResponse.status !== 200) {
+                assert(
+                  dataGetResponse.status === 200,
+                  `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
+                );
+              }
             })
           );
         });

@@ -4,7 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@/../build/clients/backend";
+import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 
 export interface DataSearchStoredCompany {

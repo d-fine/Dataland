@@ -58,16 +58,16 @@
 </style>
 
 <script>
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
-import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu.vue";
 import PrimeButton from "primevue/button";
-import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults";
+import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { useRoute } from "vue-router";
-import { CompanyInformationIndicesEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import { CompanyInformationIndicesEnum } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 const stockIndices = Object.keys(CompanyInformationIndicesEnum);
 
@@ -174,7 +174,10 @@ export default {
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: this.currentSearchBarInput, frameworks: frameworksQuery },
+        query: {
+          input: this.currentSearchBarInput,
+          frameworks: frameworksQuery,
+        },
       });
     },
 

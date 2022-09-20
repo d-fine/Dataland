@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import BackButton from "@/components/general/BackButton";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import BackButton from "@/components/general/BackButton.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default {
   name: "DataPrivacy",

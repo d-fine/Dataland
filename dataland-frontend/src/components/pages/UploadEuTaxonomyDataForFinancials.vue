@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials";
-import CompanyInformation from "@/components/pages/CompanyInformation";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default {
   name: "UploadEuTaxonomyDataForFinancials",

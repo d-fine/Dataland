@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder";
-import RetrieveCompany from "@/components/forms/RetrieveCompany";
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
+import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder.vue";
+import RetrieveCompany from "@/components/forms/RetrieveCompany.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 
 export default {
   name: "SearchCompanies",

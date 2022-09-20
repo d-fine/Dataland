@@ -1,10 +1,6 @@
-import { retrieveDataIdsList, retrieveCompanyIdsList } from "../../utils/ApiUtils";
-import { doThingsInChunks } from "../../utils/Cypress";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-} from "../../../../build/clients/backend";
+import { retrieveDataIdsList, retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
+import { doThingsInChunks } from "@e2e/utils/Cypress";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
 const chunkSize = 15;
 
 describe(
@@ -54,11 +50,15 @@ describe(
           },
           body: JSON.stringify(element),
         }).then((response) => {
-          assert(
-            response.status.toString() === "200",
-            `Got status code ${response.status.toString()} during upload of single ` +
-              `Element to ${endpoint}. Expected: 200.`
-          );
+          // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
+          // every assert
+          if (response.status !== 200) {
+            assert(
+              response.status === 200,
+              `Got status code ${response.status} during upload of single element to ${endpoint}. Expected: 200.`
+            );
+          }
+
           return response;
         });
       }

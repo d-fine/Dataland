@@ -1,4 +1,4 @@
-import { describeIf } from "../../support/TestUtility";
+import { describeIf } from "@e2e/support/TestUtility";
 
 describe("As a developer, I want to ensure that security relevant headers are set.", () => {
   function checkCommonHeaders(response: Cypress.Response<any>) {
