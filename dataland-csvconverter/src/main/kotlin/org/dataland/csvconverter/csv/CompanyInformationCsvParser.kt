@@ -5,7 +5,6 @@ import org.dataland.csvconverter.csv.CsvUtils.getScaledCsvValue
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -25,16 +24,6 @@ class CompanyInformationCsvParser {
         IdentifierType.Isin.name to "ISIN",
         IdentifierType.Lei.name to "LEI",
         IdentifierType.PermId.name to "PermID",
-        StockIndex.PrimeStandard.name to "Prime Standard",
-        StockIndex.GeneralStandard.name to "General Standard",
-        StockIndex.Hdax.name to "HDAX",
-        StockIndex.Cdax.name to "CDAX",
-        StockIndex.Gex.name to "GEX",
-        StockIndex.Dax.name to "DAX",
-        StockIndex.Mdax.name to "MDAX",
-        StockIndex.Sdax.name to "SDAX",
-        StockIndex.TecDax.name to "TecDAX",
-        StockIndex.Dax50Esg.name to "DAX 50 ESG",
         "isTeaserCompany" to "Teaser Company",
     )
 
@@ -52,7 +41,6 @@ class CompanyInformationCsvParser {
                 DateTimeFormatter.ofPattern("d.M.yyyy")
             ),
             identifiers = getCompanyIdentifiers(row),
-            indices = getStockIndices(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
             isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
                 .equals("Yes", true)
@@ -68,13 +56,6 @@ class CompanyInformationCsvParser {
             "Could not parse market capitalisation for company \"${
             companyInformationColumnMapping.getCsvValue("companyName", csvLineData)}\""
         )
-    }
-
-    private fun getStockIndices(csvLineData: Map<String, String>): Set<StockIndex> {
-        return StockIndex.values().filter {
-            (csvLineData[companyInformationColumnMapping[it.name]] ?: "")
-                .isNotBlank()
-        }.toSet()
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
