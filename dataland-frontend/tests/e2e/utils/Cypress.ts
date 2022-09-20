@@ -15,7 +15,7 @@ export function doThingsInChunks<T>(
     return wrapPromiseToCypressPromise(promise);
   });
 }
-//
+
 export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
   return new Cypress.Promise((resolve, reject) => {
     promise
