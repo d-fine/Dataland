@@ -31,7 +31,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   }
 
   function verifyPaginator(): void {
-    cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist")
+    cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist");
   }
 
   function executeCompanySearchWithStandardSearchBar(inputValue: string) {
