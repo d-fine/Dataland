@@ -5,13 +5,13 @@ import { routes } from "@/router";
 
 describe("Component test for FrameworkDataSearchBar", () => {
   let wrapper: any;
-  it("checks field properties", async () => {
+  it("checks field properties", () => {
     const router = createRouter({
       history: createMemoryHistory(),
       routes,
     });
-    await router.push("/companies");
-    await router.isReady();
+    router.push("/companies");
+    router.isReady();
     wrapper = mount(FrameworkDataSearchBar, {
       global: {
         plugins: [router],
