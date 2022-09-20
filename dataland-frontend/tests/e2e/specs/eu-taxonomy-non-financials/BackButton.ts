@@ -1,4 +1,4 @@
-import { retrieveCompanyIdsList } from "../../utils/ApiUtils";
+import { retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
 
 describe("As a user, I expect the back button to work properly", () => {
   it("company eu taxonomy page should be present and contain back button", function () {

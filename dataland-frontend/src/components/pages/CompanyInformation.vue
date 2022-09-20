@@ -9,10 +9,12 @@
       <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
     </div>
     <div class="col-4">
-      <span>Headquarter: </span> <span class="font-semibold">{{ companyInformation.headquarters }}</span>
+      <span>Headquarter: </span>
+      <span class="font-semibold">{{ companyInformation.headquarters }}</span>
     </div>
     <div class="col-4">
-      <span>Sector: </span> <span class="font-semibold">{{ companyInformation.sector }}</span>
+      <span>Sector: </span>
+      <span class="font-semibold">{{ companyInformation.sector }}</span>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@ import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 
 import { convertToPercentageString, getAttestation, getCompanyType } from "./CsvUtils";
 import { FixtureData } from "./GenerateFakeFixtures";
@@ -27,15 +27,31 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   let greenAssetRatio = undefined;
 
   if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
-    const singleFieldReporting = faker.datatype.boolean();
-    if (singleFieldReporting) {
-      tradingPortfolioAndInterbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+    const singleOrDualField = faker.datatype.boolean();
+    if (singleOrDualField) {
+      tradingPortfolioAndInterbankLoans = faker.datatype.float({
+        min: 0,
+        max: 1,
+        precision: resolution,
+      });
     } else {
-      interbankLoans = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-      tradingPortfolio = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+      interbankLoans = faker.datatype.float({
+        min: 0,
+        max: 1,
+        precision: resolution,
+      });
+      tradingPortfolio = faker.datatype.float({
+        min: 0,
+        max: 1,
+        precision: resolution,
+      });
     }
   } else if (financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0) {
-    taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+    taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({
+      min: 0,
+      max: 1,
+      precision: resolution,
+    });
   }
 
   if (
@@ -68,11 +84,31 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
 }
 
 export function generateEligibilityKpis(): EligibilityKpis {
-  const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const taxonomyNonEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution });
-  const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  const taxonomyEligibleEconomicActivity = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const taxonomyNonEligibleEconomicActivity = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const eligibleDerivatives = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const banksAndIssuers = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
+  const nonNfrd = faker.datatype.float({
+    min: 0,
+    max: 1,
+    precision: resolution,
+  });
 
   return {
     banksAndIssuers: generateDatapointOrNotReportedAtRandom(banksAndIssuers),
@@ -140,7 +176,10 @@ export function generateCSVDataForFinancials(
           convertToPercentageString(row.t.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities),
       },
       { label: "IS/FS", value: "companyType", default: "FS" },
-      { label: "NFRD mandatory", value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportingObligation },
+      {
+        label: "NFRD mandatory",
+        value: (row: FixtureData<EuTaxonomyDataForFinancials>) => row.t.reportingObligation,
+      },
       {
         label: "FS - company type",
         value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>

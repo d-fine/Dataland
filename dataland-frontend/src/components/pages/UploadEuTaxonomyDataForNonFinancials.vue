@@ -16,12 +16,12 @@
   </AuthenticationWrapper>
 </template>
 <script>
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials";
-import CompanyInformation from "@/components/pages/CompanyInformation";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default {
   name: "UploadEutaxonomyDataForNonFinancials",

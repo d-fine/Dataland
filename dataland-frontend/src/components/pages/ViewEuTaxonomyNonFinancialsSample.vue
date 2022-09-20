@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import BackButton from "@/components/general/BackButton";
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import BackButton from "@/components/general/BackButton.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials";
-import CompanyInformation from "@/components/pages/CompanyInformation";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 export default {
   name: "ViewEuTaxonomyNonFinancialsSample",
   components: {

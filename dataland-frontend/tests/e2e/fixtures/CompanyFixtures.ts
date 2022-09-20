@@ -4,10 +4,10 @@ import {
   CompanyIdentifier,
   CompanyIdentifierIdentifierTypeEnum,
   CompanyInformationIndicesEnum,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 import { JSONSet } from "./Utils";
 import { FixtureData } from "./GenerateFakeFixtures";
-import { humanizeString } from "../../../src/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv, getStockIndexValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {
@@ -62,7 +62,11 @@ export function generateCompanyInformation(): CompanyInformation {
 }
 
 export function getCsvCompanyMapping<T>() {
-  const dateOptions: any = { year: "numeric", month: "numeric", day: "numeric" };
+  const dateOptions: any = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  };
   const dateLocale = "de-DE";
 
   return [
@@ -74,7 +78,10 @@ export function getCsvCompanyMapping<T>() {
       label: "Headquarter",
       value: (row: FixtureData<T>) => row.companyInformation.headquarters,
     },
-    { label: "Sector", value: (row: FixtureData<T>) => row.companyInformation.sector },
+    {
+      label: "Sector",
+      value: (row: FixtureData<T>) => row.companyInformation.sector,
+    },
     {
       label: "Countrycode",
       value: (row: FixtureData<T>) => row.companyInformation.countryCode,

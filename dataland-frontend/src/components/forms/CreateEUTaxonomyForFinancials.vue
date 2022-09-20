@@ -120,9 +120,9 @@
   </Card>
 </template>
 <script>
-import SuccessUpload from "@/components/messages/SuccessUpload";
+import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
-import FailedUpload from "@/components/messages/FailedUpload";
+import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";

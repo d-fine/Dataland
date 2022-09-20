@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar";
-import MarginWrapper from "@/components/wrapper/MarginWrapper";
-import BackButton from "@/components/general/BackButton";
-import TheHeader from "@/components/generics/TheHeader";
-import TheContent from "@/components/generics/TheContent";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper";
-import CompanyInformation from "@/components/pages/CompanyInformation";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import BackButton from "@/components/general/BackButton.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import TheContent from "@/components/generics/TheContent.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 export default {
   name: "ViewFrameworkBase",
@@ -55,7 +55,10 @@ export default {
   },
   methods: {
     handleQueryCompany() {
-      this.$router.push({ name: "Search Companies for Framework Data", query: { input: this.currentInput } });
+      this.$router.push({
+        name: "Search Companies for Framework Data",
+        query: { input: this.currentInput },
+      });
     },
     async getDataIdToLoad() {
       try {

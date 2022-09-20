@@ -79,8 +79,8 @@
 
 <script>
 import { ApiClientProvider } from "@/services/ApiClients";
-import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard";
-import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard";
+import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
+import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 
 export default {
   name: "EuTaxonomyPanelNonFinancials",
