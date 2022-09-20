@@ -10,8 +10,6 @@ export function doThingsInChunks<T>(
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
     promise = promise.then(() => {
-      console.log("Chunksize: " + chunk.length);
-      console.log("index " + i);
       return Promise.all(chunk.map((element) => processor(element)));
     });
   }
