@@ -24,6 +24,8 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   let interbankLoans = undefined;
   let tradingPortfolio = undefined;
   let taxonomyEligibleNonLifeInsuranceActivities = undefined;
+  let greenAssetRatio = undefined;
+
   if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
     const singleFieldReporting = faker.datatype.boolean();
     if (singleFieldReporting) {
@@ -36,12 +38,20 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
     taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   }
 
+  if (
+    financialServicesTypes.indexOf("CreditInstitution") >= 0 ||
+    financialServicesTypes.indexOf("InvestmentFirm") >= 0
+  ) {
+    greenAssetRatio = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  }
+
   const eligibilityKpis = Object.fromEntries(financialServicesTypes.map((it) => [it, generateEligibilityKpis()]));
 
   return {
     reportingObligation: randomYesNo(),
     activityLevelReporting: randomYesNo(),
     assurance: generateAssuranceData(),
+    greenAssetRatio: generateDatapointOrNotReportedAtRandom(greenAssetRatio),
     financialServicesTypes: financialServicesTypes,
     eligibilityKpis: eligibilityKpis,
     creditInstitutionKpis: {
@@ -59,6 +69,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
 
 export function generateEligibilityKpis(): EligibilityKpis {
   const taxonomyEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  const taxonomyNonEligibleEconomicActivity = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const eligibleDerivatives = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const banksAndIssuers = faker.datatype.float({ min: 0, max: 1, precision: resolution });
   const nonNfrd = faker.datatype.float({ min: 0, max: 1, precision: resolution });
@@ -68,6 +79,7 @@ export function generateEligibilityKpis(): EligibilityKpis {
     derivatives: generateDatapointOrNotReportedAtRandom(eligibleDerivatives),
     investmentNonNfrd: generateDatapointOrNotReportedAtRandom(nonNfrd),
     taxonomyEligibleActivity: generateDatapointOrNotReportedAtRandom(taxonomyEligibleEconomicActivity),
+    taxonomyNonEligibleActivity: generateDatapointOrNotReportedAtRandom(taxonomyNonEligibleEconomicActivity),
   };
 }
 

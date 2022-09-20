@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
+import org.dataland.datalandbackend.model.DataPoint
 import java.util.EnumSet
 
 /**
@@ -27,6 +28,9 @@ data class EuTaxonomyDataForFinancials(
 
     @field:JsonProperty("assurance")
     val assurance: AssuranceData? = null,
+
+    @field:JsonProperty("greenAssetRatio")
+    val greenAssetRatio: DataPoint? = null,
 
     @field:JsonProperty("reportingObligation")
     val reportingObligation: YesNo? = null,

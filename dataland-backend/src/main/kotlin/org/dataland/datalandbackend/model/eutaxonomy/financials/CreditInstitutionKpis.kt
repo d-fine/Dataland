@@ -17,6 +17,4 @@ data class CreditInstitutionKpis(
     @field:JsonProperty("tradingPortfolioAndInterbankLoans")
     val tradingPortfolioAndInterbankLoans: DataPoint? = null,
 
-    @field:JsonProperty("greenAssetRatio")
-    val greenAssetRatio: DataPoint? = null,
 )

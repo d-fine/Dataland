@@ -11,6 +11,9 @@ data class EligibilityKpis(
     @field:JsonProperty("taxonomyEligibleActivity")
     val taxonomyEligibleActivity: DataPoint? = null,
 
+    @field:JsonProperty("taxonomyNonEligibleActivity")
+    val taxonomyNonEligibleActivity: DataPoint? = null,
+
     @field:JsonProperty("derivatives")
     val derivatives: DataPoint? = null,
 

@@ -14,8 +14,13 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
+  const industry = faker.company.bsNoun();
+  const currency = "EUR";
   const marketCap = faker.mersenne.rand(10000000, 50000);
   const reportingDateOfMarketCap = faker.date.past().toISOString().split("T")[0];
+  const numberOfShares = faker.mersenne.rand(1000000, 10000);
+  const sharePrice = faker.mersenne.rand(1000, 1);
+  const numberOfEmployees = faker.mersenne.rand(1000000, 10000);
   const indices = faker.helpers.arrayElements(Object.values(CompanyInformationIndicesEnum));
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
@@ -42,8 +47,13 @@ export function generateCompanyInformation(): CompanyInformation {
     companyName: companyName,
     headquarters: headquarters,
     sector: sector,
+    industry: industry,
+    currency: currency,
     marketCap: marketCap,
     reportingDateOfMarketCap: reportingDateOfMarketCap,
+    numberOfShares: numberOfShares,
+    sharePrice: sharePrice,
+    numberOfEmployees: numberOfEmployees,
     indices: new JSONSet(indices),
     identifiers: identifiers,
     countryCode: countryCode,
@@ -76,7 +86,9 @@ export function getCsvCompanyMapping<T>() {
     {
       label: "Market Capitalization Date",
       value: (row: FixtureData<T>) =>
-        new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
+        row.companyInformation.reportingDateOfMarketCap !== null
+          ? null
+          : new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
     },
     {
       label: "Teaser Company",
