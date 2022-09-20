@@ -38,9 +38,6 @@ data class StoredCompanyEntity(
     var reportingDateOfMarketCap: LocalDate,
 
     @OneToMany(mappedBy = "company")
-    var indices: MutableSet<StoredCompanyStockIndexEntity>,
-
-    @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
     @OneToMany(mappedBy = "company")
@@ -62,7 +59,6 @@ data class StoredCompanyEntity(
                 sector = sector,
                 marketCap = marketCap,
                 reportingDateOfMarketCap = reportingDateOfMarketCap,
-                indices = indices.map { it.toApiModel() }.toSet(),
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,

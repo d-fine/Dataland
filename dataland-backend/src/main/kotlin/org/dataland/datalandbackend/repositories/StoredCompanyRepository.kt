@@ -42,16 +42,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
     /**
-     * Used for pre-fetching the indices field of a list of stored companies
-     */
-    @Query(
-        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.indices WHERE company in :companies"
-    )
-    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
-    fun fetchStockIndices(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
-
-    /**
      * Used for pre-fetching the identifiers field of a list of stored companies
      */
     @Query(
