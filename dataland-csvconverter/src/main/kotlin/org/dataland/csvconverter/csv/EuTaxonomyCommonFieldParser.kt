@@ -48,7 +48,7 @@ class EuTaxonomyCommonFieldParser {
     /**
      * This function parses the attestation field from the EU-Taxonomy framework CSV file
      */
-    fun getAttestation(csvLineData: Map<String, String>): AssuranceOptions {
+    fun getAssurance(csvLineData: Map<String, String>): AssuranceOptions {
         return when (
             val rawAttestation = columnMappingEuTaxonomyUtils.getCsvValue("attestation", csvLineData)
         ) {
