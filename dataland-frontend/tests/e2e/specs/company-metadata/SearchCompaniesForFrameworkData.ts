@@ -70,7 +70,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.exist");
-    verifyTaxonomySearchResultTable()
+    verifyTaxonomySearchResultTable();
 
     cy.scrollTo(0, 500, { duration: 300 });
     cy.get("input[name=search_bar_top]").should("exist");
@@ -97,7 +97,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue2 = "XYZ";
     cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=search_bar_top]").type(inputValue1);
-    verifyTaxonomySearchResultTable()
+    verifyTaxonomySearchResultTable();
     cy.scrollTo(0, 500);
     cy.get("button[name=search_bar_collapse]").click();
     cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
