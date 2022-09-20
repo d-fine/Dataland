@@ -2,14 +2,11 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntity
-import org.dataland.datalandbackend.entities.StoredCompanyStockIndexEntityId
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.repositories.StoredCompanyStockIndexRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
@@ -26,7 +23,6 @@ import javax.transaction.Transactional
 class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
-    @Autowired private val storedCompanyStockIndexRepository: StoredCompanyStockIndexRepository,
 ) : CompanyManagerInterface {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -47,7 +43,6 @@ class CompanyManager(
             sector = companyInformation.sector,
             marketCap = companyInformation.marketCap,
             reportingDateOfMarketCap = companyInformation.reportingDateOfMarketCap,
-            indices = mutableSetOf(),
             countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
@@ -81,32 +76,13 @@ class CompanyManager(
         }
     }
 
-    private fun createAndAssociateStockIndices(
-        savedCompanyEntity: StoredCompanyEntity,
-        companyInformation: CompanyInformation
-    ): List<StoredCompanyStockIndexEntity> {
-        val newStockIndexAssociations = companyInformation.indices.map {
-            StoredCompanyStockIndexEntity(
-                company = savedCompanyEntity,
-                id = StoredCompanyStockIndexEntityId(
-                    companyId = savedCompanyEntity.companyId,
-                    stockIndex = it
-                )
-            )
-        }
-
-        return storedCompanyStockIndexRepository.saveAll(newStockIndexAssociations).toList()
-    }
-
     @Transactional
     override fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
         val companyId = UUID.randomUUID().toString()
         logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
         val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
         val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation)
-        val stockIndices = createAndAssociateStockIndices(savedCompany, companyInformation)
         savedCompany.identifiers = identifiers.toMutableList()
-        savedCompany.indices = stockIndices.toMutableSet()
         return savedCompany
     }
 
@@ -127,7 +103,6 @@ class CompanyManager(
         }.toMap()
 
         var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
-        filteredResults = companyRepository.fetchStockIndices(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
         filteredResults = filteredResults.sortedBy { sortingMap[it.companyId]!! }
 
