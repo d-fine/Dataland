@@ -58,7 +58,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
-  - [ ] All implemented Social Logins have been tested manually in the UI
+- [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades  
 
 # Review (to be completed by the reviewer)
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
