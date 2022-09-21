@@ -39,7 +39,7 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
-function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<object> {
+function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<DataSearchStoredCompany> {
   return responseData.map((company) => ({
     companyName: company.companyInformation.companyName,
     companyInformation: company.companyInformation,
@@ -53,8 +53,6 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  *
  * @param  {string} searchString           the string that is used to search companies
- * @param  {'Cdax' | 'Dax' | 'GeneralStandard' | 'Gex' | 'Mdax' | 'PrimeStandard' | 'Sdax' | 'TecDax' | 'Hdax' | 'Dax50Esg'} stockIndex
- *                                         choose one to get companies in that index
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
  * @param {Array<string>} frameworksToFilter
@@ -65,36 +63,15 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
-  stockIndex:
-    | "Cdax"
-    | "Dax"
-    | "GeneralStandard"
-    | "Gex"
-    | "Mdax"
-    | "PrimeStandard"
-    | "Sdax"
-    | "TecDax"
-    | "Hdax"
-    | "Dax50Esg"
-    | undefined,
   onlyCompanyNames: boolean,
-  frameworksToFilter: Array<DataTypeEnum>,
+  frameworksToFilter: Set<DataTypeEnum>,
   keycloakPromise: Promise<Keycloak>
-): Promise<Array<object>> {
-  let mappedResponse: object[] = [];
-
-  const frameworkFilter = frameworksToFilter ? new Set(frameworksToFilter) : new Set(Object.values(DataTypeEnum));
-  const stockIndexFilter = stockIndex ? new Set([stockIndex]) : undefined;
-  const searchFilter = searchString ? searchString : "";
+): Promise<Array<DataSearchStoredCompany>> {
+  let mappedResponse: Array<DataSearchStoredCompany> = [];
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(
-      searchFilter,
-      stockIndexFilter,
-      frameworkFilter,
-      onlyCompanyNames
-    );
+    const response = await companyDataControllerApi.getCompanies(searchString, frameworksToFilter, onlyCompanyNames);
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {

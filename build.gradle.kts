@@ -88,8 +88,7 @@ sonarqube {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "./dataland-frontend/src/main.ts" +
-                "./dataland-frontend/src/components/helper/*"
+                "./dataland-frontend/src/main.ts"
         )
         property(
             "sonar.sources",
@@ -104,6 +103,8 @@ jacoco {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
+    dependsOn(tasks.getByPath(":dataland-backend:compileKotlin"))
+    dependsOn(tasks.getByPath(":dataland-csvconverter:compileKotlin"))
     sourceDirectories.setFrom(
         subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
