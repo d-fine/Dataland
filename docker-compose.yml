@@ -6,7 +6,6 @@ version: "3.8"
 # productionInMemory: The profile to be used if the stack is deployed in a production-like setup but DatalandEDC should be replaced by an in-memory storage
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
-# devcontainer: starts a dev container
 
 services:
   proxy:
