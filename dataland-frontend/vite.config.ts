@@ -4,6 +4,26 @@ import vue from "@vitejs/plugin-vue";
 import istanbul from "vite-plugin-istanbul";
 
 export default defineConfig({
+  //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
+  optimizeDeps: {
+    include: [
+      "@vue/test-utils",
+      "vue-router",
+      "keycloak-js",
+      "vue",
+      "primevue/button",
+      "primevue/card",
+      "primevue/message",
+      "primevue/datatable",
+      "primevue/column",
+      "primevue/tooltip",
+      "primevue/autocomplete",
+      "primevue/menu",
+      "primevue/progressbar",
+      "@formkit/vue",
+      "axios",
+    ],
+  },
   plugins: [
     vue(),
     istanbul({

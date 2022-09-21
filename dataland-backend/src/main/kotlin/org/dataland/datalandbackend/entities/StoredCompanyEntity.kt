@@ -53,9 +53,6 @@ data class StoredCompanyEntity(
     var numberOfEmployees: BigDecimal?,
 
     @OneToMany(mappedBy = "company")
-    var indices: MutableSet<StoredCompanyStockIndexEntity>,
-
-    @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
     @OneToMany(mappedBy = "company")
@@ -82,7 +79,6 @@ data class StoredCompanyEntity(
                 numberOfShares = numberOfShares,
                 sharePrice = sharePrice,
                 numberOfEmployees = numberOfEmployees,
-                indices = indices.map { it.toApiModel() }.toSet(),
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,

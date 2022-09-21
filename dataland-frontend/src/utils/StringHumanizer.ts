@@ -21,14 +21,6 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
  */
 function humaniseViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
-    cdax: "CDAX",
-    dax: "DAX",
-    gex: "GEX",
-    mdax: "MDAX",
-    sdax: "SDAX",
-    tecdax: "TecDAX",
-    hdax: "HDAX",
-    dax50esg: "DAX 50 ESG",
     isin: "ISIN",
     permid: "PermID",
     lei: "LEI",
