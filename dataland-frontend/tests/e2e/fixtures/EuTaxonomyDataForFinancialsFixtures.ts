@@ -3,7 +3,6 @@ import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 
 import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "./CsvUtils";
@@ -162,7 +161,7 @@ export function generateCSVDataForFinancials(
 ) {
   const options = {
     fields: [
-      ...getCsvSharedEuTaxonomyValuesMapping<EuTaxonomyDataForFinancials>(2),
+      ...getCsvSharedEuTaxonomyValuesMapping(2),
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),

@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
-import { JSONSet } from "./Utils";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";

@@ -1,5 +1,5 @@
 import { FixtureData } from "./GenerateFakeFixtures";
-import { EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials, YesNoNa } from "../../../build/clients/backend";
+import { EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "../../../build/clients/backend";
 import { humanizeString } from "../../../src/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humaniseOrUndefined } from "./CsvUtils";
 import { getCsvDataSourceMapping } from "./DataSourceFixtures";
@@ -43,7 +43,7 @@ function getCsvReportMapping(reportName: string) {
   ];
 }
 
-export function getCsvSharedEuTaxonomyValuesMapping<T>(isfs: number) {
+export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
   return [
     {
       label: "IS/FS",

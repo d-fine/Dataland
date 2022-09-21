@@ -1,16 +1,10 @@
 import { faker } from "@faker-js/faker";
-import {
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDetailsPerCashFlowType,
-} from "@clients/backend";
+import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { convertToPercentageString, decimalSeparatorConverter } from "./CsvUtils";
 
 import { getCsvCompanyMapping } from "./CompanyFixtures";
-import { generateDatapoint, generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "./DataPointFixtures";
-import { randomYesNo } from "./YesNoFixtures";
-import { generateAssuranceData } from "./AssuranceDataFixture";
+import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "./DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "./EuTaxonomySharedValues";
 import { ReferencedReports } from "./Utils";
 const { parse } = require("json2csv");
@@ -56,7 +50,7 @@ export function generateCSVDataForNonFinancials(
   const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForNonFinancials>(),
-      ...getCsvSharedEuTaxonomyValuesMapping<EuTaxonomyDataForNonFinancials>(1),
+      ...getCsvSharedEuTaxonomyValuesMapping(1),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Total Revenue`,
         (row) => row.t.revenue?.totalAmount,

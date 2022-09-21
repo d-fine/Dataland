@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference, YesNoNa } from "../../../build/clients/backend";
+import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
-import { FixtureData } from "./GenerateFakeFixtures";
 import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 
