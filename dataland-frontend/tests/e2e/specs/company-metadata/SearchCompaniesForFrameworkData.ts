@@ -236,7 +236,9 @@ describeIf(
         cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
           .should("contain.text", "Sorry! The company you searched for was not found in our database");
-        cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials,eutaxonomy-financials`)
+        cy.visit(
+          `/companies?input=${companyName}&frameworks=eutaxonomy-non-financials&frameworks=eutaxonomy-financials`
+        )
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
           .should("exist");
