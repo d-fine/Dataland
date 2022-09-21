@@ -100,7 +100,7 @@ import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
-import DataPointFormElement from "@/components/forms/DataPointFormElement";
+import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 
 export default {
   name: "CreateEUTaxonomyForNonFinancials",
