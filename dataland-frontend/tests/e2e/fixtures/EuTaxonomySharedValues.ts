@@ -27,7 +27,7 @@ function getCsvReportMapping(reportName: string) {
         row.t.referencedReports !== null &&
         row.t.referencedReports[reportName] !== undefined &&
         row.t.referencedReports[reportName] !== null
-          ? row.t.referencedReports[reportName].isGroupLevel
+          ? row.t.referencedReports[reportName].reference
           : "",
     },
     {
@@ -37,7 +37,7 @@ function getCsvReportMapping(reportName: string) {
         row.t.referencedReports !== null &&
         row.t.referencedReports[reportName] !== undefined &&
         row.t.referencedReports[reportName] !== null
-          ? row.t.referencedReports[reportName].reference
+          ? row.t.referencedReports[reportName].isGroupLevel
           : "",
     },
   ];
@@ -58,7 +58,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
       label: "Fiscal Year End",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) => row.t.fiscalYearEnd,
     },
-    ...getCsvReportMapping("AnualReport"),
+    ...getCsvReportMapping("AnnualReport"),
     ...getCsvReportMapping("SustainabilityReport"),
     ...getCsvReportMapping("IntegratedReport"),
     {
@@ -84,7 +84,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     {
       label: "Assurance provider",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.reportingObligation),
+        humaniseOrUndefined(row.t.assurance?.provider),
     },
     ...getCsvDataSourceMapping<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>>(
       "Assurance",
