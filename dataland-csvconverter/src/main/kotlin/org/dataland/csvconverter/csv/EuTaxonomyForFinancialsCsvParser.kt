@@ -1,6 +1,5 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -16,18 +15,24 @@ class EuTaxonomyForFinancialsCsvParser(
     private val commonFieldParser: EuTaxonomyCommonFieldParser
 ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
+    /**
+     * general string Mappings
+     */
     private val columnMappingEuTaxonomyForFinancials = mapOf(
         "financialServicesType" to "FS - company type",
         "tradingPortfolio" to "Trading portfolio",
         "interbankLoans" to "On-demand interbank loans",
-        "tradingPortfolio" to "Trading portfolio",
         "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on demand interbank loans",
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
         FinancialServicesType.CreditInstitution.name to "Credit Institution",
         FinancialServicesType.AssetManagement.name to "Asset Management Company",
-        FinancialServicesType.InsuranceOrReinsurance.name to "Insurance/Reinsurance"
+        FinancialServicesType.InsuranceOrReinsurance.name to "Insurance/Reinsurance",
+        FinancialServicesType.InvestmentFirm.name to "Investment Firm"
     )
 
+    /**
+     * Function retrieving all Financial Service types of the company
+     */
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
         val csvData = csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]!!
         val split = csvData.split(",").map { it.trim() }
@@ -45,27 +50,34 @@ class EuTaxonomyForFinancialsCsvParser(
         return commonFieldParser.getCompanyType(row) == "FS"
     }
 
+    /**
+     * Callable function generating the string-maps for the Eligibility KPIs for all Financial Service Types
+     */
     private fun buildEligibilityColumnMapping(type: FinancialServicesType): Map<String, String> {
         return mapOf(
-            "investmentNonNfrd" to "Exposures to non-NFRD entities ${columnMappingEuTaxonomyForFinancials[type.name]}",
-            "taxonomyEligibleActivity" to "Exposures to taxonomy-eligible economic activities" +
+            "investmentNonNfrd" to
+                "Exposures to non-NFRD entities ${columnMappingEuTaxonomyForFinancials[type.name]}",
+            "taxonomyEligibleActivity" to
+                "Exposures to taxonomy-eligible economic activities" +
                 " ${columnMappingEuTaxonomyForFinancials[type.name]}",
-            "banksAndIssuers" to "Exposures to central governments, central banks, supranational issuers" +
+            "taxonomyNonEligibleActivity" to
+                "Exposures to taxonomy non-eligible economic activities" +
                 " ${columnMappingEuTaxonomyForFinancials[type.name]}",
-            "derivatives" to "Exposures to derivatives ${columnMappingEuTaxonomyForFinancials[type.name]}",
+            "banksAndIssuers" to
+                "Exposures to central governments, central banks, supranational issuers" +
+                " ${columnMappingEuTaxonomyForFinancials[type.name]}",
+            "derivatives" to
+                "Exposures to derivatives ${columnMappingEuTaxonomyForFinancials[type.name]}",
         )
     }
 
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
         return EligibilityKpis(
-            taxonomyEligibleActivity =
-            buildEligibilityColumnMapping(type).getNumericCsvValue("taxonomyEligibleActivity", row),
-            banksAndIssuers =
-            buildEligibilityColumnMapping(type).getNumericCsvValue("banksAndIssuers", row),
-            derivatives =
-            buildEligibilityColumnMapping(type).getNumericCsvValue("derivatives", row),
-            investmentNonNfrd =
-            buildEligibilityColumnMapping(type).getNumericCsvValue("investmentNonNfrd", row),
+            taxonomyEligibleActivity = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "taxonomyEligibleActivity"),
+            taxonomyNonEligibleActivity = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "taxonomyNonEligibleActivity"),
+            banksAndIssuers = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "banksAndIssuers"),
+            derivatives = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "derivatives"),
+            investmentNonNfrd = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "investmentNonNfrd"),
         )
     }
 
@@ -80,22 +92,15 @@ class EuTaxonomyForFinancialsCsvParser(
         row: Map<String, String>
     ): CreditInstitutionKpis {
         return CreditInstitutionKpis(
-            interbankLoans =
-            columnMappingEuTaxonomyForFinancials.getNumericCsvValue("interbankLoans", row),
-            tradingPortfolio =
-            columnMappingEuTaxonomyForFinancials.getNumericCsvValue("tradingPortfolio", row),
-            tradingPortfolioAndInterbankLoans =
-            columnMappingEuTaxonomyForFinancials.getNumericCsvValue("tradingPortfolioAndInterbankLoans", row)
+            tradingPortfolio = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "tradingPortfolio"),
+            interbankLoans = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "interbankLoans"),
+            tradingPortfolioAndInterbankLoans = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"),
         )
     }
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis {
         return InsuranceKpis(
-            taxonomyEligibleNonLifeInsuranceActivities =
-            columnMappingEuTaxonomyForFinancials.getNumericCsvValue(
-                "taxonomyEligibleNonLifeInsuranceActivities",
-                row
-            ),
+            taxonomyEligibleNonLifeInsuranceActivities = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"),
         )
     }
 
@@ -103,7 +108,7 @@ class EuTaxonomyForFinancialsCsvParser(
         val financialServicesTypes = getFinancialServiceTypes(row)
         return EuTaxonomyDataForFinancials(
             reportingObligation = commonFieldParser.getReportingObligation(row),
-            assurance = commonFieldParser.getAssurance(row),
+            assurance = commonFieldParser.buildSingleAssuranceData(row),
             financialServicesTypes = financialServicesTypes,
             eligibilityKpis = buildEligibilityKpis(row, financialServicesTypes),
             creditInstitutionKpis = buildCreditInstitutionKpis(row),
