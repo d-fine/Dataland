@@ -103,7 +103,7 @@ class EuTaxonomyForFinancialsCsvParser(
         val financialServicesTypes = getFinancialServiceTypes(row)
         return EuTaxonomyDataForFinancials(
             reportingObligation = commonFieldParser.getReportingObligation(row),
-            assurance = commonFieldParser.getAttestation(row),
+            assurance = commonFieldParser.getAssurance(row),
             financialServicesTypes = financialServicesTypes,
             eligibilityKpis = buildEligibilityKpis(row, financialServicesTypes),
             creditInstitutionKpis = buildCreditInstitutionKpis(row),

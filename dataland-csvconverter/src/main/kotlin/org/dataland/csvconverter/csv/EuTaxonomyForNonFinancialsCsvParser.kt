@@ -35,7 +35,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
         return EuTaxonomyDataForNonFinancials(
             reportObligation = commonFieldParser.getReportingObligation(row),
-            assurance = commonFieldParser.getAttestation(row),
+            assurance = commonFieldParser.getAssurance(row),
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
             opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
             revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
