@@ -13,8 +13,8 @@ dependencyResolutionManagement {
             library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.11")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.1")
-            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.0")
-            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.0")
+            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.1")
+            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.1")
 
             library("moshi-kotlin", "com.squareup.moshi:moshi-kotlin:1.14.0")
             library("moshi-adapters", "com.squareup.moshi:moshi-adapters:1.14.0")
@@ -33,8 +33,8 @@ dependencyResolutionManagement {
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.19.0")
             library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.19.0")
 
-            library("logback-classic", "ch.qos.logback:logback-classic:1.4.1")
-            library("logback-core", "ch.qos.logback:logback-core:1.4.1")
+            library("logback-classic", "ch.qos.logback:logback-classic:1.2.11")
+            library("logback-core", "ch.qos.logback:logback-core:1.2.11")
 
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.2")
 
