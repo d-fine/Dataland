@@ -6,7 +6,7 @@ import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EligibilityKpis,
-  DataPoint
+  DataPoint,
 } from "@clients/backend";
 
 describeIf(

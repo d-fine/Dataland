@@ -1,13 +1,36 @@
 import { faker } from "@faker-js/faker";
-import { DataPoint, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
+import { DataPointBigDecimal, QualityOptions, CompanyReportReference, YesNoNa } from "../../../build/clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
+import { FixtureData } from "./GenerateFakeFixtures";
+import { ReferencedReports } from "./Utils";
+import { randomYesNoNaUndefined } from "./YesNoFixtures";
 
-export function generateDatapointOrNotReportedAtRandom(value: number | undefined): DataPoint | undefined {
-  if (value === undefined) return undefined;
-  return generateDatapoint(Math.random() > 0.1 ? value : null);
+const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
+
+export function generateReferencedReports(): ReferencedReports {
+  const availableReports = faker.helpers.arrayElements(possibleReports);
+  if (availableReports.length == 0) availableReports.push(possibleReports[0]);
+
+  const ret: ReferencedReports = {};
+  availableReports.forEach((reportName) => {
+    ret[reportName] = {
+      reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
+      isGroupLevel: randomYesNoNaUndefined(),
+    };
+  });
+
+  return ret;
 }
 
-export function generateDatapoint(value: number | null): DataPoint {
+export function generateDatapointOrNotReportedAtRandom(
+  value: number | undefined,
+  reports: ReferencedReports
+): DataPointBigDecimal | undefined {
+  if (value === undefined) return undefined;
+  return generateDatapoint(Math.random() > 0.1 ? value : null, reports);
+}
+
+export function generateDatapoint(value: number | null, reports: ReferencedReports): DataPointBigDecimal {
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -20,7 +43,7 @@ export function generateDatapoint(value: number | null): DataPoint {
     ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
       faker.datatype.boolean())
   ) {
-    dataSource = generateDataSource();
+    dataSource = generateDataSource(reports);
   }
 
   return {
@@ -28,4 +51,29 @@ export function generateDatapoint(value: number | null): DataPoint {
     dataSource: dataSource,
     quality: qualityBucket,
   };
+}
+
+export function getCsvDataPointMapping<T>(
+  dataPointName: string,
+  dataPointGetter: (row: T) => DataPointBigDecimal | undefined,
+  valueConverter: (input: number | undefined) => string = (x) => x?.toString() || ""
+) {
+  return [
+    {
+      label: dataPointName,
+      value: (row: T) => valueConverter(dataPointGetter(row)?.value),
+    },
+    {
+      label: `${dataPointName} Quality`,
+      value: (row: T) => dataPointGetter(row)?.quality || "",
+    },
+    {
+      label: `${dataPointName} Report`,
+      value: (row: T) => dataPointGetter(row)?.dataSource?.report || "", // TODO()
+    },
+    {
+      label: `${dataPointName} Page`,
+      value: (row: T) => dataPointGetter(row)?.dataSource?.page || "",
+    },
+  ];
 }

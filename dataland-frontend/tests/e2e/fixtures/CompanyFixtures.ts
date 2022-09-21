@@ -1,14 +1,9 @@
 import { faker } from "@faker-js/faker";
-import {
-  CompanyInformation,
-  CompanyIdentifier,
-  CompanyIdentifierIdentifierTypeEnum,
-  CompanyInformationIndicesEnum,
-} from "@clients/backend";
+import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
 import { JSONSet } from "./Utils";
 import { FixtureData } from "./GenerateFakeFixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { getIdentifierValueForCsv, getStockIndexValueForCsv } from "./CsvUtils";
+import { getIdentifierValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
@@ -21,13 +16,12 @@ export function generateCompanyInformation(): CompanyInformation {
   const numberOfShares = faker.mersenne.rand(1000000, 10000);
   const sharePrice = faker.mersenne.rand(1000, 1);
   const numberOfEmployees = faker.mersenne.rand(1000000, 10000);
-  const indices = faker.helpers.arrayElements(Object.values(CompanyInformationIndicesEnum));
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
     .arrayElements([
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
-        identifierValue: faker.random.alphaNumeric(12),
+        identifierValue: faker.random.alphaNumeric(20),
       },
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
@@ -35,6 +29,14 @@ export function generateCompanyInformation(): CompanyInformation {
       },
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
+        identifierValue: faker.random.alphaNumeric(12),
+      },
+      {
+        identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
+        identifierValue: faker.random.alphaNumeric(12),
+      },
+      {
+        identifierType: CompanyIdentifierIdentifierTypeEnum.DunsNumber,
         identifierValue: faker.random.alphaNumeric(12),
       },
     ])
@@ -54,7 +56,6 @@ export function generateCompanyInformation(): CompanyInformation {
     numberOfShares: numberOfShares,
     sharePrice: sharePrice,
     numberOfEmployees: numberOfEmployees,
-    indices: new JSONSet(indices),
     identifiers: identifiers,
     countryCode: countryCode,
     isTeaserCompany: false,
@@ -71,7 +72,7 @@ export function getCsvCompanyMapping<T>() {
 
   return [
     {
-      label: "Unternehmensname",
+      label: "Company name",
       value: (row: FixtureData<T>) => row.companyInformation.companyName,
     },
     {
@@ -83,30 +84,46 @@ export function getCsvCompanyMapping<T>() {
       value: (row: FixtureData<T>) => row.companyInformation.sector,
     },
     {
-      label: "Countrycode",
+      label: "Industry",
+      value: (row: FixtureData<T>) => row.companyInformation.industry,
+    },
+    {
+      label: "Country code",
       value: (row: FixtureData<T>) => row.companyInformation.countryCode,
     },
     {
-      label: "Market Capitalization EURmm",
+      label: "Market Capitalization",
       value: (row: FixtureData<T>) => row.companyInformation.marketCap,
     },
     {
       label: "Market Capitalization Date",
-      value: (row: FixtureData<T>) =>
-        row.companyInformation.reportingDateOfMarketCap !== null
-          ? null
-          : new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
+      value: (row: FixtureData<T>) => {
+        const date = row.companyInformation.reportingDateOfMarketCap;
+        return date !== null && date !== undefined && date !== ""
+          ? new Date(date).toLocaleDateString(dateLocale, dateOptions)
+          : "";
+      },
     },
     {
       label: "Teaser Company",
       value: (row: FixtureData<T>) => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
-    ...Object.values(CompanyInformationIndicesEnum).map((e) => {
-      return {
-        label: humanizeString(e),
-        value: (row: FixtureData<T>) => getStockIndexValueForCsv(row.companyInformation.indices, e),
-      };
-    }),
+    {
+      label: "Number of Employees",
+      value: (row: FixtureData<T>) => row.companyInformation.numberOfEmployees,
+    },
+    {
+      label: "Number Of Shares",
+      value: (row: FixtureData<T>) => row.companyInformation.numberOfShares,
+    },
+    {
+      label: "Share Price",
+      value: (row: FixtureData<T>) => row.companyInformation.sharePrice,
+    },
+    {
+      label: "Currency",
+      value: (row: FixtureData<T>) => row.companyInformation.currency,
+    },
     ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((e) => {
       return {
         label: humanizeString(e),

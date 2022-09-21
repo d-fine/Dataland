@@ -1,139 +1,109 @@
 import { faker } from "@faker-js/faker";
-import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDetailsPerCashFlowType,
+} from "@clients/backend";
 import { FixtureData } from "./GenerateFakeFixtures";
-import { convertToPercentageString, decimalSeparatorConverter, getAttestation } from "./CsvUtils";
+import { convertToPercentageString, decimalSeparatorConverter } from "./CsvUtils";
 
 import { getCsvCompanyMapping } from "./CompanyFixtures";
-import { generateDatapoint, generateDatapointOrNotReportedAtRandom } from "./DataPointFixtures";
+import { generateDatapoint, generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "./DataPointFixtures";
 import { randomYesNo } from "./YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
+import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "./EuTaxonomySharedValues";
+import { ReferencedReports } from "./Utils";
 const { parse } = require("json2csv");
 
 const maxEuro = 1000000;
 const minEuro = 50000;
 const resolution = 0.0001;
 
-export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const capexTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const capexEligible = faker.datatype.float({
+export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): EuTaxonomyDetailsPerCashFlowType {
+  const total = faker.datatype.float({ min: minEuro, max: maxEuro });
+  const eligiblePercentage = faker.datatype.float({
     min: 0,
     max: 1,
     precision: resolution,
   });
-  const capexAligned = faker.datatype.float({
-    min: 0,
-    max: capexEligible,
-    precision: resolution,
-  });
-  const opexTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const opexEligible = faker.datatype.float({
+  const alignedPercentage = faker.datatype.float({
     min: 0,
     max: 1,
-    precision: resolution,
-  });
-  const opexAligned = faker.datatype.float({
-    min: 0,
-    max: opexEligible,
-    precision: resolution,
-  });
-  const revenueTotal = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const revenueEligible = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const revenueAligned = faker.datatype.float({
-    min: 0,
-    max: revenueEligible,
     precision: resolution,
   });
 
   return {
-    reportingObligation: randomYesNo(),
-    activityLevelReporting: randomYesNo(),
-    assurance: generateAssuranceData(),
-    capex: {
-      totalAmount: generateDatapointOrNotReportedAtRandom(capexTotal),
-      alignedPercentage: generateDatapointOrNotReportedAtRandom(capexAligned),
-      eligiblePercentage: generateDatapointOrNotReportedAtRandom(capexEligible),
-    },
-    opex: {
-      totalAmount: generateDatapointOrNotReportedAtRandom(opexTotal),
-      alignedPercentage: generateDatapointOrNotReportedAtRandom(opexAligned),
-      eligiblePercentage: generateDatapointOrNotReportedAtRandom(opexEligible),
-    },
-    revenue: {
-      totalAmount: generateDatapointOrNotReportedAtRandom(revenueTotal),
-      alignedPercentage: generateDatapointOrNotReportedAtRandom(revenueAligned),
-      eligiblePercentage: generateDatapointOrNotReportedAtRandom(revenueEligible),
-    },
+    totalAmount: generateDatapointOrNotReportedAtRandom(total, reports),
+    alignedPercentage: generateDatapointOrNotReportedAtRandom(alignedPercentage, reports),
+    eligiblePercentage: generateDatapointOrNotReportedAtRandom(eligiblePercentage, reports),
   };
+}
+
+export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
+  const returnBase: EuTaxonomyDataForNonFinancials = {};
+  populateSharedValues(returnBase);
+
+  returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
+  returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
+  returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
+
+  return returnBase;
 }
 
 export function generateCSVDataForNonFinancials(
   companyInformationWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
 ) {
-  /*const options = {
+  const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForNonFinancials>(),
-      {
-        label: "Total Revenue EURmm",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          decimalSeparatorConverter(row.t.revenue?.totalAmount),
-      },
-      {
-        label: "Total CapEx EURmm",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          decimalSeparatorConverter(row.t.capex?.totalAmount),
-      },
-      {
-        label: "Total OpEx EURmm",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) => decimalSeparatorConverter(row.t.opex?.totalAmount),
-      },
-      {
-        label: "Eligible Revenue",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.revenue?.eligiblePercentage),
-      },
-      {
-        label: "Eligible CapEx",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.capex?.eligiblePercentage),
-      },
-      {
-        label: "Eligible OpEx",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.opex?.eligiblePercentage),
-      },
-      {
-        label: "Aligned Revenue",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.revenue?.alignedPercentage),
-      },
-      {
-        label: "Aligned CapEx",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.capex?.alignedPercentage),
-      },
-      {
-        label: "Aligned OpEx",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) =>
-          convertToPercentageString(row.t.opex?.alignedPercentage),
-      },
-      { label: "IS/FS", value: "companyType", default: "IS" },
-      {
-        label: "NFRD mandatory",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) => row.t.reportingObligation,
-      },
-      {
-        label: "Assurance",
-        value: (row: FixtureData<EuTaxonomyDataForNonFinancials>) => {
-          return getAttestation(row.t.attestation);
-        },
-      },
+      ...getCsvSharedEuTaxonomyValuesMapping<EuTaxonomyDataForNonFinancials>(1),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Total Revenue`,
+        (row) => row.t.revenue?.totalAmount,
+        decimalSeparatorConverter
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Total CapEx`,
+        (row) => row.t.capex?.totalAmount,
+        decimalSeparatorConverter
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Total OppEx`,
+        (row) => row.t.capex?.totalAmount,
+        decimalSeparatorConverter
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Eligible Revenue`,
+        (row) => row.t.revenue?.eligiblePercentage,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Eligible CapEx`,
+        (row) => row.t.capex?.eligiblePercentage,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Eligible OpEx`,
+        (row) => row.t.opex?.eligiblePercentage,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Aligned Revenue`,
+        (row) => row.t.revenue?.alignedPercentage,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Aligned CapEx`,
+        (row) => row.t.capex?.alignedPercentage,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+        `Aligned OpEx`,
+        (row) => row.t.opex?.alignedPercentage,
+        convertToPercentageString
+      ),
     ],
     delimiter: ";",
   };
-  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);*/
-  return "";
+  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
 }

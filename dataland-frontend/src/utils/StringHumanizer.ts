@@ -32,11 +32,19 @@ function humaniseViaMapping(rawText: string): string {
     isin: "ISIN",
     permid: "PermID",
     lei: "LEI",
+    dunsnumber: "D-U-N-S Number",
+    ticker: "Ticker",
     eligiblecapex: "Eligible CapEx",
     eligibleopex: "Eligible OpEx",
     alignedcapex: "Aligned CapEx",
     alignedopex: "Aligned OpEx",
     insuranceorreinsurance: "Insurance or Reinsurance",
+    anualreport: "Anual Report",
+    sustainabilityreport: "Sustainability Report",
+    integratedreport: "Integrated Report",
+    yes: "Yes",
+    no: "No",
+    na: "N/A",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";

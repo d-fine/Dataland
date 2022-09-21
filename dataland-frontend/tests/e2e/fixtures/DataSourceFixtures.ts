@@ -1,9 +1,27 @@
 import { faker } from "@faker-js/faker";
 import { CompanyReportReference } from "../../../build/clients/backend";
+import { ReferencedReports } from "./Utils";
 
-export function generateDataSource(): CompanyReportReference {
+export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
+  const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
   return {
     page: faker.mersenne.rand(1200, 1),
-    report: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
+    report: chosenReport,
   };
+}
+
+export function getCsvDataSourceMapping<T>(
+  reportName: string,
+  companyReportGetter: (x: T) => CompanyReportReference | undefined
+) {
+  return [
+    {
+      label: `${reportName} Report`,
+      value: (row: T) => companyReportGetter(row)?.report,
+    },
+    {
+      label: `${reportName} Page`,
+      value: (row: T) => companyReportGetter(row)?.page,
+    },
+  ];
 }
