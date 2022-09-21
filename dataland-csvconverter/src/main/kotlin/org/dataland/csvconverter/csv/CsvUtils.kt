@@ -32,10 +32,17 @@ object CsvUtils {
      * This function uses the backing map to extract a property from a CSV row.
      * If the requested column is not populated "n/a" will be returned
      */
-    fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String {
-        return csvData[this[property]!!]!!.trim().ifBlank {
-            NOT_AVAILABLE_STRING
+    fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String? {
+        return csvData[this[property]!!]?.trim()?.ifBlank {
+            null
         }
+    }
+
+    /** This function checks, whether the passed properties field contains an entry.
+     * If it does, it returns true
+     */
+    fun Map<String, String>.checkIfFieldHasValue(property: String, csvData: Map<String, String>): Boolean {
+        return csvData[this[property]!!]!!.isNotBlank()
     }
 
     /**
@@ -48,8 +55,8 @@ object CsvUtils {
         scaleFactor: String
     ): BigDecimal? {
         // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
-        return getCsvValue(property, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
-            .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())?.stripTrailingZeros()
+        return getCsvValue(property, csvData)?.replace("[^,\\d]".toRegex(), "")?.replace(",", ".")
+            ?.toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())?.stripTrailingZeros()
     }
 
     /**
@@ -58,7 +65,7 @@ object CsvUtils {
      * EURO_UNIT_CONVERSION_FACTOR
      */
     fun Map<String, String>.getNumericCsvValue(property: String, csvLineData: Map<String, String>): BigDecimal? {
-        return if (getCsvValue(property, csvLineData).contains("%")) {
+        return if (getCsvValue(property, csvLineData)?.contains("%") == true) {
             getScaledCsvValue(property, csvLineData, "0.01")
         } else {
             getScaledCsvValue(property, csvLineData, EURO_UNIT_CONVERSION_FACTOR)
