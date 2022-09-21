@@ -8,6 +8,13 @@ Note: To create a PR using this template add the query parameter `template=manua
 - [ ] Complete manual maintenance in the EDC Repo
 - [ ] Release a new version `x.x.x` (Please put new version number here)
 ## Dataland
+### Skipped updates
+The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
+- [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
+- [ ] primevue 3.15.0 (higher versions have issues with autofocus)
+- [ ] primeicon 5.0.0 (higher version require higher version of primevue)
+- [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
+
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
