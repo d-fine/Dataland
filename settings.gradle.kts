@@ -27,7 +27,7 @@ dependencyResolutionManagement {
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
             library("skyminder-client", "org.dataland:skyminder-client:0.1.8")
-            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.14-SNAPSHOT")
+            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.15-SNAPSHOT")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.18.0")
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.18.0")
