@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { CompanyReportReference } from "../../../build/clients/backend";
 import { ReferencedReports } from "./Utils";
+import { humaniseOrUndefined } from "./CsvUtils";
 
 export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
   const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
@@ -11,16 +12,16 @@ export function generateDataSource(referencedReports: ReferencedReports): Compan
 }
 
 export function getCsvDataSourceMapping<T>(
-  reportName: string,
+  dataPointName: string,
   companyReportGetter: (x: T) => CompanyReportReference | undefined
 ) {
   return [
     {
-      label: `${reportName} Report`,
-      value: (row: T) => companyReportGetter(row)?.report,
+      label: `${dataPointName} Report`,
+      value: (row: T) => humaniseOrUndefined(companyReportGetter(row)?.report),
     },
     {
-      label: `${reportName} Page`,
+      label: `${dataPointName} Page`,
       value: (row: T) => companyReportGetter(row)?.page,
     },
   ];

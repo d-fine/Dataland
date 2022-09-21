@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker";
 import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
-import { generateDataSource } from "./DataSourceFixtures";
+import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
+import { humaniseOrUndefined } from "./CsvUtils";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
 
@@ -64,15 +65,8 @@ export function getCsvDataPointMapping<T>(
     },
     {
       label: `${dataPointName} Quality`,
-      value: (row: T) => dataPointGetter(row)?.quality || "",
+      value: (row: T) => dataPointGetter(row)?.quality,
     },
-    {
-      label: `${dataPointName} Report`,
-      value: (row: T) => dataPointGetter(row)?.dataSource?.report || "", // TODO()
-    },
-    {
-      label: `${dataPointName} Page`,
-      value: (row: T) => dataPointGetter(row)?.dataSource?.page || "",
-    },
+    ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];
 }

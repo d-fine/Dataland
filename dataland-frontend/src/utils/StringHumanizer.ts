@@ -31,7 +31,7 @@ function humaniseViaMapping(rawText: string): string {
     alignedcapex: "Aligned CapEx",
     alignedopex: "Aligned OpEx",
     insuranceorreinsurance: "Insurance or Reinsurance",
-    anualreport: "Anual Report",
+    annualreport: "Annual Report",
     sustainabilityreport: "Sustainability Report",
     integratedreport: "Integrated Report",
     yes: "Yes",
