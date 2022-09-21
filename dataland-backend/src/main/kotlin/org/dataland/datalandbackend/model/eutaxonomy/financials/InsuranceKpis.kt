@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataPoint
+import java.math.BigDecimal
+
 
 /**
  * --- API model ---
@@ -9,5 +11,5 @@ import org.dataland.datalandbackend.model.DataPoint
  */
 data class InsuranceKpis(
     @field:JsonProperty("taxonomyEligibleNonLifeInsuranceActivities")
-    val taxonomyEligibleNonLifeInsuranceActivities: DataPoint? = null,
+    val taxonomyEligibleNonLifeInsuranceActivities: DataPoint<BigDecimal>? = null,
 )

@@ -7,6 +7,8 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialS
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.DataPoint
 import java.util.EnumSet
+import java.math.BigDecimal
+
 
 /**
  * --- API model ---
@@ -30,7 +32,7 @@ data class EuTaxonomyDataForFinancials(
     val assurance: AssuranceData? = null,
 
     @field:JsonProperty("greenAssetRatio")
-    val greenAssetRatio: DataPoint? = null,
+    val greenAssetRatio: DataPoint<BigDecimal>? = null,
 
     @field:JsonProperty("reportingObligation")
     val reportingObligation: YesNo? = null,
