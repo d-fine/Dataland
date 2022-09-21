@@ -138,12 +138,6 @@ jobs:
         with:
           name: lcovResults
           path: ./*.info
-      - name: Upload FE E2E lcov HTML reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: lcovHtmlReportsE2E
-          path: ./lcov-reports
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v2
