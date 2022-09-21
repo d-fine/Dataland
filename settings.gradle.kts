@@ -36,7 +36,7 @@ dependencyResolutionManagement {
             library("logback-classic", "ch.qos.logback:logback-classic:1.2.11")
             library("logback-core", "ch.qos.logback:logback-core:1.2.11")
 
-            library("slf4j-api", "org.slf4j:slf4j-api:2.0.2")
+            library("slf4j-api", "org.slf4j:slf4j-api:1.7.36")
 
             library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.4")
             library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.4")

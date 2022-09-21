@@ -14,6 +14,7 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] primevue 3.15.0 (higher versions have issues with autofocus)
 - [ ] primeicon 5.0.0 (higher version require higher version of primevue)
 - [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
+- [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
