@@ -221,7 +221,7 @@ describeIf(
 
     it(
       "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
-        "framework filter is set to that framework",
+        "framework filter is set to that framework, or to several frameworks including that framework",
       () => {
         const companyName = "CompanyWithFinancial" + companyNameMarker;
         createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
@@ -236,6 +236,10 @@ describeIf(
         cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
           .should("contain.text", "Sorry! The company you searched for was not found in our database");
+        cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials,eutaxonomy-financials`)
+          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+          .contains(companyName)
+          .should("exist");
       }
     );
 
