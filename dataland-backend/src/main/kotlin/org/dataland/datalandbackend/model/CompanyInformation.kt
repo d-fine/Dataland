@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.company.StockIndex
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.time.LocalDate
 
 /**
@@ -29,22 +28,22 @@ data class CompanyInformation(
     val industry: String? = null,
 
     @field:JsonProperty(required = false)
-    val currency: String?="EUR",
+    val currency: String? = "EUR",
 
     @field:JsonProperty(required = false)
-    val marketCap: BigDecimal?=null,
+    val marketCap: BigDecimal? = null,
 
     @field:JsonProperty(required = false)
-    val reportingDateOfMarketCap: LocalDate?=null,
+    val reportingDateOfMarketCap: LocalDate? = null,
 
     @field:JsonProperty(required = false)
-    val numberOfShares: BigDecimal?=null,
+    val numberOfShares: BigDecimal? = null,
 
     @field:JsonProperty(required = false)
-    val sharePrice: BigDecimal?=null,
+    val sharePrice: BigDecimal? = null,
 
     @field:JsonProperty(required = false)
-    val numberOfEmployees: BigDecimal?=null,
+    val numberOfEmployees: BigDecimal? = null,
 
     @field:JsonProperty(required = false)
     val indices: Set<StockIndex>,

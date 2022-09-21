@@ -3,17 +3,16 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
-import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
-import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.FrameworkBase
+import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
+import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
-import java.util.EnumSet
 import java.math.BigDecimal
 import java.time.LocalDate
-
+import java.util.EnumSet
 
 /**
  * --- API model ---

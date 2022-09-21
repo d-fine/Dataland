@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataPoint
 import java.math.BigDecimal
 
-
 /**
  * --- API model ---
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework

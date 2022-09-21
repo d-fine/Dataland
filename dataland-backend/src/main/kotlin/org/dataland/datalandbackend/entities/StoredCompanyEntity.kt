@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Entity
