@@ -21,8 +21,8 @@ export default defineConfig({
       "primevue/menu",
       "primevue/progressbar",
       "@formkit/vue",
-      "axios"
-    ]
+      "axios",
+    ],
   },
   plugins: [
     vue(),
