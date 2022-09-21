@@ -1,7 +1,7 @@
 import { retrieveDataIdsList, retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
 import { doThingsInChunks } from "@e2e/utils/Cypress";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
-const chunkSize = 40;
+const chunkSize = 15;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
@@ -63,36 +63,36 @@ describe(
         });
       }
 
+      function chunkUploadData(
+        dataEndpoint: string,
+        data: Array<{ companyInformation: CompanyInformation; t: Object }>,
+        token: string
+      ) {
+        doThingsInChunks(data, chunkSize, (element) => {
+          return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
+            .then((response) => response.json())
+            .then((companyUploadResponseJson) => {
+              return browserPromiseUploadSingleElementOnce(
+                dataEndpoint,
+                {
+                  companyId: companyUploadResponseJson.companyId,
+                  data: element.t,
+                },
+                token
+              );
+            });
+        });
+      }
+
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
         .then((token) => {
-          doThingsInChunks(companiesWithEuTaxonomyDataForNonFinancials, chunkSize, (element) => {
-            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-              .then((response) => response.json())
-              .then((companyUploadResponseJson) => {
-                browserPromiseUploadSingleElementOnce(
-                  "data/eutaxonomy-non-financials",
-                  {
-                    companyId: companyUploadResponseJson.companyId,
-                    data: element.t,
-                  },
-                  token
-                );
-              });
-          });
-          doThingsInChunks(companiesWithEuTaxonomyDataForFinancials, chunkSize, (element) => {
-            return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-              .then((response) => response.json())
-              .then((json) => {
-                browserPromiseUploadSingleElementOnce(
-                  "data/eutaxonomy-financials",
-                  {
-                    companyId: json.companyId,
-                    data: element.t,
-                  },
-                  token
-                );
-              });
-          });
+          chunkUploadData("data/eutaxonomy-non-financials", companiesWithEuTaxonomyDataForNonFinancials, token);
+        })
+        .should("eq", "done");
+
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+        .then((token) => {
+          chunkUploadData("data/eutaxonomy-financials", companiesWithEuTaxonomyDataForFinancials, token);
         })
         .should("eq", "done");
     });

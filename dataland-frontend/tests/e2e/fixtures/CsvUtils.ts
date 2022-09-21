@@ -34,13 +34,6 @@ export function convertToPercentageString(value: number | undefined): string {
   return `${valueRounded}%`;
 }
 
-export function getStockIndexValueForCsv(
-  setStockIndexList: Set<string> | undefined,
-  stockIndexToCheck: string
-): string {
-  return setStockIndexList && setStockIndexList.has(stockIndexToCheck) ? "x" : "";
-}
-
 export function getIdentifierValueForCsv(identifierArray: Array<Object>, identifierType: string): string {
   const identifierObject: any = identifierArray.find((identifier: any) => {
     return identifier.identifierType === identifierType;
