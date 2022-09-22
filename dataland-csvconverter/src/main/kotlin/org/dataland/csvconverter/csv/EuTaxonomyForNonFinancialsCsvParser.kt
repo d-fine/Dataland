@@ -1,8 +1,10 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
@@ -11,9 +13,11 @@ import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDet
  * This class contains the parsing logic for the EuTaxonomyForNonFinancials framework
  */
 class EuTaxonomyForNonFinancialsCsvParser(
+    private val commonFieldParser: EuTaxonomyCommonFieldParser,
+    private val companyTypeParser: CompanyTypeParser,
     private val dataPointParser: DataPointParser,
     private val assuranceDataParser: AssuranceDataParser,
-    private val commonFieldParser: EuTaxonomyCommonFieldParser
+    private val fiscalYearParser: FiscalYearParser,
 ) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
     private val columnMappingEuTaxonomyForNonFinancials = mapOf(
@@ -29,7 +33,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
-        return commonFieldParser.getCompanyType(row) == "IS"
+        return companyTypeParser.getCompanyType(row) == "IS"
     }
 
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
@@ -52,8 +56,8 @@ class EuTaxonomyForNonFinancialsCsvParser(
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
             opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
             revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row),
-            fiscalYearDeviation = commonFieldParser.getFiscalYearDeviation(row),
-            fiscalYearEnd = commonFieldParser.getFiscalYearEnd(row),
+            fiscalYearDeviation = fiscalYearParser.getFiscalYearDeviation(row),
+            fiscalYearEnd = fiscalYearParser.getFiscalYearEnd(row),
             scopeOfEntities = commonFieldParser.getScopeOfEntities(row),
             reportingObligation = commonFieldParser.getReportingObligation(row),
             activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),

@@ -3,7 +3,6 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
-import java.time.LocalDate
 
 /**
  * This class provides parsing methods for columns that are required by both EU-Taxonomy frameworks
@@ -25,50 +24,11 @@ class EuTaxonomyCommonFieldParser {
 
     private val columnMappingEuTaxonomyUtils = mapOf(
 
-        "companyType" to "IS/FS",
-        "fiscalYearDeviation" to "Fiscal Year",
-        "fiscalYearEnd" to "Fiscal Year End",
         "scopeOfEntities" to "Scope of Entities",
         "reportObligation" to "NFRD mandatory",
         "activityLevelReporting" to "EU Taxonomy Activity Level Reporting",
 
     )
-
-    /**
-     * Returns the relevant company type for the EU-Taxonomy framework (IS/FS)
-     */
-
-    private val companyTypeMap = mapOf(
-        "1" to "IS",
-        "2" to "FS"
-    )
-
-    fun getCompanyType(csvLineData: Map<String, String>): String {
-        val companyTypeNumeric = columnMappingEuTaxonomyUtils.getCsvValue("companyType", csvLineData)
-        return companyTypeMap.getValue(companyTypeNumeric ?: throw IllegalArgumentException("No Company type listed"))
-    }
-
-    /**
-     * Returns the information about the companies fiscal year (End date and whether it deviates from a normal calendar year)
-     */
-
-    private val fiscalYearDeviationMap = mapOf(
-        "No deviation" to YesNo.No,
-        "Deviation" to YesNo.Yes
-    )
-
-    fun getFiscalYearDeviation(csvLineData: Map<String, String>): YesNo? {
-        val fiscalYearDeviationString = columnMappingEuTaxonomyUtils.getCsvValue("fiscalYearDeviation", csvLineData)
-        return fiscalYearDeviationMap[fiscalYearDeviationString]
-    }
-
-    fun getFiscalYearEnd(csvLineData: Map<String, String>): LocalDate? {
-        val fiscalYearEndString = columnMappingEuTaxonomyUtils.getCsvValue("fiscalYearEnd", csvLineData)
-        return if (fiscalYearEndString.isNullOrBlank())
-            null
-        else
-            LocalDate.parse(fiscalYearEndString)
-    }
 
     fun getScopeOfEntities(csvLineData: Map<String, String>): YesNoNa? {
         return when (

@@ -1,8 +1,10 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -15,9 +17,11 @@ import java.util.EnumSet
  * This class contains the parsing logic for the EuTaxonomyForFinancials framework
  */
 class EuTaxonomyForFinancialsCsvParser(
+    private val commonFieldParser: EuTaxonomyCommonFieldParser,
+    private val companyTypeParser: CompanyTypeParser,
     private val dataPointParser: DataPointParser,
     private val assuranceDataParser: AssuranceDataParser,
-    private val commonFieldParser: EuTaxonomyCommonFieldParser
+    private val fiscalYearParser: FiscalYearParser,
 ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
     /**
@@ -56,7 +60,7 @@ class EuTaxonomyForFinancialsCsvParser(
     }
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
-        return commonFieldParser.getCompanyType(row) == "FS"
+        return companyTypeParser.getCompanyType(row) == "FS"
     }
 
     /**
@@ -125,8 +129,8 @@ class EuTaxonomyForFinancialsCsvParser(
             eligibilityKpis = buildEligibilityKpis(row, financialServicesTypes),
             creditInstitutionKpis = buildCreditInstitutionKpis(row),
             insuranceKpis = buildInsuranceKpis(row),
-            fiscalYearDeviation = commonFieldParser.getFiscalYearDeviation(row),
-            fiscalYearEnd = commonFieldParser.getFiscalYearEnd(row),
+            fiscalYearDeviation = fiscalYearParser.getFiscalYearDeviation(row),
+            fiscalYearEnd = fiscalYearParser.getFiscalYearEnd(row),
             scopeOfEntities = commonFieldParser.getScopeOfEntities(row),
             reportingObligation = commonFieldParser.getReportingObligation(row),
             activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
