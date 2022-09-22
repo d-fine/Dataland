@@ -90,16 +90,26 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
         return EligibilityKpis(
-            taxonomyEligibleActivity = dataPointParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row,
-                "taxonomyEligibleActivity"),
-            taxonomyNonEligibleActivity = dataPointParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row,
-                "taxonomyNonEligibleActivity"),
-            banksAndIssuers = dataPointParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row,
-                "banksAndIssuers"),
-            derivatives = dataPointParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row,
-                "derivatives"),
-            investmentNonNfrd = dataPointParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row,
-                "investmentNonNfrd"),
+            taxonomyEligibleActivity = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "taxonomyEligibleActivity"
+            ),
+            taxonomyNonEligibleActivity = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "taxonomyNonEligibleActivity"
+            ),
+            banksAndIssuers = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "banksAndIssuers"
+            ),
+            derivatives = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "derivatives"
+            ),
+            investmentNonNfrd = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "investmentNonNfrd"
+            ),
         )
     }
 
@@ -114,19 +124,25 @@ class EuTaxonomyForFinancialsCsvParser(
         row: Map<String, String>
     ): CreditInstitutionKpis {
         return CreditInstitutionKpis(
-            tradingPortfolio = dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row,
-                "tradingPortfolio"),
-            interbankLoans = dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row,
-                "interbankLoans"),
+            tradingPortfolio = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row,
+                "tradingPortfolio"
+            ),
+            interbankLoans = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row,
+                "interbankLoans"
+            ),
             tradingPortfolioAndInterbankLoans = dataPointParser.buildSingleDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"),
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"
+            ),
         )
     }
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis {
         return InsuranceKpis(
             taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildSingleDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"),
+                columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"
+            ),
         )
     }
     /**

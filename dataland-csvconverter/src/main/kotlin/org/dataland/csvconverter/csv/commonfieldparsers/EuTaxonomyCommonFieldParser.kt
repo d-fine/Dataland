@@ -74,8 +74,10 @@ class EuTaxonomyCommonFieldParser {
      */
     fun getActivityLevelReporting(csvLineData: Map<String, String>): YesNo? {
         return when (
-            val rawActivityLevelReporting = columnMappingEuTaxonomyUtils.getCsvValue("activityLevelReporting",
-                csvLineData)
+            val rawActivityLevelReporting = columnMappingEuTaxonomyUtils.getCsvValue(
+                "activityLevelReporting",
+                csvLineData
+            )
         ) {
             ACTIVITY_LEVEL_REPORTING_YES -> YesNo.Yes
             ACTIVITY_LEVEL_REPORTING_NO -> YesNo.No

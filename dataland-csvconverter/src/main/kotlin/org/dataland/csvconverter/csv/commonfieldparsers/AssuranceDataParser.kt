@@ -25,18 +25,22 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
         val baseString = "assurance"
         val generalMap = columnMappingAssurance
         return if (dataPointParser.buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue(
-                baseString, row)) {
+                baseString, row
+            )
+        ) {
             AssuranceData(
                 assurance = AssuranceOptions.valueOf(
                     dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(baseString, row)
                         ?: throw IllegalArgumentException(
                             "Expected an AssuranceOption but found" +
                                 " ${dataPointParser.buildMapForSpecificData(generalMap,baseString).getCsvValue(
-                                    baseString, row)}" + "which is not a valid Quality Option"
+                                    baseString, row
+                                )}" + "which is not a valid Quality Option"
                         )
                 ),
                 provider = dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(
-                    "${baseString}provider", row),
+                    "${baseString}provider", row
+                ),
                 dataSource = dataPointParser.buildSingleCompanyReportReference(generalMap, row, baseString)
             )
         } else {
