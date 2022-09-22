@@ -15,13 +15,13 @@ import java.time.format.DateTimeFormatter
 class CompanyInformationCsvParser {
 
     private val companyInformationColumnMapping = mapOf(
-        "companyName" to "Unternehmensname",
+        "companyName" to "Company name",
         "headquarters" to "Headquarter",
-        "countryCode" to "Countrycode",
+        "countryCode" to "Country code",
         "sector" to "Sector",
         "industry" to "Industry",
         "currency" to "Currency",
-        "marketCap" to "Market Capitalization EURmm",
+        "marketCap" to "Market Capitalization",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
         "numberOfShares" to "Number Of Shares",
         "sharePrice" to "Share Price",
@@ -29,6 +29,8 @@ class CompanyInformationCsvParser {
         IdentifierType.Isin.name to "ISIN",
         IdentifierType.Lei.name to "LEI",
         IdentifierType.PermId.name to "PermID",
+        IdentifierType.DunsNumber.name to "D-U-N-S Number",
+        IdentifierType.Ticker.name to "Ticker",
         "isTeaserCompany" to "Teaser Company",
     )
 
@@ -71,7 +73,7 @@ class CompanyInformationCsvParser {
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return IdentifierType.values().sortedBy { it.name }.map {
             CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData)!!,
+                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData)?:"" ,
                 identifierType = it
             )
         }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }

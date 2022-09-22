@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataPoint
 import java.math.BigDecimal
 

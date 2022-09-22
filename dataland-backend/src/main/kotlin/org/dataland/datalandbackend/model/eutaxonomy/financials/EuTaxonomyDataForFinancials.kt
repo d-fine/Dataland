@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.DataPoint

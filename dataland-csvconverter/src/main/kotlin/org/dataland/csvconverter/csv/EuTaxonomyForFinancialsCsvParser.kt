@@ -1,5 +1,10 @@
 package org.dataland.csvconverter.csv
 
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -12,7 +17,11 @@ import java.util.EnumSet
  * This class contains the parsing logic for the EuTaxonomyForFinancials framework
  */
 class EuTaxonomyForFinancialsCsvParser(
-    private val commonFieldParser: EuTaxonomyCommonFieldParser
+    private val commonFieldParser: EuTaxonomyCommonFieldParser,
+    private val companyTypeParser: CompanyTypeParser,
+    private val dataPointParser: DataPointParser,
+    private val assuranceDataParser: AssuranceDataParser,
+    private val fiscalYearParser: FiscalYearParser,
 ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
     /**
@@ -24,15 +33,19 @@ class EuTaxonomyForFinancialsCsvParser(
         "interbankLoans" to "On-demand interbank loans",
         "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on demand interbank loans",
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
-        FinancialServicesType.CreditInstitution.name to "Credit Institution",
-        FinancialServicesType.AssetManagement.name to "Asset Management Company",
-        FinancialServicesType.InsuranceOrReinsurance.name to "Insurance/Reinsurance",
-        FinancialServicesType.InvestmentFirm.name to "Investment Firm"
     )
 
     /**
      * Function retrieving all Financial Service types of the company
      */
+
+    private val financialServicesMap = mapOf<FinancialServicesType, String>(
+        FinancialServicesType.CreditInstitution to "1",
+        FinancialServicesType.InsuranceOrReinsurance to "2",
+        FinancialServicesType.AssetManagement to "3",
+        FinancialServicesType.InvestmentFirm to "4"
+    )
+
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
         val csvData = csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]!!
         val split = csvData.split(",").map { it.trim() }
@@ -40,14 +53,14 @@ class EuTaxonomyForFinancialsCsvParser(
             split.map {
                     candidate ->
                 FinancialServicesType.values().firstOrNull {
-                    candidate.equals(columnMappingEuTaxonomyForFinancials[it.name], ignoreCase = true)
+                    candidate.equals(financialServicesMap[it], ignoreCase = true)
                 } ?: throw IllegalArgumentException("Could not determine financial services type")
             }
         )
     }
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
-        return commonFieldParser.getCompanyType(row) == "FS"
+        return companyTypeParser.getCompanyType(row) == "FS"
     }
 
     /**
@@ -71,13 +84,32 @@ class EuTaxonomyForFinancialsCsvParser(
         )
     }
 
+    /**
+     * Callable functions assembling the different types of KPIs
+     */
+
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
         return EligibilityKpis(
-            taxonomyEligibleActivity = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "taxonomyEligibleActivity"),
-            taxonomyNonEligibleActivity = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "taxonomyNonEligibleActivity"),
-            banksAndIssuers = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "banksAndIssuers"),
-            derivatives = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "derivatives"),
-            investmentNonNfrd = commonFieldParser.buildSingleDataPoint(buildEligibilityColumnMapping(type), row, "investmentNonNfrd"),
+            taxonomyEligibleActivity = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "taxonomyEligibleActivity"
+            ),
+            taxonomyNonEligibleActivity = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "taxonomyNonEligibleActivity"
+            ),
+            banksAndIssuers = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "banksAndIssuers"
+            ),
+            derivatives = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "derivatives"
+            ),
+            investmentNonNfrd = dataPointParser.buildSingleDataPoint(
+                buildEligibilityColumnMapping(type), row,
+                "investmentNonNfrd"
+            ),
         )
     }
 
@@ -92,27 +124,42 @@ class EuTaxonomyForFinancialsCsvParser(
         row: Map<String, String>
     ): CreditInstitutionKpis {
         return CreditInstitutionKpis(
-            tradingPortfolio = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "tradingPortfolio"),
-            interbankLoans = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "interbankLoans"),
-            tradingPortfolioAndInterbankLoans = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"),
+            tradingPortfolio = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row,
+                "tradingPortfolio"
+            ),
+            interbankLoans = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row,
+                "interbankLoans"
+            ),
+            tradingPortfolioAndInterbankLoans = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"
+            ),
         )
     }
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis {
         return InsuranceKpis(
-            taxonomyEligibleNonLifeInsuranceActivities = commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"),
+            taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"
+            ),
         )
     }
-
+    /**
+     Assembles all partial information into one EuTaxonomyDataForFinancials object
+     */
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForFinancials {
         val financialServicesTypes = getFinancialServiceTypes(row)
         return EuTaxonomyDataForFinancials(
-            reportingObligation = commonFieldParser.getReportingObligation(row),
-            assurance = commonFieldParser.buildSingleAssuranceData(row),
-            financialServicesTypes = financialServicesTypes,
             eligibilityKpis = buildEligibilityKpis(row, financialServicesTypes),
             creditInstitutionKpis = buildCreditInstitutionKpis(row),
             insuranceKpis = buildInsuranceKpis(row),
+            fiscalYearDeviation = fiscalYearParser.getFiscalYearDeviation(row),
+            fiscalYearEnd = fiscalYearParser.getFiscalYearEnd(row),
+            scopeOfEntities = commonFieldParser.getScopeOfEntities(row),
+            reportingObligation = commonFieldParser.getReportingObligation(row),
+            activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
+            assurance = assuranceDataParser.buildSingleAssuranceData(row),
         )
     }
 }
