@@ -3,7 +3,6 @@ import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "../
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
-import { humaniseOrUndefined } from "./CsvUtils";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
 
