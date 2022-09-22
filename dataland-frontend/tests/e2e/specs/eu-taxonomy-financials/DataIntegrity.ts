@@ -6,7 +6,7 @@ import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EligibilityKpis,
-  DataPoint,
+  DataPointBigDecimal,
 } from "@clients/backend";
 
 describeIf(
@@ -54,7 +54,7 @@ describeIf(
       });
     }
 
-    function formatPercentNumber(value?: DataPoint): string {
+    function formatPercentNumber(value?: DataPointBigDecimal): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
       return (Math.round(value.value * 100 * 100) / 100).toString();

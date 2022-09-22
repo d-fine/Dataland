@@ -37,7 +37,7 @@ function getCsvReportMapping(reportName: string) {
         row.t.referencedReports !== null &&
         row.t.referencedReports[reportName] !== undefined &&
         row.t.referencedReports[reportName] !== null
-          ? row.t.referencedReports[reportName].isGroupLevel
+          ? humaniseOrUndefined(row.t.referencedReports[reportName].isGroupLevel)
           : "",
     },
   ];

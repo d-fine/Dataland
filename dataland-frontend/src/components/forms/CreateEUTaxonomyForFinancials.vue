@@ -42,7 +42,6 @@
             <FormKit
               type="select"
               name="assurance"
-              validation="required"
               label="Assurance"
               placeholder="Please choose"
               :inner-class="innerClass"
@@ -57,7 +56,6 @@
           <FormKit
             type="radio"
             name="reportingObligation"
-            validation="required"
             label="Reporting Obligation"
             :outer-class="{
               'formkit-outer': false,
