@@ -37,23 +37,21 @@ class EuTaxonomyForFinancialsCsvParser(
     )
 
     private val columnMappingCompanyType = mapOf(
-            FinancialServicesType.CreditInstitution to "Credit Institution",
-            FinancialServicesType.InvestmentFirm to "Investment Firm",
-            FinancialServicesType.AssetManagement to "Asset Management Company",
-            FinancialServicesType.InsuranceOrReinsurance to "Insurance/Reinsurance",
+        FinancialServicesType.CreditInstitution to "Credit Institution",
+        FinancialServicesType.InvestmentFirm to "Investment Firm",
+        FinancialServicesType.AssetManagement to "Asset Management Company",
+        FinancialServicesType.InsuranceOrReinsurance to "Insurance/Reinsurance",
     )
 
     private val financialServicesMap = mapOf<FinancialServicesType, String>(
-            FinancialServicesType.CreditInstitution to "1",
-            FinancialServicesType.InsuranceOrReinsurance to "2",
-            FinancialServicesType.AssetManagement to "3",
-            FinancialServicesType.InvestmentFirm to "4"
+        FinancialServicesType.CreditInstitution to "1",
+        FinancialServicesType.InsuranceOrReinsurance to "2",
+        FinancialServicesType.AssetManagement to "3",
+        FinancialServicesType.InvestmentFirm to "4"
     )
     /**
      * Function retrieving all Financial Service types of the company
      */
-
-
 
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
         val csvData = csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]!!

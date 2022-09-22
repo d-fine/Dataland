@@ -41,7 +41,7 @@ class CompanyInformationCsvParser {
         return CompanyInformation(
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row)!!,
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row)!!,
-            sector = companyInformationColumnMapping.getCsvValue("sector", row)?:"Missing Sector",
+            sector = companyInformationColumnMapping.getCsvValue("sector", row) ?: "Missing Sector",
             industry = companyInformationColumnMapping.getCsvValue("industry", row),
             currency = companyInformationColumnMapping.getCsvValue("currency", row),
             marketCap = getMarketCap(row),
@@ -73,7 +73,7 @@ class CompanyInformationCsvParser {
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return IdentifierType.values().sortedBy { it.name }.map {
             CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData)?:"" ,
+                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData) ?: "",
                 identifierType = it
             )
         }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }
