@@ -9,7 +9,10 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
  */
 fun CompanyInformation.copyNormalised(): CompanyInformation {
     return this.copy(
-        marketCap = this.marketCap.stripTrailingZeros()
+        marketCap = this.marketCap.stripTrailingZeros(),
+        numberOfShares = this.numberOfShares?.stripTrailingZeros(),
+        sharePrice = this.sharePrice?.stripTrailingZeros(),
+        numberOfEmployees = this.numberOfEmployees?.stripTrailingZeros()
     )
 }
 
