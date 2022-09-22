@@ -71,4 +71,4 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, npm serve, npm teste2e and execute Cypress Tests locally
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
