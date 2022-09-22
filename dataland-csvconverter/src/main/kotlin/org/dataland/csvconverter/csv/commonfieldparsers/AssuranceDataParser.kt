@@ -18,6 +18,13 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
         "assurance" to "Assurance"
     )
 
+    private val assuranceOptionsMapping = mapOf(
+        "reasonable" to AssuranceOptions.ReasonableAssurance,
+        "limited" to AssuranceOptions.LimitedAssurance,
+        "none" to AssuranceOptions.None
+    )
+
+
     /**
      * This method builds the single assurance data
      */
@@ -29,14 +36,11 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
             )
         ) {
             AssuranceData(
-                assurance = AssuranceOptions.valueOf(
-                    dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(baseString, row)
-                        ?: throw IllegalArgumentException(
-                            "Expected an AssuranceOption but found" +
-                                " ${dataPointParser.buildMapForSpecificData(generalMap,baseString).getCsvValue(
-                                    baseString, row
-                                )}" + "which is not a valid Quality Option"
-                        )
+                assurance = assuranceOptionsMapping[dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(baseString, row)]
+                    ?: throw IllegalArgumentException(
+                    "Expected an AssuranceOption but found" +
+                        " ${dataPointParser.buildMapForSpecificData(generalMap,baseString).getCsvValue(baseString, row)}" +
+                        "which is not a valid Quality Option"
                 ),
                 provider = dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(
                     "${baseString}provider", row
