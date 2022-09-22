@@ -71,7 +71,7 @@ export function getCsvCompanyMapping<T>() {
 
   return [
     {
-      label: "Company name",
+      label: "Company Name",
       value: (row: FixtureData<T>) => row.companyInformation.companyName,
     },
     {
@@ -87,7 +87,7 @@ export function getCsvCompanyMapping<T>() {
       value: (row: FixtureData<T>) => row.companyInformation.industry,
     },
     {
-      label: "Country code",
+      label: "Country Code",
       value: (row: FixtureData<T>) => row.companyInformation.countryCode,
     },
     {

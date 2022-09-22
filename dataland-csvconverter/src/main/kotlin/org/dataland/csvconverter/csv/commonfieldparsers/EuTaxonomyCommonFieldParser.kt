@@ -16,10 +16,10 @@ class EuTaxonomyCommonFieldParser {
 
         private const val SCOPE_OF_ENTITIES_YES = "Yes"
         private const val SCOPE_OF_ENTITIES_NO = "No"
-        private const val SCOPE_OF_ENTITIES_NA = "n/a"
+        private const val SCOPE_OF_ENTITIES_NA = "N/A"
 
-        private const val ACTIVITY_LEVEL_REPORTING_YES = "Y"
-        private const val ACTIVITY_LEVEL_REPORTING_NO = "N"
+        private const val ACTIVITY_LEVEL_REPORTING_YES = "Yes"
+        private const val ACTIVITY_LEVEL_REPORTING_NO = "No"
     }
 
     private val columnMappingEuTaxonomyUtils = mapOf(

@@ -15,9 +15,9 @@ import java.time.format.DateTimeFormatter
 class CompanyInformationCsvParser {
 
     private val companyInformationColumnMapping = mapOf(
-        "companyName" to "Company name",
+        "companyName" to "Company Name",
         "headquarters" to "Headquarter",
-        "countryCode" to "Country code",
+        "countryCode" to "Country Code",
         "sector" to "Sector",
         "industry" to "Industry",
         "currency" to "Currency",
