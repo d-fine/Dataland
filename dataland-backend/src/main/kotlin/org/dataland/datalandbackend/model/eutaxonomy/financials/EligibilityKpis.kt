@@ -9,18 +9,13 @@ import java.math.BigDecimal
  * KPIs for all companies for the EuTaxonomyForFinancials framework
  */
 data class EligibilityKpis(
-    @field:JsonProperty("taxonomyEligibleActivity")
     val taxonomyEligibleActivity: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("taxonomyNonEligibleActivity")
     val taxonomyNonEligibleActivity: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("derivatives")
     val derivatives: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("banksAndIssuers")
     val banksAndIssuers: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("investmentNonNfrd")
     val investmentNonNfrd: DataPoint<BigDecimal>? = null,
 )

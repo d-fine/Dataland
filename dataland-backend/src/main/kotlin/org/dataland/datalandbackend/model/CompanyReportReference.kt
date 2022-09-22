@@ -8,11 +8,8 @@ import java.math.BigDecimal
  * A reference to a page in a company report
  */
 data class CompanyReportReference(
-
-    @field:JsonProperty("report", required = true)
+    @field:JsonProperty(required = true)
     val report: String,
 
-    @field:JsonProperty("page")
     val page: BigDecimal? = null,
-
 )

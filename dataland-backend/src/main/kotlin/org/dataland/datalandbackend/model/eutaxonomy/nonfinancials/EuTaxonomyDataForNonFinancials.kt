@@ -16,33 +16,23 @@ import java.time.LocalDate
  */
 @DataType("eutaxonomy-non-financials")
 data class EuTaxonomyDataForNonFinancials(
-    @field:JsonProperty("capex")
     val capex: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("opex")
     val opex: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("revenue")
     val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("fiscalYearDeviation")
     override val fiscalYearDeviation: YesNo? = null,
 
-    @field:JsonProperty("fiscalYearEnd")
     override val fiscalYearEnd: LocalDate? = null,
 
-    @field:JsonProperty("scopeOfEntities")
     override val scopeOfEntities: YesNoNa? = null,
 
-    @field:JsonProperty("reportingObligation")
     override val reportingObligation: YesNo? = null,
 
-    @field:JsonProperty("activityLevelReporting")
     override val activityLevelReporting: YesNo? = null,
 
-    @field:JsonProperty("assurance")
     override val assurance: AssuranceData? = null,
 
-    @field:JsonProperty("referencedReports")
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

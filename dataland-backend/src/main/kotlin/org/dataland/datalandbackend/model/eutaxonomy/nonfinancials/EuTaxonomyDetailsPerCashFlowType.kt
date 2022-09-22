@@ -9,12 +9,9 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    @field:JsonProperty("totalAmount")
     val totalAmount: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("alignedPercentage")
     val alignedPercentage: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("eligiblePercentage")
     val eligiblePercentage: DataPoint<BigDecimal>? = null
 )
