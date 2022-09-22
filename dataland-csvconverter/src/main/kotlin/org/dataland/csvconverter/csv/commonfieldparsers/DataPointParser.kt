@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import java.math.BigDecimal
 
+/**
+ * This class provides methods to create data points
+ */
 class DataPointParser {
 
     /**
@@ -26,11 +29,13 @@ class DataPointParser {
     /**
      * parses Company reference for one single DataPoint (if existing)
      */
-    fun buildSingleCompanyReportReference(generalMap: Map<String, String>, row: Map<String, String>, baseString: String): CompanyReportReference? {
+    fun buildSingleCompanyReportReference(generalMap: Map<String, String>, row: Map<String, String>,
+                                          baseString: String): CompanyReportReference? {
         return if (buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue("${baseString}Report", row)) {
             CompanyReportReference(
                 report = buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Report", row)
-                    ?: throw IllegalArgumentException("Expected a report but found null; This should not happen, since a previous check occurs"),
+                    ?: throw IllegalArgumentException("Expected a report but found null; This should not happen," +
+                            " since a previous check occurs"),
                 page = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue("${baseString}Page", row)
             )
         } else {
@@ -41,7 +46,8 @@ class DataPointParser {
     /**
      * parses one single DataPoint (if existing)
      */
-    fun buildSingleDataPoint(generalMap: Map<String, String>, row: Map<String, String>, baseString: String): DataPoint<BigDecimal>? {
+    fun buildSingleDataPoint(generalMap: Map<String, String>, row: Map<String, String>, baseString: String):
+            DataPoint<BigDecimal>? {
         return if (buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue(baseString, row)) {
             DataPoint(
                 value = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue(baseString, row),
@@ -49,7 +55,8 @@ class DataPointParser {
                     buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Quality", row)
                         ?: throw IllegalArgumentException(
                             "The quality of the DataPoint ${generalMap.getValue(baseString)} is" +
-                                " ${buildMapForSpecificData(generalMap,baseString).getCsvValue("${baseString}Quality", row)}," +
+                                " ${buildMapForSpecificData(generalMap,baseString).getCsvValue(
+                                    "${baseString}Quality", row)}," +
                                 " which is not a valid Quality Option"
                         )
                 ),

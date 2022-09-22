@@ -30,6 +30,9 @@ class EuTaxonomyCommonFieldParser {
 
     )
 
+    /**
+     * This method retrieves scope of companies from a csv row
+     */
     fun getScopeOfEntities(csvLineData: Map<String, String>): YesNoNa? {
         return when (
             val rawScopeOfEntities = columnMappingEuTaxonomyUtils.getCsvValue("scopeOfEntities", csvLineData)
@@ -66,9 +69,13 @@ class EuTaxonomyCommonFieldParser {
         }
     }
 
+    /**
+     * This method retrieves the activity level reporting
+     */
     fun getActivityLevelReporting(csvLineData: Map<String, String>): YesNo? {
         return when (
-            val rawActivityLevelReporting = columnMappingEuTaxonomyUtils.getCsvValue("activityLevelReporting", csvLineData)
+            val rawActivityLevelReporting = columnMappingEuTaxonomyUtils.getCsvValue("activityLevelReporting",
+                csvLineData)
         ) {
             ACTIVITY_LEVEL_REPORTING_YES -> YesNo.Yes
             ACTIVITY_LEVEL_REPORTING_NO -> YesNo.No
