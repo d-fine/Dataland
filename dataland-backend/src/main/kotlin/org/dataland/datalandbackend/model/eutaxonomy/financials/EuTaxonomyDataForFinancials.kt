@@ -20,39 +20,27 @@ import java.util.EnumSet
  */
 @DataType("eutaxonomy-financials")
 data class EuTaxonomyDataForFinancials(
-    @field:JsonProperty("financialServicesTypes")
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
-    @field:JsonProperty("eligibilityKpis")
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
-    @field:JsonProperty("creditInstitutionKpis")
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
 
-    @field:JsonProperty("insuranceKpis")
     val insuranceKpis: InsuranceKpis? = null,
 
-    @field:JsonProperty("greenAssetRatio")
     val greenAssetRatio: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("fiscalYearDeviation")
     override val fiscalYearDeviation: YesNo? = null,
 
-    @field:JsonProperty("fiscalYearEnd")
     override val fiscalYearEnd: LocalDate? = null,
 
-    @field:JsonProperty("scopeOfEntities")
     override val scopeOfEntities: YesNoNa? = null,
 
-    @field:JsonProperty("reportingObligation")
     override val reportingObligation: YesNo? = null,
 
-    @field:JsonProperty("activityLevelReporting")
     override val activityLevelReporting: YesNo? = null,
 
-    @field:JsonProperty("assurance")
     override val assurance: AssuranceData? = null,
 
-    @field:JsonProperty("referencedReports")
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

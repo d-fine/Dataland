@@ -26,10 +26,10 @@ data class StoredCompanyEntity(
     var companyName: String,
 
     @Column(name = "headquarters")
-    var headquarters: String?,
+    var headquarters: String,
 
     @Column(name = "sector")
-    var sector: String?,
+    var sector: String,
 
     @Column(name = "industry")
     var industry: String?,
@@ -38,10 +38,10 @@ data class StoredCompanyEntity(
     var currency: String?,
 
     @Column(name = "market_capitalisation")
-    var marketCap: BigDecimal?,
+    var marketCap: BigDecimal,
 
     @Column(name = "reporting_date_of_market_capitalisation")
-    var reportingDateOfMarketCap: LocalDate?,
+    var reportingDateOfMarketCap: LocalDate,
 
     @Column(name = "number_of_shares")
     var numberOfShares: BigDecimal?,

@@ -8,9 +8,8 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
  * Fields describing a company report like an anual report
  */
 data class CompanyReport(
-    @field:JsonProperty("reference", required = true)
+    @field:JsonProperty(required = true)
     val reference: String,
 
-    @field:JsonProperty("isGroupLevel")
     val isGroupLevel: YesNoNa? = null,
 )
