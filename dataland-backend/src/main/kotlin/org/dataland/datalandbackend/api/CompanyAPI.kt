@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -49,10 +48,9 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name/identifier/index or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier/index are retrieved. " +
-            "If only an empty string is passed as search argument, all companies in the data store are returned." +
-            "If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned."
+        summary = "Retrieve specific companies by name/identifier or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier are retrieved. " +
+            "If only an empty string is passed as search argument, all companies in the data store are returned."
     )
     @ApiResponses(
         value = [
@@ -64,18 +62,15 @@ interface CompanyAPI {
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
-     * A method to retrieve specific companies identified by their company names identifier or stock index
+     * A method to retrieve specific companies identified by their company names or identifiers
      * If only an empty string is passed as search argument, all companies in the data store are returned.
-     * If selectedIndex is not null, all companies in Dataland associated to the given stock index are returned.
      * @param searchString string used for substring matching
-     * @param selectedIndex StockIndex Enum used to filter against stock indices
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param dataTypes If set, this function only returns companies that have data for the specified dataTypes
      * @return information about all companies matching the search criteria
      */
     fun getCompanies(
         @RequestParam searchString: String? = null,
-        @RequestParam stockIndices: Set<StockIndex>? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam onlyCompanyNames: Boolean = false
     ):
