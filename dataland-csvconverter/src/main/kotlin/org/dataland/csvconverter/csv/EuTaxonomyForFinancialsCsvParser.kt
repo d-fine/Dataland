@@ -27,6 +27,7 @@ class EuTaxonomyForFinancialsCsvParser(
     /**
      * general string Mappings
      */
+
     private val columnMappingEuTaxonomyForFinancials = mapOf(
         "financialServicesType" to "FS - company type",
         "tradingPortfolio" to "Trading portfolio",
@@ -35,16 +36,24 @@ class EuTaxonomyForFinancialsCsvParser(
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
     )
 
+    private val columnMappingCompanyType = mapOf(
+            FinancialServicesType.CreditInstitution to "Credit Institution",
+            FinancialServicesType.InvestmentFirm to "Investment Firm",
+            FinancialServicesType.AssetManagement to "Asset Management Company",
+            FinancialServicesType.InsuranceOrReinsurance to "Insurance/Reinsurance",
+    )
+
+    private val financialServicesMap = mapOf<FinancialServicesType, String>(
+            FinancialServicesType.CreditInstitution to "1",
+            FinancialServicesType.InsuranceOrReinsurance to "2",
+            FinancialServicesType.AssetManagement to "3",
+            FinancialServicesType.InvestmentFirm to "4"
+    )
     /**
      * Function retrieving all Financial Service types of the company
      */
 
-    private val financialServicesMap = mapOf<FinancialServicesType, String>(
-        FinancialServicesType.CreditInstitution to "1",
-        FinancialServicesType.InsuranceOrReinsurance to "2",
-        FinancialServicesType.AssetManagement to "3",
-        FinancialServicesType.InvestmentFirm to "4"
-    )
+
 
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
         val csvData = csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]!!
@@ -69,18 +78,18 @@ class EuTaxonomyForFinancialsCsvParser(
     private fun buildEligibilityColumnMapping(type: FinancialServicesType): Map<String, String> {
         return mapOf(
             "investmentNonNfrd" to
-                "Exposures to non-NFRD entities ${columnMappingEuTaxonomyForFinancials[type.name]}",
+                "Exposures to non-NFRD entities ${columnMappingCompanyType[type]}",
             "taxonomyEligibleActivity" to
                 "Exposures to taxonomy-eligible economic activities" +
-                " ${columnMappingEuTaxonomyForFinancials[type.name]}",
+                " ${columnMappingCompanyType[type]}",
             "taxonomyNonEligibleActivity" to
                 "Exposures to taxonomy non-eligible economic activities" +
-                " ${columnMappingEuTaxonomyForFinancials[type.name]}",
+                " ${columnMappingCompanyType[type]}",
             "banksAndIssuers" to
                 "Exposures to central governments, central banks, supranational issuers" +
-                " ${columnMappingEuTaxonomyForFinancials[type.name]}",
+                " ${columnMappingCompanyType[type]}",
             "derivatives" to
-                "Exposures to derivatives ${columnMappingEuTaxonomyForFinancials[type.name]}",
+                "Exposures to derivatives ${columnMappingCompanyType[type]}",
         )
     }
 

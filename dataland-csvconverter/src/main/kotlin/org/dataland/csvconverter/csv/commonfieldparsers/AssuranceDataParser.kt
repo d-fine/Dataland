@@ -43,7 +43,7 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
                         "which is not a valid Quality Option"
                 ),
                 provider = dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(
-                    "${baseString}provider", row
+                    "${baseString}Provider", row
                 ),
                 dataSource = dataPointParser.buildSingleCompanyReportReference(generalMap, row, baseString)
             )
