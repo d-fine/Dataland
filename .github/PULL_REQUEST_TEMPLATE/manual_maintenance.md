@@ -3,10 +3,10 @@ Note: To create a PR using this template add the query parameter `template=manua
 # Maintenance tasks (to be completed by the assignee)
 ## Skyminder
 - [ ] Complete manual maintenance in the Skyminder Repo
-- [ ] Release a new version `x.x.x` (Please put new version number here)
+- [ ] Release a new version `0.1.11`
 ## EDC
 - [ ] Complete manual maintenance in the EDC Repo
-- [ ] Release a new version `x.x.x` (Please put new version number here)
+- [ ] Release a new version `0.2.9`
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
