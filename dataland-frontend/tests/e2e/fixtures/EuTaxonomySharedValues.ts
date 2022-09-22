@@ -72,7 +72,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
         humaniseOrUndefined(row.t.activityLevelReporting),
     },
     {
-      label: "NFRD mandatoryg",
+      label: "NFRD mandatory",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
         humaniseOrUndefined(row.t.reportingObligation),
     },
@@ -82,7 +82,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
         getAssurance(row.t.assurance?.assurance),
     },
     {
-      label: "Assurance provider",
+      label: "Assurance Provider",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
         humaniseOrUndefined(row.t.assurance?.provider),
     },
