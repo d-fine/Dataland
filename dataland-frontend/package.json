@@ -8,6 +8,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore --max-warnings 0 --no-fix",
     "cypress": "cypress open",
+    "checkcypresscompilation": "tsc --noEmit -P tsconfig.cypress-e2e.json && tsc --noEmit -P tsconfig.cypress-ct.json",
     "testcomponent": "cypress run --component",
     "testpipeline": "cypress run",
     "testdevelopment": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev-dataland.duckdns.org\"}}'",
