@@ -1,5 +1,8 @@
 package org.dataland.csvconverter.csv
 
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
@@ -8,6 +11,8 @@ import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDet
  * This class contains the parsing logic for the EuTaxonomyForNonFinancials framework
  */
 class EuTaxonomyForNonFinancialsCsvParser(
+    private val dataPointParser: DataPointParser,
+    private val assuranceDataParser: AssuranceDataParser,
     private val commonFieldParser: EuTaxonomyCommonFieldParser
 ) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
@@ -21,35 +26,38 @@ class EuTaxonomyForNonFinancialsCsvParser(
         "alignedRevenue" to "Aligned Revenue",
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
-        "companyType" to "IS/FS",
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
         return commonFieldParser.getCompanyType(row) == "IS"
     }
 
-    /**
-     * Method to build EuTaxonomyDataForNonFinancials from the read row in the csv file.
-     */
-    override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
-        return EuTaxonomyDataForNonFinancials(
-            reportingObligation = commonFieldParser.getReportingObligation(row),
-            assurance = commonFieldParser.buildSingleAssuranceData(row),
-            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
-            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
-            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
-        )
-    }
-
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount =
-            commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "total$type"),
+            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "total$type"),
             alignedPercentage =
-            commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "aligned$type"),
+            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "aligned$type"),
             eligiblePercentage =
-            commonFieldParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "eligible$type")
+            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "eligible$type")
+        )
+    }
+    /**
+     Assembles all partial information into one EuTaxonomyDataForNonFinancials object
+     */
+    override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
+        return EuTaxonomyDataForNonFinancials(
+
+            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
+            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
+            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row),
+            fiscalYearDeviation = commonFieldParser.getFiscalYearDeviation(row),
+            fiscalYearEnd = commonFieldParser.getFiscalYearEnd(row),
+            scopeOfEntities = commonFieldParser.getScopeOfEntities(row),
+            reportingObligation = commonFieldParser.getReportingObligation(row),
+            activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
+            assurance = assuranceDataParser.buildSingleAssuranceData(row),
         )
     }
 }

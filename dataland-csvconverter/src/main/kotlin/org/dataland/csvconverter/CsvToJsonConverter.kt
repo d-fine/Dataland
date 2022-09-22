@@ -3,9 +3,11 @@ package org.dataland.csvconverter
 import org.dataland.csvconverter.csv.CompanyInformationCsvParser
 import org.dataland.csvconverter.csv.CsvFrameworkParser
 import org.dataland.csvconverter.csv.CsvUtils
-import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
 import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.json.JsonConfig
 import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
@@ -20,8 +22,10 @@ class CsvToJsonConverter {
     private var rawCsvData: List<Map<String, String>> = listOf()
     private val companyParser = CompanyInformationCsvParser()
     private val euTaxonomyCommonFieldParser = EuTaxonomyCommonFieldParser()
-    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(euTaxonomyCommonFieldParser)
-    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(euTaxonomyCommonFieldParser)
+    private val dataPointParser = DataPointParser()
+    private val assuranceDataParser = AssuranceDataParser(dataPointParser)
+    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(dataPointParser, assuranceDataParser, euTaxonomyCommonFieldParser)
+    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(dataPointParser, assuranceDataParser, euTaxonomyCommonFieldParser)
 
     /**
      * Function to parse company-associated framework data from a CSV file
