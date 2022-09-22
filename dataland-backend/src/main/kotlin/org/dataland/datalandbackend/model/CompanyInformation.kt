@@ -17,11 +17,11 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val companyName: String,
 
-    @field:JsonProperty(required = false)
-    val headquarters: String? = null,
+    @field:JsonProperty(required = true)
+    val headquarters: String,
 
-    @field:JsonProperty(required = false)
-    val sector: String? = null,
+    @field:JsonProperty(required = true)
+    val sector: String,
 
     @field:JsonProperty(required = false)
     val industry: String? = null,
@@ -29,11 +29,11 @@ data class CompanyInformation(
     @field:JsonProperty(required = false)
     val currency: String? = "EUR",
 
-    @field:JsonProperty(required = false)
-    val marketCap: BigDecimal? = null,
+    @field:JsonProperty(required = true)
+    val marketCap: BigDecimal,
 
-    @field:JsonProperty(required = false)
-    val reportingDateOfMarketCap: LocalDate? = null,
+    @field:JsonProperty(required = true)
+    val reportingDateOfMarketCap: LocalDate,
 
     @field:JsonProperty(required = false)
     val numberOfShares: BigDecimal? = null,

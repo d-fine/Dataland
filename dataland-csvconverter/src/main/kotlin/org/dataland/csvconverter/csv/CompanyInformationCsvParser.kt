@@ -19,8 +19,13 @@ class CompanyInformationCsvParser {
         "headquarters" to "Headquarter",
         "countryCode" to "Countrycode",
         "sector" to "Sector",
+        "industry" to "Industry",
+        "currency" to "Currency",
         "marketCap" to "Market Capitalization EURmm",
         "reportingDateOfMarketCap" to "Market Capitalization Date",
+        "numberOfShares" to "Number Of Shares",
+        "sharePrice" to "Share Price",
+        "numberOfEmployees" to "Number Of Employees",
         IdentifierType.Isin.name to "ISIN",
         IdentifierType.Lei.name to "LEI",
         IdentifierType.PermId.name to "PermID",
@@ -32,16 +37,21 @@ class CompanyInformationCsvParser {
      */
     fun buildCompanyInformation(row: Map<String, String>): CompanyInformation {
         return CompanyInformation(
-            companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
-            headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
-            sector = companyInformationColumnMapping.getCsvValue("sector", row),
+            companyName = companyInformationColumnMapping.getCsvValue("companyName", row)!!,
+            headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row)!!,
+            sector = companyInformationColumnMapping.getCsvValue("sector", row)!!,
+            industry = companyInformationColumnMapping.getCsvValue("industry", row),
+            currency = companyInformationColumnMapping.getCsvValue("currency", row),
             marketCap = getMarketCap(row),
             reportingDateOfMarketCap = LocalDate.parse(
                 companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")
             ),
+            numberOfShares = companyInformationColumnMapping.getScaledCsvValue("numberOfShares", row, "1"),
+            sharePrice = companyInformationColumnMapping.getScaledCsvValue("sharePrice", row, "1"),
+            numberOfEmployees = companyInformationColumnMapping.getScaledCsvValue("numberOfEmployees", row, "1"),
             identifiers = getCompanyIdentifiers(row),
-            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
+            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row)!!,
             isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
                 .equals("Yes", true)
         )
@@ -61,7 +71,7 @@ class CompanyInformationCsvParser {
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return IdentifierType.values().sortedBy { it.name }.map {
             CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData),
+                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData)!!,
                 identifierType = it
             )
         }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }
