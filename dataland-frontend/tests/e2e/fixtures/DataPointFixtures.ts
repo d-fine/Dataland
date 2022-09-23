@@ -6,7 +6,7 @@ import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humaniseOrUndefined } from "./CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
 
-const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
+const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
 export function generateReferencedReports(): ReferencedReports {
   const availableReports = faker.helpers.arrayElements(possibleReports);
@@ -18,7 +18,7 @@ export function generateReferencedReports(): ReferencedReports {
       reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
       isGroupLevel: randomYesNoNaUndefined(),
       reportDate: randomDateOrUndefined(),
-      currency: randomStringOrUndefined(3),
+      currency: faker.finance.currencyCode(),
     };
   });
 
@@ -48,7 +48,7 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
       faker.datatype.boolean())
   ) {
     dataSource = generateDataSource(reports);
-    comment = randomStringOrUndefined(10);
+    comment = faker.git.commitMessage();
   }
 
   return {

@@ -81,6 +81,7 @@ class CsvToJsonConverter {
      */
     fun parseCsvFile(filePath: String) {
         rawCsvData = CsvUtils.readCsvFile(filePath)
+        rawCsvData = rawCsvData.map { row -> row.mapKeys { it.key.lowercase() } }
     }
 
     companion object {

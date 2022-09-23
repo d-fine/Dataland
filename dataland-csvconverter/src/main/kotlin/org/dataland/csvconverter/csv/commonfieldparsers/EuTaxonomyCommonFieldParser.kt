@@ -4,6 +4,7 @@ import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import java.math.BigDecimal
 
 /**
  * This class provides parsing methods for columns that are required by both EU-Taxonomy frameworks
@@ -18,11 +19,10 @@ class EuTaxonomyCommonFieldParser {
     }
 
     private val columnMappingEuTaxonomyUtils = mapOf(
-
         "scopeOfEntities" to "Scope of Entities",
         "reportObligation" to "NFRD mandatory",
         "activityLevelReporting" to "EU Taxonomy Activity Level Reporting",
-
+        "numberOfEmployes" to "Number Of Employees",
     )
 
     /**
@@ -84,5 +84,9 @@ class EuTaxonomyCommonFieldParser {
                 )
             }
         }
+    }
+
+    fun getNumberOfEmployees(csvLineData: Map<String, String>): BigDecimal? {
+        return columnMappingEuTaxonomyUtils.getNumericCsvValue("numberOfEmployees", csvLineData)
     }
 }

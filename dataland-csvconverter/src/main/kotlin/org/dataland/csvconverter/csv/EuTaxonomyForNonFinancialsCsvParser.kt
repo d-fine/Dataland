@@ -50,7 +50,6 @@ class EuTaxonomyForNonFinancialsCsvParser(
      */
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
         return EuTaxonomyDataForNonFinancials(
-
             capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
             opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
             revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row),
@@ -60,6 +59,8 @@ class EuTaxonomyForNonFinancialsCsvParser(
             reportingObligation = commonFieldParser.getReportingObligation(row),
             activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
             assurance = assuranceDataParser.buildSingleAssuranceData(row),
+            numberOfEmployees = commonFieldParser.getNumberOfEmployees(row),
+            referencedReports = companyReportParser.buildMapOfAllCompanyReports(row),
         )
     }
 }

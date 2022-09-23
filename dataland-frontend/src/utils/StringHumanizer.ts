@@ -34,6 +34,7 @@ function humaniseViaMapping(rawText: string): string {
     annualreport: "Annual Report",
     sustainabilityreport: "Sustainability Report",
     integratedreport: "Integrated Report",
+    esefreport: "ESEF Report",
     yes: "Yes",
     no: "No",
     na: "N/A",

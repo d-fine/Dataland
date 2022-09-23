@@ -3,10 +3,7 @@ package org.dataland.csvconverter.csv
 import org.dataland.csvconverter.csv.commonfieldparsers.*
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
-import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EligibilityKpis
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.model.eutaxonomy.financials.InsuranceKpis
+import org.dataland.datalandbackend.model.eutaxonomy.financials.*
 import java.util.EnumSet
 
 /**
@@ -24,13 +21,14 @@ class EuTaxonomyForFinancialsCsvParser(
     /**
      * general string Mappings
      */
-
     private val columnMappingEuTaxonomyForFinancials = mapOf(
         "financialServicesType" to "FS - company type",
         "tradingPortfolio" to "Trading portfolio",
         "interbankLoans" to "On-demand interbank loans",
         "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on demand interbank loans",
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
+        "greenAssetRatioCreditInstitution" to "Green Asset Ratio Credit Institution",
+        "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm"
     )
 
     private val columnMappingCompanyType = mapOf(
@@ -139,6 +137,17 @@ class EuTaxonomyForFinancialsCsvParser(
             tradingPortfolioAndInterbankLoans = dataPointParser.buildSingleDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"
             ),
+            greenAssetRatio = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution"
+            ),
+        )
+    }
+
+    private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis {
+        return InvestmentFirmKpis(
+                greenAssetRatio = dataPointParser.buildSingleDataPoint(
+                        columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
+                ),
         )
     }
 
@@ -164,6 +173,10 @@ class EuTaxonomyForFinancialsCsvParser(
             reportingObligation = commonFieldParser.getReportingObligation(row),
             activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
             assurance = assuranceDataParser.buildSingleAssuranceData(row),
+            investmentFirmKpis = buildInvestmentFirmKpis(row),
+            financialServicesTypes = financialServicesTypes,
+            numberOfEmployees = commonFieldParser.getNumberOfEmployees(row),
+            referencedReports = companyReportParser.buildMapOfAllCompanyReports(row),
         )
     }
 }
