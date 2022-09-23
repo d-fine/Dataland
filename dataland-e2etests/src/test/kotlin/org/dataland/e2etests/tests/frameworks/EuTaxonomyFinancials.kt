@@ -22,9 +22,8 @@ class EuTaxonomyFinancials {
 
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
-    // Suppressing detekt issue as detekt and ktlint do not agree on the right approach for the following line
-    @Suppress("MaxLineLength")
-    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): Pair<DataMetaInformation, EuTaxonomyDataForFinancials> {
+    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials():
+        Pair<DataMetaInformation, EuTaxonomyDataForFinancials> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testData = testDataProviderForEuTaxonomyDataForFinancials.getTData(1).first()
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
