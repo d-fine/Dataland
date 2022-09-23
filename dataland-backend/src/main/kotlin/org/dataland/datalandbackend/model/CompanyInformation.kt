@@ -23,21 +23,11 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val sector: String,
 
-    val industry: String? = null,
-
-    val currency: String? = null,
-
     @field:JsonProperty(required = true)
     val marketCap: BigDecimal,
 
     @field:JsonProperty(required = true)
     val reportingDateOfMarketCap: LocalDate,
-
-    val numberOfShares: BigDecimal? = null,
-
-    val sharePrice: BigDecimal? = null,
-
-    val numberOfEmployees: BigDecimal? = null,
 
     @field:JsonProperty(required = true)
     val identifiers: List<CompanyIdentifier>,
@@ -45,6 +35,6 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val countryCode: String,
 
-    @get:JsonProperty("isTeaserCompany")
+    @get:JsonProperty(value = "isTeaserCompany")
     val isTeaserCompany: Boolean = false,
 )

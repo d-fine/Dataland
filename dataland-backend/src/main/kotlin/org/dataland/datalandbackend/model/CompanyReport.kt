@@ -11,5 +11,6 @@ data class CompanyReport(
     @field:JsonProperty(required = true)
     val reference: String,
 
+    @field:JsonProperty()
     val isGroupLevel: YesNoNa? = null,
 )

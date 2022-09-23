@@ -31,26 +31,11 @@ data class StoredCompanyEntity(
     @Column(name = "sector")
     var sector: String,
 
-    @Column(name = "industry")
-    var industry: String?,
-
-    @Column(name = "currency")
-    var currency: String?,
-
     @Column(name = "market_capitalisation")
     var marketCap: BigDecimal,
 
     @Column(name = "reporting_date_of_market_capitalisation")
     var reportingDateOfMarketCap: LocalDate,
-
-    @Column(name = "number_of_shares")
-    var numberOfShares: BigDecimal?,
-
-    @Column(name = "share_price")
-    var sharePrice: BigDecimal?,
-
-    @Column(name = "number_of_employees")
-    var numberOfEmployees: BigDecimal?,
 
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
@@ -72,13 +57,8 @@ data class StoredCompanyEntity(
                 companyName = companyName,
                 headquarters = headquarters,
                 sector = sector,
-                industry = industry,
-                currency = currency,
                 marketCap = marketCap,
                 reportingDateOfMarketCap = reportingDateOfMarketCap,
-                numberOfShares = numberOfShares,
-                sharePrice = sharePrice,
-                numberOfEmployees = numberOfEmployees,
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
