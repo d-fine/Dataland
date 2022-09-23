@@ -3,10 +3,15 @@ Note: To create a PR using this template add the query parameter `template=manua
 # Maintenance tasks (to be completed by the assignee)
 ## Skyminder
 - [ ] Complete manual maintenance in the Skyminder Repo
-- [ ] Release a new version `0.1.11`
+- [ ] Release a new version `0.1.11` and replace the version number in the text here with the next version number to come.
+- [ ] Upgrade to the new version of the skyminder-client in the `settings.gradle.kts`
+- [ ] Upgrade to the new version of the skyminder-dummyserver in the `docker-compose.yml` file.
 ## EDC
 - [ ] Complete manual maintenance in the EDC Repo
-- [ ] Release a new version `0.2.9`
+- [ ] Release a new version `0.2.9`and replace the version number in the text here with the next version number to come.
+- [ ] Upgrade to the new version of the edc-client in the `settings.gradle.kts`
+- [ ] Upgrade to the new version of the edc-dummyserver in the `docker-compose.yml` file.
+- [ ] Upgrade to the new version of the edc-server in the `docker-compose.yml` file.
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
@@ -42,9 +47,11 @@ Update versions in the following dockerfiles
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
+- [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
 - [ ] Update the versions of all postgres images in the `docker-compose.yml` file
-- [ ] Update versions in the `docker-compose.yml` file 
+- [ ] Update the version of the node image in the `docker-compose.yml` file
+- [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on

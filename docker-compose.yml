@@ -114,7 +114,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:bullseye
+    image: node:18.9.0
     networks:
       - internal
     volumes:
@@ -136,7 +136,7 @@ services:
       - internal
   skyminder-dummyserver:
     profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:latest
+    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.10
     networks:
       - internal
       - external
