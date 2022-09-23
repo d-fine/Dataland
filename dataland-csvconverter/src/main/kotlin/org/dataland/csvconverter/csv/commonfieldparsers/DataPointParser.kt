@@ -23,6 +23,7 @@ class DataPointParser {
             "${baseString}Provider" to "${generalMap.getValue(baseString)} Provider",
             "${baseString}Report" to "${generalMap.getValue(baseString)} Report",
             "${baseString}Page" to "${generalMap.getValue(baseString)} Page",
+            "${baseString}Comment" to "${generalMap.getValue(baseString)} Comment",
         )
     }
 
@@ -66,6 +67,7 @@ class DataPointParser {
                                 " which is not a valid Quality Option"
                         )
                 ),
+                comment = buildMapForSpecificData(generalMap, baseString).getCsvValue(baseString, row),
                 dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
             )
         } else {

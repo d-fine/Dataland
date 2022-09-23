@@ -1,6 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 
@@ -11,15 +12,9 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 class EuTaxonomyCommonFieldParser {
 
     companion object {
-        private const val REPORT_OBLIGATION_YES = "Yes"
-        private const val REPORT_OBLIGATION_NO = "No"
-
-        private const val SCOPE_OF_ENTITIES_YES = "Yes"
-        private const val SCOPE_OF_ENTITIES_NO = "No"
-        private const val SCOPE_OF_ENTITIES_NA = "N/A"
-
-        private const val ACTIVITY_LEVEL_REPORTING_YES = "Yes"
-        private const val ACTIVITY_LEVEL_REPORTING_NO = "No"
+        const val STRING_YES = "Yes"
+        const val STRING_NO = "No"
+        const val STRING_NA = "N/A"
     }
 
     private val columnMappingEuTaxonomyUtils = mapOf(
@@ -37,14 +32,14 @@ class EuTaxonomyCommonFieldParser {
         return when (
             val rawScopeOfEntities = columnMappingEuTaxonomyUtils.getCsvValue("scopeOfEntities", csvLineData)
         ) {
-            SCOPE_OF_ENTITIES_YES -> YesNoNa.Yes
-            SCOPE_OF_ENTITIES_NO -> YesNoNa.No
-            SCOPE_OF_ENTITIES_NA -> YesNoNa.NA
+            STRING_YES -> YesNoNa.Yes
+            STRING_NO -> YesNoNa.No
+            STRING_NA -> YesNoNa.NA
             null -> null
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine Scope of Entities : Found $rawScopeOfEntities, " +
-                        "but expect one of $SCOPE_OF_ENTITIES_YES, $SCOPE_OF_ENTITIES_NO, $SCOPE_OF_ENTITIES_NA or null"
+                        "but expect one of $STRING_YES, $STRING_NO, $STRING_NA or null"
                 )
             }
         }
@@ -57,13 +52,13 @@ class EuTaxonomyCommonFieldParser {
         return when (
             val rawReportObligation = columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
         ) {
-            REPORT_OBLIGATION_YES -> YesNo.Yes
-            REPORT_OBLIGATION_NO -> YesNo.No
+            STRING_YES -> YesNo.Yes
+            STRING_NO -> YesNo.No
             null -> null
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine reportObligation: Found $rawReportObligation, " +
-                        "but expect one of $REPORT_OBLIGATION_YES, $REPORT_OBLIGATION_NO  or null"
+                        "but expect one of $STRING_YES, $STRING_NO  or null"
                 )
             }
         }
@@ -79,13 +74,13 @@ class EuTaxonomyCommonFieldParser {
                 csvLineData
             )
         ) {
-            ACTIVITY_LEVEL_REPORTING_YES -> YesNo.Yes
-            ACTIVITY_LEVEL_REPORTING_NO -> YesNo.No
+            STRING_YES -> YesNo.Yes
+            STRING_NO -> YesNo.No
             null -> null
             else -> {
                 throw java.lang.IllegalArgumentException(
                     "Could not determine Activity Level Reporting: Found $rawActivityLevelReporting, " +
-                        "but expect one of $ACTIVITY_LEVEL_REPORTING_YES, $ACTIVITY_LEVEL_REPORTING_NO or null"
+                        "but expect one of $STRING_YES, $STRING_NO or null"
                 )
             }
         }

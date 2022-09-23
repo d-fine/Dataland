@@ -1,10 +1,6 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
-import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
-import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
-import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
-import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.commonfieldparsers.*
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -22,6 +18,7 @@ class EuTaxonomyForFinancialsCsvParser(
     private val dataPointParser: DataPointParser,
     private val assuranceDataParser: AssuranceDataParser,
     private val fiscalYearParser: FiscalYearParser,
+    private val companyReportParser: CompanyReportParser,
 ) : CsvFrameworkParser<EuTaxonomyDataForFinancials> {
 
     /**

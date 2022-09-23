@@ -14,5 +14,5 @@ data class CreditInstitutionKpis(
 
     val tradingPortfolioAndInterbankLoans: DataPoint<BigDecimal>? = null,
 
-    val greenAssetRatioCreditInstitution: DataPoint<BigDecimal>? = null,
+    val greenAssetRatio: DataPoint<BigDecimal>? = null,
 )

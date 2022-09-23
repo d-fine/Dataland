@@ -83,7 +83,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
       tradingPortfolioAndInterbankLoans,
       returnBase.referencedReports!!
     ),
-    greenAssetRatioCreditInstitution: generateDatapointOrNotReportedAtRandom(
+    greenAssetRatio: generateDatapointOrNotReportedAtRandom(
       greenAssetRatioCreditInstitution,
       returnBase.referencedReports!!
     ),
@@ -95,7 +95,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
     ),
   };
   returnBase.investmentFirmKpis = {
-    greenAssetRatioInvestmentFirm: generateDatapointOrNotReportedAtRandom(
+    greenAssetRatio: generateDatapointOrNotReportedAtRandom(
       greenAssetRatioInvestmentFirm,
       returnBase.referencedReports!!
     ),
@@ -202,12 +202,12 @@ export function generateCSVDataForFinancials(
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
         `Green Asset Ratio Credit Institution`,
-        (row) => row.t.creditInstitutionKpis?.greenAssetRatioCreditInstitution,
+        (row) => row.t.creditInstitutionKpis?.greenAssetRatio,
         convertToPercentageString
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
         `Green Asset Ratio Investment Firm`,
-        (row) => row.t.investmentFirmKpis?.greenAssetRatioInvestmentFirm,
+        (row) => row.t.investmentFirmKpis?.greenAssetRatio,
         convertToPercentageString
       ),
       {

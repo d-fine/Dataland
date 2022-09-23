@@ -1,6 +1,6 @@
 import { FixtureData } from "./GenerateFakeFixtures";
-import { EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "../../../build/clients/backend";
-import { humanizeString } from "../../../src/utils/StringHumanizer";
+import { CompanyReport, EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { humanizeString } from "@/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humaniseOrUndefined } from "./CsvUtils";
 import { getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { generateReferencedReports } from "./DataPointFixtures";
@@ -20,27 +20,41 @@ export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxo
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
+function getReportIfExists(
+  row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>,
+  reportName: string
+): CompanyReport | undefined {
+  return row.t.referencedReports !== undefined &&
+    row.t.referencedReports !== null &&
+    row.t.referencedReports[reportName] !== undefined &&
+    row.t.referencedReports[reportName] !== null
+    ? row.t.referencedReports[reportName]
+    : undefined;
+}
+
 function getCsvReportMapping(reportName: string) {
   return [
     {
       label: humanizeString(reportName),
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        row.t.referencedReports !== undefined &&
-        row.t.referencedReports !== null &&
-        row.t.referencedReports[reportName] !== undefined &&
-        row.t.referencedReports[reportName] !== null
-          ? row.t.referencedReports[reportName].reference
-          : "",
+        getReportIfExists(row, reportName)?.reference,
     },
     {
       label: `Group Level ${humanizeString(reportName)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        row.t.referencedReports !== undefined &&
-        row.t.referencedReports !== null &&
-        row.t.referencedReports[reportName] !== undefined &&
-        row.t.referencedReports[reportName] !== null
-          ? humaniseOrUndefined(row.t.referencedReports[reportName].isGroupLevel)
-          : "",
+        getReportIfExists(row, reportName)?.isGroupLevel,
+    },
+    {
+      label: `${humanizeString(reportName)} Currency`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
+        getReportIfExists(row, reportName)?.currency,
+    },
+    {
+      label: `${humanizeString(reportName)} Date`,
+      value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) => {
+        const reportDate = getReportIfExists(row, reportName)?.reportDate;
+        return reportDate !== undefined ? new Date(reportDate).toISOString().split("T")[0] : "";
+      },
     },
   ];
 }
@@ -63,6 +77,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     ...getCsvReportMapping("AnnualReport"),
     ...getCsvReportMapping("SustainabilityReport"),
     ...getCsvReportMapping("IntegratedReport"),
+    ...getCsvReportMapping("EsefReport"),
     {
       label: "Scope of Entities",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>

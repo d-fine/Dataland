@@ -1,10 +1,6 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
-import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
-import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
-import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
-import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.commonfieldparsers.*
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
@@ -13,12 +9,14 @@ import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDet
  * This class contains the parsing logic for the EuTaxonomyForNonFinancials framework
  */
 class EuTaxonomyForNonFinancialsCsvParser(
-    private val commonFieldParser: EuTaxonomyCommonFieldParser,
-    private val companyTypeParser: CompanyTypeParser,
-    private val dataPointParser: DataPointParser,
-    private val assuranceDataParser: AssuranceDataParser,
-    private val fiscalYearParser: FiscalYearParser,
-) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
+        private val commonFieldParser: EuTaxonomyCommonFieldParser,
+        private val companyTypeParser: CompanyTypeParser,
+        private val dataPointParser: DataPointParser,
+        private val assuranceDataParser: AssuranceDataParser,
+        private val fiscalYearParser: FiscalYearParser,
+        private val companyReportParser: CompanyReportParser,
+
+        ) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
     private val columnMappingEuTaxonomyForNonFinancials = mapOf(
         "totalRevenue" to "Total Revenue",

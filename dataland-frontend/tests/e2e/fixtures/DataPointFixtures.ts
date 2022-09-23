@@ -5,7 +5,6 @@ import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humaniseOrUndefined } from "./CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
-import { randomStringOrUndefined } from "./StringFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
 
@@ -41,7 +40,7 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
   let dataSource: CompanyReportReference | undefined = undefined;
-  let comment: String | undefined = undefined;
+  let comment: string | undefined = undefined;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
