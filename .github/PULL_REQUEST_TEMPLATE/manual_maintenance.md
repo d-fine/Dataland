@@ -42,6 +42,7 @@ Update versions in the following dockerfiles
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
+- [ ] Search for all Dockerfiles that use a nginx image and update it. Just search for `FROM nginx` in the whole code.
 - [ ] Update versions in the `docker-compose.yml` file
 
 ## Server updates
