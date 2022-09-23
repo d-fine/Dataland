@@ -256,6 +256,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
+      SCRIPT_NAME: "/pgadmin"
 networks:
   internal:
   external:
