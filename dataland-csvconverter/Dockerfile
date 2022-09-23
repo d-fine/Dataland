@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.16.2
 
 COPY CompanyInformationWithEuTaxonomyDataForNonFinancials.json /storedData/CompanyInformationWithEuTaxonomyDataForNonFinancials.json
 COPY CompanyInformationWithEuTaxonomyDataForFinancials.json /storedData/CompanyInformationWithEuTaxonomyDataForFinancials.json

@@ -15,4 +15,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] There is at least one picture for each story, which was created before coding has started
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma 
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, npm serve, npm teste2e and execute Cypress Tests locally
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
