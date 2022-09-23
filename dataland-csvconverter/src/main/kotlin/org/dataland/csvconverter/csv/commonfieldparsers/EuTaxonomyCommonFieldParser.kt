@@ -22,7 +22,7 @@ class EuTaxonomyCommonFieldParser {
         "scopeOfEntities" to "Scope of Entities",
         "reportObligation" to "NFRD mandatory",
         "activityLevelReporting" to "EU Taxonomy Activity Level Reporting",
-        "numberOfEmployes" to "Number Of Employees",
+        "numberOfEmployees" to "Number Of Employees",
     )
 
     /**

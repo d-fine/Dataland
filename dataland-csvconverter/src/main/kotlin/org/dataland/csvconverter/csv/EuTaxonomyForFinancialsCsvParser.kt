@@ -1,5 +1,6 @@
 package org.dataland.csvconverter.csv
 
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.commonfieldparsers.*
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
@@ -49,7 +50,7 @@ class EuTaxonomyForFinancialsCsvParser(
      */
 
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
-        val csvData = csvLineData[columnMappingEuTaxonomyForFinancials["financialServicesType"]]!!
+        val csvData = columnMappingEuTaxonomyForFinancials.getCsvValue("financialServicesType", csvLineData)!!
         val split = csvData.split(",").map { it.trim() }
         return EnumSet.copyOf(
             split.map {

@@ -67,7 +67,7 @@ class DataPointParser {
                                 " which is not a valid Quality Option"
                         )
                 ),
-                comment = buildMapForSpecificData(generalMap, baseString).getCsvValue(baseString, row),
+                comment = buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Comment", row),
                 dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
             )
         } else {

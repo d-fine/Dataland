@@ -41,9 +41,9 @@ class CompanyReportParser {
             CompanyReport(
                     reference = report,
                     isGroupLevel = getIsGroupLevelAttribute(csvLineData, baseString, report),
-                    reportDate = LocalDate.parse(buildMapForSpecificReport(baseString).getCsvValue(
-                            "${baseString}Date", csvLineData),
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    reportDate = buildMapForSpecificReport(baseString).getCsvValue(
+                            "${baseString}Date", csvLineData)?.let { LocalDate.parse(it,  DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+                           ,
                     currency = buildMapForSpecificReport(baseString).getCsvValue(
                             "${baseString}Currency", csvLineData)
             )

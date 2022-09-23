@@ -59,11 +59,14 @@ class CompanyInformationCsvParser {
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
-        return IdentifierType.values().sortedBy { it.name }.map {
-            CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData) ?: "",
-                identifierType = it
-            )
-        }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }
+        return IdentifierType.values().mapNotNull {identifierType ->
+            companyInformationColumnMapping.getCsvValue(identifierType.name, csvLineData)?.let {
+                CompanyIdentifier(
+                        identifierValue = it,
+                        identifierType = identifierType
+                )
+            }
+
+        }
     }
 }

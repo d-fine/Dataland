@@ -33,7 +33,7 @@ object CsvUtils {
      * If the requested column is not populated "n/a" will be returned
      */
     fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String? {
-        return csvData[this[property.lowercase()]!!]?.trim()?.ifBlank {
+        return csvData[this[property]!!.lowercase()]?.trim()?.ifBlank {
             null
         }
     }
@@ -42,7 +42,7 @@ object CsvUtils {
      * If it does, it returns true
      */
     fun Map<String, String>.checkIfFieldHasValue(property: String, csvData: Map<String, String>): Boolean {
-        return csvData[this[property.lowercase()]!!]!!.isNotBlank()
+        return csvData[this[property]!!.lowercase()]!!.isNotBlank()
     }
 
     /**
