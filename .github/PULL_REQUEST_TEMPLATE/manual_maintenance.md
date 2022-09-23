@@ -3,7 +3,7 @@ Note: To create a PR using this template add the query parameter `template=manua
 # Maintenance tasks (to be completed by the assignee)
 ## Skyminder
 - [ ] Complete manual maintenance in the Skyminder Repo
-- [ ] Release a new version `0.1.11` and replace the version number in the text here with the next version number to come.
+- [ ] Release a new version `0.1.13` and replace the version number in the text here with the next version number to come.
 - [ ] Upgrade to the new version of the skyminder-client in the `settings.gradle.kts`
 - [ ] Upgrade to the new version of the skyminder-dummyserver in the `docker-compose.yml` file.
 ## EDC

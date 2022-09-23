@@ -136,7 +136,7 @@ services:
       - internal
   skyminder-dummyserver:
     profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.10
+    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.12
     networks:
       - internal
       - external
