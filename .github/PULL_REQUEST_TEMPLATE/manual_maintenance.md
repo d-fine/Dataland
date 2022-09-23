@@ -48,6 +48,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
 - [ ] `./dataland-pgadmin/Dockerfile`
+- [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
 - [ ] Update the versions of all postgres images in the `docker-compose.yml` file
 - [ ] Update the version of the node image in the `docker-compose.yml` file
