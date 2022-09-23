@@ -13,5 +13,7 @@ data class DataPoint <T>(
     @field:JsonProperty(required = true)
     val quality: QualityOptions,
 
-    val dataSource: CompanyReportReference? = null
+    val dataSource: CompanyReportReference? = null,
+
+    val comment: String? = null,
 )

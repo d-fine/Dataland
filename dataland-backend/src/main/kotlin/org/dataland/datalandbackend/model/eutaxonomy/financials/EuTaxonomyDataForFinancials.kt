@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
-import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
@@ -25,9 +24,9 @@ data class EuTaxonomyDataForFinancials(
 
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
 
-    val insuranceKpis: InsuranceKpis? = null,
+    val investmentFirmKpis: InvestmentFirmKpis? = null,
 
-    val greenAssetRatio: DataPoint<BigDecimal>? = null,
+    val insuranceKpis: InsuranceKpis? = null,
 
     override val fiscalYearDeviation: YesNo? = null,
 
@@ -40,6 +39,8 @@ data class EuTaxonomyDataForFinancials(
     override val activityLevelReporting: YesNo? = null,
 
     override val assurance: AssuranceData? = null,
+
+    override val numberOfEmployees: BigDecimal? = null,
 
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

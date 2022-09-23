@@ -5,16 +5,18 @@ import { getAssurance, getFiscalYearDeviation, humaniseOrUndefined } from "./Csv
 import { getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { generateReferencedReports } from "./DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
-import { faker } from "@faker-js/faker";
 import { generateAssuranceData } from "./AssuranceDataFixture";
+import { randomDateOrUndefined } from "./DateFixtures";
+import { randomNumberOrUndefined } from "./NumberFixtures";
 
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials) {
   input.referencedReports = generateReferencedReports();
   input.fiscalYearDeviation = randomYesNoUndefined();
-  input.fiscalYearEnd = faker.date.past().toISOString().split("T")[0];
+  input.fiscalYearEnd = randomDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
   input.reportingObligation = randomYesNoUndefined();
+  input.numberOfEmployees = randomNumberOrUndefined();
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
@@ -73,6 +75,11 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     },
     {
       label: "NFRD mandatory",
+      value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
+        humaniseOrUndefined(row.t.reportingObligation),
+    },
+    {
+      label: "Number Of Employees",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
         humaniseOrUndefined(row.t.reportingObligation),
     },

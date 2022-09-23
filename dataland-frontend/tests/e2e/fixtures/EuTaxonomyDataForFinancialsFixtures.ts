@@ -29,7 +29,8 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   let interbankLoans = undefined;
   let tradingPortfolio = undefined;
   let taxonomyEligibleNonLifeInsuranceActivities = undefined;
-  let greenAssetRatio = undefined;
+  let greenAssetRatioCreditInstitution = undefined;
+  let greenAssetRatioInvestmentFirm = undefined;
 
   if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
     const singleOrDualField = faker.datatype.boolean();
@@ -51,26 +52,28 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
         precision: resolution,
       });
     }
+    greenAssetRatioCreditInstitution = faker.datatype.float({
+      min: 0,
+      max: 1,
+      precision: resolution,
+    });
   } else if (financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0) {
     taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({
       min: 0,
       max: 1,
       precision: resolution,
     });
-  }
-
-  if (
-    financialServicesTypes.indexOf("CreditInstitution") >= 0 ||
-    financialServicesTypes.indexOf("InvestmentFirm") >= 0
-  ) {
-    greenAssetRatio = faker.datatype.float({ min: 0, max: 1, precision: resolution });
+  } else if (financialServicesTypes.indexOf("InvestmentFirm") >= 0) {
+    greenAssetRatioInvestmentFirm = faker.datatype.float({
+      min: 0,
+      max: 1,
+      precision: resolution,
+    });
   }
 
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!!)])
   );
-
-  returnBase.greenAssetRatio = generateDatapointOrNotReportedAtRandom(greenAssetRatio, returnBase.referencedReports!!);
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
   returnBase.creditInstitutionKpis = {
@@ -80,10 +83,20 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
       tradingPortfolioAndInterbankLoans,
       returnBase.referencedReports!!
     ),
+    greenAssetRatioCreditInstitution: generateDatapointOrNotReportedAtRandom(
+      greenAssetRatioCreditInstitution,
+      returnBase.referencedReports!!
+    ),
   };
   returnBase.insuranceKpis = {
     taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
       taxonomyEligibleNonLifeInsuranceActivities,
+      returnBase.referencedReports!!
+    ),
+  };
+  returnBase.investmentFirmKpis = {
+    greenAssetRatioInvestmentFirm: generateDatapointOrNotReportedAtRandom(
+      greenAssetRatioInvestmentFirm,
       returnBase.referencedReports!!
     ),
   };
@@ -166,6 +179,7 @@ export function generateCSVDataForFinancials(
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
+      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
         `Trading portfolio & on demand interbank loans`,
         (row) => row.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
@@ -187,8 +201,13 @@ export function generateCSVDataForFinancials(
         convertToPercentageString
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Green Asset Ratio`,
-        (row) => row.t.greenAssetRatio,
+        `Green Asset Ratio Credit Institution`,
+        (row) => row.t.creditInstitutionKpis?.greenAssetRatioCreditInstitution,
+        convertToPercentageString
+      ),
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
+        `Green Asset Ratio Investment Firm`,
+        (row) => row.t.investmentFirmKpis?.greenAssetRatioInvestmentFirm,
         convertToPercentageString
       ),
       {
