@@ -42,8 +42,9 @@ Update versions in the following dockerfiles
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
-- [ ] Search for all Dockerfiles that use a nginx image and update it. Just search for `FROM nginx` in the whole code.
-- [ ] Update versions in the `docker-compose.yml` file
+- [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
+- [ ] Update the versions of all postgres images in the `docker-compose.yml` file
+- [ ] Update versions in the `docker-compose.yml` file 
 
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
