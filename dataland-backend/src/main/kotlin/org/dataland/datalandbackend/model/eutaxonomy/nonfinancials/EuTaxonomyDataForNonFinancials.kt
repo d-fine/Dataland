@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
+import java.math.BigDecimal
 import java.time.LocalDate
 
 /**
@@ -32,6 +33,8 @@ data class EuTaxonomyDataForNonFinancials(
     override val activityLevelReporting: YesNo? = null,
 
     override val assurance: AssuranceData? = null,
+
+    override val numberOfEmployees: BigDecimal? = null,
 
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.model.eutaxonomy
 
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import java.math.BigDecimal
 import java.time.LocalDate
 
 /**
@@ -15,4 +16,5 @@ interface EuTaxonomyCommonFields {
     val reportingObligation: YesNo?
     val activityLevelReporting: YesNo?
     val assurance: AssuranceData?
+    val numberOfEmployees: BigDecimal?
 }

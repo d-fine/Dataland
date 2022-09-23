@@ -4,6 +4,8 @@ import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixture
 import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humaniseOrUndefined } from "./CsvUtils";
+import { randomDateOrUndefined } from "./DateFixtures";
+import { randomStringOrUndefined } from "./StringFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport"];
 
@@ -16,6 +18,8 @@ export function generateReferencedReports(): ReferencedReports {
     ret[reportName] = {
       reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
       isGroupLevel: randomYesNoNaUndefined(),
+      reportDate: randomDateOrUndefined(),
+      currency: randomStringOrUndefined(3),
     };
   });
 
@@ -37,6 +41,7 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
   let dataSource: CompanyReportReference | undefined = undefined;
+  let comment: String | undefined = undefined;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
@@ -44,12 +49,14 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
       faker.datatype.boolean())
   ) {
     dataSource = generateDataSource(reports);
+    comment = randomStringOrUndefined(10);
   }
 
   return {
     value: value || undefined,
     dataSource: dataSource,
     quality: qualityBucket,
+    comment: comment,
   };
 }
 

@@ -5,9 +5,9 @@ export function randomYesNo(): YesNo {
   return faker.datatype.boolean() ? YesNo.Yes : YesNo.No;
 }
 
-const possiblerYesNoUndefinedValues = [undefined, ...Object.values(YesNo)];
+const possibleYesNoUndefinedValues = [undefined, ...Object.values(YesNo)];
 export function randomYesNoUndefined(): YesNo | undefined {
-  return faker.helpers.arrayElement(possiblerYesNoUndefinedValues);
+  return faker.helpers.arrayElement(possibleYesNoUndefinedValues);
 }
 
 const possibleYesNoNaUndefinedValues = [undefined, ...Object.values(YesNoNa)];
