@@ -96,7 +96,8 @@ class DataPointParser(
                 quality = getQualityOption(
                     buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Quality", row)
                 ),
-                comment = buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Comment", row),
+                comment = buildMapForSpecificData(generalMap, baseString)
+                    .getCsvValue("${baseString}Comment", row),
                 dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
             )
         } else {

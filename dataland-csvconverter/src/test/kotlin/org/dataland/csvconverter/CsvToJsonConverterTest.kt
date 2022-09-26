@@ -81,7 +81,7 @@ class CsvToJsonConverterTest {
 
     @Test
     fun `assurance with incorrect input value throws exception`() {
-        val expectedErrorMessage = "Could not determine attestation:"
+        val expectedErrorMessage = "Expected an AssuranceOption but found"
         val filePath = "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingAssuranceError.csv"
         checkThatProcessingFileThrowsErrorWithMessage(filePath, expectedErrorMessage)
     }

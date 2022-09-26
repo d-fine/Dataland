@@ -17,7 +17,7 @@ class FiscalYearParser {
         "fiscalYearEnd" to "Fiscal Year End",
     )
     private val fiscalYearDeviationMap = mapOf(
-        "No deviation" to YesNo.No,
+        "No Deviation" to YesNo.No,
         "Deviation" to YesNo.Yes
     )
     /**
