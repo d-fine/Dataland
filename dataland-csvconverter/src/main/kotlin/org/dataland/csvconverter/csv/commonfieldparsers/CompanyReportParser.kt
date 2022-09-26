@@ -68,7 +68,9 @@ class CompanyReportParser {
             else -> {
                 throw java.lang.IllegalArgumentException(
                         "Could not determine Group Level Attribute of the report $report: Found $rawIsGroupLevelAttribute, " +
-                                "but expect one of ${EuTaxonomyCommonFieldParser.STRING_YES}, ${EuTaxonomyCommonFieldParser.STRING_NO} or null"
+                                "but expect one of ${EuTaxonomyCommonFieldParser.STRING_YES}," +
+                                " ${EuTaxonomyCommonFieldParser.STRING_NO}," +
+                                " ${EuTaxonomyCommonFieldParser.STRING_NA} or null"
                 )
             }
         }
