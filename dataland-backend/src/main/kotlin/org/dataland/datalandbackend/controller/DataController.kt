@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import java.util.UUID.randomUUID
 
 /**
  * Implementation of the API for data exchange
@@ -20,7 +21,7 @@ abstract class DataController<T>(
     var dataManager: DataManagerInterface,
     var dataMetaInformationManager: DataMetaInformationManagerInterface,
     var objectMapper: ObjectMapper,
-    private val clazz: Class<T>
+    private val clazz: Class<T>,
 ) : DataAPI<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -31,14 +32,20 @@ abstract class DataController<T>(
             "Received a request to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"
         )
+        val correlationId = randomUUID().toString()
+        logger.info(
+            "Generated correlation ID '$correlationId' for the received request"
+        )
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
                 companyAssociatedData.companyId, dataType,
-                data = objectMapper.writeValueAsString(companyAssociatedData.data)
-            )
+                data = objectMapper.writeValueAsString(companyAssociatedData.data),
+            ),
+            correlationId
         )
         logger.info(
-            "Posted company associated data for companyId '${companyAssociatedData.companyId}'"
+            "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
+                "Correlation ID: $correlationId"
         )
         return ResponseEntity.ok(
             DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId)
@@ -47,15 +54,22 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        logger.info("Received a request to get company data with dataId '$dataId' for companyId '$companyId'")
+        val correlationId = randomUUID().toString()
+        logger.info(
+            "Received a request to get company data with dataId '$dataId' for companyId '$companyId' " +
+                "with correlation ID '$correlationId'"
+        )
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             data = objectMapper.readValue(
-                dataManager.getDataSet(dataId, dataType).data,
+                dataManager.getDataSet(dataId, dataType, correlationId).data,
                 clazz
-            )
+            ),
         )
-        logger.info("Received company data with dataId '$dataId' for companyId '$companyId' from EuroDaT")
+        logger.info(
+            "Received company data with dataId '$dataId' for companyId '$companyId' from EuroDaT. " +
+                "Correlation ID '$correlationId'"
+        )
         return ResponseEntity.ok(companyAssociatedData)
     }
 }

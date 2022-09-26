@@ -13,7 +13,7 @@ interface DataManagerInterface {
      * @param storableDataSet contains all the inputs needed by Dataland
      * @return ID of the newly stored data in the data store
      */
-    fun addDataSet(storableDataSet: StorableDataSet): String
+    fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String
 
     /**
      * Method to make the data manager get the data of a single entry from the data store
@@ -21,7 +21,7 @@ interface DataManagerInterface {
      * @param dataType to check the correctness of the type of the retrieved data
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(dataId: String, dataType: DataType): StorableDataSet
+    fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet
 
     /**
      * Method to check if a data set belongs to a teaser company and hence is publicly available

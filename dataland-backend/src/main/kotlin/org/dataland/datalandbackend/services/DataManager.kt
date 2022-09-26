@@ -40,44 +40,50 @@ class DataManager(
         return dataMetaInformation
     }
 
-    override fun addDataSet(storableDataSet: StorableDataSet): String {
+    override fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "${storableDataSet.companyId}, Company Name ${company.companyName} to EuroDaT Interface"
+                "${storableDataSet.companyId}, Company Name ${company.companyName} to EuroDaT Interface. " +
+                "Correlation ID: $correlationId"
         )
-        val dataId: String = storeDataSet(storableDataSet, company)
+        val dataId: String = storeDataSet(storableDataSet, company, correlationId)
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
 
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
-        company: StoredCompanyEntity
+        company: StoredCompanyEntity,
+        correlationId: String
     ): String {
         val dataId: String
         try {
-            dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet)).dataId
+            dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet), correlationId).dataId
         } catch (e: ServerException) {
             logger.error(
-                "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}"
+                "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
+                    "Correlation ID: $correlationId"
             )
             throw e
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name ${company.companyName} received ID $dataId from EuroDaT"
+                " Company Name ${company.companyName} received ID $dataId from EuroDaT. Correlation ID: $correlationId"
         )
         return dataId
     }
 
-    override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
+    override fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         val dataTypeNameExpectedByDataland = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType).dataType
-        logger.info("Requesting Data with ID $dataId and expected type $dataType from EuroDat")
-        val dataAsString: String = getDataFromEdcClient(dataId)
+        logger.info(
+            "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: " +
+                "$correlationId"
+        )
+        val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
             throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store."
+                "No data set with the id: $dataId could be found in the data store. Correlation ID: $correlationId"
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}")
@@ -85,19 +91,21 @@ class DataManager(
         if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
                 "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the " +
-                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland."
+                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland. " +
+                    "Correlation ID: $correlationId"
             )
         }
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromEdcClient(dataId: String): String {
+    private fun getDataFromEdcClient(dataId: String, correlationId: String): String {
         val dataAsString: String
         try {
-            dataAsString = edcClient.selectDataById(dataId)
+            dataAsString = edcClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
-                "Error sending selectDataById request to Eurodat. Received ServerException with Message: ${e.message}"
+                "Error sending selectDataById request to Eurodat. Received ServerException with Message:" +
+                    " ${e.message}. Correlation ID: $correlationId"
             )
             throw e
         }
