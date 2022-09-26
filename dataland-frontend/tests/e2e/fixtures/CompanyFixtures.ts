@@ -8,6 +8,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
+  const industry = faker.company.bsNoun();
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
     .arrayElements([
@@ -28,11 +29,15 @@ export function generateCompanyInformation(): CompanyInformation {
       return a.identifierType.localeCompare(b.identifierType);
     });
   const countryCode = faker.address.countryCode();
+  const companyAlternativeNames = Array.from({ length: parseInt(faker.random.numeric()) }, faker.company.name)
+
 
   return {
     companyName: companyName,
+    companyAlternativeNames: companyAlternativeNames,
     headquarters: headquarters,
     sector: sector,
+    industry: industry,
     identifiers: identifiers,
     countryCode: countryCode,
     isTeaserCompany: false,

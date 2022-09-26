@@ -39,8 +39,10 @@ class CompanyManager(
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
             companyName = companyInformation.companyName,
+            companyAlternativeNames = companyInformation.companyAlternativeNames,
             headquarters = companyInformation.headquarters,
             sector = companyInformation.sector,
+            industry = companyInformation.industry,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
