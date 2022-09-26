@@ -5,16 +5,16 @@
   "scripts": {
     "build": "node build_styles.js",
     "updatepackages": "npm-check-updates -u",
-    "updatepackagelock": "npm update --save --dev && npm audit fix"
+    "updatepackagelock": "npm update --save --include=dev && npm audit fix"
   },
   "dependencies": {
-    "@ibm/plex": "^6.1.0",
-    "material-icons": "^1.11.10",
+    "@ibm/plex": "^6.1.1",
+    "material-icons": "^1.11.11",
     "primeflex": "^3.2.1",
-    "primeicons": "^5.0.0",
-    "sass": "^1.54.5"
+    "primeicons": "^6.0.1",
+    "sass": "^1.54.9"
   },
   "devDependencies": {
-    "npm-check-updates": "^16.0.5"
+    "npm-check-updates": "^16.2.1"
   }
 }
