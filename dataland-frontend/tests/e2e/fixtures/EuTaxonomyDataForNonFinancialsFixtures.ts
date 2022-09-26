@@ -63,7 +63,7 @@ export function generateCSVDataForNonFinancials(
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Total OpEx`,
-        (row) => row.t.capex?.totalAmount,
+        (row) => row.t.opex?.totalAmount,
         decimalSeparatorConverter
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(

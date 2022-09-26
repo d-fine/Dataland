@@ -73,6 +73,10 @@ export function getCsvDataPointMapping<T>(
       label: `${dataPointName} Quality`,
       value: (row: T) => humanizeOrUndefined(dataPointGetter(row)?.quality),
     },
+    {
+      label: `${dataPointName} Comment`,
+      value: (row: T) => dataPointGetter(row)?.comment,
+    },
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];
 }

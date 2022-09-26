@@ -86,6 +86,9 @@ class EuTaxonomyCommonFieldParser {
         }
     }
 
+    /**
+     * Returns the number of employees for a specific company
+     */
     fun getNumberOfEmployees(csvLineData: Map<String, String>): BigDecimal? {
         return columnMappingEuTaxonomyUtils.getNumericCsvValue("numberOfEmployees", csvLineData)
     }

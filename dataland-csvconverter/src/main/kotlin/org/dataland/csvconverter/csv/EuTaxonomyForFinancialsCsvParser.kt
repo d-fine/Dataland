@@ -1,10 +1,19 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
-import org.dataland.csvconverter.csv.commonfieldparsers.*
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
-import org.dataland.datalandbackend.model.eutaxonomy.financials.*
+import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EligibilityKpis
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.eutaxonomy.financials.InsuranceKpis
+import org.dataland.datalandbackend.model.eutaxonomy.financials.InvestmentFirmKpis
 import java.util.EnumSet
 
 /**
@@ -146,9 +155,9 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis {
         return InvestmentFirmKpis(
-                greenAssetRatio = dataPointParser.buildSingleDataPoint(
-                        columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
-                ),
+            greenAssetRatio = dataPointParser.buildSingleDataPoint(
+                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
+            ),
         )
     }
 

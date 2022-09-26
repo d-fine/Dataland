@@ -11,7 +11,17 @@ import java.math.BigDecimal
 /**
  * This class provides methods to create data points
  */
-class DataPointParser {
+class DataPointParser(
+    private val companyReportParser: CompanyReportParser
+) {
+
+    companion object {
+        const val QUALITYOPTION_AUDITED = "Audited"
+        const val QUALITYOPTION_REPORTED = "Reported"
+        const val QUALITYOPTION_ESTIMATED = "Estimated"
+        const val QUALITYOPTION_INCOMPLETE = "Incomplete"
+        const val QUALITYOPTION_NA = EuTaxonomyCommonFieldParser.STRING_NA
+    }
 
     /**
      * Callable function generating the string-maps for each single DataPoint (or AssuranceData)
@@ -35,17 +45,41 @@ class DataPointParser {
         row: Map<String, String>,
         baseString: String
     ): CompanyReportReference? {
-        return if (buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue("${baseString}Report", row)) {
+        return if (buildMapForSpecificData(generalMap, baseString)
+            .checkIfFieldHasValue("${baseString}Report", row)
+        ) {
             CompanyReportReference(
-                report = buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Report", row)
+                report = buildMapForSpecificData(generalMap, baseString)
+                    .getCsvValue("${baseString}Report", row)
+                    ?.let { companyReportParser.getReverseReportNameMapping(it) }
                     ?: throw IllegalArgumentException(
                         "Expected a report but found null; This should not happen," +
                             " since a previous check occurs"
                     ),
-                page = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue("${baseString}Page", row)
+                page = buildMapForSpecificData(generalMap, baseString)
+                    .getNumericCsvValue("${baseString}Page", row)
             )
         } else {
             null
+        }
+    }
+
+    private fun getQualityOption(value: String?): QualityOptions {
+        return when (
+            value
+        ) {
+            QUALITYOPTION_AUDITED -> QualityOptions.Audited
+            QUALITYOPTION_REPORTED -> QualityOptions.Reported
+            QUALITYOPTION_ESTIMATED -> QualityOptions.Estimated
+            QUALITYOPTION_INCOMPLETE -> QualityOptions.Incomplete
+            QUALITYOPTION_NA -> QualityOptions.NA
+            else -> {
+                throw java.lang.IllegalArgumentException(
+                    "Could not determine reportObligation: Found $value, " +
+                        "but expect one of ${EuTaxonomyCommonFieldParser.STRING_YES}," +
+                        " ${EuTaxonomyCommonFieldParser.STRING_NO}  or null"
+                )
+            }
         }
     }
 
@@ -54,18 +88,13 @@ class DataPointParser {
      */
     fun buildSingleDataPoint(generalMap: Map<String, String>, row: Map<String, String>, baseString: String):
         DataPoint<BigDecimal>? {
-        return if (buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue(baseString, row)) {
+        return if (buildMapForSpecificData(generalMap, baseString)
+            .checkIfFieldHasValue("${baseString}Quality", row)
+        ) {
             DataPoint(
                 value = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue(baseString, row),
-                quality = QualityOptions.valueOf(
+                quality = getQualityOption(
                     buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Quality", row)
-                        ?: throw IllegalArgumentException(
-                            "The quality of the DataPoint ${generalMap.getValue(baseString)} is" +
-                                " ${buildMapForSpecificData(generalMap,baseString).getCsvValue(
-                                    "${baseString}Quality", row
-                                )}," +
-                                " which is not a valid Quality Option"
-                        )
                 ),
                 comment = buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Comment", row),
                 dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)

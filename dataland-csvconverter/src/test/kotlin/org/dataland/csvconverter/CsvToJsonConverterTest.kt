@@ -86,12 +86,6 @@ class CsvToJsonConverterTest {
         checkThatProcessingFileThrowsErrorWithMessage(filePath, expectedErrorMessage)
     }
 
-    @Test
-    fun `execute corner cases in CsvToJsonConverter`() {
-        val converter = getConverter("./build/resources/csvTestEuTaxonomyDataForNonFinancialsCornerCases.csv")
-        converter.parseEuTaxonomyNonFinancialData()
-    }
-
     private fun checkThatProcessingFileThrowsErrorWithMessage(
         filePath: String,
         expectedErrorMessage: String

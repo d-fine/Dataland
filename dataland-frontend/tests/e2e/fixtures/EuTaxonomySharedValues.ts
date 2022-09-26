@@ -77,7 +77,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     ...getCsvReportMapping("AnnualReport"),
     ...getCsvReportMapping("SustainabilityReport"),
     ...getCsvReportMapping("IntegratedReport"),
-    ...getCsvReportMapping("EsefReport"),
+    ...getCsvReportMapping("ESEFReport"),
     {
       label: "Scope of Entities",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
@@ -96,7 +96,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     {
       label: "Number Of Employees",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humanizeOrUndefined(row.t.reportingObligation),
+        row.t.numberOfEmployees,
     },
     {
       label: "Assurance",
@@ -106,7 +106,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     {
       label: "Assurance Provider",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humanizeOrUndefined(row.t.assurance?.provider),
+        row.t.assurance?.provider,
     },
     ...getCsvDataSourceMapping<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>>(
       "Assurance",
