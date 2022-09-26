@@ -35,7 +35,7 @@ class EuTaxonomyForFinancialsCsvParser(
         "financialServicesType" to "FS - company type",
         "tradingPortfolio" to "Trading portfolio",
         "interbankLoans" to "On-demand interbank loans",
-        "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on demand interbank loans",
+        "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on-demand interbank loans",
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
         "greenAssetRatioCreditInstitution" to "Green Asset Ratio Credit Institution",
         "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm"

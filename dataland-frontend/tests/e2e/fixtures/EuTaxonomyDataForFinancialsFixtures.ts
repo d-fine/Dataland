@@ -181,7 +181,7 @@ export function generateCSVDataForFinancials(
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Trading portfolio & on demand interbank loans`,
+        `Trading portfolio & on-demand interbank loans`,
         (row) => row.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
         convertToPercentageString
       ),
