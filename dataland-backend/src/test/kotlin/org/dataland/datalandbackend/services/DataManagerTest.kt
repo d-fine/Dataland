@@ -63,7 +63,7 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during insertion`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenThrow(ServerException::class.java)
+        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
             dataManager.addDataSet(storableDataSet, correlationId)
         }
@@ -108,9 +108,13 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
+        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+            InsertDataResponse(
+                "XXXsomeUUIDXXX"
+            )
+        )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        `when`(edcClientMock.selectDataById(dataId)).thenReturn("")
+        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn("")
         val thrown = assertThrows<IllegalArgumentException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
@@ -121,11 +125,15 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
+        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+            InsertDataResponse(
+                "XXXsomeUUIDXXX"
+            )
+        )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val unexpectedDataTypeName = "eutaxonomy-financials"
         val expectedDataTypeName = storableDataSet.dataType.name
-        `when`(edcClientMock.selectDataById(dataId)).thenReturn(
+        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn(
             objectMapper.writeValueAsString(
                 StorableDataSet(
                     storableDataSet.companyId,

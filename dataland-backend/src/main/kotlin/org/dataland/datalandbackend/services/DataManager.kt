@@ -83,7 +83,7 @@ class DataManager(
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
             throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store. Correlation ID: $correlationId"
+                "No data set with the id: $dataId could be found in the data store."
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}")
@@ -91,8 +91,7 @@ class DataManager(
         if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
                 "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the " +
-                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland. " +
-                    "Correlation ID: $correlationId"
+                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland."
             )
         }
         return dataAsStorableDataSet
