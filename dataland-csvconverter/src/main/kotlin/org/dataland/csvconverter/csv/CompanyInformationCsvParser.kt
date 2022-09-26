@@ -66,7 +66,6 @@ class CompanyInformationCsvParser {
                         identifierType = identifierType
                 )
             }
-
-        }
+        }.sortedBy { it.identifierType.name }
     }
 }
