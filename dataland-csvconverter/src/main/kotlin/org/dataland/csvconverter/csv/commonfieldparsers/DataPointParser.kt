@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
-import org.dataland.csvconverter.csv.CsvUtils.checkIfFieldHasValue
+import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
@@ -26,17 +26,18 @@ class DataPointParser(
         )
     )
 
-    /**
-     * Callable function generating the string-maps for each single DataPoint (or AssuranceData)
-     */
-    fun buildMapForSpecificData(generalMap: Map<String, String>, baseString: String): Map<String, String> {
+    private fun buildMapForSpecificDatapoint(generalMap: Map<String, String>, baseString: String): Map<String, String> {
         return mapOf(
             baseString to generalMap.getValue(baseString),
             "${baseString}Quality" to "${generalMap.getValue(baseString)} Quality",
-            "${baseString}Provider" to "${generalMap.getValue(baseString)} Provider",
+            "${baseString}Comment" to "${generalMap.getValue(baseString)} Comment",
+        ) + buildMapForSpecificReport(generalMap, baseString)
+    }
+
+    private fun buildMapForSpecificReport(generalMap: Map<String, String>, baseString: String): Map<String, String> {
+        return mapOf(
             "${baseString}Report" to "${generalMap.getValue(baseString)} Report",
             "${baseString}Page" to "${generalMap.getValue(baseString)} Page",
-            "${baseString}Comment" to "${generalMap.getValue(baseString)} Comment",
         )
     }
 
@@ -48,23 +49,21 @@ class DataPointParser(
         row: Map<String, String>,
         baseString: String
     ): CompanyReportReference? {
-        return if (buildMapForSpecificData(generalMap, baseString)
-            .checkIfFieldHasValue("${baseString}Report", row)
-        ) {
-            CompanyReportReference(
-                report = buildMapForSpecificData(generalMap, baseString)
-                    .getCsvValue("${baseString}Report", row)
-                    ?.let { companyReportParser.getReverseReportNameMapping(it) }
-                    ?: throw IllegalArgumentException(
-                        "Expected a report but found null; This should not happen," +
-                            " since a previous check occurs"
-                    ),
-                page = buildMapForSpecificData(generalMap, baseString)
-                    .getNumericCsvValue("${baseString}Page", row)
-            )
-        } else {
-            null
-        }
+        val reportColumnMapping = buildMapForSpecificReport(generalMap, baseString)
+        if (!reportColumnMapping.checkIfAnyFieldHasValue(reportColumnMapping.keys.toList(), row))
+            return null
+
+        return CompanyReportReference(
+            report = reportColumnMapping
+                .getCsvValue("${baseString}Report", row)
+                ?.let { companyReportParser.getReverseReportNameMapping(it) }
+                ?: throw IllegalArgumentException(
+                    "Expected a report for $baseString as a corresponding page" +
+                        " has been specified but no report was found"
+                ),
+            page = buildMapForSpecificDatapoint(generalMap, baseString)
+                .getNumericCsvValue("${baseString}Page", row)
+        )
     }
 
     /**
@@ -72,20 +71,18 @@ class DataPointParser(
      */
     fun buildSingleDataPoint(generalMap: Map<String, String>, row: Map<String, String>, baseString: String):
         DataPoint<BigDecimal>? {
-        return if (buildMapForSpecificData(generalMap, baseString)
-            .checkIfFieldHasValue("${baseString}Quality", row)
-        ) {
-            DataPoint(
-                value = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue(baseString, row),
-                quality = buildMapForSpecificData(generalMap, baseString)
-                    .getCsvValue("${baseString}Quality", row)
-                    .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
-                comment = buildMapForSpecificData(generalMap, baseString)
-                    .getCsvValue("${baseString}Comment", row),
-                dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
-            )
-        } else {
-            null
-        }
+        val datapointColumnMapping = buildMapForSpecificDatapoint(generalMap, baseString)
+        if (!datapointColumnMapping.checkIfAnyFieldHasValue(datapointColumnMapping.keys.toList(), row))
+            return null
+
+        return DataPoint(
+            value = buildMapForSpecificDatapoint(generalMap, baseString).getNumericCsvValue(baseString, row),
+            quality = buildMapForSpecificDatapoint(generalMap, baseString)
+                .getCsvValue("${baseString}Quality", row)
+                .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
+            comment = buildMapForSpecificDatapoint(generalMap, baseString)
+                .getCsvValue("${baseString}Comment", row),
+            dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
+        )
     }
 }

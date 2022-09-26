@@ -1,5 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
+import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReport
@@ -52,20 +53,22 @@ class CompanyReportParser(
         baseString: String
     ): CompanyReport? {
         val reportMap = buildMapForSpecificReport(baseString)
-        val report = reportMap.getCsvValue(baseString, csvLineData)
-        return if (report !== null) {
-            CompanyReport(
-                reference = report,
-                isGroupLevel = reportMap.getCsvValue("${baseString}GroupLevel", csvLineData)
-                    .let { yesNoNaParser.parseAllowingNull("${baseString}GroupLevel", it) },
-                reportDate = reportMap.getCsvValue("${baseString}Date", csvLineData)
-                    ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
-                currency = reportMap.getCsvValue(
-                    "${baseString}Currency", csvLineData
-                )
+        if (!reportMap.checkIfAnyFieldHasValue(reportMap.keys.toList(), csvLineData))
+            return null
+
+        return CompanyReport(
+            reference = reportMap.getCsvValue(baseString, csvLineData)
+                ?: throw IllegalArgumentException(
+                    "Report reference for $baseString has not been defined " +
+                        "but some other values have. This should not happen"
+                ),
+            isGroupLevel = reportMap.getCsvValue("${baseString}GroupLevel", csvLineData)
+                .let { yesNoNaParser.parseAllowingNull("${baseString}GroupLevel", it) },
+            reportDate = reportMap.getCsvValue("${baseString}Date", csvLineData)
+                ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
+            currency = reportMap.getCsvValue(
+                "${baseString}Currency", csvLineData
             )
-        } else {
-            null
-        }
+        )
     }
 }

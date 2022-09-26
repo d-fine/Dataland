@@ -67,7 +67,7 @@ class CsvToJsonConverterTest {
     fun `reporting obligation with incorrect input value throws exception`() {
         checkThatProcessingFileThrowsErrorWithMessage(
             "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingNFRDRequiredError.csv",
-            "Could not determine reportObligation:"
+            "Received illegal value ERROR THIS SHOULD NOT WORK for column: reportObligation."
         )
     }
 
@@ -81,7 +81,7 @@ class CsvToJsonConverterTest {
 
     @Test
     fun `assurance with incorrect input value throws exception`() {
-        val expectedErrorMessage = "Expected an AssuranceOption but found"
+        val expectedErrorMessage = "Received illegal value ERROR ASSURANCE for column: Assurance"
         val filePath = "./build/resources/csvTestEuTaxonomyDataForNonFinancialsThrowingAssuranceError.csv"
         checkThatProcessingFileThrowsErrorWithMessage(filePath, expectedErrorMessage)
     }

@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
-import org.dataland.csvconverter.csv.CsvUtils.checkIfFieldHasValue
+import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
@@ -16,7 +16,10 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
      */
 
     private val columnMappingAssurance = mapOf(
-        "assurance" to "Assurance"
+        "assurance" to "Assurance",
+        "assuranceProvider" to "Assurance Provider",
+        "assurancePage" to "Assurance Page",
+        "assuranceReport" to "Assurance Report"
     )
 
     private val assuranceOptionsParser = EnumCsvParser<AssuranceOptions>(
@@ -31,24 +34,19 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
      * This method builds the single assurance data
      */
     fun buildSingleAssuranceData(row: Map<String, String>): AssuranceData? {
-        val baseString = "assurance"
-        val generalMap = columnMappingAssurance
-        return if (dataPointParser.buildMapForSpecificData(generalMap, baseString).checkIfFieldHasValue(
-                baseString, row
+        if (!columnMappingAssurance.checkIfAnyFieldHasValue(columnMappingAssurance.keys.toList(), row))
+            return null
+
+        return AssuranceData(
+            assurance = columnMappingAssurance
+                .getCsvValue("assurance", row)
+                .let { assuranceOptionsParser.parse("Assurance", it) },
+            provider = columnMappingAssurance.getCsvValue("assuranceProvider", row),
+            dataSource = dataPointParser.buildSingleCompanyReportReference(
+                columnMappingAssurance,
+                row,
+                "assurance"
             )
-        ) {
-            AssuranceData(
-                assurance =
-                dataPointParser.buildMapForSpecificData(generalMap, baseString)
-                    .getCsvValue(baseString, row)
-                    .let { assuranceOptionsParser.parse("Assurance", it) },
-                provider = dataPointParser.buildMapForSpecificData(generalMap, baseString).getCsvValue(
-                    "${baseString}Provider", row
-                ),
-                dataSource = dataPointParser.buildSingleCompanyReportReference(generalMap, row, baseString)
-            )
-        } else {
-            null
-        }
+        )
     }
 }

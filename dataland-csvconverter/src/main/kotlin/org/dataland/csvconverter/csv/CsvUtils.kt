@@ -46,6 +46,13 @@ object CsvUtils {
     }
 
     /**
+     * Checks if any of the specified fields have a value
+     */
+    fun Map<String, String>.checkIfAnyFieldHasValue(fields: List<String>, csvData: Map<String, String>): Boolean {
+        return fields.any { this.checkIfFieldHasValue(it, csvData) }
+    }
+
+    /**
      * This function uses the backing map to extract a numeric property from a CSV row.
      * The returned value is scaled according to the scaleFactor
      */
