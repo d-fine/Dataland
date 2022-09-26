@@ -50,6 +50,13 @@ class EuTaxonomyFinancials {
             .getCompanyAssociatedData1(testDataInformation.dataId)
 
         Assertions.assertEquals(testDataInformation.companyId, downloadedAssociatedData.companyId)
-        Assertions.assertEquals(uploadedData, downloadedAssociatedData.data)
+        // Sorting is required here as the backend models this field as a Set but this info is lost during the openApi
+        // conversion
+        Assertions.assertEquals(
+            uploadedData.copy(financialServicesTypes = uploadedData.financialServicesTypes?.sorted()),
+            downloadedAssociatedData.data?.copy(
+                financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted()
+            )
+        )
     }
 }
