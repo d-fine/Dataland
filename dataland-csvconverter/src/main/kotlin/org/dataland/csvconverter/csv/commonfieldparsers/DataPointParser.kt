@@ -3,6 +3,7 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 import org.dataland.csvconverter.csv.CsvUtils.checkIfFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
+import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
@@ -15,13 +16,15 @@ class DataPointParser(
     private val companyReportParser: CompanyReportParser
 ) {
 
-    companion object {
-        const val QUALITYOPTION_AUDITED = "Audited"
-        const val QUALITYOPTION_REPORTED = "Reported"
-        const val QUALITYOPTION_ESTIMATED = "Estimated"
-        const val QUALITYOPTION_INCOMPLETE = "Incomplete"
-        const val QUALITYOPTION_NA = EuTaxonomyCommonFieldParser.STRING_NA
-    }
+    private val qualityOptionCsvParser = EnumCsvParser<QualityOptions>(
+        mapOf(
+            "Audited" to QualityOptions.Audited,
+            "Reported" to QualityOptions.Reported,
+            "Estimated" to QualityOptions.Estimated,
+            "Incomplete" to QualityOptions.Incomplete,
+            "N/A" to QualityOptions.NA
+        )
+    )
 
     /**
      * Callable function generating the string-maps for each single DataPoint (or AssuranceData)
@@ -64,25 +67,6 @@ class DataPointParser(
         }
     }
 
-    private fun getQualityOption(value: String?): QualityOptions {
-        return when (
-            value
-        ) {
-            QUALITYOPTION_AUDITED -> QualityOptions.Audited
-            QUALITYOPTION_REPORTED -> QualityOptions.Reported
-            QUALITYOPTION_ESTIMATED -> QualityOptions.Estimated
-            QUALITYOPTION_INCOMPLETE -> QualityOptions.Incomplete
-            QUALITYOPTION_NA -> QualityOptions.NA
-            else -> {
-                throw java.lang.IllegalArgumentException(
-                    "Could not determine reportObligation: Found $value, " +
-                        "but expect one of ${EuTaxonomyCommonFieldParser.STRING_YES}," +
-                        " ${EuTaxonomyCommonFieldParser.STRING_NO}  or null"
-                )
-            }
-        }
-    }
-
     /**
      * parses one single DataPoint (if existing)
      */
@@ -93,9 +77,9 @@ class DataPointParser(
         ) {
             DataPoint(
                 value = buildMapForSpecificData(generalMap, baseString).getNumericCsvValue(baseString, row),
-                quality = getQualityOption(
-                    buildMapForSpecificData(generalMap, baseString).getCsvValue("${baseString}Quality", row)
-                ),
+                quality = buildMapForSpecificData(generalMap, baseString)
+                    .getCsvValue("${baseString}Quality", row)
+                    .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
                 comment = buildMapForSpecificData(generalMap, baseString)
                     .getCsvValue("${baseString}Comment", row),
                 dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)

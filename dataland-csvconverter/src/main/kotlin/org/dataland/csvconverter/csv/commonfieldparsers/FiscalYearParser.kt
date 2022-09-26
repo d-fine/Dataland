@@ -1,6 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import java.time.LocalDate
 
@@ -16,16 +17,18 @@ class FiscalYearParser {
         "fiscalYearDeviation" to "Fiscal Year",
         "fiscalYearEnd" to "Fiscal Year End",
     )
-    private val fiscalYearDeviationMap = mapOf(
-        "No Deviation" to YesNo.No,
-        "Deviation" to YesNo.Yes
+    private val fiscalYearDeviationParser = EnumCsvParser<YesNo>(
+        mapOf(
+            "No Deviation" to YesNo.No,
+            "Deviation" to YesNo.Yes
+        )
     )
     /**
      * Method to retrieve information about the deviation of the fiscal year from the csv file
      */
     fun getFiscalYearDeviation(csvLineData: Map<String, String>): YesNo? {
-        val fiscalYearDeviationString = columnMappingFiscalYear.getCsvValue("fiscalYearDeviation", csvLineData)
-        return fiscalYearDeviationMap[fiscalYearDeviationString]
+        return columnMappingFiscalYear.getCsvValue("fiscalYearDeviation", csvLineData)
+            ?.let { fiscalYearDeviationParser.parseAllowingNull("fiscalYearDeviation", it) }
     }
 
     /**

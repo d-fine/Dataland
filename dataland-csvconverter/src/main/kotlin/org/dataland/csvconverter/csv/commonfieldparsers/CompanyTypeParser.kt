@@ -9,10 +9,10 @@ class CompanyTypeParser {
     private val columnMappingCompanyType = mapOf(
         "companyType" to "IS/FS",
     )
+
     /**
      * Returns the relevant company type for the EU-Taxonomy framework (IS/FS)
      */
-
     private val companyTypeMap = mapOf(
         "1" to "IS",
         "2" to "FS"

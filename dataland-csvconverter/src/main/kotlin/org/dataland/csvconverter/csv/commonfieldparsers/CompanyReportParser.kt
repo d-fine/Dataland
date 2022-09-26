@@ -1,6 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import java.time.LocalDate
@@ -9,7 +10,9 @@ import java.time.format.DateTimeFormatter
 /**
  * This class provides the method required for parsing the top-level company reports
  */
-class CompanyReportParser {
+class CompanyReportParser(
+    private val yesNoNaParser: EnumCsvParser<YesNoNa>
+) {
 
     private val columnMapReportTitles = mapOf(
         "AnnualReport" to "Annual Report",
@@ -48,45 +51,21 @@ class CompanyReportParser {
         csvLineData: Map<String, String>,
         baseString: String
     ): CompanyReport? {
-        val report = buildMapForSpecificReport(baseString).getCsvValue(baseString, csvLineData)
+        val reportMap = buildMapForSpecificReport(baseString)
+        val report = reportMap.getCsvValue(baseString, csvLineData)
         return if (report !== null) {
             CompanyReport(
                 reference = report,
-                isGroupLevel = getIsGroupLevelAttribute(csvLineData, baseString, report),
-                reportDate = buildMapForSpecificReport(baseString).getCsvValue(
-                    "${baseString}Date", csvLineData
-                )?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
-                currency = buildMapForSpecificReport(baseString).getCsvValue(
+                isGroupLevel = reportMap.getCsvValue("${baseString}GroupLevel", csvLineData)
+                    .let { yesNoNaParser.parseAllowingNull("${baseString}GroupLevel", it) },
+                reportDate = reportMap.getCsvValue("${baseString}Date", csvLineData)
+                    ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
+                currency = reportMap.getCsvValue(
                     "${baseString}Currency", csvLineData
                 )
             )
         } else {
             null
-        }
-    }
-
-    private fun getIsGroupLevelAttribute(
-        csvLineData: Map<String, String>,
-        baseString: String,
-        report: String
-    ): YesNoNa? {
-        return when (
-            val rawIsGroupLevelAttribute = buildMapForSpecificReport(baseString).getCsvValue(
-                "${baseString}GroupLevel",
-                csvLineData
-            )
-        ) {
-            EuTaxonomyCommonFieldParser.STRING_YES -> YesNoNa.Yes
-            EuTaxonomyCommonFieldParser.STRING_NO -> YesNoNa.No
-            EuTaxonomyCommonFieldParser.STRING_NA -> YesNoNa.NA
-            null -> null
-            else -> {
-                throw java.lang.IllegalArgumentException(
-                    "Could not determine Group Level Attribute of the report $report: Found " +
-                        "$rawIsGroupLevelAttribute, but expect one of ${EuTaxonomyCommonFieldParser.STRING_YES}, " +
-                        "${EuTaxonomyCommonFieldParser.STRING_NO}, ${EuTaxonomyCommonFieldParser.STRING_NA} or null"
-                )
-            }
         }
     }
 }

@@ -2,6 +2,7 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
+import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import java.math.BigDecimal
@@ -10,14 +11,10 @@ import java.math.BigDecimal
  * This class provides parsing methods for columns that are required by both EU-Taxonomy frameworks
  * but don't belong to the companyInformation parser
  */
-class EuTaxonomyCommonFieldParser {
-
-    companion object {
-        const val STRING_YES = "Yes"
-        const val STRING_NO = "No"
-        const val STRING_NA = "N/A"
-    }
-
+class EuTaxonomyCommonFieldParser(
+    private val yesNoNaParser: EnumCsvParser<YesNoNa>,
+    private val yesNoParser: EnumCsvParser<YesNo>
+) {
     private val columnMappingEuTaxonomyUtils = mapOf(
         "scopeOfEntities" to "Scope of Entities",
         "reportObligation" to "NFRD mandatory",
@@ -29,61 +26,24 @@ class EuTaxonomyCommonFieldParser {
      * This method retrieves scope of companies from a csv row
      */
     fun getScopeOfEntities(csvLineData: Map<String, String>): YesNoNa? {
-        return when (
-            val rawScopeOfEntities = columnMappingEuTaxonomyUtils.getCsvValue("scopeOfEntities", csvLineData)
-        ) {
-            STRING_YES -> YesNoNa.Yes
-            STRING_NO -> YesNoNa.No
-            STRING_NA -> YesNoNa.NA
-            null -> null
-            else -> {
-                throw java.lang.IllegalArgumentException(
-                    "Could not determine Scope of Entities : Found $rawScopeOfEntities, " +
-                        "but expect one of $STRING_YES, $STRING_NO, $STRING_NA or null"
-                )
-            }
-        }
+        return columnMappingEuTaxonomyUtils.getCsvValue("scopeOfEntities", csvLineData)
+            ?.let { yesNoNaParser.parseAllowingNull("scopeOfEntities", it) }
     }
 
     /**
      * This function parses the reportingObligation field from the EU-Taxonomy framework CSV file
      */
     fun getReportingObligation(csvLineData: Map<String, String>): YesNo? {
-        return when (
-            val rawReportObligation = columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
-        ) {
-            STRING_YES -> YesNo.Yes
-            STRING_NO -> YesNo.No
-            null -> null
-            else -> {
-                throw java.lang.IllegalArgumentException(
-                    "Could not determine reportObligation: Found $rawReportObligation, " +
-                        "but expect one of $STRING_YES, $STRING_NO  or null"
-                )
-            }
-        }
+        return columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
+            ?.let { yesNoParser.parseAllowingNull("reportObligation", it) }
     }
 
     /**
      * This method retrieves the activity level reporting
      */
     fun getActivityLevelReporting(csvLineData: Map<String, String>): YesNo? {
-        return when (
-            val rawActivityLevelReporting = columnMappingEuTaxonomyUtils.getCsvValue(
-                "activityLevelReporting",
-                csvLineData
-            )
-        ) {
-            STRING_YES -> YesNo.Yes
-            STRING_NO -> YesNo.No
-            null -> null
-            else -> {
-                throw java.lang.IllegalArgumentException(
-                    "Could not determine Activity Level Reporting: Found $rawActivityLevelReporting, " +
-                        "but expect one of $STRING_YES, $STRING_NO or null"
-                )
-            }
-        }
+        return columnMappingEuTaxonomyUtils.getCsvValue("activityLevelReporting", csvLineData)
+            ?.let { yesNoParser.parseAllowingNull("activityLevelReporting", it) }
     }
 
     /**
