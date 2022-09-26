@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.util.*
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -31,6 +32,7 @@ class DataManagerTest(
     val testDataProvider = TestDataProvider(objectMapper)
     val edcClientMock = mock(DefaultApi::class.java)
     val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
+    val correlationId = UUID.randomUUID().toString()
 
     private fun getNonMatchingDataIdDataTypeMessage(registeredDataId: String, registereTypeName: String): String {
         return "The data with the id: $registeredDataId is registered as type $registereTypeName by " +
@@ -63,7 +65,7 @@ class DataManagerTest(
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
-            dataManager.addDataSet(storableDataSet)
+            dataManager.addDataSet(storableDataSet, correlationId)
         }
     }
 
@@ -72,10 +74,10 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
-        val dataId = dataManager.addDataSet(storableDataSet)
+        val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(edcClientMock.selectDataById(dataId)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
-            dataManager.getDataSet(dataId, DataType(storableDataSet.dataType.name))
+            dataManager.getDataSet(dataId, DataType(storableDataSet.dataType.name), correlationId)
         }
     }
 
@@ -84,9 +86,9 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
-        val dataId = dataManager.addDataSet(storableDataSet)
+        val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val thrown = assertThrows<IllegalArgumentException> {
-            dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"))
+            dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
         assertEquals(
             getNonMatchingDataIdDataTypeMessage(dataId, storableDataSet.dataType.name),
@@ -99,10 +101,10 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
-        val dataId = dataManager.addDataSet(storableDataSet)
+        val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(edcClientMock.selectDataById(dataId)).thenReturn("")
         val thrown = assertThrows<IllegalArgumentException> {
-            dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"))
+            dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
         assertEquals(getNoDataFoundMessage(dataId), thrown.message)
     }
@@ -112,7 +114,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
-        val dataId = dataManager.addDataSet(storableDataSet)
+        val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val unexpectedDataTypeName = "eutaxonomy-financials"
         val expectedDataTypeName = storableDataSet.dataType.name
         `when`(edcClientMock.selectDataById(dataId)).thenReturn(
@@ -125,7 +127,12 @@ class DataManagerTest(
             )
         )
         val thrown =
-            assertThrows<IllegalArgumentException> { dataManager.getDataSet(dataId, DataType(expectedDataTypeName)) }
+            assertThrows<IllegalArgumentException> {
+                dataManager.getDataSet(
+                    dataId, DataType(expectedDataTypeName),
+                    correlationId
+                )
+            }
         assertEquals(getWrongDataTypeMessage(dataId, unexpectedDataTypeName, expectedDataTypeName), thrown.message)
     }
 }
