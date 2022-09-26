@@ -1,7 +1,7 @@
 import { FixtureData } from "./GenerateFakeFixtures";
 import { CompanyReport, EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { getAssurance, getFiscalYearDeviation, humaniseOrUndefined } from "./CsvUtils";
+import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "./CsvUtils";
 import { getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { generateReferencedReports } from "./DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
@@ -42,7 +42,7 @@ function getCsvReportMapping(reportName: string) {
     {
       label: `Group Level ${humanizeString(reportName)}`,
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        getReportIfExists(row, reportName)?.isGroupLevel,
+        humanizeOrUndefined(getReportIfExists(row, reportName)?.isGroupLevel),
     },
     {
       label: `${humanizeString(reportName)} Currency`,
@@ -81,22 +81,22 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     {
       label: "Scope of Entities",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.scopeOfEntities),
+        humanizeOrUndefined(row.t.scopeOfEntities),
     },
     {
       label: "EU Taxonomy Activity Level Reporting",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.activityLevelReporting),
+        humanizeOrUndefined(row.t.activityLevelReporting),
     },
     {
       label: "NFRD mandatory",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.reportingObligation),
+        humanizeOrUndefined(row.t.reportingObligation),
     },
     {
       label: "Number Of Employees",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.reportingObligation),
+        humanizeOrUndefined(row.t.reportingObligation),
     },
     {
       label: "Assurance",
@@ -106,7 +106,7 @@ export function getCsvSharedEuTaxonomyValuesMapping(isfs: number) {
     {
       label: "Assurance Provider",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>) =>
-        humaniseOrUndefined(row.t.assurance?.provider),
+        humanizeOrUndefined(row.t.assurance?.provider),
     },
     ...getCsvDataSourceMapping<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>>(
       "Assurance",

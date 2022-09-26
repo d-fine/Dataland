@@ -3,7 +3,7 @@ import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "../
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { ReferencedReports } from "./Utils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
-import { humaniseOrUndefined } from "./CsvUtils";
+import { humanizeOrUndefined } from "./CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
@@ -71,7 +71,7 @@ export function getCsvDataPointMapping<T>(
     },
     {
       label: `${dataPointName} Quality`,
-      value: (row: T) => humaniseOrUndefined(dataPointGetter(row)?.quality),
+      value: (row: T) => humanizeOrUndefined(dataPointGetter(row)?.quality),
     },
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];

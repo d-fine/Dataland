@@ -48,7 +48,7 @@ export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialS
   throw Error(`Unknown FS type ${type}`);
 }
 
-export function humaniseOrUndefined(stringToHumanise: string | undefined): string | undefined {
+export function humanizeOrUndefined(stringToHumanise: string | undefined): string | undefined {
   if (stringToHumanise == undefined) return undefined;
   return humanizeString(stringToHumanise!!);
 }
