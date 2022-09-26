@@ -41,11 +41,9 @@ class CompanyManager(
             companyName = companyInformation.companyName,
             headquarters = companyInformation.headquarters,
             sector = companyInformation.sector,
-            marketCap = companyInformation.marketCap,
-            reportingDateOfMarketCap = companyInformation.reportingDateOfMarketCap,
-            countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
+            countryCode = companyInformation.countryCode,
             isTeaserCompany = companyInformation.isTeaserCompany
         )
 

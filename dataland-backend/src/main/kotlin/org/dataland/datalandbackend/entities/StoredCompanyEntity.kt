@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import java.math.BigDecimal
-import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -31,12 +29,6 @@ data class StoredCompanyEntity(
     @Column(name = "sector")
     var sector: String,
 
-    @Column(name = "market_capitalisation")
-    var marketCap: BigDecimal,
-
-    @Column(name = "reporting_date_of_market_capitalisation")
-    var reportingDateOfMarketCap: LocalDate,
-
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
@@ -57,8 +49,6 @@ data class StoredCompanyEntity(
                 companyName = companyName,
                 headquarters = headquarters,
                 sector = sector,
-                marketCap = marketCap,
-                reportingDateOfMarketCap = reportingDateOfMarketCap,
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,

@@ -8,8 +8,6 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
-  const marketCap = faker.mersenne.rand(10000000, 50000);
-  const reportingDateOfMarketCap = faker.date.past().toISOString().split("T")[0];
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
     .arrayElements([
@@ -35,8 +33,6 @@ export function generateCompanyInformation(): CompanyInformation {
     companyName: companyName,
     headquarters: headquarters,
     sector: sector,
-    marketCap: marketCap,
-    reportingDateOfMarketCap: reportingDateOfMarketCap,
     identifiers: identifiers,
     countryCode: countryCode,
     isTeaserCompany: false,
@@ -44,13 +40,6 @@ export function generateCompanyInformation(): CompanyInformation {
 }
 
 export function getCsvCompanyMapping<T>() {
-  const dateOptions: any = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  };
-  const dateLocale = "de-DE";
-
   return [
     {
       label: "Unternehmensname",
@@ -67,15 +56,6 @@ export function getCsvCompanyMapping<T>() {
     {
       label: "Countrycode",
       value: (row: FixtureData<T>) => row.companyInformation.countryCode,
-    },
-    {
-      label: "Market Capitalization EURmm",
-      value: (row: FixtureData<T>) => row.companyInformation.marketCap,
-    },
-    {
-      label: "Market Capitalization Date",
-      value: (row: FixtureData<T>) =>
-        new Date(row.companyInformation.reportingDateOfMarketCap).toLocaleDateString(dateLocale, dateOptions),
     },
     {
       label: "Teaser Company",

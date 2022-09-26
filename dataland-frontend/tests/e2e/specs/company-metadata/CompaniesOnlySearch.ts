@@ -7,7 +7,6 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     function verifyCompanySearchResultTable(): void {
       cy.get("table.p-datatable-table").contains("th", "COMPANY");
       cy.get("table.p-datatable-table").contains("th", "SECTOR");
-      cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
     }
 
     cy.visitAndCheckAppMount("/companies-only-search");

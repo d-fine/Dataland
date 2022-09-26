@@ -21,9 +21,9 @@ export interface FixtureData<T> {
   t: T;
 }
 
-function generateFixtureDataset<T>(generator: () => T): Array<FixtureData<T>> {
+function generateFixtureDataset<T>(dataPoints: number, generator: () => T): Array<FixtureData<T>> {
   const fixtureDataset = [];
-  for (let id = 1; id <= 250; id++) {
+  for (let id = 1; id <= dataPoints; id++) {
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: generator(),
@@ -33,7 +33,7 @@ function generateFixtureDataset<T>(generator: () => T): Array<FixtureData<T>> {
 }
 
 function exportFixturesEuTaxonomyNonFinancial() {
-  const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
+  const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(150,
     generateEuTaxonomyDataForNonFinancials
   );
   companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany = true;
@@ -47,8 +47,22 @@ function exportFixturesEuTaxonomyNonFinancial() {
   );
 }
 
+function exportFixturesEuTaxonomyNonFinancialCornerCases() {
+  const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(1,
+      generateEuTaxonomyDataForNonFinancials
+  );
+
+  companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName = "DALA-357";
+  companyInformationWithEuTaxonomyDataForNonFinancials[0].t.reportingObligation = "No";
+  companyInformationWithEuTaxonomyDataForNonFinancials[0].t.opex = { totalAmount: 5000, alignedPercentage: 2.1, eligiblePercentage: 0.5 }
+  fs.writeFileSync(
+      "../testing/data/csvTestEuTaxonomyDataForNonFinancialsPreviousIssues.csv",
+      generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials)
+  );
+}
+
 function exportFixturesEuTaxonomyFinancial() {
-  const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
+  const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(100,
     generateEuTaxonomyDataForFinancials
   );
   fs.writeFileSync(
@@ -63,6 +77,7 @@ function exportFixturesEuTaxonomyFinancial() {
 
 function main() {
   exportFixturesEuTaxonomyNonFinancial();
+  exportFixturesEuTaxonomyNonFinancialCornerCases();
   exportFixturesEuTaxonomyFinancial();
 }
 
