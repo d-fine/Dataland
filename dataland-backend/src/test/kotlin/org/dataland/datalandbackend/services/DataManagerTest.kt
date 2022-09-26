@@ -73,9 +73,9 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during selection`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
+        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        `when`(edcClientMock.selectDataById(dataId)).thenThrow(ServerException::class.java)
+        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
             dataManager.getDataSet(dataId, DataType(storableDataSet.dataType.name), correlationId)
         }
@@ -85,7 +85,7 @@ class DataManagerTest(
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
+        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(InsertDataResponse("XXXsomeUUIDXXX"))
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val thrown = assertThrows<IllegalArgumentException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)

@@ -59,7 +59,7 @@ class DataManager(
     ): String {
         val dataId: String
         try {
-            dataId = edcClient.insertData(objectMapper.writeValueAsString(storableDataSet), correlationId).dataId
+            dataId = edcClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             logger.error(
                 "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
