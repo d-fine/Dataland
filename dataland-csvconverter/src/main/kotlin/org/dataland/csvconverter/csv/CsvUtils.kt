@@ -78,4 +78,5 @@ object CsvUtils {
             getScaledCsvValue(property, csvLineData, EURO_UNIT_CONVERSION_FACTOR)
         }
     }
+
 }

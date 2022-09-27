@@ -11,5 +11,5 @@ data class CompanyReportReference(
     @field:JsonProperty(required = true)
     val report: String,
 
-    val page: BigDecimal? = null,
+    val page: Long? = null,
 )

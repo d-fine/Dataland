@@ -7,7 +7,7 @@ package org.dataland.csvconverter.csv.utils
 class EnumCsvParser<T>(val valueMap: Map<String, T>) {
     /**
      * Parses the input string input. If input is null or no mapping is defined for it, an error is raised
-     * @param columnReference A column reference name that is soley used to generate sensible error messages!
+     * @param columnReference A column reference name that is solely used to generate sensible error messages!
      * @param input The input that is supposed to be parsed
      */
     fun parse(columnReference: String, input: String?): T {

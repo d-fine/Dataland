@@ -31,12 +31,12 @@ class ParserUnitTests {
     private val row = mapOf(
         "assurance" to "reasonable",
         "assurance provider" to "Baker",
-        "assurance report" to "AnnualReport",
+        "assurance report" to "Annual Report",
         "assurance page" to "123",
         "recipe" to "111",
         "recipe quality" to "Reported",
-        "recipe report" to "AnnualReport",
-        "recipe page" to "222",
+        "recipe report" to "Annual Report",
+        "recipe page" to "123",
         "recipe comment" to "it's great"
     )
 
@@ -54,7 +54,7 @@ class ParserUnitTests {
             )
         )
         assertTrue(myParser.parse("Zahl", "1") == "one")
-        assertTrue(myParser.parseAllowingNull("Kekse?", "Kekse") == "cookies")
+        assertTrue(myParser.parseAllowingNull("kekse", "kekse") == "cookies")
         assertThrows<IllegalArgumentException> { myParser.parse("kekse", "keine Kekse") }
         assertThrows<IllegalArgumentException> { myParser.parse("Fehler", "") }
         assertThrows<IllegalArgumentException> { myParser.parseAllowingNull("Kekse?", "keine Kekse") }
@@ -75,8 +75,7 @@ class ParserUnitTests {
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleCompanyReportReference(
                 generalMap, row, baseString
-            ),
-            CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal())
+            ), CompanyReportReference(report = "AnnualReport", page = 123)
         )
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleCompanyReportReference(
@@ -103,7 +102,7 @@ class ParserUnitTests {
             ),
             DataPoint(
                 value = 111.toBigDecimal(), quality = QualityOptions.Reported,
-                CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal()), comment = "it's great"
+                CompanyReportReference(report = "AnnualReport", page = 123), comment = "it's great"
             )
         )
         assertEquals(
@@ -131,7 +130,7 @@ class ParserUnitTests {
                 .buildSingleAssuranceData(row),
             AssuranceData(
                 assurance = AssuranceOptions.ReasonableAssurance,
-                provider = "Baker", CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal())
+                provider = "Baker", CompanyReportReference(report = "AnnualReport", page = 123)
             )
         )
         assertEquals(

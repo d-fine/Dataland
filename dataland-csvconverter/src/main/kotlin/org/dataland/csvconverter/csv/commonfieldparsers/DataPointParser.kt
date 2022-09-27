@@ -2,6 +2,7 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getLongCsvValue
 import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReportReference
@@ -62,7 +63,7 @@ class DataPointParser(
                         " has been specified but no report was found"
                 ),
             page = buildMapForSpecificDatapoint(generalMap, baseString)
-                .getNumericCsvValue("${baseString}Page", row)
+                .getLongCsvValue("${baseString}Page", row)
         )
     }
 
