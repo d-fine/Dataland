@@ -1,5 +1,6 @@
 package org.dataland.csvconverter
 
+import org.dataland.csvconverter.DataPointParserTest.Companion.buildDataRow
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
@@ -23,12 +24,12 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report reference parser works on valid data`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val validDataRow = mapOf(
-            "recipe" to "111",
-            "recipe quality" to "Reported",
-            "recipe report" to "Annual Report",
-            "recipe page" to "123",
-            "recipe comment" to "it's great"
+        val validDataRow = buildDataRow(
+            "111",
+            "Reported",
+            "Annual Report",
+            "123",
+            "it's great"
         )
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
@@ -41,13 +42,7 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report parser returns null if no fields have been specified`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithNoReport = mapOf(
-            "recipe" to "",
-            "recipe quality" to "",
-            "recipe report" to "",
-            "recipe page" to "",
-            "recipe comment" to ""
-        )
+        val rowWithNoReport = buildDataRow("", "", "", "", "")
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
                 csvMapping, rowWithNoReport, "rezept"
@@ -59,13 +54,7 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report parser throws an error when only partial data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val roWithNoReportButWithPage = mapOf(
-            "recipe" to "",
-            "recipe quality" to "",
-            "recipe report" to "",
-            "recipe page" to "123",
-            "recipe comment" to ""
-        )
+        val roWithNoReportButWithPage = buildDataRow("", "", "", "123", "")
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildSingleCompanyReportReference(csvMapping, roWithNoReportButWithPage, "rezept")
         }

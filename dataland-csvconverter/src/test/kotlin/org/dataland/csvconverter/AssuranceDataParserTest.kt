@@ -27,14 +27,23 @@ class AssuranceDataParserTest {
     )
     private val assuranceParser = AssuranceDataParser(DataPointParser(CompanyReportParser(yesNoNaParser)))
 
+    private fun buildDataRow(
+        assurance: String,
+        assuranceProvider: String,
+        assuranceReport: String,
+        assurancePage: String
+    ): Map<String, String> {
+        return mapOf(
+            "assurance" to assurance,
+            "assurance provider" to assuranceProvider,
+            "assurance report" to assuranceReport,
+            "assurance page" to assurancePage
+        )
+    }
+
     @Test
     fun `test AssuranceDataParser`() {
-        val row = mapOf(
-            "assurance" to "reasonable",
-            "assurance provider" to "Baker",
-            "assurance report" to "Annual Report",
-            "assurance page" to "123"
-        )
+        val row = buildDataRow("reasonable", "Baker", "Annual Report", "123")
         assertEquals(
             AssuranceData(
                 assurance = AssuranceOptions.ReasonableAssurance,
@@ -47,12 +56,7 @@ class AssuranceDataParserTest {
 
     @Test
     fun `test AssuranceDataParser with empty row`() {
-        val rowWithNoAssurance = mapOf(
-            "assurance" to "",
-            "assurance provider" to "",
-            "assurance report" to "",
-            "assurance page" to "",
-        )
+        val rowWithNoAssurance = buildDataRow("", "", "", "")
         assertEquals(
             null,
             assuranceParser.buildSingleAssuranceData(rowWithNoAssurance),
@@ -61,13 +65,7 @@ class AssuranceDataParserTest {
 
     @Test
     fun `test AssuranceDataParser with missing arguments`() {
-        val rowWithProviderOnly = mapOf(
-            "assurance" to "",
-            "assurance provider" to "Baker",
-            "assurance report" to "",
-            "assurance page" to ""
-        )
-
+        val rowWithProviderOnly = buildDataRow("", "Baker", "", "")
         assertThrows<IllegalArgumentException> {
             assuranceParser.buildSingleAssuranceData(rowWithProviderOnly)
         }
