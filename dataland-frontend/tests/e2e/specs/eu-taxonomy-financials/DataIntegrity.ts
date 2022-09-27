@@ -86,7 +86,7 @@ describeIf(
       const testData = getCompanyAssociatedDataWithSpecificFinancialType([
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
       ]).filter((it) => {
-        return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans !== undefined;
+        return it.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans?.value !== undefined;
       })[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
@@ -101,7 +101,10 @@ describeIf(
       const testData = getCompanyAssociatedDataWithSpecificFinancialType([
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
       ]).filter((it) => {
-        return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans === undefined;
+        return (
+          it.t.creditInstitutionKpis?.tradingPortfolio?.value !== undefined &&
+          it.t.creditInstitutionKpis?.interbankLoans?.value !== undefined
+        );
       })[0];
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
