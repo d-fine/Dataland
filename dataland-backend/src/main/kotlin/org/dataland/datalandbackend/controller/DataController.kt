@@ -32,7 +32,7 @@ abstract class DataController<T>(
             "Received a request to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"
         )
-        val correlationId = generatedCorrelationId()
+        val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
                 companyAssociatedData.companyId, dataType,
@@ -47,17 +47,17 @@ abstract class DataController<T>(
         return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId))
     }
 
-    private fun generatedCorrelationId(): String {
+    private fun generatedCorrelationId(companyId: String): String {
         val correlationId = randomUUID().toString()
         logger.info(
-            "Generated correlation ID '$correlationId' for the received request"
+            "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
         )
         return correlationId
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        val correlationId = generatedCorrelationId()
+        val correlationId = generatedCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. "
         )
