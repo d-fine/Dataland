@@ -27,6 +27,10 @@ setup_ssh
 
 timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
 
+# TODO: ENTER BACKUP/EXPORT CODE HERE
+user_backup_directory = "backup"
+ssh ubuntu@"$target_server_url/keycloak" "opt/keycloak/bin/kc.sh export --dir $user_backup_directory --users same_file --realm datalandsecurity"
+
 location=/home/ubuntu/dataland
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
@@ -50,6 +54,11 @@ if [[ $INITIALIZE_KEYCLOAK == true ]]; then
   echo "Deployment configuration requires Keycloak to be set up from scratch."
   "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
 fi
+
+# TODO: ENTER USER RECOVERY HERE OR IN CONDITIONAL ABOVE (OR DISSOLVE CONDITIONAL)
+"opt/keycloak/bin/kcadm.sh create partialImport -r datalandsecurity -s ifResourceExists=OVERWRITE -f $user_backup_directory/datalandsecurity-users-0.json
+		--server $target_server_url/keycloak --realm master --user admin --password admin"
+"rm $user_backup_directory/*"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"

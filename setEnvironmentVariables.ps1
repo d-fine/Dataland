@@ -2,6 +2,9 @@
 # The Script can take quite some time (something like a minute) to complete
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "", [System.EnvironmentVariableTarget]::User)
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GITHUB_USER", "fsoffel", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "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", [System.EnvironmentVariableTarget]::User)
+# REMOVE ABOVE?
 [Environment]::SetEnvironmentVariable("BACKEND_DOCKERFILE", "./dataland-backend/DockerfileTest", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
