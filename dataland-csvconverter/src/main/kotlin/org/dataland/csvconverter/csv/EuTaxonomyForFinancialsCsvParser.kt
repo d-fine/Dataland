@@ -99,27 +99,28 @@ class EuTaxonomyForFinancialsCsvParser(
     /**
      * Callable functions assembling the different types of KPIs
      */
-
+    @Suppress("kotlin:S138")
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
+        val eligibilityColumnMapping = buildEligibilityColumnMapping(type)
         return EligibilityKpis(
             taxonomyEligibleActivity = dataPointParser.buildPercentageDataPoint(
-                buildEligibilityColumnMapping(type), row,
+                eligibilityColumnMapping, row,
                 "taxonomyEligibleActivity"
             ),
             taxonomyNonEligibleActivity = dataPointParser.buildPercentageDataPoint(
-                buildEligibilityColumnMapping(type), row,
+                eligibilityColumnMapping, row,
                 "taxonomyNonEligibleActivity"
             ),
             banksAndIssuers = dataPointParser.buildPercentageDataPoint(
-                buildEligibilityColumnMapping(type), row,
+                eligibilityColumnMapping, row,
                 "banksAndIssuers"
             ),
             derivatives = dataPointParser.buildPercentageDataPoint(
-                buildEligibilityColumnMapping(type), row,
+                eligibilityColumnMapping, row,
                 "derivatives"
             ),
             investmentNonNfrd = dataPointParser.buildPercentageDataPoint(
-                buildEligibilityColumnMapping(type), row,
+                eligibilityColumnMapping, row,
                 "investmentNonNfrd"
             ),
         )

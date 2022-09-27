@@ -39,6 +39,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
         return companyTypeParser.getCompanyType(row) == "IS"
     }
 
+    @Suppress("kotlin:S138")
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(

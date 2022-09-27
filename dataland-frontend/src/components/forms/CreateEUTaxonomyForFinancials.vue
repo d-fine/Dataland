@@ -93,7 +93,6 @@
               name="tradingPortfolioAndInterbankLoans"
               label="Trading Portfolio and Interbank Loans (combined)"
             />
-            <!--//<DataPointFormElement name="greenAssetRatio" label="Green Asset Ratio" />-->
           </FormKit>
           <FormKit type="group" name="insuranceKpis" label)="Insurance KPIs">
             <h4>Insurance KPIs</h4>
