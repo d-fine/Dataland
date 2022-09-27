@@ -28,7 +28,6 @@ class ParserUnitTests {
         )
     )
 
-
     private val row = mapOf(
         "assurance" to "reasonable",
         "assurance provider" to "Baker",
@@ -76,12 +75,14 @@ class ParserUnitTests {
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleCompanyReportReference(
                 generalMap, row, baseString
-            ), CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal())
+            ),
+            CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal())
         )
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleCompanyReportReference(
                 generalMap, rowWithNoReport, baseString
-            ), null
+            ),
+            null
         )
         assertThrows<NullPointerException> {
             DataPointParser(CompanyReportParser(yesNoNaParser))
@@ -99,7 +100,8 @@ class ParserUnitTests {
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleDataPoint(
                 generalMap, row, baseString
-            ), DataPoint(
+            ),
+            DataPoint(
                 value = 111.toBigDecimal(), quality = QualityOptions.Reported,
                 CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal()), comment = "it's great"
             )
@@ -107,7 +109,8 @@ class ParserUnitTests {
         assertEquals(
             DataPointParser(CompanyReportParser(yesNoNaParser)).buildSingleDataPoint(
                 generalMap, rowWithNoQuality, baseString
-            ), null
+            ),
+            null
         )
         assertThrows<NullPointerException> {
             DataPointParser(CompanyReportParser(yesNoNaParser))
@@ -125,14 +128,16 @@ class ParserUnitTests {
         val rowWithProviderOnly = mapOf("assurance provider" to "Baker")
         assertEquals(
             AssuranceDataParser(DataPointParser(CompanyReportParser(yesNoNaParser)))
-                .buildSingleAssuranceData(row), AssuranceData(
+                .buildSingleAssuranceData(row),
+            AssuranceData(
                 assurance = AssuranceOptions.ReasonableAssurance,
                 provider = "Baker", CompanyReportReference(report = "Annual Report", page = 123.toBigDecimal())
             )
         )
         assertEquals(
             AssuranceDataParser(DataPointParser(CompanyReportParser(yesNoNaParser)))
-                .buildSingleAssuranceData(rowWithNoAssurance), null
+                .buildSingleAssuranceData(rowWithNoAssurance),
+            null
         )
         assertThrows<NullPointerException> {
             AssuranceDataParser(DataPointParser(CompanyReportParser(yesNoNaParser)))

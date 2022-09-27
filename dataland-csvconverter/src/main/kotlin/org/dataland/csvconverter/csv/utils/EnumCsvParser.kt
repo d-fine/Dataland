@@ -1,5 +1,9 @@
 package org.dataland.csvconverter.csv.utils
 
+/**
+ * This class realises a generic Enum-Parser
+ * that maps a set of predefined string values to internal object references (e.g Enums)
+ */
 class EnumCsvParser<T>(val valueMap: Map<String, T>) {
     /**
      * Parses the input string input. If input is null or no mapping is defined for it, an error is raised
