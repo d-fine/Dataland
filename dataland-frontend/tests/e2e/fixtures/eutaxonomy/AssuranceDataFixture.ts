@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { generateDataSource } from "./DataSourceFixtures";
+import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
 import { AssuranceData, AssuranceDataAssuranceEnum } from "@clients/backend";
-import { ReferencedReports } from "./Utils";
+import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 export function generateAssuranceData(reports: ReferencedReports): AssuranceData | undefined {
   const assurance = faker.helpers.arrayElement(Object.values(AssuranceDataAssuranceEnum));
   const provider =

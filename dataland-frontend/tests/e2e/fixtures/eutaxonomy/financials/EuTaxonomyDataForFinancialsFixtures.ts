@@ -5,13 +5,15 @@ import {
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
 
-import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "./CsvUtils";
-import { FixtureData } from "./GenerateFakeFixtures";
-import { generateDatapointOrNotReportedAtRandom } from "./DataPointFixtures";
-import { getCsvCompanyMapping } from "./CompanyFixtures";
-import { getCsvDataPointMapping } from "./DataPointFixtures";
-import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "./EuTaxonomySharedValues";
-import { ReferencedReports } from "./Utils";
+import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "@e2e/fixtures/CsvUtils";
+import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
+import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
+import { getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  getCsvSharedEuTaxonomyValuesMapping,
+  populateSharedValues,
+} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
+import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 
 const { parse } = require("json2csv");
 

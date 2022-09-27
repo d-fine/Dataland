@@ -1,13 +1,13 @@
-import { FixtureData } from "./GenerateFakeFixtures";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { CompanyReport, EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "./CsvUtils";
-import { getCsvDataSourceMapping } from "./DataSourceFixtures";
-import { generateReferencedReports } from "./DataPointFixtures";
-import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
+import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
+import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures";
+import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
-import { randomDateOrUndefined } from "./DateFixtures";
-import { randomNumberOrUndefined } from "./NumberFixtures";
+import { randomDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
+import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
 
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials) {
   input.referencedReports = generateReferencedReports();

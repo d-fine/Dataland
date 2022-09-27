@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { CompanyReportReference } from "../../../build/clients/backend";
-import { ReferencedReports } from "./Utils";
-import { humanizeOrUndefined } from "./CsvUtils";
+import { CompanyReportReference } from "@clients/backend";
+import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 
 export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
   const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));

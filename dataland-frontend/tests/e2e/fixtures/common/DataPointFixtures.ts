@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "../../../build/clients/backend";
+import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
-import { ReferencedReports } from "./Utils";
+import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
-import { humanizeOrUndefined } from "./CsvUtils";
+import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];

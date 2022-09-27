@@ -5,7 +5,7 @@ import {
   YesNoNa,
 } from "@clients/backend";
 import Big from "big.js";
-import { humanizeString } from "../../../src/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export function getAssurance(assurance: AssuranceDataAssuranceEnum | undefined): string | undefined {
   switch (assurance) {

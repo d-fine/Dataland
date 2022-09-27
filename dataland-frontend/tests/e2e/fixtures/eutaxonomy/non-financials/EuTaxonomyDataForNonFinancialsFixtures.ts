@@ -1,12 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
-import { FixtureData } from "./GenerateFakeFixtures";
-import { convertToPercentageString, decimalSeparatorConverter } from "./CsvUtils";
+import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 
-import { getCsvCompanyMapping } from "./CompanyFixtures";
-import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "./DataPointFixtures";
-import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "./EuTaxonomySharedValues";
-import { ReferencedReports } from "./Utils";
+import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
+import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  getCsvSharedEuTaxonomyValuesMapping,
+  populateSharedValues,
+} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
 const { parse } = require("json2csv");
 
 const maxEuro = 1000000;

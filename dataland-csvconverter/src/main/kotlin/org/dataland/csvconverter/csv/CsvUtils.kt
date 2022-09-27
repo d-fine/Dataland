@@ -55,9 +55,6 @@ object CsvUtils {
      */
     fun Map<String, String>.readCsvPercentage(property: String, csvData: Map<String, String>): BigDecimal? {
         val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
-
-        // Match N digits followed by an optional comma and another N digits followed
-        // by an optional whitespace and a percentage sign
         val expectedFormat = "\\d+(,\\d+)?(\\s*)%".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
@@ -83,8 +80,6 @@ object CsvUtils {
         scaleFactor: BigDecimal = BigDecimal.ONE
     ): BigDecimal? {
         val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
-
-        // Match N digits (which can have dots in arbitrary places) followed by an optional comma and another N digits
         val expectedFormat = "(\\d+(.)?)+(,\\d+)?".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
