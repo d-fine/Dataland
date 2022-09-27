@@ -132,6 +132,22 @@ class DataManagerTest(
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val unexpectedDataTypeName = "eutaxonomy-financials"
+        val expectedDataTypeName = getExpectedDataTypeName(storableDataSet, dataId, unexpectedDataTypeName)
+        val thrown =
+            assertThrows<IllegalArgumentException> {
+                dataManager.getDataSet(
+                    dataId, DataType(expectedDataTypeName),
+                    correlationId
+                )
+            }
+        assertEquals(getWrongDataTypeMessage(dataId, unexpectedDataTypeName, expectedDataTypeName), thrown.message)
+    }
+
+    private fun getExpectedDataTypeName(
+        storableDataSet: StorableDataSet,
+        dataId: String,
+        unexpectedDataTypeName: String
+    ): String {
         val expectedDataTypeName = storableDataSet.dataType.name
         `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn(
             objectMapper.writeValueAsString(
@@ -142,13 +158,6 @@ class DataManagerTest(
                 )
             )
         )
-        val thrown =
-            assertThrows<IllegalArgumentException> {
-                dataManager.getDataSet(
-                    dataId, DataType(expectedDataTypeName),
-                    correlationId
-                )
-            }
-        assertEquals(getWrongDataTypeMessage(dataId, unexpectedDataTypeName, expectedDataTypeName), thrown.message)
+        return expectedDataTypeName
     }
 }
