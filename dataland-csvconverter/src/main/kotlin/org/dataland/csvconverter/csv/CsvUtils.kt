@@ -10,9 +10,7 @@ import java.nio.charset.StandardCharsets
  * This object provides utility functions for parsing data from CSV files in the Dataland context
  */
 object CsvUtils {
-
-    const val NOT_AVAILABLE_STRING = "n/a"
-    var EURO_UNIT_CONVERSION_FACTOR = "1000000"
+    val SCALE_FACTOR_ONE_MILLION = "1000000".toBigDecimal()
 
     /**
      * This function parses a CSV file given a filename
@@ -53,30 +51,72 @@ object CsvUtils {
     }
 
     /**
-     * This function uses the backing map to extract a numeric property from a CSV row.
-     * The returned value is scaled according to the scaleFactor
+     * Tries to parse a percentage value in the format "XX,XX %" with a comma separator
      */
-    fun Map<String, String>.getScaledCsvValue(
-        property: String,
-        csvData: Map<String, String>,
-        scaleFactor: String
-    ): BigDecimal? {
-        // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
-        return getCsvValue(property, csvData)?.replace("[^,\\d]".toRegex(), "")?.replace(",", ".")
-            ?.toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())?.stripTrailingZeros()
+    fun Map<String, String>.readCsvPercentage(property: String, csvData: Map<String, String>): BigDecimal? {
+        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+
+        // Match N digits followed by an optional comma and another N digits followed
+        // by an optional whitespace and a percentage sign
+        val expectedFormat = "\\d+(,\\d+)?(\\s*)%".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for a percentage value"
+            )
+
+        return rawValue
+            .replace("[%\\s]".toRegex(), "")
+            .replace(",", ".")
+            .toBigDecimal()
+            .multiply("0.01".toBigDecimal())
+            .stripTrailingZeros()
     }
 
     /**
-     * This function uses the backing map to extract a numeric property from a CSV row.
-     * If the value represents a percentage, it gets scaled accordingly. All other values get scaled using the
-     * EURO_UNIT_CONVERSION_FACTOR
+     * Tries to parse a decimal value from the CSV file with the expected format
+     * XXX.XXX,XXX
      */
-    fun Map<String, String>.getNumericCsvValue(property: String, csvLineData: Map<String, String>): BigDecimal? {
-        return if (getCsvValue(property, csvLineData)?.contains("%") == true) {
-            getScaledCsvValue(property, csvLineData, "0.01")
-        } else {
-            getScaledCsvValue(property, csvLineData, EURO_UNIT_CONVERSION_FACTOR)
-        }
+    fun Map<String, String>.readCsvDecimal(
+        property: String,
+        csvData: Map<String, String>,
+        scaleFactor: BigDecimal = BigDecimal.ONE
+    ): BigDecimal? {
+        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+
+        // Match N digits (which can have dots in arbitrary places) followed by an optional comma and another N digits
+        val expectedFormat = "(\\d+(.)?)+(,\\d+)?".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for a decimal value"
+            )
+
+        return rawValue
+            .replace(".", "")
+            .replace(",", ".")
+            .toBigDecimal()
+            .multiply(scaleFactor)
+            .stripTrailingZeros()
     }
 
+    /**
+     * Tries to parse an integer value from the CSV file with the expected format
+     * XXX.XXX (optional dot separation for easier readability is allowed)
+     */
+    fun Map<String, String>.readCsvLong(
+        property: String,
+        csvData: Map<String, String>,
+    ): Long? {
+        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+        val expectedFormat = "(\\d+(.)?)+".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for an integer value"
+            )
+        return rawValue
+            .replace(".", "")
+            .toLong()
+    }
 }

@@ -54,17 +54,17 @@ export function generateCSVDataForNonFinancials(
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Total Revenue`,
         (row) => row.t.revenue?.totalAmount,
-        decimalSeparatorConverter
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Total CapEx`,
         (row) => row.t.capex?.totalAmount,
-        decimalSeparatorConverter
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Total OpEx`,
         (row) => row.t.opex?.totalAmount,
-        decimalSeparatorConverter
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible Revenue`,

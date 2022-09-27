@@ -4,6 +4,7 @@ import {
   YesNo,
   YesNoNa,
 } from "@clients/backend";
+import Big from "big.js";
 import { humanizeString } from "../../../src/utils/StringHumanizer";
 
 export function getAssurance(assurance: AssuranceDataAssuranceEnum | undefined): string | undefined {
@@ -67,9 +68,12 @@ export function getCompanyTypeCsvValue(type: EuTaxonomyDataForFinancialsFinancia
   throw Error(`Unknown FS type ${type}`);
 }
 
-export function decimalSeparatorConverter(value: number | undefined): string {
-  return value === undefined ? "" : value.toString().replace(".", ",");
+export function decimalSeparatorConverter(scaleFactor: number): (value: number | undefined) => string {
+  return (value) => {
+    return value === undefined ? "" : Big(value).div(Big(scaleFactor)).toString().replace(".", ",");
+  };
 }
+
 export function convertToPercentageString(value: number | undefined): string {
   if (value === undefined) return "";
   const valueRounded = parseFloat((Math.round(value * 100 * 100) / 100).toFixed(2))

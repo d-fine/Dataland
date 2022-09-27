@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
-import org.dataland.csvconverter.csv.CsvUtils.getScaledCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -48,10 +48,10 @@ class CompanyInformationCsvParser {
     }
 
     private fun getMarketCap(csvLineData: Map<String, String>): BigDecimal {
-        return companyInformationColumnMapping.getScaledCsvValue(
+        return companyInformationColumnMapping.readCsvDecimal(
             "marketCap",
             csvLineData,
-            CsvUtils.EURO_UNIT_CONVERSION_FACTOR
+            CsvUtils.SCALE_FACTOR_ONE_MILLION
         ) ?: throw IllegalArgumentException(
             "Could not parse market capitalisation for company \"${
             companyInformationColumnMapping.getCsvValue("companyName", csvLineData)}\""

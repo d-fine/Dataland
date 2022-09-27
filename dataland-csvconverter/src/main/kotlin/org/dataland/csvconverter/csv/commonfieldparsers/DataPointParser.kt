@@ -2,8 +2,9 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
-import org.dataland.csvconverter.csv.CsvUtils.getLongCsvValue
-import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
+import org.dataland.csvconverter.csv.CsvUtils.readCsvLong
+import org.dataland.csvconverter.csv.CsvUtils.readCsvPercentage
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.DataPoint
@@ -67,23 +68,53 @@ class DataPointParser(
         )
     }
 
-    /**
-     * parses one single DataPoint (if existing)
-     */
-    fun buildSingleDataPoint(generalMap: Map<String, String>, row: Map<String, String>, baseString: String):
-        DataPoint<BigDecimal>? {
+    private fun <T> buildDataPoint(
+        generalMap: Map<String, String>,
+        row: Map<String, String>,
+        baseString: String,
+        valueFunction: (datapointColumnMapping: Map<String, String>) -> T?
+    ): DataPoint<T>? {
         val datapointColumnMapping = buildMapForSpecificDatapoint(generalMap, baseString)
         if (!datapointColumnMapping.checkIfAnyFieldHasValue(datapointColumnMapping.keys.toList(), row))
             return null
 
         return DataPoint(
-            value = buildMapForSpecificDatapoint(generalMap, baseString).getNumericCsvValue(baseString, row),
-            quality = buildMapForSpecificDatapoint(generalMap, baseString)
+            value = valueFunction(datapointColumnMapping),
+            quality = datapointColumnMapping
                 .getCsvValue("${baseString}Quality", row)
                 .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
-            comment = buildMapForSpecificDatapoint(generalMap, baseString)
+            comment = datapointColumnMapping
                 .getCsvValue("${baseString}Comment", row),
             dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
         )
+    }
+
+    /**
+     * Parses a single decimal data point
+     */
+    fun buildDecimalDataPoint(
+        generalMap: Map<String, String>,
+        row: Map<String, String>,
+        baseString: String,
+        valueScaleFactor: BigDecimal
+    ):
+        DataPoint<BigDecimal>? {
+        return buildDataPoint(generalMap, row, baseString) {
+            it.readCsvDecimal(baseString, row, valueScaleFactor)
+        }
+    }
+
+    /**
+     * Parses a single percentage data point
+     */
+    fun buildPercentageDataPoint(
+        generalMap: Map<String, String>,
+        row: Map<String, String>,
+        baseString: String,
+    ):
+        DataPoint<BigDecimal>? {
+        return buildDataPoint(generalMap, row, baseString) {
+            it.readCsvPercentage(baseString, row)
+        }
     }
 }

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.math.BigDecimal
 
 /**
  * --- API model ---

@@ -43,11 +43,24 @@ class EuTaxonomyForNonFinancialsCsvParser(
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount =
-            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "total$type"),
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "total$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION
+            ),
             alignedPercentage =
-            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "aligned$type"),
+            dataPointParser.buildPercentageDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "aligned$type"
+            ),
             eligiblePercentage =
-            dataPointParser.buildSingleDataPoint(columnMappingEuTaxonomyForNonFinancials, csvLineData, "eligible$type")
+            dataPointParser.buildPercentageDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "eligible$type"
+            )
         )
     }
     /**

@@ -102,23 +102,23 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
         return EligibilityKpis(
-            taxonomyEligibleActivity = dataPointParser.buildSingleDataPoint(
+            taxonomyEligibleActivity = dataPointParser.buildPercentageDataPoint(
                 buildEligibilityColumnMapping(type), row,
                 "taxonomyEligibleActivity"
             ),
-            taxonomyNonEligibleActivity = dataPointParser.buildSingleDataPoint(
+            taxonomyNonEligibleActivity = dataPointParser.buildPercentageDataPoint(
                 buildEligibilityColumnMapping(type), row,
                 "taxonomyNonEligibleActivity"
             ),
-            banksAndIssuers = dataPointParser.buildSingleDataPoint(
+            banksAndIssuers = dataPointParser.buildPercentageDataPoint(
                 buildEligibilityColumnMapping(type), row,
                 "banksAndIssuers"
             ),
-            derivatives = dataPointParser.buildSingleDataPoint(
+            derivatives = dataPointParser.buildPercentageDataPoint(
                 buildEligibilityColumnMapping(type), row,
                 "derivatives"
             ),
-            investmentNonNfrd = dataPointParser.buildSingleDataPoint(
+            investmentNonNfrd = dataPointParser.buildPercentageDataPoint(
                 buildEligibilityColumnMapping(type), row,
                 "investmentNonNfrd"
             ),
@@ -136,18 +136,18 @@ class EuTaxonomyForFinancialsCsvParser(
         row: Map<String, String>
     ): CreditInstitutionKpis {
         return CreditInstitutionKpis(
-            tradingPortfolio = dataPointParser.buildSingleDataPoint(
+            tradingPortfolio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row,
                 "tradingPortfolio"
             ),
-            interbankLoans = dataPointParser.buildSingleDataPoint(
+            interbankLoans = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row,
                 "interbankLoans"
             ),
-            tradingPortfolioAndInterbankLoans = dataPointParser.buildSingleDataPoint(
+            tradingPortfolioAndInterbankLoans = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"
             ),
-            greenAssetRatio = dataPointParser.buildSingleDataPoint(
+            greenAssetRatio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution"
             ),
         )
@@ -155,7 +155,7 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis {
         return InvestmentFirmKpis(
-            greenAssetRatio = dataPointParser.buildSingleDataPoint(
+            greenAssetRatio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
             ),
         )
@@ -163,7 +163,7 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis {
         return InsuranceKpis(
-            taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildSingleDataPoint(
+            taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"
             ),
         )
