@@ -64,7 +64,7 @@ describe(
       }
 
       function chunkUploadData(
-        endpoint: string,
+        dataEndpoint: string,
         data: Array<{ companyInformation: CompanyInformation; t: Object }>,
         token: string
       ) {
@@ -73,7 +73,7 @@ describe(
             .then((response) => response.json())
             .then((companyUploadResponseJson) => {
               return browserPromiseUploadSingleElementOnce(
-                endpoint,
+                dataEndpoint,
                 {
                   companyId: companyUploadResponseJson.companyId,
                   data: element.t,

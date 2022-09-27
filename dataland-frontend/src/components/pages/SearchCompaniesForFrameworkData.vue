@@ -5,7 +5,7 @@
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarAndIndexTabContainer"
+        ref="searchBarContainer"
       >
         <div class="pt-4" />
         <MarginWrapper>
@@ -36,12 +36,6 @@
             >
               <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
             </PrimeButton>
-            <IndexTabMenu
-              ref="indexTabs"
-              :initIndex="firstDisplayedIndex"
-              @tab-click="toggleIndexTabs"
-              @companies-received="handleFilterByIndex"
-            />
           </div>
         </MarginWrapper>
       </div>
@@ -57,21 +51,20 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import IndexTabMenu from "@/components/resources/frameworkDataSearch/IndexTabMenu.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { useRoute } from "vue-router";
-import { CompanyInformationIndicesEnum } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import { defineComponent, ref } from "vue";
+import { DataTypeEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
-const stockIndices = Object.keys(CompanyInformationIndicesEnum);
-
-export default {
+export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     MarginWrapper,
@@ -79,35 +72,39 @@ export default {
     TheHeader,
     TheContent,
     FrameworkDataSearchBar,
-    IndexTabMenu,
     PrimeButton,
     FrameworkDataSearchResults,
   },
 
   created() {
     window.addEventListener("scroll", this.handleScroll);
+    this.scanQueryParams();
   },
   data() {
     return {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      firstDisplayedIndex: 1,
       showSearchResultsTable: false,
-      resultsArray: [],
+      resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
-      currentSearchBarInput: undefined,
-      currentFilteredFrameworks: undefined,
+      currentSearchBarInput: "",
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
     };
   },
-
+  setup() {
+    return {
+      frameworkDataSearchBar: ref(),
+      searchBarContainer: ref(),
+    };
+  },
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
+        this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -137,65 +134,49 @@ export default {
         }
       }
     },
-
-    handleFrameworkDataSearchBarRender() {
-      let filtered = false;
-      if (this.route.query.frameworks !== undefined) {
-        this.currentFilteredFrameworks = [];
-        if (typeof this.route.query.frameworks === "string" && this.route.query.frameworks !== "") {
-          this.currentFilteredFrameworks.push(this.route.query.frameworks);
-        } else if (Array.isArray(this.route.query.frameworks)) {
-          this.currentFilteredFrameworks = this.route.query.frameworks;
+    scanQueryParams() {
+      let queryFrameworks = this.route.query.frameworks;
+      if (queryFrameworks) {
+        if (typeof queryFrameworks === "string" && queryFrameworks !== "") {
+          this.currentFilteredFrameworks = [queryFrameworks as DataTypeEnum];
+        } else if (Array.isArray(queryFrameworks)) {
+          this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>;
         }
-        filtered = true;
-      }
-
-      if (this.route.query.input) {
-        this.currentSearchBarInput = this.route.query.input;
-        filtered = true;
-      }
-
-      if (filtered) {
-        this.$refs.frameworkDataSearchBar.queryCompany(this.currentSearchBarInput, this.currentFilteredFrameworks);
       } else {
-        this.$refs.frameworkDataSearchBar.$refs.autocomplete.focus();
-        this.toggleIndexTabs(stockIndices[this.firstDisplayedIndex]);
+        this.currentFilteredFrameworks = Object.values(DataTypeEnum);
+      }
+
+      let queryInput = this.route.query.input as string;
+      if (queryInput) {
+        this.currentSearchBarInput = queryInput;
       }
     },
-    handleCompanyQuery(companiesReceived) {
-      this.$refs.indexTabs.activeIndex = null;
+    handleFrameworkDataSearchBarRender() {
+      this.frameworkDataSearchBar.queryCompany();
+    },
+    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
-      const frameworksQuery =
-        this.currentFilteredFrameworks && this.currentFilteredFrameworks.length === 0
-          ? ""
-          : this.currentFilteredFrameworks;
+      const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
+      const queryFrameworks = !this.route.query.frameworks ? undefined : this.currentFilteredFrameworks;
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: {
-          input: this.currentSearchBarInput,
-          frameworks: frameworksQuery,
-        },
+        query: { input: queryInput, frameworks: queryFrameworks },
       });
-    },
-
-    handleFilterByIndex(companiesReceived) {
-      this.resultsArray = companiesReceived;
-      this.showSearchResultsTable = true;
-    },
-    toggleIndexTabs(stockIndex) {
-      this.$refs.indexTabs.filterByIndex(stockIndex);
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.$refs.searchBarAndIndexTabContainer.clientHeight;
+      const height = this.searchBarContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
       this.searchBarName = "search_bar_scrolled";
     },
+    unmounted() {
+      window.removeEventListener("scroll", this.handleScroll);
+    },
   },
-};
+});
 </script>

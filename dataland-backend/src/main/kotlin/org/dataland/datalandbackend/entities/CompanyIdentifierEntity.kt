@@ -20,7 +20,7 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name = "company_identifiers")
-@IdClass(CompanyIdentifierId::class)
+@IdClass(CompanyIdentifierEntityId::class)
 data class CompanyIdentifierEntity(
     @Id
     @Column(name = "identifier_value")
@@ -37,8 +37,8 @@ data class CompanyIdentifierEntity(
 
     @Transient
     private var isNew: Boolean = false
-) : Persistable<CompanyIdentifierId>, ApiModelConversion<CompanyIdentifier> {
-    override fun getId(): CompanyIdentifierId = CompanyIdentifierId(identifierValue, identifierType)
+) : Persistable<CompanyIdentifierEntityId>, ApiModelConversion<CompanyIdentifier> {
+    override fun getId(): CompanyIdentifierEntityId = CompanyIdentifierEntityId(identifierValue, identifierType)
     override fun isNew(): Boolean = isNew
 
     override fun toApiModel(): CompanyIdentifier {

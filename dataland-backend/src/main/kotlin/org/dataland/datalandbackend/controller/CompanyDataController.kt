@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.model.enums.company.StockIndex
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -32,7 +31,6 @@ class CompanyDataController(
     @Transactional
     override fun getCompanies(
         searchString: String?,
-        stockIndices: Set<StockIndex>?,
         dataTypes: Set<DataType>?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
@@ -45,7 +43,6 @@ class CompanyDataController(
                 searchString ?: "",
                 onlyCompanyNames,
                 dataTypes ?: setOf(),
-                stockIndices ?: setOf()
             ).map { it.toApiModel() }
         )
     }
