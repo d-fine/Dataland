@@ -75,18 +75,14 @@ class DataManager(
     }
 
     override fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        val dataTypeNameExpectedByDataland = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType).dataType
-        logger.info(
-            "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: " +
-                "$correlationId"
-        )
+        val dataTypeNameExpectedByDataland = getTypeNameExpectedByDataland(dataId, dataType, correlationId)
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
             throw IllegalArgumentException(
                 "No data set with the id: $dataId could be found in the data store."
             )
         }
-        logger.info("Received Dataset of length ${dataAsString.length}")
+        logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
             throw IllegalArgumentException(
@@ -97,8 +93,21 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
+    private fun getTypeNameExpectedByDataland(
+        dataId: String,
+        dataType: DataType,
+        correlationId: String
+    ): String {
+        val dataTypeNameExpectedByDataland = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType).dataType
+        logger.info(
+            "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: $correlationId"
+        )
+        return dataTypeNameExpectedByDataland
+    }
+
     private fun getDataFromEdcClient(dataId: String, correlationId: String): String {
         val dataAsString: String
+        logger.info("Retrieve data from edc client. Correlation ID: $correlationId")
         try {
             dataAsString = edcClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
