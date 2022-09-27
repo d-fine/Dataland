@@ -19,7 +19,7 @@ class EnumCsvParser<T>(val valueMap: Map<String, T>) {
 
     /**
      * Parses the input string input. If no mapping is defined for the input, an error is raised
-     * @param columnReference A column reference name that is soley used to generate sensible error messages!
+     * @param columnReference A column reference name that is solely used to generate sensible error messages!
      * @param input The input that is supposed to be parsed
      */
     fun parseAllowingNull(columnReference: String, input: String?): T? {

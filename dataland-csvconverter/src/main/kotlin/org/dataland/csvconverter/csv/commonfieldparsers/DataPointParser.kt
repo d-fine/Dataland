@@ -64,7 +64,7 @@ class DataPointParser(
                         " has been specified but no report was found"
                 ),
             page = buildMapForSpecificDatapoint(generalMap, baseString)
-                .getLongCsvValue("${baseString}Page", row)
+                .readCsvLong("${baseString}Page", row)
         )
     }
 
