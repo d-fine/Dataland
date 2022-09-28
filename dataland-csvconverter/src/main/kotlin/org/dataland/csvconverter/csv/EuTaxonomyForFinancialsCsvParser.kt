@@ -105,7 +105,7 @@ class EuTaxonomyForFinancialsCsvParser(
     @Suppress("kotlin:S138")
     private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis? {
         val eligibilityColumnMapping = buildEligibilityColumnMapping(type)
-        val eligibilityKpis= EligibilityKpis(
+        val eligibilityKpis = EligibilityKpis(
             taxonomyEligibleActivity = dataPointParser.buildPercentageDataPoint(
                 eligibilityColumnMapping, row,
                 "taxonomyEligibleActivity"
@@ -134,13 +134,18 @@ class EuTaxonomyForFinancialsCsvParser(
     private fun buildEligibilityKpis(
         row: Map<String, String>,
         types: EnumSet<FinancialServicesType>
-    ): Map<FinancialServicesType, EligibilityKpis?> {
-        if (!checkIfCorrectKpisGiven(row, types)){
-            throw IllegalArgumentException("Wrong Eligibility KPIs given.")
+    ): Map<FinancialServicesType, EligibilityKpis> {
+        val presentKpis = FinancialServicesType.values()
+            .mapNotNull { fsType -> buildSingleEligibilityKpis(row, fsType)?.let { fsType to it } }
+            .toMap()
+        if (!types.containsAll(presentKpis.keys)) {
+            throw IllegalArgumentException(
+                "EligibilityKpi values have been specified for ${presentKpis.keys}" +
+                    " but the company is only of types $types"
+            )
         }
-        return types.associateWith { buildSingleEligibilityKpis(row, it) }
+        return presentKpis
     }
-
 
     private fun buildCreditInstitutionKpis(
         row: Map<String, String>
@@ -204,19 +209,5 @@ class EuTaxonomyForFinancialsCsvParser(
             numberOfEmployees = commonFieldParser.getNumberOfEmployees(row),
             referencedReports = companyReportParser.buildMapOfAllCompanyReports(row),
         )
-    }
-
-    private fun checkIfCorrectKpisGiven(
-        row: Map<String, String>,
-        types: EnumSet<FinancialServicesType>
-    ): Boolean {
-        for (f in enumValues<FinancialServicesType>().subtract(types)) {
-            if (buildSingleEligibilityKpis(row, f) !== null){
-                throw IllegalArgumentException("Eligibility KPI given for Financial type ${f} " +
-                        "even though company is not assigned as ${f}.")
-                return false
-            }
-        }
-        return true
     }
 }

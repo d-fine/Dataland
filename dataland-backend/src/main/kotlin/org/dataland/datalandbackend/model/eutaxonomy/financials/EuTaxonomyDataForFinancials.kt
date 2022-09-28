@@ -20,7 +20,7 @@ import java.util.EnumSet
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
-    val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis?>? = null,
+    val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
 
