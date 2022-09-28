@@ -2,12 +2,12 @@ import { faker } from "@faker-js/faker";
 
 const percentagePrecision = 0.0001;
 
-export function randomNumber() {
-  return faker.datatype.number(1000);
+export function randomNumber(max: number) {
+  return faker.datatype.number(max);
 }
 
-export function randomNumberOrUndefined(): number | undefined {
-  return faker.datatype.boolean() ? randomNumber() : undefined;
+export function randomNumberOrUndefined(max: number): number | undefined {
+  return faker.datatype.boolean() ? randomNumber(max) : undefined;
 }
 
 export function randomPercentageValue(): number {

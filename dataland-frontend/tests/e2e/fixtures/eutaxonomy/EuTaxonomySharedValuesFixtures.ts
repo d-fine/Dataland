@@ -16,7 +16,7 @@ export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxo
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
   input.reportingObligation = randomYesNoUndefined();
-  input.numberOfEmployees = randomNumberOrUndefined();
+  input.numberOfEmployees = randomNumberOrUndefined(100000);
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
