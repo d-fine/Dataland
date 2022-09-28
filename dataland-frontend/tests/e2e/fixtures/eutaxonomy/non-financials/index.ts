@@ -8,7 +8,8 @@ import fs from "fs";
 
 export function exportFixturesEuTaxonomyNonFinancial() {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
-    generateEuTaxonomyDataForNonFinancials
+    generateEuTaxonomyDataForNonFinancials,
+    250
   );
   companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany = true;
   fs.writeFileSync(

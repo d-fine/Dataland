@@ -3,6 +3,9 @@ import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  InsuranceKpis,
+  CreditInstitutionKpis,
+  InvestmentFirmKpis,
 } from "@clients/backend";
 
 import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "@e2e/fixtures/CsvUtils";
@@ -14,123 +17,90 @@ import {
   populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
 import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { randomPercentageValue } from "../../common/NumberFixtures";
 
 const { parse } = require("json2csv");
 
-const resolution = 0.0001;
+export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
+  const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();
+  return {
+    taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
+      taxonomyEligibleNonLifeInsuranceActivities,
+      referencedReports
+    ),
+  };
+}
 
-export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
-  const returnBase: EuTaxonomyDataForFinancials = {};
-  populateSharedValues(returnBase);
-
-  const financialServicesTypes = faker.helpers.arrayElements(
-    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
-  );
-
+export function generateCreditInstitutionKpis(referencedReports: ReferencedReports): CreditInstitutionKpis {
   let tradingPortfolioAndInterbankLoans = undefined;
   let interbankLoans = undefined;
   let tradingPortfolio = undefined;
-  let taxonomyEligibleNonLifeInsuranceActivities = undefined;
-  let greenAssetRatioCreditInstitution = undefined;
-  let greenAssetRatioInvestmentFirm = undefined;
 
-  if (financialServicesTypes.indexOf("CreditInstitution") >= 0) {
-    const singleOrDualField = faker.datatype.boolean();
-    if (singleOrDualField) {
-      tradingPortfolioAndInterbankLoans = faker.datatype.float({
-        min: 0,
-        max: 1,
-        precision: resolution,
-      });
-    } else {
-      interbankLoans = faker.datatype.float({
-        min: 0,
-        max: 1,
-        precision: resolution,
-      });
-      tradingPortfolio = faker.datatype.float({
-        min: 0,
-        max: 1,
-        precision: resolution,
-      });
-    }
-    greenAssetRatioCreditInstitution = faker.datatype.float({
-      min: 0,
-      max: 1,
-      precision: resolution,
-    });
-  } else if (financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0) {
-    taxonomyEligibleNonLifeInsuranceActivities = faker.datatype.float({
-      min: 0,
-      max: 1,
-      precision: resolution,
-    });
-  } else if (financialServicesTypes.indexOf("InvestmentFirm") >= 0) {
-    greenAssetRatioInvestmentFirm = faker.datatype.float({
-      min: 0,
-      max: 1,
-      precision: resolution,
-    });
+  const singleOrDualField = faker.datatype.boolean();
+  if (singleOrDualField) {
+    tradingPortfolioAndInterbankLoans = randomPercentageValue();
+  } else {
+    interbankLoans = randomPercentageValue();
+    tradingPortfolio = randomPercentageValue();
   }
+  const greenAssetRatioCreditInstitution = randomPercentageValue();
 
+  return {
+    interbankLoans: generateDatapointOrNotReportedAtRandom(interbankLoans, referencedReports),
+    tradingPortfolio: generateDatapointOrNotReportedAtRandom(tradingPortfolio, referencedReports),
+    tradingPortfolioAndInterbankLoans: generateDatapointOrNotReportedAtRandom(
+      tradingPortfolioAndInterbankLoans,
+      referencedReports
+    ),
+    greenAssetRatio: generateDatapointOrNotReportedAtRandom(greenAssetRatioCreditInstitution, referencedReports),
+  };
+}
+
+export function generateInvestmentFirmKpis(referencedReports: ReferencedReports): InvestmentFirmKpis {
+  const greenAssetRatioInvestmentFirm = randomPercentageValue();
+  return {
+    greenAssetRatio: generateDatapointOrNotReportedAtRandom(greenAssetRatioInvestmentFirm, referencedReports),
+  };
+}
+
+export function generateEuTaxonomyDataForFinancialsWithTypes(
+  financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
+): EuTaxonomyDataForFinancials {
+  const returnBase: EuTaxonomyDataForFinancials = {};
+  populateSharedValues(returnBase);
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!!)])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
-  returnBase.creditInstitutionKpis = {
-    interbankLoans: generateDatapointOrNotReportedAtRandom(interbankLoans, returnBase.referencedReports!!),
-    tradingPortfolio: generateDatapointOrNotReportedAtRandom(tradingPortfolio, returnBase.referencedReports!!),
-    tradingPortfolioAndInterbankLoans: generateDatapointOrNotReportedAtRandom(
-      tradingPortfolioAndInterbankLoans,
-      returnBase.referencedReports!!
-    ),
-    greenAssetRatio: generateDatapointOrNotReportedAtRandom(
-      greenAssetRatioCreditInstitution,
-      returnBase.referencedReports!!
-    ),
-  };
-  returnBase.insuranceKpis = {
-    taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
-      taxonomyEligibleNonLifeInsuranceActivities,
-      returnBase.referencedReports!!
-    ),
-  };
-  returnBase.investmentFirmKpis = {
-    greenAssetRatio: generateDatapointOrNotReportedAtRandom(
-      greenAssetRatioInvestmentFirm,
-      returnBase.referencedReports!!
-    ),
-  };
+  returnBase.creditInstitutionKpis =
+    financialServicesTypes.indexOf("CreditInstitution") >= 0
+      ? generateCreditInstitutionKpis(returnBase.referencedReports!!)
+      : undefined;
+  returnBase.insuranceKpis =
+    financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
+      ? generateInsuranceKpis(returnBase.referencedReports!!)
+      : undefined;
+  returnBase.investmentFirmKpis =
+    financialServicesTypes.indexOf("InvestmentFirm") >= 0
+      ? generateInvestmentFirmKpis(returnBase.referencedReports!!)
+      : undefined;
   return returnBase;
 }
 
+export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
+  const financialServicesTypes = faker.helpers.arrayElements(
+    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
+  );
+  return generateEuTaxonomyDataForFinancialsWithTypes(financialServicesTypes);
+}
+
 export function generateEligibilityKpis(reports: ReferencedReports): EligibilityKpis {
-  const taxonomyEligibleEconomicActivity = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const taxonomyNonEligibleEconomicActivity = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const eligibleDerivatives = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const banksAndIssuers = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const nonNfrd = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
+  const taxonomyEligibleEconomicActivity = randomPercentageValue();
+  const taxonomyNonEligibleEconomicActivity = randomPercentageValue();
+  const eligibleDerivatives = randomPercentageValue();
+  const banksAndIssuers = randomPercentageValue();
+  const nonNfrd = randomPercentageValue();
 
   return {
     banksAndIssuers: generateDatapointOrNotReportedAtRandom(banksAndIssuers, reports),

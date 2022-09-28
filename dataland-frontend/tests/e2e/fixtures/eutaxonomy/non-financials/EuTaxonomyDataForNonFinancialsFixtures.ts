@@ -9,24 +9,16 @@ import {
   getCsvSharedEuTaxonomyValuesMapping,
   populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
+import { randomPercentageValue } from "../../common/NumberFixtures";
 const { parse } = require("json2csv");
 
 const maxEuro = 1000000;
 const minEuro = 50000;
-const resolution = 0.0001;
 
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): EuTaxonomyDetailsPerCashFlowType {
   const total = faker.datatype.float({ min: minEuro, max: maxEuro });
-  const eligiblePercentage = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
-  const alignedPercentage = faker.datatype.float({
-    min: 0,
-    max: 1,
-    precision: resolution,
-  });
+  const eligiblePercentage = randomPercentageValue();
+  const alignedPercentage = randomPercentageValue();
 
   return {
     totalAmount: generateDatapointOrNotReportedAtRandom(total, reports),

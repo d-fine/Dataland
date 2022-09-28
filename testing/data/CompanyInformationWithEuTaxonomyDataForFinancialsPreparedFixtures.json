@@ -1,0 +1,529 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "asset-management-credit-institution",
+			"headquarters": "Zapletalburg",
+			"sector": "web services",
+			"marketCap": 5278779,
+			"reportingDateOfMarketCap": "2021-11-13",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "a8edry0pi95n"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "fz2k8o9pyqn7"
+				}
+			],
+			"countryCode": "MG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://xn--gengsam-hurrikan-lzb.net/g%C3%BCtig-pluto.pdf",
+					"reportDate": "2022-02-08",
+					"currency": "PYG"
+				},
+				"AnnualReport": {
+					"reference": "http://xn--nchtern-jazz-dlb.org/z%C3%A4rtlich-elektrizit%C3%A4t.pdf",
+					"currency": "ETB"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Tang, Schumann und Unger"
+			},
+			"scopeOfEntities": "No",
+			"financialServicesTypes": [
+				"AssetManagement",
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"AssetManagement": {
+					"banksAndIssuers": {
+						"value": 0.517,
+						"dataSource": {
+							"page": 144,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "synthesize bluetooth port"
+					},
+					"derivatives": {
+						"value": 0.1391,
+						"dataSource": {
+							"page": 24,
+							"report": "AnnualReport"
+						},
+						"quality": "Reported",
+						"comment": "connect auxiliary application"
+					},
+					"investmentNonNfrd": {
+						"quality": "NA"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.8266,
+						"dataSource": {
+							"page": 512,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "back up open-source card"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.0437,
+						"dataSource": {
+							"page": 334,
+							"report": "AnnualReport"
+						},
+						"quality": "Estimated",
+						"comment": "parse solid state bus"
+					}
+				},
+				"CreditInstitution": {
+					"banksAndIssuers": {
+						"quality": "NA"
+					},
+					"derivatives": {
+						"value": 0.2123,
+						"quality": "Incomplete"
+					},
+					"investmentNonNfrd": {
+						"value": 0.9961,
+						"quality": "Estimated"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.9218,
+						"dataSource": {
+							"page": 1162,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "transmit back-end sensor"
+					},
+					"taxonomyNonEligibleActivity": {
+						"quality": "NA"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"interbankLoans": {
+					"value": 0.449,
+					"dataSource": {
+						"page": 855,
+						"report": "IntegratedReport"
+					},
+					"quality": "Audited",
+					"comment": "copy open-source monitor"
+				},
+				"tradingPortfolio": {
+					"value": 0.0257,
+					"quality": "Incomplete"
+				},
+				"greenAssetRatio": {
+					"value": 0.7043,
+					"dataSource": {
+						"page": 688,
+						"report": "IntegratedReport"
+					},
+					"quality": "Estimated",
+					"comment": "reboot cross-platform program"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "credit-institution-dual-field-submission",
+			"headquarters": "Hadfielddorf",
+			"sector": "web-readiness",
+			"marketCap": 7585608,
+			"reportingDateOfMarketCap": "2022-04-29",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "20yb1nt1o6bq"
+				}
+			],
+			"countryCode": "AX",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "https://xn--hintergrndig-epistemologie-5zc.ch/divenhaft-k%C3%B6rper.pdf",
+					"reportDate": "2022-03-10",
+					"currency": "EUR"
+				},
+				"AnnualReport": {
+					"reference": "http://verantwortungslos-bewusstsein.name/spitz-mund.pdf",
+					"reportDate": "2022-01-14",
+					"currency": "PKR"
+				}
+			},
+			"fiscalYearEnd": "2021-11-20",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"financialServicesTypes": [
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"CreditInstitution": {
+					"banksAndIssuers": {
+						"value": 0.1803,
+						"quality": "Incomplete"
+					},
+					"derivatives": {
+						"value": 0.1795,
+						"dataSource": {
+							"page": 342,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "index primary program"
+					},
+					"investmentNonNfrd": {
+						"quality": "NA"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.795,
+						"dataSource": {
+							"page": 1029,
+							"report": "IntegratedReport"
+						},
+						"quality": "Audited",
+						"comment": "connect virtual capacitor"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.0577,
+						"dataSource": {
+							"page": 436,
+							"report": "AnnualReport"
+						},
+						"quality": "Incomplete",
+						"comment": "index bluetooth array"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"interbankLoans": {
+					"value": 0.2429,
+					"dataSource": {
+						"page": 1071,
+						"report": "IntegratedReport"
+					},
+					"quality": "Reported",
+					"comment": "calculate mobile bandwidth"
+				},
+				"tradingPortfolio": {
+					"value": 0.5534,
+					"dataSource": {
+						"page": 1192,
+						"report": "IntegratedReport"
+					},
+					"quality": "Audited",
+					"comment": "index online interface"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "credit-institution-single-field-submission",
+			"headquarters": "Korayscheid",
+			"sector": "schemas",
+			"marketCap": 6858657,
+			"reportingDateOfMarketCap": "2021-12-12",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "6sd92uv92evq"
+				}
+			],
+			"countryCode": "IS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://xn--bedrohlich-sthetik-vtb.name/objektiv-wind.pdf",
+					"currency": "WST"
+				},
+				"ESEFReport": {
+					"reference": "https://xn--herzerfrischend-sthetik-b8b.name/weitblickend-flaschenzug.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2021-10-15",
+					"currency": "BRL"
+				},
+				"SustainabilityReport": {
+					"reference": "https://xn--unaufhaltsam-kologie-gbc.com/teuer-adler.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-07-26",
+					"currency": "PGK"
+				}
+			},
+			"fiscalYearDeviation": "Yes",
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Wollmann Gruppe"
+			},
+			"reportingObligation": "No",
+			"numberOfEmployees": 858,
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"CreditInstitution": {
+					"banksAndIssuers": {
+						"value": 0.3467,
+						"dataSource": {
+							"page": 436,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Audited",
+						"comment": "parse mobile system"
+					},
+					"derivatives": {
+						"value": 0.306,
+						"dataSource": {
+							"page": 1189,
+							"report": "ESEFReport"
+						},
+						"quality": "Audited",
+						"comment": "override back-end program"
+					},
+					"investmentNonNfrd": {
+						"value": 0.0876,
+						"dataSource": {
+							"page": 1121,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Incomplete",
+						"comment": "generate 1080p driver"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.2504,
+						"dataSource": {
+							"page": 504,
+							"report": "ESEFReport"
+						},
+						"quality": "Audited",
+						"comment": "index solid state hard drive"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.5138,
+						"dataSource": {
+							"page": 877,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Reported",
+						"comment": "quantify mobile circuit"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"tradingPortfolioAndInterbankLoans": {
+					"value": 0.5842,
+					"dataSource": {
+						"page": 165,
+						"report": "SustainabilityReport"
+					},
+					"quality": "Incomplete",
+					"comment": "back up primary protocol"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "insurance-company",
+			"headquarters": "Ost Joelinadorf",
+			"sector": "platforms",
+			"marketCap": 5549463,
+			"reportingDateOfMarketCap": "2022-06-06",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "fzsmag7g08ma"
+				}
+			],
+			"countryCode": "TC",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://bestechend-axt.info/sachlich-urknall.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-03-21",
+					"currency": "GNF"
+				},
+				"SustainabilityReport": {
+					"reference": "https://ordentlich-fels.net/transzendent-demokratie.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-03-28",
+					"currency": "COP"
+				}
+			},
+			"fiscalYearDeviation": "Yes",
+			"fiscalYearEnd": "2021-10-14",
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"numberOfEmployees": 204,
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"InsuranceOrReinsurance"
+			],
+			"eligibilityKpis": {
+				"InsuranceOrReinsurance": {
+					"banksAndIssuers": {
+						"value": 0.2545,
+						"quality": "Estimated"
+					},
+					"derivatives": {
+						"value": 0.5156,
+						"dataSource": {
+							"page": 511,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Incomplete",
+						"comment": "input back-end card"
+					},
+					"investmentNonNfrd": {
+						"value": 0.6208,
+						"quality": "Incomplete"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.642,
+						"dataSource": {
+							"page": 371,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Estimated",
+						"comment": "quantify redundant bus"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.8936,
+						"dataSource": {
+							"page": 938,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Reported",
+						"comment": "back up cross-platform system"
+					}
+				}
+			},
+			"insuranceKpis": {
+				"taxonomyEligibleNonLifeInsuranceActivities": {
+					"quality": "NA"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "asset-management-company",
+			"headquarters": "Bad Muhammed",
+			"sector": "niches",
+			"marketCap": 6662175,
+			"reportingDateOfMarketCap": "2022-06-04",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "hqxmdv62gu3h"
+				}
+			],
+			"countryCode": "JM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "https://verdient-brust.net/inhaltsreich-bakterium.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-01-29",
+					"currency": "BMD"
+				},
+				"SustainabilityReport": {
+					"reference": "https://xn--individuell-kologie-16b.de/mitrei%C3%9Fend-herz.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "BYR"
+				},
+				"ESEFReport": {
+					"reference": "http://fair-pyramide.org/treffend-nachttisch.pdf",
+					"currency": "FKP"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"fiscalYearEnd": "2021-10-01",
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Krause GmbH",
+				"dataSource": {
+					"page": 1195,
+					"report": "SustainabilityReport"
+				}
+			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"AssetManagement"
+			],
+			"eligibilityKpis": {
+				"AssetManagement": {
+					"banksAndIssuers": {
+						"value": 0.4639,
+						"quality": "Incomplete"
+					},
+					"derivatives": {
+						"value": 0.909,
+						"dataSource": {
+							"page": 782,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Reported",
+						"comment": "transmit online interface"
+					},
+					"investmentNonNfrd": {
+						"value": 0.8245,
+						"dataSource": {
+							"page": 240,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Estimated",
+						"comment": "parse multi-byte hard drive"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.9169,
+						"dataSource": {
+							"page": 973,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Audited",
+						"comment": "navigate 1080p port"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.7189,
+						"dataSource": {
+							"page": 529,
+							"report": "ESEFReport"
+						},
+						"quality": "Audited",
+						"comment": "index wireless protocol"
+					}
+				}
+			}
+		}
+	}
+]

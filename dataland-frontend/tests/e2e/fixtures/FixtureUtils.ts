@@ -8,9 +8,9 @@ export interface FixtureData<T> {
   t: T;
 }
 
-export function generateFixtureDataset<T>(generator: () => T): Array<FixtureData<T>> {
+export function generateFixtureDataset<T>(generator: () => T, numElements: number): Array<FixtureData<T>> {
   const fixtureDataset = [];
-  for (let id = 1; id <= 250; id++) {
+  for (let id = 1; id <= numElements; id++) {
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: generator(),
