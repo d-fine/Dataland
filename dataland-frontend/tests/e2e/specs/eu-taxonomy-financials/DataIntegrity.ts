@@ -114,7 +114,7 @@ describeIf(
     });
 
     it("Create a Company that is Asset Manager and Insurance", () => {
-      const testData = getPreparedFixture("asset-management-credit-institution");
+      const testData = getPreparedFixture("asset-management-insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);

@@ -7,6 +7,7 @@ import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.utils.NullCheckExtension.checkIfAllFieldsAreNull
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -135,8 +136,8 @@ class EuTaxonomyForFinancialsCsvParser(
 
     private fun buildCreditInstitutionKpis(
         row: Map<String, String>
-    ): CreditInstitutionKpis {
-        return CreditInstitutionKpis(
+    ): CreditInstitutionKpis? {
+        val creditInstitutionKpis = CreditInstitutionKpis(
             tradingPortfolio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row,
                 "tradingPortfolio"
@@ -152,22 +153,28 @@ class EuTaxonomyForFinancialsCsvParser(
                 columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution"
             ),
         )
+        return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) null
+        else creditInstitutionKpis
     }
 
-    private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis {
-        return InvestmentFirmKpis(
+    private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis? {
+        val investmentFirmKpis = InvestmentFirmKpis(
             greenAssetRatio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
             ),
         )
+        return if (investmentFirmKpis.checkIfAllFieldsAreNull()) null
+        else investmentFirmKpis
     }
 
-    private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis {
-        return InsuranceKpis(
+    private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis? {
+        val insuranceKpis = InsuranceKpis(
             taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"
             ),
         )
+        return if (insuranceKpis.checkIfAllFieldsAreNull()) null
+        else insuranceKpis
     }
     /**
      Assembles all partial information into one EuTaxonomyDataForFinancials object

@@ -13,7 +13,7 @@ type generatorFunction = (
 
 export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyDataForFinancials>> {
   const creationFunctions: Array<generatorFunction> = [
-    createAssetManagementAndCreditInstitutionCompany,
+    createAssetManagementAndInsuranceCompany,
     createCreditInstitutionDualFieldSubmission,
     createCreditInstitutionSingleFieldSubmission,
     createInsuranceCompany,
@@ -69,10 +69,10 @@ function createAssetManagementCompany(
   return input;
 }
 
-function createAssetManagementAndCreditInstitutionCompany(
+function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
-  input.companyInformation.companyName = "asset-management-credit-institution";
-  input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "CreditInstitution"]);
+  input.companyInformation.companyName = "asset-management-insurance-company";
+  input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
   return input;
 }
