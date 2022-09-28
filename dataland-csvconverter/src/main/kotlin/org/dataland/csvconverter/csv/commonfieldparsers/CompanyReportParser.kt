@@ -25,9 +25,9 @@ class CompanyReportParser(
     /**
      * Maps a human-readable report name to our internal reference name
      */
-    fun getReverseReportNameMapping(csvName: String): String {
-        return columnMapReportTitles.entries.firstOrNull { it.value == csvName }?.key
-            ?: throw IllegalArgumentException("Unknown report $csvName")
+    fun getReverseReportNameMapping(reportNameFromCsv: String): String {
+        return columnMapReportTitles.entries.firstOrNull { it.value == reportNameFromCsv }?.key
+            ?: throw IllegalArgumentException("Unknown report $reportNameFromCsv")
     }
 
     /**

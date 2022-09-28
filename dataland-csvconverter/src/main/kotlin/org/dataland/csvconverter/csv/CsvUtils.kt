@@ -28,7 +28,7 @@ object CsvUtils {
 
     /**
      * This function uses the backing map to extract a property from a CSV row.
-     * If the requested column is not populated "n/a" will be returned
+     * If the requested column is not populated null will be returned
      */
     fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String? {
         return csvData[this[property]!!.lowercase()]?.trim()?.ifBlank {
@@ -36,10 +36,11 @@ object CsvUtils {
         }
     }
 
-    /** This function checks, whether the passed properties field contains an entry.
+    /**
+     * This function checks, whether the passed properties field contains an entry.
      * If it does, it returns true
      */
-    fun Map<String, String>.checkIfFieldHasValue(property: String, csvData: Map<String, String>): Boolean {
+    private fun Map<String, String>.checkIfFieldHasValue(property: String, csvData: Map<String, String>): Boolean {
         return csvData[this[property]!!.lowercase()]!!.isNotBlank()
     }
 
@@ -80,7 +81,7 @@ object CsvUtils {
         scaleFactor: BigDecimal = BigDecimal.ONE
     ): BigDecimal? {
         val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
-        val expectedFormat = "(\\d+(.)?)+(,\\d+)?".toRegex()
+        val expectedFormat = "(\\d+(\\.)?)+(,\\d+)?".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
                 "The input string \"$rawValue\" for column ${this[property]} does not " +
@@ -104,7 +105,7 @@ object CsvUtils {
         csvData: Map<String, String>,
     ): Long? {
         val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
-        val expectedFormat = "(\\d+(.)?)+".toRegex()
+        val expectedFormat = "(\\d+(\\.)?)+".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
                 "The input string \"$rawValue\" for column ${this[property]} does not " +
