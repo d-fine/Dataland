@@ -7,8 +7,8 @@ import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
-import org.dataland.csvconverter.csv.utils.NullCheckExtension.checkIfAllFieldsAreNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
+import org.dataland.csvconverter.csv.utils.NullCheckExtension.checkIfAllFieldsAreNull
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
