@@ -103,9 +103,9 @@ class EuTaxonomyForFinancialsCsvParser(
      * Callable functions assembling the different types of KPIs
      */
     @Suppress("kotlin:S138")
-    private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis {
+    private fun buildSingleEligibilityKpis(row: Map<String, String>, type: FinancialServicesType): EligibilityKpis? {
         val eligibilityColumnMapping = buildEligibilityColumnMapping(type)
-        return EligibilityKpis(
+        val eligibilityKpis= EligibilityKpis(
             taxonomyEligibleActivity = dataPointParser.buildPercentageDataPoint(
                 eligibilityColumnMapping, row,
                 "taxonomyEligibleActivity"
@@ -127,14 +127,20 @@ class EuTaxonomyForFinancialsCsvParser(
                 "investmentNonNfrd"
             ),
         )
+        return if (eligibilityKpis.checkIfAllFieldsAreNull()) null
+        else eligibilityKpis
     }
 
     private fun buildEligibilityKpis(
         row: Map<String, String>,
         types: EnumSet<FinancialServicesType>
-    ): Map<FinancialServicesType, EligibilityKpis> {
+    ): Map<FinancialServicesType, EligibilityKpis?> {
+        if (!checkIfCorrectKpisGiven(row, types)){
+            throw IllegalArgumentException("Wrong Eligibility KPIs given.")
+        }
         return types.associateWith { buildSingleEligibilityKpis(row, it) }
     }
+
 
     private fun buildCreditInstitutionKpis(
         row: Map<String, String>
@@ -198,5 +204,19 @@ class EuTaxonomyForFinancialsCsvParser(
             numberOfEmployees = commonFieldParser.getNumberOfEmployees(row),
             referencedReports = companyReportParser.buildMapOfAllCompanyReports(row),
         )
+    }
+
+    private fun checkIfCorrectKpisGiven(
+        row: Map<String, String>,
+        types: EnumSet<FinancialServicesType>
+    ): Boolean {
+        for (f in enumValues<FinancialServicesType>().subtract(types)) {
+            if (buildSingleEligibilityKpis(row, f) !== null){
+                throw IllegalArgumentException("Eligibility KPI given for Financial type ${f} " +
+                        "even though company is not assigned as ${f}.")
+                return false
+            }
+        }
+        return true
     }
 }
