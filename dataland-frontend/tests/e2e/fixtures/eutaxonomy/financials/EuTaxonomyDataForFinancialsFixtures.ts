@@ -12,10 +12,7 @@ import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader
 import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
-import {
-  getCsvSharedEuTaxonomyValuesMapping,
-  populateSharedValues,
-} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
+import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
 import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "../../common/NumberFixtures";
 
