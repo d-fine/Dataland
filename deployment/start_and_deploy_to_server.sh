@@ -30,8 +30,6 @@ timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url e
 location=/home/ubuntu/dataland
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose stop keycloak keycloak-initializer"
-ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer" || exit 1
-ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export" || exit 1
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
