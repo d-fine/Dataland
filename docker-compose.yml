@@ -221,7 +221,8 @@ services:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
-      - ./dataland-keycloak/realms:/opt/keycloak/data/import
+      - ./dataland-keycloak/realms:/keycloak_realms
+      - keycloak_users:/keycloak_users
     command: initialize
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
@@ -268,4 +269,6 @@ volumes:
   backend_data:
     driver: local
   letsencrypt:
+    driver: local
+  keycloak_users:
     driver: local

@@ -27,12 +27,10 @@ setup_ssh
 
 timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
 
-# TODO: ENTER BACKUP/EXPORT CODE HERE
-user_backup_directory="backup"
-ssh ubuntu@"$target_server_url/keycloak" "opt/keycloak/bin/kc.sh export --dir $user_backup_directory --users same_file --realm datalandsecurity"
-
 location=/home/ubuntu/dataland
 # shut down currently running dataland application and purge files on server
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose stop keycloak keycloak-initializer"
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export" || exit 1
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
@@ -50,17 +48,8 @@ scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/Dockerfi
 scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_url":$location/jar/dataland-backend.jar
 
-#if [[ $INITIALIZE_KEYCLOAK == true ]]; then
-#  echo "Deployment configuration requires Keycloak to be set up from scratch."
-#  "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
-#fi
-
-"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
-
-# TODO: ENTER USER RECOVERY HERE OR IN CONDITIONAL ABOVE (OR DISSOLVE CONDITIONAL)
-ssh ubuntu@"$target_server_url/keycloak" "opt/keycloak/bin/kcadm.sh create partialImport -r datalandsecurity -s ifResourceExists=OVERWRITE -f $user_backup_directory/datalandsecurity-users-0.json
-		--server $target_server_url/keycloak --realm master --user admin --password admin"
-ssh ubuntu@"$target_server_url/keycloak" "rm $user_backup_directory/*"
+echo "Set up Keycloak from scratch."
+"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
