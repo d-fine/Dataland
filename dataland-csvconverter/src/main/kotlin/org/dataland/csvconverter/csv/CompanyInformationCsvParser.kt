@@ -34,7 +34,7 @@ class CompanyInformationCsvParser {
         return CompanyInformation(
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row)!!,
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row)!!,
-            sector = companyInformationColumnMapping.getCsvValue("sector", row) ?: "Missing Sector",
+            sector = companyInformationColumnMapping.getCsvValue("sector", row)!!,
             marketCap = getMarketCap(row),
             reportingDateOfMarketCap = LocalDate.parse(
                 companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),

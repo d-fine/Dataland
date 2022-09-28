@@ -7,6 +7,7 @@ import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.financials.CreditInstitutionKpis
@@ -41,32 +42,26 @@ class EuTaxonomyForFinancialsCsvParser(
         "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm"
     )
 
-    private val columnMappingCompanyType = mapOf(
-        FinancialServicesType.CreditInstitution to "Credit Institution",
-        FinancialServicesType.InvestmentFirm to "Investment Firm",
-        FinancialServicesType.AssetManagement to "Asset Management Company",
-        FinancialServicesType.InsuranceOrReinsurance to "Insurance/Reinsurance",
+    private val financialServicesParser = EnumCsvParser<FinancialServicesType>(
+        mapOf(
+            "1" to FinancialServicesType.CreditInstitution,
+            "2" to FinancialServicesType.InsuranceOrReinsurance,
+            "3" to FinancialServicesType.AssetManagement,
+            "4" to FinancialServicesType.InvestmentFirm,
+        )
     )
 
-    private val financialServicesMap = mapOf<FinancialServicesType, String>(
-        FinancialServicesType.CreditInstitution to "1",
-        FinancialServicesType.InsuranceOrReinsurance to "2",
-        FinancialServicesType.AssetManagement to "3",
-        FinancialServicesType.InvestmentFirm to "4"
-    )
-    /**
-     * Function retrieving all Financial Service types of the company
+    /** Function retrieving all Financial Service types of the company
      */
 
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
         val csvData = columnMappingEuTaxonomyForFinancials.getCsvValue("financialServicesType", csvLineData)!!
-        val split = csvData.split(",").map { it.trim() }
+        val split = csvData.split(",")
         return EnumSet.copyOf(
             split.map {
-                    candidate ->
-                FinancialServicesType.values().firstOrNull {
-                    candidate.equals(financialServicesMap[it], ignoreCase = true)
-                } ?: throw IllegalArgumentException("Could not determine financial services type")
+                financialServicesParser.parse(
+                    "Financial Services Type", it.trim()
+                )
             }
         )
     }
@@ -78,21 +73,28 @@ class EuTaxonomyForFinancialsCsvParser(
     /**
      * Callable function generating the string-maps for the Eligibility KPIs for all Financial Service Types
      */
+
+    private val columnMappingFinancialType = mapOf(
+        FinancialServicesType.CreditInstitution to "Credit Institution",
+        FinancialServicesType.InvestmentFirm to "Investment Firm",
+        FinancialServicesType.AssetManagement to "Asset Management Company",
+        FinancialServicesType.InsuranceOrReinsurance to "Insurance/Reinsurance",
+    )
     private fun buildEligibilityColumnMapping(type: FinancialServicesType): Map<String, String> {
         return mapOf(
             "investmentNonNfrd" to
-                "Exposures to non-NFRD entities ${columnMappingCompanyType[type]}",
+                "Exposures to non-NFRD entities ${columnMappingFinancialType[type]}",
             "taxonomyEligibleActivity" to
                 "Exposures to taxonomy-eligible economic activities" +
-                " ${columnMappingCompanyType[type]}",
+                " ${columnMappingFinancialType[type]}",
             "taxonomyNonEligibleActivity" to
                 "Exposures to taxonomy non-eligible economic activities" +
-                " ${columnMappingCompanyType[type]}",
+                " ${columnMappingFinancialType[type]}",
             "banksAndIssuers" to
                 "Exposures to central governments, central banks, supranational issuers" +
-                " ${columnMappingCompanyType[type]}",
+                " ${columnMappingFinancialType[type]}",
             "derivatives" to
-                "Exposures to derivatives ${columnMappingCompanyType[type]}",
+                "Exposures to derivatives ${columnMappingFinancialType[type]}",
         )
     }
 

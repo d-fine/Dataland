@@ -5,10 +5,7 @@ import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtu
 
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
-import {
-  getCsvSharedEuTaxonomyValuesMapping,
-  populateSharedValues,
-} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValues";
+import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
 import { randomPercentageValue } from "../../common/NumberFixtures";
 const { parse } = require("json2csv");
 
