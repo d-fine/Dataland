@@ -2,11 +2,10 @@ package org.dataland.csvconverter
 
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
-import org.dataland.csvconverter.csv.utils.EnumCsvParser
+import org.dataland.csvconverter.csv.utils.YesNoNaParser
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -32,14 +31,7 @@ class DataPointParserTest {
         }
     }
 
-    private val yesNoNaParser = EnumCsvParser(
-        mapOf(
-            "Yes" to YesNoNa.Yes,
-            "No" to YesNoNa.No,
-            "N/A" to YesNoNa.NA
-        )
-    )
-    private val companyReportParser = CompanyReportParser(yesNoNaParser)
+    private val companyReportParser = CompanyReportParser(YesNoNaParser())
     private val dataPointParser = DataPointParser(companyReportParser)
 
     @Test

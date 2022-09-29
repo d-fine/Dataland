@@ -3,10 +3,9 @@ package org.dataland.csvconverter
 import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
-import org.dataland.csvconverter.csv.utils.EnumCsvParser
+import org.dataland.csvconverter.csv.utils.YesNoNaParser
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -18,14 +17,7 @@ import org.junit.jupiter.api.assertThrows
 
 class AssuranceDataParserTest {
 
-    private val yesNoNaParser = EnumCsvParser(
-        mapOf(
-            "Yes" to YesNoNa.Yes,
-            "No" to YesNoNa.No,
-            "N/A" to YesNoNa.NA
-        )
-    )
-    private val assuranceParser = AssuranceDataParser(DataPointParser(CompanyReportParser(yesNoNaParser)))
+    private val assuranceParser = AssuranceDataParser(DataPointParser(CompanyReportParser(YesNoNaParser())))
 
     private fun buildDataRow(
         assurance: String,

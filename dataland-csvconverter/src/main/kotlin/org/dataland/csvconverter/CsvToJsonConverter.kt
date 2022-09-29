@@ -11,10 +11,9 @@ import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
-import org.dataland.csvconverter.csv.utils.EnumCsvParser
+import org.dataland.csvconverter.csv.utils.YesNoNaParser
+import org.dataland.csvconverter.csv.utils.YesNoParser
 import org.dataland.csvconverter.json.JsonConfig
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.utils.CompanyInformationWithData
@@ -27,27 +26,14 @@ class CsvToJsonConverter {
 
     private var rawCsvData: List<Map<String, String>> = listOf()
 
-    private val yesNoNaParser = EnumCsvParser<YesNoNa>(
-        mapOf(
-            "Yes" to YesNoNa.Yes,
-            "No" to YesNoNa.No,
-            "N/A" to YesNoNa.NA
-        )
-    )
-    private val yesNoParser = EnumCsvParser<YesNo>(
-        mapOf(
-            "Yes" to YesNo.Yes,
-            "No" to YesNo.No
-        )
-    )
     private val companyParser = CompanyInformationCsvParser()
     private val euTaxonomyCommonFieldParser = EuTaxonomyCommonFieldParser(
-        yesNoNaParser,
-        yesNoParser
+        YesNoNaParser(),
+        YesNoParser(),
     )
     private val companyTypeParser = CompanyTypeParser()
     private val fiscalYearParser = FiscalYearParser()
-    private val companyReportParser = CompanyReportParser(yesNoNaParser)
+    private val companyReportParser = CompanyReportParser(YesNoNaParser())
     private val dataPointParser = DataPointParser(companyReportParser)
     private val assuranceDataParser = AssuranceDataParser(dataPointParser)
     private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(
