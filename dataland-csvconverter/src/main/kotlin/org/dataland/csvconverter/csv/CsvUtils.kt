@@ -37,6 +37,23 @@ object CsvUtils {
     }
 
     /**
+     * This function uses the backing map to extract a property from a CSV row, where the field itself represents a
+     * list of items separated by a single character. If the requested column is not populated an empty list will
+     * be returned.
+     */
+    fun Map<String, String>.readMultiValuedCsvField(
+        property: String,
+        csvData: Map<String, String>,
+        subSeparator: String
+    ): List<String> {
+        //This should be replaced by a standard library parsing a string representing csv if possible
+        return csvData[this[property]!!.lowercase()]?.split(
+            "$subSeparator(?=(?:[^\"]*\"[^\"]*\")*[^\"]*\$)".toRegex()
+        )
+            ?.map { it.trim().replace("\"", "") } ?: listOf()
+    }
+
+    /**
      * This function uses the backing map to extract a property from a CSV row
      * If the requested column is not populated an exception will be raised
      */

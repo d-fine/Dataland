@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
 import { FixtureData } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { decimalSeparatorConverter, getIdentifierValueForCsv } from "./CsvUtils";
+import { getIdentifierValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
@@ -51,12 +51,20 @@ export function getCsvCompanyMapping<T>() {
       value: (row: FixtureData<T>) => row.companyInformation.companyName,
     },
     {
+      label: "Alternative Names",
+      value: (row: FixtureData<T>) => row.companyInformation.companyAlternativeNames.map(name => `"${name}"`).join(", "),
+    },
+    {
       label: "Headquarter",
       value: (row: FixtureData<T>) => row.companyInformation.headquarters,
     },
     {
       label: "Sector",
       value: (row: FixtureData<T>) => row.companyInformation.sector,
+    },
+    {
+      label: "Industry",
+      value: (row: FixtureData<T>) => row.companyInformation.industry,
     },
     {
       label: "Countrycode",
