@@ -18,8 +18,8 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val companyName: String,
 
-    @field:JsonProperty(required = true)
-    val companyAlternativeNames: List<String>,
+    @field:JsonProperty(required = false)
+    val companyAlternativeNames: List<String>? = null,
 
     @field:JsonProperty(required = true)
     val headquarters: String,

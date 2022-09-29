@@ -26,7 +26,7 @@ data class StoredCompanyEntity(
 
     @ElementCollection
     @Column(name = "company_alternative_names")
-    var companyAlternativeNames: List<String>,
+    var companyAlternativeNames: List<String>?,
 
     @Column(name = "headquarters")
     var headquarters: String,

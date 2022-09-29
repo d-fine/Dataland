@@ -45,12 +45,12 @@ object CsvUtils {
         property: String,
         csvData: Map<String, String>,
         subSeparator: String
-    ): List<String> {
+    ): List<String>? {
         // This should be replaced by a standard library parsing a string representing csv if possible
         return csvData[this[property]!!.lowercase()]?.split(
             "$subSeparator(?=(?:[^\"]*\"[^\"]*\")*[^\"]*\$)".toRegex()
         )
-            ?.map { it.trim().replace("\"", "") } ?: listOf()
+            ?.map { it.trim().replace("\"", "") }
     }
 
     /**
