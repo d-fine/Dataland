@@ -56,7 +56,7 @@ class EuTaxonomyForFinancialsCsvParser(
      * Function retrieving all Financial Service types of the company
      */
     private fun getFinancialServiceTypes(csvLineData: Map<String, String>): EnumSet<FinancialServicesType> {
-        val csvData = columnMappingEuTaxonomyForFinancials.getCsvValue("financialServicesType", csvLineData)!!
+        val csvData = columnMappingEuTaxonomyForFinancials.getCsvValue("financialServicesType", csvLineData)
         val split = csvData.split(",")
         return EnumSet.copyOf(
             split.map {

@@ -1,10 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { YesNo, YesNoNa } from "@clients/backend";
 
-export function randomYesNo(): YesNo {
-  return faker.datatype.boolean() ? YesNo.Yes : YesNo.No;
-}
-
 const possibleYesNoUndefinedValues = [undefined, ...Object.values(YesNo)];
 export function randomYesNoUndefined(): YesNo | undefined {
   return faker.helpers.arrayElement(possibleYesNoUndefinedValues);

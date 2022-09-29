@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
@@ -39,9 +39,9 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
 
         return AssuranceData(
             assurance = columnMappingAssurance
-                .getCsvValue("assurance", row)
+                .getCsvValueAllowingNull("assurance", row)
                 .let { assuranceOptionsParser.parse("Assurance", it) },
-            provider = columnMappingAssurance.getCsvValue("assuranceProvider", row),
+            provider = columnMappingAssurance.getCsvValueAllowingNull("assuranceProvider", row),
             dataSource = dataPointParser.buildSingleCompanyReportReference(
                 columnMappingAssurance,
                 row,

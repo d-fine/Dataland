@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
@@ -57,16 +57,16 @@ class CompanyReportParser(
             return null
 
         return CompanyReport(
-            reference = reportMap.getCsvValue(baseString, csvLineData)
+            reference = reportMap.getCsvValueAllowingNull(baseString, csvLineData)
                 ?: throw IllegalArgumentException(
                     "Report reference for $baseString has not been defined " +
                         "but some other values have. This should not happen"
                 ),
-            isGroupLevel = reportMap.getCsvValue("${baseString}GroupLevel", csvLineData)
+            isGroupLevel = reportMap.getCsvValueAllowingNull("${baseString}GroupLevel", csvLineData)
                 .let { yesNoNaParser.parseAllowingNull("${baseString}GroupLevel", it) },
-            reportDate = reportMap.getCsvValue("${baseString}Date", csvLineData)
+            reportDate = reportMap.getCsvValueAllowingNull("${baseString}Date", csvLineData)
                 ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
-            currency = reportMap.getCsvValue(
+            currency = reportMap.getCsvValueAllowingNull(
                 "${baseString}Currency", csvLineData
             )
         )

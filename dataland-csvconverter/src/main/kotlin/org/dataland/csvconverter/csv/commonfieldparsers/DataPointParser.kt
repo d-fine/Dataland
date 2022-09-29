@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.csvconverter.csv.CsvUtils.readCsvLong
 import org.dataland.csvconverter.csv.CsvUtils.readCsvPercentage
@@ -57,7 +57,7 @@ class DataPointParser(
 
         return CompanyReportReference(
             report = reportColumnMapping
-                .getCsvValue("${baseString}Report", row)
+                .getCsvValueAllowingNull("${baseString}Report", row)
                 ?.let { companyReportParser.getReverseReportNameMapping(it) }
                 ?: throw IllegalArgumentException(
                     "Expected a report for $baseString as a corresponding page" +
@@ -81,10 +81,10 @@ class DataPointParser(
         return DataPoint(
             value = valueFunction(datapointColumnMapping),
             quality = datapointColumnMapping
-                .getCsvValue("${baseString}Quality", row)
+                .getCsvValueAllowingNull("${baseString}Quality", row)
                 .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
             comment = datapointColumnMapping
-                .getCsvValue("${baseString}Comment", row),
+                .getCsvValueAllowingNull("${baseString}Comment", row),
             dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
         )
     }

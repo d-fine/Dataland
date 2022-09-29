@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
@@ -26,7 +26,7 @@ class EuTaxonomyCommonFieldParser(
      * This method retrieves scope of companies from a csv row
      */
     fun getScopeOfEntities(csvLineData: Map<String, String>): YesNoNa? {
-        return columnMappingEuTaxonomyUtils.getCsvValue("scopeOfEntities", csvLineData)
+        return columnMappingEuTaxonomyUtils.getCsvValueAllowingNull("scopeOfEntities", csvLineData)
             ?.let { yesNoNaParser.parseAllowingNull("scopeOfEntities", it) }
     }
 
@@ -34,7 +34,7 @@ class EuTaxonomyCommonFieldParser(
      * This function parses the reportingObligation field from the EU-Taxonomy framework CSV file
      */
     fun getReportingObligation(csvLineData: Map<String, String>): YesNo? {
-        return columnMappingEuTaxonomyUtils.getCsvValue("reportObligation", csvLineData)
+        return columnMappingEuTaxonomyUtils.getCsvValueAllowingNull("reportObligation", csvLineData)
             ?.let { yesNoParser.parseAllowingNull("reportObligation", it) }
     }
 
@@ -42,7 +42,7 @@ class EuTaxonomyCommonFieldParser(
      * This method retrieves the activity level reporting
      */
     fun getActivityLevelReporting(csvLineData: Map<String, String>): YesNo? {
-        return columnMappingEuTaxonomyUtils.getCsvValue("activityLevelReporting", csvLineData)
+        return columnMappingEuTaxonomyUtils.getCsvValueAllowingNull("activityLevelReporting", csvLineData)
             ?.let { yesNoParser.parseAllowingNull("activityLevelReporting", it) }
     }
 

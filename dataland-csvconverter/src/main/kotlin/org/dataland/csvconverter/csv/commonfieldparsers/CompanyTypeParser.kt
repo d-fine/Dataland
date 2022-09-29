@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 
 /**
@@ -25,7 +25,7 @@ class CompanyTypeParser {
      * This method retrieves the company type from a csv row
      */
     fun getCompanyType(csvLineData: Map<String, String>): String {
-        val companyTypeNumeric = columnMappingCompanyType.getCsvValue("companyType", csvLineData)
+        val companyTypeNumeric = columnMappingCompanyType.getCsvValueAllowingNull("companyType", csvLineData)
         return companyTypeCsvParser.parse(columnMappingCompanyType["companyType"]!!, companyTypeNumeric)
     }
 }
