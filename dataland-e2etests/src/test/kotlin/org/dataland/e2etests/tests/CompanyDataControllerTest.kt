@@ -1,12 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
@@ -21,33 +16,13 @@ import org.junit.jupiter.api.assertThrows
 
 class CompanyDataControllerTest {
 
-    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val euTaxonomyDataForNonFinancialsControllerApi =
-        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     private val tokenHandler = TokenHandler()
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
     private val testDataProviderForEuTaxonomyDataForNonFinancials =
         TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
-
-    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): DataMetaInformation {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
-        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val testCompanyId = companyDataControllerApi.postCompany(
-            testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
-        ).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
-        ).dataId
-        return DataMetaInformation(
-            companyId = testCompanyId,
-            dataId = testDataId,
-            dataType = testDataType
-        )
-    }
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -113,26 +88,6 @@ class CompanyDataControllerTest {
         assertEquals(
             listOfTestCompanyInformation.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${listOfTestCompanyInformation.size}."
-        )
-    }
-
-    @Test
-    fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
-        val testDataInformation = postOneCompanyAndEuTaxonomyDataForNonFinancials()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
-            testDataInformation.companyId,
-            testDataInformation.dataType
-        )
-        assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(
-                    testDataInformation.dataId,
-                    testDataInformation.dataType,
-                    testDataInformation.companyId
-                )
-            ),
-            "The all-data-sets-list of the posted company does not contain the posted data set."
         )
     }
 

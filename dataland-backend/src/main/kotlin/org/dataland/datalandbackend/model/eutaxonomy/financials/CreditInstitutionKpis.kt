@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.DataPoint
 import java.math.BigDecimal
 
 /**
@@ -8,12 +8,11 @@ import java.math.BigDecimal
  * KPIs for credit institutions for the EuTaxonomyForFinancials framework
  */
 data class CreditInstitutionKpis(
-    @field:JsonProperty("tradingPortfolio")
-    val tradingPortfolio: BigDecimal? = null,
+    val tradingPortfolio: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("interbankLoans")
-    val interbankLoans: BigDecimal? = null,
+    val interbankLoans: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("tradingPortfolioAndInterbankLoans")
-    val tradingPortfolioAndInterbankLoans: BigDecimal? = null,
+    val tradingPortfolioAndInterbankLoans: DataPoint<BigDecimal>? = null,
+
+    val greenAssetRatio: DataPoint<BigDecimal>? = null,
 )

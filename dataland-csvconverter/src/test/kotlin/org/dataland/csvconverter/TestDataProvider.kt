@@ -11,22 +11,12 @@ class TestDataProvider(private val objectMapper: ObjectMapper) {
     fun getAllCompanyInformationWithEuTaxonomyDataForNonFinancials():
         List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
         val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
-        val testCompanyInformationWithEuTaxonomyDataForNonFinancials:
-            List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
-            objectMapper.readValue(
-                jsonFile,
-            )
-        return testCompanyInformationWithEuTaxonomyDataForNonFinancials
+        return objectMapper.readValue(jsonFile)
     }
 
     fun getAllCompanyInformationWithEuTaxonomyDataForFinancials():
         List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
         val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
-        val testCompanyInformationWithEuTaxonomyDataForFinancials:
-            List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> =
-            objectMapper.readValue(
-                jsonFile,
-            )
-        return testCompanyInformationWithEuTaxonomyDataForFinancials
+        return objectMapper.readValue(jsonFile)
     }
 }
