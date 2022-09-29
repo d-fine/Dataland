@@ -66,7 +66,7 @@ describeIf(
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
-          cy.get('select[name="attestation"]').select("None");
+          cy.get('select[name="assurance"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
             cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
@@ -90,7 +90,7 @@ describeIf(
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
-          cy.get('select[name="attestation"]').select("None");
+          cy.get('select[name="assurance"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
           }

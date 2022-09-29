@@ -10,9 +10,7 @@ import java.nio.charset.StandardCharsets
  * This object provides utility functions for parsing data from CSV files in the Dataland context
  */
 object CsvUtils {
-
-    const val NOT_AVAILABLE_STRING = "n/a"
-    var EURO_UNIT_CONVERSION_FACTOR = "1000000"
+    val SCALE_FACTOR_ONE_MILLION = "1000000".toBigDecimal()
 
     /**
      * This function parses a CSV file given a filename
@@ -30,38 +28,100 @@ object CsvUtils {
 
     /**
      * This function uses the backing map to extract a property from a CSV row.
-     * If the requested column is not populated "n/a" will be returned
+     * If the requested column is not populated null will be returned
+     */
+    fun Map<String, String>.getCsvValueAllowingNull(property: String, csvData: Map<String, String>): String? {
+        return csvData[this[property]!!.lowercase()]?.trim()?.ifBlank {
+            null
+        }
+    }
+
+    /**
+     * This function uses the backing map to extract a property from a CSV row
+     * If the requested column is not populated an exception will be raised
      */
     fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String {
-        return csvData[this[property]!!]!!.trim().ifBlank {
-            NOT_AVAILABLE_STRING
-        }
+        return this.getCsvValueAllowingNull(property, csvData)
+            ?: throw IllegalArgumentException("The column ${this[property]} is empty but shouldn't be")
     }
 
     /**
-     * This function uses the backing map to extract a numeric property from a CSV row.
-     * The returned value is scaled according to the scaleFactor
+     * This function checks, whether the passed properties field contains an entry.
+     * If it does, it returns true
      */
-    fun Map<String, String>.getScaledCsvValue(
+    private fun Map<String, String>.checkIfFieldHasValue(property: String, csvData: Map<String, String>): Boolean {
+        return csvData[this[property]!!.lowercase()]!!.isNotBlank()
+    }
+
+    /**
+     * Checks if any of the specified fields have a value
+     */
+    fun Map<String, String>.checkIfAnyFieldHasValue(fields: List<String>, csvData: Map<String, String>): Boolean {
+        return fields.any { this.checkIfFieldHasValue(it, csvData) }
+    }
+
+    /**
+     * Tries to parse a percentage value in the format "XX,XX %" with a comma separator
+     */
+    fun Map<String, String>.readCsvPercentage(property: String, csvData: Map<String, String>): BigDecimal? {
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
+        val expectedFormat = "\\d+(,\\d+)?(\\s*)%".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for a percentage value"
+            )
+
+        return rawValue
+            .replace("[%\\s]".toRegex(), "")
+            .replace(",", ".")
+            .toBigDecimal()
+            .multiply("0.01".toBigDecimal())
+            .stripTrailingZeros()
+    }
+
+    /**
+     * Tries to parse a decimal value from the CSV file with the expected format
+     * XXX.XXX,XXX
+     */
+    fun Map<String, String>.readCsvDecimal(
         property: String,
         csvData: Map<String, String>,
-        scaleFactor: String
+        scaleFactor: BigDecimal = BigDecimal.ONE
     ): BigDecimal? {
-        // The numeric value conversion assumes "," as decimal separator and "." to separate thousands
-        return getCsvValue(property, csvData).replace("[^,\\d]".toRegex(), "").replace(",", ".")
-            .toBigDecimalOrNull()?.multiply(scaleFactor.toBigDecimal())?.stripTrailingZeros()
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
+        val expectedFormat = "(\\d+(\\.)?)+(,\\d+)?".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for a decimal value"
+            )
+
+        return rawValue
+            .replace(".", "")
+            .replace(",", ".")
+            .toBigDecimal()
+            .multiply(scaleFactor)
+            .stripTrailingZeros()
     }
 
     /**
-     * This function uses the backing map to extract a numeric property from a CSV row.
-     * If the value represents a percentage, it gets scaled accordingly. All other values get scaled using the
-     * EURO_UNIT_CONVERSION_FACTOR
+     * Tries to parse an integer value from the CSV file with the expected format
+     * XXX.XXX (optional dot separation for easier readability is allowed)
      */
-    fun Map<String, String>.getNumericCsvValue(property: String, csvLineData: Map<String, String>): BigDecimal? {
-        return if (getCsvValue(property, csvLineData).contains("%")) {
-            getScaledCsvValue(property, csvLineData, "0.01")
-        } else {
-            getScaledCsvValue(property, csvLineData, EURO_UNIT_CONVERSION_FACTOR)
-        }
+    fun Map<String, String>.readCsvLong(
+        property: String,
+        csvData: Map<String, String>,
+    ): Long? {
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
+        val expectedFormat = "(\\d+(\\.)?)+".toRegex()
+        if (!rawValue.matches(expectedFormat))
+            throw IllegalArgumentException(
+                "The input string \"$rawValue\" for column ${this[property]} does not " +
+                    "match the expected format for an integer value"
+            )
+        return rawValue
+            .replace(".", "")
+            .toLong()
     }
 }

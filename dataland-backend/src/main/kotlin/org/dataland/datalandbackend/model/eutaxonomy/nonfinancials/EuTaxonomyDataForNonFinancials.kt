@@ -1,9 +1,14 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.model.enums.eutaxonomy.AttestationOptions
+import org.dataland.datalandbackend.model.CompanyReport
+import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
+import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
+import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
+import java.math.BigDecimal
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -11,18 +16,25 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
  */
 @DataType("eutaxonomy-non-financials")
 data class EuTaxonomyDataForNonFinancials(
-    @field:JsonProperty("capex")
     val capex: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("opex")
     val opex: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("revenue")
     val revenue: EuTaxonomyDetailsPerCashFlowType? = null,
 
-    @field:JsonProperty("reportingObligation", required = true)
-    val reportObligation: YesNo? = null,
+    override val fiscalYearDeviation: YesNo? = null,
 
-    @field:JsonProperty("attestation", required = true)
-    val attestation: AttestationOptions? = null
-)
+    override val fiscalYearEnd: LocalDate? = null,
+
+    override val scopeOfEntities: YesNoNa? = null,
+
+    override val reportingObligation: YesNo? = null,
+
+    override val activityLevelReporting: YesNo? = null,
+
+    override val assurance: AssuranceData? = null,
+
+    override val numberOfEmployees: BigDecimal? = null,
+
+    override val referencedReports: Map<String, CompanyReport>? = null,
+) : EuTaxonomyCommonFields, FrameworkBase

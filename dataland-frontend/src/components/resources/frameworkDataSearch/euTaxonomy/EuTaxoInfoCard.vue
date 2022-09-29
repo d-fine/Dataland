@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     humanizedValue() {
-      return humanizeString(this.value);
+      return this.value !== undefined && this.value !== null ? humanizeString(this.value) : "No data has been reported";
     },
   },
 };

@@ -1,5 +1,5 @@
 export function fillEuTaxonomyNonFinancialsDummyUploadFields(): void {
-  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,
   });
