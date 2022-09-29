@@ -29,7 +29,10 @@ export function generateCompanyInformation(): CompanyInformation {
       return a.identifierType.localeCompare(b.identifierType);
     });
   const countryCode = faker.address.countryCode();
-  const companyAlternativeNames = Array.from({ length: parseInt(faker.random.numeric()) }, faker.company.name);
+  const companyAlternativeNames = Array.from(
+    { length: parseInt(faker.random.numeric(1, { allowLeadingZeros: true })) },
+    faker.company.name
+  );
 
   return {
     companyName: companyName,
@@ -52,7 +55,7 @@ export function getCsvCompanyMapping<T>() {
     {
       label: "Alternative Names",
       value: (row: FixtureData<T>) =>
-        row.companyInformation.companyAlternativeNames.map((name) => `"${name}"`).join(", "),
+        row.companyInformation.companyAlternativeNames?.map((name) => `"${name}"`).join(", "),
     },
     {
       label: "Headquarter",

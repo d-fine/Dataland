@@ -47,6 +47,9 @@ object CsvUtils {
         subSeparator: String
     ): List<String>? {
         // This should be replaced by a standard library parsing a string representing csv if possible
+        if ( getCsvValueAllowingNull(property, csvData) == null ) {
+            return emptyList()
+        }
         return csvData[this[property]!!.lowercase()]?.split(
             "$subSeparator(?=(?:[^\"]*\"[^\"]*\")*[^\"]*\$)".toRegex()
         )
