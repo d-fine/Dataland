@@ -42,7 +42,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("have.value", inputValue)
       .type("{enter}")
       .should("have.value", inputValue);
-    cy.url().should("include", "/companies?input=" + inputValueUntilFirstSpace);
+    cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
     verifyTaxonomySearchResultTable();
   }
 

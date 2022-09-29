@@ -1,4 +1,8 @@
-import { EuTaxonomyDataForFinancials, EligibilityKpis } from "@clients/backend";
+import {
+  EuTaxonomyDataForFinancials,
+  EligibilityKpis,
+  DataPointBigDecimal,
+} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/model";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
@@ -13,9 +17,16 @@ export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypre
 }
 
 export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
-  cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes);
-  cy.get("select[name=attestation]").select(data.attestation.toString());
-  cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
+
+  if (data.assurance?.assurance !== undefined) {
+    cy.get("select[name=assurance]").select(data.assurance.assurance.toString());
+  }
+
+  if (data.reportingObligation !== undefined) {
+    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  }
+
   fillEligibilityKpis("CreditInstitution", data.eligibilityKpis?.CreditInstitution);
   fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis?.InsuranceOrReinsurance);
   fillEligibilityKpis("AssetManagement", data.eligibilityKpis?.AssetManagement);
@@ -36,9 +47,9 @@ function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined)
   fillField(divName, "investmentNonNfrd", data?.investmentNonNfrd);
 }
 
-function fillField(divName: string, inputName: string, value?: any) {
-  if (value !== undefined) {
-    const input = value.toString();
+function fillField(divName: string, inputName: string, value?: DataPointBigDecimal) {
+  if (value !== undefined && value.value !== undefined) {
+    const input = value.value.toString();
     if (divName === "") {
       cy.get(`input[name="${inputName}"]`).type(input);
     } else {
@@ -49,6 +60,6 @@ function fillField(divName: string, inputName: string, value?: any) {
 
 function fillEuTaxonomyFinancialsDummyUploadFields(): void {
   cy.get("select[name=financialServicesTypes]").select("Credit Institution");
-  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[name="reportingObligation"][value=Yes]').check();
 }

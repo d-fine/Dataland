@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
-import { FixtureData } from "./GenerateFakeFixtures";
+import { FixtureData } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { getIdentifierValueForCsv } from "./CsvUtils";
+import { decimalSeparatorConverter, getIdentifierValueForCsv } from "./CsvUtils";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();

@@ -1,6 +1,8 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
+import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -33,17 +35,19 @@ class CompanyInformationCsvParser {
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
-            isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
+            isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)
                 .equals("Yes", true)
         )
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
-        return IdentifierType.values().sortedBy { it.name }.map {
-            CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData),
-                identifierType = it
-            )
-        }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }
+        return IdentifierType.values().mapNotNull { identifierType ->
+            companyInformationColumnMapping.getCsvValueAllowingNull(identifierType.name, csvLineData)?.let {
+                CompanyIdentifier(
+                    identifierValue = it,
+                    identifierType = identifierType
+                )
+            }
+        }.sortedBy { it.identifierType.name }
     }
 }

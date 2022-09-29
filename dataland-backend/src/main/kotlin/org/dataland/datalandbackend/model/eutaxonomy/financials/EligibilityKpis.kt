@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.DataPoint
 import java.math.BigDecimal
 
 /**
@@ -8,15 +8,13 @@ import java.math.BigDecimal
  * KPIs for all companies for the EuTaxonomyForFinancials framework
  */
 data class EligibilityKpis(
-    @field:JsonProperty("taxonomyEligibleActivity")
-    val taxonomyEligibleActivity: BigDecimal? = null,
+    val taxonomyEligibleActivity: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("derivatives")
-    val derivatives: BigDecimal? = null,
+    val taxonomyNonEligibleActivity: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("banksAndIssuers")
-    val banksAndIssuers: BigDecimal? = null,
+    val derivatives: DataPoint<BigDecimal>? = null,
 
-    @field:JsonProperty("investmentNonNfrd")
-    val investmentNonNfrd: BigDecimal? = null,
+    val banksAndIssuers: DataPoint<BigDecimal>? = null,
+
+    val investmentNonNfrd: DataPoint<BigDecimal>? = null,
 )
