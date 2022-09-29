@@ -6,11 +6,19 @@ package org.dataland.datalandbackend.repositories.utils
  */
 data class StoredCompanySearchFilter(
     val dataTypeFilter: List<String>,
+    val countryCodeFilter: List<String>,
+    val sectorFilter: List<String>,
     val searchString: String,
     val nameOnlyFilter: Boolean
 ) {
     val dataTypeFilterSize: Int
         get() = dataTypeFilter.size
+
+    val countryCodeFilterSize: Int
+        get() = countryCodeFilter.size
+
+    val sectorFilterSize: Int
+        get() = sectorFilter.size
 
     val searchStringLength: Int
         get() = searchString.length

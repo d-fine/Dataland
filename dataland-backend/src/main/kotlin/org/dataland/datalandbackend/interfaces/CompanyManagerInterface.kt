@@ -29,6 +29,8 @@ interface CompanyManagerInterface {
         searchString: String,
         onlyCompanyNames: Boolean,
         dataTypeFilter: Set<DataType>,
+        countryCodeFilter: Set<String>,
+        sectorFilter: Set<String>,
     ): List<StoredCompanyEntity>
 
     /**
@@ -37,6 +39,16 @@ interface CompanyManagerInterface {
      * @return information about the retrieved company
      */
     fun getCompanyById(companyId: String): StoredCompanyEntity
+
+    /**
+     * Returns a list of available country codes across all stored companies
+     */
+    fun getDistinctCountryCodes(): Set<String>
+
+    /**
+     * Returns a list of available sectors across all stored companies
+     */
+    fun getDistinctSectors(): Set<String>
 
     /**
      * Method to retrieve the list of currently set teaser company IDs

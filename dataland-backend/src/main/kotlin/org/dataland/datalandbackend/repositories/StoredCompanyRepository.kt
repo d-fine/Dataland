@@ -29,6 +29,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
             "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
+            "(:#{#searchFilter.sectorFilterSize} = 0 " +
+            "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
+            "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
+            "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(:#{#searchFilter.nameOnlyFilter} = false " +
@@ -40,6 +44,22 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "company.companyName ASC"
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
+
+    /**
+     * Returns all available distinct country codes
+     */
+    @Query(
+        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company"
+    )
+    fun fetchDistinctCountryCodes(): Set<String>
+
+    /**
+     * Returns all available distinct sectors
+     */
+    @Query(
+        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company"
+    )
+    fun fetchDistinctSectors(): Set<String>
 
     /**
      * Used for pre-fetching the identifiers field of a list of stored companies
