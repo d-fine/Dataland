@@ -30,10 +30,19 @@ object CsvUtils {
      * This function uses the backing map to extract a property from a CSV row.
      * If the requested column is not populated null will be returned
      */
-    fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String? {
+    fun Map<String, String>.getCsvValueAllowingNull(property: String, csvData: Map<String, String>): String? {
         return csvData[this[property]!!.lowercase()]?.trim()?.ifBlank {
             null
         }
+    }
+
+    /**
+     * This function uses the backing map to extract a property from a CSV row
+     * If the requested column is not populated an exception will be raised
+     */
+    fun Map<String, String>.getCsvValue(property: String, csvData: Map<String, String>): String {
+        return this.getCsvValueAllowingNull(property, csvData)
+            ?: throw IllegalArgumentException("The column ${this[property]} is empty but shouldn't be")
     }
 
     /**
@@ -55,7 +64,7 @@ object CsvUtils {
      * Tries to parse a percentage value in the format "XX,XX %" with a comma separator
      */
     fun Map<String, String>.readCsvPercentage(property: String, csvData: Map<String, String>): BigDecimal? {
-        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "\\d+(,\\d+)?(\\s*)%".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
@@ -80,7 +89,7 @@ object CsvUtils {
         csvData: Map<String, String>,
         scaleFactor: BigDecimal = BigDecimal.ONE
     ): BigDecimal? {
-        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "(\\d+(\\.)?)+(,\\d+)?".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(
@@ -104,7 +113,7 @@ object CsvUtils {
         property: String,
         csvData: Map<String, String>,
     ): Long? {
-        val rawValue = this.getCsvValue(property, csvData)?.trim() ?: return null
+        val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "(\\d+(\\.)?)+".toRegex()
         if (!rawValue.matches(expectedFormat))
             throw IllegalArgumentException(

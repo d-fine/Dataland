@@ -1,6 +1,7 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
@@ -32,17 +33,17 @@ class CompanyInformationCsvParser {
      */
     fun buildCompanyInformation(row: Map<String, String>): CompanyInformation {
         return CompanyInformation(
-            companyName = companyInformationColumnMapping.getCsvValue("companyName", row)!!,
-            headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row)!!,
-            sector = companyInformationColumnMapping.getCsvValue("sector", row)!!,
+            companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
+            headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
+            sector = companyInformationColumnMapping.getCsvValue("sector", row),
             marketCap = getMarketCap(row),
             reportingDateOfMarketCap = LocalDate.parse(
-                companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
+                companyInformationColumnMapping.getCsvValueAllowingNull("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")
             ),
             identifiers = getCompanyIdentifiers(row),
-            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row)!!,
-            isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
+            countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
+            isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)
                 .equals("Yes", true)
         )
     }
@@ -54,13 +55,13 @@ class CompanyInformationCsvParser {
             CsvUtils.SCALE_FACTOR_ONE_MILLION
         ) ?: throw IllegalArgumentException(
             "Could not parse market capitalisation for company \"${
-            companyInformationColumnMapping.getCsvValue("companyName", csvLineData)}\""
+            companyInformationColumnMapping.getCsvValueAllowingNull("companyName", csvLineData)}\""
         )
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
         return IdentifierType.values().mapNotNull { identifierType ->
-            companyInformationColumnMapping.getCsvValue(identifierType.name, csvLineData)?.let {
+            companyInformationColumnMapping.getCsvValueAllowingNull(identifierType.name, csvLineData)?.let {
                 CompanyIdentifier(
                     identifierValue = it,
                     identifierType = identifierType

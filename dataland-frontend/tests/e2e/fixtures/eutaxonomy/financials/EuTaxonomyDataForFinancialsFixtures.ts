@@ -143,8 +143,8 @@ export function generateCSVDataForFinancials(
 ) {
   const options = {
     fields: [
-      ...getCsvSharedEuTaxonomyValuesMapping(2),
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
+      ...getCsvSharedEuTaxonomyValuesMapping(2),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
       ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
