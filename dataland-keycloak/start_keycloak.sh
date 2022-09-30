@@ -8,7 +8,7 @@ if [[ "$1" == initialize ]]; then
   echo "Initializing new keycloak realms"
   mkdir -p /opt/keycloak/data/import
   cp /keycloak_realms/* /opt/keycloak/data/import/
-  touch keycloak_users/dummy
+  touch /keycloak_users/dummy
   cp /keycloak_users/* /opt/keycloak/data/import/
   rm /opt/keycloak/data/import/dummy
  ./kc.sh import --file /opt/keycloak/data/import/master-realm.json
