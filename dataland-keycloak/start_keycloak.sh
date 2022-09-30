@@ -7,7 +7,6 @@ cd $script_dir
 if [[ "$1" == initialize ]]; then
   echo "Initializing new keycloak realms"
   cp -r /keycloak_users/ /opt/keycloak/data/import/
-  cp -r /keycloak_realms/ /opt/keycloak/data/import/
  ./kc.sh import --file /opt/keycloak/data/import/master-realm.json
  ./kc.sh start --import-realm
 elif [[ "$1" == export ]]; then
@@ -15,7 +14,6 @@ elif [[ "$1" == export ]]; then
   ./kc.sh export --dir /keycloak_users --users same_file --realm datalandsecurity || exit 1
   rm /keycloak_users/datalandsecurity-realm.json
 else
-  cp -r /keycloak_realms/ /opt/keycloak/data/import/
   echo "Starting keycloak using: $@"
   ./kc.sh "$@"
 fi

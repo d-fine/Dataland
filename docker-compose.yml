@@ -221,7 +221,7 @@ services:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
-      - ./dataland-keycloak/realms:/keycloak_realms
+      - ./dataland-keycloak/realms:/opt/keycloak/data/import
       - keycloak_users:/keycloak_users
     command: initialize
     environment:
