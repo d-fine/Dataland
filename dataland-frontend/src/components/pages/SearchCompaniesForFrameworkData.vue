@@ -14,11 +14,14 @@
             ref="frameworkDataSearchBar"
             :searchBarName="searchBarName"
             :frameworksToFilterFor="currentFilteredFrameworks"
+            :country-codes-to-filter-for="currentFilteredCountryCodes"
+            :enable-full-search="true"
             @companies-received="handleCompanyQuery"
-            @rendered="handleFrameworkDataSearchBarRender"
-            class="pl-4"
           />
-
+          <FrameworkDataSearchFilters
+            v-model:selected-country-codes="currentFilteredCountryCodes"
+            v-model:selected-frameworks="currentFilteredFrameworks"
+          />
           <div
             :class="[
               pageScrolled && !searchBarToggled
@@ -61,12 +64,15 @@ import FrameworkDataSearchResults from "@/components/resources/frameworkDataSear
 import { useRoute } from "vue-router";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { defineComponent, ref } from "vue";
-import { DataTypeEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { DataTypeEnum } from "@clients/backend";
 import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
+import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 
 export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
+    FrameworkDataSearchFilters,
     MarginWrapper,
     AuthenticationWrapper,
     TheHeader,
@@ -90,6 +96,7 @@ export default defineComponent({
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
+      currentFilteredCountryCodes: [] as Array<string>,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
@@ -135,15 +142,19 @@ export default defineComponent({
       }
     },
     scanQueryParams() {
-      let queryFrameworks = this.route.query.frameworks;
+      let queryFrameworks = this.route.query.framework;
       if (queryFrameworks) {
-        if (typeof queryFrameworks === "string" && queryFrameworks !== "") {
-          this.currentFilteredFrameworks = [queryFrameworks as DataTypeEnum];
-        } else if (Array.isArray(queryFrameworks)) {
-          this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>;
-        }
+        const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
+        this.currentFilteredFrameworks = parseQueryParamArray(queryFrameworks).filter((it) =>
+          allowedDataTypeEnumValues.includes(it)
+        ) as Array<DataTypeEnum>;
       } else {
         this.currentFilteredFrameworks = Object.values(DataTypeEnum);
+      }
+
+      let queryCountryCodes = this.route.query.countryCode;
+      if (queryCountryCodes) {
+        this.currentFilteredCountryCodes = parseQueryParamArray(queryCountryCodes);
       }
 
       let queryInput = this.route.query.input as string;
@@ -151,19 +162,27 @@ export default defineComponent({
         this.currentSearchBarInput = queryInput;
       }
     },
-    handleFrameworkDataSearchBarRender() {
-      this.frameworkDataSearchBar.queryCompany();
-    },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
-      const queryFrameworks = !this.route.query.frameworks ? undefined : this.currentFilteredFrameworks;
+
+      const allFrameworksSelected = Object.values(DataTypeEnum).every((it) =>
+        this.currentFilteredFrameworks.includes(it)
+      );
+      const queryFrameworks = allFrameworksSelected ? undefined : this.currentFilteredFrameworks;
+
+      const queryCountryCodes =
+        this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
 
       this.$router.push({
         name: "Search Companies for Framework Data",
-        query: { input: queryInput, frameworks: queryFrameworks },
+        query: {
+          input: queryInput,
+          framework: queryFrameworks,
+          countryCode: queryCountryCodes,
+        },
       });
     },
     toggleSearchBar() {

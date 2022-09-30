@@ -55,7 +55,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  * @param  {string} searchString           the string that is used to search companies
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
- * @param {Array<string>} frameworksToFilter
+ * @param {Array<string>} frameworkFilter
  *                                         search for companies that hold at least one data set for at least one of
  *                                         the frameworks mentioned in frameworksToFilter and don't filter if
  *                                         frameworksToFilter is empty
@@ -64,14 +64,21 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
   onlyCompanyNames: boolean,
-  frameworksToFilter: Set<DataTypeEnum>,
+  frameworkFilter: Set<DataTypeEnum>,
+  countryCodeFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<DataSearchStoredCompany>> {
   let mappedResponse: Array<DataSearchStoredCompany> = [];
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(searchString, frameworksToFilter, onlyCompanyNames);
+    const response = await companyDataControllerApi.getCompanies(
+      searchString,
+      frameworkFilter,
+      countryCodeFilter,
+      new Set([]),
+      onlyCompanyNames
+    );
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {

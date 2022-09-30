@@ -95,7 +95,7 @@ export default defineComponent({
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "update:modelValue", "rendered"],
+  emits: ["companies-received", "update:modelValue", "rendered", "search-confirmed"],
 
   props: {
     searchBarName: {
@@ -114,9 +114,17 @@ export default defineComponent({
       type: Array as () => Array<DataTypeEnum>,
       default: () => [],
     },
+    countryCodesToFilterFor: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
+    enableFullSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
-    this.$emit("rendered", true);
+    this.queryCompany();
     if (!this.route.query.input) {
       this.autocomplete.focus();
     }
@@ -125,6 +133,18 @@ export default defineComponent({
   watch: {
     searchBarName() {
       this.autocomplete.focus();
+    },
+    frameworksToFilterFor: {
+      handler() {
+        this.queryCompany();
+      },
+      deep: true,
+    },
+    countryCodesToFilterFor: {
+      handler() {
+        this.queryCompany();
+      },
+      deep: true,
     },
   },
 
@@ -143,20 +163,22 @@ export default defineComponent({
     },
 
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
+      this.$router.push(getRouterLinkTargetFramework(event.value));
     },
     handleKeyupEnter() {
       this.queryCompany();
       this.autocomplete.hideOverlay();
       this.autocomplete.$refs.input.blur();
+      this.$emit("search-confirmed", this.modelValue);
     },
     async queryCompany() {
-      if (this.getKeycloakPromise !== undefined) {
+      if (this.getKeycloakPromise !== undefined && this.enableFullSearch) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.modelValue,
           false,
           new Set(this.frameworksToFilterFor),
+          new Set(this.countryCodesToFilterFor),
           this.getKeycloakPromise()
         );
         this.$emit("companies-received", resultsArray);
@@ -170,14 +192,12 @@ export default defineComponent({
           companyName.query,
           true,
           new Set(this.frameworksToFilterFor),
+          new Set(this.countryCodesToFilterFor),
           this.getKeycloakPromise()
         );
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
         this.loading = false;
       }
-    },
-    getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
-      return getRouterLinkTargetFramework(companyData);
     },
   },
 });

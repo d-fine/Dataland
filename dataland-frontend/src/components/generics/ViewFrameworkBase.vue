@@ -4,7 +4,7 @@
     <TheContent class="surface-800 min-h-screen">
       <MarginWrapper class="text-left mt-2 surface-0">
         <BackButton />
-        <FrameworkDataSearchBar class="mt-2" v-model="currentInput" @companies-received="handleQueryCompany" />
+        <FrameworkDataSearchBar class="mt-2" v-model="currentInput" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
       <MarginWrapper class="surface-0">
         <div class="grid align-items-end">
@@ -54,7 +54,7 @@ export default {
     },
   },
   methods: {
-    handleQueryCompany() {
+    handleSearchConfirm() {
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: this.currentInput },
