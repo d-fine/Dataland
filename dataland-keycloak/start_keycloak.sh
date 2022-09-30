@@ -6,6 +6,8 @@ cd $script_dir
 
 if [[ "$1" == initialize ]]; then
   echo "Initializing new keycloak realms"
+  mkdir -p /opt/keycloak/data/import
+  cp -r /keycloak_realms/ /opt/keycloak/data/import/
   cp -r /keycloak_users/ /opt/keycloak/data/import/
  ./kc.sh import --file /opt/keycloak/data/import/master-realm.json
  ./kc.sh start --import-realm
