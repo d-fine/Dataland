@@ -15,7 +15,6 @@ scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$tar
 
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer" || exit 1
 ssh ubuntu@"$target_server_url" "(cd $location && sudo docker-compose run keycloak-initializer export) || docker exec keycloak-initializer echo User export not possible"
-ssh ubuntu@"$target_server_url" "docker exec keycloak-initializer echo TESTTESTTEST"
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "keycloak_data"
 
