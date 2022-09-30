@@ -12,9 +12,10 @@ if [[ "$1" == initialize ]]; then
  ./kc.sh start --import-realm
 elif [[ "$1" == export ]]; then
   echo "Exporting users"
-  ./kc.sh export --dir /keycloak_users --users same_file --realm datalandsecurity
+  ./kc.sh export --dir /keycloak_users --users same_file --realm datalandsecurity || exit 1
   rm /keycloak_users/datalandsecurity-realm.json
 else
+  cp -r /keycloak_realms/ /opt/keycloak/data/import/
   echo "Starting keycloak using: $@"
   ./kc.sh "$@"
 fi
