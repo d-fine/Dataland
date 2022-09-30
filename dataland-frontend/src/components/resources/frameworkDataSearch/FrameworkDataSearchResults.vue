@@ -11,11 +11,12 @@
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
           :alwaysShowPaginator="false"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          @update:first="scrollToTop"
+          @update:first="firstUpdated"
           @row-click="goToData"
           class="table-cursor"
           id="search-result-framework-data"
           :rowHover="true"
+          ref="dataTable"
         >
           <Column
             field="companyInformation.companyName"
@@ -70,7 +71,7 @@
           </Column>
         </DataTable>
         <div class="d-center-div text-center px-7 py-4" v-else>
-          <p class="font-medium text-xl">Sorry! The company you searched for was not found in our database.</p>
+          <p class="font-medium text-xl">Sorry! Your search didn't return any results.</p>
           <p class="font-medium">Try again please!</p>
         </div>
       </div>
@@ -119,14 +120,18 @@ export default {
     buildLocationString(headquarters, countryCode) {
       return headquarters + ", " + countryCode;
     },
-    scrollToTop() {
-      window.scrollTo(0, 0);
-    },
     goToData(event) {
       this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
     getRouterLinkTargetFrameworkInt(companyData) {
       return getRouterLinkTargetFramework(companyData);
+    },
+    resetPagination() {
+      if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
+    },
+    firstUpdated(event) {
+      window.scrollTo(0, 0);
+      this.$emit("update:first", event);
     },
   },
 };

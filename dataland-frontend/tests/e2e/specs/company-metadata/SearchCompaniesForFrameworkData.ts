@@ -213,7 +213,7 @@ describeIf(
         });
         cy.visit(`/companies?input=${companyName}`)
           .get("div[class='col-12 text-left']")
-          .should("contain.text", "Sorry! The company you searched for was not found in our database");
+          .should("contain.text", "Sorry! Sorry! Your search didn't return any results.");
       }
     );
 
@@ -233,12 +233,10 @@ describeIf(
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
           .should("exist");
-        cy.visit(`/companies?input=${companyName}&frameworks=eutaxonomy-non-financials`)
+        cy.visit(`/companies?input=${companyName}&framework=eutaxonomy-non-financials`)
           .get("div[class='col-12 text-left']")
-          .should("contain.text", "Sorry! The company you searched for was not found in our database");
-        cy.visit(
-          `/companies?input=${companyName}&frameworks=eutaxonomy-non-financials&frameworks=eutaxonomy-financials`
-        )
+          .should("contain.text", "Sorry! Sorry! Your search didn't return any results.");
+        cy.visit(`/companies?input=${companyName}&framework=eutaxonomy-non-financials&framework=eutaxonomy-financials`)
           .get("td[class='d-bg-white w-3 d-datatable-column-left']")
           .contains(companyName)
           .should("exist");

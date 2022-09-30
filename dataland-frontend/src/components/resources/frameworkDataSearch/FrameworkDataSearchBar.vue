@@ -118,6 +118,10 @@ export default defineComponent({
       type: Array as () => Array<string>,
       default: () => [],
     },
+    sectorsToFilterFor: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
     enableFullSearch: {
       type: Boolean,
       default: false,
@@ -141,6 +145,12 @@ export default defineComponent({
       deep: true,
     },
     countryCodesToFilterFor: {
+      handler() {
+        this.queryCompany();
+      },
+      deep: true,
+    },
+    sectorsToFilterFor: {
       handler() {
         this.queryCompany();
       },
@@ -179,6 +189,7 @@ export default defineComponent({
           false,
           new Set(this.frameworksToFilterFor),
           new Set(this.countryCodesToFilterFor),
+          new Set(this.sectorsToFilterFor),
           this.getKeycloakPromise()
         );
         this.$emit("companies-received", resultsArray);
@@ -193,6 +204,7 @@ export default defineComponent({
           true,
           new Set(this.frameworksToFilterFor),
           new Set(this.countryCodesToFilterFor),
+          new Set(this.sectorsToFilterFor),
           this.getKeycloakPromise()
         );
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);

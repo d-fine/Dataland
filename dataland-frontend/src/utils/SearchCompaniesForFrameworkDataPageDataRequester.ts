@@ -59,6 +59,9 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  *                                         search for companies that hold at least one data set for at least one of
  *                                         the frameworks mentioned in frameworksToFilter and don't filter if
  *                                         frameworksToFilter is empty
+ * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
+ *                                         countries specified by the country codes are returned
+ * @param sectorFilter                     If not empty only companies whose sector is in the set ist returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
@@ -66,6 +69,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   onlyCompanyNames: boolean,
   frameworkFilter: Set<DataTypeEnum>,
   countryCodeFilter: Set<string>,
+  sectorFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<DataSearchStoredCompany>> {
   let mappedResponse: Array<DataSearchStoredCompany> = [];
@@ -76,7 +80,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       searchString,
       frameworkFilter,
       countryCodeFilter,
-      new Set([]),
+      sectorFilter,
       onlyCompanyNames
     );
     const responseData: Array<StoredCompany> = response.data;

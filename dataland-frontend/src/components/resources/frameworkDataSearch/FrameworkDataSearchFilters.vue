@@ -1,18 +1,51 @@
 <template>
   <div class="flex">
-    <FrameworkDataSearchDropdownFilter
-      v-model="selectedCountriesInt"
-      :available-items="availableCountries"
-      filter-name="Country"
-    />
-    <FrameworkDataSearchDropdownFilter
-      v-model="selectedFrameworksInt"
-      :available-items="availableFrameworks"
-      filter-name="Framework"
-      class="ml-2"
-    />
+    <div class="flex flex-column">
+      <span class="d-section-heading mb-2" v-if="showHeading">Filter by company</span>
+      <div>
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedSectorsInt"
+          :available-items="availableSectors"
+          filter-name="Sector"
+          filter-placeholder="Search sectors"
+        />
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedCountriesInt"
+          :available-items="availableCountries"
+          filter-name="Country"
+          filter-placeholder="Search countries"
+          class="ml-3"
+        />
+      </div>
+    </div>
+    <div class="flex flex-column ml-3">
+      <span class="d-section-heading mb-2" v-if="showHeading">Filter by data</span>
+      <div class="flex flex-row align-items-center">
+        <div class="d-separator-left" />
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedFrameworksInt"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          filter-placeholder="Search frameworks"
+          class="ml-3"
+        />
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.d-section-heading {
+  text-align: left;
+  font-size: 0.75rem;
+  color: #5a4f36;
+}
+
+.d-separator-left {
+  height: 2rem;
+  border-left: 1px solid #5a4f36;
+}
+</style>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
@@ -37,20 +70,28 @@ interface FrameworkSelectableItem extends SelectableItem {
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
   components: { FrameworkDataSearchDropdownFilter },
-  emits: ["update:selectedCountryCodes", "update:selectedFrameworks"],
+  emits: ["update:selectedCountryCodes", "update:selectedFrameworks", "update:selectedSectors"],
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   props: {
+    selectedFrameworks: {
+      type: Array as () => Array<DataTypeEnum>,
+      default: () => [],
+    },
+    selectedSectors: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
     selectedCountryCodes: {
       type: Array as () => Array<string>,
       default: () => [],
     },
-    selectedFrameworks: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
+    showHeading: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -58,12 +99,13 @@ export default defineComponent({
       route: useRoute(),
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableSectors: [] as Array<SelectableItem>,
     };
   },
   computed: {
     selectedCountriesInt: {
       get(): Array<CountryCodeSelectableItem> {
-        return this.availableCountries.filter((it) => this.selectedCountryCodes.indexOf(it.countryCode) >= 0);
+        return this.availableCountries.filter((it) => this.selectedCountryCodes.includes(it.countryCode));
       },
       set(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
@@ -74,7 +116,7 @@ export default defineComponent({
     },
     selectedFrameworksInt: {
       get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((it) => this.selectedFrameworks.indexOf(it.frameworkDataType) >= 0);
+        return this.availableFrameworks.filter((it) => this.selectedFrameworks.includes(it.frameworkDataType));
       },
       set(newValue: Array<FrameworkSelectableItem>) {
         this.$emit(
@@ -83,9 +125,20 @@ export default defineComponent({
         );
       },
     },
+    selectedSectorsInt: {
+      get(): Array<SelectableItem> {
+        return this.availableSectors.filter((it) => this.selectedSectors.includes(it.displayName));
+      },
+      set(newValue: Array<SelectableItem>) {
+        this.$emit(
+          "update:selectedSectors",
+          newValue.map((it) => it.displayName)
+        );
+      },
+    },
   },
   methods: {
-    async retrieveCountryFilterOptions() {
+    async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
         this.getKeycloakPromise!!()
       ).getCompanyDataControllerApi();
@@ -96,6 +149,9 @@ export default defineComponent({
           displayName: getCountryNameFromCountryCode(it),
         };
       });
+      this.availableSectors = [...availableSearchFilters.data.sectors!!].map((it) => {
+        return { displayName: it };
+      });
     },
     async retrieveAvailableFilterOptions() {
       this.availableFrameworks = Object.values(DataTypeEnum).map((it) => {
@@ -104,7 +160,7 @@ export default defineComponent({
           displayName: humanizeString(it),
         };
       });
-      await this.retrieveCountryFilterOptions();
+      await this.retrieveCountryAndSectorFilterOptions();
     },
   },
   async mounted() {

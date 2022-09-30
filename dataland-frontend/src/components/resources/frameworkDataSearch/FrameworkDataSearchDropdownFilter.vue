@@ -4,6 +4,7 @@
     :options="availableItems"
     :filter="true"
     :showToggleAll="false"
+    :filterPlaceholder="filterPlaceholder"
     panelClass="d-framework-data-search-dropdown"
     optionLabel="displayName"
     @before-show="this.overlayVisible = true"
@@ -11,7 +12,7 @@
   >
     <template #indicator>
       <div :class="selectionButtonClasses">
-        <div class="selection-button-content flex align-items-center">
+        <div class="selection-button-content">
           <template v-if="this.modelValue.length === 1">
             {{ modelValue[0].displayName }}
           </template>
@@ -19,7 +20,7 @@
           <span v-if="this.modelValue.length > 0" class="p-badge p-component p-badge-no-gutter ml-1">
             {{ modelValue.length }}</span
           >
-          <svg class="mt-1 ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="5" xml:space="preserve">
+          <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
             <polygon points="0,0 5,5 10,0" fill="currentColor" />
           </svg>
         </div>
@@ -53,6 +54,10 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    filterPlaceholder: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -61,7 +66,7 @@ export default defineComponent({
   },
   computed: {
     selectionButtonClasses(): Array<String> {
-      const classes = ["selection-button"];
+      const classes = ["selection-button", "flex", "flex-row", "align-items-center"];
       if (this.overlayVisible) {
         classes.push("overlayVisible");
       } else if (this.modelValue.length > 0) {
@@ -124,6 +129,7 @@ $dropdown-button-primary-color: #5a4f36;
   color: $dropdown-button-primary-color;
   border: 2px solid $dropdown-button-primary-color;
   border-radius: 8px;
+  height: 2.5rem;
   .selection-button-content {
     margin: 0.5rem 1rem;
   }
