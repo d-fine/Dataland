@@ -63,7 +63,13 @@ class CompanyManagerTest(
     @Transactional
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompanies(company.companyName, true, setOf(), setOf(), setOf())
+            val searchResponse = testCompanyManager.searchCompanies(
+                company.companyName,
+                true,
+                setOf(),
+                setOf(),
+                setOf()
+            )
             assertTrue(
                 searchResponse.any { it.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name."
@@ -75,8 +81,7 @@ class CompanyManagerTest(
         val searchResponse = testCompanyManager.searchCompanies(
             identifier.identifierValue,
             false,
-            setOf()
-            , setOf(), setOf()
+            setOf(), setOf(), setOf()
         )
             .toMutableList()
         // The response list is filtered to exclude results that match in account of another identifier having
