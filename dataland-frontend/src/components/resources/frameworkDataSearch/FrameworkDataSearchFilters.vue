@@ -154,7 +154,7 @@ export default defineComponent({
         return { displayName: it, disabled: false };
       });
     },
-    async retrieveAvailableFilterOptions() {
+    retrieveAvailableFrameworks() {
       this.availableFrameworks = Object.values(DataTypeEnum).map((it) => {
         return {
           frameworkDataType: it,
@@ -174,6 +174,9 @@ export default defineComponent({
           disabled: true,
         }
       );
+    },
+    async retrieveAvailableFilterOptions() {
+      this.retrieveAvailableFrameworks();
       await this.retrieveCountryAndSectorFilterOptions();
     },
   },
