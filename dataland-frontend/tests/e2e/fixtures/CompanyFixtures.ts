@@ -14,7 +14,7 @@ export function generateCompanyInformation(): CompanyInformation {
     .arrayElements([
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
-        identifierValue: faker.random.alphaNumeric(12),
+        identifierValue: faker.random.alphaNumeric(20),
       },
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
@@ -22,7 +22,15 @@ export function generateCompanyInformation(): CompanyInformation {
       },
       {
         identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-        identifierValue: faker.random.alphaNumeric(12),
+        identifierValue: faker.random.alphaNumeric(10),
+      },
+      {
+        identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
+        identifierValue: faker.random.alphaNumeric(7),
+      },
+      {
+        identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
+        identifierValue: faker.random.alphaNumeric(9),
       },
     ])
     .sort((a, b) => {
