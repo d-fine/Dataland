@@ -4,8 +4,8 @@ import {
   generateEuTaxonomyDataForFinancials,
   generateEuTaxonomyDataForFinancialsWithTypes,
 } from "./EuTaxonomyDataForFinancialsFixtures";
-import { randomPercentageValue } from "../../common/NumberFixtures";
-import { generateDatapoint } from "../../common/DataPointFixtures";
+import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>
