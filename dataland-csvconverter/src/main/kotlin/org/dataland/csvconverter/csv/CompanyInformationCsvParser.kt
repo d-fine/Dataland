@@ -23,7 +23,7 @@ class CompanyInformationCsvParser {
         IdentifierType.Lei.name to "LEI",
         IdentifierType.PermId.name to "PermID",
         IdentifierType.Ticker.name to "Ticker",
-        IdentifierType.Duns.name to "D-U-N-S",
+        IdentifierType.Duns.name to "DUNS",
         "isTeaserCompany" to "Teaser Company",
     )
 
