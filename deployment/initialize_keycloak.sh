@@ -18,7 +18,7 @@ scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$tar
 volume_exists=$(search_volume "$target_server_url" "$location" "$keycloak_volume_name")
 if [[ -n $volume_exists ]]; then
   ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer"
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export" || echo EXPORT FAILED
+  ssh ubuntu@"$target_server_url" "(cd $location && sudo docker-compose run keycloak-initializer export) || echo EXPORT FAILED"
 fi
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
