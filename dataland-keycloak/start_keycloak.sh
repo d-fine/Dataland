@@ -15,7 +15,7 @@ if [[ "$mode" == initialize ]]; then
  ./kc.sh start --import-realm
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
-  ./kc.sh export --dir /keycloak_users --users same_file --realm datalandsecurity
+  ./kc.sh export --dir /keycloak_users/ --users same_file --realm datalandsecurity
   rm /keycloak_users/datalandsecurity-realm.json
 else
   cp -r /keycloak_realms/ /opt/keycloak/data/import/
