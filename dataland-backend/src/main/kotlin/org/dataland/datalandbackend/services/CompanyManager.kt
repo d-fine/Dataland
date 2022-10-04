@@ -103,6 +103,7 @@ class CompanyManager(
         }.toMap()
 
         var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
+        filteredResults = companyRepository.fetchAlternativeNames(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
         filteredResults = filteredResults.sortedBy { sortingMap[it.companyId]!! }
 
