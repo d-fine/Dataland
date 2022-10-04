@@ -1,7 +1,8 @@
 package org.dataland.csvconverter.csv
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
-import org.dataland.csvconverter.csv.CsvUtils.getScaledCsvValue
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
+import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -37,33 +38,35 @@ class CompanyInformationCsvParser {
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
             marketCap = getMarketCap(row),
             reportingDateOfMarketCap = LocalDate.parse(
-                companyInformationColumnMapping.getCsvValue("reportingDateOfMarketCap", row),
+                companyInformationColumnMapping.getCsvValueAllowingNull("reportingDateOfMarketCap", row),
                 DateTimeFormatter.ofPattern("d.M.yyyy")
             ),
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
-            isTeaserCompany = companyInformationColumnMapping.getCsvValue("isTeaserCompany", row)
+            isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)
                 .equals("Yes", true)
         )
     }
 
     private fun getMarketCap(csvLineData: Map<String, String>): BigDecimal {
-        return companyInformationColumnMapping.getScaledCsvValue(
+        return companyInformationColumnMapping.readCsvDecimal(
             "marketCap",
             csvLineData,
-            CsvUtils.EURO_UNIT_CONVERSION_FACTOR
+            CsvUtils.SCALE_FACTOR_ONE_MILLION
         ) ?: throw IllegalArgumentException(
             "Could not parse market capitalisation for company \"${
-            companyInformationColumnMapping.getCsvValue("companyName", csvLineData)}\""
+            companyInformationColumnMapping.getCsvValueAllowingNull("companyName", csvLineData)}\""
         )
     }
 
     private fun getCompanyIdentifiers(csvLineData: Map<String, String>): List<CompanyIdentifier> {
-        return IdentifierType.values().sortedBy { it.name }.map {
-            CompanyIdentifier(
-                identifierValue = companyInformationColumnMapping.getCsvValue(it.name, csvLineData),
-                identifierType = it
-            )
-        }.filter { it.identifierValue != CsvUtils.NOT_AVAILABLE_STRING }
+        return IdentifierType.values().mapNotNull { identifierType ->
+            companyInformationColumnMapping.getCsvValueAllowingNull(identifierType.name, csvLineData)?.let {
+                CompanyIdentifier(
+                    identifierValue = it,
+                    identifierType = identifierType
+                )
+            }
+        }.sortedBy { it.identifierType.name }
     }
 }

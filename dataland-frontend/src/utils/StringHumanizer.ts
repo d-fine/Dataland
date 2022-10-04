@@ -29,6 +29,13 @@ function humaniseViaMapping(rawText: string): string {
     alignedcapex: "Aligned CapEx",
     alignedopex: "Aligned OpEx",
     insuranceorreinsurance: "Insurance or Reinsurance",
+    annualreport: "Annual Report",
+    sustainabilityreport: "Sustainability Report",
+    integratedreport: "Integrated Report",
+    esefreport: "ESEF Report",
+    yes: "Yes",
+    no: "No",
+    na: "N/A",
     "eutaxonomy-financials": "EU Taxonomy for financial companies",
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
   };

@@ -1,6 +1,11 @@
 package org.dataland.csvconverter.csv
 
-import org.dataland.csvconverter.csv.CsvUtils.getNumericCsvValue
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDetailsPerCashFlowType
@@ -9,48 +14,72 @@ import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDet
  * This class contains the parsing logic for the EuTaxonomyForNonFinancials framework
  */
 class EuTaxonomyForNonFinancialsCsvParser(
-    private val commonFieldParser: EuTaxonomyCommonFieldParser
+    private val commonFieldParser: EuTaxonomyCommonFieldParser,
+    private val companyTypeParser: CompanyTypeParser,
+    private val dataPointParser: DataPointParser,
+    private val assuranceDataParser: AssuranceDataParser,
+    private val fiscalYearParser: FiscalYearParser,
+    private val companyReportParser: CompanyReportParser,
+
 ) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
     private val columnMappingEuTaxonomyForNonFinancials = mapOf(
-        "totalRevenue" to "Total Revenue EURmm",
-        "totalCapex" to "Total CapEx EURmm",
-        "totalOpex" to "Total OpEx EURmm",
+        "totalRevenue" to "Total Revenue",
+        "totalCapex" to "Total CapEx",
+        "totalOpex" to "Total OpEx",
         "eligibleRevenue" to "Eligible Revenue",
         "eligibleCapex" to "Eligible CapEx",
         "eligibleOpex" to "Eligible OpEx",
         "alignedRevenue" to "Aligned Revenue",
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
-        "companyType" to "IS/FS"
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
-        return commonFieldParser.getCompanyType(row) == "IS"
+        return companyTypeParser.getCompanyType(row) == "IS"
     }
 
-    /**
-     * Method to build EuTaxonomyDataForNonFinancials from the read row in the csv file.
-     */
-    override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
-        return EuTaxonomyDataForNonFinancials(
-            reportObligation = commonFieldParser.getReportingObligation(row),
-            attestation = commonFieldParser.getAttestation(row),
-            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
-            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
-            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row)
-        )
-    }
-
+    @Suppress("kotlin:S138")
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
         EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount =
-            columnMappingEuTaxonomyForNonFinancials.getNumericCsvValue("total$type", csvLineData),
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "total$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION
+            ),
             alignedPercentage =
-            columnMappingEuTaxonomyForNonFinancials.getNumericCsvValue("aligned$type", csvLineData),
+            dataPointParser.buildPercentageDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "aligned$type"
+            ),
             eligiblePercentage =
-            columnMappingEuTaxonomyForNonFinancials.getNumericCsvValue("eligible$type", csvLineData)
+            dataPointParser.buildPercentageDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
+                "eligible$type"
+            )
+        )
+    }
+    /**
+     Assembles all partial information into one EuTaxonomyDataForNonFinancials object
+     */
+    override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
+        return EuTaxonomyDataForNonFinancials(
+            capex = buildEuTaxonomyDetailsPerCashFlowType("Capex", row),
+            opex = buildEuTaxonomyDetailsPerCashFlowType("Opex", row),
+            revenue = buildEuTaxonomyDetailsPerCashFlowType("Revenue", row),
+            fiscalYearDeviation = fiscalYearParser.getFiscalYearDeviation(row),
+            fiscalYearEnd = fiscalYearParser.getFiscalYearEnd(row),
+            scopeOfEntities = commonFieldParser.getScopeOfEntities(row),
+            reportingObligation = commonFieldParser.getReportingObligation(row),
+            activityLevelReporting = commonFieldParser.getActivityLevelReporting(row),
+            assurance = assuranceDataParser.buildSingleAssuranceData(row),
+            numberOfEmployees = commonFieldParser.getNumberOfEmployees(row),
+            referencedReports = companyReportParser.buildMapOfAllCompanyReports(row),
         )
     }
 }

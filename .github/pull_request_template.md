@@ -13,6 +13,5 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
-- [ ] There is at least one picture for each story, which was created before coding has started
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma 
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
