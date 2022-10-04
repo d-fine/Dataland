@@ -34,7 +34,7 @@ class CompanyInformationCsvParser {
         return CompanyInformation(
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
             companyAlternativeNames = companyInformationColumnMapping
-                .readMultiValuedCsvField("companyAlternativeNames", row, ","),
+                .readMultiValuedCsvField("companyAlternativeNames", row),
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
             industry = companyInformationColumnMapping.getCsvValue("industry", row),

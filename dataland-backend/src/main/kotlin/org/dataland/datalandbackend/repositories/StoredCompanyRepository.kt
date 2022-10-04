@@ -60,7 +60,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-                "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies"
+            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies"
     )
     @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
