@@ -13,7 +13,7 @@
   >
     <template #indicator>
       <div :class="selectionButtonClasses">
-        <div class="selection-button-content">
+        <div class="selection-button-content" :id="filterId">
           <template v-if="this.modelValue.length === 1">
             {{ modelValue[0].displayName }}
           </template>
@@ -53,6 +53,10 @@ export default defineComponent({
       default: () => [],
     },
     filterName: {
+      type: String,
+      default: "",
+    },
+    filterId: {
       type: String,
       default: "",
     },

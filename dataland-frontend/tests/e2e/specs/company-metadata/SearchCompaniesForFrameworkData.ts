@@ -1,9 +1,5 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
-import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
-import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { describeIf } from "@e2e/support/TestUtility";
-import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;

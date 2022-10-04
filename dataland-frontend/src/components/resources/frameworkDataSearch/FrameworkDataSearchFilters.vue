@@ -7,12 +7,14 @@
           v-model="selectedSectorsInt"
           :available-items="availableSectors"
           filter-name="Sector"
+          filter-id="sector-filter"
           filter-placeholder="Search sectors"
         />
         <FrameworkDataSearchDropdownFilter
           v-model="selectedCountriesInt"
           :available-items="availableCountries"
           filter-name="Country"
+          filter-id="country-filter"
           filter-placeholder="Search countries"
           class="ml-3"
         />
@@ -26,6 +28,7 @@
           v-model="selectedFrameworksInt"
           :available-items="availableFrameworks"
           filter-name="Framework"
+          filter-id="framework-filter"
           filter-placeholder="Search frameworks"
           class="ml-3"
         />
