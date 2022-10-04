@@ -116,7 +116,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and check if that specific company can be queried by its country-code and sector`() {
+    fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val storedCompany = postFirstCompanyWithoutIdentifiers()
         val getCompaniesByCountryCodeAndSector = companyDataControllerApi.getCompanies(
             sectors = setOf(storedCompany.companyInformation.sector),

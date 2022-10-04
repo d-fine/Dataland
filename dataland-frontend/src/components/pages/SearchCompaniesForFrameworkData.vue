@@ -29,30 +29,25 @@
             <span class="d-page-display">{{ currentlyVisiblePageText }}</span>
           </div>
           <div
-            :class="[
-              pageScrolled && !searchBarToggled
-                ? ['col-12', 'align-items-center', 'grid', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
-                : 'pl-2',
-            ]"
+            class="col-12 align-items-center grid bg-white d-search-toggle fixed d-shadow-bottom"
+            v-show="!searchBarToggled && pageScrolled"
           >
-            <template v-if="!searchBarToggled && pageScrolled">
-              <span class="mr-3 font-semibold">Search Data for Companies</span>
-              <PrimeButton
-                name="search_bar_collapse"
-                icon="pi pi-search"
-                class="p-button-rounded surface-ground border-none m-2"
-                @click="toggleSearchBar"
-              >
-                <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-              </PrimeButton>
-              <FrameworkDataSearchFilters
-                class="ml-3"
-                :show-heading="false"
-                v-model:selected-country-codes="currentFilteredCountryCodes"
-                v-model:selected-frameworks="currentFilteredFrameworks"
-                v-model:selected-sectors="currentFilteredSectors"
-              />
-            </template>
+            <span class="mr-3 font-semibold">Search Data for Companies</span>
+            <PrimeButton
+              name="search_bar_collapse"
+              icon="pi pi-search"
+              class="p-button-rounded surface-ground border-none m-2"
+              @click="toggleSearchBar"
+            >
+              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+            </PrimeButton>
+            <FrameworkDataSearchFilters
+              class="ml-3"
+              :show-heading="false"
+              v-model:selected-country-codes="currentFilteredCountryCodes"
+              v-model:selected-frameworks="currentFilteredFrameworks"
+              v-model:selected-sectors="currentFilteredSectors"
+            />
           </div>
         </MarginWrapper>
       </div>

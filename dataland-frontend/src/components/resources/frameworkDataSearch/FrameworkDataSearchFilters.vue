@@ -147,10 +147,11 @@ export default defineComponent({
         return {
           countryCode: it,
           displayName: getCountryNameFromCountryCode(it),
+          disabled: false,
         };
       });
       this.availableSectors = [...availableSearchFilters.data.sectors!!].map((it) => {
-        return { displayName: it };
+        return { displayName: it, disabled: false };
       });
     },
     async retrieveAvailableFilterOptions() {
@@ -158,8 +159,21 @@ export default defineComponent({
         return {
           frameworkDataType: it,
           displayName: humanizeString(it),
+          disabled: false,
         };
       });
+      this.availableFrameworks.push(
+        {
+          frameworkDataType: "sfdr" as DataTypeEnum,
+          displayName: "SFDR",
+          disabled: true,
+        },
+        {
+          frameworkDataType: "lksg" as DataTypeEnum,
+          displayName: "LkSG",
+          disabled: true,
+        }
+      );
       await this.retrieveCountryAndSectorFilterOptions();
     },
   },

@@ -7,6 +7,7 @@
     :filterPlaceholder="filterPlaceholder"
     panelClass="d-framework-data-search-dropdown"
     optionLabel="displayName"
+    optionDisabled="disabled"
     @before-show="this.overlayVisible = true"
     @before-hide="this.overlayVisible = false"
   >
@@ -35,6 +36,7 @@ import { defineComponent } from "vue";
 
 export interface SelectableItem {
   displayName: string;
+  disabled: boolean;
 }
 
 export default defineComponent({
@@ -92,10 +94,22 @@ export default defineComponent({
   .p-multiselect-item {
     color: black !important;
     border: none !important;
+    font-weight: 400;
 
     &.p-highlight {
       color: #e67f3f !important;
       background: #fdefe6 !important;
+    }
+
+    &.p-disabled {
+      color: #958d7c !important;
+
+      &::after {
+        content: "(Not available)";
+        margin-left: 0.2rem;
+        font-weight: 500;
+        color: black !important;
+      }
     }
   }
   .p-multiselect-close {
