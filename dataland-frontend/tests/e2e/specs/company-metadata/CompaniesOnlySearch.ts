@@ -58,6 +58,7 @@ describeIf(
         );
       })[0];
     }
+
     it.only("Search for company by its alternative name", () => {
       const testCompany = getCompanyWithAlternativeName();
       const searchValue = testCompany.companyInformation.companyAlternativeNames!![0];
@@ -68,9 +69,9 @@ describeIf(
         .click({ force: true })
         .type(searchValue)
         .should("have.value", searchValue);
-      cy.get("button[name=show_all_companies_button].p-button")
+      cy.get("button[name=getCompanies].p-button")
         .should("not.be.disabled")
-        .should("contain", "Show all companies")
+        .should("contain", "Search Company")
         .click({ force: true });
       cy.get("table.p-datatable-table").contains("th", "COMPANY");
       cy.get("table.p-datatable-table").contains("th", "SECTOR");
