@@ -10,6 +10,7 @@ if [[ "$1" == initialize ]]; then
   cp /keycloak_realms/* /opt/keycloak/data/import/
   touch /keycloak_users/dummy
   cp /keycloak_users/* /opt/keycloak/data/import/
+  rm /keycloak_users/dummy
   rm /opt/keycloak/data/import/dummy
  ./kc.sh import --file /opt/keycloak/data/import/master-realm.json
  ./kc.sh start --import-realm
