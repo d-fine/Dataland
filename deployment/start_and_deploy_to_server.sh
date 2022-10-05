@@ -47,7 +47,7 @@ scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/Dockerf
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_url":$location/jar/dataland-backend.jar
 
 echo "Set up Keycloak from scratch."
-"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
+"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"

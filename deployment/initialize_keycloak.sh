@@ -15,13 +15,10 @@ scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$l
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
 scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":$location/dataland-keycloak/dataland_theme/login
 
-volume_exists=$(search_volume "$target_server_url" "$location" "$keycloak_volume_name")
-if [[ -n $volume_exists ]]; then
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer"
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export"
-fi
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer" || exit 1
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export" || exit 1
 
-delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
+delete_docker_volume_if_existent "$target_server_url" "$location" "keycloak_data"
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
