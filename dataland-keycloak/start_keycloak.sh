@@ -17,7 +17,7 @@ elif [[ "$mode" == export ]]; then
   ./kc.sh export --dir /keycloak_users --users same_file --realm datalandsecurity
   rm /keycloak_users/datalandsecurity-realm.json
 else
-  cp -r /keycloak_realms/ /opt/keycloak/data/import/
+  cp /keycloak_realms/* /opt/keycloak/data/import || true
   echo "Starting keycloak using: $@"
   ./kc.sh "$@"
 fi
