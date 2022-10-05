@@ -59,22 +59,16 @@ describeIf(
       })[0];
     }
 
-    it.only("Search for company by its alternative name", () => {
+    it("Search for company by its alternative name", () => {
       const testCompany = getCompanyWithAlternativeName();
       const searchValue = testCompany.companyInformation.companyAlternativeNames!![0];
       cy.visitAndCheckAppMount("/companies-only-search");
-      cy.get(".p-card-title").should("contain", "Company Search");
       cy.get("input[name=companyName]")
         .should("not.be.disabled")
         .click({ force: true })
         .type(searchValue)
         .should("have.value", searchValue);
-      cy.get("button[name=getCompanies].p-button")
-        .should("not.be.disabled")
-        .should("contain", "Search Company")
-        .click({ force: true });
-      cy.get("table.p-datatable-table").contains("th", "COMPANY");
-      cy.get("table.p-datatable-table").contains("th", "SECTOR");
+      cy.get("button[name=getCompanies]").click({ force: true });
       cy.get("table.p-datatable-table").contains(testCompany.companyInformation.companyName);
     });
   }
