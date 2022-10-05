@@ -51,7 +51,4 @@ timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location &&
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 
-echo "Cleanup user backup"
-ssh ubuntu@"$target_server_url" "rm -r $location/dataland-keycloak/users"
-
 echo "Successfully initialized new instance of Keycloak."
