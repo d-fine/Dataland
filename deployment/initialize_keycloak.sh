@@ -18,7 +18,7 @@ scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$tar
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer" || exit 1
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export" || exit 1
 
-delete_docker_volume_if_existent "$target_server_url" "$location" "keycloak_data"
+delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
