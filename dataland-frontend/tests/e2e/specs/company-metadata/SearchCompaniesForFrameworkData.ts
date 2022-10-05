@@ -1,9 +1,15 @@
-import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import {
+  CompanyInformation,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+  DataTypeEnum,
+} from "@clients/backend";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { getKeycloakToken } from "../../utils/Auth";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -149,17 +155,20 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });
 
-  it("Visit framework data view page and assure that title is present and a Framework Data Serach Bar exists", () => {
+  it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
-      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
-      cy.get("input[name=framework_data_search_bar_standard]")
-        .should("not.be.disabled")
-        .type(inputValue)
-        .should("have.value", inputValue)
-        .invoke("attr", "placeholder")
-        .should("contain", placeholder);
+    getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
+      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((datasetNonFinancial) => {
+        const companyId = datasetNonFinancial[0].companyId;
+        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
+        cy.get("input[name=framework_data_search_bar_standard]")
+          .should("not.be.disabled")
+          .type(inputValue)
+          .should("have.value", inputValue)
+          .invoke("attr", "placeholder")
+          .should("contain", placeholder);
+      });
     });
   });
 

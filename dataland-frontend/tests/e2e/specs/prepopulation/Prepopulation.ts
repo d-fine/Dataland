@@ -3,13 +3,12 @@ import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
-  CompanyDataControllerApi,
   Configuration,
   EuTaxonomyDataForFinancialsControllerApi,
-  StoredCompany,
   EuTaxonomyDataForNonFinancialsControllerApi,
   DataTypeEnum,
 } from "@clients/backend";
+import { countCompanyAndDataIds, uploadCompany } from "../../utils/ApiUtils";
 const chunkSize = 15;
 
 describe(
@@ -22,33 +21,6 @@ describe(
     },
   },
   () => {
-    async function uploadCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
-      const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-        companyInformation
-      );
-      return data.data;
-    }
-
-    async function countCompanyAndDataIds(
-      token: string,
-      dataType: DataTypeEnum
-    ): Promise<{ matchingCompanies: number; matchingDataIds: number }> {
-      const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
-        undefined,
-        new Set([dataType])
-      );
-      const matchingCompanies = data.data.length;
-      let matchingDataIds = 0;
-      data.data.forEach((it) => {
-        matchingDataIds += it.dataRegisteredByDataland.length;
-      });
-
-      return {
-        matchingDataIds,
-        matchingCompanies,
-      };
-    }
-
     describe("Upload and validate EuTaxonomy for financials data", () => {
       let companiesWithEuTaxonomyDataForFinancials: Array<{
         companyInformation: CompanyInformation;
