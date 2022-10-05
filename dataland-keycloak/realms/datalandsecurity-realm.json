@@ -30,7 +30,7 @@
   "registrationAllowed": true,
   "registrationEmailAsUsername": true,
   "rememberMe": true,
-  "verifyEmail": false,
+  "verifyEmail": true,
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
@@ -1499,7 +1499,20 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "replyToDisplayName": "",
+    "starttls": "false",
+    "auth": "true",
+    "envelopeFrom": "",
+    "ssl": "true",
+    "password": "${KEYCLOAK_MAILJET_API_SECRET}",
+    "port": "465",
+    "host": "in-v3.mailjet.com",
+    "replyTo": "",
+    "from": "info@dataland.com",
+    "fromDisplayName": "",
+    "user": "${KEYCLOAK_MAILJET_API_ID}"
+  },
   "loginTheme": "dataland_theme",
   "eventsEnabled": false,
   "eventsListeners": [
