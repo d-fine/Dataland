@@ -222,7 +222,7 @@ services:
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
       - ./dataland-keycloak/realms:/keycloak_realms
-      - keycloak_users:/keycloak_users
+      - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
