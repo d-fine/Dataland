@@ -37,10 +37,7 @@ export function generateCompanyInformation(): CompanyInformation {
       return a.identifierType.localeCompare(b.identifierType);
     });
   const countryCode = faker.address.countryCode();
-  const companyAlternativeNames = Array.from(
-    { length: parseInt(faker.random.numeric(1, { allowLeadingZeros: true })) },
-    faker.company.name
-  );
+  const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, faker.company.name);
 
   return {
     companyName: companyName,

@@ -45,7 +45,7 @@ object CsvUtils {
     fun Map<String, String>.readMultiValuedCsvField(
         property: String,
         csvData: Map<String, String>,
-    ): List<String>? {
+    ): List<String> {
         val fieldValue = getCsvValueAllowingNull(property, csvData)
         val csvMapper = CsvMapper().apply { enable(CsvParser.Feature.TRIM_SPACES) }
         return if (fieldValue == null) {
