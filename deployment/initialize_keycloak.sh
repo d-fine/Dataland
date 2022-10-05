@@ -9,7 +9,7 @@ keycloak_volume_name=dataland_keycloak_data
 
 script_dir="$(dirname "$0")"
 echo "Copying the realm jsons to the server $target_server_url."
-ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
+ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak/users"
 scp -r "$script_dir"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$location"/dataland-keycloak
 scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
