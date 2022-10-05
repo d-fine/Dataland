@@ -19,7 +19,7 @@ volume_exists=$(search_volume "$target_server_url" "$location" "$keycloak_volume
 if [[ -n $volume_exists ]]; then
   ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer"
   ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export"
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
+  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down --remove-orphans"
 fi
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
