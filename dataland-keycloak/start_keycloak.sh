@@ -2,7 +2,6 @@
 set -eu
 
 mode=$1
-
 script_dir="$(dirname "$0")"
 cd $script_dir
 
