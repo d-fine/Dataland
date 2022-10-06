@@ -270,5 +270,3 @@ volumes:
     driver: local
   letsencrypt:
     driver: local
-  keycloak_users:
-    driver: local

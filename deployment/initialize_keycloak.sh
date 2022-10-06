@@ -25,10 +25,9 @@ fi
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
 
-echo "Start Keycloak in initialization mode."
+echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location;
                                  sudo docker-compose pull;
-                                 sudo docker-compose build keycloak-initializer;
                                  export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
                                  export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
                                  export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
@@ -42,7 +41,15 @@ ssh ubuntu@"$target_server_url" "cd $location;
                                  export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
-                                 sudo -E docker-compose run keycloak-initializer"
+                                 sudo -E docker-compose --profile init up -d --build"
+
+message="Profile prod activated."
+container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
+timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location && sudo docker logs $container_name | grep -q \\\"$message\\\"\";
+                     do
+                       echo Startup of Keycloak incomplete. Waiting for it to finish.;
+                       sleep 5;
+                     done"
 
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'

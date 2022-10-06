@@ -19,6 +19,7 @@ if [[ "$mode" == initialize ]]; then
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
   ./kc.sh import --dir $dataland_realm_folder
+  ./kc.sh start
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
   ./kc.sh export --dir /keycloak_users --users different_files --users-per-file 1 --realm datalandsecurity
