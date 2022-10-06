@@ -1,0 +1,4 @@
+.eslintrc.js
+cypress.config.ts
+vite.config.ts
+**/build/
