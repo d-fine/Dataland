@@ -7,8 +7,8 @@ script_dir="$(dirname "$0")"
 cd $script_dir
 
 if [[ "$mode" == initialize ]]; then
-  echo "Initializing new keycloak realms" >> $dataland_realm_folder/inner.log
   mkdir -p $dataland_realm_folder
+  echo "Initializing new keycloak realms" >> $dataland_realm_folder/inner.log
   cp /keycloak_users/datalandsecurity-users-0.json $dataland_realm_folder || echo "No importable users exist"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   for variable in $(env | grep KEYCLOAK_ | cut -d'=' -f1); do
