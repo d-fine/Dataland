@@ -4,11 +4,7 @@
         p {
             font-family: IBM Plex Sans, Helvetica;
             font-weight: 500;
-        }
-        p > a {
-            font-family: Arial;
-            font-weight: 100;
-            color: white;
+            font-size: 16px;
         }
     </style>
     <body>
