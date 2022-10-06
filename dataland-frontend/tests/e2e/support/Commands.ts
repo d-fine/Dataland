@@ -2,6 +2,7 @@ import Chainable = Cypress.Chainable;
 import { ensureLoggedIn, getKeycloakToken } from "../utils/Auth";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;

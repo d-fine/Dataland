@@ -28,8 +28,8 @@ describeIf(
       });
     });
 
-    function getPreparedFixture(name: String): FixtureData<EuTaxonomyDataForFinancials> {
-      return preparedFixtures.find((it) => it.companyInformation.companyName == name)!!;
+    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
+      return preparedFixtures.find((it) => it.companyInformation.companyName == name)!;
     }
 
     function uploadDataAndVisitCompanyPage(

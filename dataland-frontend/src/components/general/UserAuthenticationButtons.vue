@@ -20,7 +20,7 @@ export default {
       this.getKeycloakPromise()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            let baseUrl = window.location.origin;
+            const baseUrl = window.location.origin;
             const url = keycloak.createLoginUrl({
               redirectUri: `${baseUrl}/companies`,
             });

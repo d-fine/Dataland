@@ -28,9 +28,9 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
   const returnBase: EuTaxonomyDataForNonFinancials = {};
   populateSharedValues(returnBase);
 
-  returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
-  returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
-  returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!!);
+  returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
+  returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
+  returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
 
   return returnBase;
 }

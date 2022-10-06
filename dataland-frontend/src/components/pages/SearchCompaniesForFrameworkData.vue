@@ -135,18 +135,18 @@ export default defineComponent({
       }
     },
     scanQueryParams() {
-      let queryFrameworks = this.route.query.frameworks;
+      const queryFrameworks = this.route.query.frameworks;
       if (queryFrameworks) {
         if (typeof queryFrameworks === "string" && queryFrameworks !== "") {
-          this.currentFilteredFrameworks = [queryFrameworks as DataTypeEnum];
+          this.currentFilteredFrameworks = [queryFrameworks as DataTypeEnum]; // TODO()
         } else if (Array.isArray(queryFrameworks)) {
-          this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>;
+          this.currentFilteredFrameworks = queryFrameworks as Array<DataTypeEnum>; // TODO()
         }
       } else {
         this.currentFilteredFrameworks = Object.values(DataTypeEnum);
       }
 
-      let queryInput = this.route.query.input as string;
+      const queryInput = this.route.query.input as string; // TODO()
       if (queryInput) {
         this.currentSearchBarInput = queryInput;
       }

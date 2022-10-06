@@ -1,4 +1,5 @@
 import { login, logout } from "@e2e/utils/Auth";
+import { getBaseUrl } from "../../utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -35,7 +36,7 @@ describe("As a user I want to be able to register for an account and be able to 
       .click()
 
       .url()
-      .should("eq", Cypress.config("baseUrl") + "/companies");
+      .should("eq", `${getBaseUrl()}/companies`);
     logout();
   });
 

@@ -8,8 +8,8 @@ export type ExecutionEnvironment = "developmentLocal" | "development" | "preview
 export type DataEnvironment = "fakeFixtures" | "realData";
 
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
-  const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment;
-  const dataEnvironment = Cypress.env("DATA_ENVIRONMENT") as DataEnvironment;
+  const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment; // TODO()
+  const dataEnvironment = Cypress.env("DATA_ENVIRONMENT") as DataEnvironment; // TODO()
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
     return describe(`${name} - Disabled`, () => {

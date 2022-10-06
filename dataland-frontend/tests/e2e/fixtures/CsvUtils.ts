@@ -51,7 +51,7 @@ export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialS
 
 export function humanizeOrUndefined(stringToHumanise: string | undefined): string | undefined {
   if (stringToHumanise == undefined) return undefined;
-  return humanizeString(stringToHumanise!!);
+  return humanizeString(stringToHumanise);
 }
 
 export function getCompanyTypeCsvValue(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): number {

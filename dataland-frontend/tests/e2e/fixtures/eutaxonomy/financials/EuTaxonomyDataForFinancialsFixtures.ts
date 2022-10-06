@@ -66,21 +66,21 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
   const returnBase: EuTaxonomyDataForFinancials = {};
   populateSharedValues(returnBase);
   const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!!)])
+    financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!)])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
   returnBase.creditInstitutionKpis =
     financialServicesTypes.indexOf("CreditInstitution") >= 0
-      ? generateCreditInstitutionKpis(returnBase.referencedReports!!)
+      ? generateCreditInstitutionKpis(returnBase.referencedReports!)
       : undefined;
   returnBase.insuranceKpis =
     financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
-      ? generateInsuranceKpis(returnBase.referencedReports!!)
+      ? generateInsuranceKpis(returnBase.referencedReports!)
       : undefined;
   returnBase.investmentFirmKpis =
     financialServicesTypes.indexOf("InvestmentFirm") >= 0
-      ? generateInvestmentFirmKpis(returnBase.referencedReports!!)
+      ? generateInvestmentFirmKpis(returnBase.referencedReports!)
       : undefined;
   return returnBase;
 }
