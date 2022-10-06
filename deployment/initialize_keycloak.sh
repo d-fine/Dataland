@@ -6,10 +6,11 @@ target_server_url=$1
 location=$2
 
 keycloak_volume_name=dataland_keycloak_data
+keycloak_user_dir=$location/dataland-keycloak/users
 
 script_dir="$(dirname "$0")"
 echo "Copying the realm jsons to the server $target_server_url."
-ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak/users"
+ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_user_dir"
 scp -r "$script_dir"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$location"/dataland-keycloak
 scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
@@ -24,7 +25,7 @@ fi
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
 
-echo "Start Keycloak in initialization mode and wait for it to load the realm data."
+echo "Start Keycloak in initialization mode."
 ssh ubuntu@"$target_server_url" "cd $location;
                                  sudo docker-compose pull;
                                  sudo docker-compose build keycloak-initializer;
@@ -45,5 +46,8 @@ ssh ubuntu@"$target_server_url" "cd $location;
 
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
+
+echo "Cleaning up exported user files."
+ssh ubuntu@"$target_server_url" "rm $keycloak_user_dir/*.json"
 
 echo "Successfully initialized new instance of Keycloak."
