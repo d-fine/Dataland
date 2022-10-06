@@ -51,8 +51,6 @@ timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location &&
                        sleep 5;
                      done"
 
-ssh ubuntu@"$target_server_url" "sudo docker exec $container_name /opt/keycloak/bin/kcadm.sh "
-
 echo "Testing if the number of current users matches the number of exported users"
 current_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -c '\"username\" :'")
 all_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name ls /keycloak_users/datalandsecurity-users-*.json | wc -l")
