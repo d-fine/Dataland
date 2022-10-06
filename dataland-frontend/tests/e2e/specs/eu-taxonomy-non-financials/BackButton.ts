@@ -9,9 +9,7 @@ describe("As a user, I expect the back button to work properly", () => {
     getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
       cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((dataSetNonFinancial) => {
         cy.visitAndCheckAppMount(
-          "/companies/" +
-            dataSetNonFinancial[5].dataRegisteredByDataland[0].dataId +
-            "/frameworks/eutaxonomy-non-financials"
+          "/companies/" + dataSetNonFinancial[0].companyId + "/frameworks/eutaxonomy-non-financials"
         );
         cy.get("span.text-primary[title=back_button]")
           .parent(".cursor-pointer.grid.align-items-center")

@@ -9,9 +9,9 @@ describe(
   "As a developer, I want to ensure that all tests work by ensuring that all EuTaxonomy data is cached",
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
   () => {
-    it("Visit all EuTaxonomy Financial data with Controller API", () => {
+    it("Visit all EuTaxonomy Financial", () => {
       getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
-        getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials).then((datasetFinancial) =>
+        cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials)).then((datasetFinancial) =>
           doThingsInChunks(datasetFinancial, chunkSize, (element) =>
             new MetaDataControllerApi(new Configuration({ accessToken: token }))
               .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)
@@ -28,9 +28,9 @@ describe(
       });
     });
 
-    it("Visit all EuTaxonomy Non-Financial data with Controller API", () => {
+    it("Visit all EuTaxonomy Non-Financial data", () => {
       getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
-        getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials).then((datasetNonFinancial) =>
+        cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((datasetNonFinancial) =>
           doThingsInChunks(datasetNonFinancial, chunkSize, (element) =>
             new MetaDataControllerApi(new Configuration({ accessToken: token }))
               .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)

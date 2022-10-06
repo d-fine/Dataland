@@ -1,7 +1,4 @@
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-} from "@clients/backend";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {
