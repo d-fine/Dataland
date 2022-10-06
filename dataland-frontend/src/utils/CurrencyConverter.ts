@@ -9,7 +9,7 @@
 export function convertCurrencyNumbersToNotationWithLetters(
   numberToConvert: number,
   maxNumberOfDigitsAfterDecimalPoint?: number
-) {
+): string {
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "K" },

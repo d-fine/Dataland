@@ -3,53 +3,57 @@
   <DatalandFooter />
 </template>
 
-<script>
+<script lang="ts">
 import Keycloak from "keycloak-js";
-import { computed } from "vue";
+import { computed, defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
-export default {
+export default defineComponent({
   name: "app",
   components: { DatalandFooter },
   data() {
     return {
-      keycloak: null,
-      keycloakPromise: null,
-      keycloakPromiseFinished: true,
-      keycloakAuthenticated: null,
+      keycloak: null as Keycloak | null,
+      keycloakPromise: null as Promise<Keycloak> | null,
+      keycloakAuthenticated: false,
     };
   },
   methods: {
-    init_keycloak() {
-      if (this.keycloakPromiseFinished) {
-        this.keycloakPromise = this.keycloak
-          .init({
-            onLoad: "check-sso",
-            silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
-            pkceMethod: "S256",
-          })
-          .then((authenticated) => {
-            this.keycloakAuthenticated = authenticated;
-            return authenticated;
-          })
-          .catch((error) => {
-            console.log("Error in init keycloak ", error);
-            this.keycloakAuthenticated = false;
-          })
-          .then(() => {
-            return this.keycloak;
-          });
-        this.keycloakPromise.finally(() => {
-          this.keycloakPromiseFinished = true;
+    initKeycloak() {
+      const initOptions = {
+        realm: "datalandsecurity",
+        url: "/keycloak",
+        clientId: "dataland-public",
+        onLoad: "login-required",
+      };
+      const keycloak = new Keycloak(initOptions);
+      const keycloakPromise = keycloak
+        .init({
+          onLoad: "check-sso",
+          silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
+          pkceMethod: "S256",
+        })
+        .then((authenticated) => {
+          this.keycloakAuthenticated = authenticated;
+          return authenticated;
+        })
+        .catch((error) => {
+          console.log("Error in init keycloak ", error);
+          this.keycloakAuthenticated = false;
+        })
+        .then(() => {
+          return keycloak;
         });
-        this.keycloakPromiseFinished = false;
-      }
+
+      this.keycloak = keycloak;
+      this.keycloakPromise = keycloakPromise;
     },
   },
   provide() {
     return {
-      getKeycloakPromise: () => {
-        return this.keycloakPromise;
+      getKeycloakPromise: (): Promise<Keycloak> => {
+        if (this.keycloakPromise) return this.keycloakPromise;
+        throw new Error("The keycloak promise has not yet been initialised. This should not be possible...");
       },
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
@@ -57,16 +61,9 @@ export default {
     };
   },
   created() {
-    const initOptions = {
-      realm: "datalandsecurity",
-      url: "/keycloak",
-      clientId: "dataland-public",
-      onLoad: "login-required",
-    };
-    this.keycloak = new Keycloak(initOptions);
-    this.init_keycloak();
+    this.initKeycloak();
   },
-};
+});
 </script>
 
 <style lang="scss">
