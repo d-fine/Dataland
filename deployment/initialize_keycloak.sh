@@ -43,6 +43,7 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
 
 sleep 60
 echo "Debug logging"
+container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker logs $container_name > ./keycloak_initializer_debug.log"
 
 message="Profile prod activated."
