@@ -40,6 +40,11 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull;
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  sudo -E docker-compose --profile init up -d --build"
+
+sleep 60
+echo "Debug logging"
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker logs $container_name > ./keycloak_initializer_debug.log"
+
 message="Profile prod activated."
 container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
 timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location && sudo docker logs $container_name | grep -q \\\"$message\\\"\";
@@ -49,7 +54,7 @@ timeout 300 bash -c "while ! ssh ubuntu@\"$target_server_url\" \"cd $location &&
                      done"
 
 echo "Debug logging"
-ssh ubuntu@"$target_server_url" "cd $location && sudo docker logs $container_name > ./keycloak_initializer_debug.log"
+ssh ubuntu@"$target_server_url" "cd $location && sudo docker logs $container_name >> ./keycloak_initializer_debug.log"
 
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
