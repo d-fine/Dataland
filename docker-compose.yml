@@ -10,7 +10,8 @@ version: "3.8"
 services:
   proxy:
     build:
-      context: ./dataland-inbound-proxy
+      context: ./
+      dockerfile: ./dataland-inbound-proxy/Dockerfile
       args:
         PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
     restart: always
