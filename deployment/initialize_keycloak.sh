@@ -56,6 +56,8 @@ current_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name /op
 all_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name ls /keycloak_users/datalandsecurity-users-*.json | wc -l")
 test_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l")
 expected_users=$((all_users-test_users))
+echo ALL USERS $all_users
+echo TEST USERS $test_users
 if [[ ! $expected_users -eq $current_users ]]; then
   echo "Found $current_users but $expected_users were expected."
   exit 1
