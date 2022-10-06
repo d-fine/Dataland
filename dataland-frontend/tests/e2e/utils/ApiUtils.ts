@@ -1,4 +1,3 @@
-import Chainable = Cypress.Chainable;
 import {
   CompanyDataControllerApi,
   CompanyInformation,
@@ -36,19 +35,4 @@ export async function countCompanyAndDataIds(
     matchingDataIds,
     matchingCompanies,
   };
-}
-
-export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chainable<string> {
-  return cy
-    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-    .then((token) => {
-      return cy.request({
-        url: `/api/companies?dataTypes=${framework}`,
-        method: "GET",
-        headers: { Authorization: "Bearer " + token },
-      });
-    })
-    .then((response) => {
-      return response.body[0].companyId;
-    });
 }
