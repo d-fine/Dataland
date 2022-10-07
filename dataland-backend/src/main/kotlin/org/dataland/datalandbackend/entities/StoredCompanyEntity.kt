@@ -34,9 +34,6 @@ data class StoredCompanyEntity(
     @Column(name = "sector")
     var sector: String,
 
-    @Column(name = "industry")
-    var industry: String,
-
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
@@ -58,7 +55,6 @@ data class StoredCompanyEntity(
                 companyAlternativeNames = companyAlternativeNames,
                 headquarters = headquarters,
                 sector = sector,
-                industry = industry,
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,

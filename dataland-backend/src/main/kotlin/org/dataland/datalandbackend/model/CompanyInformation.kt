@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param companyAlternativeNames other names or abbreviations the company is known under
  * @param headquarters city where the headquarters of the company is located
  * @param sector in which the company operates (e.g. Financials)
- * @param industry in which the company operates (e.g. Insurance)
  * @param identifiers under which the company is registered (LEI, PermID, ...)
  * @param countryCode of the country of origin
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
@@ -26,9 +25,6 @@ data class CompanyInformation(
 
     @field:JsonProperty(required = true)
     val sector: String,
-
-    @field:JsonProperty(required = true)
-    val industry: String,
 
     @field:JsonProperty(required = true)
     val identifiers: List<CompanyIdentifier>,

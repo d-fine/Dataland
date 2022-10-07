@@ -42,7 +42,6 @@ class CompanyManager(
             companyAlternativeNames = companyInformation.companyAlternativeNames,
             headquarters = companyInformation.headquarters,
             sector = companyInformation.sector,
-            industry = companyInformation.industry,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
