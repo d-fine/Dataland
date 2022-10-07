@@ -5,10 +5,6 @@
     </div>
 
     <div class="col-4">
-      <span>Market Cap:</span>
-      <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
-    </div>
-    <div class="col-4">
       <span>Headquarter: </span>
       <span class="font-semibold">{{ companyInformation.headquarters }}</span>
     </div>

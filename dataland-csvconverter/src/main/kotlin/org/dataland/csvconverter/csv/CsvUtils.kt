@@ -1,6 +1,7 @@
 package org.dataland.csvconverter.csv
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvParser
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import java.io.FileReader
 import java.math.BigDecimal
@@ -33,6 +34,26 @@ object CsvUtils {
     fun Map<String, String>.getCsvValueAllowingNull(property: String, csvData: Map<String, String>): String? {
         return csvData[this[property]!!.lowercase()]?.trim()?.ifBlank {
             null
+        }
+    }
+
+    /**
+     * This function uses the backing map to extract a property from a CSV row, where the field itself represents a
+     * list of items separated by commas. If the requested column is not populated an empty list will
+     * be returned.
+     */
+    fun Map<String, String>.readMultiValuedCsvField(
+        property: String,
+        csvData: Map<String, String>,
+    ): List<String> {
+        val fieldValue = getCsvValueAllowingNull(property, csvData)
+        val csvMapper = CsvMapper().apply { enable(CsvParser.Feature.TRIM_SPACES) }
+        return if (fieldValue == null) {
+            emptyList()
+        } else {
+            csvMapper.readerFor(String::class.java)
+                .with(CsvSchema.emptySchema().withoutHeader())
+                .readValues<String>(fieldValue).readAll()
         }
     }
 
