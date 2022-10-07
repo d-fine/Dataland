@@ -123,14 +123,13 @@ export default defineComponent({
 </style>
 
 <style lang="scss" scoped>
-$dropdown-button-primary-color: #5a4f36;
 :deep(.p-multiselect-label-container) {
   display: none;
 }
 
 :deep(.p-badge) {
   background: #fff;
-  color: $dropdown-button-primary-color;
+  color: #5a4f36;
 }
 
 :deep(.p-multiselect) {
@@ -144,8 +143,8 @@ $dropdown-button-primary-color: #5a4f36;
 
 :deep(.selection-button) {
   background: white;
-  color: $dropdown-button-primary-color;
-  border: 2px solid $dropdown-button-primary-color;
+  color: #5a4f36;
+  border: 2px solid #5a4f36;
   border-radius: 8px;
   height: 2.5rem;
   .selection-button-content {
@@ -157,7 +156,7 @@ $dropdown-button-primary-color: #5a4f36;
   }
 
   &.filterActive {
-    background: $dropdown-button-primary-color;
+    background: #5a4f36;
     color: white;
   }
 }

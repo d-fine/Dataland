@@ -68,6 +68,27 @@ describe("As a user, I expect the search functionality on the /companies page to
       .url()
       .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
   });
+  it("Checks that the sector filter synchronises between the search bar and the drop down and works", () => {
+    const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+    const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
+      (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
+    )!!.companyInformation;
+
+    cy.ensureLoggedIn();
+    cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
+      .get("div[class='col-12 text-left']")
+      .should("contain.text", "Sorry! Your search didn't return any results.")
+      .get("#sector-filter")
+      .click()
+      .get("div.p-multiselect-panel")
+      .find(`li:contains('${demoCompanyToTestFor.sector}')`)
+      .click()
+      .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+      .contains(demoCompanyToTestFor.companyName)
+      .should("exist")
+      .url()
+      .should("contain", `sector=${demoCompanyToTestFor.sector}`);
+  });
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {
