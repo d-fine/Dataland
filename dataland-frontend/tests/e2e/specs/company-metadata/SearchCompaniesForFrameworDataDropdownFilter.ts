@@ -99,9 +99,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .eq(0)
       .click()
       .url()
-      .then((url) => {
-        expect(url.endsWith("/companies")).to.be.true;
-      });
+      .should("eq", `${Cypress.config("baseUrl")}/companies`);
   });
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",

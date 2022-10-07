@@ -13,6 +13,7 @@
             v-model="currentSearchBarInput"
             ref="frameworkDataSearchBar"
             :filter="currentCombinedFilter"
+            :search-bar-name="searchBarName"
             :enable-full-search="true"
             @companies-received="handleCompanyQuery"
             @search-confirmed="handleSearchConfirmed"
