@@ -142,8 +142,6 @@ export default defineComponent({
     },
     filter: {
       handler() {
-        console.log("Filter updated - Starting query");
-        console.log(JSON.stringify(this.filter));
         this.searchBarInput = this.filter?.companyNameFilter ?? "";
         this.queryCompany();
       },
