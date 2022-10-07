@@ -28,11 +28,20 @@ setup_ssh
 timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
 
 location=/home/ubuntu/dataland
+keycloak_backup_dir=/home/ubuntu/keycloak_backup
+keycloak_user_dir=$location/dataland-keycloak/users
+
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
-ssh ubuntu@"$target_server_url" "sudo rm -rf $location; mkdir -p $location/jar; mkdir -p $location/dataland-keycloak/dataland_theme/login"
+
+ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir && cp $keycloak_user_dir/*user-*.json $keycloak_backup_dir"
+ssh ubuntu@"$target_server_url" "sudo rm -rf $location;
+                                 mkdir -p $location/jar;
+                                 mkdir -p $location/dataland-keycloak/dataland_theme/login;
+                                 mkdir -p $keycloak_user_dir;
+                                 mv $keycloak_backup_dir/*user-*.json $keycloak_user_dir"
 
 envsubst < environments/.env.template > .env
 
@@ -48,6 +57,8 @@ scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_u
 
 echo "Set up Keycloak from scratch."
 "$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
+echo "Cleaning up exported user files."
+ssh ubuntu@"$target_server_url" "rm $keycloak_user_dir/*.json"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
