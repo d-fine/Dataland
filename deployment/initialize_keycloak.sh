@@ -60,7 +60,7 @@ if [[ ! $expected_users -eq $current_users ]]; then
   echo "Found $current_users but $expected_users were expected."
   exit 1
 fi
-echo "Imported users match the exported users."
+echo "Number of imported users match the exported users."
 
 echo "Shutting down all running containers."
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
