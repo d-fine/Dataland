@@ -1,11 +1,22 @@
 import { CompanyInformation, EuTaxonomyDataForFinancials } from "@clients/backend";
 
-beforeEach(() => {
-  cy.ensureLoggedIn();
-});
-
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
-  it("Check if the search bar is available, and if the show-all-companies button works as expected", () => {
+  beforeEach(() => {
+    cy.ensureLoggedIn();
+  });
+
+  let companiesWithEuTaxonomyDataForFinancials: Array<{
+    companyInformation: CompanyInformation;
+    t: EuTaxonomyDataForFinancials;
+  }>;
+
+  before(function () {
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+      companiesWithEuTaxonomyDataForFinancials = companies;
+    });
+  });
+
+  it("Check if the search bar is available, and if the 'Show all companies'-button works as expected", function () {
     const inputValue = "dummy";
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get(".p-card-title").should("contain", "Company Search");
@@ -14,29 +25,13 @@ describe("As a user, I want to be able to search companies existing on Dataland"
       .click({ force: true })
       .type(inputValue)
       .should("have.value", inputValue);
-    cy.get("button[name=show_all_companies_button].p-button")
-      .should("not.be.disabled")
-      .should("contain", "Show all companies")
-      .click({ force: true });
+    cy.get("button[name=show_all_companies_button].p-button").click({ force: true });
     cy.get("table.p-datatable-table").contains("th", "COMPANY");
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
-});
-
-describe("As a user, I want to be able to search companies by their alternative names", function () {
-  let fixtureData: Array<{
-    companyInformation: CompanyInformation;
-    t: EuTaxonomyDataForFinancials;
-  }>;
-
-  before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      fixtureData = companies;
-    });
-  });
 
   function getCompanyWithAlternativeName() {
-    return fixtureData.filter((it) => {
+    return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (
         it.companyInformation.companyAlternativeNames !== undefined &&
         it.companyInformation.companyAlternativeNames.length > 0
@@ -55,5 +50,24 @@ describe("As a user, I want to be able to search companies by their alternative 
       .should("have.value", searchValue);
     cy.get("button[name=getCompanies]").click({ force: true });
     cy.get("table.p-datatable-table").contains(testCompany.companyInformation.companyName);
+  });
+
+  it("Company Name Input field exists and works", () => {
+    const inputValue = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
+    cy.visitAndCheckAppMount("/companies-only-search");
+    cy.get("input[name=companyName]")
+      .should("not.be.disabled")
+      .type(inputValue, { force: true })
+      .should("have.value", inputValue);
+    cy.intercept("**/api/companies*").as("retrieveCompany");
+    cy.get("button[name=getCompanies]").click();
+    cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
+      cy.get("td").contains(companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName);
+    });
+  });
+
+  it("'Show all companies'-button exists and is enabled", () => {
+    cy.visitAndCheckAppMount("/companies-only-search");
+    cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
   });
 });
