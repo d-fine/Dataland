@@ -56,7 +56,7 @@ scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/Dockerf
 scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_url":$location/jar/dataland-backend.jar
 
 echo "Set up Keycloak from scratch."
-"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" || exit 1
+"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" "$keycloak_user_dir" || exit 1
 echo "Cleaning up exported user files."
 ssh ubuntu@"$target_server_url" "rm $keycloak_user_dir/*.json"
 
