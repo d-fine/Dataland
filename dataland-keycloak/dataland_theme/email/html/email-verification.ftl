@@ -1,7 +1,7 @@
 
 <#import "template.ftl" as layout>
 <@layout.emailLayout>
-    ${kcSanitize(msg("emailVerificationBodyHtml1"))?no_esc}
+    <p>Someone has created a Dataland account with this email address. If this was you, click the link below to verify your email address</p>
     <table role="presentation" style="border-collapse:separate;line-height:100%;">
         <tr>
             <td  role="presentation" style="border:none;border-radius:6px;cursor:auto;padding:11px 20px;background:#e67f3f;">
@@ -11,7 +11,8 @@
             </td>
         </tr>
     </table>
-    <strong>${(msg("emailVerificationBodyHtml2", linkExpiration, linkExpirationFormatter(linkExpiration)))?no_esc}</strong>
+    <p><strong>This link will expire within  ${msg(linkExpirationFormatter(linkExpiration))}.</strong></p>
+    <p>If you didn''t create this account, just ignore this message.</p>
 </@layout.emailLayout>
 
 
