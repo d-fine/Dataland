@@ -1,17 +1,5 @@
-import {
-  CompanyDataControllerApi,
-  CompanyInformation,
-  Configuration,
-  DataTypeEnum,
-  StoredCompany,
-} from "@clients/backend";
+import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
 
-export async function uploadCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
-  const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-    companyInformation
-  );
-  return data.data;
-}
 export async function getCompanyAndDataIds(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const dataset = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
