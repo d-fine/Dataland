@@ -32,6 +32,8 @@
           filter-placeholder="Search frameworks"
           class="ml-3"
         />
+        <div class="d-separator-left ml-3" />
+        <span class="ml-3 cursor-pointer text-primary font-semibold d-letters" @click="resetFilters">RESET</span>
       </div>
     </div>
   </div>
@@ -141,6 +143,11 @@ export default defineComponent({
     },
   },
   methods: {
+    resetFilters() {
+      this.selectedCountriesInt = this.availableCountries.filter((it) => !it.disabled);
+      this.selectedCountriesInt = [];
+      this.selectedSectorsInt = [];
+    },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
         this.getKeycloakPromise!!()

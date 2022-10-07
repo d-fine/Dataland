@@ -12,12 +12,10 @@
           <FrameworkDataSearchBar
             v-model="currentSearchBarInput"
             ref="frameworkDataSearchBar"
-            :searchBarName="searchBarName"
-            :frameworks-to-filter-for="currentFilteredFrameworks"
-            :country-codes-to-filter-for="currentFilteredCountryCodes"
-            :sectors-to-filter-for="currentFilteredSectors"
+            :filter="currentCombinedFilter"
             :enable-full-search="true"
             @companies-received="handleCompanyQuery"
+            @search-confirmed="handleSearchConfirmed"
           />
           <div class="flex">
             <FrameworkDataSearchFilters
@@ -78,16 +76,19 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import FrameworkDataSearchBar, {
+  FrameworkDataSearchFilterInterface,
+} from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
-import { useRoute } from "vue-router";
+import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, toRaw } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
+import { arraySetEquals } from "@/utils/ArrayUtils";
 
 export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
@@ -104,7 +105,7 @@ export default defineComponent({
 
   created() {
     window.addEventListener("scroll", this.handleScroll);
-    this.scanQueryParams();
+    this.scanQueryParams(this.route);
   },
   data() {
     return {
@@ -118,11 +119,20 @@ export default defineComponent({
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
+      currentCombinedFilter: {
+        companyNameFilter: "",
+        frameworkFilter: [],
+        sectorFilter: [],
+        countryCodeFilter: [],
+      } as FrameworkDataSearchFilterInterface,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
       firstShownRow: 0,
     };
+  },
+  beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
+    this.scanQueryParams(to);
   },
   setup() {
     return {
@@ -139,6 +149,24 @@ export default defineComponent({
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
       }
+    },
+    currentFilteredFrameworks: {
+      handler() {
+        this.updateCombinedFilterIfRequired();
+      },
+      deep: true,
+    },
+    currentFilteredCountryCodes: {
+      handler() {
+        this.updateCombinedFilterIfRequired();
+      },
+      deep: true,
+    },
+    currentFilteredSectors: {
+      handler() {
+        this.updateCombinedFilterIfRequired();
+      },
+      deep: true,
     },
   },
   computed: {
@@ -177,30 +205,75 @@ export default defineComponent({
         }
       }
     },
-    scanQueryParams() {
-      let queryFrameworks = this.route.query.framework;
+    getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
+      let queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
-        this.currentFilteredFrameworks = parseQueryParamArray(queryFrameworks).filter((it) =>
+        return parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
       } else {
-        this.currentFilteredFrameworks = Object.values(DataTypeEnum);
+        return Object.values(DataTypeEnum);
       }
-
-      let queryCountryCodes = this.route.query.countryCode;
+    },
+    getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
+      let queryCountryCodes = route.query.countryCode;
       if (queryCountryCodes) {
-        this.currentFilteredCountryCodes = parseQueryParamArray(queryCountryCodes);
+        return parseQueryParamArray(queryCountryCodes);
       }
-
-      let querySectors = this.route.query.sector;
+      return [];
+    },
+    getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
+      let querySectors = route.query.sector;
       if (querySectors) {
-        this.currentFilteredSectors = parseQueryParamArray(querySectors);
+        return parseQueryParamArray(querySectors);
       }
-
-      let queryInput = this.route.query.input as string;
+      return [];
+    },
+    getQueryInput(route: RouteLocationNormalizedLoaded): string {
+      let queryInput = route.query.input as string;
       if (queryInput) {
+        return queryInput;
+      }
+      return "";
+    },
+    updateCombinedFilterIfRequired() {
+      if (
+        !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
+        !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
+        !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
+        this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
+      ) {
+        this.currentCombinedFilter = {
+          sectorFilter: this.currentFilteredSectors,
+          frameworkFilter: this.currentFilteredFrameworks,
+          companyNameFilter: this.currentSearchBarInput,
+          countryCodeFilter: this.currentFilteredCountryCodes,
+        };
+      }
+    },
+    scanQueryParams(route: RouteLocationNormalizedLoaded) {
+      const queryFrameworks = this.getQueryFrameworks(route);
+      const queryCountryCodes = this.getQueryCountryCodes(route);
+      const querySectors = this.getQuerySectors(route);
+      const queryInput = this.getQueryInput(route);
+
+      if (
+        !arraySetEquals(this.currentFilteredFrameworks, queryFrameworks) ||
+        !arraySetEquals(this.currentFilteredCountryCodes, queryCountryCodes) ||
+        !arraySetEquals(this.currentFilteredSectors, querySectors) ||
+        this.currentSearchBarInput !== queryInput
+      ) {
+        this.currentFilteredFrameworks = queryFrameworks;
+        this.currentFilteredCountryCodes = queryCountryCodes;
+        this.currentFilteredSectors = querySectors;
         this.currentSearchBarInput = queryInput;
+        this.currentCombinedFilter = {
+          sectorFilter: querySectors,
+          frameworkFilter: queryFrameworks,
+          companyNameFilter: queryInput,
+          countryCodeFilter: queryCountryCodes,
+        };
       }
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
@@ -230,6 +303,9 @@ export default defineComponent({
           sector: querySectors,
         },
       });
+    },
+    handleSearchConfirmed(companyNameFilter: string) {
+      this.currentSearchBarInput = companyNameFilter;
     },
     toggleSearchBar() {
       this.searchBarToggled = true;

@@ -13,13 +13,12 @@
           <AutoComplete
             :suggestions="autocompleteArrayDisplayed"
             :name="searchBarName"
-            :modelValue="modelValue"
+            v-model="searchBarInput"
             ref="autocomplete"
             inputClass="h-3rem d-framework-searchbar-input"
             field="companyName"
             style="z-index: 10"
             placeholder="Search company by name or PermID"
-            @input="handleInput"
             @complete="searchCompanyName"
             @item-select="handleItemSelect"
             @keyup.enter="handleKeyupEnter"
@@ -27,7 +26,7 @@
           >
             <template #item="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="this.modelValue" />
+              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="searchBarInput" />
             </template>
             <template #footer>
               <ul
@@ -81,9 +80,16 @@ import {
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
-import { DataTypeEnum } from "build/clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
+
+export interface FrameworkDataSearchFilterInterface {
+  companyNameFilter: string;
+  frameworkFilter: Array<DataTypeEnum>;
+  countryCodeFilter: Array<string>;
+  sectorFilter: Array<string>;
+}
 
 export default defineComponent({
   setup() {
@@ -95,32 +101,27 @@ export default defineComponent({
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "update:modelValue", "rendered", "search-confirmed"],
+  emits: ["companies-received", "rendered", "search-confirmed"],
 
   props: {
     searchBarName: {
       type: String,
       default: "framework_data_search_bar_standard",
     },
-    modelValue: {
-      type: String,
-      default: "",
+    filter: {
+      type: Object as () => FrameworkDataSearchFilterInterface,
+      default(): FrameworkDataSearchFilterInterface {
+        return {
+          companyNameFilter: "",
+          frameworkFilter: Object.values(DataTypeEnum),
+          sectorFilter: [],
+          countryCodeFilter: [],
+        };
+      },
     },
     maxNumAutoCompleteEntries: {
       type: Number,
       default: 3,
-    },
-    frameworksToFilterFor: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
-    },
-    countryCodesToFilterFor: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
-    sectorsToFilterFor: {
-      type: Array as () => Array<string>,
-      default: () => [],
     },
     enableFullSearch: {
       type: Boolean,
@@ -128,6 +129,7 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.searchBarInput = this.filter?.companyNameFilter ?? "";
     this.queryCompany();
     if (!this.route.query.input) {
       this.autocomplete.focus();
@@ -138,20 +140,11 @@ export default defineComponent({
     searchBarName() {
       this.autocomplete.focus();
     },
-    frameworksToFilterFor: {
+    filter: {
       handler() {
-        this.queryCompany();
-      },
-      deep: true,
-    },
-    countryCodesToFilterFor: {
-      handler() {
-        this.queryCompany();
-      },
-      deep: true,
-    },
-    sectorsToFilterFor: {
-      handler() {
+        console.log("Filter updated - Starting query");
+        console.log(JSON.stringify(this.filter));
+        this.searchBarInput = this.filter?.companyNameFilter ?? "";
         this.queryCompany();
       },
       deep: true,
@@ -160,36 +153,32 @@ export default defineComponent({
 
   data: function () {
     return {
+      searchBarInput: "",
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       loading: false,
       route: useRoute(),
     };
   },
-
   methods: {
-    handleInput(inputEvent: { target: { value: string } }) {
-      this.$emit("update:modelValue", inputEvent.target.value);
-    },
-
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
       this.$router.push(getRouterLinkTargetFramework(event.value));
     },
     handleKeyupEnter() {
-      this.queryCompany();
+      this.$emit("search-confirmed", this.searchBarInput);
       this.autocomplete.hideOverlay();
       this.autocomplete.$refs.input.blur();
-      this.$emit("search-confirmed", this.modelValue);
+      this.queryCompany();
     },
     async queryCompany() {
       if (this.getKeycloakPromise !== undefined && this.enableFullSearch) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-          this.modelValue,
+          this.searchBarInput,
           false,
-          new Set(this.frameworksToFilterFor),
-          new Set(this.countryCodesToFilterFor),
-          new Set(this.sectorsToFilterFor),
+          new Set(this.filter?.frameworkFilter),
+          new Set(this.filter?.countryCodeFilter),
+          new Set(this.filter?.sectorFilter),
           this.getKeycloakPromise()
         );
         this.$emit("companies-received", resultsArray);
@@ -202,9 +191,9 @@ export default defineComponent({
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
           companyName.query,
           true,
-          new Set(this.frameworksToFilterFor),
-          new Set(this.countryCodesToFilterFor),
-          new Set(this.sectorsToFilterFor),
+          new Set(this.filter?.frameworkFilter),
+          new Set(this.filter?.countryCodeFilter),
+          new Set(this.filter?.sectorFilter),
           this.getKeycloakPromise()
         );
         this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
