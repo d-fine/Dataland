@@ -1,21 +1,20 @@
 import { CompanyInformation, EuTaxonomyDataForFinancials } from "@clients/backend";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
-beforeEach(() => {
-  cy.ensureLoggedIn();
-});
-
-let companiesWithEuTaxonomyDataForFinancials: Array<{
-  companyInformation: CompanyInformation;
-  t: EuTaxonomyDataForFinancials;
-}>;
-
-before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-    companiesWithEuTaxonomyDataForFinancials = companies;
+  beforeEach(() => {
+    cy.ensureLoggedIn();
   });
-});
 
+  let companiesWithEuTaxonomyDataForFinancials: Array<{
+    companyInformation: CompanyInformation;
+    t: EuTaxonomyDataForFinancials;
+  }>;
+
+  before(function () {
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+      companiesWithEuTaxonomyDataForFinancials = companies;
+    });
+  });
 
   it("Check if the search bar is available, and if the 'Show all companies'-button works as expected", function () {
     const inputValue = "dummy";
