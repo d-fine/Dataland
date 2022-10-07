@@ -22,7 +22,7 @@ if [[ -n $volume_exists ]]; then
 fi
 
 delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
-exit 1
+
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 ssh ubuntu@"$target_server_url" "cd $location;
                                  sudo docker-compose pull;
