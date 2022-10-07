@@ -89,6 +89,20 @@ describe("As a user, I expect the search functionality on the /companies page to
       .url()
       .should("contain", `sector=${demoCompanyToTestFor.sector}`);
   });
+  it("Checks that the reset button works as expected", () => {
+    const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+    cy.ensureLoggedIn();
+    cy.visit(
+      `/companies?sector=${demoCompanyToTestFor.sector}&countryCode=${demoCompanyToTestFor.countryCode}&framework=eutaxonomy-non-financials`
+    )
+      .get("span:contains('RESET')")
+      .eq(0)
+      .click()
+      .url()
+      .then((url) => {
+        expect(url.endsWith("/companies")).to.be.true;
+      });
+  });
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {

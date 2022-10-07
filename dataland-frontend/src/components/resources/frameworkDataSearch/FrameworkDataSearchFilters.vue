@@ -144,7 +144,7 @@ export default defineComponent({
   },
   methods: {
     resetFilters() {
-      this.selectedCountriesInt = this.availableCountries.filter((it) => !it.disabled);
+      this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
