@@ -12,7 +12,7 @@
         }
     </style>
     <body>
-    <img src="https://dataland.com/images/logos/logo_dataland_long.png">
+    <img src="${properties.frontendUrl?keep_before("keycloak")}images/logos/logo_dataland_long.png">
     <div>
         <br>
         <br>
