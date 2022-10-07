@@ -9,10 +9,10 @@ describe(
   "As a developer, I want to ensure that all tests work by ensuring that all EuTaxonomy data is cached",
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
   () => {
-    it("Visit all EuTaxonomy Financial", () => {
+    function visitTaxonomyData(dataType: DataTypeEnum) {
       getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
-        cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials)).then((datasetFinancial) =>
-          doThingsInChunks(datasetFinancial, chunkSize, (element) =>
+        cy.browserThen(getCompanyAndDataIds(token, dataType)).then((myDataset) =>
+          doThingsInChunks(myDataset, chunkSize, (element) =>
             new MetaDataControllerApi(new Configuration({ accessToken: token }))
               .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)
               .then((dataGetResponse) => {
@@ -26,25 +26,14 @@ describe(
           )
         );
       });
+    }
+
+    it("Visit all EuTaxonomy Financial", () => {
+      visitTaxonomyData(DataTypeEnum.EutaxonomyFinancials);
     });
 
     it("Visit all EuTaxonomy Non-Financial data", () => {
-      getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
-        cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((datasetNonFinancial) =>
-          doThingsInChunks(datasetNonFinancial, chunkSize, (element) =>
-            new MetaDataControllerApi(new Configuration({ accessToken: token }))
-              .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)
-              .then((dataGetResponse) => {
-                if (dataGetResponse.status !== 200) {
-                  assert(
-                    dataGetResponse.status === 200,
-                    `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
-                  );
-                }
-              })
-          )
-        );
-      });
+      visitTaxonomyData(DataTypeEnum.EutaxonomyNonFinancials);
     });
   }
 );

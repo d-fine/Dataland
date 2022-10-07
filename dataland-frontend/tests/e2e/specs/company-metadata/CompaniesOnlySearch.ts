@@ -16,7 +16,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     });
   });
 
-  it("Check if the search bar is available, and if the show-all-companies button works as expected", function () {
+  it("Check if the search bar is available, and if the 'Show all companies'-button works as expected", function () {
     function verifyCompanySearchResultTable(): void {
       cy.get("table.p-datatable-table").contains("th", "COMPANY");
       cy.get("table.p-datatable-table").contains("th", "SECTOR");
@@ -31,10 +31,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
       .click({ force: true })
       .type(inputValue)
       .should("have.value", inputValue);
-    cy.get("button[name=show_all_companies_button].p-button")
-      .should("not.be.disabled")
-      .should("contain", "Show all companies")
-      .click({ force: true });
+    cy.get("button[name=show_all_companies_button].p-button").click({ force: true });
     verifyCompanySearchResultTable();
   });
 
@@ -52,7 +49,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     });
   });
 
-  it("Show all companies button exists", () => {
+  it("'Show all companies'-button exists and is enabled", () => {
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
   });
