@@ -1,6 +1,6 @@
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { DataTypeEnum } from "../../../../build/clients/backend";
-import { getKeycloakToken } from "../../utils/Auth";
+import { DataTypeEnum } from "@clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
   let minimumNumberNonFinancialCompanies = 0;

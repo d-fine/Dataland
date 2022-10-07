@@ -8,7 +8,7 @@ import {
   EuTaxonomyDataForNonFinancialsControllerApi,
   DataTypeEnum,
 } from "@clients/backend";
-import { countCompanyAndDataIds, uploadCompany } from "../../utils/ApiUtils";
+import { countCompanyAndDataIds, uploadCompany } from "@e2e/utils/ApiUtils";
 const chunkSize = 15;
 
 describe(

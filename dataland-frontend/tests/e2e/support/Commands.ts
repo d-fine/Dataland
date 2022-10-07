@@ -1,6 +1,6 @@
 import Chainable = Cypress.Chainable;
-import { ensureLoggedIn, getKeycloakToken } from "../utils/Auth";
-import { browserThen } from "../utils/Cypress";
+import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
+import { browserThen } from "@e2e/utils/Cypress";
 
 declare global {
   namespace Cypress {

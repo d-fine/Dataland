@@ -1,7 +1,7 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { doThingsInChunks } from "@e2e/utils/Cypress";
-import { Configuration, DataTypeEnum, MetaDataControllerApi } from "../../../../build/clients/backend";
+import { Configuration, DataTypeEnum, MetaDataControllerApi } from "@clients/backend";
 
 const chunkSize = 40;
 

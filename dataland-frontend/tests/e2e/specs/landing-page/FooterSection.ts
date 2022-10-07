@@ -1,6 +1,6 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
-import { getKeycloakToken } from "../../utils/Auth";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {

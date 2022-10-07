@@ -1,6 +1,6 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { getKeycloakToken } from "../../utils/Auth";
-import { DataTypeEnum } from "../../../../build/clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
   it("tooltips are present and contain text as expected", function () {

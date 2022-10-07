@@ -9,7 +9,7 @@ import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { getKeycloakToken } from "../../utils/Auth";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;

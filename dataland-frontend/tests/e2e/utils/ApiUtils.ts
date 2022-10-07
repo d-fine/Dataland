@@ -4,7 +4,7 @@ import {
   Configuration,
   DataTypeEnum,
   StoredCompany,
-} from "../../../build/clients/backend";
+} from "@clients/backend";
 
 export async function uploadCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
   const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(

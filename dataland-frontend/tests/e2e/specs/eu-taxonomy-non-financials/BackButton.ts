@@ -1,6 +1,6 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { getKeycloakToken } from "../../utils/Auth";
-import { DataTypeEnum } from "../../../../build/clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the back button to work properly", () => {
   it("company eu taxonomy page should be present and contain back button", function () {
