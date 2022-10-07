@@ -36,12 +36,12 @@ ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
 
-ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir && cp $keycloak_user_dir/*user-*.json $keycloak_backup_dir"
+ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir && cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir"
 ssh ubuntu@"$target_server_url" "sudo rm -rf $location;
                                  mkdir -p $location/jar;
                                  mkdir -p $location/dataland-keycloak/dataland_theme/login;
                                  mkdir -p $keycloak_user_dir;
-                                 mv $keycloak_backup_dir/*user-*.json $keycloak_user_dir"
+                                 mv $keycloak_backup_dir/*-users-*.json $keycloak_user_dir"
 
 envsubst < environments/.env.template > .env
 
