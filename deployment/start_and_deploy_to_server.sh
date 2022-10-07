@@ -34,7 +34,7 @@ keycloak_user_dir=$location/dataland-keycloak/users
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" 'sudo docker kill $(sudo docker ps -q); sudo docker system prune --force; sudo docker info'
+ssh ubuntu@"$target_server_url" 'docker kill $(sudo docker ps -q); docker system prune --force; docker info'
 
 ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir && cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir"
 ssh ubuntu@"$target_server_url" "sudo rm -rf $location;

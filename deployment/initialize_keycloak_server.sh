@@ -15,8 +15,6 @@ scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$l
 scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
 scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":$location/dataland-keycloak/dataland_theme/login
 
-#scp "$script_dir"/initialize_keycloak_server.sh ubuntu@"$target_server_url":$location/dataland-keycloak
-
 volume_exists=$(search_volume "$target_server_url" "$location" "$keycloak_volume_name")
 if [[ -n $volume_exists ]]; then
   ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer"
