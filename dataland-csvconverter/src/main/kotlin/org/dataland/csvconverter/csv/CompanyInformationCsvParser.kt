@@ -18,7 +18,6 @@ class CompanyInformationCsvParser {
         "headquarters" to "Headquarter",
         "countryCode" to "Countrycode",
         "sector" to "Sector",
-        "industry" to "Industry",
         IdentifierType.Isin.name to "ISIN",
         IdentifierType.Lei.name to "LEI",
         IdentifierType.PermId.name to "PermID",
@@ -37,7 +36,6 @@ class CompanyInformationCsvParser {
                 .readMultiValuedCsvField("companyAlternativeNames", row),
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
-            industry = companyInformationColumnMapping.getCsvValue("industry", row),
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
             isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)

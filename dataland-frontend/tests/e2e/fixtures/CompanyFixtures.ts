@@ -8,7 +8,6 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
   const sector = faker.company.bsNoun();
-  const industry = faker.company.bsNoun();
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
     .arrayElements([
@@ -44,7 +43,6 @@ export function generateCompanyInformation(): CompanyInformation {
     companyAlternativeNames: companyAlternativeNames,
     headquarters: headquarters,
     sector: sector,
-    industry: industry,
     identifiers: identifiers,
     countryCode: countryCode,
     isTeaserCompany: false,
@@ -69,10 +67,6 @@ export function getCsvCompanyMapping<T>() {
     {
       label: "Sector",
       value: (row: FixtureData<T>) => row.companyInformation.sector,
-    },
-    {
-      label: "Industry",
-      value: (row: FixtureData<T>) => row.companyInformation.industry,
     },
     {
       label: "Countrycode",
