@@ -102,7 +102,6 @@ export default defineComponent({
   props: {
     dataID: {
       type: String,
-      default: "",
     },
   },
   mounted() {
@@ -120,7 +119,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(
-          this.dataID
+          assertDefined(this.dataID)
         );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {

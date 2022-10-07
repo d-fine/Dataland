@@ -8,18 +8,24 @@ import Keycloak from "keycloak-js";
 import { computed, defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
+export interface AppData {
+  keycloak?: Keycloak;
+  keycloakPromise?: Promise<Keycloak>;
+  keycloakAuthenticated: boolean;
+}
+
 export default defineComponent({
   name: "app",
   components: { DatalandFooter },
-  data() {
+  data(): AppData {
     return {
-      keycloak: null as Keycloak | null,
-      keycloakPromise: null as Promise<Keycloak> | null,
+      keycloak: undefined,
+      keycloakPromise: undefined,
       keycloakAuthenticated: false,
     };
   },
   methods: {
-    initKeycloak() {
+    initKeycloak(): void {
       const initOptions = {
         realm: "datalandsecurity",
         url: "/keycloak",
@@ -33,15 +39,15 @@ export default defineComponent({
           silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
           pkceMethod: "S256",
         })
-        .then((authenticated) => {
+        .then((authenticated): boolean => {
           this.keycloakAuthenticated = authenticated;
           return authenticated;
         })
-        .catch((error) => {
+        .catch((error): void => {
           console.log("Error in init keycloak ", error);
           this.keycloakAuthenticated = false;
         })
-        .then(() => {
+        .then((): Keycloak => {
           return keycloak;
         });
 
@@ -60,7 +66,7 @@ export default defineComponent({
       }),
     };
   },
-  created() {
+  created(): void {
     this.initKeycloak();
   },
 });

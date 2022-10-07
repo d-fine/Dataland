@@ -88,15 +88,16 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
 import { getRouterLinkTargetFramework } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "FrameworkDataSearchResults",
   components: { MarginWrapper, DataTable, Column },
   directives: {
@@ -129,7 +130,7 @@ export default {
       return getRouterLinkTargetFramework(companyData);
     },
   },
-};
+});
 </script>
 <style>
 #search-result-framework-data tr:hover {

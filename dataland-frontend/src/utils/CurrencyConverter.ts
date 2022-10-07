@@ -23,9 +23,7 @@ export function convertCurrencyNumbersToNotationWithLetters(
   const item = lookup
     .slice()
     .reverse()
-    .find(function (part) {
-      return numberToConvert >= part.value;
-    });
+    .find((part): boolean => numberToConvert >= part.value);
   return item
     ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
         " " +

@@ -23,7 +23,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     'semi-spacing': 'error',
-    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowTypedFunctionExpressions": false,
+    }],
     "vue/block-lang": ["error",
       {
         "script": {
