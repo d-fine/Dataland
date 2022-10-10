@@ -13,9 +13,9 @@ scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":"$location"
 scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":"$location"/dataland-keycloak/dataland_theme/login
 
 ls -lisa "$script_dir"
-scp -p "$script_dir"/initialize_keycloak_server.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
+scp "$script_dir"/initialize_keycloak_server.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "ls -lisa \"$location\"/dataland-keycloak"
-scp ./deployment/deployment_utils.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
+scp "$script_dir"/deployment/deployment_utils.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
                                  export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
                                  export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
