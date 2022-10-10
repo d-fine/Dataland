@@ -6,7 +6,7 @@ describe("As a developer, I expect the PGAdmin console to be available to me", (
       .type("admin@dataland.com")
       .get("input[name=password]")
       .should("exist")
-      .type(Cypress.env("PGADMIN_PASSWORD"))
+      .type(Cypress.env("PGADMIN_PASSWORD") as string)
       .get("button[name=internal_button]")
       .should("contain.text", "Login")
       .click();

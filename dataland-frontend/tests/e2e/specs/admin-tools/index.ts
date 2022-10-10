@@ -1,7 +1,7 @@
 /**
  * Aa a developer or dataland employee I want to have access to meaningful admin tools
  */
-describe("Admin tool test", () => {
+describe("Admin tool test", (): void => {
   require("./AdminConsoleSecurity");
   require("./PGAdmin");
 });
