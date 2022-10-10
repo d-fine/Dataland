@@ -39,11 +39,11 @@ export function login(
 export function ensureLoggedIn(username?: string, password?: string): void {
   cy.session(
     [username, password],
-    () => {
+    (): void => {
       login(username, password);
     },
     {
-      validate: () => {
+      validate: (): void => {
         cy.visit("/").url().should("eq", `${getBaseUrl()}/companies`);
       },
     }
@@ -73,5 +73,5 @@ export function getKeycloakToken(
     })
     .should("have.a.property", "body")
     .should("have.a.property", "access_token")
-    .then((token) => token.toString());
+    .then((token): string => token.toString());
 }

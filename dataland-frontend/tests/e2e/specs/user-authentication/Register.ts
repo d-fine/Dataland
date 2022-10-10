@@ -1,12 +1,12 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { getBaseUrl } from "../../utils/Cypress";
 
-describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
+describe("As a user I want to be able to register for an account and be able to log in and out of that account", (): void => {
   const email = `test_user${Date.now()}@dataland.com`;
   const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
-  const randomHexPassword = [...passwordBytes].map((x) => x.toString(16).padStart(2, "0")).join("");
+  const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
-  it("Checks that registering works", () => {
+  it("Checks that registering works", (): void => {
     cy.visitAndCheckAppMount("/")
       .get("button[name='join_dataland_button']")
       .click()
@@ -40,7 +40,7 @@ describe("As a user I want to be able to register for an account and be able to 
     logout();
   });
 
-  it("Checks that one can login to the newly registered account", () => {
+  it("Checks that one can login to the newly registered account", (): void => {
     login(email, randomHexPassword);
     logout();
   });
