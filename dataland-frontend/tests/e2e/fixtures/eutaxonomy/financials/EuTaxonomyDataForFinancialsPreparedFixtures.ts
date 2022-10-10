@@ -4,8 +4,8 @@ import {
   generateEuTaxonomyDataForFinancials,
   generateEuTaxonomyDataForFinancialsWithTypes,
 } from "./EuTaxonomyDataForFinancialsFixtures";
-import { randomPercentageValue } from "../../common/NumberFixtures";
-import { generateDatapoint } from "../../common/DataPointFixtures";
+import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>
@@ -32,7 +32,7 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
 
 function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForNonFinancials> {
+): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
   input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
@@ -44,7 +44,7 @@ function createCreditInstitutionDualFieldSubmission(
 
 function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForNonFinancials> {
+): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "credit-institution-single-field-submission";
   input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
@@ -55,7 +55,7 @@ function createCreditInstitutionSingleFieldSubmission(
 
 function createInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForNonFinancials> {
+): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "insurance-company";
   input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
   return input;
@@ -63,7 +63,7 @@ function createInsuranceCompany(
 
 function createAssetManagementCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForNonFinancials> {
+): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-company";
   input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
   return input;
@@ -71,7 +71,7 @@ function createAssetManagementCompany(
 
 function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForNonFinancials> {
+): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-insurance-company";
   input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
   return input;
