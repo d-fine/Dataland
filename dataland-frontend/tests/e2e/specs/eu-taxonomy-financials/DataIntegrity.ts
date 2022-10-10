@@ -15,8 +15,8 @@ describeIf(
     executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
-  function () {
-    beforeEach(() => {
+  function (): void {
+    beforeEach((): void => {
       cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
@@ -29,14 +29,14 @@ describeIf(
     });
 
     function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
-      return preparedFixtures.find((it) => it.companyInformation.companyName == name)!;
+      return preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
     }
 
     function uploadDataAndVisitCompanyPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
-    ) {
-      createCompanyAndGetId(companyInformation.companyName).then((companyId) => {
+    ): void {
+      createCompanyAndGetId(companyInformation.companyName).then((companyId): void => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
         generateEuTaxonomyUpload(testData);
         submitEuTaxonomyFinancialsUploadForm();
@@ -50,7 +50,7 @@ describeIf(
       return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
-    function checkCommonFields(type: string, data: EligibilityKpis) {
+    function checkCommonFields(type: string, data: EligibilityKpis): void {
       cy.get(`div[name="taxonomyEligibleActivity${type}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
         .should("contain", formatPercentNumber(data.taxonomyEligibleActivity));
@@ -65,14 +65,14 @@ describeIf(
         .should("contain", formatPercentNumber(data.investmentNonNfrd));
     }
 
-    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials) {
+    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
-    it("Create a CreditInstitution (combined field submission)", () => {
+    it("Create a CreditInstitution (combined field submission)", (): void => {
       const testData = getPreparedFixture("credit-institution-single-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
@@ -83,7 +83,7 @@ describeIf(
       cy.get("body").should("not.contain", "On demand interbank loans");
     });
 
-    it("Create a CreditInstitution (individual field submission)", () => {
+    it("Create a CreditInstitution (individual field submission)", (): void => {
       const testData = getPreparedFixture("credit-institution-dual-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
@@ -96,7 +96,7 @@ describeIf(
       cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
     });
 
-    it("Create an insurance company", () => {
+    it("Create an insurance company", (): void => {
       const testData = getPreparedFixture("insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
@@ -104,7 +104,7 @@ describeIf(
       cy.get("body").should("not.contain", "demand interbank loans");
     });
 
-    it("Create an Asset Manager", () => {
+    it("Create an Asset Manager", (): void => {
       const testData = getPreparedFixture("asset-management-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
@@ -113,7 +113,7 @@ describeIf(
       cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
     });
 
-    it("Create a Company that is Asset Manager and Insurance", () => {
+    it("Create a Company that is Asset Manager and Insurance", (): void => {
       const testData = getPreparedFixture("asset-management-insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);

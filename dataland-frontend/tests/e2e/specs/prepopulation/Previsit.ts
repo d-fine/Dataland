@@ -7,8 +7,8 @@ const chunkSize = 40;
 describe(
   "As a developer, I want to ensure that all tests work by ensuring that all EuTaxonomy data is cached",
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
-  () => {
-    it("Visit all EuTaxonomy Data", () => {
+  (): void => {
+    it("Visit all EuTaxonomy Data", (): void => {
       performSimpleGet("metadata").then((metaDataResponse) => {
         getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then(async (token) => {
           doThingsInChunks(metaDataResponse.body, chunkSize, (element: any) =>

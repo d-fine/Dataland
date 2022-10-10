@@ -1,8 +1,8 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 
-describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
-  it("Checks that the footer section works properly", () => {
+describe("As a user, I expect the footer section to be present and contain relevant legal links", (): void => {
+  it("Checks that the footer section works properly", (): void => {
     cy.visitAndCheckAppMount("/");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("body").should("contain.text", "Legal");
@@ -22,8 +22,8 @@ describe("As a user, I expect the footer section to be present and contain relev
     cy.get("h2").contains("Data Privacy");
   });
 
-  describe("Checks that the footer section is present on many pages", () => {
-    beforeEach(() => {
+  describe("Checks that the footer section is present on many pages", (): void => {
+    beforeEach((): void => {
       cy.ensureLoggedIn();
     });
 
@@ -38,8 +38,8 @@ describe("As a user, I expect the footer section to be present and contain relev
       cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }
 
-    pagesToCheck.forEach((page) => {
-      it(`Checks that the footer is present on ${page}`, () => {
+    pagesToCheck.forEach((page): void => {
+      it(`Checks that the footer is present on ${page}`, (): void => {
         cy.visitAndCheckAppMount(page);
         assertFooterPresence();
       });
@@ -47,9 +47,9 @@ describe("As a user, I expect the footer section to be present and contain relev
 
     const frameworksToCheck = Object.values(DataTypeEnum);
 
-    frameworksToCheck.forEach((framework) => {
-      it(`Checks that the footer is present on framework ${framework}`, () => {
-        retrieveFirstCompanyIdWithFrameworkData(framework).then((companyId) => {
+    frameworksToCheck.forEach((framework): void => {
+      it(`Checks that the footer is present on framework ${framework}`, (): void => {
+        retrieveFirstCompanyIdWithFrameworkData(framework).then((companyId): void => {
           cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
           assertFooterPresence();
         });

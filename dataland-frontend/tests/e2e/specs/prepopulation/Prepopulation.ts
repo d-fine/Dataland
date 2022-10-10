@@ -65,7 +65,7 @@ describe(
 
       function chunkUploadData(
         dataEndpoint: string,
-        data: Array<{ companyInformation: CompanyInformation; t: Object }>,
+        data: Array<{ companyInformation: CompanyInformation; t: Record<string, unknown> }>,
         token: string
       ) {
         doThingsInChunks(data, chunkSize, (element) => {

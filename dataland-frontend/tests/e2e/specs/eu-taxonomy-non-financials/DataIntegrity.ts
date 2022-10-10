@@ -8,10 +8,10 @@ describeIf(
     executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
-  function () {
+  function (): void {
     const companyIdList: Array<string> = [];
     const companyNames: Array<string> = ["eligible & total", "eligible"];
-    beforeEach(() => {
+    beforeEach((): void => {
       cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
@@ -32,14 +32,14 @@ describeIf(
       uploadFormFiller();
       cy.intercept("**/api/data/eutaxonomy-non-financials").as("postTaxonomyData");
       cy.get('button[name="postEUData"]').click({ force: true });
-      cy.wait("@postTaxonomyData", { timeout: timeout }).then(() => {
+      cy.wait("@postTaxonomyData", { timeout: timeout }).then((): void => {
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
-        cy.get("span[title=dataId]").then(() => {
-          cy.get("span[title=companyId]").then(($companyID) => {
+        cy.get("span[title=dataId]").then((): void => {
+          cy.get("span[title=companyId]").then(($companyID): void => {
             const companyID = $companyID.text();
             cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(`/companies/${companyID}/frameworks/eutaxonomy-non-financials`);
-            cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
+            cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then((): void => {
               euTaxonomyPageVerifier();
             });
           });
@@ -47,9 +47,9 @@ describeIf(
       });
     }
 
-    it("Create a Company providing only valid data", () => {
-      companyNames.forEach((companyName) => {
-        createCompanyAndGetId(companyName).then((id) => {
+    it("Create a Company providing only valid data", (): void => {
+      companyNames.forEach((companyName): void => {
+        createCompanyAndGetId(companyName).then((id): void => {
           companyIdList.push(id);
           cy.visitAndCheckAppMount(`/companies/${id}`);
           cy.get("body").should("contain", companyName);
@@ -57,12 +57,12 @@ describeIf(
       });
     });
 
-    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
+    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", (): void => {
       const eligible = 0.67;
       const total = "15422154";
       uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
         companyIdList[0],
-        () => {
+        (): void => {
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
@@ -72,7 +72,7 @@ describeIf(
             cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
           }
         },
-        () => {
+        (): void => {
           cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
           cy.get("body")
             .should("contain", "Eligible Revenue")
@@ -82,11 +82,11 @@ describeIf(
       );
     });
 
-    it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
+    it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", (): void => {
       const eligible = 0.67;
       uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
         companyIdList[1],
-        () => {
+        (): void => {
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
@@ -95,7 +95,7 @@ describeIf(
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
           }
         },
-        () => {
+        (): void => {
           cy.get("body")
             .should("contain", "Eligible OpEx")
             .should("contain", `${100 * eligible}%`);

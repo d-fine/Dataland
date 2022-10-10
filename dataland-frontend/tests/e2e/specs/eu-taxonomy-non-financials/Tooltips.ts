@@ -1,14 +1,14 @@
 import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
 
-describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
-  it("tooltips are present and contain text as expected", function () {
+describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", (): void => {
+  it("tooltips are present and contain text as expected", function (): void {
     const NFRDText = "Non financial disclosure directive";
     const AssuranceText = "Level of Assurance specifies the confidence level";
     cy.intercept("**/api/companies/*").as("retrieveCompany");
     cy.ensureLoggedIn();
-    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: string) => {
+    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: string): void => {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
-      cy.wait("@retrieveCompany", { timeout: 5 * 1000 }).then(() => {
+      cy.wait("@retrieveCompany", { timeout: 5 * 1000 }).then((): void => {
         cy.get(".p-card-content .text-left strong").contains("NFRD required");
         cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
