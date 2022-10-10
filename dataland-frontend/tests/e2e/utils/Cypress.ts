@@ -9,11 +9,11 @@ export function doThingsInChunks<T>(
   let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
-    promise = promise.then(async () => {
-      await Promise.all(chunk.map((element) => processor(element)));
+    promise = promise.then(async (): Promise<void> => {
+      await Promise.all(chunk.map((element): Promise<void> => processor(element)));
     });
   }
-  return cy.then(() => {
+  return cy.then((): Bluebird<string> => {
     return wrapPromiseToCypressPromise(promise);
   });
 }
@@ -35,12 +35,12 @@ export function getStringCypressEnv(variableName: string): string {
 }
 
 export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<string> {
-  return new Cypress.Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject): void => {
     promise
       .then(
-        () => resolve("done"),
-        (reason) => reject(reason)
+        (): void => resolve("done"),
+        (reason): void => reject(reason)
       )
-      .catch((reason) => reject(reason));
+      .catch((reason): void => reject(reason));
   });
 }
