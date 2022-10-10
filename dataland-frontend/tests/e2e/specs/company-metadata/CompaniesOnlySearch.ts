@@ -1,9 +1,9 @@
-describe("As a user, I want to be able to search companies existing on Dataland", function () {
-  beforeEach(() => {
+describe("As a user, I want to be able to search companies existing on Dataland", function (): void {
+  beforeEach((): void => {
     cy.ensureLoggedIn();
   });
 
-  it("Check if the search bar is available, and if the show-all-companies button works as expected", function () {
+  it("Check if the search bar is available, and if the show-all-companies button works as expected", function (): void {
     function verifyCompanySearchResultTable(): void {
       cy.get("table.p-datatable-table").contains("th", "COMPANY");
       cy.get("table.p-datatable-table").contains("th", "SECTOR");

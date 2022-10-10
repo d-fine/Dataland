@@ -1,9 +1,9 @@
-describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
-  beforeEach(() => {
+describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", (): void => {
+  beforeEach((): void => {
     cy.ensureLoggedIn();
   });
 
-  it("Do a search with 0 matches, then assure that the paginator is gone", () => {
+  it("Do a search with 0 matches, then assure that the paginator is gone", (): void => {
     cy.visitAndCheckAppMount("/companies");
     const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
     cy.get("input[name=search_bar_top]")
@@ -14,7 +14,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
     cy.get("div.p-paginator").should("not.exist");
   });
 
-  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
+  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", (): void => {
     cy.visitAndCheckAppMount("/companies");
     const inputValue = "a";
     cy.get("input[name=search_bar_top]")

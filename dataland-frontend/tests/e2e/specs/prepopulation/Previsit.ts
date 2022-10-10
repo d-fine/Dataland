@@ -10,22 +10,25 @@ describe(
   (): void => {
     it("Visit all EuTaxonomy Data", (): void => {
       performSimpleGet("metadata").then((metaDataResponse) => {
-        getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then(async (token) => {
-          doThingsInChunks(metaDataResponse.body, chunkSize, (element: any) =>
-            fetch(`/api/data/${element.dataType}/${element.dataId}`, {
-              headers: {
-                Authorization: "Bearer " + token,
-              },
-            }).then((dataGetResponse) => {
-              // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
-              // every assert
-              if (dataGetResponse.status !== 200) {
-                assert(
-                  dataGetResponse.status === 200,
-                  `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
-                );
-              }
-            })
+        getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD") as string).then(async (token) => {
+          doThingsInChunks(
+            metaDataResponse.body,
+            chunkSize,
+            (element: any): Promise<void> =>
+              fetch(`/api/data/${element.dataType}/${element.dataId}`, {
+                headers: {
+                  Authorization: "Bearer " + token,
+                },
+              }).then((dataGetResponse): void => {
+                // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
+                // every assert
+                if (dataGetResponse.status !== 200) {
+                  assert(
+                    dataGetResponse.status === 200,
+                    `Got status code ${dataGetResponse.status.toString()} during Previsit of ${element}`
+                  );
+                }
+              })
           );
         });
       });

@@ -2,7 +2,7 @@ import Chainable = Cypress.Chainable;
 
 export function performSimpleGet(endpoint: string): Chainable<unknown> {
   return cy
-    .getKeycloakToken("data_uploader", String(Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")))
+    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
     .then((token): Chainable => {
       return cy.request({
         url: `/api/${endpoint}`,
@@ -28,7 +28,7 @@ export function retrieveCompanyIdsList(): Chainable<Array<string>> {
 
 export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chainable<string> {
   return cy
-    .getKeycloakToken("data_uploader", String(Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")))
+    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
     .then((token): Chainable => {
       return cy.request({
         url: `/api/companies?dataTypes=${framework}`,

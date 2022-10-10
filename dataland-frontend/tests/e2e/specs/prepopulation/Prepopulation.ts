@@ -12,7 +12,7 @@ describe(
       openMode: 0,
     },
   },
-  () => {
+  (): void => {
     let companiesWithEuTaxonomyDataForNonFinancials: Array<{
       companyInformation: CompanyInformation;
       t: EuTaxonomyDataForNonFinancials;
@@ -22,21 +22,25 @@ describe(
       t: EuTaxonomyDataForFinancials;
     }>;
 
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+    before(function (): void {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
+        companies: Array<{ companyInformation: CompanyInformation; t: EuTaxonomyDataForNonFinancials }>
+      ): void {
         companiesWithEuTaxonomyDataForNonFinancials = companies;
       });
     });
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+    before(function (): void {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (
+        companies: Array<{ companyInformation: CompanyInformation; t: EuTaxonomyDataForFinancials }>
+      ): void {
         companiesWithEuTaxonomyDataForFinancials = companies;
       });
     });
-    beforeEach(function () {
+    beforeEach(function (): void {
       cy.ensureLoggedIn();
     });
 
-    it("Populate Companies and Eu Taxonomy Data", () => {
+    it("Populate Companies and Eu Taxonomy Data", (): void => {
       function browserPromiseUploadSingleElementOnce(
         endpoint: string,
         element: object,
@@ -49,7 +53,7 @@ describe(
             Authorization: "Bearer " + token,
           },
           body: JSON.stringify(element),
-        }).then((response) => {
+        }).then((response: Response): Response => {
           // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
           // every assert
           if (response.status !== 200) {
@@ -67,11 +71,11 @@ describe(
         dataEndpoint: string,
         data: Array<{ companyInformation: CompanyInformation; t: Record<string, unknown> }>,
         token: string
-      ) {
+      ): void {
         doThingsInChunks(data, chunkSize, (element) => {
           return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-            .then((response) => response.json())
-            .then((companyUploadResponseJson) => {
+            .then((response: Response) => response.json())
+            .then((companyUploadResponseJson: { companyId: string }): Promise<Response> => {
               return browserPromiseUploadSingleElementOnce(
                 dataEndpoint,
                 {
@@ -84,27 +88,27 @@ describe(
         });
       }
 
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-        .then((token) => {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
+        .then((token): void => {
           chunkUploadData("data/eutaxonomy-non-financials", companiesWithEuTaxonomyDataForNonFinancials, token);
         })
         .should("eq", "done");
 
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-        .then((token) => {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
+        .then((token): void => {
           chunkUploadData("data/eutaxonomy-financials", companiesWithEuTaxonomyDataForFinancials, token);
         })
         .should("eq", "done");
     });
 
-    it("Check if all the company ids can be retrieved", () => {
-      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
+    it("Check if all the company ids can be retrieved", (): void => {
+      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>): void => {
         assert(
           allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} companies`
         );
       });
-      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
+      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>): void => {
         assert(
           allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} companies`
@@ -112,14 +116,14 @@ describe(
       });
     });
 
-    it("Check if all the data ids can be retrieved", () => {
-      retrieveDataIdsList().then((allDataIdsList: any) => {
+    it("Check if all the data ids can be retrieved", (): void => {
+      retrieveDataIdsList().then((allDataIdsList: { length: number }): void => {
         assert(
           allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} datasets`
         );
       });
-      retrieveDataIdsList().then((allDataIdsList: any) => {
+      retrieveDataIdsList().then((allDataIdsList: { length: number }): void => {
         assert(
           allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
           `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} datasets`
@@ -127,7 +131,7 @@ describe(
       });
     });
 
-    it("Company Name Input field exists and works", () => {
+    it("Company Name Input field exists and works", (): void => {
       const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
       cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("input[name=companyName]")
@@ -136,12 +140,12 @@ describe(
         .should("have.value", inputValue);
       cy.intercept("**/api/companies*").as("retrieveCompany");
       cy.get("button[name=getCompanies]").click();
-      cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
+      cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then((): void => {
         cy.get("td").contains(companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName);
       });
     });
 
-    it("Show all companies button exists", () => {
+    it("Show all companies button exists", (): void => {
       cy.visitAndCheckAppMount("/companies-only-search");
       cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
     });

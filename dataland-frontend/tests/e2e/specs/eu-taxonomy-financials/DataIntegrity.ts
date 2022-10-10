@@ -17,13 +17,15 @@ describeIf(
   },
   function (): void {
     beforeEach((): void => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (companies) {
+    before(function (): void {
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (
+        companies: Array<FixtureData<EuTaxonomyDataForFinancials>>
+      ): void {
         preparedFixtures = companies;
       });
     });
