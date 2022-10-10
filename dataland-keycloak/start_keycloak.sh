@@ -14,7 +14,8 @@ if [[ "$mode" == initialize ]]; then
   rm $(grep -E -l '"username" : "test_user.*@dataland.com"' $dataland_realm_folder/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   for variable in $(env | grep KEYCLOAK_ | cut -d'=' -f1); do
-    #If one of the env variables containing "KEYCLOAK_" contains a % character the below sed statement will fail and the script will terminate
+    # If one of the env variables containing "KEYCLOAK_" contains a % character the below sed statement will fail
+    # and the script will terminate because % is the sed delimiter
     sed s%\$\{"$variable"\}%"${!variable}"%g -i $dataland_realm_folder/datalandsecurity-realm.json
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
