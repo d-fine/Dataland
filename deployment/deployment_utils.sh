@@ -12,21 +12,17 @@ wait_for_health () {
 }
 
 delete_docker_volume_if_existent () {
-  target_server_url=$1
-  location=$2
-  volume_filter=$3
+  volume_filter=$1
 
-  old_volume=$(search_volume "$target_server_url" "$location" "$volume_filter")
+  old_volume=$(search_volume "$volume_filter")
   if [[ -n $old_volume ]]; then
     echo "Removing old database volume with name $old_volume."
-    ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume rm $old_volume"
+    docker volume rm "$old_volume"
   fi
 }
 
 search_volume() {
-  target_server_url=$1
-  location=$2
-  volume_filter=$3
-  volume_found=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker volume ls -q | grep $volume_filter") || true
+  volume_filter=$1
+  volume_found=$(docker volume ls -q | grep "$volume_filter") || true
   echo "$volume_found"
 }

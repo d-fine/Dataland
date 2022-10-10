@@ -1,35 +1,20 @@
 #!/bin/bash
 set -eux
-source ./deployment/deployment_utils.sh
 
 target_server_url=$1
 location=$2
 keycloak_user_dir=$3
 
-keycloak_volume_name=dataland_keycloak_data
-
 script_dir="$(dirname "$0")"
 echo "Copying the realm jsons to the server $target_server_url."
 scp -r "$script_dir"/../dataland-keycloak/realms ubuntu@"$target_server_url":"$location"/dataland-keycloak
-scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
-scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":$location
-scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":$location/dataland-keycloak/dataland_theme/login
+scp "$script_dir"/../dataland-keycloak/Dockerfile ubuntu@"$target_server_url":"$location"/DockerfileKeycloak
+scp "$script_dir"/../docker-compose.yml ubuntu@"$target_server_url":"$location"
+scp -r "$script_dir"/../dataland-keycloak/dataland_theme/login/dist ubuntu@"$target_server_url":"$location"/dataland-keycloak/dataland_theme/login
 
-#scp "$script_dir"/initialize_keycloak_server.sh ubuntu@"$target_server_url":$location/dataland-keycloak
-
-volume_exists=$(search_volume "$target_server_url" "$location" "$keycloak_volume_name")
-if [[ -n $volume_exists ]]; then
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose build keycloak-initializer"
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose run keycloak-initializer export"
-  ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down --remove-orphans"
-fi
-
-delete_docker_volume_if_existent "$target_server_url" "$location" "$keycloak_volume_name"
-
-echo "Start Keycloak in initialization mode and wait for it to load the realm data."
-ssh ubuntu@"$target_server_url" "cd $location;
-                                 sudo docker-compose pull;
-                                 export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
+scp "$script_dir"/initialize_keycloak_server.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
+scp .deployment/deployment_utils.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
+ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
                                  export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
                                  export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
                                  export KEYCLOAK_READER_VALUE=\"$KEYCLOAK_READER_VALUE\";
@@ -42,30 +27,4 @@ ssh ubuntu@"$target_server_url" "cd $location;
                                  export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
-                                 sudo -E docker-compose --profile init up -d --build"
-
-message="Profile prod activated."
-container_name=$(ssh ubuntu@"$target_server_url" "cd $location && sudo docker ps --format \"{{.Names}}\" | grep keycloak-initializer")
-ssh ubuntu@"$target_server_url" "timeout 300 bash -c \"while ! \"docker logs $container_name | grep -q \\\"$message\\\"\";
-                     do
-                       echo Startup of Keycloak incomplete. Waiting for it to finish.;
-                       sleep 5;
-                     done\""
-
-if ssh ubuntu@"$target_server_url" "ls $keycloak_user_dir/*-users-*.json &>/dev/null"; then
-  echo "Testing if the number of current users matches the number of exported users"
-  current_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -c '\"username\" :'")
-  all_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l'")
-  test_users=$(ssh ubuntu@"$target_server_url" "docker exec $container_name bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l'")
-  expected_users=$((all_users-test_users))
-  if [[ ! $expected_users -eq $current_users ]]; then
-    echo "Found $current_users but $expected_users were expected."
-    exit 1
-  fi
-  echo "Number of imported users match the exported users."
-fi
-
-echo "Shutting down all running containers."
-ssh ubuntu@"$target_server_url" 'docker kill $(sudo docker ps -q); docker system prune --force; docker info'
-
-echo "Successfully initialized new instance of Keycloak."
+                                 \"$location\"/dataland-keycloak/initialize_keycloak_server.sh $location $keycloak_user_dir"
