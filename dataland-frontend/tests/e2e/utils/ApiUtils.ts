@@ -1,18 +1,20 @@
 import Chainable = Cypress.Chainable;
 
-export function performSimpleGet(endpoint: string): Chainable<any> {
-  return cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token): Chainable => {
-    return cy.request({
-      url: `/api/${endpoint}`,
-      method: "GET",
-      headers: { Authorization: "Bearer " + token },
+export function performSimpleGet(endpoint: string): Chainable<unknown> {
+  return cy
+    .getKeycloakToken("data_uploader", String(Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")))
+    .then((token): Chainable => {
+      return cy.request({
+        url: `/api/${endpoint}`,
+        method: "GET",
+        headers: { Authorization: "Bearer " + token },
+      });
     });
-  });
 }
 
 function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
-  return performSimpleGet(endpoint).then((response): Chainable => {
-    return response.body.map((e: any) => e[idKey]);
+  return performSimpleGet(endpoint).then((response): Chainable<string[]> => {
+    return response.body.map((e: never): string => e[idKey]);
   });
 }
 
@@ -26,7 +28,7 @@ export function retrieveCompanyIdsList(): Chainable<Array<string>> {
 
 export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chainable<string> {
   return cy
-    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+    .getKeycloakToken("data_uploader", String(Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")))
     .then((token): Chainable => {
       return cy.request({
         url: `/api/companies?dataTypes=${framework}`,
@@ -34,7 +36,7 @@ export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chai
         headers: { Authorization: "Bearer " + token },
       });
     })
-    .then((response): string => {
+    .then((response: { body: Array<{ companyId: string }> }): string => {
       return response.body[0].companyId;
     });
 }
