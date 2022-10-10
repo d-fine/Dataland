@@ -39,13 +39,12 @@ class CompanyManager(
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
             companyName = companyInformation.companyName,
+            companyAlternativeNames = companyInformation.companyAlternativeNames,
             headquarters = companyInformation.headquarters,
             sector = companyInformation.sector,
-            marketCap = companyInformation.marketCap,
-            reportingDateOfMarketCap = companyInformation.reportingDateOfMarketCap,
-            countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
+            countryCode = companyInformation.countryCode,
             isTeaserCompany = companyInformation.isTeaserCompany
         )
 
@@ -107,6 +106,7 @@ class CompanyManager(
         }.toMap()
 
         var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
+        filteredResults = companyRepository.fetchAlternativeNames(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
         filteredResults = filteredResults.sortedBy { sortingMap[it.companyId]!! }
 

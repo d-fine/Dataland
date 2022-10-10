@@ -1,5 +1,6 @@
 import Chainable = Cypress.Chainable;
-import { ensureLoggedIn, getKeycloakToken } from "../utils/Auth";
+import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
+import { browserThen } from "@e2e/utils/Cypress";
 
 declare global {
   namespace Cypress {
@@ -7,6 +8,7 @@ declare global {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
       ensureLoggedIn: typeof ensureLoggedIn;
       getKeycloakToken: typeof getKeycloakToken;
+      browserThen: typeof browserThen;
     }
   }
 }
@@ -18,3 +20,4 @@ export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
 Cypress.Commands.add("visitAndCheckAppMount", visitAndCheckAppMount);
 Cypress.Commands.add("ensureLoggedIn", ensureLoggedIn);
 Cypress.Commands.add("getKeycloakToken", getKeycloakToken);
+Cypress.Commands.add("browserThen", browserThen);

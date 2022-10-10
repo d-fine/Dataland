@@ -26,6 +26,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT company FROM StoredCompanyEntity company " +
             "LEFT JOIN company.dataRegisteredByDataland data " +
             "LEFT JOIN company.identifiers identifier " +
+            "LEFT JOIN company.companyAlternativeNames alternativeName " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
             "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
@@ -35,12 +36,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(:#{#searchFilter.nameOnlyFilter} = false " +
             "AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
             "GROUP BY company.companyId " +
             "ORDER BY " +
             "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
-            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 2 ELSE 3 END) ASC, " +
+            "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
+            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
+            "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
             "company.companyName ASC"
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
@@ -70,6 +74,16 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     )
     @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+
+    /**
+     * Used for pre-fetching the alternative company names field of a list of stored companies
+     */
+    @Query(
+        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies"
+    )
+    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
+    fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
      * Used for pre-fetching the dataStoredByDataland field of a list of stored companies

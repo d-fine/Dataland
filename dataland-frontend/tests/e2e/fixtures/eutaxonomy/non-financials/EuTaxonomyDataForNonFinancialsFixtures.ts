@@ -6,7 +6,7 @@ import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtu
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
-import { randomPercentageValue } from "../../common/NumberFixtures";
+import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 const { parse } = require("json2csv");
 
 const maxEuro = 1000000;

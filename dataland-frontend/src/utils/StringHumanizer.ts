@@ -24,6 +24,8 @@ function humaniseViaMapping(rawText: string): string {
     isin: "ISIN",
     permid: "PermID",
     lei: "LEI",
+    ticker: "Ticker",
+    duns: "DUNS",
     eligiblecapex: "Eligible CapEx",
     eligibleopex: "Eligible OpEx",
     alignedcapex: "Aligned CapEx",

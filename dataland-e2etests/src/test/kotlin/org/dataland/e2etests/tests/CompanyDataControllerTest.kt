@@ -8,7 +8,6 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
-import org.dataland.e2etests.utils.copyNormalised
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -56,8 +55,8 @@ class CompanyDataControllerTest {
         val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         assertEquals(
-            StoredCompany(receivedCompanyId, testCompanyInformation, emptyList()).copyNormalised(),
-            companyDataControllerApi.getCompanyById(receivedCompanyId).copyNormalised(),
+            StoredCompany(receivedCompanyId, testCompanyInformation, emptyList()),
+            companyDataControllerApi.getCompanyById(receivedCompanyId),
             "Dataland does not contain the posted company."
         )
     }
@@ -65,12 +64,12 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val storedCompany = postFirstCompanyWithoutIdentifiers()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
             searchString = storedCompany.companyInformation.companyName,
             onlyCompanyNames = true,
-        ).map { it.copyNormalised() }
+        )
         val expectedCompany = StoredCompany(storedCompany.companyId, storedCompany.companyInformation, emptyList())
-            .copyNormalised()
         assertTrue(
             getCompaniesByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company."
@@ -162,7 +161,7 @@ class CompanyDataControllerTest {
             dataRegisteredByDataland = emptyList()
         )
         assertEquals(
-            expectedStoredTeaserCompany.copyNormalised(), getCompanyByIdResponse.copyNormalised(),
+            expectedStoredTeaserCompany, getCompanyByIdResponse,
             "The posted company does not equal the teaser company."
         )
     }

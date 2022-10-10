@@ -46,17 +46,6 @@
             </template>
           </Column>
           <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
-          <Column
-            field="companyInformation.marketCap"
-            header="MARKET CAP"
-            headerClass="d-justify-content-end-inner"
-            :sortable="true"
-            class="d-bg-white w-1 text-right"
-          >
-            <template #body="{ data }">
-              {{ orderOfMagnitudeSuffix(data.companyInformation.marketCap) }}
-            </template>
-          </Column>
           <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
             <template #body="{ data }">
               {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}

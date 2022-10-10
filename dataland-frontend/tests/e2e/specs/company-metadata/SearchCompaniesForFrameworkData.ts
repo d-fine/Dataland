@@ -22,7 +22,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("table.p-datatable-table").contains("th", "COMPANY");
     cy.get("table.p-datatable-table").contains("th", "PERM ID");
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
-    cy.get("table.p-datatable-table").contains("th", "MARKET CAP");
     cy.get("table.p-datatable-table").contains("th", "LOCATION");
   }
 
@@ -145,7 +144,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });
 
-  it("Visit framework data view page and assure that title is present and a Framework Data Serach Bar exists", () => {
+  it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
     retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
