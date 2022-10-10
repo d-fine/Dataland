@@ -29,34 +29,41 @@ timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url e
 
 location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
+persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" 'docker kill $(sudo docker ps -q); docker system prune --force; docker info'
+ssh ubuntu@"$target_server_url" "source $location/dataland-keycloak ; kill_docker_containers"
 
-ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir && cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir"
-ssh ubuntu@"$target_server_url" "sudo rm -rf $location;
-                                 mkdir -p $location/jar;
-                                 mkdir -p $location/dataland-keycloak/dataland_theme/login;
-                                 mkdir -p $keycloak_user_dir;
-                                 mv $keycloak_backup_dir/*-users-*.json $keycloak_user_dir"
+ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir &&
+                                 mkdir -p $persistent_keycloak_backup_dir &&
+                                 cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir &&
+                                 cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
+ssh ubuntu@"$target_server_url" "sudo rm -rf $location"
 
-envsubst < environments/.env.template > .env
+construction_dir=./dataland
+build_directories "$construction_dir"
+scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
-scp ./.env ubuntu@"$target_server_url":$location
-scp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf ubuntu@$target_server_url:$location
-scp -r ./dataland-keycloak/dataland_theme/login/dist ubuntu@$target_server_url:$location/dataland-keycloak/dataland_theme/login
-scp -r ./dataland-pgadmin ubuntu@$target_server_url:$location
-scp ./dataland-keycloak/start_keycloak.sh ubuntu@"$target_server_url":$location/dataland-keycloak/start_keycloak.sh
-scp ./dataland-frontend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileFrontend
-scp ./dataland-backend/Dockerfile ubuntu@"$target_server_url":$location/DockerfileBackend
-scp ./dataland-keycloak/Dockerfile ubuntu@"$target_server_url":$location/DockerfileKeycloak
-scp ./dataland-backend/build/libs/dataland-backend*.jar ubuntu@"$target_server_url":$location/jar/dataland-backend.jar
+ssh ubuntu@"$target_server_url" "mv $keycloak_backup_dir/*-users-*.json $keycloak_user_dir"
 
 echo "Set up Keycloak from scratch."
-"$(dirname "$0")"/initialize_keycloak.sh "$target_server_url" "$location" "$keycloak_user_dir" || exit 1
+ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
+                                 export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
+                                 export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
+                                 export KEYCLOAK_READER_VALUE=\"$KEYCLOAK_READER_VALUE\";
+                                 export KEYCLOAK_READER_SALT=\"$KEYCLOAK_READER_SALT\";
+                                 export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
+                                 export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
+                                 export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
+                                 export KEYCLOAK_GOOGLE_SECRET=\"$KEYCLOAK_GOOGLE_SECRET\";
+                                 export KEYCLOAK_GOOGLE_ID=\"$KEYCLOAK_GOOGLE_ID\";
+                                 export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
+                                 export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
+                                 export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
+                                 \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 echo "Cleaning up exported user files."
 ssh ubuntu@"$target_server_url" "rm $keycloak_user_dir/*.json"
 
