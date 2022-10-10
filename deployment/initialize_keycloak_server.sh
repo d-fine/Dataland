@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eux
-source ./deployment_utils.sh
+source "$(dirname "$0")"/deployment_utils.sh
 
 location=$1
 keycloak_user_dir=$2
