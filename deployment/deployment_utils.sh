@@ -11,6 +11,10 @@ wait_for_health () {
   timeout 240 bash -c "while ! curl -L $1 2>/dev/null | grep -q UP; do echo 'Waiting for $2 to finish boot process.'; sleep 5; done; echo '$2 available!'"
 }
 
+kill_docker_containers() {
+  docker kill $(docker ps -q); docker system prune --force; docker info
+}
+
 delete_docker_volume_if_existent () {
   volume_filter=$1
 
