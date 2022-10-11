@@ -1,4 +1,4 @@
-import { retrieveFirstCompanyIdWithFrameworkData } from "@e2e/utils/ApiUtils";
+import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
 
 let companiesWithData: Array<{
@@ -147,14 +147,18 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    retrieveFirstCompanyIdWithFrameworkData("eutaxonomy-non-financials").then((companyId: any) => {
-      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
-      cy.get("input[name=framework_data_search_bar_standard]")
-        .should("not.be.disabled")
-        .type(inputValue)
-        .should("have.value", inputValue)
-        .invoke("attr", "placeholder")
-        .should("contain", placeholder);
+    cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+      getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials).then(
+        (storedCompanies: Array<StoredCompany>) => {
+          cy.visitAndCheckAppMount(`/companies}/frameworks/${storedCompanies[0].companyId}/eutaxonomy-non-financials`);
+          cy.get("input[name=framework_data_search_bar_standard]")
+            .should("not.be.disabled")
+            .type(inputValue)
+            .should("have.value", inputValue)
+            .invoke("attr", "placeholder")
+            .should("contain", placeholder);
+        }
+      );
     });
   });
 
