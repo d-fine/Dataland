@@ -93,7 +93,7 @@ interface CompanyAPI {
         ]
     )
     @GetMapping(
-        value = ["/distinct"],
+        value = ["/meta-information"],
         produces = ["application/json"]
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
