@@ -21,8 +21,11 @@ interface CompanyManagerInterface {
      * Method to search for companies matching the company name or identifier
      * @param searchString string used for substring matching against the company name and/or identifiers
      * @param onlyCompanyNames boolean determining if the search should be solely against the company names
-     * @param dataTypeFilter if not empty, return only companies that have
-     * data reported for one of the specified dataTypes
+     * @param dataTypeFilter if not empty, return only companies that have data reported for
+     * one of the specified dataTypes
+     * @param countryCodeFilter set of strings with ISO country codes to return companies whose headquarters are in
+     * the country of one of those ISO country codes
+     * @param sectorFilter set of strings with sector names to return companies which operate in one of those sectors
      * @return list of all matching companies in Dataland
      */
     fun searchCompanies(

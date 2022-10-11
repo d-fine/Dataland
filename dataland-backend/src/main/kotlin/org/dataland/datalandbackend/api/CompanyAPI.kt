@@ -63,8 +63,8 @@ interface CompanyAPI {
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
-     * A method to retrieve specific companies identified by their company names or identifiers
-     * If only an empty string is passed as search argument, all companies in the data store are returned.
+     * A method to retrieve specific companies identified by different filters
+     * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param dataTypes If set & non-empty,
