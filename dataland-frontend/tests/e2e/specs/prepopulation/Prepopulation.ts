@@ -1,7 +1,7 @@
 import { retrieveDataIdsList, retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
 import { doThingsInChunks } from "@e2e/utils/Cypress";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
-const chunkSize = 15;
+const chunkSize = 50;
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
