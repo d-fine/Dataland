@@ -12,7 +12,7 @@ describeIf(
     const companyIdList: Array<string> = [];
     const companyNames: Array<string> = ["eligible & total", "eligible"];
     beforeEach((): void => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string);
     });
 
     /**

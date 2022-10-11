@@ -10,8 +10,8 @@ describe("Component test for FrameworkDataSearchBar", () => {
       history: createMemoryHistory(),
       routes,
     });
-    router.push("/companies");
-    router.isReady();
+    void router.push("/companies");
+    void router.isReady();
     wrapper = mount(FrameworkDataSearchBar, {
       global: {
         plugins: [router],

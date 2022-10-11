@@ -94,7 +94,10 @@ import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
-import { getRouterLinkTargetFramework } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {
+  DataSearchStoredCompany,
+  getRouterLinkTargetFramework,
+} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -114,19 +117,19 @@ export default defineComponent({
     },
   },
   methods: {
-    orderOfMagnitudeSuffix(value) {
+    orderOfMagnitudeSuffix(value: number) {
       return convertCurrencyNumbersToNotationWithLetters(value, 2) + " €";
     },
-    buildLocationString(headquarters, countryCode) {
+    buildLocationString(headquarters: string, countryCode: string) {
       return headquarters + ", " + countryCode;
     },
     scrollToTop() {
       window.scrollTo(0, 0);
     },
-    goToData(event) {
-      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
+    goToData(event: { data: DataSearchStoredCompany }) {
+      void this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
-    getRouterLinkTargetFrameworkInt(companyData) {
+    getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);
     },
   },

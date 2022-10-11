@@ -7,7 +7,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import fs from "fs";
 import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDataForFinancialsPreparedFixtures";
 
-export function exportFixturesEuTaxonomyFinancial() {
+export function exportFixturesEuTaxonomyFinancial(): void {
   const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
     250

@@ -19,7 +19,7 @@ export function getAssurance(assurance: AssuranceDataAssuranceEnum | undefined):
     case AssuranceDataAssuranceEnum.None:
       return "none";
   }
-  throw Error(`Unknown assurance type ${assurance}`);
+  throw Error(`Unknown assurance type ${String(assurance)}`);
 }
 
 export function getFiscalYearDeviation(isdeviation: YesNo | undefined): string | undefined {
@@ -32,7 +32,7 @@ export function getFiscalYearDeviation(isdeviation: YesNo | undefined): string |
     case YesNoNa.No:
       return "No Deviation";
   }
-  throw Error(`Unknown yesno type ${isdeviation}`);
+  throw Error(`Unknown yesno type ${String(isdeviation)}`);
 }
 
 export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): string {
@@ -46,7 +46,7 @@ export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialS
     case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm:
       return "Investment Firm";
   }
-  throw Error(`Unknown FS type ${type}`);
+  throw Error(`Unknown FS type ${String(type)}`);
 }
 
 export function humanizeOrUndefined(stringToHumanise: string | undefined): string | undefined {
@@ -65,7 +65,7 @@ export function getCompanyTypeCsvValue(type: EuTaxonomyDataForFinancialsFinancia
     case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm:
       return 4;
   }
-  throw Error(`Unknown FS type ${type}`);
+  throw Error(`Unknown FS type ${String(type)}`);
 }
 
 export function decimalSeparatorConverter(scaleFactor: number): (value: number | undefined) => string {
