@@ -1,5 +1,5 @@
-import { describeIf } from "../../support/TestUtility";
-import { createCompanyAndGetId, fillCompanyUploadFields } from "../../utils/CompanyUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { createCompanyAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
 
 describeIf(
   "As a user, I want to be able to create new companies",

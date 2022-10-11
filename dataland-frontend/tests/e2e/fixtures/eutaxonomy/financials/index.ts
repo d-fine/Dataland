@@ -10,7 +10,7 @@ import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDat
 export function exportFixturesEuTaxonomyFinancial(): void {
   const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
-    250
+    100
   );
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",

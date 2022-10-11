@@ -1,47 +1,26 @@
-import Chainable = Cypress.Chainable;
-interface CyRequestResult {
-  body: Array<{
-    companyId: string;
-  }>;
+import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
+
+export async function getCompanyAndDataIds(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
+  const dataset = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+    undefined,
+    new Set([dataType])
+  );
+  return dataset.data;
 }
 
-export function performSimpleGet(endpoint: string): Chainable<unknown> {
-  return cy
-    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
-    .then((token): Chainable => {
-      return cy.request({
-        url: `/api/${endpoint}`,
-        method: "GET",
-        headers: { Authorization: "Bearer " + token },
-      });
-    });
-}
-
-function retrieveIdsList(idKey: string, endpoint: string): Chainable<string[]> {
-  return performSimpleGet(endpoint).then((response): Chainable<string[]> => {
-    return response.body.map((e: never): string => e[idKey]);
+export async function countCompanyAndDataIds(
+  token: string,
+  dataType: DataTypeEnum
+): Promise<{ matchingCompanies: number; matchingDataIds: number }> {
+  const dataset = await getCompanyAndDataIds(token, dataType);
+  const matchingCompanies = dataset.length;
+  let matchingDataIds = 0;
+  dataset.forEach((it) => {
+    matchingDataIds += it.dataRegisteredByDataland.length;
   });
-}
 
-export function retrieveDataIdsList(): Chainable<Array<string>> {
-  return retrieveIdsList("dataId", "metadata");
-}
-
-export function retrieveCompanyIdsList(): Chainable<Array<string>> {
-  return retrieveIdsList("companyId", "companies");
-}
-
-export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chainable<string> {
-  return cy
-    .getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
-    .then((token): Chainable => {
-      return cy.request({
-        url: `/api/companies?dataTypes=${framework}`,
-        method: "GET",
-        headers: { Authorization: "Bearer " + token },
-      });
-    })
-    .then((response: CyRequestResult): string => {
-      return response.body[0].companyId;
-    });
+  return {
+    matchingDataIds,
+    matchingCompanies,
+  };
 }

@@ -16,9 +16,34 @@
             <FormKitSchema :schema="companyIdentifierSchema" />
           </FormKit>
         </FormKit>
+        <FormKit type="list" name="companyAlternativeNames">
+          <template v-for="nAlternativeNames in alternativeNamesListSize" :key="nAlternativeNames">
+            <FormKit
+              type="text"
+              label="Alternative Name"
+              placeholder="e.g. some Abbreviation"
+              :inner-class="{
+                'formkit-inner': false,
+                'p-inputwrapper': true,
+              }"
+              :input-class="{
+                'formkit-input': false,
+                'p-inputtext': true,
+              }"
+            />
+          </template>
+        </FormKit>
         <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
       </FormKit>
       <p>{{ model }}</p>
+      <Button v-if="alternativeNamesListSize < 1" @click="alternativeNamesListSize++"> Add an alternative Name</Button>
+      <Button v-if="alternativeNamesListSize >= 1" @click="alternativeNamesListSize++">
+        Add another alternative Name</Button
+      >
+      <Button v-if="alternativeNamesListSize >= 1" @click="alternativeNamesListSize--" class="ml-2">
+        Remove the last alternative Name
+      </Button>
+      <p></p>
       <Button @click="identifierListSize++"> Add a new identifier</Button>
       <Button v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
         Remove the last identifier
@@ -72,6 +97,7 @@ const createCompany = {
     postCompanyResponse: null,
     messageCount: 0,
     identifierListSize: 1,
+    alternativeNamesListSize: 0,
   }),
   inject: ["getKeycloakPromise"],
   methods: {
