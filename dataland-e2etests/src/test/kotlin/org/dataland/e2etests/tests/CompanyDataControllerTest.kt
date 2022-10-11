@@ -95,10 +95,9 @@ class CompanyDataControllerTest {
         val getCompaniesByCountryCodeAndSector = companyDataControllerApi.getCompanies(
             sectors = setOf(storedCompany.companyInformation.sector),
             countryCodes = setOf(storedCompany.companyInformation.countryCode)
-        ).map { it.copyNormalised() }
-        val expectedCompany = storedCompany.copyNormalised()
+        )
         assertTrue(
-            getCompaniesByCountryCodeAndSector.contains(expectedCompany),
+            getCompaniesByCountryCodeAndSector.contains(storedCompany),
         )
     }
 
@@ -108,10 +107,9 @@ class CompanyDataControllerTest {
         val getCompaniesByCountryCodeAndSector = companyDataControllerApi.getCompanies(
             sectors = setOf("${storedCompany.companyInformation.sector}a"),
             countryCodes = setOf(storedCompany.companyInformation.countryCode)
-        ).map { it.copyNormalised() }
-        val expectedCompany = storedCompany.copyNormalised()
+        )
         assertTrue(
-            !getCompaniesByCountryCodeAndSector.contains(expectedCompany)
+            !getCompaniesByCountryCodeAndSector.contains(storedCompany)
         )
     }
 
