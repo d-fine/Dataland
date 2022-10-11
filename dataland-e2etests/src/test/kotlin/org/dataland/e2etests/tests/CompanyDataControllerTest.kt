@@ -92,24 +92,24 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val storedCompany = postFirstCompanyWithoutIdentifiers()
-        val getCompaniesByCountryCodeAndSector = companyDataControllerApi.getCompanies(
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
             sectors = setOf(storedCompany.companyInformation.sector),
             countryCodes = setOf(storedCompany.companyInformation.countryCode)
         )
         assertTrue(
-            getCompaniesByCountryCodeAndSector.contains(storedCompany),
+            getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
         )
     }
 
     @Test
-    fun `post a dummy company and check that it is not returned if filtered by a different country code or sector`() {
+    fun `post a dummy company and check that it is not returned if filtered by a different country code`() {
         val storedCompany = postFirstCompanyWithoutIdentifiers()
-        val getCompaniesByCountryCodeAndSector = companyDataControllerApi.getCompanies(
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
             sectors = setOf("${storedCompany.companyInformation.sector}a"),
             countryCodes = setOf(storedCompany.companyInformation.countryCode)
         )
         assertTrue(
-            !getCompaniesByCountryCodeAndSector.contains(storedCompany)
+            !getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany)
         )
     }
 
