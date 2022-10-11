@@ -174,7 +174,7 @@ export default defineComponent({
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.resultsArray.length;
 
-      if (totalSearchResults <= 0) return "No results";
+      if (totalSearchResults === 0) return "No results";
 
       const startIndex = this.firstShownRow;
       const endIndex = startIndex + 99 >= totalSearchResults ? totalSearchResults - 1 : startIndex + 99;
