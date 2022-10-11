@@ -17,7 +17,7 @@ export function createCompanyAndGetId(companyName: string): Cypress.Chainable<st
     .get("body")
     .should("contain", "success")
     .get("span[title=companyId]")
-    .then<string>(($companyID) => {
+    .then<string>(($companyID): string => {
       return $companyID.text();
     });
 }

@@ -15,7 +15,7 @@ export async function countCompanyAndDataIds(
   const dataset = await getCompanyAndDataIds(token, dataType);
   const matchingCompanies = dataset.length;
   let matchingDataIds = 0;
-  dataset.forEach((it) => {
+  dataset.forEach((it): void => {
     matchingDataIds += it.dataRegisteredByDataland.length;
   });
 

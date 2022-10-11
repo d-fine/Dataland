@@ -152,7 +152,7 @@ export default {
   },
   inject: ["getKeycloakPromise"],
   methods: {
-    async postEuTaxonomyDataForFinancials() {
+    async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;

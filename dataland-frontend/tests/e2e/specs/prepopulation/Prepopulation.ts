@@ -13,6 +13,11 @@ import {
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 const chunkSize = 15;
 
+interface CompaniesWithEUTaxonomyData<T> {
+  companyInformation: CompanyInformation;
+  t: T;
+}
+
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
   {
@@ -22,6 +27,7 @@ describe(
       openMode: 0,
     },
   },
+
   () => {
     async function uploadOneCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
       const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
@@ -30,8 +36,13 @@ describe(
       return data.data;
     }
 
-    function prepopulate(companiesWithEuTaxonomyData: Array<any>, uploadOneEuTaxonomyDataset: Function) {
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+    function prepopulate(
+      companiesWithEuTaxonomyData: Array<
+        CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>
+      >,
+      uploadOneEuTaxonomyDataset: Function
+    ): void {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string).then((token) => {
         doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
           const storedCompany = await uploadOneCompany(token, it.companyInformation);
           await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
@@ -39,8 +50,8 @@ describe(
       });
     }
 
-    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number) {
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string)
         .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
         .then((response) => {
           assert(
@@ -52,13 +63,11 @@ describe(
     }
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
-      let companiesWithEuTaxonomyDataForFinancials: Array<{
-        companyInformation: CompanyInformation;
-        t: EuTaxonomyDataForFinancials;
-      }>;
-
+      let companiesWithEuTaxonomyDataForFinancials: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials>>;
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (
+          companies: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials>>
+        ) {
           companiesWithEuTaxonomyDataForFinancials = companies;
         });
       });
@@ -85,13 +94,14 @@ describe(
     });
 
     describe("Upload and validate EuTaxonomy for non-financials data", () => {
-      let companiesWithEuTaxonomyDataForNonFinancials: Array<{
-        companyInformation: CompanyInformation;
-        t: EuTaxonomyDataForNonFinancials;
-      }>;
+      let companiesWithEuTaxonomyDataForNonFinancials: Array<
+        CompaniesWithEUTaxonomyData<EuTaxonomyDataForNonFinancials>
+      >;
 
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
+          companies: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForNonFinancials>>
+        ) {
           companiesWithEuTaxonomyDataForNonFinancials = companies;
         });
       });

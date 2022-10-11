@@ -16,7 +16,7 @@ export function logout(): void {
 
 export function login(
   username = "data_reader",
-  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD")
+  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD") as string
 ): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
@@ -52,7 +52,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
 
 export function getKeycloakToken(
   username = "data_reader",
-  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD"),
+  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD") as string,
   client_id = "dataland-public"
 ): Chainable<string> {
   return cy

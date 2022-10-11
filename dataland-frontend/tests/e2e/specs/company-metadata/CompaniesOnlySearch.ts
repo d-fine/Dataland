@@ -41,7 +41,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
 
   it("Search for company by its alternative name", () => {
     const testCompany = getCompanyWithAlternativeName();
-    const searchValue = testCompany.companyInformation.companyAlternativeNames!![0];
+    const searchValue = testCompany.companyInformation.companyAlternativeNames![0];
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("input[name=companyName]")
       .should("not.be.disabled")

@@ -1,10 +1,14 @@
 import { humanizeString } from "@/utils/StringHumanizer";
 
+interface SchemaInterface {
+  required: [key: string];
+  properties: { [key: string]: { format: string; type: string; enum: string[]; items: { enum: string[] } } };
+}
 export class SchemaGenerator {
-  private readonly rawSchema: any;
+  private readonly rawSchema: SchemaInterface;
   private readonly hiddenIndices: Array<string>;
 
-  constructor(rawSchema: any, hiddenIndices: Array<string> = []) {
+  constructor(rawSchema: SchemaInterface, hiddenIndices: Array<string> = []) {
     this.rawSchema = rawSchema;
     this.hiddenIndices = hiddenIndices;
   }
@@ -23,8 +27,8 @@ export class SchemaGenerator {
     return "";
   }
 
-  private processEnum(rawEnumProperties: any): any {
-    const enumProperties: any = {};
+  private processEnum(rawEnumProperties: string[]): Record<string, unknown> {
+    const enumProperties: Record<string, unknown> = {};
     for (const enumItem of rawEnumProperties) {
       enumProperties[enumItem] = humanizeString(enumItem);
     }
