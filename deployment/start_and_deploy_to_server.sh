@@ -68,7 +68,7 @@ ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persisten
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
-  delete_docker_volume_if_existent "backend_data"
+  ssh ubuntu@"$target_server_url" "source $location/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"backend_data\""
 fi
 
 echo "Starting docker compose stack."
