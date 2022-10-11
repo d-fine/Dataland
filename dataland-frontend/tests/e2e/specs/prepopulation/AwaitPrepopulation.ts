@@ -6,10 +6,10 @@ describe("I want to ensure that the prepopulation has finished before executing 
   let minimumNumberNonFinancialCompanies = 0;
   let minimumNumberFinancialCompanies = 0;
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies: []) {
       minimumNumberNonFinancialCompanies += companies.length;
     });
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies: []) {
       minimumNumberFinancialCompanies += companies.length;
     });
   });
@@ -18,22 +18,22 @@ describe("I want to ensure that the prepopulation has finished before executing 
     "Should wait until prepopulation has finished",
     {
       retries: {
-        runMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES"),
-        openMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES"),
+        runMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES") as number,
+        openMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES") as number,
       },
     },
     () => {
       cy.wait(5000)
-        .then(() => getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")))
+        .then(() => getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD") as string))
         .then((token) => {
-          countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials).then((response) => {
+          void countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials).then((response) => {
             if (response.matchingCompanies < minimumNumberFinancialCompanies) {
               throw Error(
                 `Only found ${response.matchingCompanies} financial companies (Expecting ${minimumNumberFinancialCompanies})`
               );
             }
           });
-          countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials).then((response) => {
+          void countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials).then((response) => {
             if (response.matchingCompanies < minimumNumberNonFinancialCompanies) {
               throw Error(
                 `Only found ${response.matchingCompanies} non-financial companies (Expecting ${minimumNumberNonFinancialCompanies})`
