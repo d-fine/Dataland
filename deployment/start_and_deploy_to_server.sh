@@ -1,8 +1,6 @@
 #!/bin/bash
 set -ux
 
-source ./deployment/deployment_utils.sh
-
 environment=$1
 source ./deployment/deployment_utils.sh
 
@@ -25,7 +23,7 @@ target_server_url="$TARGETSERVER_URL"
 
 setup_ssh
 
-timeout 300 bash -c "while ! ssh -o ConnectTimeout=3 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 1s'; sleep 1; done" || exit
+timeout 300 bash -c "while ! ssh -o ConnectTimeout=5 ubuntu@$target_server_url exit; do echo '$environment server not yet there - retrying in 5s'; sleep 5; done" || exit
 
 location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
@@ -35,7 +33,7 @@ keycloak_user_dir=$location/dataland-keycloak/users
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" "source $location/dataland-keycloak ; kill_docker_containers"
+ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
 ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir &&
                                  mkdir -p $persistent_keycloak_backup_dir &&
@@ -64,6 +62,7 @@ ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTE
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
+
 echo "Cleaning up exported user files."
 ssh ubuntu@"$target_server_url" "rm $keycloak_user_dir/*.json"
 

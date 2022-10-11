@@ -24,7 +24,7 @@ sudo -E docker-compose --profile init up -d --build
 
 message="Profile prod activated."
 container_name=$(sudo docker ps --format "{{.Names}}" | grep keycloak-initializer)
-timeout 300 bash -c "while ! docker logs $container_name | grep -q \"$message\";
+timeout 300 bash -c "while ! docker logs $container_name 2>/dev/null | grep -q \"$message\";
                      do
                        echo Startup of Keycloak incomplete. Waiting for it to finish.;
                        sleep 5;
@@ -44,6 +44,6 @@ if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
 fi
 
 echo "Shutting down all running containers."
-kill_docker_containers
+docker kill $(docker ps -q); docker system prune --force; docker info
 
 echo "Successfully initialized new instance of Keycloak."

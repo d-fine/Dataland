@@ -11,14 +11,8 @@ wait_for_health () {
   timeout 240 bash -c "while ! curl -L $1 2>/dev/null | grep -q UP; do echo 'Waiting for $2 to finish boot process.'; sleep 5; done; echo '$2 available!'"
 }
 
-kill_docker_containers() {
-  docker kill $(docker ps -q); docker system prune --force; docker info
-}
-
 delete_docker_volume_if_existent () {
-  volume_filter=$1
-
-  old_volume=$(search_volume "$volume_filter")
+  old_volume=$(search_volume "$1")
   if [[ -n $old_volume ]]; then
     echo "Removing old database volume with name $old_volume."
     docker volume rm "$old_volume"
@@ -26,13 +20,13 @@ delete_docker_volume_if_existent () {
 }
 
 search_volume() {
-  volume_filter=$1
-  volume_found=$(docker volume ls -q | grep "$volume_filter") || true
+  volume_found=$(docker volume ls -q | grep "$1") || true
   echo "$volume_found"
 }
 
 build_directories() {
   target_dir=$1
+  echo "Assembling deployment folder."
   mkdir -p "$target_dir"
 
   mkdir -p $target_dir/jar;
@@ -41,7 +35,7 @@ build_directories() {
 
   envsubst < environments/.env.template > "$target_dir"/.env
 
-  echo "Copying files to server"
+  echo "Copying general files."
   cp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf "$target_dir"
   cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
   cp -r ./dataland-pgadmin "$target_dir"
@@ -52,7 +46,7 @@ build_directories() {
   cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
   cp ./dataland-backend/build/libs/dataland-backend*.jar "$target_dir"/jar/dataland-backend.jar
 
-  echo "Copying keycloak files to server"
+  echo "Copying keycloak files."
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
   cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
   cp ./docker-compose.yml "$target_dir"
