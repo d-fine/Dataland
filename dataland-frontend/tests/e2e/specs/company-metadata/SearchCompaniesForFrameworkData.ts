@@ -1,5 +1,11 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
+import {
+  CompanyInformation,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+  DataTypeEnum,
+  StoredCompany,
+} from "@clients/backend";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
