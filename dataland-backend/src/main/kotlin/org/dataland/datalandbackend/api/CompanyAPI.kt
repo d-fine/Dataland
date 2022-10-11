@@ -49,9 +49,9 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name/identifier or just all companies from the data store.",
+        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
         description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
-            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored"
+            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored."
     )
     @ApiResponses(
         value = [
