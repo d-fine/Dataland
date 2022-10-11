@@ -68,7 +68,7 @@ ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persisten
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
-  delete_docker_volume_if_existent "$target_server_url" "$location" "backend_data"
+  delete_docker_volume_if_existent "backend_data"
 fi
 
 echo "Starting docker compose stack."
