@@ -54,19 +54,19 @@ export function getCsvCompanyMapping<T>() {
   return [
     {
       label: "Unternehmensname",
-      value: (row: FixtureData<T>) => row.companyInformation.companyName,
+      value: (row: FixtureData<T>): string => row.companyInformation.companyName,
     },
     {
       label: "Headquarter",
-      value: (row: FixtureData<T>) => row.companyInformation.headquarters,
+      value: (row: FixtureData<T>): string => row.companyInformation.headquarters,
     },
     {
       label: "Sector",
-      value: (row: FixtureData<T>) => row.companyInformation.sector,
+      value: (row: FixtureData<T>): string => row.companyInformation.sector,
     },
     {
       label: "Countrycode",
-      value: (row: FixtureData<T>) => row.companyInformation.countryCode,
+      value: (row: FixtureData<T>): string => row.companyInformation.countryCode,
     },
     {
       label: "Market Capitalization EURmm",
@@ -79,12 +79,12 @@ export function getCsvCompanyMapping<T>() {
     },
     {
       label: "Teaser Company",
-      value: (row: FixtureData<T>) => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
+      value: (row: FixtureData<T>): string => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
     ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((e) => {
       return {
         label: humanizeString(e),
-        value: (row: FixtureData<T>) => getIdentifierValueForCsv(row.companyInformation.identifiers, e),
+        value: (row: FixtureData<T>): string => getIdentifierValueForCsv(row.companyInformation.identifiers, e),
       };
     }),
   ];

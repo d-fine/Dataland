@@ -5,14 +5,20 @@ import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomy
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
-let companiesWithData: Array<{
-  companyInformation: CompanyInformation;
-  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
-  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-}>;
+interface CompaniesWithData {
+  T: Array<{
+    companyInformation: CompanyInformation;
+    euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
+    euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+  }>;
+}
+
+let companiesWithData: CompaniesWithData;
 
 before(function (): void {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson): void {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
+    outputFromJson: CompaniesWithData
+  ): void {
     companiesWithData = outputFromJson;
   });
 });
@@ -129,7 +135,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
 
     cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[0].companyInformation.companyName;
+    const inputValue = companiesWithData.T[0].companyInformation.companyName;
     const permIdText = "Permanent Identifier (PermID)";
     checkPermIdToolTip(permIdText);
     executeCompanySearchWithStandardSearchBar(inputValue);
@@ -143,8 +149,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Execute a company Search by identifier and assure that the company is found", (): void => {
     cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[0].companyInformation.identifiers[0].identifierValue;
-    const expectedCompanyName = companiesWithData[0].companyInformation.companyName;
+    const inputValue = companiesWithData.T[0].companyInformation.identifiers[0].identifierValue;
+    const expectedCompanyName = companiesWithData.T[0].companyInformation.companyName;
     executeCompanySearchWithStandardSearchBar(inputValue);
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });

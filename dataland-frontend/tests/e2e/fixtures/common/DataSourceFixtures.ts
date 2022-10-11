@@ -18,11 +18,11 @@ export function getCsvDataSourceMapping<T>(
   return [
     {
       label: `${dataPointName} Report`,
-      value: (row: T) => humanizeOrUndefined(companyReportGetter(row)?.report),
+      value: (row: T): string | undefined => humanizeOrUndefined(companyReportGetter(row)?.report),
     },
     {
       label: `${dataPointName} Page`,
-      value: (row: T) => companyReportGetter(row)?.page,
+      value: (row: T): number | undefined => companyReportGetter(row)?.page,
     },
   ];
 }

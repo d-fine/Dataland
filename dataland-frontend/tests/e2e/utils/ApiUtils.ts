@@ -1,4 +1,9 @@
 import Chainable = Cypress.Chainable;
+interface CyRequestResult {
+  body: Array<{
+    companyId: string;
+  }>;
+}
 
 export function performSimpleGet(endpoint: string): Chainable<unknown> {
   return cy
@@ -12,7 +17,7 @@ export function performSimpleGet(endpoint: string): Chainable<unknown> {
     });
 }
 
-function retrieveIdsList(idKey: string, endpoint: string): Chainable<Array<string>> {
+function retrieveIdsList(idKey: string, endpoint: string): Chainable<string[]> {
   return performSimpleGet(endpoint).then((response): Chainable<string[]> => {
     return response.body.map((e: never): string => e[idKey]);
   });
@@ -36,7 +41,7 @@ export function retrieveFirstCompanyIdWithFrameworkData(framework: string): Chai
         headers: { Authorization: "Bearer " + token },
       });
     })
-    .then((response: { body: Array<{ companyId: string }> }): string => {
+    .then((response: CyRequestResult): string => {
       return response.body[0].companyId;
     });
 }
