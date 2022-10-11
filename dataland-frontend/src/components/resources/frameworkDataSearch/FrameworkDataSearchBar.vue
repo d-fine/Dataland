@@ -101,7 +101,7 @@ export default defineComponent({
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "rendered", "search-confirmed"],
+  emits: ["companies-received", "search-confirmed"],
 
   props: {
     searchBarName: {
