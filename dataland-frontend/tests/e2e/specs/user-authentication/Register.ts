@@ -72,7 +72,7 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.visit("/");
     cy.task("getEmail").then((returnemail) => {
       cy.task("getPassword").then((returnpassword) => {
-        login(returnemail, returnpassword);
+        login(returnemail as string, returnpassword as string);
       });
     });
     logout();
