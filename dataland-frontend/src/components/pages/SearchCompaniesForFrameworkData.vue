@@ -115,7 +115,7 @@ export default defineComponent({
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
+      currentFilteredFrameworks: Object.values(DataTypeEnum) as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: {
@@ -209,12 +209,10 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       let queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
-        console.log("fulfilled");
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
         const result = parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
-        console.log(result);
         return result;
       } else {
         return Object.values(DataTypeEnum);
