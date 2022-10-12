@@ -14,7 +14,7 @@
             ref="frameworkDataSearchBar"
             :filter="currentCombinedFilter"
             :search-bar-name="searchBarName"
-            :enable-full-search="true"
+            :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"
           />

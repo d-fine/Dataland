@@ -123,7 +123,7 @@ export default defineComponent({
       type: Number,
       default: 3,
     },
-    enableFullSearch: {
+    emitSearchResultsArray: {
       type: Boolean,
       default: false,
     },
@@ -169,7 +169,7 @@ export default defineComponent({
       this.queryCompany();
     },
     async queryCompany() {
-      if (this.getKeycloakPromise !== undefined && this.enableFullSearch) {
+      if (this.getKeycloakPromise !== undefined && this.emitSearchResultsArray) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
