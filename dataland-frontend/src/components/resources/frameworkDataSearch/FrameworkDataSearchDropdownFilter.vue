@@ -1,6 +1,7 @@
 <template>
   <MultiSelect
     v-model="selectedItemsBind"
+    ref="multiselect"
     :options="availableItems"
     :filter="true"
     :showToggleAll="false"
@@ -32,7 +33,7 @@
 
 <script lang="ts">
 import MultiSelect from "primevue/multiselect";
-import { defineComponent } from "vue";
+import {defineComponent, ref} from "vue";
 
 export interface SelectableItem {
   displayName: string;
@@ -40,6 +41,11 @@ export interface SelectableItem {
 }
 
 export default defineComponent({
+  setup() {
+    return {
+      multiselect: ref(),
+    };
+  },
   name: "FrameworkDataSearchDropdownFilter",
   components: { MultiSelect },
   emits: ["update:modelValue"],

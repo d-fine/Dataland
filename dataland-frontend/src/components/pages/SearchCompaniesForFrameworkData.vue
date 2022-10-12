@@ -38,6 +38,7 @@
             </div>
             <FrameworkDataSearchFilters
               class="ml-3"
+              ref="frameworkDataSearchFilters"
               :show-heading="!pageScrolled || searchBarToggled"
               v-model:selected-country-codes="currentFilteredCountryCodes"
               v-model:selected-frameworks="currentFilteredFrameworks"
@@ -134,8 +135,9 @@ export default defineComponent({
   },
   setup() {
     return {
-      frameworkDataSearchBar: ref(),
       searchBarAndFiltersContainer: ref(),
+      frameworkDataSearchBar: ref(),
+      frameworkDataSearchFilters: ref(),
       searchResults: ref(),
     };
   },
@@ -143,6 +145,7 @@ export default defineComponent({
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
         this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
+        this.frameworkDataSearchFilters.closeAllDropDowns()
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -297,6 +300,9 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       this.searchResults?.resetPagination();
+      if(this.pageScrolled) {
+        this.frameworkDataSearchFilters.closeAllDropDowns()
+      }
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
@@ -305,7 +311,7 @@ export default defineComponent({
           countryCode: queryCountryCodes,
           sector: querySectors,
         },
-      });
+      })
     },
     handleSearchConfirmed(companyNameFilter: string) {
       this.currentSearchBarInput = companyNameFilter;

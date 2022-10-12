@@ -5,6 +5,7 @@
       <div>
         <FrameworkDataSearchDropdownFilter
           v-model="selectedSectorsInt"
+          ref="sectorFilter"
           :available-items="availableSectors"
           filter-name="Sector"
           filter-id="sector-filter"
@@ -12,6 +13,7 @@
         />
         <FrameworkDataSearchDropdownFilter
           v-model="selectedCountriesInt"
+          ref="countryFilter"
           :available-items="availableCountries"
           filter-name="Country"
           filter-id="country-filter"
@@ -26,6 +28,7 @@
         <div class="d-separator-left" />
         <FrameworkDataSearchDropdownFilter
           v-model="selectedFrameworksInt"
+          ref="frameworkFilter"
           :available-items="availableFrameworks"
           filter-name="Framework"
           filter-id="framework-filter"
@@ -53,7 +56,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import {defineComponent, inject, ref} from "vue";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
@@ -78,6 +81,9 @@ export default defineComponent({
   emits: ["update:selectedCountryCodes", "update:selectedFrameworks", "update:selectedSectors"],
   setup() {
     return {
+      sectorFilter: ref(),
+      countryFilter: ref(),
+      frameworkFilter: ref(),
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
@@ -147,6 +153,11 @@ export default defineComponent({
       this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
+    },
+    closeAllDropDowns() {
+      this.countryFilter.$refs.multiselect.hide();
+      this.sectorFilter.$refs.multiselect.hide();
+      this.frameworkFilter.$refs.multiselect.hide();
     },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
