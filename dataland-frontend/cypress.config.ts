@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
-let returnemail: string
-let returnpassword: string
+let returnemail: string;
+let returnpassword: string;
 export default defineConfig({
   numTestsKeptInMemory: 2,
   defaultCommandTimeout: 10000,
@@ -17,28 +17,26 @@ export default defineConfig({
   e2e: {
     baseUrl: "https://dataland-local.duckdns.org",
     setupNodeEvents(on, config) {
-      on('task', {
-        setEmail: (val:string) => {
-          return (returnemail = val)
+      on("task", {
+        setEmail: (val: string) => {
+          return (returnemail = val);
         },
         getEmail: () => {
-          return returnemail
+          return returnemail;
         },
-      }),
-      on('task', {
-        setPassword: (val:string) => {
-          return (returnpassword = val)
+      });
+      on("task", {
+        setPassword: (val: string) => {
+          return (returnpassword = val);
         },
         getPassword: () => {
-          return returnpassword
+          return returnpassword;
         },
-      })
+      });
       return require("./tests/e2e/plugins/index.js")(on, config);
-
     },
     experimentalSessionAndOrigin: true,
     supportFile: "tests/e2e/support/index.ts",
-
   },
   component: {
     devServer: {
@@ -53,7 +51,4 @@ export default defineConfig({
       return config;
     },
   },
-
-
-
 });
