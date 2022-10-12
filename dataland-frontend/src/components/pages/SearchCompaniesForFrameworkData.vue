@@ -15,38 +15,35 @@
             :filter="currentCombinedFilter"
             :search-bar-name="searchBarName"
             :enable-full-search="true"
-            @companies-received="handleCompanyQuery"
             @search-confirmed="handleSearchConfirmed"
+            @companies-received="handleCompanyQuery"
           />
-          <div class="flex">
-            <FrameworkDataSearchFilters
-              :show-heading="true"
-              v-model:selected-country-codes="currentFilteredCountryCodes"
-              v-model:selected-frameworks="currentFilteredFrameworks"
-              v-model:selected-sectors="currentFilteredSectors"
-            />
-            <span class="d-page-display">{{ currentlyVisiblePageText }}</span>
-          </div>
           <div
-            class="col-12 align-items-center grid bg-white d-search-toggle fixed d-shadow-bottom"
-            v-show="!searchBarToggled && pageScrolled"
+            :class="[
+              pageScrolled && !searchBarToggled
+                ? ['grid', 'col-12', 'align-items-center', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
+                : 'flex',
+            ]"
           >
-            <span class="mr-3 font-semibold">Search Data for Companies</span>
-            <PrimeButton
-              name="search_bar_collapse"
-              icon="pi pi-search"
-              class="p-button-rounded surface-ground border-none m-2"
-              @click="toggleSearchBar"
-            >
-              <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-            </PrimeButton>
+            <div :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']">
+              <span class="mr-3 font-semibold">Search Data for Companies</span>
+              <PrimeButton
+                name="search_bar_collapse"
+                icon="pi pi-search"
+                class="p-button-rounded surface-ground border-none m-2"
+                @click="toggleSearchBar"
+              >
+                <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+              </PrimeButton>
+            </div>
             <FrameworkDataSearchFilters
               class="ml-3"
-              :show-heading="false"
+              :show-heading="!pageScrolled || searchBarToggled"
               v-model:selected-country-codes="currentFilteredCountryCodes"
               v-model:selected-frameworks="currentFilteredFrameworks"
               v-model:selected-sectors="currentFilteredSectors"
             />
+            <span v-show="!pageScrolled" class="d-page-display">{{ currentlyVisiblePageText }}</span>
           </div>
         </MarginWrapper>
       </div>
@@ -138,7 +135,7 @@ export default defineComponent({
   setup() {
     return {
       frameworkDataSearchBar: ref(),
-      searchBarContainer: ref(),
+      searchBarAndFiltersContainer: ref(),
       searchResults: ref(),
     };
   },
@@ -209,10 +206,13 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       let queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
+        console.log("fulfilled");
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
-        return parseQueryParamArray(queryFrameworks).filter((it) =>
+        const result = parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
+        console.log(result);
+        return result;
       } else {
         return Object.values(DataTypeEnum);
       }
@@ -269,6 +269,7 @@ export default defineComponent({
         this.currentFilteredCountryCodes = queryCountryCodes;
         this.currentFilteredSectors = querySectors;
         this.currentSearchBarInput = queryInput;
+
         this.currentCombinedFilter = {
           sectorFilter: querySectors,
           frameworkFilter: queryFrameworks,
@@ -310,7 +311,7 @@ export default defineComponent({
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.searchBarContainer.clientHeight;
+      const height = this.searchBarAndFiltersContainer.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
