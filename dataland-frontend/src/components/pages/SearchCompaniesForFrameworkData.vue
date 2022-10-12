@@ -198,7 +198,7 @@ export default defineComponent({
           this.pageScrolled = document.documentElement.scrollTop >= 50;
         } else {
           //ScrollDOWN event
-          this.pageScrolled = document.documentElement.scrollTop > 80;
+          this.pageScrolled = document.documentElement.scrollTop > 100;
           this.latestScrollPosition = windowScrollY;
         }
       }
@@ -280,6 +280,7 @@ export default defineComponent({
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
+      this.searchBarToggled=false
       this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
