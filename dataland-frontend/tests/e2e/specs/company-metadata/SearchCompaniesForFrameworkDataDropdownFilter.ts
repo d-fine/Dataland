@@ -29,20 +29,24 @@ describe("As a user, I expect the search functionality on the /companies page to
       .find("li.p-disabled:contains('LkSG')")
       .should("exist");
   });
-  it("Check that the framework filter synchronises between the search bar and the URL", () => {
-    cy.ensureLoggedIn();
-    cy.visit(`/companies?framework=eutaxonomy-financials`)
-      .get("#framework-filter")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find("li:contains('EU Taxonomy for non-financial companies')")
-      .click()
-      .url()
-      .should("include", "/companies?framework=eutaxonomy-non-financials");
-  });
+  it(
+    "Check that the framework filter synchronises between the search bar and the URL",
+    { scrollBehavior: false },
+    () => {
+      cy.ensureLoggedIn();
+      cy.visit(`/companies?framework=eutaxonomy-financials`)
+        .get("#framework-filter")
+        .click()
+        .get("div.p-multiselect-panel")
+        .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
+        .click()
+        .get("div.p-multiselect-panel")
+        .find("li:contains('EU Taxonomy for non-financial companies')")
+        .click()
+        .url()
+        .should("include", "/companies?framework=eutaxonomy-non-financials");
+    }
+  );
   it("Checks that the country-code filter synchronises between the search bar and the drop down and works", () => {
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
