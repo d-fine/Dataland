@@ -145,7 +145,7 @@ export default defineComponent({
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
         this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
-        this.frameworkDataSearchFilters.closeAllDropDowns()
+        this.frameworkDataSearchFilters.closeAllDropDowns();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -283,7 +283,7 @@ export default defineComponent({
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
-      this.searchBarToggled=false
+      this.searchBarToggled = false;
       this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
@@ -300,8 +300,8 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       this.searchResults?.resetPagination();
-      if(this.pageScrolled) {
-        this.frameworkDataSearchFilters.closeAllDropDowns()
+      if (this.pageScrolled) {
+        this.frameworkDataSearchFilters.closeAllDropDowns();
       }
       this.$router.push({
         name: "Search Companies for Framework Data",
@@ -311,7 +311,7 @@ export default defineComponent({
           countryCode: queryCountryCodes,
           sector: querySectors,
         },
-      })
+      });
     },
     handleSearchConfirmed(companyNameFilter: string) {
       this.currentSearchBarInput = companyNameFilter;

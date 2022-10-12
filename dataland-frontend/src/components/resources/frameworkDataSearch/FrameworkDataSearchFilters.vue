@@ -56,7 +56,7 @@
 </style>
 
 <script lang="ts">
-import {defineComponent, inject, ref} from "vue";
+import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";

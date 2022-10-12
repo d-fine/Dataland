@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import MultiSelect from "primevue/multiselect";
-import {defineComponent, ref} from "vue";
+import { defineComponent, ref } from "vue";
 
 export interface SelectableItem {
   displayName: string;
