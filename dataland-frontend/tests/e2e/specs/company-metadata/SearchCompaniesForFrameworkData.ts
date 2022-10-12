@@ -72,7 +72,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Scroll the page and check if search icon and search bar behave as expected", () => {
+  it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
@@ -98,50 +98,58 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("input[name=search_bar_scrolled]").should("not.exist");
   });
 
-  it("Scroll the page to type into the search bar in different states and check if the input is always saved", () => {
-    const inputValue1 = "ABCDEFG";
-    const inputValue2 = "XYZ";
-    cy.visitAndCheckAppMount("/companies");
-    cy.get("input[name=search_bar_top]").type(inputValue1);
-    verifyPaginator();
-    cy.scrollTo(0, 500);
-    cy.get("button[name=search_bar_collapse]").click();
-    cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
-    cy.scrollTo(0, 0);
-    cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-  });
-
-  it("Check PermId tooltip, execute company search by name, check result table and assure VIEW button works", () => {
-    cy.visitAndCheckAppMount("/companies");
-
-    function checkPermIdToolTip(permIdTextInt: string) {
-      cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-      cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
-      cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-      cy.get(".p-tooltip").should("not.exist");
+  it(
+    "Scroll the page to type into the search bar in different states and check if the input is always saved",
+    { scrollBehavior: false },
+    () => {
+      const inputValue1 = "ABCDEFG";
+      const inputValue2 = "XYZ";
+      cy.visitAndCheckAppMount("/companies");
+      cy.get("input[name=search_bar_top]").type(inputValue1);
+      verifyPaginator();
+      cy.scrollTo(0, 500);
+      cy.get("button[name=search_bar_collapse]").click();
+      cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
+      cy.scrollTo(0, 0);
+      cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
     }
+  );
 
-    function checkViewButtonWorks() {
-      cy.get("table.p-datatable-table")
-        .contains("td", "VIEW")
-        .contains("a", "VIEW")
-        .click()
-        .url()
-        .should("include", "/frameworks");
+  it(
+    "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
+    { scrollBehavior: false },
+    () => {
+      cy.visitAndCheckAppMount("/companies");
+
+      function checkPermIdToolTip(permIdTextInt: string) {
+        cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+        cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
+        cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+        cy.get(".p-tooltip").should("not.exist");
+      }
+
+      function checkViewButtonWorks() {
+        cy.get("table.p-datatable-table")
+          .contains("td", "VIEW")
+          .contains("a", "VIEW")
+          .click()
+          .url()
+          .should("include", "/frameworks");
+      }
+
+      cy.visitAndCheckAppMount("/companies");
+      const inputValue = companiesWithData[0].companyInformation.companyName;
+      const permIdText = "Permanent Identifier (PermID)";
+      checkPermIdToolTip(permIdText);
+      executeCompanySearchWithStandardSearchBar(inputValue);
+      verifyTaxonomySearchResultTable();
+      checkViewButtonWorks();
+      cy.get("h1").contains(inputValue);
+      cy.get("[title=back_button").should("be.visible").click({ force: true });
+      checkViewButtonWorks();
+      cy.get("h1").contains(inputValue);
     }
-
-    cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[0].companyInformation.companyName;
-    const permIdText = "Permanent Identifier (PermID)";
-    checkPermIdToolTip(permIdText);
-    executeCompanySearchWithStandardSearchBar(inputValue);
-    verifyTaxonomySearchResultTable();
-    checkViewButtonWorks();
-    cy.get("h1").contains(inputValue);
-    cy.get("[title=back_button").should("be.visible").click({ force: true });
-    checkViewButtonWorks();
-    cy.get("h1").contains(inputValue);
-  });
+  );
 
   it("Execute a company Search by identifier and assure that the company is found", () => {
     cy.visitAndCheckAppMount("/companies");
