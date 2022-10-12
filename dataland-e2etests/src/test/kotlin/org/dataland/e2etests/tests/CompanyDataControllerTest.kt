@@ -85,8 +85,14 @@ class CompanyDataControllerTest {
             companyDataControllerApi.postCompany(it)
         }
         val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
-        assertTrue(distinctValues.sectors?.containsAll(testCompanyInformation.map { it.sector }) ?: false)
-        assertTrue(distinctValues.countryCodes?.containsAll(testCompanyInformation.map { it.countryCode }) ?: false)
+        assertTrue(
+            distinctValues.sectors?.containsAll(testCompanyInformation.map { it.sector }) ?: false,
+            "The list of all occurring sectors does not contain the sectors of the posted companies."
+        )
+        assertTrue(
+            distinctValues.countryCodes?.containsAll(testCompanyInformation.map { it.countryCode }) ?: false,
+            "The list of all occurring country codes does not contain the country codes of the posted companies."
+        )
     }
 
     @Test
@@ -98,6 +104,7 @@ class CompanyDataControllerTest {
         )
         assertTrue(
             getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company could not be found in the query results when querying for its country code and sector."
         )
     }
 
@@ -109,7 +116,10 @@ class CompanyDataControllerTest {
             countryCodes = setOf(storedCompany.companyInformation.countryCode)
         )
         assertTrue(
-            !getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany)
+            !getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company is in the query results," +
+                " even though the country code filter was set to a different country code."
+
         )
     }
 
@@ -141,7 +151,8 @@ class CompanyDataControllerTest {
             companyDataControllerApi.getCompanies(
                 searchString = testCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false
-            ).any { it.companyId == testCompanyId }
+            ).any { it.companyId == testCompanyId },
+            "The posted company could not be found in the query results when querying for its first identifiers value."
         )
     }
 
@@ -174,7 +185,10 @@ class CompanyDataControllerTest {
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedCompanyDataControllerApi.getCompanyById(testCompanyId)
         }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+        assertTrue(
+            exception.message!!.contains("Unauthorized access failed"),
+            "The exception message does not say that an unauthorized access was the cause."
+        )
     }
 
     @Test
@@ -184,6 +198,9 @@ class CompanyDataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(
+            "Client error : 403 ", exception.message,
+            "The exception message does not say that a 403 client error was the cause."
+        )
     }
 }
