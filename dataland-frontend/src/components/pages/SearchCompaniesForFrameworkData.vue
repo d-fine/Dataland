@@ -272,13 +272,6 @@ export default defineComponent({
         this.currentFilteredCountryCodes = queryCountryCodes;
         this.currentFilteredSectors = querySectors;
         this.currentSearchBarInput = queryInput;
-
-        this.currentCombinedFilter = {
-          sectorFilter: querySectors,
-          frameworkFilter: queryFrameworks,
-          companyNameFilter: queryInput,
-          countryCodeFilter: queryCountryCodes,
-        };
       }
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
