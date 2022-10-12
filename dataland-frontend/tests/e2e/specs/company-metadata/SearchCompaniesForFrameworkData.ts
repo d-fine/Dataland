@@ -6,7 +6,7 @@ import {
   DataTypeEnum,
   StoredCompany,
 } from "@clients/backend";
-import {getKeycloakToken} from "../../utils/Auth";
+import { getKeycloakToken } from "../../utils/Auth";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -156,8 +156,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
 
     getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((storedCompanies: Array<StoredCompany>) => {
-          cy.visitAndCheckAppMount(`/companies}/frameworks/${storedCompanies[0].companyId}/eutaxonomy-non-financials`);
+      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+        (storedCompanies: Array<StoredCompany>) => {
+          cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);
           cy.get("input[name=framework_data_search_bar_standard]")
             .should("not.be.disabled")
             .type(inputValue)
