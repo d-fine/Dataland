@@ -196,16 +196,13 @@ services:
   keycloak:
     restart: always
     profiles: ["production", "productionInMemory", "development"]
-    volumes:
-      - ./dataland-keycloak/dataland_theme/login/dist:/opt/keycloak/themes/dataland_theme/login
-      - ./dataland-keycloak/dataland_theme/email:/opt/keycloak/themes/dataland_theme/email
     networks:
       - internal
       - keycloak-db
     build:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
-    command: start-dev
+    command: ${KEYCLOAK_START_COMMAND:-start}
     expose:
       - "8080"
     environment:
