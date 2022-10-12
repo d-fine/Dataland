@@ -113,6 +113,21 @@ describe(
       cy.visit("/companies").get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
       cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
     });
+    it("Checks that the filter dropdowns close on the resulting query when you check a box while you are not at the top of the page", () => {
+      cy.ensureLoggedIn();
+      cy.visit("/companies").get("td[class='d-bg-white w-3 d-datatable-column-left']");
+      cy.scrollTo(0, 500, { duration: 300 })
+        .get("#framework-filter")
+        .click()
+        .get("div.p-multiselect-panel")
+        .find("li.p-multiselect-item")
+        .first()
+        .click()
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .should("exist")
+        .get("div.p-multiselect-panel")
+        .should("not.exist");
+    });
 
     describeIf(
       "As a user, I expect the search results to adjust according to the framework filter",
