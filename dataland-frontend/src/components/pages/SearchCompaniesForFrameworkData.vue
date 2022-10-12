@@ -5,7 +5,7 @@
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarContainer"
+        ref="searchBarAndFiltersContainer"
       >
         <div class="pt-4" />
         <MarginWrapper>
