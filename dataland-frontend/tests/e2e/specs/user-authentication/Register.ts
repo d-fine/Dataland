@@ -40,9 +40,8 @@ describe("As a user I want to be able to register for an account and be able to 
       .should("contain", "Email verification");
   });
 
-  it("test", () => {
-    function verifyRegisteredUser(inputemail: any): void {
-      console.log(email);
+  it("Checks that the admin console is working and a newly registered user can be verified", () => {
+    cy.task("getEmail").then((returnemail) => {
       cy.visit("http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users");
       cy.get("h1").should("exist").should("contain", "Sign in to your account");
       cy.url().should("contain", "realms/master");
@@ -57,15 +56,12 @@ describe("As a user I want to be able to register for an account and be able to 
         .click();
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
-        .type(inputemail, { force: true })
+        .type(returnemail as string, { force: true })
         .type("{enter}");
       cy.get("table");
-      cy.contains("td", inputemail).click();
+      cy.contains("td", returnemail as string).click();
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
-    }
-    cy.task("getEmail").then((returnemail) => {
-      verifyRegisteredUser(returnemail);
     });
   });
   it("Checks that one can login to the newly registered account", () => {
