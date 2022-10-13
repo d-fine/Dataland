@@ -61,16 +61,20 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("contain", placeholder);
   });
 
-  it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", { scrollBehavior: false }, () => {
-    cy.visitAndCheckAppMount("/companies");
-    cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=search_bar_top]").type("b");
-    cy.get(".p-autocomplete-item").contains("View all results").click();
-    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      verifyTaxonomySearchResultTable();
-      cy.url().should("include", "/companies?input=b");
-    });
-  });
+  it(
+    "Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed",
+    { scrollBehavior: false },
+    () => {
+      cy.visitAndCheckAppMount("/companies");
+      cy.intercept("**/api/companies*").as("searchCompany");
+      cy.get("input[name=search_bar_top]").type("b");
+      cy.get(".p-autocomplete-item").contains("View all results").click();
+      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        verifyTaxonomySearchResultTable();
+        cy.url().should("include", "/companies?input=b");
+      });
+    }
+  );
 
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
