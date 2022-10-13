@@ -12,5 +12,4 @@ describe("As a user I expect the admin console only to be reachable using admin-
   it(`Master Realm not reachable from remote`, () => {
     checkThatUrlResolvesToErrorPage("/keycloak/realms/master");
   });
-
 });
