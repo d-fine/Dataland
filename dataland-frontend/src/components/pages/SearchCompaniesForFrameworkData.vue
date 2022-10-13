@@ -194,7 +194,7 @@ export default defineComponent({
             startIndex + (this.rowsPerPage - 1) >= totalSearchResults
               ? totalSearchResults - 1
               : startIndex + (this.rowsPerPage - 1);
-          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults}`;
+          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
         }
       } else {
         return "loading...";
