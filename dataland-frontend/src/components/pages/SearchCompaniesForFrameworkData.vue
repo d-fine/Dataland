@@ -48,19 +48,14 @@
           </div>
         </MarginWrapper>
       </div>
-      <div v-if="!firstQueryFinished" class="d-center-div text-center px-7 py-4">
+      <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading...</p>
-        <i
-          v-if="!firstQueryFinished"
-          class="pi pi-spinner pi-spin"
-          aria-hidden="true"
-          style="z-index: 20; color: #e67f3f"
-        />
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <FrameworkDataSearchResults
+        v-if="!waitingForSearchResults"
         ref="searchResults"
         :rows-per-page="rowsPerPage"
-        v-if="showSearchResultsTable"
         :data="resultsArray"
         @update:first="setFirstShownRow"
       />
@@ -121,7 +116,6 @@ export default defineComponent({
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      showSearchResultsTable: false,
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
@@ -139,7 +133,7 @@ export default defineComponent({
       searchBarName: "search_bar_top",
       indexOfFirstShownRow: 0,
       rowsPerPage: 100,
-      firstQueryFinished: false,
+      waitingForSearchResults: true,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -156,7 +150,7 @@ export default defineComponent({
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
-        this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
+        this.frameworkDataSearchBar?.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -185,7 +179,7 @@ export default defineComponent({
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.resultsArray.length;
 
-      if (this.firstQueryFinished) {
+      if (!this.waitingForSearchResults) {
         if (totalSearchResults === 0) {
           return "No results";
         } else {
@@ -219,12 +213,12 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 50;
-          // this.frameworkDataSearchFilters.closeAllOpenDropDowns();
+          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop > 100;
-          //this.frameworkDataSearchFilters.closeAllOpenDropDowns();
+          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
       }
     },
@@ -268,6 +262,7 @@ export default defineComponent({
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
+        this.waitingForSearchResults = true;
         this.currentCombinedFilter = {
           sectorFilter: this.currentFilteredSectors,
           frameworkFilter: this.currentFilteredFrameworks,
@@ -296,8 +291,8 @@ export default defineComponent({
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
+      this.waitingForSearchResults = false;
       this.searchBarToggled = false;
-      this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
@@ -313,9 +308,6 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       this.searchResults?.resetPagination();
-      if (!this.firstQueryFinished) {
-        this.firstQueryFinished = true;
-      }
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
@@ -327,11 +319,12 @@ export default defineComponent({
       });
     },
     handleSearchConfirmed(companyNameFilter: string) {
+      this.waitingForSearchResults = true;
       this.currentSearchBarInput = companyNameFilter;
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.searchBarAndFiltersContainer.clientHeight;
+      const height = this.searchBarAndFiltersContainer?.clientHeight;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
