@@ -86,11 +86,11 @@ class CompanyDataControllerTest {
         }
         val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors?.containsAll(testCompanyInformation.map { it.sector }) ?: false,
+            distinctValues.sectors!!.containsAll(testCompanyInformation.map { it.sector }),
             "The list of all occurring sectors does not contain the sectors of the posted companies."
         )
         assertTrue(
-            distinctValues.countryCodes?.containsAll(testCompanyInformation.map { it.countryCode }) ?: false,
+            distinctValues.countryCodes!!.containsAll(testCompanyInformation.map { it.countryCode }),
             "The list of all occurring country codes does not contain the country codes of the posted companies."
         )
     }
