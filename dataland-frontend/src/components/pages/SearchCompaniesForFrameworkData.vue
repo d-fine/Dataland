@@ -145,7 +145,6 @@ export default defineComponent({
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
         this.frameworkDataSearchBar.$refs.autocomplete.hideOverlay();
-        this.frameworkDataSearchFilters.closeAllDropDowns();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
@@ -199,10 +198,12 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 50;
+          this.frameworkDataSearchFilters.closeAllDropDowns();
         } else {
           //ScrollDOWN event
-          this.pageScrolled = document.documentElement.scrollTop > 100;
           this.latestScrollPosition = windowScrollY;
+          this.pageScrolled = document.documentElement.scrollTop > 100;
+          this.frameworkDataSearchFilters.closeAllDropDowns();
         }
       }
     },
@@ -291,9 +292,6 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       this.searchResults?.resetPagination();
-      if (this.pageScrolled) {
-        this.frameworkDataSearchFilters.closeAllDropDowns();
-      }
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: {

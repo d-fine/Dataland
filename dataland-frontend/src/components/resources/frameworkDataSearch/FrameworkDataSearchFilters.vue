@@ -154,10 +154,16 @@ export default defineComponent({
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
-    closeAllDropDowns() {
-      this.countryFilter.$refs.multiselect.hide();
-      this.sectorFilter.$refs.multiselect.hide();
-      this.frameworkFilter.$refs.multiselect.hide();
+    closeAllOpenDropDowns() {
+      if (this.countryFilter.$refs.multiselect) {
+        this.countryFilter.$refs.multiselect.hide();
+      }
+      if (this.sectorFilter.$refs.multiselect) {
+        this.sectorFilter.$refs.multiselect.hide();
+      }
+      if (this.frameworkFilter.$refs.multiselect) {
+        this.frameworkFilter.$refs.multiselect.hide();
+      }
     },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
