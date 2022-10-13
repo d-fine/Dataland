@@ -61,7 +61,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("contain", placeholder);
   });
 
-  it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", () => {
+  it("Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
     cy.get("input[name=search_bar_top]").type("b");
