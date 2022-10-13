@@ -198,12 +198,12 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 50;
-          this.frameworkDataSearchFilters.closeAllDropDowns();
+          this.frameworkDataSearchFilters.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop > 100;
-          this.frameworkDataSearchFilters.closeAllDropDowns();
+          this.frameworkDataSearchFilters.closeAllOpenDropDowns();
         }
       }
     },
