@@ -48,6 +48,15 @@
           </div>
         </MarginWrapper>
       </div>
+      <div v-if="!firstQueryFinished" class="d-center-div text-center px-7 py-4">
+        <p class="font-medium text-xl">Loading...</p>
+        <i
+          v-if="!firstQueryFinished"
+          class="pi pi-spinner pi-spin"
+          aria-hidden="true"
+          style="z-index: 20; color: #e67f3f"
+        />
+      </div>
       <FrameworkDataSearchResults
         ref="searchResults"
         :rows-per-page="rowsPerPage"
@@ -210,12 +219,12 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 50;
-          this.frameworkDataSearchFilters.closeAllOpenDropDowns();
+          // this.frameworkDataSearchFilters.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop > 100;
-          this.frameworkDataSearchFilters.closeAllOpenDropDowns();
+          //this.frameworkDataSearchFilters.closeAllOpenDropDowns();
         }
       }
     },
