@@ -4,10 +4,11 @@
       <div class="col-12 text-left">
         <DataTable
           v-if="data && data.length > 0"
+          ref="dataTable"
           :value="data"
           responsive-layout="scroll"
           :paginator="true"
-          :rows="100"
+          :rows="rowsPerPage"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
           :alwaysShowPaginator="false"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -16,7 +17,6 @@
           class="table-cursor"
           id="search-result-framework-data"
           :rowHover="true"
-          ref="dataTable"
         >
           <Column
             field="companyInformation.companyName"
@@ -97,10 +97,10 @@ export default {
       type: Object,
       default: null,
     },
-    processed: {
-      type: Boolean,
-      default: false,
-    },
+    rowsPerPage: {
+      type: Number,
+      default: null
+    }
   },
   methods: {
     orderOfMagnitudeSuffix(value) {

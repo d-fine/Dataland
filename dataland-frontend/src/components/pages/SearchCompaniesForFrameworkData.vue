@@ -50,6 +50,7 @@
       </div>
       <FrameworkDataSearchResults
         ref="searchResults"
+        :rows-per-page="rowsPerPage"
         v-if="showSearchResultsTable"
         :data="resultsArray"
         @update:first="setFirstShownRow"
@@ -127,7 +128,9 @@ export default defineComponent({
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
-      firstShownRow: 0,
+      indexOfFirstShownRow: 0,
+      rowsPerPage: 100,
+      firstQueryFinished: false,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -173,16 +176,25 @@ export default defineComponent({
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.resultsArray.length;
 
-      if (totalSearchResults === 0) return "No results";
-
-      const startIndex = this.firstShownRow;
-      const endIndex = startIndex + 99 >= totalSearchResults ? totalSearchResults - 1 : startIndex + 99;
-      return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults}`;
+      if (this.firstQueryFinished) {
+        if (totalSearchResults === 0) {
+          return "No results";
+        } else {
+          const startIndex = this.indexOfFirstShownRow;
+          const endIndex =
+            startIndex + (this.rowsPerPage - 1) >= totalSearchResults
+              ? totalSearchResults - 1
+              : startIndex + (this.rowsPerPage - 1);
+          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults}`;
+        }
+      } else {
+        return "loading...";
+      }
     },
   },
   methods: {
     setFirstShownRow(value: number) {
-      this.firstShownRow = value;
+      this.indexOfFirstShownRow = value;
     },
     handleScroll() {
       const windowScrollY = window.scrollY;
@@ -292,6 +304,9 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       this.searchResults?.resetPagination();
+      if (!this.firstQueryFinished) {
+        this.firstQueryFinished = true;
+      }
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
