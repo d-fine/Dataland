@@ -99,8 +99,8 @@ export default {
     },
     rowsPerPage: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
     orderOfMagnitudeSuffix(value) {
