@@ -105,30 +105,38 @@ describe("As a user, I expect the search functionality on the /companies page to
       .url()
       .should("eq", `${Cypress.config("baseUrl")}/companies`);
   });
-  it("Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up", () => {
-    cy.ensureLoggedIn();
-    cy.visit("/companies").get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-    cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-    cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-    cy.scrollTo(0, 600, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-    cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-    cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-  });
-  it("Check that the filter dropdowns close on the resulting query when you check a box while you are not at the top of the page", () => {
-    cy.ensureLoggedIn();
-    cy.visit("/companies").get("td[class='d-bg-white w-3 d-datatable-column-left']");
-    cy.scrollTo(0, 500, { duration: 300 })
-      .get("#framework-filter")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find("li.p-multiselect-item")
-      .first()
-      .click()
-      .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-      .should("exist")
-      .get("div.p-multiselect-panel")
-      .should("not.exist");
-  });
+  it(
+    "Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up",
+    { scrollBehavior: false },
+    () => {
+      cy.ensureLoggedIn();
+      cy.visit("/companies").get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
+      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.scrollTo(0, 600, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
+      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
+    }
+  );
+  it(
+    "Check that the filter dropdowns close on the resulting query when you check a box while you are not at the top of the page",
+    { scrollBehavior: false },
+    () => {
+      cy.ensureLoggedIn();
+      cy.visit("/companies").get("td[class='d-bg-white w-3 d-datatable-column-left']");
+      cy.scrollTo(0, 500, { duration: 300 })
+        .get("#framework-filter")
+        .click()
+        .get("div.p-multiselect-panel")
+        .find("li.p-multiselect-item")
+        .first()
+        .click()
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .should("exist")
+        .get("div.p-multiselect-panel")
+        .should("not.exist");
+    }
+  );
 
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
