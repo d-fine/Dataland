@@ -39,8 +39,8 @@ export default defineComponent({
       type: String,
     },
   },
-  async created() {
-    await this.getCompanyInformation();
+  created() {
+    void this.getCompanyInformation();
   },
   watch: {
     async companyID() {

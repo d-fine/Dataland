@@ -8,25 +8,31 @@
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
-export default {
+import { defineComponent, inject } from "vue";
+
+export default defineComponent({
   name: "WelcomeDataland",
   components: { SampleSection, MarketingSection, LandingLogin },
-  inject: ["authenticated"],
+  setup() {
+    return {
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
 
   mounted() {
-    this.checkAuthenticatedAndRedirectIfLoggedIn();
+    void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
   watch: {
     authenticated() {
-      this.checkAuthenticatedAndRedirectIfLoggedIn();
+      void this.checkAuthenticatedAndRedirectIfLoggedIn();
     },
   },
   methods: {
-    checkAuthenticatedAndRedirectIfLoggedIn() {
+    async checkAuthenticatedAndRedirectIfLoggedIn() {
       if (this.authenticated === true) {
-        this.$router.push({ path: "/companies", replace: true });
+        await this.$router.push({ path: "/companies", replace: true });
       }
     },
   },
-};
+});
 </script>

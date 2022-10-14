@@ -69,7 +69,6 @@ export default defineComponent({
     filteredCompaniesBasic: null,
     additionalCompanies: null,
   }),
-  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyByName(all = false) {
       try {

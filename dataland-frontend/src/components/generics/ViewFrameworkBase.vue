@@ -91,8 +91,8 @@ export default defineComponent({
       }
     },
   },
-  async created() {
-    await this.getDataIdToLoad();
+  created() {
+    void this.getDataIdToLoad();
   },
   watch: {
     async companyID() {

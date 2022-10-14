@@ -168,7 +168,7 @@ export default defineComponent({
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
-      const height = this.searchBarContainer.clientHeight;
+      const height = this.searchBarContainer.clientHeight as number;
       window.scrollBy(0, -height);
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;

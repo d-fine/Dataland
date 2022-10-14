@@ -60,7 +60,10 @@ import TheContent from "@/components/generics/TheContent.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-export default {
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+
+export default defineComponent({
   name: "ViewEuTaxonomyNonFinancialsSample",
   components: {
     CompanyInformation,
@@ -70,37 +73,45 @@ export default {
     MarginWrapper,
     EuTaxonomyPanelNonFinancials,
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data: () => ({
-    companyID: null,
-    dataId: undefined,
+    companyID: "",
+    dataId: "",
   }),
   created() {
-    this.queryCompany();
+    void this.queryCompany();
   },
-  inject: ["getKeycloakPromise"],
   methods: {
     async queryCompany() {
       try {
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getCompanyDataControllerApi();
-        const companyResponse = await companyDataControllerApi.getTeaserCompanies();
-        this.companyID = companyResponse.data[0];
+        if (this.getKeycloakPromise !== undefined) {
+          const companyDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getCompanyDataControllerApi();
+          const companyResponse = await companyDataControllerApi.getTeaserCompanies();
+          this.companyID = companyResponse.data[0];
 
-        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-          this.companyID,
-          "eutaxonomy-non-financials"
-        );
-        const listOfMetaData = apiResponse.data;
+          const metaDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getMetaDataControllerApi();
+          const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
+            this.companyID,
+            "eutaxonomy-non-financials"
+          );
+          const listOfMetaData = apiResponse.data;
 
-        if (listOfMetaData.length > 0) {
-          this.dataId = listOfMetaData[0].dataId;
+          if (listOfMetaData.length > 0) {
+            this.dataId = listOfMetaData[0].dataId;
+          }
         }
       } catch (error) {
         console.error(error);
       }
     },
   },
-};
+});
 </script>
