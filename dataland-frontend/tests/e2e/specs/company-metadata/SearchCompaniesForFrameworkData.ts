@@ -32,10 +32,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("table.p-datatable-table").contains("th", "LOCATION");
   }
 
-  function verifyPaginator(): void {
-    cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist");
-  }
-
   function executeCompanySearchWithStandardSearchBar(inputValue: string) {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
@@ -80,7 +76,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visitAndCheckAppMount("/companies");
     cy.get("input[name=search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
-    verifyPaginator();
 
     cy.scrollTo(0, 500, { duration: 300 });
     cy.get("input[name=search_bar_top]").should("exist");
@@ -110,7 +105,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       const inputValue2 = "XYZ";
       cy.visitAndCheckAppMount("/companies");
       cy.get("input[name=search_bar_top]").type(inputValue1);
-      verifyPaginator();
       cy.scrollTo(0, 500);
       cy.get("button[name=search_bar_collapse]").click();
       cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
