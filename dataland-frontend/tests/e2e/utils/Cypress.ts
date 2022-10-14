@@ -46,5 +46,5 @@ export function getStringCypressEnv(variableName: string): string {
   if (typeof cypressEnv === "string") {
     return cypressEnv;
   }
-  throw new Error(`Expected cypress env ${variableName} to be a string. It's not`);
+  throw new Error(`Cypress env ${variableName} is not a string.`);
 }

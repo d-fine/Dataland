@@ -19,7 +19,6 @@ module.exports = {
     sourceType: "module"
   },
   plugins: ['@typescript-eslint'],
-  ignorePatterns: ["**/coverage/**", "**/cypress/**"],
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',

@@ -10,6 +10,7 @@ import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomy
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -39,7 +40,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist");
   }
 
-  function executeCompanySearchWithStandardSearchBar(inputValue: string) {
+  function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
       .should("not.be.disabled")
@@ -117,14 +118,14 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Check PermId tooltip, execute company search by name, check result table and assure VIEW button works", () => {
     cy.visitAndCheckAppMount("/companies");
 
-    function checkPermIdToolTip(permIdTextInt: string) {
+    function checkPermIdToolTip(permIdTextInt: string): void {
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
       cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
       cy.get(".p-tooltip").should("not.exist");
     }
 
-    function checkViewButtonWorks() {
+    function checkViewButtonWorks(): void {
       cy.get("table.p-datatable-table")
         .contains("td", "VIEW")
         .contains("a", "VIEW")
@@ -157,7 +158,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
+    getKeycloakToken("data_reader", getStringCypressEnv("KEYCLOAK_READER_PASSWORD")).then((token) => {
       cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((datasetNonFinancial) => {
         const companyId = datasetNonFinancial[0].companyId;
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
@@ -204,7 +205,7 @@ describeIf(
   },
   function () {
     beforeEach(function () {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn("data_uploader", getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD"));
     });
 
     it(

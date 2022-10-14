@@ -1,6 +1,7 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
   it("Checks that the footer section works properly", () => {
@@ -35,7 +36,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       "/samples/eutaxonomy-non-financials",
     ];
 
-    function assertFooterPresence() {
+    function assertFooterPresence(): void {
       cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }
 
@@ -49,7 +50,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     const frameworksToCheck = Object.values(DataTypeEnum);
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
-        getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {
+        getKeycloakToken("data_reader", getStringCypressEnv("KEYCLOAK_READER_PASSWORD")).then((token) => {
           cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
             (datasetNonFinancial) => {
               const companyId = datasetNonFinancial[0].companyId;

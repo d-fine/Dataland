@@ -2,3 +2,6 @@
 cypress.config.ts
 vite.config.ts
 **/build/
+**/coverage
+**/cypress
+**/plugins/index.js
