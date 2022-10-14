@@ -18,9 +18,16 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
   name: "CompanyInformation",
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       getCompanyResponse: null,
@@ -32,23 +39,24 @@ export default {
       type: String,
     },
   },
-  created() {
-    this.getCompanyInformation();
+  async created() {
+    await this.getCompanyInformation();
   },
   watch: {
-    companyID() {
-      this.getCompanyInformation();
+    async companyID() {
+      await this.getCompanyInformation();
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
       try {
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getCompanyDataControllerApi();
-        this.getCompanyResponse = await companyDataControllerApi.getCompanyById(this.companyID);
-        this.companyInformation = this.getCompanyResponse.data.companyInformation;
+        if (this.getKeycloakPromise !== undefined) {
+          const companyDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getCompanyDataControllerApi();
+          this.getCompanyResponse = await companyDataControllerApi.getCompanyById(this.companyID as string);
+          this.companyInformation = this.getCompanyResponse.data.companyInformation;
+        }
       } catch (error) {
         console.error(error);
         this.getCompanyResponse = null;
@@ -58,5 +66,5 @@ export default {
       return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
-};
+});
 </script>

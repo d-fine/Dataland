@@ -29,7 +29,11 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-export default {
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { DataTypeEnum } from "@clients/backend";
+
+export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
     TheContent,
@@ -39,6 +43,11 @@ export default {
     FrameworkDataSearchBar,
     AuthenticationWrapper,
     CompanyInformation,
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   data() {
     return {
@@ -54,35 +63,41 @@ export default {
     },
   },
   methods: {
-    handleQueryCompany() {
-      this.$router.push({
+    async handleQueryCompany() {
+      await this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: this.currentInput },
       });
     },
     async getDataIdToLoad() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, this.dataType);
-        const listOfMetaData = apiResponse.data;
-        if (listOfMetaData.length > 0) {
-          this.$emit("updateDataId", listOfMetaData[0].dataId);
-        } else {
-          this.$emit("updateDataId", null);
+        if (this.getKeycloakPromise !== undefined) {
+          const metaDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getMetaDataControllerApi();
+          const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
+            this.companyID,
+            this.dataType as DataTypeEnum
+          );
+          const listOfMetaData = apiResponse.data;
+          if (listOfMetaData.length > 0) {
+            this.$emit("updateDataId", listOfMetaData[0].dataId);
+          } else {
+            this.$emit("updateDataId", null);
+          }
         }
       } catch (error) {
         console.error(error);
       }
     },
   },
-  inject: ["getKeycloakPromise"],
-  created() {
-    this.getDataIdToLoad();
+  async created() {
+    await this.getDataIdToLoad();
   },
   watch: {
-    companyID() {
-      this.getDataIdToLoad();
+    async companyID() {
+      await this.getDataIdToLoad();
     },
   },
-};
+});
 </script>
