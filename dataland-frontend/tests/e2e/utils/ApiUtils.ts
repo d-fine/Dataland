@@ -24,3 +24,13 @@ export async function countCompanyAndDataIds(
     matchingCompanies,
   };
 }
+
+export function interceptAllAndCheckFor500Errors() {
+  cy.intercept("/api/**", (req) => {
+    req.continue((res) => {
+      if (res.statusCode === 500) {
+        assert(false, `Received a 500 Response from the Dataland backend (request to ${req.url})`);
+      }
+    });
+  });
+}
