@@ -33,7 +33,6 @@ describe("As a user, I expect there to be multiple result pages if there are man
     cy.visitAndCheckAppMount("/companies");
     cy.get("table.p-datatable-table").should("exist");
     cy.get('button[class="p-paginator-page p-paginator-element p-link"]').eq(0).should("contain.text", "2").click();
-    cy.wait(5000);
     cy.get("table.p-datatable-table").should("exist");
     const inputValue = "a";
     cy.get("input[name=search_bar_top]")
