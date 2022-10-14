@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.servlet.NoHandlerFoundException
 
 /**
  * This class handles errors that occur during execution and for which custom error responses can be defined
@@ -60,6 +61,22 @@ class KnownErrorControllerAdvice(
                 message = "Access to this resource has been denied. " +
                     "Please contact support, if you belive this to be an error",
                 httpStatus = HttpStatus.FORBIDDEN
+            ),
+            ex
+        )
+    }
+
+    /**
+     * Handles NoHandlerFoundException errors (aka 404-errors)
+     */
+    @ExceptionHandler(NoHandlerFoundException::class)
+    fun handleNoHandlerFoundException(ex: NoHandlerFoundException): ResponseEntity<ErrorResponse> {
+        return prepareResponse(
+            ErrorDetails(
+                errorCode = "not-found",
+                summary = "Resource not found",
+                message = "The requested resource ${ex.requestURL} could not be located",
+                httpStatus = HttpStatus.NOT_FOUND
             ),
             ex
         )
