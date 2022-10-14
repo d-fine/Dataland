@@ -47,31 +47,37 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("include", "/companies?framework=eutaxonomy-non-financials");
     }
   );
-  it("Checks that the country-code filter synchronises between the search bar and the drop down and works", () => {
-    const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-    const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
-      (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
-    )!!.companyInformation;
+  it(
+    "Checks that the country-code filter synchronises between the search bar and the drop down and works",
+    { scrollBehavior: false },
+    () => {
+      const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+      const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
+        (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
+      )!!.companyInformation;
 
-    const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
+      const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
-    cy.ensureLoggedIn();
-    cy.visit(
-      `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
-    )
-      .get("div[class='col-12 text-left']")
-      .should("contain.text", "Sorry! Your search didn't return any results.")
-      .get("#country-filter")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find(`li:contains('${demoCompanyToTestForCountryName}')`)
-      .click()
-      .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-      .contains(demoCompanyToTestFor.companyName)
-      .should("exist")
-      .url()
-      .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
-  });
+      cy.ensureLoggedIn();
+      cy.visit(
+        `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
+      )
+        .get("div[class='col-12 text-left']")
+        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .get("#country-filter")
+        .click()
+        .get('input[placeholder="Search countries"]')
+        .type(`${demoCompanyToTestForCountryName}`)
+        .get("li")
+        .should("contain", `${demoCompanyToTestForCountryName}`)
+        .click()
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .contains(demoCompanyToTestFor.companyName)
+        .should("exist")
+        .url()
+        .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
+    }
+  );
   it("Checks that the sector filter synchronises between the search bar and the drop down and works", () => {
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
