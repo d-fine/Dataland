@@ -11,7 +11,7 @@ cd "$location"
 
 volume_exists=$(search_volume "$keycloak_volume_name")
 if [[ -n $volume_exists ]]; then
-  sudo docker-compose build --no-cache keycloak-initializer
+  sudo docker-compose build keycloak-initializer
   sudo docker-compose run keycloak-initializer export
   sudo docker-compose down --remove-orphans
 fi
