@@ -19,12 +19,13 @@ module.exports = {
     sourceType: "module"
   },
   plugins: ['@typescript-eslint'],
+  ignorePatterns: ["**/coverage/**", "**/cypress/**"],
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     'semi-spacing': 'error',
     "@typescript-eslint/explicit-function-return-type": ["error", {
-      "allowTypedFunctionExpressions": false,
+      "allowTypedFunctionExpressions": true,
     }],
     "vue/block-lang": ["error",
       {

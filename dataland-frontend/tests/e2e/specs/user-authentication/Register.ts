@@ -1,5 +1,5 @@
 import { login, logout } from "@e2e/utils/Auth";
-import { getBaseUrl } from "../../utils/Cypress";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", (): void => {
   const email = `test_user${Date.now()}@dataland.com`;

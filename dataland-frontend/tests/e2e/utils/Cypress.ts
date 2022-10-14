@@ -32,3 +32,19 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
 export function browserThen<T>(promise: Promise<T>): Chainable<T> {
   return cy.then((): Bluebird<T> => wrapPromiseToCypressPromise(promise));
 }
+
+export function getBaseUrl(): string {
+  const cypressBaseUrl = Cypress.config("baseUrl");
+  if (cypressBaseUrl) {
+    return cypressBaseUrl;
+  }
+  throw new Error("Cypress baseUrl is unexpectedly null");
+}
+
+export function getStringCypressEnv(variableName: string): string {
+  const cypressEnv: unknown = Cypress.env(variableName);
+  if (typeof cypressEnv === "string") {
+    return cypressEnv;
+  }
+  throw new Error(`Expected cypress env ${variableName} to be a string. It's not`);
+}

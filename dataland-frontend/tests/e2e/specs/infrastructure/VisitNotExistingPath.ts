@@ -1,4 +1,4 @@
-import { getBaseUrl } from "../../utils/Cypress";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user, I want to get redirected to a useful error page when I visit a non-existent page", (): void => {
   it("test for each of given paths", (): void => {

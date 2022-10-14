@@ -1,4 +1,4 @@
-import { getBaseUrl } from "../../utils/Cypress";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user, I expect to get redirected to the company search page when I am logged in and visit the landing page", (): void => {
   it("Checks that the redirect works", (): void => {

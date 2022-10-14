@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { getBaseUrl } from "../../utils/Cypress";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a developer, I want to ensure that security relevant headers are set.", (): void => {
   function checkCommonHeaders(response: Cypress.Response<unknown>): void {

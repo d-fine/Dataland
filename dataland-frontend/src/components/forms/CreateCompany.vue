@@ -61,7 +61,7 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import { FormKit, FormKitSchema } from "@formkit/vue";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { SchemaGenerator } from "@/services/SchemaGenerator";
