@@ -32,7 +32,7 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import Card from "primevue/card";
 import ProgressBar from "primevue/progressbar";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";

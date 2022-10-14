@@ -101,10 +101,17 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: { DataPointFormElement, FailedUpload, Card, FormKit, SuccessUpload },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
 
   data: () => ({
     innerClass: {
@@ -116,13 +123,12 @@ export default {
       "p-inputtext": true,
       "w-full": true,
     },
-    postEuTaxonomyDataForNonFinancialsProcessed: false,
+    postEuTaxonomyDataForNonFinancialsProcessed: false as boolean,
     messageCount: 0,
     formInputsModel: {},
     postEuTaxonomyDataForNonFinancialsResponse: null,
     humanizeString: humanizeString,
   }),
-  inject: ["getKeycloakPromise"],
   props: {
     companyID: {
       type: String,
@@ -131,14 +137,16 @@ export default {
   methods: {
     async postEuTaxonomyDataForNonFinancials() {
       try {
-        this.postEuTaxonomyDataForNonFinancialsProcessed = false;
-        this.messageCount++;
-        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        this.postEuTaxonomyDataForNonFinancialsResponse =
-          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        if (this.getKeycloakPromise !== undefined) {
+          this.postEuTaxonomyDataForNonFinancialsProcessed = false;
+          this.messageCount++;
+          const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getEuTaxonomyDataForNonFinancialsControllerApi();
+          this.postEuTaxonomyDataForNonFinancialsResponse =
+            await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
+          this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        }
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
@@ -147,5 +155,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

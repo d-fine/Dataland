@@ -20,7 +20,7 @@
   </AuthenticationWrapper>
 </template>
 
-<script>
+<script lang="ts">
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";

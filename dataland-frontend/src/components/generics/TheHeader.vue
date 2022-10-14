@@ -17,7 +17,7 @@
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
 </template>
-<script>
+<script lang="ts">
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 export default {
   name: "TheHeader",

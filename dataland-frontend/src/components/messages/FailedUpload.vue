@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Message from "primevue/message";
 import { humanizeString } from "@/utils/StringHumanizer";
 

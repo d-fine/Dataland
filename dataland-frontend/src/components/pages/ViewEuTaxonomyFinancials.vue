@@ -25,7 +25,7 @@
   </ViewFrameworkBase>
 </template>
 
-<script>
+<script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 export default {

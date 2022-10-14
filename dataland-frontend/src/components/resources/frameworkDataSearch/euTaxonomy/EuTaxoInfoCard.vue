@@ -30,7 +30,7 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
 import { humanizeString } from "@/utils/StringHumanizer";

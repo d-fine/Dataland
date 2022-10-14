@@ -18,7 +18,7 @@ export function exportFixturesEuTaxonomyFinancial(): void {
   );
   fs.writeFileSync(
     "../testing/data/csvTestEuTaxonomyDataForFinancials.csv",
-    generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials)
+    generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials) as string
   );
   const preparedFixtureEuTaxonomyDataForFinancials = generateEuTaxonomyForFinancialsPreparedFixtures();
   fs.writeFileSync(

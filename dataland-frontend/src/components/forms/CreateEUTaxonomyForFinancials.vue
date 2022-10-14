@@ -124,8 +124,15 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   name: "CreateEUTaxonomyForFinancials",
   components: { DataPointFormElement, FailedUpload, FormKit, SuccessUpload, Card },
 
@@ -140,8 +147,9 @@ export default {
       "w-full": true,
     },
     postEuTaxonomyDataForFinancialsProcessed: false,
-    messageCount: 0,
     formInputsModel: {},
+    messageCount: 0,
+
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
   }),
@@ -150,18 +158,19 @@ export default {
       type: String,
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
     async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
-        this.postEuTaxonomyDataForFinancialsProcessed = false;
-        this.messageCount++;
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getEuTaxonomyDataForFinancialsControllerApi();
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        if (this.getKeycloakPromise !== undefined) {
+          this.postEuTaxonomyDataForFinancialsProcessed = false;
+          this.messageCount++;
+          const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getEuTaxonomyDataForFinancialsControllerApi();
+          this.postEuTaxonomyDataForFinancialsResponse =
+            await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
+          this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        }
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
@@ -170,5 +179,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

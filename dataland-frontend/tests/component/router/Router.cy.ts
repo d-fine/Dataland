@@ -1,9 +1,9 @@
 import { routes } from "@/router";
-import { shallowMount, mount } from "@vue/test-utils";
+import { shallowMount, mount, VueWrapper } from "@vue/test-utils";
 import App from "@/App.vue";
 import { createRouter, createWebHistory, Router } from "vue-router";
 
-function mountAppWithRouter(routerToBeUsedWithMount: Router) {
+function mountAppWithRouter(routerToBeUsedWithMount: Router): VueWrapper {
   return mount(App, {
     global: {
       plugins: [routerToBeUsedWithMount],

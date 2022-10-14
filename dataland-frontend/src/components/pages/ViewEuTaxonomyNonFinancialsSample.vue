@@ -52,7 +52,7 @@
   </TheContent>
 </template>
 
-<script>
+<script lang="ts">
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
