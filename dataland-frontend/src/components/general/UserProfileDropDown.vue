@@ -31,10 +31,19 @@
 
 <script lang="ts">
 import PrimeMenu from "primevue/menu";
-export default {
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+
+export default defineComponent({
   name: "UserProfileDropDown",
   inject: ["authenticated", "getKeycloakPromise"],
   components: { PrimeMenu },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
 
   data() {
     return {
@@ -55,11 +64,11 @@ export default {
   },
 
   methods: {
-    toggleDropdownMenu(event) {
+    toggleDropdownMenu(event: Event) {
       this.$refs.menu.toggle(event);
     },
     logoutViaDropdown() {
-      this.getKeycloakPromise()
+      this.getKeycloakPromise?.()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             const baseUrl = window.location.origin;
@@ -67,28 +76,28 @@ export default {
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
     gotoUserSettings() {
-      this.getKeycloakPromise()
-        .then((keycloak) => {
+      this.getKeycloakPromise?.()
+        .then(async (keycloak) => {
           if (keycloak.authenticated) {
-            keycloak.accountManagement();
+            await keycloak.accountManagement();
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
   created() {
-    this.getKeycloakPromise()
+    this.getKeycloakPromise?.()
       .then((keycloak) => {
-        if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
+        if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
           this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
         }
       })
-      .catch((error) => console.log("error: " + error));
+      .catch((error) => console.log(error));
   },
-};
+});
 </script>
 
 <style scoped>

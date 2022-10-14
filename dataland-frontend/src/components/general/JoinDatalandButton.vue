@@ -13,14 +13,21 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
   name: "JoinDatalandButton",
   components: { PrimeButton },
-  inject: ["authenticated", "getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
   methods: {
     register() {
-      this.getKeycloakPromise()
+      this.getKeycloakPromise?.()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             const baseUrl = window.location.origin;
@@ -30,8 +37,8 @@ export default {
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
-};
+});
 </script>

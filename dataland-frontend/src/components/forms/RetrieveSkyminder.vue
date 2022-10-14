@@ -32,10 +32,17 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import PrimeButton from "primevue/button";
 import SkyminderTable from "@/components/resources/skyminderCompaniesSearch/SkyminderTable.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
   name: "RetrieveSkyminder",
   components: { Card, PrimeButton, FormKit, SkyminderTable },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
 
   data: () => ({
     skyminderSearchParams: {},
@@ -50,15 +57,17 @@ export default {
 
     async executeSkyminderSearch() {
       try {
-        const inputArgs = Object.values(this.skyminderSearchParams);
-        const skyminderControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getSkyminderControllerApi();
-        this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
+        if (this.getKeycloakPromise !== undefined) {
+          const inputArgs = Object.values(this.skyminderSearchParams);
+          const skyminderControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getSkyminderControllerApi();
+          this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
+        }
       } catch (error) {
         console.error(error);
       }
     },
   },
-};
+});
 </script>

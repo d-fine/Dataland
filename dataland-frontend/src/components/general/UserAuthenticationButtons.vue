@@ -10,14 +10,22 @@
 </template>
 <script lang="ts">
 import PrimeButton from "primevue/button";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 
-export default {
+export default defineComponent({
   name: "UserAuthenticationButtons",
   components: { PrimeButton },
-  inject: ["getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
+
   methods: {
     login() {
-      this.getKeycloakPromise()
+      this.getKeycloakPromise?.()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             const baseUrl = window.location.origin;
@@ -27,8 +35,8 @@ export default {
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
-};
+});
 </script>

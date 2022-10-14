@@ -43,17 +43,25 @@ import Card from "primevue/card";
 import PrimeButton from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { CompanyInformation } from "@clients/backend";
 
-export default {
+export default defineComponent({
   name: "RetrieveCompany",
   components: { Card, PrimeButton, DataTable, Column, FormKit },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
 
   data: () => ({
     table: false,
     responseArray: null,
     filter: false,
     loading: false,
-    model: {},
+    model: {} as CompanyInformation,
     response: null,
     companyInformation: null,
     selectedCompany: null,
@@ -65,14 +73,16 @@ export default {
   methods: {
     async getCompanyByName(all = false) {
       try {
-        this.loading = false;
-        if (all) {
-          this.model.companyName = "";
+        if (this.getKeycloakPromise !== undefined) {
+          this.loading = false;
+          if (all) {
+            this.model.companyName = "";
+          }
+          const companyDataControllerApi = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).getCompanyDataControllerApi();
+          this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
         }
-        const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
-        ).getCompanyDataControllerApi();
-        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
       } catch (error) {
         console.error(error);
         this.response = null;
@@ -81,5 +91,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
