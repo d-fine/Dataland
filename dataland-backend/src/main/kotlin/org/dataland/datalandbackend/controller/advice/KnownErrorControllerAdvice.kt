@@ -1,0 +1,75 @@
+package org.dataland.datalandbackend.controller.advice
+
+import org.apache.commons.lang3.exception.ExceptionUtils
+import org.dataland.datalandbackend.exceptions.SingleApiException
+import org.dataland.datalandbackend.model.ErrorDetails
+import org.dataland.datalandbackend.model.ErrorResponse
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+
+/**
+ * This class handles errors that occur during execution and for which custom error responses can be defined
+ */
+@Order(1)
+@ControllerAdvice
+class KnownErrorControllerAdvice(
+    @Value("\${dataland.trace:false}")
+    val trace: Boolean
+) {
+    private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
+        val returnedError = if (trace) error.copy(stackTrace = ExceptionUtils.getStackTrace(exception)) else error
+        return ResponseEntity.status(error.httpStatus).body(
+            ErrorResponse(
+                errors = listOf(returnedError)
+            )
+        )
+    }
+
+    /**
+     * Handles HttpMessageNotReadbleException errors. These occur i.e. when the request JSON cannot be parsed
+     */
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
+        return prepareResponse(
+            ErrorDetails(
+                errorCode = "message-not-readable",
+                summary = "Bad Request",
+                message = ex.message ?: "Bad Request",
+                httpStatus = HttpStatus.BAD_REQUEST
+            ),
+            ex
+        )
+    }
+
+    /**
+     * Handles AccessDeniedException errors. These occur i.e. if the user does not have permissions to perform an action
+     */
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
+    fun handleAccessDeniedException(
+        ex: org.springframework.security.access.AccessDeniedException
+    ): ResponseEntity<ErrorResponse> {
+        return prepareResponse(
+            ErrorDetails(
+                errorCode = "access-denied",
+                summary = "Access Denied",
+                message = "Access to this resource has been denied. " +
+                    "Please contact support, if you belive this to be an error",
+                httpStatus = HttpStatus.FORBIDDEN
+            ),
+            ex
+        )
+    }
+
+    /**
+     * Handles SingleApiException errors. These occur whenever custom dataland-exceptions are thrown
+     */
+    @ExceptionHandler(SingleApiException::class)
+    fun handleApiException(ex: SingleApiException): ResponseEntity<ErrorResponse> {
+        return prepareResponse(ex.getErrorResponse(), ex)
+    }
+}
