@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
@@ -28,7 +29,7 @@ class CompanyManager(
 
     override fun verifyCompanyIdExists(companyId: String) {
         if (!companyRepository.existsById(companyId)) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
+            throw ResourceNotFoundException("Company not found", "Dataland does not know the company ID $companyId")
         }
     }
 
@@ -112,7 +113,7 @@ class CompanyManager(
     override fun getCompanyById(companyId: String): StoredCompanyEntity {
         val storedCompanySearchResult = companyRepository.findById(companyId)
         if (storedCompanySearchResult.isEmpty) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
+            throw ResourceNotFoundException("Company not found", "Dataland does not know the company ID $companyId")
         }
         return storedCompanySearchResult.get()
     }

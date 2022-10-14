@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
@@ -49,8 +50,9 @@ class DataManager(
         val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
         val dataAsString = edcClient.selectDataById(dataId)
         if (dataAsString == "") {
-            throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store."
+            throw ResourceNotFoundException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store."
             )
         }
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)

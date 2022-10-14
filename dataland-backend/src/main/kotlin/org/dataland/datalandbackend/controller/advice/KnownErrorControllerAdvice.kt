@@ -73,9 +73,9 @@ class KnownErrorControllerAdvice(
     fun handleNoHandlerFoundException(ex: NoHandlerFoundException): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
-                errorCode = "not-found",
-                summary = "Resource not found",
-                message = "The requested resource ${ex.requestURL} could not be located",
+                errorCode = "route-not-found",
+                summary = "Route not found",
+                message = "The requested route ${ex.requestURL} could not be located",
                 httpStatus = HttpStatus.NOT_FOUND
             ),
             ex
