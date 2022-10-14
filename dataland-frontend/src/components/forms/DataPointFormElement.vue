@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { FormKit } from "@formkit/vue";
 export default {
   component: { FormKit },

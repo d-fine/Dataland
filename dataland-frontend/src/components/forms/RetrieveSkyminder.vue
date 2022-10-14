@@ -26,7 +26,7 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
@@ -43,7 +43,7 @@ export default {
   }),
   inject: ["getKeycloakPromise"],
   methods: {
-    clearSearch() {
+    clearSearch(): void {
       this.skyminderSearchParams = {};
       this.skyminderSearchResponse = null;
     },

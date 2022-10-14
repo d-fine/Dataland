@@ -4,7 +4,7 @@
   <MarketingSection />
 </template>
 
-<script>
+<script lang="ts">
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";

@@ -35,7 +35,7 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 

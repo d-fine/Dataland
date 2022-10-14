@@ -93,7 +93,7 @@
     </template>
   </Card>
 </template>
-<script>
+<script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";

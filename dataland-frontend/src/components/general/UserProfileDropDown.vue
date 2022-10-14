@@ -29,7 +29,7 @@
   </PrimeMenu>
 </template>
 
-<script>
+<script lang="ts">
 import PrimeMenu from "primevue/menu";
 export default {
   name: "UserProfileDropDown",

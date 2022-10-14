@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 
@@ -54,7 +54,7 @@ export default {
         this.getCompanyResponse = null;
       }
     },
-    orderOfMagnitudeSuffix(value) {
+    orderOfMagnitudeSuffix(value: number): string {
       return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
