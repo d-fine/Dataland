@@ -291,6 +291,8 @@ export default defineComponent({
     },
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
+      this.setFirstShownRow(0);
+      this.searchResults?.resetPagination();
       this.waitingForSearchResults = false;
       this.searchBarToggled = false;
 
@@ -307,7 +309,6 @@ export default defineComponent({
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
-      this.searchResults?.resetPagination();
       this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
