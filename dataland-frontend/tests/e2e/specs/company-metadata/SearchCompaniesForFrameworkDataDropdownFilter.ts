@@ -202,7 +202,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       );
 
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
-        cy.visit(`/companies?frameworks=${frameworkToFilterFor}`);
+        cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
         cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
