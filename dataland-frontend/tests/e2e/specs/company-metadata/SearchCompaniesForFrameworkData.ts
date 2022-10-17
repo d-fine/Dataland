@@ -1,10 +1,5 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-  DataTypeEnum,
-} from "@clients/backend";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -14,13 +9,15 @@ import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
-  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
   euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
 }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithData = outputFromJson;
+    companiesWithData = outputFromJson as Array<{
+      companyInformation: CompanyInformation;
+      euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+    }>;
   });
 });
 

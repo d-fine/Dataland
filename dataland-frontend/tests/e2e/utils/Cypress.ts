@@ -1,6 +1,8 @@
 import Bluebird from "cypress/types/bluebird";
 import Chainable = Cypress.Chainable;
 
+export const uploader_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
+
 export function doThingsInChunks<T>(
   dataArray: Array<T>,
   chunkSize: number,

@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import PrimeMenu from "primevue/menu";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref } from "vue";
+import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
 
 export default defineComponent({
@@ -39,9 +40,19 @@ export default defineComponent({
   inject: ["authenticated", "getKeycloakPromise"],
   components: { PrimeMenu },
   setup() {
+    const menu: Ref<PrimeMenu | undefined> = ref();
+    const profilePicture = ref();
+    function toggleDropdownMenu(event: Event): void {
+      if (menu.value !== undefined) {
+        menu.value.toggle(event);
+      }
+    }
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       authenticated: inject<boolean>("authenticated"),
+      menu: menu,
+      toggleDropdownMenu: toggleDropdownMenu,
+      profilePicture: profilePicture,
     };
   },
 
@@ -64,9 +75,6 @@ export default defineComponent({
   },
 
   methods: {
-    toggleDropdownMenu(event: Event) {
-      this.$refs.menu.toggle(event);
-    },
     logoutViaDropdown() {
       this.getKeycloakPromise?.()
         .then((keycloak) => {
@@ -92,7 +100,7 @@ export default defineComponent({
     this.getKeycloakPromise?.()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
-          this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
+          this.profilePicture.src = keycloak.idTokenParsed.picture;
         }
       })
       .catch((error) => console.log(error));

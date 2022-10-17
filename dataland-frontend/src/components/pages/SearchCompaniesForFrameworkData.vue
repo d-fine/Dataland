@@ -45,12 +45,6 @@
   </AuthenticationWrapper>
 </template>
 
-<style scoped>
-.d-shadow-bottom {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-}
-</style>
-
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -154,14 +148,14 @@ export default defineComponent({
     handleFrameworkDataSearchBarRender() {
       this.frameworkDataSearchBar.queryCompany();
     },
-    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
+    async handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.showSearchResultsTable = true;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
       const queryFrameworks = !this.route.query.frameworks ? undefined : this.currentFilteredFrameworks;
 
-      this.$router.push({
+      await this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: queryInput, frameworks: queryFrameworks },
       });
@@ -180,3 +174,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.d-shadow-bottom {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+}
+</style>

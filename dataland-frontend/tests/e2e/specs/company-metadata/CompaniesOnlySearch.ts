@@ -5,14 +5,16 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.ensureLoggedIn();
   });
 
-  let companiesWithEuTaxonomyDataForFinancials: Array<{
+  interface CompanyAndData {
     companyInformation: CompanyInformation;
-    t: EuTaxonomyDataForFinancials;
-  }>;
+    data: EuTaxonomyDataForFinancials;
+  }
+
+  let companiesWithEuTaxonomyDataForFinancials: Array<CompanyAndData>;
 
   before(function () {
     cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      companiesWithEuTaxonomyDataForFinancials = companies;
+      companiesWithEuTaxonomyDataForFinancials = companies as Array<CompanyAndData>;
     });
   });
 
@@ -30,7 +32,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
 
-  function getCompanyWithAlternativeName() {
+  function getCompanyWithAlternativeName(): CompanyAndData {
     return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (
         it.companyInformation.companyAlternativeNames !== undefined &&

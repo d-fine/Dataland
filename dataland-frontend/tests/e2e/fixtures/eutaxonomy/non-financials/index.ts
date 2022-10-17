@@ -18,6 +18,6 @@ export function exportFixturesEuTaxonomyNonFinancial(): void {
   );
   fs.writeFileSync(
     "../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv",
-    generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials) as string
+    generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials)
   );
 }

@@ -11,7 +11,7 @@ import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-const { parse } = require("json2csv");
+import { parse } from "json2csv";
 
 const maxEuro = 1000000;
 const minEuro = 50000;
@@ -32,18 +32,16 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
   const returnBase: EuTaxonomyDataForNonFinancials = {};
   populateSharedValues(returnBase);
 
-  if (returnBase.referencedReports !== undefined) {
-    returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports);
-    returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports);
-    returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports);
-  }
+  returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
+  returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
+  returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
 
   return returnBase;
 }
 
 export function generateCSVDataForNonFinancials(
   companyInformationWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
-) {
+): string {
   const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForNonFinancials>(),
@@ -96,5 +94,8 @@ export function generateCSVDataForNonFinancials(
     ],
     delimiter: ";",
   };
-  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
+  return parse<FixtureData<EuTaxonomyDataForNonFinancials>>(
+    companyInformationWithEuTaxonomyDataForNonFinancials,
+    options
+  );
 }

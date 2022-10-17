@@ -25,7 +25,7 @@ export default {
     messageCount: Number,
   },
   methods: {
-    humanize(text) {
+    humanize(text: unknown): string | null {
       if (typeof text == "string") return humanizeString(text);
       else return null;
     },

@@ -4,19 +4,16 @@ import { createRouter, createMemoryHistory } from "vue-router";
 import { routes } from "@/router";
 
 describe("Component test for FrameworkDataSearchBar", () => {
-  let wrapper: any;
-  it("checks field properties", () => {
-    const router = createRouter({
-      history: createMemoryHistory(),
-      routes,
-    });
-    void router.push("/companies");
-    void router.isReady();
-    wrapper = mount(FrameworkDataSearchBar, {
-      global: {
-        plugins: [router],
-      },
-    });
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+  });
+  void router.push("/companies");
+  void router.isReady();
+  const wrapper = mount(FrameworkDataSearchBar, {
+    global: {
+      plugins: [router],
+    },
   });
 
   it("Check that the initial values are correct", () => {
