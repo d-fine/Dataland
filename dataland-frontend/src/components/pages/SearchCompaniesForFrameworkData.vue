@@ -61,7 +61,7 @@ import FrameworkDataSearchResults from "@/components/resources/frameworkDataSear
 import { useRoute } from "vue-router";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { defineComponent, ref } from "vue";
-import { DataTypeEnum } from "../../../build/clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { DataTypeEnum } from "@clients/backend";
 import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default defineComponent({
