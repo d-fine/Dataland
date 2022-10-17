@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyAPI
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
+import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -30,18 +31,32 @@ class CompanyDataController(
     override fun getCompanies(
         searchString: String?,
         dataTypes: Set<DataType>?,
+        countryCodes: Set<String>?,
+        sectors: Set<String>?,
         onlyCompanyNames: Boolean
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with " +
-                "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames', dataTypes='$dataTypes', "
+                "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames', dataTypes='$dataTypes', " +
+                "countryCodes='$countryCodes', sectors='$sectors'"
         )
         return ResponseEntity.ok(
             companyManager.searchCompanies(
                 searchString ?: "",
                 onlyCompanyNames,
                 dataTypes ?: setOf(),
+                countryCodes ?: setOf(),
+                sectors ?: setOf()
             ).map { it.toApiModel() }
+        )
+    }
+
+    override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
+        return ResponseEntity.ok(
+            CompanyAvailableDistinctValues(
+                countryCodes = companyManager.getDistinctCountryCodes(),
+                sectors = companyManager.getDistinctSectors(),
+            )
         )
     }
 
