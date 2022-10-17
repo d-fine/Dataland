@@ -57,6 +57,7 @@ Update versions in the following dockerfiles
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev-dataland.duckdns.org
+- [ ] dev2-dataland.duckdns.org
 - [ ] dataland-tunnel.duckdns.org
 - [ ] dataland-letsencrypt.duckdns.org
 - [ ] (OPT) dataland.com
