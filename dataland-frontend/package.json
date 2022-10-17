@@ -12,6 +12,7 @@
     "testcomponent": "cypress run --component",
     "testpipeline": "cypress run",
     "testdevelopment": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev-dataland.duckdns.org\"}}'",
+    "testdevelopment_2": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev2-dataland.duckdns.org\"}}'",
     "testpreview": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dataland.com\"}}'",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
