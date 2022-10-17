@@ -15,43 +15,44 @@ Note: To create a PR using this template add the query parameter `template=manua
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
-- [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
-- [ ] primevue 3.15.0 (higher versions have issues with AutoComplete PrimeVue issue 2881)
-- [ ] primeicon 5.0.0 (higher version require higher version of primevue)
-- [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
-- [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
+- [ x] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
+- [ x] primevue 3.15.0 (higher versions have issues with AutoComplete PrimeVue issue 2881)
+- [ x] primeicon 5.0.0 (higher version require higher version of primevue)
+- [x ] logback-classic and logback-core 1.2.11 (higher version break backend)
+- [ x] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
+- [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 failed to compile
 
 ### Gradle update
-- [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-- [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
+- [x ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
+- [ x] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
 Note: fasterXML is managed by spring, thus NO manual version update should be conducted
-- [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ x] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
-- [ ] Update node version in `dataland-frontend/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
-- [ ]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
+- [ x] Update node version in `dataland-frontend/build.gradle.kts`
+- [ x] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
+- [ x]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
   (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
 
 ### Dataland keycloak theme
-- [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
-- [ ]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
+- [ x] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
+- [x ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
+- [ x]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
   (Known issues appeared in the past with updating Jest, openApiGenerator and Eslint).
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
-- [ ] `./baseDockerfiles/cypressBaseImageDockerfile`
+- [ x] `./baseDockerfiles/cypressBaseImageDockerfile`
   - [ ] On any change run the corresponding job in GitHub
-- [ ] `./baseDockerfiles/temurinBaseImageDockerfile`
+- [ x] `./baseDockerfiles/temurinBaseImageDockerfile`
   - [ ] On any change run the corresponding job in GitHub
-- [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile`
-- [ ] `./dataland-pgadmin/Dockerfile`
-- [ ] `./dataland-csvconverter/Dockerfile`
-- [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
+- [x ] `./dataland-backend/Dockerfile`
+- [ x] `./dataland-keycloak/Dockerfile`
+- [ x] `./dataland-pgadmin/Dockerfile`
+- [ x] `./dataland-csvconverter/Dockerfile`
+- [x ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
 - [ ] Update the versions of all postgres images in the `docker-compose.yml` file
-- [ ] Update the version of the node image in the `docker-compose.yml` file
+- [ x] Update the version of the node image in the `docker-compose.yml` file
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Server updates
