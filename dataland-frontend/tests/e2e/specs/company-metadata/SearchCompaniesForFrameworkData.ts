@@ -74,6 +74,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
+    verifyTaxonomySearchResultTable();
     cy.get("input[name=search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
@@ -104,6 +105,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const inputValue1 = "ABCDEFG";
       const inputValue2 = "XYZ";
       cy.visitAndCheckAppMount("/companies");
+      verifyTaxonomySearchResultTable();
       cy.get("input[name=search_bar_top]").type(inputValue1);
       cy.scrollTo(0, 500);
       cy.get("button[name=search_bar_collapse]").click();
@@ -136,6 +138,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       }
 
       cy.visitAndCheckAppMount("/companies");
+      verifyTaxonomySearchResultTable();
       const inputValue = companiesWithData[0].companyInformation.companyName;
       const permIdText = "Permanent Identifier (PermID)";
       checkPermIdToolTip(permIdText);
