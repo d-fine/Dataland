@@ -1,5 +1,6 @@
 import {
   AssuranceDataAssuranceEnum,
+  CompanyIdentifier,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   YesNo,
   YesNoNa,
@@ -83,8 +84,8 @@ export function convertToPercentageString(value: number | undefined): string {
   return `${valueRounded}%`;
 }
 
-export function getIdentifierValueForCsv(identifierArray: Array<Object>, identifierType: string): string {
-  const identifierObject: any = identifierArray.find((identifier: any) => {
+export function getIdentifierValueForCsv(identifierArray: Array<CompanyIdentifier>, identifierType: string): string {
+  const identifierObject: CompanyIdentifier | undefined = identifierArray.find((identifier: CompanyIdentifier) => {
     return identifier.identifierType === identifierType;
   });
   return identifierObject ? identifierObject.identifierValue : "";

@@ -4,7 +4,6 @@ import {
   CompanyReportReference,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForNonFinancials,
-  YesNoNa,
 } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
