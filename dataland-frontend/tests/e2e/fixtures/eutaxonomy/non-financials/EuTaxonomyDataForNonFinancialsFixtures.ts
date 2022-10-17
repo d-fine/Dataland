@@ -6,7 +6,6 @@ import {
 } from "@clients/backend";
 import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
-
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
@@ -94,8 +93,5 @@ export function generateCSVDataForNonFinancials(
     ],
     delimiter: ";",
   };
-  return parse<FixtureData<EuTaxonomyDataForNonFinancials>>(
-    companyInformationWithEuTaxonomyDataForNonFinancials,
-    options
-  );
+  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
 }
