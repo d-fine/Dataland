@@ -109,7 +109,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and check that it is not returned if filtered by a different country code`() {
+    fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
         val storedCompany = postFirstCompanyWithoutIdentifiers()
         val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
             sectors = setOf("${storedCompany.companyInformation.sector}a"),
