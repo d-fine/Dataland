@@ -1,13 +1,16 @@
-import { retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
+import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { DataTypeEnum } from "@clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
-  let minimumCompanySum = 0;
+  let minimumNumberNonFinancialCompanies = 0;
+  let minimumNumberFinancialCompanies = 0;
   before(function () {
     cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-      minimumCompanySum += companies.length;
+      minimumNumberNonFinancialCompanies += companies.length;
     });
     cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      minimumCompanySum += companies.length;
+      minimumNumberFinancialCompanies += companies.length;
     });
   });
 
@@ -21,11 +24,18 @@ describe("I want to ensure that the prepopulation has finished before executing 
     },
     () => {
       cy.wait(5000)
-        .then(() => retrieveCompanyIdsList())
-        .then((ids) => {
-          if (ids.length < minimumCompanySum) {
-            throw Error(`Only found ${ids.length} companies (Expecting ${minimumCompanySum})`);
-          }
+        .then(() => getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")))
+        .then(async (token) => {
+          const financialResponse = await countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials);
+          assert(
+            financialResponse.matchingCompanies >= minimumNumberFinancialCompanies,
+            `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberFinancialCompanies})`
+          );
+          const nonFinancialResponse = await countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials);
+          assert(
+            nonFinancialResponse.matchingCompanies >= minimumNumberNonFinancialCompanies,
+            `Found ${nonFinancialResponse.matchingCompanies} non-financial companies (Expecting at least ${minimumNumberNonFinancialCompanies})`
+          );
         });
     }
   );
