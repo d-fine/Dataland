@@ -9,11 +9,11 @@ const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
   const siteLocation = faker.address.city();
-  const yesno = randomYesNoUndefined();
+  const yesNo = randomYesNoUndefined();
   const address = faker.address.streetAddress();
   return {
     location: siteLocation,
-    isInHouseProductionOrIsContractProcessing: yesno,
+    isInHouseProductionOrIsContractProcessing: yesNo,
     addressesOfForeignProductionSites: address,
   };
 }
