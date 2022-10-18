@@ -166,11 +166,12 @@ export default defineComponent({
     },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.getKeycloakPromise!()
       ).getCompanyDataControllerApi();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
       this.availableCountries = [...availableSearchFilters.data.countryCodes!].map((it) => {
         return {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -180,7 +181,7 @@ export default defineComponent({
           disabled: false,
         };
       });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
       this.availableSectors = [...availableSearchFilters.data.sectors!].map((it) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         return { displayName: it, disabled: false };
