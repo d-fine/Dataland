@@ -134,11 +134,11 @@ export function generateLKSGData(): LKSGData {
   returnBase.listOfProductionSites = generateLKSGproductionSites();
   return returnBase;
 }
-
+/*
 export function generateCSVLKSGData(companyInformationWithLKSGdata: Array<FixtureData<LKSGData>>) {
   const options = {
     fields: [...getCsvCompanyMapping<LKSGData>(), ...generateLKSGData()],
     delimiter: ";",
   };
   return parse(companyInformationWithLKSGdata, options);
-}
+}*/
