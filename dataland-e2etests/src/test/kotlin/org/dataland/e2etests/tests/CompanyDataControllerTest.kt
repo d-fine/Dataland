@@ -23,6 +23,13 @@ class CompanyDataControllerTest {
     private val testDataProviderForEuTaxonomyDataForNonFinancials =
         TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
 
+    private fun postFirstCompanyWithoutIdentifiers(): StoredCompany {
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(1).first()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        return companyDataControllerApi.postCompany(testCompanyInformation)
+    }
+
     @Test
     fun `post a dummy company and check if post was successful`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
@@ -56,19 +63,63 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
-            searchString = testCompanyInformation.companyName,
+            searchString = storedCompany.companyInformation.companyName,
             onlyCompanyNames = true,
         )
-        val expectedCompany = StoredCompany(postCompanyResponse.companyId, testCompanyInformation, emptyList())
+        val expectedCompany = StoredCompany(storedCompany.companyId, storedCompany.companyInformation, emptyList())
         assertTrue(
             getCompaniesByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company."
+        )
+    }
+
+    @Test
+    fun `post two dummy companies and check if the distinct endpoint returns all values`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(2)
+        testCompanyInformation.forEach {
+            companyDataControllerApi.postCompany(it)
+        }
+        val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
+        assertTrue(
+            distinctValues.sectors!!.containsAll(testCompanyInformation.map { it.sector }),
+            "The list of all occurring sectors does not contain the sectors of the posted companies."
+        )
+        assertTrue(
+            distinctValues.countryCodes!!.containsAll(testCompanyInformation.map { it.countryCode }),
+            "The list of all occurring country codes does not contain the country codes of the posted companies."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
+            sectors = setOf(storedCompany.companyInformation.sector),
+            countryCodes = setOf(storedCompany.companyInformation.countryCode)
+        )
+        assertTrue(
+            getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company could not be found in the query results when querying for its country code and sector."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
+            sectors = setOf("${storedCompany.companyInformation.sector}a"),
+            countryCodes = setOf(storedCompany.companyInformation.countryCode)
+        )
+        assertTrue(
+            !getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company is in the query results," +
+                " even though the country code filter was set to a different country code."
+
         )
     }
 
@@ -100,7 +151,8 @@ class CompanyDataControllerTest {
             companyDataControllerApi.getCompanies(
                 searchString = testCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false
-            ).any { it.companyId == testCompanyId }
+            ).any { it.companyId == testCompanyId },
+            "The posted company could not be found in the query results when querying for its first identifiers value."
         )
     }
 
@@ -133,7 +185,10 @@ class CompanyDataControllerTest {
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedCompanyDataControllerApi.getCompanyById(testCompanyId)
         }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+        assertTrue(
+            exception.message!!.contains("Unauthorized access failed"),
+            "The exception message does not say that an unauthorized access was the cause."
+        )
     }
 
     @Test
@@ -143,6 +198,9 @@ class CompanyDataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(
+            "Client error : 403 ", exception.message,
+            "The exception message does not say that a 403 client error was the cause."
+        )
     }
 }

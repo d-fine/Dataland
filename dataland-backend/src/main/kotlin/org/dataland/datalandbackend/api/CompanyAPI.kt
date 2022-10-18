@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -48,9 +49,9 @@ interface CompanyAPI {
         ResponseEntity<StoredCompany>
 
     @Operation(
-        summary = "Retrieve specific companies by name/identifier or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier are retrieved. " +
-            "If only an empty string is passed as search argument, all companies in the data store are returned."
+        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
+            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored."
     )
     @ApiResponses(
         value = [
@@ -62,19 +63,45 @@ interface CompanyAPI {
     )
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
-     * A method to retrieve specific companies identified by their company names or identifiers
-     * If only an empty string is passed as search argument, all companies in the data store are returned.
+     * A method to retrieve specific companies identified by different filters
+     * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
-     * @param dataTypes If set, this function only returns companies that have data for the specified dataTypes
+     * @param dataTypes If set & non-empty,
+     * this function only returns companies that have data for the specified dataTypes
+     * @param countryCodes If set & non-empty,
+     * this function only returns companies that have a country code contained in the set
+     * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * @return information about all companies matching the search criteria
      */
     fun getCompanies(
         @RequestParam searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
+        @RequestParam countryCodes: Set<String>? = null,
+        @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false
     ):
         ResponseEntity<List<StoredCompany>>
+
+    @Operation(
+        summary = "Retrieve available distinct values for company search filters",
+        description = "Distinct values for the parameter countryCode and sector are returned"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved values.")
+        ]
+    )
+    @GetMapping(
+        value = ["/meta-information"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    /**
+     * A method used to retrieve all available distinct values for framework type, country code & sector
+     * to be used by the search UI
+     */
+    fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues>
 
     @Operation(
         summary = "Retrieve company information.",
