@@ -24,7 +24,7 @@ sudo -E docker-compose --profile init up -d --build
 
 message="Profile prod activated."
 container_name=$(sudo docker ps --format "{{.Names}}" | grep keycloak-initializer)
-timeout 480 bash -c "while ! docker logs $container_name 2>/dev/null | grep -q \"$message\";
+timeout 900 bash -c "while ! docker logs $container_name 2>/dev/null | grep -q \"$message\";
                      do
                        echo Startup of Keycloak incomplete. Waiting for it to finish.;
                        sleep 5;
