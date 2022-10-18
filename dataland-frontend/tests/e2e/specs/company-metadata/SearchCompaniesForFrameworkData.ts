@@ -11,7 +11,6 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 
-
 interface CompaniesWithData {
   T: Array<{
     companyInformation: CompanyInformation;
@@ -23,7 +22,7 @@ interface CompaniesWithData {
 let companiesWithData: CompaniesWithData;
 before(function (): void {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
-      outputFromJson: CompaniesWithData
+    outputFromJson: CompaniesWithData
   ): void {
     companiesWithData = outputFromJson;
   });
@@ -45,7 +44,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist");
   }
 
-  function executeCompanySearchWithStandardSearchBar(inputValue: string): void{
+  function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
       .should("not.be.disabled")

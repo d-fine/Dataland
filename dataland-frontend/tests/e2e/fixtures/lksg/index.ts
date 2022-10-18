@@ -1,6 +1,6 @@
 import { LKSGData } from "../../../../build/clients/backend";
 import { generateFixtureDataset } from "../FixtureUtils";
-import {/*generateCSVLKSGData,*/ generateLKSGData} from "../lksg/LKSGdataFixtures";
+import { /*generateCSVLKSGData,*/ generateLKSGData } from "../lksg/LKSGdataFixtures";
 import fs from "fs";
 
 export function exportFixturesLKSG() {

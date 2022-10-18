@@ -8,7 +8,9 @@ import {
   EuTaxonomyDataForNonFinancialsControllerApi,
   DataTypeEnum,
   StoredCompany,
-  CompanyDataControllerApi, LKSGData, LksgDataControllerApi,
+  CompanyDataControllerApi,
+  LKSGData,
+  LksgDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 const chunkSize = 15;
@@ -130,14 +132,8 @@ describe(
       });
 
       it("Upload LKSG fake-fixtures", () => {
-        async function uploadOneLKSGDataset(
-            token: string,
-            companyId: string,
-            data:LKSGData
-        ): Promise<void> {
-          await new LksgDataControllerApi(
-              new Configuration({ accessToken: token })
-          ).postCompanyAssociatedData({
+        async function uploadOneLKSGDataset(token: string, companyId: string, data: LKSGData): Promise<void> {
+          await new LksgDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedData({
             companyId,
             data,
           });

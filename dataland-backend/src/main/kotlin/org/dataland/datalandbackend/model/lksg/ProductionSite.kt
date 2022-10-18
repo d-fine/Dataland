@@ -13,5 +13,6 @@ data class ProductionSite(
     @field:JsonProperty()
     val isInHouseProductionOrIsContractProcessing: YesNo? = null,
 
-    val addressesOfForeignProductionSites: String? = null
+    val addressOfProductionSite: String? = null
 )
+

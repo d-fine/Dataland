@@ -8,14 +8,45 @@ import { randomYesNoUndefined } from "../common/YesNoFixtures";
 const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
-  const siteLocation = faker.address.city();
+  const fakeSiteAddress = faker.address;
+  const siteLocation = fakeSiteAddress.city();
   const yesNo = randomYesNoUndefined();
-  const address = faker.address.streetAddress();
+  const fullFormattedAddress =
+    fakeSiteAddress.street() +
+    " " +
+    fakeSiteAddress.buildingNumber() +
+    ", " +
+    fakeSiteAddress.zipCode() +
+    " " +
+    siteLocation +
+    ", " +
+    fakeSiteAddress.country();
   return {
     location: siteLocation,
     isInHouseProductionOrIsContractProcessing: yesNo,
-    addressesOfForeignProductionSites: address,
+    addressOfProductionSite: fullFormattedAddress,
   };
+}
+
+export function generateDataDate(): string {
+  const fakeFutureDate = faker.date.future(1);
+  const fakeYear = fakeFutureDate.getFullYear();
+  const fakeMonth = fakeFutureDate.toLocaleString().split(".")[1];
+  const fakeDay = fakeFutureDate.toLocaleString().split(".")[0];
+  return fakeYear + "-" + fakeMonth + "-" + fakeDay;
+}
+
+export function getCompanyLegalForm(): string {
+  const legalForms = [
+    "Public Limited Company (PLC)",
+    "Private Limited Company (Ltd)",
+    "Limited Liability Partnership (LLP)",
+    "Partnership without Limited Liability",
+    "Sole Trader",
+    "GmbH",
+    "AG",
+  ];
+  return legalForms[Math.floor(Math.random() * legalForms.length)];
 }
 
 export function generateLKSGproductionSites(): ProductionSite[] {
@@ -27,12 +58,12 @@ export function generateLKSGData(): LKSGData {
   const returnBase: LKSGData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
-  returnBase.dataDate = faker.datatype.string();
-  returnBase.companyLegalForm = faker.datatype.string();
-  returnBase.numberOfEmployees = faker.datatype.number();
-  returnBase.shareOfTemporaryWorkers = faker.datatype.number();
-  returnBase.totalRevenue = faker.datatype.number();
-  returnBase.totalRevenueCurrency = faker.datatype.string();
+  returnBase.dataDate = generateDataDate();
+  returnBase.companyLegalForm = getCompanyLegalForm();
+  returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });
+  returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: returnBase.numberOfEmployees / 2 });
+  returnBase.totalRevenue = faker.datatype.number({ min: 10000000, max: 500000000000 });
+  returnBase.totalRevenueCurrency = faker.datatype.string(); //TODO we need to fake a valid currency so that we won't have problems in the Frontend
   returnBase.responsibilitiesForFairWorkingConditions = randomYesNoUndefined();
   returnBase.responsibilitiesForTheEnvironment = randomYesNoUndefined();
   returnBase.responsibilitiesForOccupationalSafety = randomYesNoUndefined();
@@ -104,7 +135,7 @@ export function generateLKSGData(): LKSGData {
   returnBase.initiativeClauseSocialCertification = randomYesNoUndefined();
   returnBase.responsibleBusinessAssociationCertification = randomYesNoUndefined();
   returnBase.fairLabourAssociationCertification = randomYesNoUndefined();
-  returnBase.listOfGoodsOrServices = [faker.datatype.string()];
+  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO needs to be comma-seperated values, so that we can work with it in our frontend
   returnBase.lksginScope = randomYesNoUndefined();
   returnBase.oshmonitoring = randomYesNoUndefined();
   returnBase.oshpolicy = randomYesNoUndefined();
@@ -117,7 +148,7 @@ export function generateLKSGData(): LKSGData {
   returnBase.sa8000certification = randomYesNoUndefined();
   returnBase.iso37001certification = randomYesNoUndefined();
   returnBase.iso37301certification = randomYesNoUndefined();
-  returnBase.vatidentificationNumber = faker.datatype.string();
+  returnBase.vatidentificationNumber = faker.datatype.string(); //TODO stay close to a realisitc format
   returnBase.oshpolicyMachineSafety = randomYesNoUndefined();
   returnBase.oshpolicyFireProtection = randomYesNoUndefined();
   returnBase.oshpolicyWorkingHours = randomYesNoUndefined();
@@ -134,6 +165,7 @@ export function generateLKSGData(): LKSGData {
   returnBase.listOfProductionSites = generateLKSGproductionSites();
   return returnBase;
 }
+
 /*
 export function generateCSVLKSGData(companyInformationWithLKSGdata: Array<FixtureData<LKSGData>>) {
   const options = {
