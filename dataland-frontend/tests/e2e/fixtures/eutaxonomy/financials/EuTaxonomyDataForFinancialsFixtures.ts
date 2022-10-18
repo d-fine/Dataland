@@ -16,6 +16,7 @@ import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../Eu
 import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
+import { MappingTypes } from "../../common/DataSourceFixtures";
 
 export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
   const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();
@@ -107,7 +108,9 @@ export function generateEligibilityKpis(reports: ReferencedReports): Eligibility
   };
 }
 
-export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum) {
+export function getCsvEligibilityKpiMapping(
+  type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+): Array<MappingTypes<FixtureData<EuTaxonomyDataForFinancials>, string | number>> {
   return [
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to taxonomy-eligible economic activities ${getCompanyTypeHeader(type)}`,

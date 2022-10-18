@@ -11,7 +11,7 @@ export function generateDataSource(referencedReports: ReferencedReports): Compan
   };
 }
 
-interface MappingTypes<T, Y> {
+export interface MappingTypes<T, Y> {
   label: string;
   value: (x: T) => Y | undefined;
 }
