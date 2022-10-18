@@ -37,6 +37,7 @@ export function generateCompanyInformation(): CompanyInformation {
       return a.identifierType.localeCompare(b.identifierType);
     });
   const countryCode = faker.address.countryCode();
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, faker.company.name);
 
   return {

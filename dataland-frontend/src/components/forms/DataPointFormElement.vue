@@ -20,7 +20,9 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   component: { FormKit },
   name: "DataPointFormElement",
   data: () => ({
@@ -45,8 +47,9 @@ export default {
   },
   methods: {
     changed: function () {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.$refs.value.node.input(this.inputValue);
     },
   },
-};
+});
 </script>

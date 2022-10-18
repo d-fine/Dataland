@@ -1,10 +1,5 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  DataTypeEnum,
-  StoredCompany,
-} from "@clients/backend";
+import { CompanyInformation, EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
 

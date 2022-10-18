@@ -130,20 +130,22 @@ export default defineComponent({
   },
   mounted() {
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
-    this.queryCompany();
+    void this.queryCompany();
     if (!this.route.query.input) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.focus();
     }
   },
 
   watch: {
     searchBarName() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.focus();
     },
     filter: {
       handler() {
         this.searchBarInput = this.filter?.companyNameFilter ?? "";
-        this.queryCompany();
+        void this.queryCompany();
       },
       deep: true,
     },
@@ -160,13 +162,15 @@ export default defineComponent({
   },
   methods: {
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      this.$router.push(getRouterLinkTargetFramework(event.value));
+      void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
     handleKeyupEnter() {
       this.$emit("search-confirmed", this.searchBarInput);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.hideOverlay();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.$refs.input.blur();
-      this.queryCompany();
+      void this.queryCompany();
     },
     async queryCompany() {
       if (this.getKeycloakPromise !== undefined && this.emitSearchResultsArray) {

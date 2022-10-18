@@ -7,12 +7,15 @@ import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<{
   companyInformation: CompanyInformation;
-  t: EuTaxonomyDataForNonFinancials;
+  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
 }>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson;
+    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson as Array<{
+      companyInformation: CompanyInformation;
+      euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+    }>;
   });
 });
 
@@ -54,7 +57,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
       const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
-      )!!.companyInformation;
+      )!.companyInformation;
 
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
@@ -82,7 +85,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
       (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
-    )!!.companyInformation;
+    )!.companyInformation;
 
     cy.ensureLoggedIn();
     cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
@@ -109,7 +112,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .eq(0)
       .click()
       .url()
-      .should("eq", `${Cypress.config("baseUrl")}/companies`);
+      .should("eq", (Cypress.config("baseUrl") as string) + "/companies");
   });
   it(
     "Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up",
@@ -152,6 +155,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
       });
 

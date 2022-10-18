@@ -93,5 +93,6 @@ export function generateCSVDataForNonFinancials(
     ],
     delimiter: ";",
   };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
   return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
 }

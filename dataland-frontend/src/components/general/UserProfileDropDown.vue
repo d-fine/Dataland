@@ -100,6 +100,7 @@ export default defineComponent({
     this.getKeycloakPromise?.()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
           this.profilePicture.src = keycloak.idTokenParsed.picture;
         }
       })

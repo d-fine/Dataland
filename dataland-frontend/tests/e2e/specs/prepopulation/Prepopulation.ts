@@ -40,6 +40,7 @@ describe(
       companiesWithEuTaxonomyData: Array<
         CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>
       >,
+      // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneEuTaxonomyDataset: Function
     ): void {
       cy.getKeycloakToken("data_uploader", uploader_pw).then((token) => {
