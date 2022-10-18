@@ -9,9 +9,11 @@ const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
   const siteLocation = faker.address.city();
+  const yesno = randomYesNoUndefined();
   const address = faker.address.streetAddress();
   return {
     location: siteLocation,
+    isInHouseProductionOrIsContractProcessing: yesno,
     addressesOfForeignProductionSites: address,
   };
 }
@@ -135,7 +137,7 @@ export function generateLKSGData(): LKSGData {
 
 export function generateCSVLKSGData(companyInformationWithLKSGdata: Array<FixtureData<LKSGData>>) {
   const options = {
-    fields: [...getCsvCompanyMapping<LKSGData>(), ...generateLKSGproductionSites()],
+    fields: [...getCsvCompanyMapping<LKSGData>(), ...generateLKSGData()],
     delimiter: ";",
   };
   return parse(companyInformationWithLKSGdata, options);
