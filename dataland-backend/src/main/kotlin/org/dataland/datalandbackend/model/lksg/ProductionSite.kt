@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,6 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class ProductionSite(
     val location: String? = null,
 
+    @field:JsonProperty()
     val isInHouseProductionOrIsContractProcessing: YesNo? = null,
 
     val addressesOfForeignProductionSites: String? = null
