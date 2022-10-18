@@ -136,7 +136,6 @@ export function generateLKSGData(): LKSGData {
   returnBase.initiativeClauseSocialCertification = randomYesNoUndefined();
   returnBase.responsibleBusinessAssociationCertification = randomYesNoUndefined();
   returnBase.fairLabourAssociationCertification = randomYesNoUndefined();
-  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO needs to be comma-seperated values, so that we can work with it in our frontend
   returnBase.lksginScope = randomYesNoUndefined();
   returnBase.oshmonitoring = randomYesNoUndefined();
   returnBase.oshpolicy = randomYesNoUndefined();
@@ -163,6 +162,7 @@ export function generateLKSGData(): LKSGData {
   returnBase.oshmanagementSystemNationalCertification = randomYesNoUndefined();
   returnBase.oshpolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
   returnBase.listOfProductionSites = generateLKSGproductionSites();
+  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO needs to be comma-seperated values, so that we can work with it in our frontend
   return returnBase;
 }
 
