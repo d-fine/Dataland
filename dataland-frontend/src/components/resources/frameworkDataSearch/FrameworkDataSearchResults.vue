@@ -4,14 +4,15 @@
       <div class="col-12 text-left">
         <DataTable
           v-if="data && data.length > 0"
+          ref="dataTable"
           :value="data"
           responsive-layout="scroll"
           :paginator="true"
-          :rows="100"
+          :rows="rowsPerPage"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
           :alwaysShowPaginator="false"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          @update:first="scrollToTop"
+          @update:first="firstUpdated"
           @row-click="goToData"
           class="table-cursor"
           id="search-result-framework-data"
@@ -59,7 +60,7 @@
           </Column>
         </DataTable>
         <div class="d-center-div text-center px-7 py-4" v-else>
-          <p class="font-medium text-xl">Sorry! The company you searched for was not found in our database.</p>
+          <p class="font-medium text-xl">Sorry! Your search didn't return any results.</p>
           <p class="font-medium">Try again please!</p>
         </div>
       </div>
@@ -100,9 +101,9 @@ export default defineComponent({
       type: Object,
       default: null,
     },
-    processed: {
-      type: Boolean,
-      default: false,
+    rowsPerPage: {
+      type: Number,
+      default: null,
     },
   },
   methods: {
@@ -112,14 +113,18 @@ export default defineComponent({
     buildLocationString(headquarters: string, countryCode: string) {
       return headquarters + ", " + countryCode;
     },
-    scrollToTop() {
-      window.scrollTo(0, 0);
-    },
-    goToData(event: { data: DataSearchStoredCompany }) {
-      void this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
+    goToData(event) {
+      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
     getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);
+    },
+    resetPagination() {
+      if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
+    },
+    firstUpdated(event) {
+      window.scrollTo(0, 0);
+      this.$emit("update:first", event);
     },
   },
 });

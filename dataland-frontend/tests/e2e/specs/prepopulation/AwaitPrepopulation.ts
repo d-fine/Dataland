@@ -25,21 +25,17 @@ describe("I want to ensure that the prepopulation has finished before executing 
     () => {
       cy.wait(5000)
         .then(() => getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD") as string))
-        .then((token) => {
-          void countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials).then((response) => {
-            if (response.matchingCompanies < minimumNumberFinancialCompanies) {
-              throw Error(
-                `Only found ${response.matchingCompanies} financial companies (Expecting ${minimumNumberFinancialCompanies})`
-              );
-            }
-          });
-          void countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials).then((response) => {
-            if (response.matchingCompanies < minimumNumberNonFinancialCompanies) {
-              throw Error(
-                `Only found ${response.matchingCompanies} non-financial companies (Expecting ${minimumNumberNonFinancialCompanies})`
-              );
-            }
-          });
+        .then(async (token) => {
+          const financialResponse = await countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials);
+          assert(
+            financialResponse.matchingCompanies >= minimumNumberFinancialCompanies,
+            `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberFinancialCompanies})`
+          );
+          const nonFinancialResponse = await countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials);
+          assert(
+            nonFinancialResponse.matchingCompanies >= minimumNumberNonFinancialCompanies,
+            `Found ${nonFinancialResponse.matchingCompanies} non-financial companies (Expecting at least ${minimumNumberNonFinancialCompanies})`
+          );
         });
     }
   );
