@@ -24,6 +24,7 @@
     "@formkit/vue": "^1.0.0-beta.10",
     "@ibm/plex": "^6.1.1",
     "axios": "^0.27.2",
+    "i18n-iso-countries": "^7.5.0",
     "json2csv": "^5.0.7",
     "keycloak-js": "^19.0.2",
     "material-icons": "^1.11.11",

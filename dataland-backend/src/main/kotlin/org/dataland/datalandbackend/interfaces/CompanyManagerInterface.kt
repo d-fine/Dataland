@@ -21,14 +21,19 @@ interface CompanyManagerInterface {
      * Method to search for companies matching the company name or identifier
      * @param searchString string used for substring matching against the company name and/or identifiers
      * @param onlyCompanyNames boolean determining if the search should be solely against the company names
-     * @param dataTypeFilter if not empty, return only companies that have
-     * data reported for one of the specified dataTypes
+     * @param dataTypeFilter if not empty, return only companies that have data reported for
+     * one of the specified dataTypes
+     * @param countryCodeFilter set of strings with ISO country codes to return companies whose headquarters are in
+     * the country of one of those ISO country codes
+     * @param sectorFilter set of strings with sector names to return companies which operate in one of those sectors
      * @return list of all matching companies in Dataland
      */
     fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
         dataTypeFilter: Set<DataType>,
+        countryCodeFilter: Set<String>,
+        sectorFilter: Set<String>,
     ): List<StoredCompanyEntity>
 
     /**
@@ -37,6 +42,16 @@ interface CompanyManagerInterface {
      * @return information about the retrieved company
      */
     fun getCompanyById(companyId: String): StoredCompanyEntity
+
+    /**
+     * Returns a list of available country codes across all stored companies
+     */
+    fun getDistinctCountryCodes(): Set<String>
+
+    /**
+     * Returns a list of available sectors across all stored companies
+     */
+    fun getDistinctSectors(): Set<String>
 
     /**
      * Method to retrieve the list of currently set teaser company IDs
