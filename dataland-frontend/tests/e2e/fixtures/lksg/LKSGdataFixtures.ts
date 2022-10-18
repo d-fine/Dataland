@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { LKSGData, ProductionSite } from "../../../../build/clients/backend";
-import { FixtureData } from "../FixtureUtils";
+//import { FixtureData } from "../FixtureUtils";
 
-import { getCsvCompanyMapping } from "../CompanyFixtures";
+//import { getCsvCompanyMapping } from "../CompanyFixtures";
 import { randomYesNoUndefined } from "../common/YesNoFixtures";
 
-const { parse } = require("json2csv");
+//const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
   const fakeSiteAddress = faker.address;
@@ -60,10 +60,11 @@ export function generateLKSGData(): LKSGData {
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
   returnBase.dataDate = generateDataDate();
   returnBase.companyLegalForm = getCompanyLegalForm();
+  returnBase.vatidentificationNumber = faker.datatype.string(); //TODO stay close to a realisitc format
   returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });
-  returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: returnBase.numberOfEmployees / 2 });
-  returnBase.totalRevenue = faker.datatype.number({ min: 10000000, max: 500000000000 });
-  returnBase.totalRevenueCurrency = faker.datatype.string(); //TODO we need to fake a valid currency so that we won't have problems in the Frontend
+  returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: 100 });
+  returnBase.totalRevenue = faker.datatype.number({ min: 10, max: 500000 });
+  returnBase.totalRevenueCurrency = faker.datatype.string(); //TODO we need to fake a valid currency so that we won't have problems in the Frontend => data dicitonary says whe should use ISO 4217 currency codes
   returnBase.responsibilitiesForFairWorkingConditions = randomYesNoUndefined();
   returnBase.responsibilitiesForTheEnvironment = randomYesNoUndefined();
   returnBase.responsibilitiesForOccupationalSafety = randomYesNoUndefined();
@@ -148,7 +149,6 @@ export function generateLKSGData(): LKSGData {
   returnBase.sa8000certification = randomYesNoUndefined();
   returnBase.iso37001certification = randomYesNoUndefined();
   returnBase.iso37301certification = randomYesNoUndefined();
-  returnBase.vatidentificationNumber = faker.datatype.string(); //TODO stay close to a realisitc format
   returnBase.oshpolicyMachineSafety = randomYesNoUndefined();
   returnBase.oshpolicyFireProtection = randomYesNoUndefined();
   returnBase.oshpolicyWorkingHours = randomYesNoUndefined();
