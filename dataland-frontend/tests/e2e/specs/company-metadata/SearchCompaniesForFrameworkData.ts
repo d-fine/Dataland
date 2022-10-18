@@ -11,14 +11,20 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 
-let companiesWithData: Array<{
-  companyInformation: CompanyInformation;
-  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
-  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-}>;
 
-before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
+interface CompaniesWithData {
+  T: Array<{
+    companyInformation: CompanyInformation;
+    euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
+    euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
+  }>;
+}
+
+let companiesWithData: CompaniesWithData;
+before(function (): void {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
+      outputFromJson: CompaniesWithData
+  ): void {
     companiesWithData = outputFromJson;
   });
 });
@@ -39,7 +45,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("div[class='p-paginator p-component p-paginator-bottom']").should("exist");
   }
 
-  function executeCompanySearchWithStandardSearchBar(inputValue: string) {
+  function executeCompanySearchWithStandardSearchBar(inputValue: string): void{
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
       .should("not.be.disabled")
@@ -117,14 +123,14 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Check PermId tooltip, execute company search by name, check result table and assure VIEW button works", () => {
     cy.visitAndCheckAppMount("/companies");
 
-    function checkPermIdToolTip(permIdTextInt: string) {
+    function checkPermIdToolTip(permIdTextInt: string): void {
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
       cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
       cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
       cy.get(".p-tooltip").should("not.exist");
     }
 
-    function checkViewButtonWorks() {
+    function checkViewButtonWorks(): void {
       cy.get("table.p-datatable-table")
         .contains("td", "VIEW")
         .contains("a", "VIEW")

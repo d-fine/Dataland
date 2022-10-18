@@ -8,7 +8,7 @@ import {
   EuTaxonomyDataForNonFinancialsControllerApi,
   DataTypeEnum,
   StoredCompany,
-  CompanyDataControllerApi,
+  CompanyDataControllerApi, LKSGData, LksgDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 const chunkSize = 15;
@@ -114,6 +114,39 @@ describe(
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
+      });
+    });
+
+    describe("Upload and validate LKSG data", () => {
+      let companiesWithLKSGdata: Array<{
+        companyInformation: CompanyInformation;
+        t: LKSGData;
+      }>;
+
+      before(function () {
+        cy.fixture("CompanyInformationWithLKSGdata").then(function (companies) {
+          companiesWithLKSGdata = companies;
+        });
+      });
+
+      it("Upload LKSG fake-fixtures", () => {
+        async function uploadOneLKSGDataset(
+            token: string,
+            companyId: string,
+            data:LKSGData
+        ): Promise<void> {
+          await new LksgDataControllerApi(
+              new Configuration({ accessToken: token })
+          ).postCompanyAssociatedData({
+            companyId,
+            data,
+          });
+        }
+        prepopulate(companiesWithLKSGdata, uploadOneLKSGDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Lksg, companiesWithLKSGdata.length);
       });
     });
   }
