@@ -3,6 +3,7 @@ import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeE
 import { FixtureData } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
+import { MappingTypes } from "./common/DataSourceFixtures";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
@@ -49,7 +50,7 @@ export function generateCompanyInformation(): CompanyInformation {
   };
 }
 
-export function getCsvCompanyMapping<T>() {
+export function getCsvCompanyMapping<T>(): Array<MappingTypes<FixtureData<T>, string>> {
   return [
     {
       label: "Unternehmensname",
@@ -57,7 +58,7 @@ export function getCsvCompanyMapping<T>() {
     },
     {
       label: "Alternative Names",
-      value: (row: FixtureData<T>) =>
+      value: (row: FixtureData<T>): string | undefined =>
         row.companyInformation.companyAlternativeNames?.map((name) => `"${name}"`).join(", "),
     },
     {
