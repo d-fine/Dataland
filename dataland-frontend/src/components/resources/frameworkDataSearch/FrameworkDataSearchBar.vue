@@ -142,11 +142,11 @@ export default defineComponent({
       this.$emit("update:modelValue", inputEvent.target.value);
     },
 
-    handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
+    async handleItemSelect(event: { value: DataSearchStoredCompany }) {
+      await this.$router.push(this.getRouterLinkTargetFrameworkInt(event.value));
     },
-    handleKeyupEnter() {
-      this.queryCompany();
+    async handleKeyupEnter() {
+      await this.queryCompany();
       this.autocomplete.hideOverlay();
       this.autocomplete.$refs.input.blur();
     },

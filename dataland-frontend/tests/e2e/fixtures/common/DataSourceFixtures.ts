@@ -11,10 +11,15 @@ export function generateDataSource(referencedReports: ReferencedReports): Compan
   };
 }
 
+interface MappingTypes<T, Y> {
+  label: string;
+  value: (x: T) => Y | undefined;
+}
+
 export function getCsvDataSourceMapping<T>(
   dataPointName: string,
   companyReportGetter: (x: T) => CompanyReportReference | undefined
-) {
+): [MappingTypes<T, string>, MappingTypes<T, number>] {
   return [
     {
       label: `${dataPointName} Report`,
