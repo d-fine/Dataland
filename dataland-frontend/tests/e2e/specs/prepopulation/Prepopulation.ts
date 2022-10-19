@@ -126,7 +126,7 @@ describe(
       }>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithLKSGdata").then(function (companies) {
+        cy.fixture("CompanyInformationWithLKSGData").then(function (companies) {
           companiesWithLKSGdata = companies;
         });
       });
