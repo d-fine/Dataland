@@ -30,7 +30,7 @@ class EuTaxonomyFinancials {
         val testCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val testDataId = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(
+        val testDataId = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(
             CompanyAssociatedDataEuTaxonomyDataForFinancials(testCompanyId, testData)
         ).dataId
         return Pair(
@@ -47,7 +47,7 @@ class EuTaxonomyFinancials {
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
         val (testDataInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForFinancialsControllerApi
-            .getCompanyAssociatedData1(testDataInformation.dataId)
+            .getCompanyAssociatedData2(testDataInformation.dataId)
 
         Assertions.assertEquals(testDataInformation.companyId, downloadedAssociatedData.companyId)
         // Sorting is required here as the backend models this field as a Set but this info is lost during the openApi

@@ -37,7 +37,7 @@ class DataControllerTest {
         Map<String, String> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val companyId = companyDataControllerApi.postCompany((companyInformation)).companyId
-        val dataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+        val dataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, euTaxonomyDataForNonFinancials)
         ).dataId
         return mapOf("companyId" to companyId, "dataId" to dataId)
@@ -49,7 +49,7 @@ class DataControllerTest {
             .getCompanyInformationWithoutIdentifiers(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
-            euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(mapOfIds["dataId"]!!)
+            euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData1(mapOfIds["dataId"]!!)
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testData),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
@@ -96,7 +96,7 @@ class DataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> {
-                euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
+                euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
                     CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
                 )
             }
