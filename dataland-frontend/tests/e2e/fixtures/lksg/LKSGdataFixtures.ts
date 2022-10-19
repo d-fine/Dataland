@@ -33,24 +33,9 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
   return Array.from({ length: faker.datatype.number({ min: 1, max: 50 }) }, generateProductionSite);
 }
 
-function addZeroIfOneCharacterString(inputString: string): string {
-  let formattedString;
-  if (inputString.length === 1) {
-    formattedString = "0" + inputString;
-  } else {
-    formattedString = inputString;
-  }
-  return formattedString;
-}
-
 export function generateDataDate(): string {
-  const fakeFutureDate = faker.date.future(1);
-  console.log(fakeFutureDate.toLocaleDateString());
-
-  const fakeYear = fakeFutureDate.getFullYear();
-  const fakeMonth = addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[1]);
-  const fakeDay = addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[0]);
-  return fakeYear + "-" + fakeMonth + "-" + fakeDay;
+  console.log(faker.date.future(1).toISOString().split("T")[0]);
+  return faker.date.future(1).toISOString().split("T")[0];
 }
 
 export function generateVatIdentificationNumber(): string {
