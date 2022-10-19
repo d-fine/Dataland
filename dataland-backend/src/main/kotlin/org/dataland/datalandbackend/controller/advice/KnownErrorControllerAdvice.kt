@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException
 @ControllerAdvice
 class KnownErrorControllerAdvice(
     @Value("\${dataland.trace:false}")
-    val trace: Boolean
+    private val trace: Boolean
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
@@ -79,6 +80,24 @@ class KnownErrorControllerAdvice(
                 summary = "Route not found",
                 message = "The requested route ${ex.requestURL} could not be located",
                 httpStatus = HttpStatus.NOT_FOUND
+            ),
+            ex
+        )
+    }
+
+    /**
+     * Handles HttpRequestMethodNotSupportedException errors. These occur whenever someone calls an endpoint
+     * with a non-implemented HTTP-Method
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleMethodNotSupportException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
+        return prepareResponse(
+            ErrorDetails(
+                errorCode = "method-not-allowed",
+                summary = "Method ${ex.method} not allowed.",
+                message = "The HTTP-Method ${ex.method} is not allowed. Please refer to the API documentation " +
+                    "for a list of supported HTTP methods",
+                httpStatus = HttpStatus.METHOD_NOT_ALLOWED
             ),
             ex
         )

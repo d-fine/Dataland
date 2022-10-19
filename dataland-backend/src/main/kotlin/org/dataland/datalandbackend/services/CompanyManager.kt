@@ -70,8 +70,7 @@ class CompanyManager(
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
                 throw InvalidInputApiException(
                     "Company identifier already used",
-                    "Could not insert company as one company identifier " +
-                        "is already used to identify another company"
+                    "Could not insert company as one company identifier is already used to identify another company"
                 )
             }
             throw ex

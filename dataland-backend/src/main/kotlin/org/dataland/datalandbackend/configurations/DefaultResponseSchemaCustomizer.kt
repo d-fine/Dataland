@@ -2,15 +2,13 @@ package org.dataland.datalandbackend.configurations
 
 import io.swagger.v3.core.converter.ModelConverters
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.headers.Header
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.responses.ApiResponse
-import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.ErrorDetails
 import org.dataland.datalandbackend.model.ErrorResponse
-import org.springdoc.core.SpringDocUtils
 import org.springdoc.core.customizers.OpenApiCustomiser
 import org.springframework.stereotype.Component
 
@@ -30,15 +28,23 @@ class DefaultResponseSchemaCustomizer : OpenApiCustomiser {
         errorResponseSchema.`$ref` = "#/components/schemas/ErrorResponse"
 
         val errorApiResponse = ApiResponse()
-            .content(Content().addMediaType(
-                org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
-                MediaType().schema(errorResponseSchema))
+            .content(
+                Content().addMediaType(
+                    org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
+                    MediaType().schema(errorResponseSchema)
+                )
             )
             .description("An error occurred")
 
-        openApi.paths.values.forEach {path ->
+        // All errors follow the default errorApiResponse except for the 401 error which follows rfc9110
+        val unauthorizedApiResponse = ApiResponse()
+            .description("Unauthorized")
+            .addHeaderObject("WWW-Authenticate", Header().schema(Schema<Any>().type("string")))
+
+        openApi.paths.values.forEach { path ->
             path.readOperations().forEach { operation ->
                 operation.responses.default = errorApiResponse
+                operation.responses.addApiResponse("401", unauthorizedApiResponse)
             }
         }
     }

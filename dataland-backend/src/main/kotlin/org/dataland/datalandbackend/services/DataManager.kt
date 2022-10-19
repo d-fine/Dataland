@@ -50,7 +50,7 @@ class DataManager(
     }
 
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
-        val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
+        getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
         val dataAsString = edcClient.selectDataById(dataId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
@@ -61,11 +61,9 @@ class DataManager(
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != dataType) {
             throw InternalServerErrorApiException(
-                publicSummary = "Dataland-Internal inconsistency regarding dataset $dataId",
-                publicMessage = "We are having some internal issues with the dataset $dataId, please contact support.",
-                internalMessage = "The data set with the id: $dataId " +
-                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformation.dataType} as registered by Dataland."
+                "Dataland-Internal inconsistency regarding dataset $dataId",
+                "We are having some internal issues with the dataset $dataId, please contact support.",
+                "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
             )
         }
         return dataAsStorableDataSet
