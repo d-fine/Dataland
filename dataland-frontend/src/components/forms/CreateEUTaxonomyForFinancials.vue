@@ -160,7 +160,7 @@ export default {
           this.getKeycloakPromise()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
+          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(this.formInputsModel);
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
