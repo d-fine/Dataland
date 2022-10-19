@@ -17,7 +17,7 @@ import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
 const { parse } = require("json2csv");
-import { MappingTypes } from "../../common/DataSourceFixtures";
+import { MappingTypes } from "@e2e/fixtures/common/DataSourceFixtures";
 
 export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
   const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();

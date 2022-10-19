@@ -1,5 +1,5 @@
 import { EuTaxonomyDataForFinancials } from "@clients/backend";
-import { FixtureData } from "../../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {
@@ -9,8 +9,8 @@ describe("As a user, I want to be able to search companies existing on Dataland"
   let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      companiesWithEuTaxonomyDataForFinancials = companies as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+      companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     });
   });
 

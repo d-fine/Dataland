@@ -2,13 +2,13 @@ import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "../../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
-let companiesWithData: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithData = outputFromJson as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 
@@ -131,7 +131,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       cy.visitAndCheckAppMount("/companies");
       verifyTaxonomySearchResultTable();
-      const inputValue = companiesWithData[0].companyInformation.companyName;
+      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
       const permIdText = "Permanent Identifier (PermID)";
       checkPermIdToolTip(permIdText);
       executeCompanySearchWithStandardSearchBar(inputValue);
@@ -146,8 +146,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Execute a company Search by identifier and assure that the company is found", () => {
     cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[0].companyInformation.identifiers[0].identifierValue;
-    const expectedCompanyName = companiesWithData[0].companyInformation.companyName;
+    const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers[0].identifierValue;
+    const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
     executeCompanySearchWithStandardSearchBar(inputValue);
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });

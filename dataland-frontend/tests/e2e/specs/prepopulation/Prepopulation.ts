@@ -11,7 +11,7 @@ import {
   CompanyDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { FixtureData } from "../../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 const chunkSize = 15;
 
 describe(
@@ -61,11 +61,10 @@ describe(
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
       let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (
-          companies: Array<FixtureData<EuTaxonomyDataForFinancials>>
-        ) {
-          companiesWithEuTaxonomyDataForFinancials = companies;
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+          companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         });
       });
 
@@ -94,10 +93,10 @@ describe(
       let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
-          companies: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
-        ) {
-          companiesWithEuTaxonomyDataForNonFinancials = companies;
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+          companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
+            FixtureData<EuTaxonomyDataForNonFinancials>
+          >;
         });
       });
 

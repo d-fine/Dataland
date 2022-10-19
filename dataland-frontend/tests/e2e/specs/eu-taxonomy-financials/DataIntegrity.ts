@@ -24,10 +24,8 @@ describeIf(
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
     before(function (): void {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (
-        companies: Array<FixtureData<EuTaxonomyDataForFinancials>>
-      ): void {
-        preparedFixtures = companies;
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
     });
 

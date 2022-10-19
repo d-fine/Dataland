@@ -5,13 +5,13 @@ import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomy
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "../../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 

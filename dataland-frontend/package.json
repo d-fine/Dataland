@@ -16,7 +16,7 @@
     "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix",
-    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@vue/tsconfig,axios,tsconfig-paths'"
+    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*'"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.10",
