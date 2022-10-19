@@ -10,7 +10,8 @@ import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { parse } from "json2csv";
+// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
+const { parse } = require("json2csv");
 
 const maxEuro = 1000000;
 const minEuro = 50000;

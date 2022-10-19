@@ -44,6 +44,8 @@ describe(
       uploadOneEuTaxonomyDataset: Function
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
           const storedCompany = await uploadOneCompany(token, it.companyInformation);
           await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
