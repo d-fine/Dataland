@@ -29,10 +29,4 @@ describe("routerTest", () => {
       "COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE COSTS"
     );
   });
-
-  it("checks if the router pushes to companies page as expected", async () => {
-    await router.push("/companies");
-    await router.isReady();
-    expect(mountAppWithRouter(router).html()).to.contain("Search company by name or PermID");
-  });
 });

@@ -21,27 +21,28 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, onMounted, Ref } from "vue";
 import Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "AuthenticationWrapper",
   setup() {
+    const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+    const authenticated = inject<Ref>("keycloakAuthenticated");
+    onMounted(() => {
+      if (!authenticated?.value) {
+        getKeycloakPromise?.()
+          .then((keycloak) => {
+            if (!keycloak.authenticated) {
+              return keycloak.login();
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    });
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      authenticated,
     };
-  },
-  mounted: function () {
-    if (!this.authenticated) {
-      this.getKeycloakPromise?.()
-        .then((keycloak) => {
-          if (!keycloak.authenticated) {
-            return keycloak.login();
-          }
-        })
-        .catch((error) => console.log(error));
-    }
   },
 });
 </script>
