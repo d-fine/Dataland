@@ -29,6 +29,10 @@ export function generateProductionSite(): ProductionSite {
   };
 }
 
+export function generateArrayOfProductionSites(): ProductionSite[] {
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 50 }) }, generateProductionSite);
+}
+
 function addZeroIfOneCharacterString(inputString: string): string {
   let formattedString;
   if (inputString.length === 1) {
@@ -65,11 +69,6 @@ export function getCompanyLegalForm(): string {
     "GmbH & Co. KG",
   ];
   return legalForms[Math.floor(Math.random() * legalForms.length)];
-}
-
-export function generateLKSGproductionSites(): ProductionSite[] {
-  const productionSite = generateProductionSite();
-  return Array.of(productionSite);
 }
 
 export function generateIso4217CurrencyCode() {
@@ -184,6 +183,6 @@ export function generateLKSGData(): LKSGData {
   returnBase.oshpolicyDisasterBehaviouralResponse = randomYesNoUndefined();
   returnBase.oshmanagementSystemNationalCertification = randomYesNoUndefined();
   returnBase.oshpolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
-  returnBase.listOfProductionSites = generateLKSGproductionSites();
+  returnBase.listOfProductionSites = generateArrayOfProductionSites();
   return returnBase;
 }
