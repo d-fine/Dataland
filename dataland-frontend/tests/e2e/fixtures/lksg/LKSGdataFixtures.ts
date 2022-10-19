@@ -40,15 +40,15 @@ function addZeroIfOneCharacterString(inputString: string): string {
 export function generateDataDate(): string {
   const fakeFutureDate = faker.date.future(1);
   const fakeYear = fakeFutureDate.getFullYear();
-  const fakeMonth = () => {
-    const rawMonth = fakeFutureDate.toLocaleString().split(".")[1];
-    addZeroIfOneCharacterString(rawMonth);
-  };
-  const fakeDay = () => {
-    const rawDay = fakeFutureDate.toLocaleString().split(".")[0];
-    addZeroIfOneCharacterString(rawDay);
-  };
+  const fakeMonth = addZeroIfOneCharacterString(fakeFutureDate.toLocaleString().split(".")[1]);
+  const fakeDay = addZeroIfOneCharacterString(fakeFutureDate.toLocaleString().split(".")[0]);
   return fakeYear + "-" + fakeMonth + "-" + fakeDay;
+}
+
+export function generateVatIdentificationNumber(): string {
+  const fakeCountryCode = faker.address.countryCode();
+  const randomNineDigitNumber = faker.random.numeric(9);
+  return fakeCountryCode + randomNineDigitNumber.toString();
 }
 
 export function getCompanyLegalForm(): string {
@@ -60,6 +60,7 @@ export function getCompanyLegalForm(): string {
     "Sole Trader",
     "GmbH",
     "AG",
+    "GmbH & Co. KG",
   ];
   return legalForms[Math.floor(Math.random() * legalForms.length)];
 }
@@ -69,17 +70,22 @@ export function generateLKSGproductionSites(): ProductionSite[] {
   return Array.of(productionSite);
 }
 
+export function generateIso4217CurrencyCode() {
+  const someCommonIso4217CurrencyCodes = ["USD", "EUR", "CHF", "CAD", "AUD"];
+  return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
+}
+
 export function generateLKSGData(): LKSGData {
   const returnBase: LKSGData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
   returnBase.dataDate = generateDataDate();
   returnBase.companyLegalForm = getCompanyLegalForm();
-  returnBase.vatidentificationNumber = faker.datatype.string(); //TODO stay close to a realisitc format
+  returnBase.vatidentificationNumber = generateVatIdentificationNumber();
   returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });
-  returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: 100 });
-  returnBase.totalRevenue = faker.datatype.number({ min: 10, max: 500000 });
-  returnBase.totalRevenueCurrency = faker.datatype.string(); //TODO we need to fake a valid currency so that we won't have problems in the Frontend => data dicitonary says whe should use ISO 4217 currency codes
+  returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: 30, precision: 0.01 });
+  returnBase.totalRevenue = faker.datatype.float({ min: 10000000, max: 100000000000 });
+  returnBase.totalRevenueCurrency = generateIso4217CurrencyCode();
   returnBase.responsibilitiesForFairWorkingConditions = randomYesNoUndefined();
   returnBase.responsibilitiesForTheEnvironment = randomYesNoUndefined();
   returnBase.responsibilitiesForOccupationalSafety = randomYesNoUndefined();
