@@ -162,7 +162,7 @@ export function generateLKSGData(): LKSGData {
   returnBase.oshmanagementSystemNationalCertification = randomYesNoUndefined();
   returnBase.oshpolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
   returnBase.listOfProductionSites = generateLKSGproductionSites();
-  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO needs to be comma-seperated values, so that we can work with it in our frontend
+  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO maybe somehow we can find a good faker method to have some Germans words here, I can check :D
   return returnBase;
 }
 
