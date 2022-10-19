@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller.advice
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.dataland.datalandbackend.model.ErrorDetails
 import org.dataland.datalandbackend.model.ErrorResponse
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -20,7 +21,7 @@ class UnknownErrorControllerAdvice(
     @Value("\${dataland.trace:false}")
     val trace: Boolean
 ) {
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Handles all exceptions returning a generic 500 - Internal server error response.
      * This is intended as a fallback error handler
@@ -34,6 +35,7 @@ class UnknownErrorControllerAdvice(
             message = "An unexpected internal server error occurred. Please contact support, if this error persists",
             stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null
         )
+        logger.error("Suffered unknown internal server error $preparedError", ex)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ErrorResponse(errors = listOf(preparedError)))

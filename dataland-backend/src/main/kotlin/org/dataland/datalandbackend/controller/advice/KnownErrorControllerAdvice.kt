@@ -4,6 +4,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 import org.dataland.datalandbackend.exceptions.SingleApiException
 import org.dataland.datalandbackend.model.ErrorDetails
 import org.dataland.datalandbackend.model.ErrorResponse
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -22,6 +23,7 @@ class KnownErrorControllerAdvice(
     @Value("\${dataland.trace:false}")
     val trace: Boolean
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
         val returnedError = if (trace) error.copy(stackTrace = ExceptionUtils.getStackTrace(exception)) else error
         return ResponseEntity.status(error.httpStatus).body(
@@ -87,6 +89,10 @@ class KnownErrorControllerAdvice(
      */
     @ExceptionHandler(SingleApiException::class)
     fun handleApiException(ex: SingleApiException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ex.getErrorResponse()
+        if (errorResponse.httpStatus.is5xxServerError) {
+            logger.error("Suffered server-side error $errorResponse", ex)
+        }
         return prepareResponse(ex.getErrorResponse(), ex)
     }
 }
