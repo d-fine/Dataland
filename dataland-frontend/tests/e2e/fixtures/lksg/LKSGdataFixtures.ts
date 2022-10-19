@@ -34,6 +34,7 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
 }
 
 function addZeroIfOneCharacterString(inputString: string): string {
+  console.log(inputString);
   let formattedString;
   if (inputString.length === 1) {
     formattedString = "0" + inputString;
