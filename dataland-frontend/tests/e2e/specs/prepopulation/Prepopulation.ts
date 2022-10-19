@@ -11,12 +11,8 @@ import {
   CompanyDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { FixtureData } from "../../fixtures/FixtureUtils";
 const chunkSize = 15;
-
-interface CompaniesWithEUTaxonomyData<T> {
-  companyInformation: CompanyInformation;
-  t: T;
-}
 
 describe(
   "As a user, I want to be able to see some data on the DataLand webpage",
@@ -37,9 +33,7 @@ describe(
     }
 
     function prepopulate(
-      companiesWithEuTaxonomyData: Array<
-        CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>
-      >,
+      companiesWithEuTaxonomyData: Array<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>>,
       // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneEuTaxonomyDataset: Function
     ): void {
@@ -66,10 +60,10 @@ describe(
     }
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
-      let companiesWithEuTaxonomyDataForFinancials: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials>>;
+      let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
       before(function () {
         cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (
-          companies: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForFinancials>>
+          companies: Array<FixtureData<EuTaxonomyDataForFinancials>>
         ) {
           companiesWithEuTaxonomyDataForFinancials = companies;
         });
@@ -97,13 +91,11 @@ describe(
     });
 
     describe("Upload and validate EuTaxonomy for non-financials data", () => {
-      let companiesWithEuTaxonomyDataForNonFinancials: Array<
-        CompaniesWithEUTaxonomyData<EuTaxonomyDataForNonFinancials>
-      >;
+      let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
       before(function () {
         cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
-          companies: Array<CompaniesWithEUTaxonomyData<EuTaxonomyDataForNonFinancials>>
+          companies: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
         ) {
           companiesWithEuTaxonomyDataForNonFinancials = companies;
         });

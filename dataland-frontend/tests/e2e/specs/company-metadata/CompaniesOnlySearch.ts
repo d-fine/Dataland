@@ -1,20 +1,16 @@
-import { CompanyInformation, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { FixtureData } from "../../fixtures/FixtureUtils";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {
     cy.ensureLoggedIn();
   });
 
-  interface CompanyAndData {
-    companyInformation: CompanyInformation;
-    data: EuTaxonomyDataForFinancials;
-  }
-
-  let companiesWithEuTaxonomyDataForFinancials: Array<CompanyAndData>;
+  let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
   before(function () {
     cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      companiesWithEuTaxonomyDataForFinancials = companies as Array<CompanyAndData>;
+      companiesWithEuTaxonomyDataForFinancials = companies as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     });
   });
 
@@ -32,7 +28,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
 
-  function getCompanyWithAlternativeName(): CompanyAndData {
+  function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
     return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (
         it.companyInformation.companyAlternativeNames !== undefined &&

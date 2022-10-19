@@ -2,21 +2,16 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { FixtureData } from "../../fixtures/FixtureUtils";
 
-let companiesWithEuTaxonomyDataForNonFinancials: Array<{
-  companyInformation: CompanyInformation;
-  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-}>;
+let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson as Array<{
-      companyInformation: CompanyInformation;
-      euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-    }>;
+    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 

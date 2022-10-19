@@ -1,19 +1,14 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
+import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { FixtureData } from "../../fixtures/FixtureUtils";
 
-let companiesWithData: Array<{
-  companyInformation: CompanyInformation;
-  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-}>;
+let companiesWithData: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithData = outputFromJson as Array<{
-      companyInformation: CompanyInformation;
-      euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-    }>;
+    companiesWithData = outputFromJson as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 
