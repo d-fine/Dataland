@@ -17,4 +17,3 @@ data class ProductionSite(
 
     val listOfGoodsAndServices: List<String>? = null
 )
-
