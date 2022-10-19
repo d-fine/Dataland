@@ -1,11 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { LKSGData, ProductionSite } from "../../../../build/clients/backend";
-//import { FixtureData } from "../FixtureUtils";
 
-//import { getCsvCompanyMapping } from "../CompanyFixtures";
 import { randomYesNoUndefined } from "../common/YesNoFixtures";
-
-//const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();
@@ -186,12 +182,3 @@ export function generateLKSGData(): LKSGData {
   returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO maybe somehow we can find a good faker method to have some Germans words here, I can check :D
   return returnBase;
 }
-
-/*
-export function generateCSVLKSGData(companyInformationWithLKSGdata: Array<FixtureData<LKSGData>>) {
-  const options = {
-    fields: [...getCsvCompanyMapping<LKSGData>(), ...generateLKSGData()],
-    delimiter: ";",
-  };
-  return parse(companyInformationWithLKSGdata, options);
-}*/
