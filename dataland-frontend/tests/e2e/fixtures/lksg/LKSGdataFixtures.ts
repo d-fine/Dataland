@@ -8,18 +8,18 @@ import { randomYesNoUndefined } from "../common/YesNoFixtures";
 //const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
-  const fakeSiteName = faker.company.name()
+  const fakeSiteName = faker.company.name();
   const yesNo = randomYesNoUndefined();
   const fullFormattedAddress =
-      faker.address.street() +
+    faker.address.street() +
     " " +
-      faker.address.buildingNumber() +
+    faker.address.buildingNumber() +
     ", " +
-      faker.address.zipCode() +
+    faker.address.zipCode() +
     " " +
-      faker.address.city() +
+    faker.address.city() +
     ", " +
-      faker.address.country();
+    faker.address.country();
   return {
     name: fakeSiteName,
     isInHouseProductionOrIsContractProcessing: yesNo,
@@ -27,11 +27,27 @@ export function generateProductionSite(): ProductionSite {
   };
 }
 
+function addZeroIfOneCharacterString(inputString: string): string {
+  let formattedString;
+  if (inputString.length === 1) {
+    formattedString = "0" + inputString;
+  } else {
+    formattedString = inputString;
+  }
+  return formattedString;
+}
+
 export function generateDataDate(): string {
   const fakeFutureDate = faker.date.future(1);
   const fakeYear = fakeFutureDate.getFullYear();
-  const fakeMonth = fakeFutureDate.toLocaleString().split(".")[1];
-  const fakeDay = fakeFutureDate.toLocaleString().split(".")[0];
+  const fakeMonth = () => {
+    const rawMonth = fakeFutureDate.toLocaleString().split(".")[1];
+    addZeroIfOneCharacterString(rawMonth);
+  };
+  const fakeDay = () => {
+    const rawDay = fakeFutureDate.toLocaleString().split(".")[0];
+    addZeroIfOneCharacterString(rawDay);
+  };
   return fakeYear + "-" + fakeMonth + "-" + fakeDay;
 }
 
