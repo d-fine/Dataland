@@ -1,6 +1,6 @@
 import { LKSGData } from "../../../../build/clients/backend";
 import { generateFixtureDataset } from "../FixtureUtils";
-import { /*generateCSVLKSGData,*/ generateLKSGData } from "../lksg/LKSGdataFixtures";
+import { generateLKSGData } from "../lksg/LKSGdataFixtures";
 import fs from "fs";
 
 export function exportFixturesLKSG() {
@@ -10,5 +10,4 @@ export function exportFixturesLKSG() {
     "../testing/data/CompanyInformationWithLKSGData.json",
     JSON.stringify(companyInformationWithLKSGData, null, "\t")
   );
-  //fs.writeFileSync("../testing/data/csvTestLKSGData.csv", generateCSVLKSGData(companyInformationWithLKSGData));
 }

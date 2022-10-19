@@ -218,6 +218,4 @@ data class LKSGData(
     val fairLabourAssociationCertification: YesNo? = null,
 
     val listOfProductionSites: List<ProductionSite>? = null,
-
-    val listOfGoodsOrServices: List<String>? = null
-)
+    )

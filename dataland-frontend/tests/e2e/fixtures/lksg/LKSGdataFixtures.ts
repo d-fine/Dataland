@@ -6,7 +6,7 @@ import { randomYesNoUndefined } from "../common/YesNoFixtures";
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();
   const yesNo = randomYesNoUndefined();
-  const fullFormattedAddress =
+  const fullFormattedFakeAddress =
     faker.address.street() +
     " " +
     faker.address.buildingNumber() +
@@ -16,10 +16,16 @@ export function generateProductionSite(): ProductionSite {
     faker.address.city() +
     ", " +
     faker.address.country();
+  const fakeGoodsAndServices = Array.from(
+    { length: faker.datatype.number({ min: 1, max: 5 }) },
+    faker.commerce.productName
+  );
+
   return {
     name: fakeSiteName,
     isInHouseProductionOrIsContractProcessing: yesNo,
-    address: fullFormattedAddress,
+    address: fullFormattedFakeAddress,
+    listOfGoodsAndServices: fakeGoodsAndServices,
   };
 }
 
@@ -179,6 +185,5 @@ export function generateLKSGData(): LKSGData {
   returnBase.oshmanagementSystemNationalCertification = randomYesNoUndefined();
   returnBase.oshpolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
   returnBase.listOfProductionSites = generateLKSGproductionSites();
-  returnBase.listOfGoodsOrServices = [faker.datatype.string()]; //TODO maybe somehow we can find a good faker method to have some Germans words here, I can check :D
   return returnBase;
 }
