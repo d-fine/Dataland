@@ -4,7 +4,6 @@ describe("Component test for SchemaGenerator", () => {
   it("checks if the schema can be generated automatically", () => {
     const testSchema = {
       required: ["listProp", "yesNoProp"],
-      type: "object",
       properties: {
         textProp: {
           type: "string",

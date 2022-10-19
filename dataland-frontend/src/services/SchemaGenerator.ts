@@ -1,8 +1,8 @@
 import { humanizeString } from "@/utils/StringHumanizer";
 
-interface SchemaInterface {
-  required: [key: string];
-  properties: { [key: string]: { format: string; type: string; enum: string[]; items: { enum: string[] } } };
+export interface SchemaInterface {
+  required: string[];
+  properties: { [key: string]: { format?: string; type: string; enum?: string[]; items?: { enum: string[] } } };
 }
 export class SchemaGenerator {
   private readonly rawSchema: SchemaInterface;
@@ -27,10 +27,12 @@ export class SchemaGenerator {
     return "";
   }
 
-  private processEnum(rawEnumProperties: string[]): Record<string, unknown> {
+  private processEnum(rawEnumProperties: string[] | undefined): Record<string, unknown> {
     const enumProperties: Record<string, unknown> = {};
-    for (const enumItem of rawEnumProperties) {
-      enumProperties[enumItem] = humanizeString(enumItem);
+    if (rawEnumProperties !== undefined) {
+      for (const enumItem of rawEnumProperties) {
+        enumProperties[enumItem] = humanizeString(enumItem);
+      }
     }
     return enumProperties;
   }
@@ -88,8 +90,9 @@ export class SchemaGenerator {
         });
       } else if (this.getType(index) == "array") {
         /* create a checkbox form */
-        if ("enum" in propertiesSchema[index].items) {
-          const enumProperties = this.processEnum(propertiesSchema[index].items.enum);
+        const items = propertiesSchema[index]?.items;
+        if (items !== undefined && "enum" in items) {
+          const enumProperties = this.processEnum(items.enum);
           schema.push({
             $formkit: "checkbox",
             label: humanizeString(index),
