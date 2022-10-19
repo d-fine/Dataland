@@ -29,7 +29,7 @@ if (runPrepopulation) {
   }
 }
 
-if (testGroupingDisabled || cypressTestGroup === 1 || cypressTestGroup === 102) {
+if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./company-metadata");
 }
 
