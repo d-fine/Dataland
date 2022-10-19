@@ -34,7 +34,6 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
 }
 
 function addZeroIfOneCharacterString(inputString: string): string {
-  console.log(inputString);
   let formattedString;
   if (inputString.length === 1) {
     formattedString = "0" + inputString;
@@ -46,6 +45,7 @@ function addZeroIfOneCharacterString(inputString: string): string {
 
 export function generateDataDate(): string {
   const fakeFutureDate = faker.date.future(1);
+  console.log(fakeFutureDate)
   const fakeYear = fakeFutureDate.getFullYear();
   const fakeMonth = addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[1]);
   const fakeDay = addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[0]);
