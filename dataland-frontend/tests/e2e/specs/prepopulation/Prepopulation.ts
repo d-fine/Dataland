@@ -32,11 +32,11 @@ describe(
       return data.data;
     }
 
-    function prepopulate(companiesWithEuTaxonomyData: Array<any>, uploadOneEuTaxonomyDataset: Function) {
+    function prepopulate(companiesWithFrameworkData: Array<any>, uploadOneFrameworkDataset: Function) {
       cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
-        doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
+        doThingsInChunks(companiesWithFrameworkData, chunkSize, async (it) => {
           const storedCompany = await uploadOneCompany(token, it.companyInformation);
-          await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
+          await uploadOneFrameworkDataset(token, storedCompany.companyId, it.t);
         });
       });
     }
@@ -73,7 +73,7 @@ describe(
         ): Promise<void> {
           await new EuTaxonomyDataForFinancialsControllerApi(
             new Configuration({ accessToken: token })
-          ).postCompanyAssociatedData1({
+          ).postCompanyAssociatedData2({
             companyId,
             data,
           });
@@ -106,7 +106,7 @@ describe(
         ): Promise<void> {
           await new EuTaxonomyDataForNonFinancialsControllerApi(
             new Configuration({ accessToken: token })
-          ).postCompanyAssociatedData({
+          ).postCompanyAssociatedData1({
             companyId,
             data,
           });
