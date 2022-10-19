@@ -52,7 +52,7 @@ describe(
           );
         });
     }
-
+    /*
     describe("Upload and validate EuTaxonomy for financials data", () => {
       let companiesWithEuTaxonomyDataForFinancials: Array<{
         companyInformation: CompanyInformation;
@@ -118,7 +118,7 @@ describe(
         checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
       });
     });
-
+*/
     describe("Upload and validate LKSG data", () => {
       let companiesWithLKSGdata: Array<{
         companyInformation: CompanyInformation;
