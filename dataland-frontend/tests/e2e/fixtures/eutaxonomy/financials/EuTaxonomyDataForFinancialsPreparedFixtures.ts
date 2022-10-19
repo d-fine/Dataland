@@ -1,5 +1,5 @@
 import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import {
   generateEuTaxonomyDataForFinancials,
   generateEuTaxonomyDataForFinancialsWithTypes,
@@ -7,9 +7,7 @@ import {
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
-type generatorFunction = (
-  input: FixtureData<EuTaxonomyDataForNonFinancials>
-) => FixtureData<EuTaxonomyDataForNonFinancials>;
+type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
 export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyDataForFinancials>> {
   const creationFunctions: Array<generatorFunction> = [

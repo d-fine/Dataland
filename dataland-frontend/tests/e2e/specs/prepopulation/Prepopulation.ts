@@ -1,6 +1,16 @@
-import { retrieveDataIdsList, retrieveCompanyIdsList } from "@e2e/utils/ApiUtils";
-import { doThingsInChunks } from "@e2e/utils/Cypress";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { doThingsInChunks, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
+import {
+  CompanyInformation,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+  Configuration,
+  EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+  DataTypeEnum,
+  StoredCompany,
+  CompanyDataControllerApi,
+} from "@clients/backend";
+import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 const chunkSize = 15;
 
 describe(
@@ -13,137 +23,98 @@ describe(
     },
   },
   () => {
-    let companiesWithEuTaxonomyDataForNonFinancials: Array<{
-      companyInformation: CompanyInformation;
-      t: EuTaxonomyDataForNonFinancials;
-    }>;
-    let companiesWithEuTaxonomyDataForFinancials: Array<{
-      companyInformation: CompanyInformation;
-      t: EuTaxonomyDataForFinancials;
-    }>;
+    async function uploadOneCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
+      const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
+        companyInformation
+      );
+      return data.data;
+    }
 
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-        companiesWithEuTaxonomyDataForNonFinancials = companies;
-      });
-    });
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-        companiesWithEuTaxonomyDataForFinancials = companies;
-      });
-    });
-    beforeEach(function () {
-      cy.ensureLoggedIn();
-    });
-
-    it("Populate Companies and Eu Taxonomy Data", () => {
-      function browserPromiseUploadSingleElementOnce(
-        endpoint: string,
-        element: object,
-        token: string
-      ): Promise<Response> {
-        return fetch(`/api/${endpoint}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(element),
-        }).then((response) => {
-          // Introduced if to reduce number of unnecessary asserts which add some overhead as coverage is re-computed after
-          // every assert
-          if (response.status !== 200) {
-            assert(
-              response.status === 200,
-              `Got status code ${response.status} during upload of single element to ${endpoint}. Expected: 200.`
-            );
-          }
-
-          return response;
+    function prepopulate(companiesWithEuTaxonomyData: Array<any>, uploadOneEuTaxonomyDataset: Function) {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+        doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
+          const storedCompany = await uploadOneCompany(token, it.companyInformation);
+          await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
         });
-      }
+      });
+    }
 
-      function chunkUploadData(
-        dataEndpoint: string,
-        data: Array<{ companyInformation: CompanyInformation; t: Object }>,
-        token: string
-      ) {
-        doThingsInChunks(data, chunkSize, (element) => {
-          return browserPromiseUploadSingleElementOnce("companies", element.companyInformation, token)
-            .then((response) => response.json())
-            .then((companyUploadResponseJson) => {
-              return browserPromiseUploadSingleElementOnce(
-                dataEndpoint,
-                {
-                  companyId: companyUploadResponseJson.companyId,
-                  data: element.t,
-                },
-                token
-              );
-            });
+    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number) {
+      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+        .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
+        .then((response) => {
+          assert(
+            response.matchingDataIds === expectedNumberOfIds && response.matchingCompanies === expectedNumberOfIds,
+            `Found ${response.matchingCompanies} companies with matching data 
+                  and ${response.matchingDataIds} uploaded data ids, expected both to be ${expectedNumberOfIds}`
+          );
         });
-      }
+    }
 
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-        .then((token) => {
-          chunkUploadData("data/eutaxonomy-non-financials", companiesWithEuTaxonomyDataForNonFinancials, token);
-        })
-        .should("eq", "done");
+    describe("Upload and validate EuTaxonomy for financials data", () => {
+      let companiesWithEuTaxonomyDataForFinancials: Array<{
+        companyInformation: CompanyInformation;
+        t: EuTaxonomyDataForFinancials;
+      }>;
 
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
-        .then((token) => {
-          chunkUploadData("data/eutaxonomy-financials", companiesWithEuTaxonomyDataForFinancials, token);
-        })
-        .should("eq", "done");
-    });
-
-    it("Check if all the company ids can be retrieved", () => {
-      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
-        assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
-          `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} companies`
-        );
+      before(function () {
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
+          companiesWithEuTaxonomyDataForFinancials = companies;
+        });
       });
-      retrieveCompanyIdsList().then((allCompanyIdsList: Array<string>) => {
-        assert(
-          allCompanyIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
-          `Found ${allCompanyIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} companies`
-        );
-      });
-    });
 
-    it("Check if all the data ids can be retrieved", () => {
-      retrieveDataIdsList().then((allDataIdsList: any) => {
-        assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForNonFinancials.length, // >= to avoid problem with several runs in a row
-          `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForNonFinancials.length} datasets`
-        );
+      it("Upload eutaxonomy-financials fake-fixtures", () => {
+        async function uploadOneEuTaxonomyFinancialsDataset(
+          token: string,
+          companyId: string,
+          data: EuTaxonomyDataForFinancials
+        ): Promise<void> {
+          await new EuTaxonomyDataForFinancialsControllerApi(
+            new Configuration({ accessToken: token })
+          ).postCompanyAssociatedData1({
+            companyId,
+            data,
+          });
+        }
+        prepopulate(companiesWithEuTaxonomyDataForFinancials, uploadOneEuTaxonomyFinancialsDataset);
       });
-      retrieveDataIdsList().then((allDataIdsList: any) => {
-        assert(
-          allDataIdsList.length >= companiesWithEuTaxonomyDataForFinancials.length, // >= to avoid problem with several runs in a row
-          `Found ${allDataIdsList.length}, expected at least ${companiesWithEuTaxonomyDataForFinancials.length} datasets`
-        );
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.EutaxonomyFinancials, companiesWithEuTaxonomyDataForFinancials.length);
       });
     });
 
-    it("Company Name Input field exists and works", () => {
-      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
-      cy.visitAndCheckAppMount("/companies-only-search");
-      cy.get("input[name=companyName]")
-        .should("not.be.disabled")
-        .type(inputValue, { force: true })
-        .should("have.value", inputValue);
-      cy.intercept("**/api/companies*").as("retrieveCompany");
-      cy.get("button[name=getCompanies]").click();
-      cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
-        cy.get("td").contains(companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName);
-      });
-    });
+    describe("Upload and validate EuTaxonomy for non-financials data", () => {
+      let companiesWithEuTaxonomyDataForNonFinancials: Array<{
+        companyInformation: CompanyInformation;
+        t: EuTaxonomyDataForNonFinancials;
+      }>;
 
-    it("Show all companies button exists", () => {
-      cy.visitAndCheckAppMount("/companies-only-search");
-      cy.get("button.p-button").contains("Show all companies").should("not.be.disabled").click();
+      before(function () {
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
+          companiesWithEuTaxonomyDataForNonFinancials = companies;
+        });
+      });
+
+      it("Upload eutaxonomy-non-financials fake-fixtures", () => {
+        async function uploadOneEuTaxonomyNonFinancialsDataset(
+          token: string,
+          companyId: string,
+          data: EuTaxonomyDataForFinancials
+        ): Promise<void> {
+          await new EuTaxonomyDataForNonFinancialsControllerApi(
+            new Configuration({ accessToken: token })
+          ).postCompanyAssociatedData({
+            companyId,
+            data,
+          });
+        }
+        prepopulate(companiesWithEuTaxonomyDataForNonFinancials, uploadOneEuTaxonomyNonFinancialsDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
+      });
     });
   }
 );

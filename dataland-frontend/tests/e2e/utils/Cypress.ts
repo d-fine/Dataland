@@ -16,13 +16,17 @@ export function doThingsInChunks<T>(
   });
 }
 
-export function wrapPromiseToCypressPromise(promise: Promise<any>): Bluebird<any> {
+export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T> {
   return new Cypress.Promise((resolve, reject) => {
     promise
       .then(
-        () => resolve("done"),
+        (result) => resolve(result),
         (reason) => reject(reason)
       )
       .catch((reason) => reject(reason));
   });
+}
+
+export function browserThen<T>(promise: Promise<T>): Chainable<T> {
+  return cy.then(() => wrapPromiseToCypressPromise(promise));
 }
