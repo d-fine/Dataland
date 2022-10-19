@@ -8,21 +8,20 @@ import { randomYesNoUndefined } from "../common/YesNoFixtures";
 //const { parse } = require("json2csv");
 
 export function generateProductionSite(): ProductionSite {
-  const fakeSiteAddress = faker.address;
-  const siteLocation = fakeSiteAddress.city();
+  const fakeSiteName = faker.company.name()
   const yesNo = randomYesNoUndefined();
   const fullFormattedAddress =
-    fakeSiteAddress.street() +
+      faker.address.street() +
     " " +
-    fakeSiteAddress.buildingNumber() +
+      faker.address.buildingNumber() +
     ", " +
-    fakeSiteAddress.zipCode() +
+      faker.address.zipCode() +
     " " +
-    siteLocation +
+      faker.address.city() +
     ", " +
-    fakeSiteAddress.country();
+      faker.address.country();
   return {
-    location: siteLocation,
+    productionSiteName: fakeSiteName,
     isInHouseProductionOrIsContractProcessing: yesNo,
     addressOfProductionSite: fullFormattedAddress,
   };
