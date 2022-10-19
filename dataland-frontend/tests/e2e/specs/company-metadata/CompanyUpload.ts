@@ -1,5 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { createCompanyAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
   "As a user, I want to be able to create new companies",
@@ -9,7 +10,7 @@ describeIf(
   },
   (): void => {
     beforeEach((): void => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string);
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     it("Check if post company button is disabled if no values are inserted into the upload form", (): void => {

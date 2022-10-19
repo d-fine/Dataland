@@ -1,6 +1,7 @@
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
   let minimumNumberNonFinancialCompanies = 0;
@@ -24,7 +25,7 @@ describe("I want to ensure that the prepopulation has finished before executing 
     },
     () => {
       cy.wait(5000)
-        .then(() => getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD") as string))
+        .then(() => getKeycloakToken(reader_name, reader_pw))
         .then(async (token) => {
           const financialResponse = await countCompanyAndDataIds(token, DataTypeEnum.EutaxonomyFinancials);
           assert(

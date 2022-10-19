@@ -1,7 +1,7 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum } from "@clients/backend";
-import { getStringCypressEnv } from "@e2e/utils/Cypress";
+import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
   it("tooltips are present and contain text as expected", function () {
@@ -9,7 +9,7 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
     const AssuranceText = "Level of Assurance specifies the confidence level";
     cy.intercept("**/api/companies/*").as("retrieveCompany");
     cy.ensureLoggedIn();
-    getKeycloakToken("data_reader", getStringCypressEnv("KEYCLOAK_READER_PASSWORD")).then((token) => {
+    getKeycloakToken(reader_name, reader_pw).then((token) => {
       cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then((datasetNonFinancial) => {
         const companyId = datasetNonFinancial[0].companyId;
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);

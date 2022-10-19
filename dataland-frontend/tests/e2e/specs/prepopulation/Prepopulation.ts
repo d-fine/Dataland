@@ -1,4 +1,4 @@
-import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw } from "@e2e/utils/Cypress";
+import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
 import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
@@ -43,7 +43,7 @@ describe(
       // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneEuTaxonomyDataset: Function
     ): void {
-      cy.getKeycloakToken("data_uploader", uploader_pw).then((token) => {
+      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
           const storedCompany = await uploadOneCompany(token, it.companyInformation);
           await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
@@ -52,7 +52,7 @@ describe(
     }
 
     function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
-      cy.getKeycloakToken("data_uploader", uploader_pw)
+      cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
         .then((response) => {
           assert(

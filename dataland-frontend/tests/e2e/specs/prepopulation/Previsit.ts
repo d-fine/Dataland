@@ -1,6 +1,6 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { doThingsInChunks } from "@e2e/utils/Cypress";
+import { doThingsInChunks, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, MetaDataControllerApi, StoredCompany } from "@clients/backend";
 
 const chunkSize = 40;
@@ -10,7 +10,7 @@ describe(
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
   () => {
     function visitTaxonomyData(dataType: DataTypeEnum): void {
-      getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD") as string).then((token) => {
+      getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getCompanyAndDataIds(token, dataType)).then((myDataset: StoredCompany[]) =>
           doThingsInChunks(myDataset, chunkSize, (element) =>
             new MetaDataControllerApi(new Configuration({ accessToken: token }))

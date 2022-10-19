@@ -1,7 +1,7 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { getStringCypressEnv } from "@e2e/utils/Cypress";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 let companiesWithData: Array<{
   companyInformation: CompanyInformation;
@@ -161,7 +161,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
 
-    getKeycloakToken("data_uploader", getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+    getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);

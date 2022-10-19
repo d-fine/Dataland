@@ -1,3 +1,5 @@
+import { getBaseUrl } from "@e2e/utils/Cypress";
+
 describe("As a user, I expect the sample page to be functional and reachable without logging in", (): void => {
   it("Check that the sample section works properly without authentication", (): void => {
     cy.visitAndCheckAppMount("/");
@@ -12,6 +14,6 @@ describe("As a user, I expect the sample page to be functional and reachable wit
     cy.get(".p-button.p-button-rounded").should("contain.text", "COMPANY DATA SAMPLE");
     cy.get("body").should("contain.text", "Join Dataland with other");
     cy.get("[title=back_button").should("be.visible").click({ force: true });
-    cy.url().should("eq", Cypress.config("baseUrl") ?? "" + "/");
+    cy.url().should("eq", getBaseUrl() + "/");
   });
 });

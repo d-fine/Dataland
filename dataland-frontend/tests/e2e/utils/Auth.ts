@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import { getBaseUrl, getStringCypressEnv } from "./Cypress";
+import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 export function logout(): void {
   cy.visitAndCheckAppMount("/companies")
@@ -14,10 +14,7 @@ export function logout(): void {
     .should("be.visible");
 }
 
-export function login(
-  username = "data_reader",
-  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD")
-): void {
+export function login(username = reader_name, password = reader_pw): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
     .click()
@@ -51,8 +48,8 @@ export function ensureLoggedIn(username?: string, password?: string): void {
 }
 
 export function getKeycloakToken(
-  username = "data_reader",
-  password: string = getStringCypressEnv("KEYCLOAK_READER_PASSWORD"),
+  username = reader_name,
+  password = reader_pw,
   client_id = "dataland-public"
 ): Chainable<string> {
   return cy

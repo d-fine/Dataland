@@ -8,6 +8,7 @@ import {
   DataPointBigDecimal,
 } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -17,7 +18,7 @@ describeIf(
   },
   function (): void {
     beforeEach((): void => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD") as string);
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;

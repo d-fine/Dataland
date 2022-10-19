@@ -4,6 +4,7 @@ import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<{
   companyInformation: CompanyInformation;
@@ -112,7 +113,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .eq(0)
       .click()
       .url()
-      .should("eq", (Cypress.config("baseUrl") as string) + "/companies");
+      .should("eq", getBaseUrl() + "/companies");
   });
   it(
     "Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up",
@@ -156,7 +157,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     function () {
       beforeEach(function () {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
       });
 
       it(

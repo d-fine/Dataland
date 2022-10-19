@@ -41,7 +41,6 @@ export default defineComponent({
   components: { PrimeMenu },
   setup() {
     const menu: Ref<PrimeMenu | undefined> = ref();
-    const profilePicture = ref();
     function toggleDropdownMenu(event: Event): void {
       if (menu.value !== undefined) {
         menu.value.toggle(event);
@@ -52,7 +51,6 @@ export default defineComponent({
       authenticated: inject<boolean>("authenticated"),
       menu: menu,
       toggleDropdownMenu: toggleDropdownMenu,
-      profilePicture: profilePicture,
     };
   },
 
@@ -101,7 +99,7 @@ export default defineComponent({
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-          this.profilePicture.src = keycloak.idTokenParsed.picture;
+          this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
         }
       })
       .catch((error) => console.log(error));
