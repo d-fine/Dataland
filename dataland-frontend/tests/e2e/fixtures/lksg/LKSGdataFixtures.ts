@@ -21,9 +21,9 @@ export function generateProductionSite(): ProductionSite {
     ", " +
       faker.address.country();
   return {
-    productionSiteName: fakeSiteName,
+    name: fakeSiteName,
     isInHouseProductionOrIsContractProcessing: yesNo,
-    addressOfProductionSite: fullFormattedAddress,
+    address: fullFormattedAddress,
   };
 }
 
