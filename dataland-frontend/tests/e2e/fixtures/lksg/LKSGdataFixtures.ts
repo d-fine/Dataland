@@ -46,7 +46,7 @@ function addZeroIfOneCharacterString(inputString: string): string {
 export function generateDataDate(): string {
   const fakeFutureDate = faker.date.future(1);
   const fakeYear = fakeFutureDate.getFullYear();
-  const fakeMonth = "a"; //addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[1]);
+  const fakeMonth = addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[1]);
   const fakeDay = "b"; //addZeroIfOneCharacterString(fakeFutureDate.toLocaleDateString().split(".")[0]);
   return fakeYear + "-" + fakeMonth + "-" + fakeDay;
 }
