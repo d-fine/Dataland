@@ -4,17 +4,14 @@ import org.dataland.datalandbackend.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
- * A ResourceNotFoundException should be thrown if a dataland-internal resource could not be located
+ * A ResourceNotFoundApiException should be thrown if a dataland-internal resource could not be located
  * Both message and summary are displayed to the user with a 404 status code
  */
-class ResourceNotFoundException(
+class ResourceNotFoundApiException(
     val summary: String,
     override val message: String,
-    cause: Throwable?
+    cause: Throwable? = null
 ) : SingleApiException(message, cause) {
-
-    constructor(summary: String, message: String) : this(summary, message, null)
-
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
             errorCode = "resource-not-found",
