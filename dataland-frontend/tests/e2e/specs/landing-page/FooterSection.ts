@@ -35,7 +35,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       "/samples/eutaxonomy-non-financials",
     ];
 
-    function assertFooterPresence(): void {
+    function assertFooterPresence() {
       cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }
 
