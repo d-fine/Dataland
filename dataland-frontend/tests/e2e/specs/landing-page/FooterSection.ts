@@ -46,7 +46,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       });
     });
 
-    const frameworksToCheck = Object.values(DataTypeEnum);
+    const frameworksToCheck = Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg");
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
         getKeycloakToken("data_reader", Cypress.env("KEYCLOAK_READER_PASSWORD")).then((token) => {

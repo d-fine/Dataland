@@ -119,7 +119,9 @@ export default defineComponent({
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: Object.values(DataTypeEnum) as Array<DataTypeEnum>,
+      currentFilteredFrameworks: Object.values(DataTypeEnum).filter(
+        (frameworkName) => frameworkName != "lksg"
+      ) as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: {
@@ -225,13 +227,15 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       let queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
-        const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
+        const allowedDataTypeEnumValues = Object.values(DataTypeEnum).filter(
+          (frameworkName) => frameworkName != "lksg"
+        ) as Array<string>;
         const result = parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
         return result;
       } else {
-        return Object.values(DataTypeEnum);
+        return Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg");
       }
     },
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
@@ -298,9 +302,9 @@ export default defineComponent({
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = Object.values(DataTypeEnum).every((it) =>
-        this.currentFilteredFrameworks.includes(it)
-      );
+      const allFrameworksSelected = Object.values(DataTypeEnum)
+        .filter((frameworkName) => frameworkName != "lksg")
+        .every((it) => this.currentFilteredFrameworks.includes(it));
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;
       if (this.currentFilteredFrameworks.length == 0) queryFrameworks = null;

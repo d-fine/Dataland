@@ -113,7 +113,7 @@ export default defineComponent({
       default(): FrameworkDataSearchFilterInterface {
         return {
           companyNameFilter: "",
-          frameworkFilter: Object.values(DataTypeEnum),
+          frameworkFilter: Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg"),
           sectorFilter: [],
           countryCodeFilter: [],
         };
