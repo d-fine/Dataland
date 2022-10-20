@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "@clients/backend";
-import { generateDataSource, getCsvDataSourceMapping, MappingTypes } from "./DataSourceFixtures";
-import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
+import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
@@ -63,7 +63,7 @@ export function getCsvDataPointMapping<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointBigDecimal | undefined,
   valueConverter: (input: number | undefined) => string = (x): string => x?.toString() || ""
-): Array<MappingTypes<T, string | number>> {
+): Array<DataPoint<T, string | number>> {
   return [
     {
       label: dataPointName,

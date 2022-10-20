@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
-import { FixtureData } from "./FixtureUtils";
+import { FixtureData, DataPoint } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
-import { MappingTypes } from "./common/DataSourceFixtures";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
@@ -51,7 +50,7 @@ export function generateCompanyInformation(): CompanyInformation {
   };
 }
 
-export function getCsvCompanyMapping<T>(): Array<MappingTypes<FixtureData<T>, string>> {
+export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, string>> {
   return [
     {
       label: "Unternehmensname",

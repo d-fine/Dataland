@@ -1,4 +1,4 @@
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData, DataPoint } from "@e2e/fixtures/FixtureUtils";
 import {
   CompanyReport,
   CompanyReportReference,
@@ -7,7 +7,7 @@ import {
 } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
-import { getCsvDataSourceMapping, MappingTypes } from "@e2e/fixtures/common/DataSourceFixtures";
+import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures";
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
@@ -39,7 +39,7 @@ function getReportIfExists(
 
 function getCsvReportMapping(
   reportName: string
-): Array<MappingTypes<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string>> {
+): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string>> {
   return [
     {
       label: humanizeString(reportName),
@@ -68,7 +68,7 @@ function getCsvReportMapping(
 
 export function getCsvSharedEuTaxonomyValuesMapping(
   isfs: number
-): Array<MappingTypes<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string | number>> {
+): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string | number>> {
   return [
     {
       label: "IS/FS",

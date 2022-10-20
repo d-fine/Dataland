@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { CompanyReportReference } from "@clients/backend";
-import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 
 export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
@@ -11,15 +11,10 @@ export function generateDataSource(referencedReports: ReferencedReports): Compan
   };
 }
 
-export interface MappingTypes<T, Y> {
-  label: string;
-  value: (x: T) => Y | undefined;
-}
-
 export function getCsvDataSourceMapping<T>(
   dataPointName: string,
   companyReportGetter: (x: T) => CompanyReportReference | undefined
-): [MappingTypes<T, string>, MappingTypes<T, number>] {
+): Array<DataPoint<T, string | number>> {
   return [
     {
       label: `${dataPointName} Report`,

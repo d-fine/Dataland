@@ -2,7 +2,7 @@ import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "../../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
