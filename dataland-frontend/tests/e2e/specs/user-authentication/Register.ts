@@ -59,7 +59,7 @@ describe("As a user I want to be able to register for an account and be able to 
         .type(returnEmail as string, { force: true })
         .type("{enter}");
       cy.get("table");
-      cy.contains("td", returnEmail as string).click();
+      cy.contains("a", returnEmail as string).click();
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
     });
