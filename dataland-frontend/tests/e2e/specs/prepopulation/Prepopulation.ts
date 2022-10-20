@@ -9,7 +9,7 @@ import {
   DataTypeEnum,
   StoredCompany,
   CompanyDataControllerApi,
-  LKSGData,
+  LksgData,
   LksgDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
@@ -119,30 +119,30 @@ describe(
       });
     });
 
-    describe("Upload and validate LKSG data", () => {
-      let companiesWithLKSGdata: Array<{
+    describe("Upload and validate Lksg data", () => {
+      let companiesWithLksgData: Array<{
         companyInformation: CompanyInformation;
-        t: LKSGData;
+        t: LksgData;
       }>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithLKSGData").then(function (companies) {
-          companiesWithLKSGdata = companies;
+        cy.fixture("CompanyInformationWithLksgData").then(function (companies) {
+          companiesWithLksgData = companies;
         });
       });
 
-      it("Upload LKSG fake-fixtures", () => {
-        async function uploadOneLKSGDataset(token: string, companyId: string, data: LKSGData): Promise<void> {
+      it("Upload Lksg fake-fixtures", () => {
+        async function uploadOneLksgDataset(token: string, companyId: string, data: LksgData): Promise<void> {
           await new LksgDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedData({
             companyId,
             data,
           });
         }
-        prepopulate(companiesWithLKSGdata, uploadOneLKSGDataset);
+        prepopulate(companiesWithLksgData, uploadOneLksgDataset);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.Lksg, companiesWithLKSGdata.length);
+        checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
       });
     });
   }

@@ -7,13 +7,13 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Fields of the questionnaire for the LKSG framework
+ * Fields of the questionnaire for the Lksg framework
  */
 @DataType("lksg")
-data class LKSGData(
+data class LksgData(
     val dataDate: LocalDate? = null,
 
-    val LKSGinScope: YesNo? = null,
+    val LksgInScope: YesNo? = null,
 
     val companyLegalForm: String? = null,
 

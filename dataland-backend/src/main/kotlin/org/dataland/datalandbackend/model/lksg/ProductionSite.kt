@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Production Sites for LKSG framework
+ * Production Sites for Lksg framework
  */
 data class ProductionSite(
     val name: String? = null,

@@ -63,7 +63,7 @@ export function generateIso4217CurrencyCode() {
   return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
 }
 
-export function generateLKSGData(): LksgData {
+export function generateLksgData(): LksgData {
   const returnBase: LksgData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
