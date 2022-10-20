@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { LKSGData, ProductionSite } from "../../../../build/clients/backend";
+import { LksgData, ProductionSite } from "../../../../build/clients/backend";
 
 import { randomYesNoUndefined } from "../common/YesNoFixtures";
 
@@ -63,13 +63,13 @@ export function generateIso4217CurrencyCode() {
   return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
 }
 
-export function generateLKSGData(): LKSGData {
-  const returnBase: LKSGData = {};
+export function generateLKSGData(): LksgData {
+  const returnBase: LksgData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
   returnBase.dataDate = generateDataDate();
   returnBase.companyLegalForm = getCompanyLegalForm();
-  returnBase.vatidentificationNumber = generateVatIdentificationNumber();
+  returnBase.vatIdentificationNumber = generateVatIdentificationNumber();
   returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });
   returnBase.shareOfTemporaryWorkers = faker.datatype.number({ min: 0, max: 30, precision: 0.01 });
   returnBase.totalRevenue = faker.datatype.float({ min: 10000000, max: 100000000000 });
@@ -141,35 +141,35 @@ export function generateLKSGData(): LKSGData {
   returnBase.hazardousAndOtherWasteImport = randomYesNoUndefined();
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
   returnBase.riskManagementSystemCertification = randomYesNoUndefined();
-  returnBase.amforiBSCIAuditReport = randomYesNoUndefined();
+  returnBase.amforiBsciAuditReport = randomYesNoUndefined();
   returnBase.initiativeClauseSocialCertification = randomYesNoUndefined();
   returnBase.responsibleBusinessAssociationCertification = randomYesNoUndefined();
   returnBase.fairLabourAssociationCertification = randomYesNoUndefined();
-  returnBase.lksginScope = randomYesNoUndefined();
-  returnBase.oshmonitoring = randomYesNoUndefined();
-  returnBase.oshpolicy = randomYesNoUndefined();
-  returnBase.oshtraining = randomYesNoUndefined();
+  returnBase.lksgInScope = randomYesNoUndefined();
+  returnBase.oshMonitoring = randomYesNoUndefined();
+  returnBase.oshPolicy = randomYesNoUndefined();
+  returnBase.oshTraining = randomYesNoUndefined();
   returnBase.iso26000 = randomYesNoUndefined();
-  returnBase.smetasocialAuditConcept = randomYesNoUndefined();
-  returnBase.iso45001certification = randomYesNoUndefined();
-  returnBase.iso14000certification = randomYesNoUndefined();
-  returnBase.emascertification = randomYesNoUndefined();
-  returnBase.sa8000certification = randomYesNoUndefined();
-  returnBase.iso37001certification = randomYesNoUndefined();
-  returnBase.iso37301certification = randomYesNoUndefined();
-  returnBase.oshpolicyMachineSafety = randomYesNoUndefined();
-  returnBase.oshpolicyFireProtection = randomYesNoUndefined();
-  returnBase.oshpolicyWorkingHours = randomYesNoUndefined();
-  returnBase.oshmanagementSystem = randomYesNoUndefined();
-  returnBase.oshpolicyWorkplaceErgonomics = randomYesNoUndefined();
-  returnBase.oshpolicyTrainingAddressed = randomYesNoUndefined();
-  returnBase.oshpolicyTraining = randomYesNoUndefined();
-  returnBase.oshpolicyPersonalProtectiveEquipment = randomYesNoUndefined();
-  returnBase.oshpolicyAccidentsBehaviouralResponse = randomYesNoUndefined();
-  returnBase.oshmanagementSystemInternationalCertification = randomYesNoUndefined();
-  returnBase.oshpolicyDisasterBehaviouralResponse = randomYesNoUndefined();
-  returnBase.oshmanagementSystemNationalCertification = randomYesNoUndefined();
-  returnBase.oshpolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
+  returnBase.smetaSocialAuditConcept = randomYesNoUndefined();
+  returnBase.iso45001Certification = randomYesNoUndefined();
+  returnBase.iso14000Certification = randomYesNoUndefined();
+  returnBase.emasCertification = randomYesNoUndefined();
+  returnBase.sa8000Certification = randomYesNoUndefined();
+  returnBase.iso37001Certification = randomYesNoUndefined();
+  returnBase.iso37301Certification = randomYesNoUndefined();
+  returnBase.oshPolicyMachineSafety = randomYesNoUndefined();
+  returnBase.oshPolicyFireProtection = randomYesNoUndefined();
+  returnBase.oshPolicyWorkingHours = randomYesNoUndefined();
+  returnBase.oshManagementSystem = randomYesNoUndefined();
+  returnBase.oshPolicyWorkplaceErgonomics = randomYesNoUndefined();
+  returnBase.oshPolicyTrainingAddressed = randomYesNoUndefined();
+  returnBase.oshPolicyTraining = randomYesNoUndefined();
+  returnBase.oshPolicyPersonalProtectiveEquipment = randomYesNoUndefined();
+  returnBase.oshPolicyAccidentsBehaviouralResponse = randomYesNoUndefined();
+  returnBase.oshManagementSystemInternationalCertification = randomYesNoUndefined();
+  returnBase.oshPolicyDisasterBehaviouralResponse = randomYesNoUndefined();
+  returnBase.oshManagementSystemNationalCertification = randomYesNoUndefined();
+  returnBase.oshPolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
   returnBase.listOfProductionSites = generateArrayOfProductionSites();
   return returnBase;
 }
