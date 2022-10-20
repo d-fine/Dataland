@@ -34,7 +34,6 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
 }
 
 export function generateDataDate(): string {
-  console.log(faker.date.future(1).toISOString().split("T")[0]);
   return faker.date.future(1).toISOString().split("T")[0];
 }
 
