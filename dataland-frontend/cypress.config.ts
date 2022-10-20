@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
-let returnemail: string;
-let returnpassword: string;
+let returnEmail: string;
+let returnPassword: string;
 export default defineConfig({
   numTestsKeptInMemory: 2,
   defaultCommandTimeout: 10000,
@@ -19,18 +19,18 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       on("task", {
         setEmail: (val: string) => {
-          return (returnemail = val);
+          return (returnEmail = val);
         },
         getEmail: () => {
-          return returnemail;
+          return returnEmail;
         },
       });
       on("task", {
         setPassword: (val: string) => {
-          return (returnpassword = val);
+          return (returnPassword = val);
         },
         getPassword: () => {
-          return returnpassword;
+          return returnPassword;
         },
       });
       return require("./tests/e2e/plugins/index.js")(on, config);
