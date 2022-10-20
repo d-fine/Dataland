@@ -11,8 +11,16 @@
             </td>
         </tr>
     </table>
-    <p><strong>This link will expire within  ${msg(linkExpirationFormatter(linkExpiration))}.</strong></p>
+
+    <p>Or copy and paste the URL into your browser.</p>
+    <a href="${msg(link)}"> ${msg(link)} </a>
+    <br>
+    <br>
+    <br>
+    <br>
     <p>If you didn''t create this account, just ignore this message.</p>
+
+
 </@layout.emailLayout>
 
 
