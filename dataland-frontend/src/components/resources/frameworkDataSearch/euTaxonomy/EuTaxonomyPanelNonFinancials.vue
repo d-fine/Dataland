@@ -108,7 +108,7 @@ export default {
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           this.getKeycloakPromise()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(
+        const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData1(
           this.dataID
         );
         this.dataSet = companyAssociatedData.data.data;
