@@ -14,8 +14,8 @@ describe("As a user I expect the admin console only to be reachable using admin-
   });
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
-    cy.visit("http://dataland-admin:6789/keycloak/admin")
-        .get("h1").should("exist").should("contain", "Sign in to your account");
+    cy.visit("http://dataland-admin:6789/keycloak/admin");
+    cy.get("h1").should("exist").should("contain", "Sign in to your account");
     cy.url().should("contain", "realms/master");
     cy.get("#username")
       .should("exist")
