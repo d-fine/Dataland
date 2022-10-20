@@ -23,6 +23,12 @@ describe("Component test for SchemaGenerator", () => {
           type: "string",
           enum: ["None", "Some", "Full"],
         },
+        itemProp: {
+          type: "string",
+          item: {
+            enum: ["None", "Some", "Full"],
+          },
+        },
       },
     };
     const dataStore = new SchemaGenerator(testSchema);
