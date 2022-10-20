@@ -1,5 +1,5 @@
 import { generateFixtureDataset } from "../FixtureUtils";
-import { generateLksgData } from "../lksg/LKSGdataFixtures";
+import { generateLksgData } from "./LksgDataFixtures";
 import fs from "fs";
 import { LksgData } from "../../../../build/clients/backend";
 
