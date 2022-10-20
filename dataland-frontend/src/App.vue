@@ -19,7 +19,7 @@ export default defineComponent({
     };
   },
   methods: {
-    initKeycloak(): void {
+    initKeycloak() {
       const initOptions = {
         realm: "datalandsecurity",
         url: "/keycloak",
@@ -37,7 +37,7 @@ export default defineComponent({
           this.keycloakAuthenticated = authenticated;
           return authenticated;
         })
-        .catch((error): void => {
+        .catch((error) => {
           console.log("Error in init keycloak ", error);
           this.keycloakAuthenticated = false;
         })
@@ -60,7 +60,7 @@ export default defineComponent({
       }),
     };
   },
-  created(): void {
+  created() {
     this.initKeycloak();
   },
 });

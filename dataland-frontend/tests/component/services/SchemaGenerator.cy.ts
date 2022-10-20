@@ -24,8 +24,8 @@ describe("Component test for SchemaGenerator", () => {
           enum: ["None", "Some", "Full"],
         },
         itemProp: {
-          type: "string",
-          item: {
+          type: "array",
+          items: {
             enum: ["None", "Some", "Full"],
           },
         },

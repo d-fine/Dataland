@@ -2,9 +2,8 @@ import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { mount, VueWrapper } from "@vue/test-utils";
 
 describe("Component test for UserProfileDropDown", () => {
-  const testImagePath = "https://url.to/testImage";
-
   it("Should display a profile picture if the keycloak authenticator provides one", (done) => {
+    const testImagePath = "https://url.to/testImage";
     const wrapper: VueWrapper = mount(UserProfileDropDown, {
       global: {
         provide: {
