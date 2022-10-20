@@ -1,0 +1,576 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "asset-management-insurance-company",
+			"companyAlternativeNames": [
+				"Kähler GmbH"
+			],
+			"headquarters": "Nord Merle",
+			"sector": "models",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "3sx1tj93hamxs10ovqb8"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "938pgwy"
+				}
+			],
+			"countryCode": "FO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://verbrannt-sessel.de/kreativ-atheismus.pdf",
+					"isGroupLevel": "NA",
+					"currency": "MNT"
+				},
+				"AnnualReport": {
+					"reference": "https://xn--erwnscht-schraube-42b.name/erprobt-kopf.pdf",
+					"currency": "MDL"
+				},
+				"ESEFReport": {
+					"reference": "http://nachweislich-abtreibung.name/bedrohlich-geographie.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "MOP"
+				}
+			},
+			"fiscalYearEnd": "2022-02-15",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Rosenauer, Greschner und Jucken",
+				"dataSource": {
+					"page": 608,
+					"report": "IntegratedReport"
+				}
+			},
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 73250,
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"AssetManagement",
+				"InsuranceOrReinsurance"
+			],
+			"eligibilityKpis": {
+				"AssetManagement": {
+					"banksAndIssuers": {
+						"quality": "NA"
+					},
+					"derivatives": {
+						"quality": "NA"
+					},
+					"investmentNonNfrd": {
+						"value": 0.131,
+						"dataSource": {
+							"page": 772,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "bypass multi-byte panel"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.5301,
+						"dataSource": {
+							"page": 15,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "hack redundant firewall"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.086,
+						"dataSource": {
+							"page": 1036,
+							"report": "ESEFReport"
+						},
+						"quality": "Estimated",
+						"comment": "program online sensor"
+					}
+				},
+				"InsuranceOrReinsurance": {
+					"banksAndIssuers": {
+						"value": 0.4983,
+						"dataSource": {
+							"page": 1140,
+							"report": "AnnualReport"
+						},
+						"quality": "Audited",
+						"comment": "override online interface"
+					},
+					"derivatives": {
+						"value": 0.1429,
+						"dataSource": {
+							"page": 152,
+							"report": "ESEFReport"
+						},
+						"quality": "Audited",
+						"comment": "parse auxiliary interface"
+					},
+					"investmentNonNfrd": {
+						"value": 0.3658,
+						"dataSource": {
+							"page": 1000,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "bypass virtual bandwidth"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.3916,
+						"dataSource": {
+							"page": 642,
+							"report": "AnnualReport"
+						},
+						"quality": "Estimated",
+						"comment": "transmit solid state card"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.7035,
+						"dataSource": {
+							"page": 144,
+							"report": "ESEFReport"
+						},
+						"quality": "Reported",
+						"comment": "compress primary program"
+					}
+				}
+			},
+			"insuranceKpis": {
+				"taxonomyEligibleNonLifeInsuranceActivities": {
+					"value": 0.2192,
+					"quality": "Estimated"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "credit-institution-dual-field-submission",
+			"companyAlternativeNames": [
+				"Rosenauer KG",
+				"Schwandke-Schuldt"
+			],
+			"headquarters": "Gruningscheid",
+			"sector": "networks",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "muauqajat"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "gthmkzyb3wzf"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "hyrcp3vmuz"
+				}
+			],
+			"countryCode": "SV",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "http://herzlich-monotheismus.com/fett-biographie.pdf",
+					"reportDate": "2022-04-15",
+					"currency": "XBB"
+				},
+				"ESEFReport": {
+					"reference": "http://vielseitig-nomen.org/pomp%C3%B6s-denker.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-04-19",
+					"currency": "CDF"
+				}
+			},
+			"fiscalYearDeviation": "Yes",
+			"fiscalYearEnd": "2021-12-07",
+			"assurance": {
+				"assurance": "None"
+			},
+			"numberOfEmployees": 53599,
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"CreditInstitution": {
+					"banksAndIssuers": {
+						"value": 0.0263,
+						"dataSource": {
+							"page": 588,
+							"report": "AnnualReport"
+						},
+						"quality": "Audited",
+						"comment": "back up virtual firewall"
+					},
+					"derivatives": {
+						"value": 0.2138,
+						"dataSource": {
+							"page": 1033,
+							"report": "AnnualReport"
+						},
+						"quality": "Reported",
+						"comment": "index wireless sensor"
+					},
+					"investmentNonNfrd": {
+						"value": 0.8068,
+						"dataSource": {
+							"page": 547,
+							"report": "AnnualReport"
+						},
+						"quality": "Reported",
+						"comment": "transmit haptic bandwidth"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.5064,
+						"dataSource": {
+							"page": 562,
+							"report": "AnnualReport"
+						},
+						"quality": "Audited",
+						"comment": "back up virtual pixel"
+					},
+					"taxonomyNonEligibleActivity": {
+						"quality": "NA"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"interbankLoans": {
+					"value": 0.9475,
+					"quality": "Estimated"
+				},
+				"tradingPortfolio": {
+					"value": 0.4262,
+					"dataSource": {
+						"page": 242,
+						"report": "ESEFReport"
+					},
+					"quality": "Audited",
+					"comment": "compress primary panel"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "credit-institution-single-field-submission",
+			"companyAlternativeNames": [
+				"Bruckmann-Reinke"
+			],
+			"headquarters": "Süd Mathildestadt",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "z1v4lzu96"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "9az0n0e5ghwb"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "knhd73ivspi7r9vp6a82"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "4i2j5fku47"
+				}
+			],
+			"countryCode": "LS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "http://galant-sikhreligion.org/dynamisch-feminismus.pdf",
+					"reportDate": "2022-04-08",
+					"currency": "MDL"
+				},
+				"SustainabilityReport": {
+					"reference": "https://korrekt-ellenbogen.ch/relativ-frucht.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2021-12-15",
+					"currency": "NAD"
+				},
+				"AnnualReport": {
+					"reference": "https://xn--unverflscht-neutron-lwb.net/l%C3%A4ssig-galaxie.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-03-16",
+					"currency": "PKR"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Priemer, Kleinsteuber und Reuber",
+				"dataSource": {
+					"page": 949,
+					"report": "ESEFReport"
+				}
+			},
+			"scopeOfEntities": "Yes",
+			"financialServicesTypes": [
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"CreditInstitution": {
+					"banksAndIssuers": {
+						"value": 0.1583,
+						"quality": "Incomplete"
+					},
+					"derivatives": {
+						"value": 0.7011,
+						"dataSource": {
+							"page": 153,
+							"report": "AnnualReport"
+						},
+						"quality": "Audited",
+						"comment": "hack mobile interface"
+					},
+					"investmentNonNfrd": {
+						"value": 0.6547,
+						"dataSource": {
+							"page": 171,
+							"report": "AnnualReport"
+						},
+						"quality": "Estimated",
+						"comment": "quantify virtual transmitter"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.9997,
+						"dataSource": {
+							"page": 566,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Reported",
+						"comment": "input auxiliary card"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.5784,
+						"dataSource": {
+							"page": 29,
+							"report": "ESEFReport"
+						},
+						"quality": "Estimated",
+						"comment": "bypass wireless transmitter"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"tradingPortfolioAndInterbankLoans": {
+					"value": 0.4402,
+					"dataSource": {
+						"page": 350,
+						"report": "AnnualReport"
+					},
+					"quality": "Reported",
+					"comment": "hack solid state protocol"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "insurance-company",
+			"companyAlternativeNames": [
+				"Linke GmbH & Co. KG",
+				"Schuff-Dingelstedt",
+				"Tilgner AG",
+				"Greb UG"
+			],
+			"headquarters": "Saraland",
+			"sector": "interfaces",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "qi5pzodap"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "b2l7sxcrtu9t"
+				}
+			],
+			"countryCode": "BQ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "http://bedrohlich-zeit.de/wertsch%C3%A4tzend-hinduismus.pdf",
+					"isGroupLevel": "NA",
+					"currency": "YER"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Goller-Michallek",
+				"dataSource": {
+					"page": 1038,
+					"report": "SustainabilityReport"
+				}
+			},
+			"scopeOfEntities": "NA",
+			"numberOfEmployees": 17285,
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"InsuranceOrReinsurance"
+			],
+			"eligibilityKpis": {
+				"InsuranceOrReinsurance": {
+					"banksAndIssuers": {
+						"value": 0.4329,
+						"dataSource": {
+							"page": 639,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Reported",
+						"comment": "generate cross-platform monitor"
+					},
+					"derivatives": {
+						"value": 0.9485,
+						"quality": "Estimated"
+					},
+					"investmentNonNfrd": {
+						"value": 0.192,
+						"dataSource": {
+							"page": 1084,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Audited",
+						"comment": "synthesize solid state hard drive"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.1826,
+						"quality": "Estimated"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.7113,
+						"dataSource": {
+							"page": 12,
+							"report": "SustainabilityReport"
+						},
+						"quality": "Audited",
+						"comment": "parse optical card"
+					}
+				}
+			},
+			"insuranceKpis": {
+				"taxonomyEligibleNonLifeInsuranceActivities": {
+					"quality": "NA"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "asset-management-company",
+			"companyAlternativeNames": [
+				"Leist-Losch",
+				"Lausecker-Steinkamp"
+			],
+			"headquarters": "Schumacherland",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "185mp9z6o"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "z4mqoj6qnq9s"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "1kw2iq9gqnq8xdre92tx"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "zuaofd0ch4"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "4vmj66v"
+				}
+			],
+			"countryCode": "BV",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "https://eloquent-weizen.de/wach-philosophie.pdf",
+					"isGroupLevel": "NA",
+					"currency": "TWD"
+				},
+				"SustainabilityReport": {
+					"reference": "https://tapfer-technologie.org/y-f%C3%B6rmig-treppe.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-08-20",
+					"currency": "AMD"
+				},
+				"IntegratedReport": {
+					"reference": "http://wohlwollend-magen.ch/reizend-brot.pdf",
+					"isGroupLevel": "NA",
+					"currency": "GHS"
+				},
+				"ESEFReport": {
+					"reference": "http://klar-vieh.ch/fresh-diktatur.pdf",
+					"currency": "BND"
+				}
+			},
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
+			"financialServicesTypes": [
+				"AssetManagement"
+			],
+			"eligibilityKpis": {
+				"AssetManagement": {
+					"banksAndIssuers": {
+						"quality": "NA"
+					},
+					"derivatives": {
+						"value": 0.7847,
+						"dataSource": {
+							"page": 952,
+							"report": "ESEFReport"
+						},
+						"quality": "Reported",
+						"comment": "bypass mobile panel"
+					},
+					"investmentNonNfrd": {
+						"value": 0.2412,
+						"quality": "Estimated"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.8461,
+						"dataSource": {
+							"page": 425,
+							"report": "ESEFReport"
+						},
+						"quality": "Reported",
+						"comment": "parse 1080p system"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.3058,
+						"dataSource": {
+							"page": 911,
+							"report": "IntegratedReport"
+						},
+						"quality": "Incomplete",
+						"comment": "parse solid state bus"
+					}
+				}
+			}
+		}
+	}
+]
