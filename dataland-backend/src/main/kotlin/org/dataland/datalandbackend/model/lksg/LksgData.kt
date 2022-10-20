@@ -7,17 +7,17 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Fields of the questionnaire for the Lksg framework
+ * Fields of the questionnaire for the LKSG framework
  */
 @DataType("lksg")
 data class LksgData(
     val dataDate: LocalDate? = null,
 
-    val LksgInScope: YesNo? = null,
+    val lksgInScope: YesNo? = null,
 
     val companyLegalForm: String? = null,
 
-    val VATidentificationNumber: String? = null,
+    val vatIdentificationNumber: String? = null,
 
     val numberOfEmployees: BigDecimal? = null,
 
@@ -85,39 +85,39 @@ data class LksgData(
 
     val fixedHourlyWages: YesNo? = null,
 
-    val OSHmonitoring: YesNo? = null,
+    val oshMonitoring: YesNo? = null,
 
-    val OSHpolicy: YesNo? = null,
+    val oshPolicy: YesNo? = null,
 
-    val OSHpolicyPersonalProtectiveEquipment: YesNo? = null,
+    val oshPolicyPersonalProtectiveEquipment: YesNo? = null,
 
-    val OSHpolicyMachineSafety: YesNo? = null,
+    val oshPolicyMachineSafety: YesNo? = null,
 
-    val OSHpolicyDisasterBehaviouralResponse: YesNo? = null,
+    val oshPolicyDisasterBehaviouralResponse: YesNo? = null,
 
-    val OSHpolicyAccidentsBehaviouralResponse: YesNo? = null,
+    val oshPolicyAccidentsBehaviouralResponse: YesNo? = null,
 
-    val OSHpolicyWorkplaceErgonomics: YesNo? = null,
+    val oshPolicyWorkplaceErgonomics: YesNo? = null,
 
-    val OSHpolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo? = null,
+    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo? = null,
 
-    val OSHpolicyFireProtection: YesNo? = null,
+    val oshPolicyFireProtection: YesNo? = null,
 
-    val OSHpolicyWorkingHours: YesNo? = null,
+    val oshPolicyWorkingHours: YesNo? = null,
 
-    val OSHpolicyTrainingAddressed: YesNo? = null,
+    val oshPolicyTrainingAddressed: YesNo? = null,
 
-    val OSHpolicyTraining: YesNo? = null,
+    val oshPolicyTraining: YesNo? = null,
 
-    val OSHmanagementSystem: YesNo? = null,
+    val oshManagementSystem: YesNo? = null,
 
-    val OSHmanagementSystemInternationalCertification: YesNo? = null,
+    val oshManagementSystemInternationalCertification: YesNo? = null,
 
-    val OSHmanagementSystemNationalCertification: YesNo? = null,
+    val oshManagementSystemNationalCertification: YesNo? = null,
 
     val workplaceAccidentsUnder10: YesNo? = null,
 
-    val OSHtraining: YesNo? = null,
+    val oshTraining: YesNo? = null,
 
     val freedomOfAssociation: YesNo? = null,
 
@@ -189,27 +189,27 @@ data class LksgData(
 
     val hazardousAndOtherWasteImport: YesNo? = null,
 
-    val ISO26000: YesNo? = null,
+    val iso26000: YesNo? = null,
 
-    val SA8000certification: YesNo? = null,
+    val sa8000Certification: YesNo? = null,
 
-    val SMETAsocialAuditConcept: YesNo? = null,
+    val smetaSocialAuditConcept: YesNo? = null,
 
     val betterWorkProgramCertificate: YesNo? = null,
 
-    val ISO45001certification: YesNo? = null,
+    val iso45001Certification: YesNo? = null,
 
-    val ISO14000certification: YesNo? = null,
+    val iso14000Certification: YesNo? = null,
 
-    val EMAScertification: YesNo? = null,
+    val emasCertification: YesNo? = null,
 
-    val ISO37001certification: YesNo? = null,
+    val iso37001Certification: YesNo? = null,
 
-    val ISO37301certification: YesNo? = null,
+    val iso37301Certification: YesNo? = null,
 
     val riskManagementSystemCertification: YesNo? = null,
 
-    val amforiBSCIAuditReport: YesNo? = null,
+    val amforiBsciAuditReport: YesNo? = null,
 
     val initiativeClauseSocialCertification: YesNo? = null,
 
