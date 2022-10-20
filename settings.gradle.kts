@@ -10,7 +10,7 @@ include(
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.11")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-ui:1.6.12")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.1")
             library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.1")
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             library("okhttp", "com.squareup.okhttp3:okhttp:4.10.0")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
-            library("skyminder-client", "org.dataland:skyminder-client:0.1.12")
+            library("skyminder-client", "org.dataland:skyminder-client:0.1.13")
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.8")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.19.0")
@@ -43,7 +43,7 @@ dependencyResolutionManagement {
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4")
             library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.2")
+            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.3")
 
             library("database-h2", "com.h2database:h2:2.1.214")
             library("database-postgres", "org.postgresql:postgresql:42.5.0")
