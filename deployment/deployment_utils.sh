@@ -31,7 +31,7 @@ build_directories() {
 
   mkdir -p $target_dir/jar;
   mkdir -p $target_dir/dataland-keycloak/dataland_theme/login;
-  mkdir -p $target_dir/dataland-keycloak/dataland_theme/email;
+  mkdir -p $target_dir/dataland-keycloak/dataland_theme;
   mkdir -p $target_dir/dataland-keycloak/users;
 
   envsubst < environments/.env.template > "$target_dir"/.env
@@ -50,7 +50,7 @@ build_directories() {
   cp ./dataland-keycloak/start_keycloak.sh "$target_dir"/dataland-keycloak/start_keycloak.sh
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
   cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
-   cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme/email
+  cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme
   cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
 
   cp ./deployment/initialize_keycloak.sh "$target_dir"/dataland-keycloak
