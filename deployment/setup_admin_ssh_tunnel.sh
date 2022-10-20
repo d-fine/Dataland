@@ -6,7 +6,7 @@ source ./deployment/deployment_utils.sh
 setup_ssh
 
 sudo echo "127.0.0.1 dataland-admin" | sudo tee -a /etc/hosts
-ssh -L 6789:localhost:6789 -L 5433:localhost:5433 -L 5434:localhost:5434 -N -f ubuntu@NO"$TARGETSERVER_URL"
+ssh -L 6789:localhost:6789 -L 5433:localhost:5433 -L 5434:localhost:5434 -N -f ubuntu@"$TARGETSERVER_URL"
 
 wait_for_health "http://dataland-admin:6789/health" "Tunneled Admin Server"
 
