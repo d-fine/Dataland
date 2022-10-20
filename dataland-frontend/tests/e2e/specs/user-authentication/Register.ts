@@ -41,7 +41,7 @@ describe("As a user I want to be able to register for an account and be able to 
   });
 
   it("Checks that the admin console is working and a newly registered user can be verified", () => {
-    cy.task("getEmail").then((returnemail) => {
+    cy.task("getEmail").then((returnEmail) => {
       cy.visit("http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users");
       cy.get("h1").should("exist").should("contain", "Sign in to your account");
       cy.url().should("contain", "realms/master");
@@ -56,19 +56,19 @@ describe("As a user I want to be able to register for an account and be able to 
         .click();
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
-        .type(returnemail as string, { force: true })
+        .type(returnEmail as string, { force: true })
         .type("{enter}");
       cy.get("table");
-      cy.contains("td", returnemail as string).click();
+      cy.contains("td", returnEmail as string).click();
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
     });
   });
   it("Checks that one can login to the newly registered account", () => {
     cy.visit("/");
-    cy.task("getEmail").then((returnemail) => {
-      cy.task("getPassword").then((returnpassword) => {
-        login(returnemail as string, returnpassword as string);
+    cy.task("getEmail").then((returnEmail) => {
+      cy.task("getPassword").then((returnPassword) => {
+        login(returnEmail as string, returnPassword as string);
       });
     });
     logout();
