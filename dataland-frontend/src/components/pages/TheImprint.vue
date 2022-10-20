@@ -43,7 +43,6 @@
     </div>
   </div>
 </template>
->
 
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";

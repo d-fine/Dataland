@@ -8,20 +8,20 @@ export type ExecutionEnvironment = "developmentLocal" | "development" | "preview
 export type DataEnvironment = "fakeFixtures" | "realData";
 
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
-  const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment; // TODO()
-  const dataEnvironment = Cypress.env("DATA_ENVIRONMENT") as DataEnvironment; // TODO()
+  const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment;
+  const dataEnvironment = Cypress.env("DATA_ENVIRONMENT") as DataEnvironment;
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
-    return describe(`${name} - Disabled`, (): void => {
-      it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, (): void => {
+    return describe(`${name} - Disabled`, () => {
+      it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed
       });
     });
   }
 
   if (execConfig.dataEnvironments.indexOf(dataEnvironment) === -1) {
-    return describe(`${name} - Disabled`, (): void => {
-      it(`Has been disabled because the data environment ${dataEnvironment} has not been allowed`, (): void => {
+    return describe(`${name} - Disabled`, () => {
+      it(`Has been disabled because the data environment ${dataEnvironment} has not been allowed`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed
       });
     });

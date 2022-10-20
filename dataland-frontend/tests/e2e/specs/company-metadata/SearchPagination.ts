@@ -1,5 +1,5 @@
-describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", (): void => {
-  beforeEach((): void => {
+describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
+  beforeEach(() => {
     cy.ensureLoggedIn();
   });
 
@@ -15,7 +15,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
     cy.get("span[class=d-page-display]").should("contain.text", "No results");
   });
 
-  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", (): void => {
+  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
     cy.visitAndCheckAppMount("/companies");
     const inputValue = "a";
     cy.get("input[name=search_bar_top]")

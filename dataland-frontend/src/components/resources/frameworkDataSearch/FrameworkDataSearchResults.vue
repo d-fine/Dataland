@@ -130,6 +130,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style>
 #search-result-framework-data tr:hover {
   cursor: pointer;

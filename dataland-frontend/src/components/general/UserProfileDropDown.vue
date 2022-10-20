@@ -49,8 +49,8 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       authenticated: inject<boolean>("authenticated"),
-      menu: menu,
-      toggleDropdownMenu: toggleDropdownMenu,
+      menu,
+      toggleDropdownMenu,
     };
   },
 

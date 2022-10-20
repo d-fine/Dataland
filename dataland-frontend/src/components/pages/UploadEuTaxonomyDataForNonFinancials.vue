@@ -15,6 +15,7 @@
     </TheContent>
   </AuthenticationWrapper>
 </template>
+
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";

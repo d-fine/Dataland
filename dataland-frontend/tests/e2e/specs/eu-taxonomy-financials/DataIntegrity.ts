@@ -16,14 +16,14 @@ describeIf(
     executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
-  function (): void {
-    beforeEach((): void => {
+  function () {
+    beforeEach(() => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
-    before(function (): void {
+    before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
@@ -73,7 +73,7 @@ describeIf(
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
-    it("Create a CreditInstitution (combined field submission)", (): void => {
+    it("Create a CreditInstitution (combined field submission)", () => {
       const testData = getPreparedFixture("credit-institution-single-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
@@ -84,7 +84,7 @@ describeIf(
       cy.get("body").should("not.contain", "On demand interbank loans");
     });
 
-    it("Create a CreditInstitution (individual field submission)", (): void => {
+    it("Create a CreditInstitution (individual field submission)", () => {
       const testData = getPreparedFixture("credit-institution-dual-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
@@ -97,7 +97,7 @@ describeIf(
       cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
     });
 
-    it("Create an insurance company", (): void => {
+    it("Create an insurance company", () => {
       const testData = getPreparedFixture("insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
@@ -105,7 +105,7 @@ describeIf(
       cy.get("body").should("not.contain", "demand interbank loans");
     });
 
-    it("Create an Asset Manager", (): void => {
+    it("Create an Asset Manager", () => {
       const testData = getPreparedFixture("asset-management-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
@@ -114,7 +114,7 @@ describeIf(
       cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
     });
 
-    it("Create a Company that is Asset Manager and Insurance", (): void => {
+    it("Create a Company that is Asset Manager and Insurance", () => {
       const testData = getPreparedFixture("asset-management-insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);

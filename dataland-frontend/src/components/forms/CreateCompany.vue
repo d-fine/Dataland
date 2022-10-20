@@ -74,6 +74,7 @@ import Card from "primevue/card";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { CompanyInformation } from "@clients/backend";
 
 const companyInformation = backend.components.schemas.CompanyInformation;
 const companyIdentifier = backend.components.schemas.CompanyIdentifier;
@@ -98,7 +99,7 @@ export default defineComponent({
 
   data: () => ({
     postCompanyProcessed: false,
-    model: {},
+    model: {} as CompanyInformation,
     companyInformationSchema: companyInformationSchemaGenerator.generate(),
     companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
     postCompanyResponse: null,
@@ -127,6 +128,4 @@ export default defineComponent({
     },
   },
 });
-
-//export default createCompany;
 </script>

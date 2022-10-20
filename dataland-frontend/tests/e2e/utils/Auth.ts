@@ -8,7 +8,7 @@ export function logout(): void {
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()
     .url()
-    .should("eq", `${getBaseUrl()}/`)
+    .should("eq", getBaseUrl() + "/")
     .get("button[name='login_dataland_button']")
     .should("exist")
     .should("be.visible");
@@ -30,18 +30,20 @@ export function login(username = reader_name, password = reader_pw): void {
     .click()
 
     .url()
-    .should("eq", `${getBaseUrl()}/companies`);
+    .should("eq", getBaseUrl() + "/companies");
 }
 
 export function ensureLoggedIn(username?: string, password?: string): void {
   cy.session(
     [username, password],
-    (): void => {
+    () => {
       login(username, password);
     },
     {
-      validate: (): void => {
-        cy.visit("/").url().should("eq", `${getBaseUrl()}/companies`);
+      validate: () => {
+        cy.visit("/")
+          .url()
+          .should("eq", getBaseUrl() + "/companies");
       },
     }
   );

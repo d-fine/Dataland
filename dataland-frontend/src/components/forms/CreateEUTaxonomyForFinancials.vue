@@ -116,6 +116,7 @@
     </template>
   </Card>
 </template>
+
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
@@ -147,9 +148,8 @@ export default defineComponent({
       "w-full": true,
     },
     postEuTaxonomyDataForFinancialsProcessed: false,
-    formInputsModel: {},
     messageCount: 0,
-
+    formInputsModel: {},
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
   }),

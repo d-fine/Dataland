@@ -8,16 +8,10 @@ import Keycloak from "keycloak-js";
 import { computed, defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
-export interface AppData {
-  keycloak?: Keycloak;
-  keycloakPromise?: Promise<Keycloak>;
-  keycloakAuthenticated: boolean;
-}
-
 export default defineComponent({
   name: "app",
   components: { DatalandFooter },
-  data(): AppData {
+  data() {
     return {
       keycloak: undefined,
       keycloakPromise: undefined,

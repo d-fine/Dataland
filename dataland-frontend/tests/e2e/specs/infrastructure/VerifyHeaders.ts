@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl } from "@e2e/utils/Cypress";
 
-describe("As a developer, I want to ensure that security relevant headers are set.", (): void => {
+describe("As a developer, I want to ensure that security relevant headers are set.", () => {
   function checkCommonHeaders(response: Cypress.Response<unknown>): void {
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
     expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
@@ -25,7 +25,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
       executionEnvironments: ["developmentLocal"],
       dataEnvironments: ["realData", "fakeFixtures"],
     },
-    (): void => {
+    () => {
       checkCommonCspHeaders(
         "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
           "'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; " +
@@ -40,7 +40,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
       executionEnvironments: ["development", "preview"],
       dataEnvironments: ["realData", "fakeFixtures"],
     },
-    (): void => {
+    () => {
       checkCommonCspHeaders(
         "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
           "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
@@ -50,14 +50,14 @@ describe("As a developer, I want to ensure that security relevant headers are se
     }
   );
 
-  it("test for frontend response", (): void => {
+  it("test for frontend response", () => {
     cy.request("GET", `${getBaseUrl()}/`).then((response): void => {
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
   });
 
-  it("test for backend response", (): void => {
+  it("test for backend response", () => {
     cy.request("GET", `${getBaseUrl()}/api/actuator/health`).then((response): void => {
       expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
       expect(response.headers).to.have.property(
@@ -69,7 +69,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
     });
   });
 
-  it("test for swagger ui response", (): void => {
+  it("test for swagger ui response", () => {
     cy.request("GET", `${getBaseUrl()}/api/swagger-ui/index.html`).then((response): void => {
       expect(response.headers).to.have.property(
         "content-security-policy",
@@ -81,7 +81,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
     });
   });
 
-  it("test for keycloak response", (): void => {
+  it("test for keycloak response", () => {
     cy.request("GET", `${getBaseUrl()}/keycloak/realms/datalandsecurity`).then((response): void => {
       checkCommonHeaders(response);
       assert.equal(response.headers["x-frame-options"].toString().toLowerCase(), "sameorigin");

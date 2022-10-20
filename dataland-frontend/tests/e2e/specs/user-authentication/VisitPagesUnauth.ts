@@ -1,4 +1,4 @@
-describe("As a user I expect to be redirected to the login page if I am unauthenticated", (): void => {
+describe("As a user I expect to be redirected to the login page if I am unauthenticated", () => {
   const pages = [
     "/companies/upload",
     "/companies-only-search",
@@ -9,8 +9,8 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
   ];
 
-  pages.forEach((page): void => {
-    it(`Test Login Redirect for ${page}`, (): void => {
+  pages.forEach((page) => {
+    it(`Test Login Redirect for ${page}`, () => {
       cy.visit(page);
       cy.get("input[name=login]").should("exist").url().should("contain", "keycloak");
     });
