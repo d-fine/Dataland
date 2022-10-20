@@ -72,7 +72,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:14.5
+    image: postgres:15.0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -114,7 +114,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:18.9.0
+    image: node:18.11.0
     networks:
       - internal
     volumes:
@@ -136,7 +136,7 @@ services:
       - internal
   skyminder-dummyserver:
     profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.12
+    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.13
     networks:
       - internal
       - external
@@ -185,7 +185,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:14.5
+    image: postgres:15.0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
