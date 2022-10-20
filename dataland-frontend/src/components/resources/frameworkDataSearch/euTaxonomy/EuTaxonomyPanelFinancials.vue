@@ -139,11 +139,11 @@ export default defineComponent({
     },
   },
   mounted() {
-    void this.getCompanyEUDataset();
+    void this.getCompanyEuDataset();
   },
   watch: {
     async dataID() {
-      await this.getCompanyEUDataset();
+      await this.getCompanyEuDataset();
     },
   },
   setup() {
@@ -152,7 +152,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async getCompanyEUDataset() {
+    async getCompanyEuDataset() {
       try {
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
