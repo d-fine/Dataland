@@ -74,8 +74,7 @@ if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
 fi
 
 echo "Starting docker compose stack."
-ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\"
-                                "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build" "
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
