@@ -14,7 +14,7 @@ class InvalidInputApiException(
 
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
-            errorCode = "invalid-input",
+            errorType = "invalid-input",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.BAD_REQUEST

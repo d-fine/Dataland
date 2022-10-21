@@ -21,7 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException
 @Order(1)
 @ControllerAdvice
 class KnownErrorControllerAdvice(
-    @Value("\${dataland.trace:false}")
+    @Value("\${dataland.expose-error-stack-trace-to-api:false}")
     private val trace: Boolean
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -41,7 +41,7 @@ class KnownErrorControllerAdvice(
     fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
-                errorCode = "message-not-readable",
+                errorType = "message-not-readable",
                 summary = "Message not readable",
                 message = ex.message ?: "Message not readable",
                 httpStatus = HttpStatus.BAD_REQUEST
@@ -59,7 +59,7 @@ class KnownErrorControllerAdvice(
     ): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
-                errorCode = "access-denied",
+                errorType = "access-denied",
                 summary = "Access Denied",
                 message = "Access to this resource has been denied. " +
                     "Please contact support, if you belive this to be an error",
@@ -76,7 +76,7 @@ class KnownErrorControllerAdvice(
     fun handleNoHandlerFoundException(ex: NoHandlerFoundException): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
-                errorCode = "route-not-found",
+                errorType = "route-not-found",
                 summary = "Route not found",
                 message = "The requested route ${ex.requestURL} could not be located",
                 httpStatus = HttpStatus.NOT_FOUND
@@ -93,7 +93,7 @@ class KnownErrorControllerAdvice(
     fun handleMethodNotSupportException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
-                errorCode = "method-not-allowed",
+                errorType = "method-not-allowed",
                 summary = "Method ${ex.method} not allowed.",
                 message = "The HTTP-Method ${ex.method} is not allowed. Please refer to the API documentation " +
                     "for a list of supported HTTP methods",

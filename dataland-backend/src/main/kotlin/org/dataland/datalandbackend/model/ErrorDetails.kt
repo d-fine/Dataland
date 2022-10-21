@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus
  * Describes a single error
  */
 data class ErrorDetails(
-    val errorCode: String,
+    val errorType: String,
 
     val summary: String,
 
@@ -25,6 +25,7 @@ data class ErrorDetails(
     val httpStatus: HttpStatus,
 
     @Hidden
+    @JsonProperty("stackTrace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     val stackTrace: String? = null
 )

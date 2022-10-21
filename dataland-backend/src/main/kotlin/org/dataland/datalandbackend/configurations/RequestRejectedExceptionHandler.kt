@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
  */
 @Configuration
 class RequestRejectedExceptionHandler(
-    @Value("\${dataland.trace:false}")
+    @Value("\${dataland.expose-error-stack-trace-to-api:false}")
     private val trace: Boolean,
     @Autowired
     private val objectMapper: ObjectMapper
@@ -33,7 +33,7 @@ class RequestRejectedExceptionHandler(
         val responseObject = ErrorResponse(
             errors = listOf(
                 ErrorDetails(
-                    errorCode = "request-rejected",
+                    errorType = "request-rejected",
                     summary = "Your request has been rejected",
                     message = ex.message ?: "Your request has been rejected by our internal firewall",
                     httpStatus = HttpStatus.BAD_REQUEST,

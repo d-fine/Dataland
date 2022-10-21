@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @Order
 @ControllerAdvice
 class UnknownErrorControllerAdvice(
-    @Value("\${dataland.trace:false}")
+    @Value("\${dataland.expose-error-stack-trace-to-api:false}")
     val trace: Boolean
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -29,7 +29,7 @@ class UnknownErrorControllerAdvice(
     @ExceptionHandler(Exception::class)
     fun handleUnknownException(ex: Exception): ResponseEntity<ErrorResponse> {
         val preparedError = ErrorDetails(
-            errorCode = "unknown-internal-server-error",
+            errorType = "unknown-internal-server-error",
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
             summary = "An internal server error occurred",
             message = "An unexpected internal server error occurred. Please contact support, if this error persists",

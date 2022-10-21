@@ -14,7 +14,7 @@ class ResourceNotFoundApiException(
 ) : SingleApiException(message, cause) {
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
-            errorCode = "resource-not-found",
+            errorType = "resource-not-found",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.NOT_FOUND

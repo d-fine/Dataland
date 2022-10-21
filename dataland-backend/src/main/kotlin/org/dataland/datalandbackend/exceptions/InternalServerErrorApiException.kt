@@ -23,7 +23,7 @@ class InternalServerErrorApiException(
 
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
-            errorCode = "internal-server-error",
+            errorType = "internal-server-error",
             summary = publicSummary,
             message = publicMessage,
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
