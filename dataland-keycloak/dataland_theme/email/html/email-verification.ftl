@@ -18,7 +18,7 @@
     <br>
     <br>
     <br>
-    <p>If you didn''t create this account, just ignore this message.</p>
+    <p>If you didn't create this account, just ignore this message.</p>
 
 
 </@layout.emailLayout>
