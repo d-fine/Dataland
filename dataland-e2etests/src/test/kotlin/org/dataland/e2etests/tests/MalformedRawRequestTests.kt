@@ -130,4 +130,24 @@ class MalformedRawRequestTests {
         assertEquals(shouldContainStackTrace, containsStackTrace)
         assertEquals(404, response.code)
     }
+
+    @Test
+    fun `sending a request with a malformed dataType should result in a 400 error`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
+        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
+            .toHttpUrl().newBuilder()
+            .addPathSegment("companies")
+            .addQueryParameter("dataTypes", "this-datatype-does-not-exist")
+            .build()
+        val request = Request.Builder()
+            .url(endpointUrl)
+            .get()
+            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+            .build()
+
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() ?: ""
+        assertTrue(responseBodyString.contains("invalid-input"))
+        assertEquals(400, response.code)
+    }
 }

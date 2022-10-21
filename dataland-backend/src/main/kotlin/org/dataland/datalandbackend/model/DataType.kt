@@ -27,7 +27,7 @@ data class DataType @JsonCreator constructor(
         fun valueOf(input: String): DataType {
             val str = allowedDataTypes.find {
                 it.equals(input, ignoreCase = true)
-            } ?: ""
+            } ?: input
             return DataType(str)
         }
 
