@@ -48,6 +48,7 @@ scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 ssh ubuntu@"$target_server_url" "mv $keycloak_backup_dir/*-users-*.json $keycloak_user_dir"
 
 echo "Set up Keycloak from scratch."
+echo $KEYCLOAK_FRONTEND_URL
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
                                  export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
                                  export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
