@@ -36,7 +36,7 @@ class MalformedRawRequestTests {
     }
 
     @Test
-    fun `sending a request with additional non requested json-properties should result in a 400 response`() {
+    fun `sending a request with additional non requested json properties should result in a 400 response`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
