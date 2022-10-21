@@ -41,7 +41,7 @@ ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir &&
                                  cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
 
 echo "Exporting users and shutting down keycloak."
-scp ubuntu@"$target_server_url" ./deployment/shut_down_keycloak.sh ubuntu@"$target_server_url":"$location/dataland-keycloak"
+scp ubuntu@"$target_server_url" ./deployment/shut_down_keycloak.sh "ubuntu@$target_server_url:$location/dataland-keycloak"
 ssh ubuntu@"$target_server_url" "\"$location\"/dataland-keycloak/shut_down_keycloak.sh \"$location\""
 ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir &&
                                  cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
