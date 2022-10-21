@@ -12,8 +12,9 @@ COPY templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.t
 COPY dhparam.pem /certs/dhparam.pem
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY scripts /scripts
-COPY custom_errors.html /var/wwww/html/custom_errors.html
-COPY robots.txt /var/wwww/html/robots.txt
+COPY custom_errors.html /var/www/html/custom_errors.html
+COPY api_errors.json /var/www/html/api_errors.json
+COPY robots.txt /var/www/html/robots.txt
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 

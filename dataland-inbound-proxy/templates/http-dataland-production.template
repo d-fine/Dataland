@@ -26,6 +26,7 @@ server {
     location /api {
       proxy_pass http://backend:8080/api;
       include utils/proxy.conf;
+      include utils/apiErrors.conf;
     }
 
     location /edc/api/dataland/eurodat {

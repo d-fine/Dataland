@@ -35,6 +35,7 @@ server {
     location /api {
       proxy_pass http://host.docker.internal:8080/api;
       include utils/proxy.conf;
+      include utils/apiErrors.conf;
     }
 
     location /edc/api/dataland/eurodat {

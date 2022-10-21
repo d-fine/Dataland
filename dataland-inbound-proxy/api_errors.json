@@ -1,0 +1,10 @@
+{
+  "errors": [
+    {
+      "httpStatus": <!--# echo var="status" default="" -->,
+      "errorType": "proxy-error-<!--# echo var="status" default="" -->",
+      "summary": "<!--# echo var="status_message_rfc9110" default="" -->",
+      "message": "We encountered an error during the handling of your request in our proxy: <!--# echo var="status_message_rfc9110" default="" -->"
+    }
+  ]
+}
