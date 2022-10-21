@@ -86,9 +86,9 @@ export default defineComponent({
     },
     gotoUserSettings() {
       assertDefined(this.getKeycloakPromise)()
-        .then(async (keycloak) => {
+        .then((keycloak) => {
           if (keycloak.authenticated) {
-            await keycloak.accountManagement();
+            return keycloak.accountManagement();
           }
         })
         .catch((error) => console.log(error));

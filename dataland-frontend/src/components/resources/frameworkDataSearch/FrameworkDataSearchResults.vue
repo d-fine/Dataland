@@ -113,8 +113,8 @@ export default defineComponent({
     buildLocationString(headquarters: string, countryCode: string) {
       return headquarters + ", " + countryCode;
     },
-    async goToData(event: { data: DataSearchStoredCompany }) {
-      await this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
+    goToData(event: { data: DataSearchStoredCompany }) {
+      return this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
     getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);

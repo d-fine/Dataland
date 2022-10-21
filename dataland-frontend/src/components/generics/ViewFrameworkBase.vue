@@ -64,8 +64,8 @@ export default defineComponent({
     },
   },
   methods: {
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
+    handleSearchConfirm(searchTerm: string) {
+      return this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });

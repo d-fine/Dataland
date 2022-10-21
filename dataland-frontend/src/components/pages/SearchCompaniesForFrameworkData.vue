@@ -231,10 +231,9 @@ export default defineComponent({
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum) as Array<string>;
-        const result = parseQueryParamArray(queryFrameworks).filter((it) =>
+        return parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
-        return result;
       } else {
         return Object.values(DataTypeEnum);
       }
@@ -298,7 +297,7 @@ export default defineComponent({
         this.currentSearchBarInput = queryInput;
       }
     },
-    async handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
+    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.setFirstShownRow(0);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -319,7 +318,7 @@ export default defineComponent({
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
-      await this.$router.push({
+      return this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
           input: queryInput,

@@ -28,9 +28,9 @@ export default defineComponent({
     },
   },
   methods: {
-    async checkAuthenticatedAndRedirectIfLoggedIn() {
+    checkAuthenticatedAndRedirectIfLoggedIn() {
       if (this.authenticated === true) {
-        await this.$router.push({ path: "/companies", replace: true });
+        return this.$router.push({ path: "/companies", replace: true });
       }
     },
   },
