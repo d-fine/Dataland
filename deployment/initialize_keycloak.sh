@@ -5,18 +5,7 @@ source "$(dirname "$0")"/deployment_utils.sh
 location=$1
 keycloak_user_dir=$2
 
-keycloak_volume_name=dataland_keycloak_data
-
 cd "$location"
-
-volume_exists=$(search_volume "$keycloak_volume_name")
-if [[ -n $volume_exists ]]; then
-  sudo docker-compose build keycloak-initializer
-  sudo docker-compose run keycloak-initializer export
-  sudo docker-compose down --remove-orphans
-fi
-
-delete_docker_volume_if_existent "$keycloak_volume_name"
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
 sudo docker-compose pull;

@@ -39,6 +39,13 @@ ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir &&
                                  mkdir -p $persistent_keycloak_backup_dir &&
                                  cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir &&
                                  cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
+
+echo "Exporting users and shutting down keycloak."
+scp ubuntu@"$target_server_url" ./shut_down_keycloak.sh ubuntu@"$target_server_url":"$location/data"
+ssh ubuntu@"$target_server_url" "\"$location\"/dataland-keycloak/shut_down_keycloak.sh \"$location\""
+ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir &&
+                                 cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
+
 ssh ubuntu@"$target_server_url" "sudo rm -rf $location"
 
 construction_dir=./dataland

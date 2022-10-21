@@ -14,17 +14,21 @@ wait_for_health () {
 delete_docker_volume_if_existent () {
   old_volume=$(search_volume "$1")
   if [[ -n $old_volume ]]; then
-    echo "Removing old database volume with name $old_volume."
-    docker volume rm "$old_volume"
+    delete_docker_volume $old_volume
   fi
 }
 
-search_volume() {
+delete_docker_volume () {
+    echo "Removing old database volume with name $1."
+    docker volume rm "$1"
+}
+
+search_volume () {
   volume_found=$(docker volume ls -q | grep "$1") || true
   echo "$volume_found"
 }
 
-build_directories() {
+build_directories () {
   target_dir=$1
   echo "Assembling deployment folder."
   mkdir -p "$target_dir"
