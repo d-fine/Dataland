@@ -2,9 +2,9 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
@@ -22,22 +22,23 @@ class EuTaxonomyFinancials {
 
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
+    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials():
         Pair<DataMetaInformation, EuTaxonomyDataForFinancials> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testData = testDataProviderForEuTaxonomyDataForFinancials.getTData(1).first()
-        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val testCompanyId = companyDataControllerApi.postCompany(
+        val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val testDataId = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(
-            CompanyAssociatedDataEuTaxonomyDataForFinancials(testCompanyId, testData)
-        ).dataId
+        val receivedDataMetaInformation = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(
+            CompanyAssociatedDataEuTaxonomyDataForFinancials(receivedCompanyId, testData)
+        )
         return Pair(
             DataMetaInformation(
-                companyId = testCompanyId,
-                dataId = testDataId,
-                dataType = testDataType
+                companyId = receivedCompanyId,
+                dataId = receivedDataMetaInformation.dataId,
+                dataType = receivedDataMetaInformation.dataType
             ),
             testData
         )
@@ -45,11 +46,13 @@ class EuTaxonomyFinancials {
 
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
-        val (testDataInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
+        val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForFinancialsControllerApi
-            .getCompanyAssociatedData2(testDataInformation.dataId)
+            .getCompanyAssociatedData2(receivedDataMetaInformation.dataId)
+        val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
 
-        Assertions.assertEquals(testDataInformation.companyId, downloadedAssociatedData.companyId)
+        Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
+        Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType.dataType)
         // Sorting is required here as the backend models this field as a Set but this info is lost during the openApi
         // conversion
         Assertions.assertEquals(

@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinanc
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
@@ -29,18 +28,17 @@ class EuTaxonomyNonFinancials {
         Pair<DataMetaInformation, EuTaxonomyDataForNonFinancials> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
-        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val testCompanyId = companyDataControllerApi.postCompany(
+        val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
-        ).dataId
+        val receivedDataMetaInformation = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData)
+        )
         return Pair(
             DataMetaInformation(
-                companyId = testCompanyId,
-                dataId = testDataId,
-                dataType = testDataType
+                companyId = receivedCompanyId,
+                dataId = receivedDataMetaInformation.dataId,
+                dataType = receivedDataMetaInformation.dataType
             ),
             testData
         )
@@ -68,11 +66,13 @@ class EuTaxonomyNonFinancials {
 
     @Test
     fun `post a company with EuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
-        val (testDataInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
+        val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForNonFinancialsControllerApi
-            .getCompanyAssociatedData1(testDataInformation.dataId)
+            .getCompanyAssociatedData1(receivedDataMetaInformation.dataId)
+        val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
 
-        Assertions.assertEquals(testDataInformation.companyId, downloadedAssociatedData.companyId)
+        Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
+        Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType.dataType)
         Assertions.assertEquals(uploadedData, downloadedAssociatedData.data)
     }
 }
