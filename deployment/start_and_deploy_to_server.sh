@@ -43,7 +43,7 @@ ssh ubuntu@"$target_server_url" "rm -rf \"$location\""
 
 construction_dir=./dataland
 build_directories "$construction_dir"
-scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
+scp "$construction_dir"/* ubuntu@"$target_server_url":"$location"
 
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
 
