@@ -19,7 +19,7 @@ class MalformedRawRequestTests {
     private val jsonMediaType = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     @Test
-    fun `sending a request to a non-existent endpoint should yield a 404 response`() {
+    fun `sending a request to a non existent endpoint should yield a 404 response`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
@@ -36,7 +36,7 @@ class MalformedRawRequestTests {
     }
 
     @Test
-    fun `sending a request with additional non-requested json-properties should result in a 400 response`() {
+    fun `sending a request with additional non requested json-properties should result in a 400 response`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
@@ -75,7 +75,7 @@ class MalformedRawRequestTests {
     }
 
     @Test
-    fun `sending a request with a non-implemented request method results in a 405 error`() {
+    fun `sending a request with a non implemented request method results in a 405 error`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()

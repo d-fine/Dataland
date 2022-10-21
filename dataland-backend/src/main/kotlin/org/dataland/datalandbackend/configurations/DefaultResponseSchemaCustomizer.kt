@@ -20,26 +20,26 @@ import org.springframework.stereotype.Component
 @Component
 class DefaultResponseSchemaCustomizer : OpenApiCustomiser {
 
+    private val errorResponseSchema = Schema<Any>().`$ref`("#/components/schemas/ErrorResponse")
+
+    private val errorApiResponse = ApiResponse()
+        .content(
+            Content().addMediaType(
+                org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
+                MediaType().schema(errorResponseSchema)
+            )
+        )
+        .description("An error occurred")
+
+    // All errors follow the default errorApiResponse except for the 401 error which only returns the error in the
+    // WWW-Authenticate header as described in rfc9110
+    private val unauthorizedApiResponse = ApiResponse()
+        .description("Unauthorized")
+        .addHeaderObject("WWW-Authenticate", Header().schema(Schema<Any>().type("string")))
+
     override fun customise(openApi: OpenAPI) {
         openApi.components.schemas.putAll(ModelConverters.getInstance().read(ErrorDetails::class.java))
         openApi.components.schemas.putAll(ModelConverters.getInstance().read(ErrorResponse::class.java))
-
-        val errorResponseSchema = Schema<Any>()
-        errorResponseSchema.`$ref` = "#/components/schemas/ErrorResponse"
-
-        val errorApiResponse = ApiResponse()
-            .content(
-                Content().addMediaType(
-                    org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
-                    MediaType().schema(errorResponseSchema)
-                )
-            )
-            .description("An error occurred")
-
-        // All errors follow the default errorApiResponse except for the 401 error which follows rfc9110
-        val unauthorizedApiResponse = ApiResponse()
-            .description("Unauthorized")
-            .addHeaderObject("WWW-Authenticate", Header().schema(Schema<Any>().type("string")))
 
         openApi.paths.values.forEach { path ->
             path.readOperations().forEach { operation ->

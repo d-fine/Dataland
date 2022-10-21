@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.swagger.v3.oas.annotations.Hidden
@@ -24,5 +25,6 @@ data class ErrorDetails(
     val httpStatus: HttpStatus,
 
     @Hidden
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     val stackTrace: String? = null
 )

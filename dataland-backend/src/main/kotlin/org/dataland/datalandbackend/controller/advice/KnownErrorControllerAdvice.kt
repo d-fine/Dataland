@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
 
 /**
- * This class handles errors that occur during execution and for which custom error responses can be defined
+ * This class contains error handlers for commonly thrown errors
  */
 @Order(1)
 @ControllerAdvice
@@ -35,15 +35,15 @@ class KnownErrorControllerAdvice(
     }
 
     /**
-     * Handles HttpMessageNotReadbleException errors. These occur i.e. when the request JSON cannot be parsed
+     * Handles HttpMessageNotReadbleException errors. These occur i.e. when the request body cannot be parsed
      */
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
                 errorCode = "message-not-readable",
-                summary = "Bad Request",
-                message = ex.message ?: "Bad Request",
+                summary = "Message not readable",
+                message = ex.message ?: "Message not readable",
                 httpStatus = HttpStatus.BAD_REQUEST
             ),
             ex
@@ -110,7 +110,7 @@ class KnownErrorControllerAdvice(
     fun handleApiException(ex: SingleApiException): ResponseEntity<ErrorResponse> {
         val errorResponse = ex.getErrorResponse()
         if (errorResponse.httpStatus.is5xxServerError) {
-            logger.error("Suffered server-side error $errorResponse", ex)
+            logger.error("A server-side error occurred: $errorResponse", ex)
         }
         return prepareResponse(ex.getErrorResponse(), ex)
     }

@@ -23,7 +23,7 @@ class UnknownErrorControllerAdvice(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     /**
-     * Handles all exceptions returning a generic 500 - Internal server error response.
+     * Handles all exceptions returning a generic Internal server error response.
      * This is intended as a fallback error handler
      */
     @ExceptionHandler(Exception::class)
@@ -35,7 +35,7 @@ class UnknownErrorControllerAdvice(
             message = "An unexpected internal server error occurred. Please contact support, if this error persists",
             stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null
         )
-        logger.error("Suffered unknown internal server error $preparedError", ex)
+        logger.error("An unknown internal server error occurred: $preparedError", ex)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ErrorResponse(errors = listOf(preparedError)))
