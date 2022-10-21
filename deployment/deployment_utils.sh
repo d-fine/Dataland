@@ -56,6 +56,5 @@ build_directories () {
   cp ./docker-compose.yml "$target_dir"
   cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
 
-  cp ./deployment/initialize_keycloak.sh "$target_dir"/dataland-keycloak
-  cp ./deployment/deployment_utils.sh "$target_dir"/dataland-keycloak
+  cp ./deployment/{initialize_keycloak,shut_down_keycloak,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }
