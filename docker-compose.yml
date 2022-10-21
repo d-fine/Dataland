@@ -72,7 +72,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:15.0
+    image: postgres:14.0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -185,7 +185,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:15.0
+    image: postgres:14.0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
