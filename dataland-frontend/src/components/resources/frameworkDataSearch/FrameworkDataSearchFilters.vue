@@ -66,6 +66,7 @@ import FrameworkDataSearchDropdownFilter, {
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 interface CountryCodeSelectableItem extends SelectableItem {
   countryCode: string;
@@ -166,8 +167,7 @@ export default defineComponent({
     },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.getKeycloakPromise!()
+        assertDefined(this.getKeycloakPromise)()
       ).getCompanyDataControllerApi();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();

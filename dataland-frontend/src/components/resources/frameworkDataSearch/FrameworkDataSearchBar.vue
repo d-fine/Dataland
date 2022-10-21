@@ -83,6 +83,7 @@ import { defineComponent, inject, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;
@@ -173,7 +174,7 @@ export default defineComponent({
       void this.queryCompany();
     },
     async queryCompany() {
-      if (this.getKeycloakPromise !== undefined && this.emitSearchResultsArray) {
+      if (this.emitSearchResultsArray) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
@@ -181,26 +182,24 @@ export default defineComponent({
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
         this.loading = false;
       }
     },
     async searchCompanyName(companyName: { query: string }) {
-      if (this.getKeycloakPromise !== undefined) {
-        this.loading = true;
-        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
-          companyName.query,
-          true,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          this.getKeycloakPromise()
-        );
-        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
-        this.loading = false;
-      }
+      this.loading = true;
+      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
+        companyName.query,
+        true,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)()
+      );
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+      this.loading = false;
     },
   },
 });

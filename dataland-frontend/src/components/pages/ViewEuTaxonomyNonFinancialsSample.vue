@@ -62,6 +62,7 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancialsSample",
@@ -88,25 +89,23 @@ export default defineComponent({
   methods: {
     async queryCompany() {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          const companyResponse = await companyDataControllerApi.getTeaserCompanies();
-          this.companyID = companyResponse.data[0];
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        const companyResponse = await companyDataControllerApi.getTeaserCompanies();
+        this.companyID = companyResponse.data[0];
 
-          const metaDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getMetaDataControllerApi();
-          const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-            this.companyID,
-            "eutaxonomy-non-financials"
-          );
-          const listOfMetaData = apiResponse.data;
+        const metaDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
+          this.companyID,
+          "eutaxonomy-non-financials"
+        );
+        const listOfMetaData = apiResponse.data;
 
-          if (listOfMetaData.length > 0) {
-            this.dataId = listOfMetaData[0].dataId;
-          }
+        if (listOfMetaData.length > 0) {
+          this.dataId = listOfMetaData[0].dataId;
         }
       } catch (error) {
         console.error(error);

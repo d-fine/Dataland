@@ -45,6 +45,7 @@ import Column from "primevue/column";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { CompanyInformation } from "@clients/backend";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "RetrieveCompany",
@@ -71,16 +72,14 @@ export default defineComponent({
   methods: {
     async getCompanyByName(all = false) {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          this.loading = false;
-          if (all) {
-            this.model.companyName = "";
-          }
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
+        this.loading = false;
+        if (all) {
+          this.model.companyName = "";
         }
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        this.response = await companyDataControllerApi.getCompanies(this.model.companyName, "", true);
       } catch (error) {
         console.error(error);
         this.response = null;

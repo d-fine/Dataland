@@ -34,6 +34,7 @@ import PrimeButton from "primevue/button";
 import SkyminderTable from "@/components/resources/skyminderCompaniesSearch/SkyminderTable.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "RetrieveSkyminder",
@@ -48,7 +49,6 @@ export default defineComponent({
     skyminderSearchParams: {},
     skyminderSearchResponse: null,
   }),
-  inject: ["getKeycloakPromise"],
   methods: {
     clearSearch(): void {
       this.skyminderSearchParams = {};
@@ -57,13 +57,11 @@ export default defineComponent({
 
     async executeSkyminderSearch() {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          const inputArgs = Object.values(this.skyminderSearchParams);
-          const skyminderControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getSkyminderControllerApi();
-          this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
-        }
+        const inputArgs = Object.values(this.skyminderSearchParams);
+        const skyminderControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getSkyminderControllerApi();
+        this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {
         console.error(error);
       }

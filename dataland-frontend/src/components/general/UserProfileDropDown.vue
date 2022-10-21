@@ -34,10 +34,10 @@ import PrimeMenu from "primevue/menu";
 import { defineComponent, inject, ref } from "vue";
 import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "UserProfileDropDown",
-  inject: ["authenticated", "getKeycloakPromise"],
   components: { PrimeMenu },
   setup() {
     const menu: Ref<PrimeMenu | undefined> = ref();
@@ -74,7 +74,7 @@ export default defineComponent({
 
   methods: {
     logoutViaDropdown() {
-      this.getKeycloakPromise?.()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             const baseUrl = window.location.origin;
@@ -85,7 +85,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     gotoUserSettings() {
-      this.getKeycloakPromise?.()
+      assertDefined(this.getKeycloakPromise)()
         .then(async (keycloak) => {
           if (keycloak.authenticated) {
             await keycloak.accountManagement();
@@ -95,7 +95,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.getKeycloakPromise?.()
+    assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access

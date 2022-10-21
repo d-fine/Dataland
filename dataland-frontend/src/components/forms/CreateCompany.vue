@@ -75,6 +75,7 @@ import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { CompanyInformation } from "@clients/backend";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 const companyInformation = backend.components.schemas.CompanyInformation;
 const companyIdentifier = backend.components.schemas.CompanyIdentifier;
@@ -111,14 +112,12 @@ export default defineComponent({
     async postCompanyData() {
       try {
         this.postCompanyProcessed = false;
-        if (this.getKeycloakPromise !== undefined) {
-          this.messageCount++;
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          this.postCompanyResponse = await companyDataControllerApi.postCompany(this.model);
-          this.$formkit.reset("createCompanyForm");
-        }
+        this.messageCount++;
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        this.postCompanyResponse = await companyDataControllerApi.postCompany(this.model);
+        this.$formkit.reset("createCompanyForm");
       } catch (error) {
         console.error(error);
         this.postCompanyResponse = null;

@@ -32,6 +32,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { DataTypeEnum } from "@clients/backend";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -71,20 +72,18 @@ export default defineComponent({
     },
     async getDataIdToLoad() {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          const metaDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getMetaDataControllerApi();
-          const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-            this.companyID,
-            this.dataType as DataTypeEnum
-          );
-          const listOfMetaData = apiResponse.data;
-          if (listOfMetaData.length > 0) {
-            this.$emit("updateDataId", listOfMetaData[0].dataId);
-          } else {
-            this.$emit("updateDataId", null);
-          }
+        const metaDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
+          this.companyID,
+          this.dataType as DataTypeEnum
+        );
+        const listOfMetaData = apiResponse.data;
+        if (listOfMetaData.length > 0) {
+          this.$emit("updateDataId", listOfMetaData[0].dataId);
+        } else {
+          this.$emit("updateDataId", null);
         }
       } catch (error) {
         console.error(error);

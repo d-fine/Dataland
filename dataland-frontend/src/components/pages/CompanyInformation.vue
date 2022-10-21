@@ -21,6 +21,7 @@ import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyCon
 import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -50,13 +51,11 @@ export default defineComponent({
   methods: {
     async getCompanyInformation() {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          const companyDataControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getCompanyDataControllerApi();
-          const response = await companyDataControllerApi.getCompanyById(this.companyID as string);
-          this.companyInformation = response.data.companyInformation;
-        }
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        const response = await companyDataControllerApi.getCompanyById(this.companyID as string);
+        this.companyInformation = response.data.companyInformation;
       } catch (error) {
         console.error(error);
         this.companyInformation = null;

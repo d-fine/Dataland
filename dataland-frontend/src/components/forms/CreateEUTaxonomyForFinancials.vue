@@ -127,6 +127,7 @@ import Card from "primevue/card";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   setup() {
@@ -161,16 +162,14 @@ export default defineComponent({
   methods: {
     async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          this.postEuTaxonomyDataForFinancialsProcessed = false;
-          this.messageCount++;
-          const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-          this.postEuTaxonomyDataForFinancialsResponse =
-            await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
-          this.$formkit.reset("createEuTaxonomyForFinancialsForm");
-        }
+        this.postEuTaxonomyDataForFinancialsProcessed = false;
+        this.messageCount++;
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getEuTaxonomyDataForFinancialsControllerApi();
+        this.postEuTaxonomyDataForFinancialsResponse =
+          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);

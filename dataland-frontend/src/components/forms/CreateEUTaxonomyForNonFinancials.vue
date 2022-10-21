@@ -104,6 +104,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -138,16 +139,14 @@ export default defineComponent({
   methods: {
     async postEuTaxonomyDataForNonFinancials() {
       try {
-        if (this.getKeycloakPromise !== undefined) {
-          this.postEuTaxonomyDataForNonFinancialsProcessed = false;
-          this.messageCount++;
-          const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).getEuTaxonomyDataForNonFinancialsControllerApi();
-          this.postEuTaxonomyDataForNonFinancialsResponse =
-            await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
-          this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
-        }
+        this.postEuTaxonomyDataForNonFinancialsProcessed = false;
+        this.messageCount++;
+        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        this.postEuTaxonomyDataForNonFinancialsResponse =
+          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(this.formInputsModel);
+        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
