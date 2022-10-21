@@ -142,8 +142,8 @@ export default defineComponent({
     void this.getCompanyEuDataset();
   },
   watch: {
-    async dataID() {
-      await this.getCompanyEuDataset();
+    dataID() {
+      void this.getCompanyEuDataset();
     },
   },
   setup() {

@@ -208,9 +208,9 @@ export default defineComponent({
         }
       );
     },
-    async retrieveAvailableFilterOptions() {
+    retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();
-      await this.retrieveCountryAndSectorFilterOptions();
+      return this.retrieveCountryAndSectorFilterOptions();
     },
   },
   mounted() {
