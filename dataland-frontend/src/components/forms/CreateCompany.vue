@@ -36,7 +36,7 @@
         <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
       </FormKit>
       <p>{{ model }}</p>
-      <PrimeButton v-if="alternativeNamesListSize < 1" @click="alternativeNamesListSize++">
+      <PrimeButton v-if="alternativeNamesListSize < 1" @click="alternativeNamesListSize++" name="addAlternativeName">
         Add an alternative Name</PrimeButton
       >
       <PrimeButton v-if="alternativeNamesListSize >= 1" @click="alternativeNamesListSize++">
