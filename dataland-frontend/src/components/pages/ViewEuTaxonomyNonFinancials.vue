@@ -25,10 +25,12 @@
   </ViewFrameworkBase>
 </template>
 
-<script>
+<script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "ViewEuTaxonomyNonFinancials",
   components: { ViewFrameworkBase, EuTaxonomyPanelNonFinancials },
   props: {
@@ -42,9 +44,9 @@ export default {
     };
   },
   methods: {
-    receiveDataId(id) {
+    receiveDataId(id: undefined) {
       this.frameworkDataId = id;
     },
   },
-};
+});
 </script>

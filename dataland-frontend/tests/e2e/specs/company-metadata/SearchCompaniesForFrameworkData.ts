@@ -1,22 +1,14 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
-import {
-  CompanyInformation,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-  DataTypeEnum,
-  StoredCompany,
-} from "@clients/backend";
-import { getKeycloakToken } from "../../utils/Auth";
+import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
-let companiesWithData: Array<{
-  companyInformation: CompanyInformation;
-  euTaxonomyDataForFinancials: EuTaxonomyDataForFinancials;
-  euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials;
-}>;
+let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithData = outputFromJson;
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 
@@ -32,7 +24,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("table.p-datatable-table").contains("th", "LOCATION");
   }
 
-  function executeCompanySearchWithStandardSearchBar(inputValue: string) {
+  function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[name=search_bar_top]")
       .should("not.be.disabled")
@@ -119,16 +111,14 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
     { scrollBehavior: false },
     () => {
-      cy.visitAndCheckAppMount("/companies");
-
-      function checkPermIdToolTip(permIdTextInt: string) {
+      function checkPermIdToolTip(permIdTextInt: string): void {
         cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
         cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
         cy.get(".p-tooltip").should("not.exist");
       }
 
-      function checkViewButtonWorks() {
+      function checkViewButtonWorks(): void {
         cy.get("table.p-datatable-table")
           .contains("td", "VIEW")
           .contains("a", "VIEW")
@@ -139,7 +129,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       cy.visitAndCheckAppMount("/companies");
       verifyTaxonomySearchResultTable();
-      const inputValue = companiesWithData[0].companyInformation.companyName;
+      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
       const permIdText = "Permanent Identifier (PermID)";
       checkPermIdToolTip(permIdText);
       executeCompanySearchWithStandardSearchBar(inputValue);
@@ -154,8 +144,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Execute a company Search by identifier and assure that the company is found", () => {
     cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithData[0].companyInformation.identifiers[0].identifierValue;
-    const expectedCompanyName = companiesWithData[0].companyInformation.companyName;
+    const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers[0].identifierValue;
+    const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
     executeCompanySearchWithStandardSearchBar(inputValue);
     cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
   });
@@ -164,7 +154,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
 
-    getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+    getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);

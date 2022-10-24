@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Message from "primevue/message";
 import { humanizeString } from "@/utils/StringHumanizer";
 
@@ -19,7 +19,7 @@ export default {
     messageCount: Number,
   },
   methods: {
-    humanize(text) {
+    humanize(text: unknown): string | null {
       if (typeof text == "string") return humanizeString(text);
       else return null;
     },

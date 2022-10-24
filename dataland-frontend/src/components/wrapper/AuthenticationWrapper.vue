@@ -20,21 +20,29 @@
 }
 </style>
 
-<script>
-export default {
-  name: "AuthenticationWrapper",
-  inject: ["authenticated", "getKeycloakPromise"],
+<script lang="ts">
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
+export default defineComponent({
+  name: "AuthenticationWrapper",
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
   mounted: function () {
     if (!this.authenticated) {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             return keycloak.login();
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     }
   },
-};
+});
 </script>

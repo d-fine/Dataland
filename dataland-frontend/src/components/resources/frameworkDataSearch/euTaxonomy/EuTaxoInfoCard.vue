@@ -30,11 +30,13 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
 import { humanizeString } from "@/utils/StringHumanizer";
-export default {
+import { defineComponent, PropType } from "vue";
+
+export default defineComponent({
   name: "TaxoInfoCard",
   components: { Card },
   directives: {
@@ -45,7 +47,7 @@ export default {
       type: String,
     },
     value: {
-      type: String,
+      type: null as unknown as PropType<string | null>,
     },
     tooltipText: {
       type: String,
@@ -54,8 +56,9 @@ export default {
   },
   computed: {
     humanizedValue() {
-      return this.value !== undefined && this.value !== null ? humanizeString(this.value) : "No data has been reported";
+      const humanizedValue = humanizeString(this.value);
+      return humanizedValue !== "" ? humanizedValue : "No data has been reported";
     },
   },
-};
+});
 </script>
