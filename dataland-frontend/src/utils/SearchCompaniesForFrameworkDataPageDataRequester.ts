@@ -76,6 +76,9 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
+    if (frameworkFilter.size === 0) {
+      frameworkFilter = new Set(Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg"));
+    }
     const response = await companyDataControllerApi.getCompanies(
       searchString,
       frameworkFilter,
