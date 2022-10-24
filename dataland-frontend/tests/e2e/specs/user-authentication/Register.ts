@@ -47,10 +47,10 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.url().should("contain", "realms/master");
       cy.get("#username")
         .should("exist")
-        .type(Cypress.env("KEYCLOAK_ADMIN"), { force: true })
+        .type(Cypress.env("KEYCLOAK_ADMIN") as string, { force: true })
         .get("#password")
         .should("exist")
-        .type(Cypress.env("KEYCLOAK_ADMIN_PASSWORD"), { force: true })
+        .type(Cypress.env("KEYCLOAK_ADMIN_PASSWORD") as string, { force: true })
         .get("#kc-login")
         .should("exist")
         .click();
