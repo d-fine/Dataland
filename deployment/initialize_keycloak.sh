@@ -8,8 +8,8 @@ keycloak_user_dir=$2
 cd "$location"
 
 echo "Start Keycloak in initialization mode and wait for it to load the realm data."
-sudo docker-compose pull;
-sudo -E docker-compose --profile init up -d --build
+sudo docker compose pull;
+sudo -E docker compose --profile init up -d --build
 
 message="Profile prod activated."
 container_name=$(sudo docker ps --format "{{.Names}}" | grep keycloak-initializer)

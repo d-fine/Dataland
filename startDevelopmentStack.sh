@@ -11,9 +11,9 @@ scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local
 ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon --stacktrace
 
 #start containers for skyminder and edc-dummyserver
-docker-compose --profile development down
-docker-compose --profile development pull
-docker-compose --profile development up -d --build
+docker compose --profile development down
+docker compose --profile development pull
+docker compose --profile development up -d --build
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

@@ -13,7 +13,8 @@ module.exports = (on, config) => {
 
   switch (process.env.ENVIRONMENT) {
     case "preview":
-    case "development": {
+    case "development":
+    case "development_2": {
       console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
       config.specPattern = ["tests/e2e/specs/index.ts"];
       break;
