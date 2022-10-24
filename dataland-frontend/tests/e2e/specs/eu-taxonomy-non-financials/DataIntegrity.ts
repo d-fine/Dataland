@@ -1,5 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 const timeout = 120 * 1000;
 describeIf(
@@ -8,11 +9,11 @@ describeIf(
     executionEnvironments: ["developmentLocal", "development"],
     dataEnvironments: ["fakeFixtures"],
   },
-  function () {
+  function (): void {
     const companyIdList: Array<string> = [];
     const companyNames: Array<string> = ["eligible & total", "eligible"];
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     /**

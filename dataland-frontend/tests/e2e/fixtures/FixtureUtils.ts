@@ -18,3 +18,8 @@ export function generateFixtureDataset<T>(generator: () => T, numElements: numbe
   }
   return fixtureDataset;
 }
+
+export interface DataPoint<T, Y> {
+  label: string;
+  value: (x: T) => Y | undefined;
+}

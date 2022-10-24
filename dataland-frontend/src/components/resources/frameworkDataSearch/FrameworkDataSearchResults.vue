@@ -78,15 +78,19 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
-import { getRouterLinkTargetFramework } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {
+  DataSearchStoredCompany,
+  getRouterLinkTargetFramework,
+} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "FrameworkDataSearchResults",
   components: { MarginWrapper, DataTable, Column },
   directives: {
@@ -103,28 +107,30 @@ export default {
     },
   },
   methods: {
-    orderOfMagnitudeSuffix(value) {
+    orderOfMagnitudeSuffix(value: number) {
       return convertCurrencyNumbersToNotationWithLetters(value, 2) + " €";
     },
-    buildLocationString(headquarters, countryCode) {
+    buildLocationString(headquarters: string, countryCode: string) {
       return headquarters + ", " + countryCode;
     },
-    goToData(event) {
-      this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
+    goToData(event: { data: DataSearchStoredCompany }) {
+      return this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
-    getRouterLinkTargetFrameworkInt(companyData) {
+    getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);
     },
     resetPagination() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
     },
-    firstUpdated(event) {
+    firstUpdated(event: never) {
       window.scrollTo(0, 0);
       this.$emit("update:first", event);
     },
   },
-};
+});
 </script>
+
 <style>
 #search-result-framework-data tr:hover {
   cursor: pointer;

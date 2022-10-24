@@ -43,9 +43,8 @@
     </div>
   </div>
 </template>
->
 
-<script>
+<script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 

@@ -6,7 +6,7 @@ import {
 } from "./EuTaxonomyDataForNonFinancialsFixtures";
 import fs from "fs";
 
-export function exportFixturesEuTaxonomyNonFinancial() {
+export function exportFixturesEuTaxonomyNonFinancial(): void {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
     150

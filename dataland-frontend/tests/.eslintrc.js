@@ -6,5 +6,6 @@ module.exports = {
   },
   rules: {
     strict: "off",
+    '@typescript-eslint/no-non-null-assertion': "off"
   },
 };

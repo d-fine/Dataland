@@ -1,8 +1,4 @@
-import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  DataPointBigDecimal,
-} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/model";
+import { EuTaxonomyDataForFinancials, EligibilityKpis, DataPointBigDecimal } from "@clients/backend";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
@@ -16,7 +12,7 @@ export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypre
   return submitEuTaxonomyFinancialsUploadForm();
 }
 
-export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
+export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials): void {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
   if (data.assurance?.assurance !== undefined) {
@@ -40,14 +36,14 @@ export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials) {
   fillField("", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
 }
 
-function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined) {
+function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined): void {
   fillField(divName, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
   fillField(divName, "derivatives", data?.derivatives);
   fillField(divName, "banksAndIssuers", data?.banksAndIssuers);
   fillField(divName, "investmentNonNfrd", data?.investmentNonNfrd);
 }
 
-function fillField(divName: string, inputName: string, value?: DataPointBigDecimal) {
+function fillField(divName: string, inputName: string, value?: DataPointBigDecimal): void {
   if (value !== undefined && value.value !== undefined) {
     const input = value.value.toString();
     if (divName === "") {

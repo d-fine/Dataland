@@ -1,18 +1,16 @@
-import { CompanyInformation, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {
     cy.ensureLoggedIn();
   });
 
-  let companiesWithEuTaxonomyDataForFinancials: Array<{
-    companyInformation: CompanyInformation;
-    t: EuTaxonomyDataForFinancials;
-  }>;
+  let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
   before(function () {
-    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-      companiesWithEuTaxonomyDataForFinancials = companies;
+    cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+      companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     });
   });
 
@@ -30,7 +28,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
 
-  function getCompanyWithAlternativeName() {
+  function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
     return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (
         it.companyInformation.companyAlternativeNames !== undefined &&
@@ -41,7 +39,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
 
   it("Search for company by its alternative name", () => {
     const testCompany = getCompanyWithAlternativeName();
-    const searchValue = testCompany.companyInformation.companyAlternativeNames!![0];
+    const searchValue = testCompany.companyInformation.companyAlternativeNames![0];
     cy.visitAndCheckAppMount("/companies-only-search");
     cy.get("input[name=companyName]")
       .should("not.be.disabled")

@@ -14,7 +14,7 @@
   </AuthenticationWrapper>
 </template>
 
-<script>
+<script lang="ts">
 import RetrieveSkyminder from "@/components/forms/RetrieveSkyminder.vue";
 import RetrieveCompany from "@/components/forms/RetrieveCompany.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
