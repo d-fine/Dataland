@@ -1,5 +1,6 @@
 import {
   AssuranceDataAssuranceEnum,
+  CompanyIdentifier,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   YesNo,
   YesNoNa,
@@ -19,7 +20,7 @@ export function getAssurance(assurance: AssuranceDataAssuranceEnum | undefined):
     case AssuranceDataAssuranceEnum.None:
       return "none";
   }
-  throw Error(`Unknown assurance type ${assurance}`);
+  throw Error(`Unknown assurance type ${String(assurance)}`);
 }
 
 export function getFiscalYearDeviation(isdeviation: YesNo | undefined): string | undefined {
@@ -32,7 +33,7 @@ export function getFiscalYearDeviation(isdeviation: YesNo | undefined): string |
     case YesNoNa.No:
       return "No Deviation";
   }
-  throw Error(`Unknown yesno type ${isdeviation}`);
+  throw Error(`Unknown yesno type ${String(isdeviation)}`);
 }
 
 export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): string {
@@ -46,12 +47,12 @@ export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialS
     case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm:
       return "Investment Firm";
   }
-  throw Error(`Unknown FS type ${type}`);
+  throw Error(`Unknown FS type ${String(type)}`);
 }
 
 export function humanizeOrUndefined(stringToHumanise: string | undefined): string | undefined {
   if (stringToHumanise == undefined) return undefined;
-  return humanizeString(stringToHumanise!!);
+  return humanizeString(stringToHumanise);
 }
 
 export function getCompanyTypeCsvValue(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): number {
@@ -65,7 +66,7 @@ export function getCompanyTypeCsvValue(type: EuTaxonomyDataForFinancialsFinancia
     case EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm:
       return 4;
   }
-  throw Error(`Unknown FS type ${type}`);
+  throw Error(`Unknown FS type ${String(type)}`);
 }
 
 export function decimalSeparatorConverter(scaleFactor: number): (value: number | undefined) => string {
@@ -83,8 +84,8 @@ export function convertToPercentageString(value: number | undefined): string {
   return `${valueRounded}%`;
 }
 
-export function getIdentifierValueForCsv(identifierArray: Array<Object>, identifierType: string): string {
-  const identifierObject: any = identifierArray.find((identifier: any) => {
+export function getIdentifierValueForCsv(identifierArray: Array<CompanyIdentifier>, identifierType: string): string {
+  const identifierObject: CompanyIdentifier | undefined = identifierArray.find((identifier: CompanyIdentifier) => {
     return identifier.identifierType === identifierType;
   });
   return identifierObject ? identifierObject.identifierValue : "";

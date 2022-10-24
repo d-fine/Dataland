@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 const percentagePrecision = 0.0001;
 
-export function randomNumber(max: number) {
+export function randomNumber(max: number): number {
   return faker.datatype.number(max);
 }
 

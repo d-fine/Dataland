@@ -2,17 +2,16 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { CompanyInformation, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
-let companiesWithEuTaxonomyDataForNonFinancials: Array<{
-  companyInformation: CompanyInformation;
-  t: EuTaxonomyDataForNonFinancials;
-}>;
+let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (outputFromJson) {
-    companiesWithEuTaxonomyDataForNonFinancials = outputFromJson;
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
   });
 });
 
@@ -54,7 +53,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
       const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
-      )!!.companyInformation;
+      )!.companyInformation;
 
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
@@ -82,7 +81,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
       (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
-    )!!.companyInformation;
+    )!.companyInformation;
 
     cy.ensureLoggedIn();
     cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
@@ -109,7 +108,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .eq(0)
       .click()
       .url()
-      .should("eq", `${Cypress.config("baseUrl")}/companies`);
+      .should("eq", getBaseUrl() + "/companies");
   });
   it(
     "Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up",
@@ -152,7 +151,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
-        cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
       });
 
       it(

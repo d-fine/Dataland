@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore --max-warnings 0 --no-fix",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0 --no-fix",
     "cypress": "cypress open",
     "checkcypresscompilation": "tsc --noEmit -P tsconfig.cypress-e2e.json && tsc --noEmit -P tsconfig.cypress-ct.json",
-    "testcomponent": "cypress run --component",
+    "testcomponent": "cypress run --component --config video=false",
     "testpipeline": "cypress run",
     "testdevelopment": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev-dataland.duckdns.org\"}}'",
     "testdevelopment_2": "cypress run --config '{\"e2e\": {\"baseUrl\": \"https://dev2-dataland.duckdns.org\"}}'",
@@ -17,7 +17,7 @@
     "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix",
-    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@vue/tsconfig,axios,tsconfig-paths'"
+    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*'"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.11",
@@ -37,9 +37,11 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@faker-js/faker": "^7.6.0",
+    "@rushstack/eslint-patch": "^1.2.0",
     "@types/big.js": "^6.1.6",
     "@types/node": "^18.11.0",
     "@vitejs/plugin-vue": "^3.1.2",
+    "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/test-utils": "^2.1.0",
     "@vue/tsconfig": "^0.1.3",

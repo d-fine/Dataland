@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import PrimeButton from "primevue/button";
 export default {
   name: "SampleSection",

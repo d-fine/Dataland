@@ -1,4 +1,4 @@
-import { doThingsInChunks, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
+import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
 import {
   CompanyInformation,
   EuTaxonomyDataForNonFinancials,
@@ -11,6 +11,7 @@ import {
   CompanyDataControllerApi,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 const chunkSize = 15;
 
 describe(
@@ -22,6 +23,7 @@ describe(
       openMode: 0,
     },
   },
+
   () => {
     async function uploadOneCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
       const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
@@ -30,8 +32,14 @@ describe(
       return data.data;
     }
 
-    function prepopulate(companiesWithEuTaxonomyData: Array<any>, uploadOneEuTaxonomyDataset: Function) {
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD")).then((token) => {
+    function prepopulate(
+      companiesWithEuTaxonomyData: Array<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>>,
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      uploadOneEuTaxonomyDataset: Function
+    ): void {
+      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         doThingsInChunks(companiesWithEuTaxonomyData, chunkSize, async (it) => {
           const storedCompany = await uploadOneCompany(token, it.companyInformation);
           await uploadOneEuTaxonomyDataset(token, storedCompany.companyId, it.t);
@@ -39,8 +47,8 @@ describe(
       });
     }
 
-    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number) {
-      cy.getKeycloakToken("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"))
+    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
+      cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
         .then((response) => {
           assert(
@@ -52,14 +60,11 @@ describe(
     }
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
-      let companiesWithEuTaxonomyDataForFinancials: Array<{
-        companyInformation: CompanyInformation;
-        t: EuTaxonomyDataForFinancials;
-      }>;
+      let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-          companiesWithEuTaxonomyDataForFinancials = companies;
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+          companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         });
       });
 
@@ -85,14 +90,13 @@ describe(
     });
 
     describe("Upload and validate EuTaxonomy for non-financials data", () => {
-      let companiesWithEuTaxonomyDataForNonFinancials: Array<{
-        companyInformation: CompanyInformation;
-        t: EuTaxonomyDataForNonFinancials;
-      }>;
+      let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies) {
-          companiesWithEuTaxonomyDataForNonFinancials = companies;
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+          companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
+            FixtureData<EuTaxonomyDataForNonFinancials>
+          >;
         });
       });
 

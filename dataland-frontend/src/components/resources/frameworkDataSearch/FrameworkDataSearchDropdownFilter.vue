@@ -77,7 +77,7 @@ export default defineComponent({
     };
   },
   computed: {
-    selectionButtonClasses(): Array<String> {
+    selectionButtonClasses(): Array<string> {
       const classes = ["selection-button", "flex", "flex-row", "align-items-center"];
       if (this.overlayVisible) {
         classes.push("overlayVisible");

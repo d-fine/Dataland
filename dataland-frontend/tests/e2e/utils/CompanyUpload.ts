@@ -5,6 +5,8 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=countryCode]").type("DE", { force: true });
   cy.get("select[name=identifierType]").select("ISIN");
   cy.get("input[name=identifierValue]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("button[name=addAlternativeName]").click();
+  cy.get("input[name=0]").type(`Another Name`, { force: true });
 }
 
 export function createCompanyAndGetId(companyName: string): Cypress.Chainable<string> {
@@ -17,7 +19,7 @@ export function createCompanyAndGetId(companyName: string): Cypress.Chainable<st
     .get("body")
     .should("contain", "success")
     .get("span[title=companyId]")
-    .then<string>(($companyID) => {
+    .then<string>(($companyID): string => {
       return $companyID.text();
     });
 }

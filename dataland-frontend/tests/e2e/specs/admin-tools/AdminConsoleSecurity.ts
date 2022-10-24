@@ -1,5 +1,7 @@
-describe("As a user I expect the admin console only to be reachable using admin-proxy and not from remote", () => {
-  function checkThatUrlResolvesToErrorPage(url: string) {
+import { getStringCypressEnv } from "@e2e/utils/Cypress";
+
+describe("As a user I expect the admin console only to be reachable using admin-proxy and not from remote", (): void => {
+  function checkThatUrlResolvesToErrorPage(url: string): void {
     cy.visit(url);
     cy.get("h2").should("exist").should("contain", "Sorry an error occurred!");
     cy.url().should("contain", "nocontent");
@@ -20,10 +22,10 @@ describe("As a user I expect the admin console only to be reachable using admin-
     cy.url().should("contain", "realms/master");
     cy.get("#username")
       .should("exist")
-      .type(Cypress.env("KEYCLOAK_ADMIN"), { force: true })
+      .type(getStringCypressEnv("KEYCLOAK_ADMIN"), { force: true })
       .get("#password")
       .should("exist")
-      .type(Cypress.env("KEYCLOAK_ADMIN_PASSWORD"), { force: true })
+      .type(getStringCypressEnv("KEYCLOAK_ADMIN_PASSWORD"), { force: true })
       .get("#kc-login")
       .should("exist")
       .click();

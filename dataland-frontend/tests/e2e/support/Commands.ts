@@ -3,6 +3,7 @@ import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
 import { browserThen } from "@e2e/utils/Cypress";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
