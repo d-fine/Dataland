@@ -111,8 +111,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
     { scrollBehavior: false },
     () => {
-      cy.visitAndCheckAppMount("/companies");
-
       function checkPermIdToolTip(permIdTextInt: string): void {
         cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);

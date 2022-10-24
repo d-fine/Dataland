@@ -34,7 +34,7 @@
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "TaxoInfoCard",
@@ -47,7 +47,7 @@ export default defineComponent({
       type: String,
     },
     value: {
-      type: String,
+      type: null as unknown as PropType<string | null>,
     },
     tooltipText: {
       type: String,
@@ -56,7 +56,8 @@ export default defineComponent({
   },
   computed: {
     humanizedValue() {
-      return this.value !== undefined ? humanizeString(this.value) : "No data has been reported";
+      const humanizedValue = humanizeString(this.value);
+      return humanizedValue !== "" ? humanizedValue : "No data has been reported";
     },
   },
 });
