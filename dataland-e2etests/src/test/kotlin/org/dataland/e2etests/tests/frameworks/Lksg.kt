@@ -57,6 +57,7 @@ class Lksg {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun `post a company without Lksg data and check if it works`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
         val receivedCompanyId = companyDataControllerApi.postCompany(
