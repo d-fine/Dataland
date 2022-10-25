@@ -31,9 +31,10 @@ class EuTaxonomyFinancials {
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val receivedDataMetaInformation = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForFinancials(receivedCompanyId, testData)
-        )
+        val receivedDataMetaInformation = euTaxonomyDataForFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForFinancials(receivedCompanyId, testData)
+            )
         return Pair(
             DataMetaInformation(
                 companyId = receivedCompanyId,

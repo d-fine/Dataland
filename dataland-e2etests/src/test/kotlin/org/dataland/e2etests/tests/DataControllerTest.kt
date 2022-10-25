@@ -49,7 +49,8 @@ class DataControllerTest {
             .getCompanyInformationWithoutIdentifiers(1).first()
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
-            euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+            euTaxonomyDataForNonFinancialsControllerApi
+                .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testData),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,

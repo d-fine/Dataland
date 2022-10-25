@@ -96,9 +96,10 @@ class MetaDataControllerTest {
         val testCompanyInformation =
             testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
-        ).dataId
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
+            ).dataId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
@@ -183,9 +184,10 @@ class MetaDataControllerTest {
             testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
-        ).dataId
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
+            ).dataId
         val dataMetaInformation = unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
             DataMetaInformation(testDataId, testDataType, testCompanyId),
@@ -201,9 +203,10 @@ class MetaDataControllerTest {
             testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = false)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
-        ).dataId
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
+            ).dataId
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         }
@@ -218,9 +221,10 @@ class MetaDataControllerTest {
             testDataProviderEuTaxonomyForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
                 .copy(isTeaserCompany = true)
         val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
-        ).dataId
+        val testDataId = euTaxonomyDataForNonFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testEuTaxonomyDataForNonFinancials)
+            ).dataId
 
         val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, testCompanyId)
         assertTrue(
