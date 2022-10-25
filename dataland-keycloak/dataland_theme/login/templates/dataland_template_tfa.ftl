@@ -25,7 +25,7 @@
 
     <!-- Main Content -->
     <div class="block ml-auto mr-auto pt-6">
-        <h1><#nested "header"></h1>
+        <h1 class="text-6xl"><#nested "header"></h1>
         <div>
             <#nested "form">
         </div>

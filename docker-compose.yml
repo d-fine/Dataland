@@ -10,7 +10,8 @@ version: "3.8"
 services:
   proxy:
     build:
-      context: ./dataland-inbound-proxy
+      context: ./
+      dockerfile: ./dataland-inbound-proxy/Dockerfile
       args:
         PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
     restart: always
@@ -206,6 +207,7 @@ services:
       - "8080"
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
   keycloak-initializer:
@@ -237,6 +239,8 @@ services:
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
       KEYCLOAK_LINKEDIN_SECRET: ${KEYCLOAK_LINKEDIN_SECRET}
+      KEYCLOAK_MAILJET_API_SECRET: ${KEYCLOAK_MAILJET_API_SECRET}
+      KEYCLOAK_MAILJET_API_ID: ${KEYCLOAK_MAILJET_API_ID}
     expose:
       - "8080"
     depends_on:
