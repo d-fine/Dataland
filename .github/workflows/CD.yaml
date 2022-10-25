@@ -140,8 +140,10 @@ jobs:
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
-        run: ./deployment/setup_admin_ssh_tunnel.sh
-        if: '${{ matrix.testGroup }} == 3'
+        run:  |
+          if [[ ${{ matrix.testGroup }} == '3' ]]; then
+            ./deployment/setup_admin_ssh_tunnel.sh
+          fi
         env:
           TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
