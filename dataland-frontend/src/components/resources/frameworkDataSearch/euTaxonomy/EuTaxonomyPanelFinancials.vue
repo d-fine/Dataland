@@ -157,9 +157,10 @@ export default defineComponent({
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
-        const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData2(
+        const companyAssociatedData =
+          await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
           assertDefined(this.dataID)
-        );
+          );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);

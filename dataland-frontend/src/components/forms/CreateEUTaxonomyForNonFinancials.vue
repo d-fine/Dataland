@@ -145,7 +145,9 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
-          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
+          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            this.formInputsModel
+          );
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;

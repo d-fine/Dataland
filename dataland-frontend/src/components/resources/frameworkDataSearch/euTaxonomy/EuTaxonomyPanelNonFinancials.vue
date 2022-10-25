@@ -118,9 +118,10 @@ export default defineComponent({
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData1(
+        const companyAssociatedData =
+          await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
           assertDefined(this.dataID)
-        );
+          );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);

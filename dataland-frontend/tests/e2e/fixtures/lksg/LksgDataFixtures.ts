@@ -16,10 +16,9 @@ export function generateProductionSite(): ProductionSite {
     faker.address.city() +
     ", " +
     faker.address.country();
-  const fakeGoodsAndServices = Array.from(
-    { length: faker.datatype.number({ min: 1, max: 5 }) },
-    faker.commerce.productName
-  );
+  const fakeGoodsAndServices = Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
+    return faker.commerce.productName();
+  });
 
   return {
     name: fakeSiteName,
@@ -57,7 +56,7 @@ export function getCompanyLegalForm(): string {
   return legalForms[Math.floor(Math.random() * legalForms.length)];
 }
 
-export function generateIso4217CurrencyCode() {
+export function generateIso4217CurrencyCode(): string {
   const someCommonIso4217CurrencyCodes = ["USD", "EUR", "CHF", "CAD", "AUD"];
   return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
 }

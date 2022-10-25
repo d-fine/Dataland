@@ -126,14 +126,11 @@ describe(
     });
 
     describe("Upload and validate Lksg data", () => {
-      let companiesWithLksgData: Array<{
-        companyInformation: CompanyInformation;
-        t: LksgData;
-      }>;
+      let companiesWithLksgData: Array<FixtureData<LksgData>>;
 
       before(function () {
-        cy.fixture("CompanyInformationWithLksgData").then(function (companies) {
-          companiesWithLksgData = companies;
+        cy.fixture("CompanyInformationWithLksgData").then(function (jsonContent) {
+          companiesWithLksgData = jsonContent as Array<FixtureData<LksgData>>;
         });
       });
 
