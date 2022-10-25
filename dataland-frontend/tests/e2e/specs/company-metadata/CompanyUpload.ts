@@ -5,7 +5,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 describeIf(
   "As a user, I want to be able to create new companies",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
   },
   () => {

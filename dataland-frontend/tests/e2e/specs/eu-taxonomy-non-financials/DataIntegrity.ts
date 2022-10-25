@@ -6,7 +6,7 @@ const timeout = 120 * 1000;
 describeIf(
   "As a user, I expect data that I upload for a company to be displayed correctly",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
   },
   function (): void {

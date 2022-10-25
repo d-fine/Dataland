@@ -6,7 +6,7 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
   describeIf(
     "In the CI pipeline, testing endpoint should be exposed",
     {
-      executionEnvironments: ["development", "developmentLocal"],
+      executionEnvironments: ["developmentLocal", "ci"],
       dataEnvironments: ["fakeFixtures", "realData"],
     },
     () => {
@@ -28,7 +28,7 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
   describeIf(
     "In the CD pipeline, testing endpoint should NOT be exposed",
     {
-      executionEnvironments: ["preview"],
+      executionEnvironments: ["developmentCd", "previewCd"],
       dataEnvironments: ["fakeFixtures", "realData"],
     },
     () => {
