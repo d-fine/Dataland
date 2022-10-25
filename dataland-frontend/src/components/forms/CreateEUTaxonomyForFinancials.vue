@@ -116,7 +116,8 @@
     </template>
   </Card>
 </template>
-<script>
+
+<script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -124,8 +125,16 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   name: "CreateEUTaxonomyForFinancials",
   components: { DataPointFormElement, FailedUpload, FormKit, SuccessUpload, Card },
 
@@ -150,14 +159,13 @@ export default {
       type: String,
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
-    async postEuTaxonomyDataForFinancials() {
+    async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(this.formInputsModel);
@@ -170,5 +178,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

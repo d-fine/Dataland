@@ -10,4 +10,9 @@ describe("Unit test for StringHumanizer", () => {
     expect(humanizeString("companyFullName")).to.equal("Company Full Name");
     expect(humanizeString("PrimeStandards")).to.equal("Prime Standards");
   });
+
+  it("Check that entering null or undefined is possible", () => {
+    expect(humanizeString(null)).to.equal("");
+    expect(humanizeString(undefined)).to.equal("");
+  });
 });

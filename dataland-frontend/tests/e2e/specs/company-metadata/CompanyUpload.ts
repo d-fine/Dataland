@@ -1,5 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { createCompanyAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
   "As a user, I want to be able to create new companies",
@@ -9,7 +10,7 @@ describeIf(
   },
   () => {
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     it("Check if post company button is disabled if no values are inserted into the upload form", () => {
@@ -17,7 +18,7 @@ describeIf(
       cy.get('button[name="postCompanyData"]').should("be.disabled");
     });
 
-    function uploadEuTaxonomyDataForNonFinancials(companyId: string) {
+    function uploadEuTaxonomyDataForNonFinancials(companyId: string): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
       cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
       cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({

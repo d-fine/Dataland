@@ -68,15 +68,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Card from "primevue/card";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
 import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "LandingLogin",
   components: { JoinDatalandButton, UserAuthenticationButtons, Card },
-};
+});
 </script>
 <style scoped>
 .d-text-register {

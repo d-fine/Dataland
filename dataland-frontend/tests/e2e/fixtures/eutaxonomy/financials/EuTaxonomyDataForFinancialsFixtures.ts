@@ -13,9 +13,9 @@ import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/Dat
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
-import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData, DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
 const { parse } = require("json2csv");
 
 export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
@@ -66,21 +66,21 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
   const returnBase: EuTaxonomyDataForFinancials = {};
   populateSharedValues(returnBase);
   const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!!)])
+    financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!)])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
   returnBase.creditInstitutionKpis =
     financialServicesTypes.indexOf("CreditInstitution") >= 0
-      ? generateCreditInstitutionKpis(returnBase.referencedReports!!)
+      ? generateCreditInstitutionKpis(returnBase.referencedReports!)
       : undefined;
   returnBase.insuranceKpis =
     financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
-      ? generateInsuranceKpis(returnBase.referencedReports!!)
+      ? generateInsuranceKpis(returnBase.referencedReports!)
       : undefined;
   returnBase.investmentFirmKpis =
     financialServicesTypes.indexOf("InvestmentFirm") >= 0
-      ? generateInvestmentFirmKpis(returnBase.referencedReports!!)
+      ? generateInvestmentFirmKpis(returnBase.referencedReports!)
       : undefined;
   return returnBase;
 }
@@ -108,7 +108,9 @@ export function generateEligibilityKpis(reports: ReferencedReports): Eligibility
   };
 }
 
-export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum) {
+export function getCsvEligibilityKpiMapping(
+  type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials>, string | number>> {
   return [
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to taxonomy-eligible economic activities ${getCompanyTypeHeader(type)}`,
@@ -140,7 +142,7 @@ export function getCsvEligibilityKpiMapping(type: EuTaxonomyDataForFinancialsFin
 
 export function generateCSVDataForFinancials(
   companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
-) {
+): string {
   const options = {
     fields: [
       ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
@@ -187,5 +189,6 @@ export function generateCSVDataForFinancials(
     ],
     delimiter: ";",
   };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
   return parse(companyInformationWithEuTaxonomyDataForFinancials, options);
 }

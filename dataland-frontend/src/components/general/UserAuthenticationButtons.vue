@@ -8,27 +8,37 @@
     />
   </div>
 </template>
-<script>
-import PrimeButton from "primevue/button";
 
-export default {
+<script lang="ts">
+import PrimeButton from "primevue/button";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+
+export default defineComponent({
   name: "UserAuthenticationButtons",
   components: { PrimeButton },
-  inject: ["getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
+
   methods: {
     login() {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            let baseUrl = window.location.origin;
+            const baseUrl = window.location.origin;
             const url = keycloak.createLoginUrl({
               redirectUri: `${baseUrl}/companies`,
             });
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
-};
+});
 </script>

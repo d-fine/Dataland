@@ -108,6 +108,7 @@ export default defineComponent({
   },
 
   created() {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     window.addEventListener("scroll", this.handleScroll);
     this.scanQueryParams(this.route);
   },
@@ -124,6 +125,7 @@ export default defineComponent({
       ) as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       currentCombinedFilter: {
         companyNameFilter: "",
         frameworkFilter: [],
@@ -152,6 +154,7 @@ export default defineComponent({
   watch: {
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         this.frameworkDataSearchBar?.$refs.autocomplete.hideOverlay();
       }
       if (!pageScrolledNew) {
@@ -215,45 +218,46 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 50;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop > 100;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
       }
     },
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
-      let queryFrameworks = route.query.framework;
+      const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum).filter(
           (frameworkName) => frameworkName != "lksg"
         ) as Array<string>;
-        const result = parseQueryParamArray(queryFrameworks).filter((it) =>
+        return parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
-        return result;
       } else {
         return Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg");
       }
     },
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
-      let queryCountryCodes = route.query.countryCode;
+      const queryCountryCodes = route.query.countryCode;
       if (queryCountryCodes) {
         return parseQueryParamArray(queryCountryCodes);
       }
       return [];
     },
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
-      let querySectors = route.query.sector;
+      const querySectors = route.query.sector;
       if (querySectors) {
         return parseQueryParamArray(querySectors);
       }
       return [];
     },
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
-      let queryInput = route.query.input as string;
+      const queryInput = route.query.input as string;
       if (queryInput) {
         return queryInput;
       }
@@ -261,9 +265,13 @@ export default defineComponent({
     },
     updateCombinedFilterIfRequired() {
       if (
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
         this.waitingForSearchResults = true;
@@ -296,6 +304,7 @@ export default defineComponent({
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.setFirstShownRow(0);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.searchResults?.resetPagination();
       this.waitingForSearchResults = false;
       this.searchBarToggled = false;
@@ -313,7 +322,7 @@ export default defineComponent({
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
-      this.$router.push({
+      return this.$router.push({
         name: "Search Companies for Framework Data",
         query: {
           input: queryInput,
@@ -329,13 +338,16 @@ export default defineComponent({
     },
     toggleSearchBar() {
       this.searchBarToggled = true;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       const height = this.searchBarAndFiltersContainer?.clientHeight;
       window.scrollBy(0, -height);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
       this.searchBarName = "search_bar_scrolled";
     },
     unmounted() {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       window.removeEventListener("scroll", this.handleScroll);
     },
   },

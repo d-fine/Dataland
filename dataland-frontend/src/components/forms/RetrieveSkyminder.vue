@@ -26,24 +26,31 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import PrimeButton from "primevue/button";
 import SkyminderTable from "@/components/resources/skyminderCompaniesSearch/SkyminderTable.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "RetrieveSkyminder",
   components: { Card, PrimeButton, FormKit, SkyminderTable },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
 
   data: () => ({
     skyminderSearchParams: {},
     skyminderSearchResponse: null,
   }),
-  inject: ["getKeycloakPromise"],
   methods: {
-    clearSearch() {
+    clearSearch(): void {
       this.skyminderSearchParams = {};
       this.skyminderSearchResponse = null;
     },
@@ -52,7 +59,7 @@ export default {
       try {
         const inputArgs = Object.values(this.skyminderSearchParams);
         const skyminderControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getSkyminderControllerApi();
         this.skyminderSearchResponse = await skyminderControllerApi.getDataSkyminderRequest(...inputArgs);
       } catch (error) {
@@ -60,5 +67,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

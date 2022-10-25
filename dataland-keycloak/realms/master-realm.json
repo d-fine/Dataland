@@ -2385,7 +2385,7 @@
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
     "frontendUrl": "http://dataland-admin:6789/keycloak",
-    "acr.loa.map": "[]"
+    "acr.loa.map": "{}"
   },
   "keycloakVersion": "19.0.3",
   "userManagedAccessAllowed": false,

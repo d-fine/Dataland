@@ -32,12 +32,13 @@
   </Card>
 </template>
 
-<script>
+<script lang="ts">
 import Card from "primevue/card";
 import ProgressBar from "primevue/progressbar";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "TaxoCard",
   components: { Card, ProgressBar },
   props: {
@@ -62,7 +63,7 @@ export default {
       return convertCurrencyNumbersToNotationWithLetters(Math.round(this.total * this.percent * 100) / 100, 2);
     },
   },
-};
+});
 </script>
 
 <style>

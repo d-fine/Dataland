@@ -66,6 +66,7 @@ import FrameworkDataSearchDropdownFilter, {
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 interface CountryCodeSelectableItem extends SelectableItem {
   countryCode: string;
@@ -138,11 +139,13 @@ export default defineComponent({
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         return this.availableSectors.filter((it) => this.selectedSectors.includes(it.displayName));
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
           "update:selectedSectors",
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
           newValue.map((it) => it.displayName)
         );
       },
@@ -155,23 +158,32 @@ export default defineComponent({
       this.selectedSectorsInt = [];
     },
     closeAllOpenDropDowns() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.countryFilter?.$refs.multiselect.hide();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.sectorFilter?.$refs.multiselect.hide();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkFilter?.$refs.multiselect.hide();
     },
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
-        this.getKeycloakPromise!!()
+        assertDefined(this.getKeycloakPromise)()
       ).getCompanyDataControllerApi();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...availableSearchFilters.data.countryCodes!!].map((it) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
+      this.availableCountries = [...availableSearchFilters.data.countryCodes!].map((it) => {
         return {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           countryCode: it,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           displayName: getCountryNameFromCountryCode(it),
           disabled: false,
         };
       });
-      this.availableSectors = [...availableSearchFilters.data.sectors!!].map((it) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
+      this.availableSectors = [...availableSearchFilters.data.sectors!].map((it) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         return { displayName: it, disabled: false };
       });
     },
@@ -198,13 +210,13 @@ export default defineComponent({
         }
       );
     },
-    async retrieveAvailableFilterOptions() {
+    retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();
-      await this.retrieveCountryAndSectorFilterOptions();
+      return this.retrieveCountryAndSectorFilterOptions();
     },
   },
-  async mounted() {
-    await this.retrieveAvailableFilterOptions();
+  mounted() {
+    void this.retrieveAvailableFilterOptions();
   },
 });
 </script>

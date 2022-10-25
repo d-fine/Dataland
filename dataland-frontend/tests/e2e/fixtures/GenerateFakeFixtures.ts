@@ -4,7 +4,7 @@ import { exportFixturesEuTaxonomyNonFinancial } from "./eutaxonomy/non-financial
 import { exportFixturesLksg } from "./lksg";
 faker.locale = "de";
 
-function main() {
+function main(): void {
   exportFixturesEuTaxonomyFinancial();
   exportFixturesEuTaxonomyNonFinancial();
   exportFixturesLksg();

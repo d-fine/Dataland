@@ -29,12 +29,30 @@
   </PrimeMenu>
 </template>
 
-<script>
+<script lang="ts">
 import PrimeMenu from "primevue/menu";
-export default {
+import { defineComponent, inject, ref } from "vue";
+import type { Ref } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+
+export default defineComponent({
   name: "UserProfileDropDown",
-  inject: ["authenticated", "getKeycloakPromise"],
   components: { PrimeMenu },
+  setup() {
+    const menu: Ref<PrimeMenu | undefined> = ref();
+    function toggleDropdownMenu(event: Event): void {
+      if (menu.value !== undefined) {
+        menu.value.toggle(event);
+      }
+    }
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+      menu,
+      toggleDropdownMenu,
+    };
+  },
 
   data() {
     return {
@@ -55,40 +73,38 @@ export default {
   },
 
   methods: {
-    toggleDropdownMenu(event) {
-      this.$refs.menu.toggle(event);
-    },
     logoutViaDropdown() {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
-            let baseUrl = window.location.origin;
+            const baseUrl = window.location.origin;
             const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}` });
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
     gotoUserSettings() {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
-            keycloak.accountManagement();
+            return keycloak.accountManagement();
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
   created() {
-    this.getKeycloakPromise()
+    assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
-        if (keycloak.authenticated && keycloak.idTokenParsed.picture) {
+        if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
           this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
         }
       })
-      .catch((error) => console.log("error: " + error));
+      .catch((error) => console.log(error));
   },
-};
+});
 </script>
 
 <style scoped>

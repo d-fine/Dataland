@@ -83,6 +83,7 @@ import { defineComponent, inject, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;
@@ -130,20 +131,22 @@ export default defineComponent({
   },
   mounted() {
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
-    this.queryCompany();
+    void this.queryCompany();
     if (!this.route.query.input) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.focus();
     }
   },
 
   watch: {
     searchBarName() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.focus();
     },
     filter: {
       handler() {
         this.searchBarInput = this.filter?.companyNameFilter ?? "";
-        this.queryCompany();
+        void this.queryCompany();
       },
       deep: true,
     },
@@ -160,16 +163,18 @@ export default defineComponent({
   },
   methods: {
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      this.$router.push(getRouterLinkTargetFramework(event.value));
+      void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
     handleKeyupEnter() {
       this.$emit("search-confirmed", this.searchBarInput);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.hideOverlay();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.$refs.input.blur();
-      this.queryCompany();
+      void this.queryCompany();
     },
     async queryCompany() {
-      if (this.getKeycloakPromise !== undefined && this.emitSearchResultsArray) {
+      if (this.emitSearchResultsArray) {
         this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
@@ -177,26 +182,24 @@ export default defineComponent({
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
         this.loading = false;
       }
     },
     async searchCompanyName(companyName: { query: string }) {
-      if (this.getKeycloakPromise !== undefined) {
-        this.loading = true;
-        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
-          companyName.query,
-          true,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          this.getKeycloakPromise()
-        );
-        this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
-        this.loading = false;
-      }
+      this.loading = true;
+      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
+        companyName.query,
+        true,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)()
+      );
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+      this.loading = false;
     },
   },
 });

@@ -22,7 +22,7 @@ export interface DataSearchStoredCompany {
  */
 function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
   const permIdIdentifier = storedCompany.companyInformation.identifiers.filter(
-    (identifier) => identifier.identifierType === "PermId"
+    (identifier): boolean => identifier.identifierType === "PermId"
   );
   if (permIdIdentifier.length == 1) {
     return permIdIdentifier[0].identifierValue;
@@ -40,13 +40,15 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
 function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<DataSearchStoredCompany> {
-  return responseData.map((company) => ({
-    companyName: company.companyInformation.companyName,
-    companyInformation: company.companyInformation,
-    companyId: company.companyId,
-    permId: retrievePermIdFromStoredCompany(company),
-    dataRegisteredByDataland: company.dataRegisteredByDataland,
-  }));
+  return responseData.map(
+    (company): DataSearchStoredCompany => ({
+      companyName: company.companyInformation.companyName,
+      companyInformation: company.companyInformation,
+      companyId: company.companyId,
+      permId: retrievePermIdFromStoredCompany(company),
+      dataRegisteredByDataland: company.dataRegisteredByDataland,
+    })
+  );
 }
 
 /**

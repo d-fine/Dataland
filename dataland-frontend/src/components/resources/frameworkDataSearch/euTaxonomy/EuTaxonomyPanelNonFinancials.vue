@@ -77,39 +77,49 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
+import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "EuTaxonomyPanelNonFinancials",
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      dataSet: null,
+      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
+    };
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   props: {
-    dataID: String,
+    dataID: {
+      type: String,
+    },
   },
   mounted() {
-    this.getCompanyEUDataset();
+    void this.getCompanyEuDataset();
   },
   watch: {
     dataID() {
-      this.getCompanyEUDataset();
+      void this.getCompanyEuDataset();
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
-    async getCompanyEUDataset() {
+    async getCompanyEuDataset() {
       try {
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData1(
-          this.dataID
+            assertDefined(this.dataID)
         );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
@@ -117,5 +127,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
