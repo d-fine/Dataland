@@ -1,7 +1,7 @@
 <#import "dataland_template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('email','username','password','password-confirm'); section>
     <#if section = "header">
-        Create an account
+        Create a preview account
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
