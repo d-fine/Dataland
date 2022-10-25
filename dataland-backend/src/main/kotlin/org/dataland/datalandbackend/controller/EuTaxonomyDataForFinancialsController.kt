@@ -30,12 +30,14 @@ class EuTaxonomyDataForFinancialsController(
     EuTaxonomyDataForFinancials::class.java
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> {
         return super.getCompanyAssociatedData(dataId)
     }
 
     @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>): ResponseEntity<DataMetaInformation> {
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>):
+        ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
 }
