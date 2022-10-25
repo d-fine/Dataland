@@ -1,52 +1,27 @@
 package org.dataland.e2etests.tests.frameworks
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
-import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class Lksg {
-    private val tokenHandler = TokenHandler()
-    private val lksgDataControllerApi =
-        LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
-    private val testDataProviderForLksgData =
-        TestDataProvider(LksgData::class.java)
-
-    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-
+    private val lksgDataControllerApi = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val testDataProviderForLksgData = TestDataProvider(LksgData::class.java)
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-
-    private fun postOneCompanyAndLksg():
-        Pair<DataMetaInformation, LksgData> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val testData = testDataProviderForLksgData.getTData(1).first()
-        val receivedCompanyId = companyDataControllerApi.postCompany(
-            testDataProviderForLksgData.getCompanyInformationWithoutIdentifiers(1).first()
-        ).companyId
-        val receivedDataMetaInformation = lksgDataControllerApi.postCompanyAssociatedLksgData(
-            CompanyAssociatedDataLksgData(receivedCompanyId, testData)
-        )
-        return Pair(
-            DataMetaInformation(
-                companyId = receivedCompanyId,
-                dataId = receivedDataMetaInformation.dataId,
-                dataType = receivedDataMetaInformation.dataType
-            ),
-            testData
-        )
-    }
 
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndLksg()
+        val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndItsData(
+            testDataProviderForLksgData,
+            { data: CompanyAssociatedDataLksgData -> lksgDataControllerApi.postCompanyAssociatedLksgData(data) }
+        ) { companyId: String, data: LksgData -> CompanyAssociatedDataLksgData(companyId, data) }
+
         val downloadedAssociatedData = lksgDataControllerApi
             .getCompanyAssociatedLksgData(receivedDataMetaInformation.dataId)
         val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
