@@ -29,6 +29,10 @@ if (runPrepopulation) {
   }
 }
 
+if (cypressTestGroup === 102) {
+  require("./company-metadata/CompaniesOnlySearch");
+}
+
 if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./company-metadata");
 }
