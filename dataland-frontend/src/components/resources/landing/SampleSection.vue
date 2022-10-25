@@ -4,7 +4,7 @@
       <div class="col-offset-3 col-3">
         <div class="grid">
           <div class="col-10 text-left text-gray-100">
-            <h2 class="mb-0">Explore Dataland</h2>
+            <h2 class="mb-0">Explore Dataland.</h2>
             <h2 class="mt-0">No preview account required.</h2>
           </div>
           <div class="col-10 text-left text-gray-100">
