@@ -158,7 +158,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData2(
-            assertDefined(this.dataID)
+          assertDefined(this.dataID)
         );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {

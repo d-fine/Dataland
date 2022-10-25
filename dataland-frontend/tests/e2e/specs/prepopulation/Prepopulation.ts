@@ -35,9 +35,11 @@ describe(
     }
 
     function prepopulate(
-        companiesWithFrameworkData: Array<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData>>,
+      companiesWithFrameworkData: Array<
+        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData>
+      >,
       // eslint-disable-next-line @typescript-eslint/ban-types
-        uploadOneFrameworkDataset: Function
+      uploadOneFrameworkDataset: Function
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
