@@ -78,7 +78,7 @@ describe(
         ): Promise<void> {
           await new EuTaxonomyDataForFinancialsControllerApi(
             new Configuration({ accessToken: token })
-          ).postCompanyAssociatedData2({
+          ).postCompanyAssociatedEuTaxonomyDataForFinancials({
             companyId,
             data,
           });
@@ -110,7 +110,7 @@ describe(
         ): Promise<void> {
           await new EuTaxonomyDataForNonFinancialsControllerApi(
             new Configuration({ accessToken: token })
-          ).postCompanyAssociatedData1({
+          ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
             companyId,
             data,
           });
@@ -137,7 +137,7 @@ describe(
 
       it("Upload Lksg fake-fixtures", () => {
         async function uploadOneLksgDataset(token: string, companyId: string, data: LksgData): Promise<void> {
-          await new LksgDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedData({
+          await new LksgDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedLksgData({
             companyId,
             data,
           });

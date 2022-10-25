@@ -1,10 +1,14 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
+import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -24,4 +28,14 @@ class EuTaxonomyDataForFinancialsController(
     myMetaDataManager,
     myObjectMapper,
     EuTaxonomyDataForFinancials::class.java
-)
+) {
+    @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> {
+        return super.getCompanyAssociatedData(dataId)
+    }
+
+    @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForFinancials")
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>): ResponseEntity<DataMetaInformation> {
+        return super.postCompanyAssociatedData(companyAssociatedData)
+    }
+}
