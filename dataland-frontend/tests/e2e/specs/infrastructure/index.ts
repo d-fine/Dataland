@@ -6,5 +6,5 @@ describe("Public infrastructure health checks", () => {
   require("./VerifyDeployment");
   require("./VerifyHeaders");
   require("./VisitNotExistingPath");
-  require("./Cypress");
+  require("./Test500Response");
 });

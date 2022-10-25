@@ -3,6 +3,7 @@ set -ex
 CYPRESS_TEST_GROUP=101 ./testing/execute_e2e_tests.sh
 
 # The backend is down now, but the proxy is still up. Test if the proxy returns errors in the expected format
+curl -L "https://dataland-local.duckdns.org/api/test"
 if ! curl -L "https://dataland-local.duckdns.org/api/test" 2>/dev/null | grep -q 'proxy-error-502'; then
   echo "Proxy does not seem to respond with the desired error format"
   exit 1
