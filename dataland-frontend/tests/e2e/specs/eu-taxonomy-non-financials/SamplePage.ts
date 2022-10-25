@@ -12,7 +12,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       .should("include", "/eutaxonomy-non-financials");
     cy.get("h2").should("contain.text", "EU Taxonomy Data");
     cy.get(".p-button.p-button-rounded").should("contain.text", "COMPANY DATA SAMPLE");
-    cy.get("body").should("contain.text", "Join Dataland with other");
+    cy.get("body").should("contain.text", "Try Dataland with other");
     cy.get("[title=back_button").should("be.visible").click({ force: true });
     cy.url().should("eq", getBaseUrl() + "/");
   });
