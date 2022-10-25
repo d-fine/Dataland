@@ -25,7 +25,7 @@ export async function countCompanyAndDataIds(
   };
 }
 
-export function interceptAllAndCheckFor500Errors() {
+export function interceptAllAndCheckFor500Errors(): void {
   cy.intercept("/api/**", (req) => {
     const allow500 = req.headers["DATALAND-ALLOW-5XX"] === "true";
     delete req.headers["DATALAND-ALLOW-5XX"];

@@ -24,7 +24,7 @@ server {
     }
 
     location /images/ {
-      root /var/wwww;
+      root /var/www;
     }
 
     location /api {
