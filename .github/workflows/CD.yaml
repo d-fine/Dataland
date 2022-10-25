@@ -159,7 +159,7 @@ jobs:
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          CYPRESS_EXECUTION_ENVIRONMENT: ${{ format('{0}CD', github.event.inputs.whichEnvironment) }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ format('{0}Cd', github.event.inputs.whichEnvironment) }}
       - name: Move Cypress Results
         if: always()
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
