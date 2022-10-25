@@ -58,7 +58,7 @@
             <template #content>
               <p class="d-text-register text-left text-xl pl-3 pr-3">
                 Create a preview account to <strong>try Dataland</strong> and access data for
-                <strong>EU Taxonomy</strong> and ohter frameworks.
+                <strong>EU Taxonomy</strong> and other frameworks.
               </p>
               <div class="grid">
                 <div class="col-12 p-fluid pl-3 pr-3">
