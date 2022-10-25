@@ -31,7 +31,7 @@ class EuTaxonomyNonFinancials {
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val receivedDataMetaInformation = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
+        val receivedDataMetaInformation = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData)
         )
         return Pair(
@@ -68,7 +68,7 @@ class EuTaxonomyNonFinancials {
     fun `post a company with EuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
         val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForNonFinancialsControllerApi
-            .getCompanyAssociatedData1(receivedDataMetaInformation.dataId)
+            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(receivedDataMetaInformation.dataId)
         val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
