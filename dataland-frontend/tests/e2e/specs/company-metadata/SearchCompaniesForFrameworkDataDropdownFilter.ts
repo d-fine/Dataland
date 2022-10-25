@@ -165,6 +165,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.intercept("**/api/companies*").as("searchCompany");
           cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName);
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+            cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`)
