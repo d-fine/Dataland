@@ -81,6 +81,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     if (frameworkFilter.size === 0) {
       frameworkFilter = new Set(Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg"));
     }
+
     const response = await companyDataControllerApi.getCompanies(
       searchString,
       frameworkFilter,
