@@ -53,7 +53,7 @@
         <div class="col-4 col-offset-4">
           <Card class="d-card">
             <template #title>
-              <p class="text-left text-xxl pl-3 pr-3">Create a preview Account to try Dataland</p>
+              <p class="text-left text-xxl pl-3 pr-3">Create a preview account to try Dataland</p>
             </template>
             <template #content>
               <p class="d-text-register text-left text-xl pl-3 pr-3">

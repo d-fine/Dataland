@@ -12,7 +12,7 @@
             <router-link
               to="/"
               class="p-button bg-white border-0 uppercase text-green-500 d-letters flex align-items-center no-underline"
-              >Create a Preview Account</router-link
+              >Create a preview account</router-link
             >
           </p>
         </div>
