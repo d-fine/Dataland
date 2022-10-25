@@ -113,7 +113,7 @@
                     Don't have an account?
                     <Button
                             label="Join"
-                            class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"
+                            class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 cursor-pointer"
                             name="join_dataland_button"
                             onclick="location.href='${url.registrationUrl}'">
                             CREATE A PREVIEW ACCOUNT
