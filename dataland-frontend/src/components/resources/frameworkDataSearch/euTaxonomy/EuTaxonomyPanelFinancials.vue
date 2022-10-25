@@ -159,7 +159,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForFinancialsControllerApi();
         const companyAssociatedData =
           await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-          assertDefined(this.dataID)
+            assertDefined(this.dataID)
           );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {

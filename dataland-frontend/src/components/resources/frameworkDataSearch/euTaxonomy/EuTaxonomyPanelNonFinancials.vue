@@ -120,7 +120,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         const companyAssociatedData =
           await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          assertDefined(this.dataID)
+            assertDefined(this.dataID)
           );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
