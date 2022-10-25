@@ -55,4 +55,23 @@ class Lksg {
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType.dataType)
         Assertions.assertEquals(uploadedData, downloadedAssociatedData.data)
     }
+
+    @Test
+    fun `post a company without Lksg data and check if it works`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val receivedCompanyId = companyDataControllerApi.postCompany(
+            testDataProviderForLksgData.getCompanyInformationWithoutIdentifiers(1).first()
+        ).companyId
+        val nullData = LksgData()
+        val receivedDataMetaInformation = lksgDataControllerApi.postCompanyAssociatedData(
+            CompanyAssociatedDataLksgData(receivedCompanyId, nullData)
+        )
+        val downloadedAssociatedData = lksgDataControllerApi
+            .getCompanyAssociatedData(receivedDataMetaInformation.dataId)
+        val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
+
+        Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
+        Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType.dataType)
+        Assertions.assertEquals(nullData, downloadedAssociatedData.data)
+    }
 }
