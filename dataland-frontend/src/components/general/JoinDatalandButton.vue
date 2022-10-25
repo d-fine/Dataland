@@ -5,7 +5,7 @@
       name="join_dataland_button"
       @click="register"
     >
-      <span class="d-letters d-button"> Join Dataland </span>
+      <span class="d-letters d-button"> Create a Preview Account </span>
       <i class="material-icons pl-1" aria-hidden="true" alt="chevron_right">chevron_right</i>
     </PrimeButton>
   </div>
