@@ -38,6 +38,10 @@ server {
       include utils/apiErrors.conf;
     }
 
+    location /api/force500Response {
+        return 500;
+    }
+
     location /edc/api/dataland/eurodat {
       proxy_pass http://dataland-edc:9191/api/dataland/eurodat;
       include utils/proxy.conf;
