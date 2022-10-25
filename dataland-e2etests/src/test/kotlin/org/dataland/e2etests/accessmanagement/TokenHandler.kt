@@ -6,13 +6,13 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
-import org.dataland.e2etests.UPLOADER_USER_NAME
-import org.dataland.e2etests.UPLOADER_USER_PASSWORD
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
 import org.dataland.e2etests.READER_USER_NAME
 import org.dataland.e2etests.READER_USER_PASSWORD
 import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
+import org.dataland.e2etests.UPLOADER_USER_NAME
+import org.dataland.e2etests.UPLOADER_USER_PASSWORD
 
 class TokenHandler {
 
