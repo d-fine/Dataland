@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
-import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomDateOrUndefined } from "./DateFixtures";
@@ -62,20 +62,20 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
 export function getCsvDataPointMapping<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointBigDecimal | undefined,
-  valueConverter: (input: number | undefined) => string = (x) => x?.toString() || ""
-) {
+  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() || ""
+): Array<DataPoint<T, string | number>> {
   return [
     {
       label: dataPointName,
-      value: (row: T) => valueConverter(dataPointGetter(row)?.value),
+      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.value),
     },
     {
       label: `${dataPointName} Quality`,
-      value: (row: T) => humanizeOrUndefined(dataPointGetter(row)?.quality),
+      value: (row: T): string | undefined => humanizeOrUndefined(dataPointGetter(row)?.quality),
     },
     {
       label: `${dataPointName} Comment`,
-      value: (row: T) => dataPointGetter(row)?.comment,
+      value: (row: T): string | undefined => dataPointGetter(row)?.comment,
     },
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];

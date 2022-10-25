@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-export function randomDate() {
+export function randomDate(): string {
   return faker.date.past().toISOString().split("T")[0];
 }
 

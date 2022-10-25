@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:19.0.2
+FROM quay.io/keycloak/keycloak:19.0.3
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
@@ -8,6 +8,7 @@ ENV KC_HOSTNAME_STRICT_HTTPS=false
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_ADDRESS_FORWARDING=true
 COPY ./dataland-keycloak/dataland_theme/login/dist /opt/keycloak/themes/dataland_theme/login
+COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
 ENV KC_HOSTNAME_ADMIN=dataland-admin:6789

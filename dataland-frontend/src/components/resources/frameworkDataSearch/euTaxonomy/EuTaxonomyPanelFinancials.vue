@@ -116,47 +116,57 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "EuTaxonomyPanelFinancials",
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      dataSet: null,
+      dataSet: null as EuTaxonomyDataForFinancials | null | undefined,
     };
   },
   props: {
-    dataID: String,
+    dataID: {
+      type: String,
+    },
   },
   mounted() {
-    this.getCompanyEUDataset();
+    void this.getCompanyEuDataset();
   },
   watch: {
     dataID() {
-      this.getCompanyEUDataset();
+      void this.getCompanyEuDataset();
     },
   },
-  inject: ["getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   methods: {
-    async getCompanyEUDataset() {
+    async getCompanyEuDataset() {
       try {
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedData1(
-          this.dataID
+          assertDefined(this.dataID)
         );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);
       }
     },
-    getSectionHeading(type) {
-      const mapping = {
+    getSectionHeading(type: string): string {
+      const mapping: { [key: string]: string } = {
         CreditInstitution: "Credit Institution",
         AssetManagement: "Asset Management",
         InsuranceOrReinsurance: "Insurance and Reinsurance",
@@ -164,5 +174,5 @@ export default {
       return mapping[type];
     },
   },
-};
+});
 </script>

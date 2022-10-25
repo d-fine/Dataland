@@ -6,15 +6,16 @@ RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && 
 # Add CronJob for certificate renewal (Add 00:00 on every day)
 RUN echo "0 0 * * * root sh /scripts/renew-certificates.sh" > /etc/cron.d/certbot-renew
 
-COPY config /etc/nginx
-COPY templates/*-dataland-$PROXY_ENVIRONMENT.template /etc/nginx/templates/
-COPY templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.template
-COPY dhparam.pem /certs/dhparam.pem
-COPY docker-entrypoint.d/* /docker-entrypoint.d/
-COPY scripts /scripts
-COPY custom_errors.html /var/www/html/custom_errors.html
-COPY api_errors.json /var/www/html/api_errors.json
-COPY robots.txt /var/www/html/robots.txt
+COPY dataland-inbound-proxy/config /etc/nginx
+COPY dataland-inbound-proxy/templates/*-dataland-$PROXY_ENVIRONMENT.template /etc/nginx/templates/
+COPY dataland-inbound-proxy/templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.template
+COPY dataland-inbound-proxy/dhparam.pem /certs/dhparam.pem
+COPY dataland-inbound-proxy/docker-entrypoint.d/* /docker-entrypoint.d/
+COPY dataland-inbound-proxy/scripts /scripts
+COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
+COPY dataland-inbound-proxy/api_errors.json /var/www/html/api_errors.json
+COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
+COPY dataland-frontend/src/assets/images /var/www/images
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 

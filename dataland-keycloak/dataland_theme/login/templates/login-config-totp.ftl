@@ -108,7 +108,7 @@
                         <div class="p-3 pt-3 ml-3 mb-4 p-tfa-instruction-box bg-white p-tfa-instruction-box-remove-border-top">
 
                             <div class="${properties.kcInputWrapperClass!} p-tfa-input-width-limit">
-                                <input type="text" class="${properties.kcInputClass!} p-tfa-input-grey-bottom-border" id="userLabel"
+                                <input type="text" class="${properties.kcInputClass!} p-input-grey-bottom-border" id="userLabel"
                                        name="userLabel"
                                        autocomplete="off"
                                        aria-invalid="<#if messagesPerField.existsError('userLabel')>true</#if>"
@@ -137,7 +137,7 @@
 
                                 <div class="${properties.kcInputWrapperClass!} pt-3 p-tfa-input-width-limit">
                                     <input type="text" id="totp" name="totp" autocomplete="off"
-                                           class="${properties.kcInputClass!} p-tfa-input-grey-bottom-border"
+                                           class="${properties.kcInputClass!} p-input-grey-bottom-border"
                                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
                                            placeholder="Enter the code"
                                     />

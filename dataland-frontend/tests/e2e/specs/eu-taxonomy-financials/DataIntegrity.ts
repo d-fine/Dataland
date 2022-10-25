@@ -8,6 +8,7 @@ import {
   DataPointBigDecimal,
 } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -17,26 +18,26 @@ describeIf(
   },
   function () {
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (companies) {
-        preparedFixtures = companies;
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
     });
 
-    function getPreparedFixture(name: String): FixtureData<EuTaxonomyDataForFinancials> {
-      return preparedFixtures.find((it) => it.companyInformation.companyName == name)!!;
+    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
+      return preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
     }
 
     function uploadDataAndVisitCompanyPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
-    ) {
-      createCompanyAndGetId(companyInformation.companyName).then((companyId) => {
+    ): void {
+      createCompanyAndGetId(companyInformation.companyName).then((companyId): void => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
         generateEuTaxonomyUpload(testData);
         submitEuTaxonomyFinancialsUploadForm();
@@ -50,7 +51,7 @@ describeIf(
       return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
-    function checkCommonFields(type: string, data: EligibilityKpis) {
+    function checkCommonFields(type: string, data: EligibilityKpis): void {
       cy.get(`div[name="taxonomyEligibleActivity${type}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
         .should("contain", formatPercentNumber(data.taxonomyEligibleActivity));
@@ -65,7 +66,7 @@ describeIf(
         .should("contain", formatPercentNumber(data.investmentNonNfrd));
     }
 
-    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials) {
+    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")

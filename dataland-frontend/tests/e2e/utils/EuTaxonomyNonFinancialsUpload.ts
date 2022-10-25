@@ -19,8 +19,7 @@ export function uploadDummyEuTaxonomyDataForNonFinancials(companyId: string): Cy
     .get("body")
     .should("contain", "success")
     .get("span[title=dataId]")
-    .then<string>(($dataId) => {
-      const id = $dataId.text();
-      return id;
+    .then<string>(($dataId): string => {
+      return $dataId.text();
     });
 }

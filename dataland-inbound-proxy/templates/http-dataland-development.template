@@ -32,6 +32,10 @@ server {
       proxy_read_timeout 86400;
     }
 
+    location /images/ {
+      root /var/wwww;
+    }
+
     location /api {
       proxy_pass http://host.docker.internal:8080/api;
       include utils/proxy.conf;

@@ -38,6 +38,8 @@ function humaniseViaMapping(rawText: string): string {
     yes: "Yes",
     no: "No",
     na: "N/A",
+    "eutaxonomy-financials": "EU Taxonomy for financial companies",
+    "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
@@ -48,7 +50,10 @@ function humaniseViaMapping(rawText: string): string {
  *
  * @param  {string} rawText      is the string to be converted to a human-readable string
  */
-export function humanizeString(rawText: string): string {
+export function humanizeString(rawText: string | null | undefined): string {
+  if (!rawText) {
+    return "";
+  }
   const resultOfCustomMappingHumanisation = humaniseViaMapping(rawText);
   return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawText)

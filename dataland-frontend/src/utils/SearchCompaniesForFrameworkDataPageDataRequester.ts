@@ -22,7 +22,7 @@ export interface DataSearchStoredCompany {
  */
 function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
   const permIdIdentifier = storedCompany.companyInformation.identifiers.filter(
-    (identifier) => identifier.identifierType === "PermId"
+    (identifier): boolean => identifier.identifierType === "PermId"
   );
   if (permIdIdentifier.length == 1) {
     return permIdIdentifier[0].identifierValue;
@@ -40,13 +40,15 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  */
 function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<DataSearchStoredCompany> {
-  return responseData.map((company) => ({
-    companyName: company.companyInformation.companyName,
-    companyInformation: company.companyInformation,
-    companyId: company.companyId,
-    permId: retrievePermIdFromStoredCompany(company),
-    dataRegisteredByDataland: company.dataRegisteredByDataland,
-  }));
+  return responseData.map(
+    (company): DataSearchStoredCompany => ({
+      companyName: company.companyInformation.companyName,
+      companyInformation: company.companyInformation,
+      companyId: company.companyId,
+      permId: retrievePermIdFromStoredCompany(company),
+      dataRegisteredByDataland: company.dataRegisteredByDataland,
+    })
+  );
 }
 
 /**
@@ -55,23 +57,34 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  * @param  {string} searchString           the string that is used to search companies
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
- * @param {Array<string>} frameworksToFilter
+ * @param {Array<string>} frameworkFilter
  *                                         search for companies that hold at least one data set for at least one of
  *                                         the frameworks mentioned in frameworksToFilter and don't filter if
  *                                         frameworksToFilter is empty
+ * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
+ *                                         countries specified by the country codes are returned
+ * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
   onlyCompanyNames: boolean,
-  frameworksToFilter: Set<DataTypeEnum>,
+  frameworkFilter: Set<DataTypeEnum>,
+  countryCodeFilter: Set<string>,
+  sectorFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<Array<DataSearchStoredCompany>> {
   let mappedResponse: Array<DataSearchStoredCompany> = [];
 
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
-    const response = await companyDataControllerApi.getCompanies(searchString, frameworksToFilter, onlyCompanyNames);
+    const response = await companyDataControllerApi.getCompanies(
+      searchString,
+      frameworkFilter,
+      countryCodeFilter,
+      sectorFilter,
+      onlyCompanyNames
+    );
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(responseData);
   } catch (error) {
