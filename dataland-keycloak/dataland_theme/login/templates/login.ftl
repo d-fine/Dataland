@@ -64,7 +64,7 @@
 
             <div id="kc-form-buttons">
                 <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                <input tabindex="4" class="p-button w-full cursor-pointer font-semibold mt-5" name="login" id="kc-login" type="submit" value="LOG IN"/>
+                <input tabindex="4" class="p-button w-full cursor-pointer font-semibold mt-5" name="login" id="kc-login" type="submit" value="LOG IN TO PREVIEW ACCOUNT"/>
             </div>
         </form>
 
@@ -116,7 +116,7 @@
                             class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"
                             name="join_dataland_button"
                             onclick="location.href='${url.registrationUrl}'">
-                            JOIN DATALAND
+                            CREATE A PREVIEW ACCOUNT
                     </Button>
                 </span>
 
