@@ -12,7 +12,7 @@ class SkyminderControllerTest {
 
     @Test
     fun `get dummy company data by sending a request to dummy skyminder server`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         assertTrue(
             skyminderControllerApi.getDataSkyminderRequest("dummy", "dummy").isNotEmpty(),
             "The dummy skyminder server is returning an empty response."

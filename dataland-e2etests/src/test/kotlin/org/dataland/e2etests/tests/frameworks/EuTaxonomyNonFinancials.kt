@@ -26,14 +26,15 @@ class EuTaxonomyNonFinancials {
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials():
         Pair<DataMetaInformation, EuTaxonomyDataForNonFinancials> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val receivedDataMetaInformation = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData1(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData)
-        )
+        val receivedDataMetaInformation = euTaxonomyDataForNonFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData)
+            )
         return Pair(
             DataMetaInformation(
                 companyId = receivedCompanyId,
@@ -47,7 +48,7 @@ class EuTaxonomyNonFinancials {
     @Test
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val (testDataInformation, _) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             testDataInformation.companyId,
             testDataInformation.dataType
@@ -68,7 +69,7 @@ class EuTaxonomyNonFinancials {
     fun `post a company with EuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
         val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForNonFinancialsControllerApi
-            .getCompanyAssociatedData1(receivedDataMetaInformation.dataId)
+            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(receivedDataMetaInformation.dataId)
         val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)

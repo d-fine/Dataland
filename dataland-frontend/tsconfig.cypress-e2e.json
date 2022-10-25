@@ -15,7 +15,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"],
-      "@e2e/*": ["./tests/e2e/*"]
+      "@e2e/*": ["./tests/e2e/*"],
+      "@common/*": ["./tests/e2e/fixtures/common/*"]
     }
   }
 }

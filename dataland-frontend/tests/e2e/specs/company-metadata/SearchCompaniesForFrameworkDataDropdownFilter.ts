@@ -16,7 +16,7 @@ before(function () {
 });
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
-  it("Lksg and Sfdr should be displayed in the framework dropdown even though they are not yet implemented", () => {
+  it("LKSG and SFDR should be displayed in the framework dropdown even though they are not yet implemented", () => {
     cy.ensureLoggedIn();
     cy.visit("/companies")
       .get("#framework-filter")

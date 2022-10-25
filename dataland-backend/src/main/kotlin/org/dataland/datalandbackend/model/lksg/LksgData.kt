@@ -217,5 +217,23 @@ data class LksgData(
 
     val fairLabourAssociationCertification: YesNo?,
 
+    val fairWorkingConditionsPolicy: YesNo?,
+
+    val fairAndEthicalRecruitmentPolicy: YesNo?,
+
+    val equalOpportunitiesAndNondiscriminationPolicy: YesNo?,
+
+    val healthAndSafetyPolicy: YesNo?,
+
+    val complaintsAndGrievancesPolicy: YesNo?,
+
+    val forcedLabourPolicy: YesNo?,
+
+    val childLabourPolicy: YesNo?,
+
+    val environmentalImpactPolicy: YesNo?,
+
+    val supplierCodeOfConduct: YesNo?,
+
     val listOfProductionSites: List<ProductionSite>?,
 )

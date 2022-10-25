@@ -26,14 +26,15 @@ class EuTaxonomyFinancials {
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials():
         Pair<DataMetaInformation, EuTaxonomyDataForFinancials> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testData = testDataProviderForEuTaxonomyDataForFinancials.getTData(1).first()
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForFinancials.getCompanyInformationWithoutIdentifiers(1).first()
         ).companyId
-        val receivedDataMetaInformation = euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData2(
-            CompanyAssociatedDataEuTaxonomyDataForFinancials(receivedCompanyId, testData)
-        )
+        val receivedDataMetaInformation = euTaxonomyDataForFinancialsControllerApi
+            .postCompanyAssociatedEuTaxonomyDataForFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForFinancials(receivedCompanyId, testData)
+            )
         return Pair(
             DataMetaInformation(
                 companyId = receivedCompanyId,
@@ -48,7 +49,7 @@ class EuTaxonomyFinancials {
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
         val (receivedDataMetaInformation, uploadedData) = postOneCompanyAndEuTaxonomyDataForNonFinancials()
         val downloadedAssociatedData = euTaxonomyDataForFinancialsControllerApi
-            .getCompanyAssociatedData2(receivedDataMetaInformation.dataId)
+            .getCompanyAssociatedEuTaxonomyDataForFinancials(receivedDataMetaInformation.dataId)
         val downloadedAssociatedDataType = metaDataControllerApi.getDataMetaInfo(receivedDataMetaInformation.dataId)
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
