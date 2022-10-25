@@ -49,7 +49,7 @@
 
                 <div class="${properties.kcInputWrapperClass!} mt-4">
                     <input id="otp" name="otp" autocomplete="off" type="text" placeholder="One time code"
-                           class="${properties.kcInputClass!} p-tfa-input-grey-bottom-border" autofocus
+                           class="${properties.kcInputClass!} p-input-grey-bottom-border" autofocus
                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"/>
 
                     <#if messagesPerField.existsError('totp')>

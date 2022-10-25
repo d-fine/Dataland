@@ -48,19 +48,18 @@ scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
 
 echo "Set up Keycloak from scratch."
-ssh ubuntu@"$target_server_url" "export KEYCLOAK_FRONTEND_URL=\"$KEYCLOAK_FRONTEND_URL\";
-                                 export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
+ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
                                  export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
                                  export KEYCLOAK_READER_VALUE=\"$KEYCLOAK_READER_VALUE\";
                                  export KEYCLOAK_READER_SALT=\"$KEYCLOAK_READER_SALT\";
                                  export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
                                  export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
-                                 export KEYCLOAK_DB_PASSWORD=\"$KEYCLOAK_DB_PASSWORD\";
                                  export KEYCLOAK_GOOGLE_SECRET=\"$KEYCLOAK_GOOGLE_SECRET\";
                                  export KEYCLOAK_GOOGLE_ID=\"$KEYCLOAK_GOOGLE_ID\";
                                  export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
-                                 export KEYCLOAK_DOCKERFILE=DockerfileKeycloak;
+                                 export KEYCLOAK_MAILJET_API_SECRET=\"$KEYCLOAK_MAILJET_API_SECRET\";
+                                 export KEYCLOAK_MAILJET_API_ID=\"$KEYCLOAK_MAILJET_API_ID\";
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 
 echo "Cleaning up exported user files."

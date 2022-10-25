@@ -27,7 +27,7 @@
         <!-- Main Content -->
         <div class="block ml-auto mr-auto pt-8" style="width: 364px;">
             <img src="${url.resourcesPath}/img/logo_dataland_long.svg" class="d-dataland-logo">
-            <h1><#nested "header"></h1>
+            <h1 class="text-6xl"><#nested "header"></h1>
             <div>
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                 <#-- during login.                                                                               -->

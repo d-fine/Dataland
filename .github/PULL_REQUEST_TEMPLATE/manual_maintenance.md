@@ -64,6 +64,11 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dataland-letsencrypt.duckdns.org
 - [ ] (OPT) dataland.com
 
+## Check e-mails sent by keycloak
+- [ ] Check that the verification e-mail is sent and displayed correctly
+- [ ] Check that the reset password e-mail is sent and displayed correctly
+- [ ] Check that the password can be reset
+
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
