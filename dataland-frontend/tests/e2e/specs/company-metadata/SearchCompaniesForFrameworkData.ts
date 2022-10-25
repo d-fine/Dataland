@@ -3,6 +3,8 @@ import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@cl
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { createCompanyAndGetId } from "../../utils/CompanyUpload";
+import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -14,7 +16,7 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedIn(uploader_name, uploader_pw);
   });
 
   function verifyTaxonomySearchResultTable(): void {
@@ -185,11 +187,18 @@ describe("As a user, I expect the search functionality on the /companies page to
   });
 
   it("Check if the autocomplete entries are highlighted", () => {
+    const highlightedSubString = "this_is_highlighted";
+    const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
+    createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
     cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=search_bar_top]").click({ force: true }).type("-");
+    cy.get("input[name=search_bar_top]").click({ force: true }).type(highlightedSubString);
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("-").should("exist");
+      cy.get(".p-autocomplete-item")
+        .eq(0)
+        .get("span[class='font-semibold']")
+        .contains(highlightedSubString)
+        .should("exist");
     });
   });
 });
