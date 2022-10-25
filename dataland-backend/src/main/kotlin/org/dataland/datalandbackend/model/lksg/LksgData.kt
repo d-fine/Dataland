@@ -11,211 +11,211 @@ import java.time.LocalDate
  */
 @DataType("lksg")
 data class LksgData(
-    val dataDate: LocalDate? = null,
+    val dataDate: LocalDate?,
 
-    val lksgInScope: YesNo? = null,
+    val lksgInScope: YesNo?,
 
-    val companyLegalForm: String? = null,
+    val companyLegalForm: String?,
 
-    val vatIdentificationNumber: String? = null,
+    val vatIdentificationNumber: String?,
 
-    val numberOfEmployees: BigDecimal? = null,
+    val numberOfEmployees: BigDecimal?,
 
-    val shareOfTemporaryWorkers: BigDecimal? = null,
+    val shareOfTemporaryWorkers: BigDecimal?,
 
-    val totalRevenue: BigDecimal? = null,
+    val totalRevenue: BigDecimal?,
 
-    val totalRevenueCurrency: String? = null,
+    val totalRevenueCurrency: String?,
 
-    val responsibilitiesForFairWorkingConditions: YesNo? = null,
+    val responsibilitiesForFairWorkingConditions: YesNo?,
 
-    val responsibilitiesForTheEnvironment: YesNo? = null,
+    val responsibilitiesForTheEnvironment: YesNo?,
 
-    val responsibilitiesForOccupationalSafety: YesNo? = null,
+    val responsibilitiesForOccupationalSafety: YesNo?,
 
-    val riskManagementSystem: YesNo? = null,
+    val riskManagementSystem: YesNo?,
 
-    val grievanceHandlingMechanism: YesNo? = null,
+    val grievanceHandlingMechanism: YesNo?,
 
-    val grievanceHandlingMechanismUsedForReporting: YesNo? = null,
+    val grievanceHandlingMechanismUsedForReporting: YesNo?,
 
-    val codeOfConduct: YesNo? = null,
+    val codeOfConduct: YesNo?,
 
-    val codeOfConductRiskManagementTopics: YesNo? = null,
+    val codeOfConductRiskManagementTopics: YesNo?,
 
-    val codeOfConductTraining: YesNo? = null,
+    val codeOfConductTraining: YesNo?,
 
-    val legalProceedings: YesNo? = null,
+    val legalProceedings: YesNo?,
 
-    val employeeUnder18: YesNo? = null,
+    val employeeUnder18: YesNo?,
 
-    val employeeUnder18Under15: YesNo? = null,
+    val employeeUnder18Under15: YesNo?,
 
-    val employeeUnder18Apprentices: YesNo? = null,
+    val employeeUnder18Apprentices: YesNo?,
 
-    val employmentUnderLocalMinimumAgePrevention: YesNo? = null,
+    val employmentUnderLocalMinimumAgePrevention: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo? = null,
+    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo? = null,
+    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo? = null,
+    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionTraining: YesNo? = null,
+    val employmentUnderLocalMinimumAgePreventionTraining: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo? = null,
+    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo?,
 
-    val forcedLabourAndSlaveryPrevention: YesNo? = null,
+    val forcedLabourAndSlaveryPrevention: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionEmploymentContracts: YesNo? = null,
+    val forcedLabourAndSlaveryPreventionEmploymentContracts: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionIdentityDocuments: YesNo? = null,
+    val forcedLabourAndSlaveryPreventionIdentityDocuments: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionFreeMovement: YesNo? = null,
+    val forcedLabourAndSlaveryPreventionFreeMovement: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo? = null,
+    val forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionProvisionTraining: YesNo? = null,
+    val forcedLabourAndSlaveryPreventionProvisionTraining: YesNo?,
 
-    val documentedWorkingHoursAndWages: YesNo? = null,
+    val documentedWorkingHoursAndWages: YesNo?,
 
-    val adequateLivingWage: YesNo? = null,
+    val adequateLivingWage: YesNo?,
 
-    val regularWagesProcessFlow: YesNo? = null,
+    val regularWagesProcessFlow: YesNo?,
 
-    val fixedHourlyWages: YesNo? = null,
+    val fixedHourlyWages: YesNo?,
 
-    val oshMonitoring: YesNo? = null,
+    val oshMonitoring: YesNo?,
 
-    val oshPolicy: YesNo? = null,
+    val oshPolicy: YesNo?,
 
-    val oshPolicyPersonalProtectiveEquipment: YesNo? = null,
+    val oshPolicyPersonalProtectiveEquipment: YesNo?,
 
-    val oshPolicyMachineSafety: YesNo? = null,
+    val oshPolicyMachineSafety: YesNo?,
 
-    val oshPolicyDisasterBehaviouralResponse: YesNo? = null,
+    val oshPolicyDisasterBehaviouralResponse: YesNo?,
 
-    val oshPolicyAccidentsBehaviouralResponse: YesNo? = null,
+    val oshPolicyAccidentsBehaviouralResponse: YesNo?,
 
-    val oshPolicyWorkplaceErgonomics: YesNo? = null,
+    val oshPolicyWorkplaceErgonomics: YesNo?,
 
-    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo? = null,
+    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo?,
 
-    val oshPolicyFireProtection: YesNo? = null,
+    val oshPolicyFireProtection: YesNo?,
 
-    val oshPolicyWorkingHours: YesNo? = null,
+    val oshPolicyWorkingHours: YesNo?,
 
-    val oshPolicyTrainingAddressed: YesNo? = null,
+    val oshPolicyTrainingAddressed: YesNo?,
 
-    val oshPolicyTraining: YesNo? = null,
+    val oshPolicyTraining: YesNo?,
 
-    val oshManagementSystem: YesNo? = null,
+    val oshManagementSystem: YesNo?,
 
-    val oshManagementSystemInternationalCertification: YesNo? = null,
+    val oshManagementSystemInternationalCertification: YesNo?,
 
-    val oshManagementSystemNationalCertification: YesNo? = null,
+    val oshManagementSystemNationalCertification: YesNo?,
 
-    val workplaceAccidentsUnder10: YesNo? = null,
+    val workplaceAccidentsUnder10: YesNo?,
 
-    val oshTraining: YesNo? = null,
+    val oshTraining: YesNo?,
 
-    val freedomOfAssociation: YesNo? = null,
+    val freedomOfAssociation: YesNo?,
 
-    val discriminationForTradeUnionMembers: YesNo? = null,
+    val discriminationForTradeUnionMembers: YesNo?,
 
-    val freedomOfOperationForTradeUnion: YesNo? = null,
+    val freedomOfOperationForTradeUnion: YesNo?,
 
-    val freedomOfAssociationTraining: YesNo? = null,
+    val freedomOfAssociationTraining: YesNo?,
 
-    val worksCouncil: YesNo? = null,
+    val worksCouncil: YesNo?,
 
-    val diversityAndInclusionRole: YesNo? = null,
+    val diversityAndInclusionRole: YesNo?,
 
-    val preventionOfMistreatments: YesNo? = null,
+    val preventionOfMistreatments: YesNo?,
 
-    val equalOpportunitiesOfficer: YesNo? = null,
+    val equalOpportunitiesOfficer: YesNo?,
 
-    val riskOfHarmfulPollution: YesNo? = null,
+    val riskOfHarmfulPollution: YesNo?,
 
-    val unlawfulEvictionAndTakingOfLand: YesNo? = null,
+    val unlawfulEvictionAndTakingOfLand: YesNo?,
 
-    val useOfPrivatePublicSecurityForces: YesNo? = null,
+    val useOfPrivatePublicSecurityForces: YesNo?,
 
-    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
+    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo?,
 
-    val mercuryAndMercuryWasteHandling: YesNo? = null,
+    val mercuryAndMercuryWasteHandling: YesNo?,
 
-    val mercuryAndMercuryWasteHandlingPolicy: YesNo? = null,
+    val mercuryAndMercuryWasteHandlingPolicy: YesNo?,
 
-    val chemicalHandling: YesNo? = null,
+    val chemicalHandling: YesNo?,
 
-    val environmentalManagementSystem: YesNo? = null,
+    val environmentalManagementSystem: YesNo?,
 
-    val environmentalManagementSystemInternationalCertification: YesNo? = null,
+    val environmentalManagementSystemInternationalCertification: YesNo?,
 
-    val environmentalManagementSystemNationalCertification: YesNo? = null,
+    val environmentalManagementSystemNationalCertification: YesNo?,
 
-    val legalRestrictedWaste: YesNo? = null,
+    val legalRestrictedWaste: YesNo?,
 
-    val legalRestrictedWasteProcesses: YesNo? = null,
+    val legalRestrictedWasteProcesses: YesNo?,
 
-    val mercuryAddedProductsHandling: YesNo? = null,
+    val mercuryAddedProductsHandling: YesNo?,
 
-    val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfExposure: YesNo?,
 
-    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo?,
 
-    val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUse: YesNo?,
 
-    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUse: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo?,
 
-    val hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: YesNo? = null,
+    val hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: YesNo?,
 
-    val hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: YesNo? = null,
+    val hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: YesNo?,
 
-    val hazardousWasteDisposal: YesNo? = null,
+    val hazardousWasteDisposal: YesNo?,
 
-    val hazardousWasteDisposalRiskOfImport: YesNo? = null,
+    val hazardousWasteDisposalRiskOfImport: YesNo?,
 
-    val hazardousAndOtherWasteImport: YesNo? = null,
+    val hazardousAndOtherWasteImport: YesNo?,
 
-    val iso26000: YesNo? = null,
+    val iso26000: YesNo?,
 
-    val sa8000Certification: YesNo? = null,
+    val sa8000Certification: YesNo?,
 
-    val smetaSocialAuditConcept: YesNo? = null,
+    val smetaSocialAuditConcept: YesNo?,
 
-    val betterWorkProgramCertificate: YesNo? = null,
+    val betterWorkProgramCertificate: YesNo?,
 
-    val iso45001Certification: YesNo? = null,
+    val iso45001Certification: YesNo?,
 
-    val iso14000Certification: YesNo? = null,
+    val iso14000Certification: YesNo?,
 
-    val emasCertification: YesNo? = null,
+    val emasCertification: YesNo?,
 
-    val iso37001Certification: YesNo? = null,
+    val iso37001Certification: YesNo?,
 
-    val iso37301Certification: YesNo? = null,
+    val iso37301Certification: YesNo?,
 
-    val riskManagementSystemCertification: YesNo? = null,
+    val riskManagementSystemCertification: YesNo?,
 
-    val amforiBsciAuditReport: YesNo? = null,
+    val amforiBsciAuditReport: YesNo?,
 
-    val initiativeClauseSocialCertification: YesNo? = null,
+    val initiativeClauseSocialCertification: YesNo?,
 
-    val responsibleBusinessAssociationCertification: YesNo? = null,
+    val responsibleBusinessAssociationCertification: YesNo?,
 
-    val fairLabourAssociationCertification: YesNo? = null,
+    val fairLabourAssociationCertification: YesNo?,
 
-    val listOfProductionSites: List<ProductionSite>? = null,
+    val listOfProductionSites: List<ProductionSite>?,
 )
