@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { LksgData, ProductionSite } from "../../../../build/clients/backend";
+import { LksgData, ProductionSite } from "@clients/backend";
 
-import { randomYesNoUndefined } from "../common/YesNoFixtures";
+import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();
@@ -16,7 +16,7 @@ export function generateProductionSite(): ProductionSite {
     faker.address.city() +
     ", " +
     faker.address.country();
-  const fakeGoodsAndServices = Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
+  const fakeGoodsAndServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
@@ -29,7 +29,7 @@ export function generateProductionSite(): ProductionSite {
 }
 
 export function generateArrayOfProductionSites(): ProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 1, max: 50 }) }, generateProductionSite);
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
 }
 
 export function generateDataDate(): string {
@@ -168,6 +168,15 @@ export function generateLksgData(): LksgData {
   returnBase.oshPolicyDisasterBehaviouralResponse = randomYesNoUndefined();
   returnBase.oshManagementSystemNationalCertification = randomYesNoUndefined();
   returnBase.oshPolicyHandlingChemicalsAndOtherHazardousSubstances = randomYesNoUndefined();
+  returnBase.fairWorkingConditionsPolicy = randomYesNoUndefined();
+  returnBase.fairAndEthicalRecruitmentPolicy = randomYesNoUndefined();
+  returnBase.equalOpportunitiesAndNondiscriminationPolicy = randomYesNoUndefined();
+  returnBase.healthAndSafetyPolicy = randomYesNoUndefined();
+  returnBase.complaintsAndGrievancesPolicy = randomYesNoUndefined();
+  returnBase.forcedLabourPolicy = randomYesNoUndefined();
+  returnBase.childLabourPolicy = randomYesNoUndefined();
+  returnBase.environmentalImpactPolicy = randomYesNoUndefined();
+  returnBase.supplierCodeOfConduct = randomYesNoUndefined();
   returnBase.listOfProductionSites = generateArrayOfProductionSites();
   return returnBase;
 }

@@ -26,7 +26,7 @@ class EuTaxonomyFinancials {
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials():
         Pair<DataMetaInformation, EuTaxonomyDataForFinancials> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testData = testDataProviderForEuTaxonomyDataForFinancials.getTData(1).first()
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForEuTaxonomyDataForFinancials.getCompanyInformationWithoutIdentifiers(1).first()

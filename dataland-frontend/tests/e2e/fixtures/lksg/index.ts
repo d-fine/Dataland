@@ -1,7 +1,7 @@
-import { generateFixtureDataset } from "../FixtureUtils";
-import { generateLksgData } from "./LksgDataFixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import fs from "fs";
-import { LksgData } from "../../../../build/clients/backend";
+import { LksgData } from "@clients/backend";
 
 export function exportFixturesLksg(): void {
   const companyInformationWithLksgData = generateFixtureDataset<LksgData>(generateLksgData, 150);

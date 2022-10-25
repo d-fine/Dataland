@@ -26,7 +26,7 @@ class Lksg {
 
     private fun postOneCompanyAndLksg():
         Pair<DataMetaInformation, LksgData> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testData = testDataProviderForLksgData.getTData(1).first()
         val receivedCompanyId = companyDataControllerApi.postCompany(
             testDataProviderForLksgData.getCompanyInformationWithoutIdentifiers(1).first()

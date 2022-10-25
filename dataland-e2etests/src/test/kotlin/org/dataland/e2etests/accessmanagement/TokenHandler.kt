@@ -6,11 +6,11 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
-import org.dataland.e2etests.ADMIN_USER_NAME
-import org.dataland.e2etests.ADMIN_USER_PASSWORD
+import org.dataland.e2etests.UPLOADER_USER_NAME
+import org.dataland.e2etests.UPLOADER_USER_PASSWORD
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
-import org.dataland.e2etests.SOME_USER_NAME
-import org.dataland.e2etests.SOME_USER_PASSWORD
+import org.dataland.e2etests.READER_USER_NAME
+import org.dataland.e2etests.READER_USER_PASSWORD
 import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 
@@ -43,13 +43,13 @@ class TokenHandler {
 
     fun obtainTokenForUserType(user: UserType) {
         ApiClient.Companion.accessToken = when (user) {
-            UserType.SomeUser -> requestToken(SOME_USER_NAME, SOME_USER_PASSWORD)
-            UserType.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
+            UserType.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
+            UserType.Uploader -> requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
         }
     }
 
     enum class UserType {
-        Admin,
-        SomeUser
+        Uploader,
+        Reader
     }
 }
