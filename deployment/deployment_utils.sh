@@ -55,5 +55,5 @@ build_directories () {
   cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
   cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme
 
-  cp ./deployment/{initialize_keycloak,shut_down_keycloak,deployment_utils}.sh "$target_dir"/dataland-keycloak
+  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }
