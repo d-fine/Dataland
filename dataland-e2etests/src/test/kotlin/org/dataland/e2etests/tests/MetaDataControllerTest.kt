@@ -112,7 +112,7 @@ class MetaDataControllerTest {
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val clientException = assertThrows<ClientException>{
+        val clientException = assertThrows<ClientException> {
             companyDataControllerApi.getCompanyById("this-should-not-exist")
         }
         assertEquals(clientException.statusCode, 404)
