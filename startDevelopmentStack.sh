@@ -1,6 +1,6 @@
 #!/bin/bash
 # Login to the docker repository
-docker login ghcr.io -u $DATALAND_SKYMINDERCLIENT_USER -p $DATALAND_SKYMINDERCLIENT_TOKEN
+docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 
 # Retrieve the SSL-Certificates for dataland-local.duckdns.org
 mkdir -p ./local/certs
