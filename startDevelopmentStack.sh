@@ -10,7 +10,7 @@ scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local
 ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 ./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon --stacktrace
 
-#start containers for skyminder and edc-dummyserver
+# start containers with the stack except frontend and backend
 docker compose --profile development down
 docker compose --profile development pull
 docker compose --profile development up -d --build
