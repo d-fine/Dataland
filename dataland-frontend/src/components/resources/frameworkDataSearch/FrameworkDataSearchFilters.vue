@@ -58,7 +58,6 @@
 <script lang="ts">
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import FrameworkDataSearchDropdownFilter, {
   SelectableItem,
@@ -67,6 +66,7 @@ import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 interface CountryCodeSelectableItem extends SelectableItem {
   countryCode: string;
@@ -166,13 +166,23 @@ export default defineComponent({
       this.frameworkFilter?.$refs.multiselect.hide();
     },
     async retrieveCountryAndSectorFilterOptions() {
-      const companyDataControllerApi = await new ApiClientProvider(
+      const availableSearchFiltersInBackendWithoutLKSG = await getCompanyDataForFrameworkDataSearchPage(
+        "",
+        true,
+        new Set(Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg")),
+        new Set(),
+        new Set(),
         assertDefined(this.getKeycloakPromise)()
-      ).getCompanyDataControllerApi();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
-      const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
+      );
+      const availableCountryCodesInFrontend = availableSearchFiltersInBackendWithoutLKSG.map((a) => {
+        return a.companyInformation.countryCode;
+      });
+      const availableSectorsInFrontend = availableSearchFiltersInBackendWithoutLKSG.map((a) => {
+        return a.companyInformation.sector;
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
-      this.availableCountries = [...availableSearchFilters.data.countryCodes!].map((it) => {
+      this.availableCountries = availableCountryCodesInFrontend.map((it) => {
         return {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           countryCode: it,
@@ -182,7 +192,7 @@ export default defineComponent({
         };
       });
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
-      this.availableSectors = [...availableSearchFilters.data.sectors!].map((it) => {
+      this.availableSectors = availableSectorsInFrontend.map((it) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         return { displayName: it, disabled: false };
       });
