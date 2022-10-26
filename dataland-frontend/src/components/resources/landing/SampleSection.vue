@@ -4,11 +4,11 @@
       <div class="col-offset-3 col-3">
         <div class="grid">
           <div class="col-10 text-left text-gray-100">
-            <h2 class="mb-0">Explore Dataland</h2>
-            <h2 class="mt-0">No registration required.</h2>
+            <h2 class="mb-0">Explore Dataland.</h2>
+            <h2 class="mt-0">No preview account required.</h2>
           </div>
           <div class="col-10 text-left text-gray-100">
-            <p>Preview EU Taxonomy Data of <strong>BMW</strong>, before joining Dataland.</p>
+            <p>View the EU Taxonomy Data of <strong>BMW</strong>, before creating a preview account.</p>
           </div>
           <div class="col-10 text-left p-fluid">
             <router-link to="/samples/eutaxonomy-non-financials" class="text-primary no-underline font-bold">
