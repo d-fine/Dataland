@@ -1,7 +1,7 @@
 <#import "dataland_template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('email','username','password','password-confirm'); section>
     <#if section = "header">
-        Create an account
+        Create a preview account
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
@@ -69,7 +69,7 @@
                 <input id="user.attributes.receive_updates" name="user.attributes.receive_updates" type="checkbox">
                 <label for="user.attributes.receive_updates" class="tex-sm ml-2">Sign me up for updates (optional)</label>
             </div>
-            <input class="p-button w-full cursor-pointer font-semibold mt-5" name="register" type="submit" value="JOIN DATALAND"/>
+            <input class="p-button w-full cursor-pointer font-semibold mt-5" name="register" type="submit" value="CREATE A PREVIEW ACCOUNT"/>
         </form>
 
         <div id="kc-social-providers">
@@ -89,7 +89,7 @@
                                     onclick="location.href='${p.loginUrl}'"
                             >
                                 <img src="${url.resourcesPath}/img/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
-                                JOIN WITH LINKEDIN
+                                TEST DATALAND WITH LINKEDIN
                             </button>
                         </div>
                     <#else>
@@ -99,7 +99,7 @@
                                     class="p-button cursor-pointer w-full bg-white text-primary uppercase mt-3"
                                     onclick="location.href='${p.loginUrl}'"
                             >
-                                JOIN WITH ${p.displayName!}
+                                TEST DATALAND WITH ${p.displayName!}
                             </button>
                         </div>
                     </#if>
@@ -116,7 +116,7 @@
                         class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"
                         name="login_button"
                         onclick="location.href='${url.loginUrl}'">
-                        LOG IN
+                        LOG IN TO PREVIEW ACCOUNT
                 </Button>
             </span>
         </div>
