@@ -14,17 +14,21 @@ wait_for_health () {
 delete_docker_volume_if_existent () {
   old_volume=$(search_volume "$1")
   if [[ -n $old_volume ]]; then
-    echo "Removing old database volume with name $old_volume."
-    docker volume rm "$old_volume"
+    delete_docker_volume $old_volume
   fi
 }
 
-search_volume() {
+delete_docker_volume () {
+    echo "Removing old database volume with name $1."
+    docker volume rm "$1"
+}
+
+search_volume () {
   volume_found=$(docker volume ls -q | grep "$1") || true
   echo "$volume_found"
 }
 
-build_directories() {
+build_directories () {
   target_dir=$1
   echo "Assembling deployment folder."
   mkdir -p "$target_dir"
@@ -50,6 +54,6 @@ build_directories() {
   cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
   cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
   cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme
-  cp ./deployment/initialize_keycloak.sh "$target_dir"/dataland-keycloak
-  cp ./deployment/deployment_utils.sh "$target_dir"/dataland-keycloak
+
+  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }

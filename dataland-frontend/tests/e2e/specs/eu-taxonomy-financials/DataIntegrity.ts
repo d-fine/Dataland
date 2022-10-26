@@ -13,7 +13,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "development", "development_2"],
     dataEnvironments: ["fakeFixtures"],
   },
   function () {

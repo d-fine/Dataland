@@ -11,7 +11,7 @@
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_EDC_TOKEN", $env:GITHUB_TOKEN, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_EDC_USER", $env:GITHUB_USER, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("ELECTRON_EXTRA_LAUNCH_ARGS", "--ignore-connections-limit=preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("ELECTRON_EXTRA_LAUNCH_ARGS", "--ignore-connections-limit=dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("FRONTEND_DOCKERFILE", "./dataland-frontend/DockerfileTest", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("IN_MEMORY", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INITIALIZE_KEYCLOAK", "false", [System.EnvironmentVariableTarget]::User)
