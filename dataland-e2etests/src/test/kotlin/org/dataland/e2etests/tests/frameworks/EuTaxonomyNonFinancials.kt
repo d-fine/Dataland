@@ -3,16 +3,13 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
-import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class EuTaxonomyNonFinancials {
-    private val tokenHandler = TokenHandler()
     private val dataControllerApi = EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testDataProvider = TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
@@ -26,19 +23,12 @@ class EuTaxonomyNonFinancials {
         ) { companyId: String, data: EuTaxonomyDataForNonFinancials ->
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, data)
         }
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
             testDataInformation.companyId,
             testDataInformation.dataType
         )
         Assertions.assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(
-                    testDataInformation.dataId,
-                    testDataInformation.dataType,
-                    testDataInformation.companyId
-                )
-            ),
+            listOfDataMetaInfoForTestCompany.contains(testDataInformation),
             "The all-data-sets-list of the posted company does not contain the posted data set."
         )
     }
