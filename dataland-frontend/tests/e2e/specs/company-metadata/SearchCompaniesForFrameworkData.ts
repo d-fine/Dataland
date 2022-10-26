@@ -69,7 +69,6 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
     verifyTaxonomySearchResultTable();
-    cy.get("input[name=search_bar_top]").type("a").type("{enter}");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 500, { duration: 300 });
