@@ -45,6 +45,5 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require("./landing-page");
-  require("./skyminder-search");
   require("./swagger-ui");
 }
