@@ -31,7 +31,4 @@ if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
   ./gradlew :dataland-e2etests:test --no-daemon --stacktrace
 else
   ./gradlew :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
-fi && GRADLE_EXIT_CODE=$? || GRADLE_EXIT_CODE=$?
-
-echo "gradle exit code $GRADLE_EXIT_CODE"
-exit $GRADLE_EXIT_CODE
+fi
