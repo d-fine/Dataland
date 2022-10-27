@@ -157,10 +157,9 @@ jobs:
       - component-tests-frontend
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/prepare
-      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - uses: ./.github/workflows/prepare
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
