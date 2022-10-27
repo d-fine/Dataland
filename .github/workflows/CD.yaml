@@ -42,8 +42,8 @@ jobs:
           echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
           echo Reset backend Database and repopulate: $RESET_BACKEND_DATABASE_AND_REPOPULATE
           env > env.log
-          echo ${{ toJSON(secrets) }} > secrets.log
-          echo ${{ toJSON(github) }} > github.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(github) }}' > github.log
         env:
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
