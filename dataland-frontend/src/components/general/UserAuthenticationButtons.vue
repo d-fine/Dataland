@@ -1,8 +1,8 @@
 <template>
   <div class="col-12">
     <PrimeButton
-      label="Login"
-      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4"
+      label="Login to preview account"
+      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-15rem ml-4"
       name="login_dataland_button"
       @click="login"
     />
