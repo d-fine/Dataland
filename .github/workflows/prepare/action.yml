@@ -3,7 +3,6 @@ description: "Prepares the action and logs inputs"
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
     - name: log inputs
       shell: bash
       run: |

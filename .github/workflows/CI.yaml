@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
@@ -45,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
       - uses: actions/setup-java@v2
         with:
@@ -82,6 +84,7 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
@@ -153,6 +156,7 @@ jobs:
       - unit-tests-backend
       - component-tests-frontend
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
       - uses: actions/checkout@v3
         with:
