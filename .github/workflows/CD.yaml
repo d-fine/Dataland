@@ -38,10 +38,10 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
           env > env.log
           echo '${{ toJSON(secrets) }}' > secrets.log
           echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(inputs) }}' > inputs.log
           echo '${{ toJSON(github) }}' > github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
@@ -121,11 +121,11 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
           env > env.log
           echo '${{ toJSON(secrets) }}' > secrets.log
           echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          echo '${{ toJSON(github) }}' > github.log         
+          echo '${{ toJSON(github) }}' > github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
