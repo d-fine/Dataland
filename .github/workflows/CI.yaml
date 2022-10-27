@@ -54,6 +54,7 @@ jobs:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
       - uses: ./.github/workflows/dockerLogs
+        if: always()
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -87,7 +88,6 @@ jobs:
           path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
-      - uses: ./.github/workflows/dockerLogs
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -184,6 +184,7 @@ jobs:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
       - uses: ./.github/workflows/dockerLogs
+        if: always()
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -235,6 +236,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - uses: ./.github/workflows/dockerLogs
+        if: always()
   summary:
     runs-on: ubuntu-latest
     if: success()

@@ -52,3 +52,4 @@ jobs:
           tags: ghcr.io/d-fine/dataland/temurinbase:latest
           push: true
       - uses: ./.github/workflows/dockerLogs
+        if: always()

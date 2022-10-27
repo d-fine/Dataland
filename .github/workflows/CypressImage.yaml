@@ -54,3 +54,4 @@ jobs:
           tags: ghcr.io/d-fine/dataland/cypressbase:latest
           push: true
       - uses: ./.github/workflows/dockerLogs
+        if: always()

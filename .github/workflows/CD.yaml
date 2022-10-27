@@ -103,6 +103,7 @@ jobs:
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
       - uses: ./.github/workflows/dockerLogs
+        if: always()
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -179,3 +180,4 @@ jobs:
           name: cypress
           path: ./dataland-frontend/cypressresult/
       - uses: ./.github/workflows/dockerLogs
+        if: always()
