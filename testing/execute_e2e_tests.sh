@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -euxo pipefail
 
 ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
