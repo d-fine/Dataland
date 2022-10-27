@@ -1,7 +1,7 @@
 name: CI
 env:
-  DATALAND_EDC_TOKEN: ${{ github.actor }}
-  DATALAND_EDC_USER: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_USER: ${{ github.actor }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REALDATA: false
 
 on:
@@ -31,8 +31,8 @@ jobs:
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
-          -e DATALAND_EDC_TOKEN \
-          -e DATALAND_EDC_USER \
+          -e GITHUB_TOKEN \
+          -e GITHUB_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports

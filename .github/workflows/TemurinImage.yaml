@@ -1,7 +1,7 @@
 name: Temurin Build & Push
 env:
-  DATALAND_EDC_TOKEN: ${{ github.actor }}
-  DATALAND_EDC_USER: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ github.actor }}
+  GITHUB_USER: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   workflow_dispatch:
