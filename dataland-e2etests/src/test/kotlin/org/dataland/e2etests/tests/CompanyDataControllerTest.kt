@@ -81,14 +81,15 @@ class CompanyDataControllerTest {
     }
 
     @Test
+    @Suppress("kotlin:S138")
     fun `post two dummy companies and check if the distinct endpoint returns all values`() {
         val numCompanies = 2
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(2)
-        for (index in testCompanyInformation.indices) {
-            val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation[index]).companyId
+        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numCompanies)
+        testCompanyInformation.forEachIndexed { index ,element ->
+            val receivedCompanyId = companyDataControllerApi.postCompany(element).companyId
             dataControllerApiForNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData[index])
             )
