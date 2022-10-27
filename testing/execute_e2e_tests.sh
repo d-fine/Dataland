@@ -20,13 +20,6 @@ timeout 90 sh -c "docker logs dala-e2e-test-backend-1 --follow" > /dev/null && B
 
 docker cp dala-e2e-test-backend-1:/app/dataland-backend/build/jacoco/bootRun.exec ./bootRun-${CYPRESS_TEST_GROUP}.exec
 
-# Write the logs of the docker container for later upload and analysis
-mkdir -p ./dockerLogs/${CYPRESS_TEST_GROUP}
-docker ps -a > ./dockerLogs/${CYPRESS_TEST_GROUP}/ps.log
-for docker_service in $(sudo docker ps --all --format "{{.Names}}");
-do
-  docker logs "$docker_service" > ./dockerLogs/${CYPRESS_TEST_GROUP}/"$docker_service".log 2>&1
-done
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.

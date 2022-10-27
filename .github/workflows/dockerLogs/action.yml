@@ -1,0 +1,22 @@
+name: "Prepare Action"
+description: "Prepares the action and logs inputs"
+runs:
+  using: "composite"
+  steps:
+    - name: log inputs
+      if: always()
+      shell: bash
+      run: |
+        # Write the logs of the docker container for later upload and analysis
+        mkdir -p ./dockerLogs/${CYPRESS_TEST_GROUP}
+        docker ps -a > ./dockerLogs/${CYPRESS_TEST_GROUP}/ps.log
+        for docker_service in $(sudo docker ps --all --format "{{.Names}}");
+        do
+        docker logs "$docker_service" > ./dockerLogs/${CYPRESS_TEST_GROUP}/"$docker_service".log 2>&1
+        done
+    - name: Upload docker log files
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: dockerLogs
+        path: ./dockerLogs

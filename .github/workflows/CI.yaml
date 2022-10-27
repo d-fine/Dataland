@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v2
+      - uses: ./.github/workflows/prepare
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
@@ -24,27 +24,28 @@ jobs:
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: TestReport
           path: ./**/build/reports
       - name: Upload JaCoCo Exec Results for backend
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsBackendUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
       - name: Upload JaCoCo Exec Results for csv converter
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
+      - uses: ./.github/workflows/dockerLogs
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v2
+      - uses: ./.github/workflows/prepare
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -54,12 +55,13 @@ jobs:
         run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lcovResults
           path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
+      - uses: ./.github/workflows/dockerLogs
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -80,13 +82,7 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/workflows/prepare
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -120,40 +116,35 @@ jobs:
           DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lcovResults
           path: ./*.info
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cypress
           path: ./cypress
       - name: Upload E2E Test Reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: e2eTestReports
           path: ./reports
-      - name: Upload docker log files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2eTestDockerLogs
-          path: ./dockerLogs
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
+      - uses: ./.github/workflows/dockerLogs
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -162,7 +153,8 @@ jobs:
       - unit-tests-backend
       - component-tests-frontend
     steps:
-      - uses: actions/checkout@v2
+      - uses: ./.github/workflows/prepare
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: actions/setup-java@v2
@@ -191,6 +183,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - uses: ./.github/workflows/dockerLogs
   summary:
     runs-on: ubuntu-latest
     if: success()

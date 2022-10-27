@@ -34,34 +34,9 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     steps:
-      - name: log inputs
-        run: |
-          echo Real Datal: $REALDATA
-          echo Which Environment: $ENVIRONMENT
-          echo Use in Memory Store: $IN_MEMORY
-          echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
-          echo Reset backend Database and repopulate: $RESET_BACKEND_DATABASE_AND_REPOPULATE
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(github) }}' > github.log
-        env:
-          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
-          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
-          RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v2
-        with:
-          name: envAndSecrets
-          path: ./*.log
+      - uses: ./.github/workflows/prepare
       - name: fail
         run: exit 1
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -72,7 +47,7 @@ jobs:
       - name: Build frontend
         run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
       - name: Store generated frontend API client for use by cypress
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
@@ -110,6 +85,7 @@ jobs:
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
+      - uses: ./.github/workflows/dockerLogs
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -123,13 +99,7 @@ jobs:
       matrix:
         testGroup: [ 1,2,3,4 ]
     steps:
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/workflows/prepare
       - name: Get GitHub real data image on demand
         run: |
           if [[ $REALDATA == true ]]; then
@@ -174,7 +144,8 @@ jobs:
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
+      - uses: ./.github/workflows/dockerLogs
