@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script retrieves tokens from keycloak. Using the dev stack the keycloak_base_url would be https://dataland-local.duckdns.org/keycloak
-set -eux
+set -euxo pipefail
 
 function getToken() {
   local user=$1

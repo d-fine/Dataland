@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
 setup_ssh () {
   mkdir -p ~/.ssh/

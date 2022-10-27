@@ -1,6 +1,6 @@
 #!/bin/bash
 # Login to the docker repository
-set -eux
+set -euxo pipefail
 
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 

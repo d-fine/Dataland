@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+set -euxo pipefail
 
 ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 #Start E2E Test and wait for E2E Test completion

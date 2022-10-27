@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -euxo pipefail
 
 environment=$1
 source ./deployment/deployment_utils.sh
