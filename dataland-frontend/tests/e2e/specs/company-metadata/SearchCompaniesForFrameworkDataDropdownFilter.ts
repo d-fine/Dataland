@@ -175,14 +175,27 @@ describe("As a user, I expect the search functionality on the /companies page to
       });
 
       it(
-        "Upload a company without uploading framework data for it and check if it neither appears in the + " +
-          "autocomplete suggestions nor in the search results, even though no framework filter is set.",
+        "Upload a company without uploading framework data for it, assure that its sector does not appear as filter " +
+          "option, and check if it neither appears in the autocomplete suggestions nor in the search results, " +
+          "even though no framework filter is set.",
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
-          createCompanyAndGetId(companyName);
+          const sector = "ThisSectorShouldNeverAppearInDropdown";
+          createCompanyAndGetId(companyName, sector);
           cy.visit(`/companies`);
+          cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
+            cy.get("#sector-filter")
+              .click({ scrollBehavior: false })
+              .get('input[placeholder="Search sectors"]')
+              .type(sector, { scrollBehavior: false })
+              .get("li")
+              .should("contain", `No results found`);
+          });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName);
+          cy.get("input[name=search_bar_top]")
+            .click({ force: true })
+            .type(companyName, { scrollBehavior: false })
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
