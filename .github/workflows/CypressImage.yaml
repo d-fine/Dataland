@@ -13,12 +13,19 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/prepare
+      - name: log inputs
+        shell: bash
+        run: |
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          echo '${{ toJSON(github) }}' > github.log         
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          secrets: ${{ secrets }}
-          matrix: ${{ matrix}}
-          inputs: ${{ inputs }}
-          github: ${{ github }}
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin

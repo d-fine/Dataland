@@ -15,12 +15,19 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/prepare
+      - name: log inputs
+        shell: bash
+        run: |
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          echo '${{ toJSON(github) }}' > github.log         
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          secrets: ${{ secrets }}
-          matrix: ${{ matrix}}
-          inputs: ${{ inputs }}
-          github: ${{ github }}
+          name: parameters
+          path: ./*.log
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
@@ -52,12 +59,19 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/prepare
+      - name: log inputs
+        shell: bash
+        run: |
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          echo '${{ toJSON(github) }}' > github.log         
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          secrets: ${{ secrets }}
-          matrix: ${{ matrix}}
-          inputs: ${{ inputs }}
-          github: ${{ github }}
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -95,12 +109,19 @@ jobs:
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/prepare
+      - name: log inputs
+        shell: bash
+        run: |
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          echo '${{ toJSON(github) }}' > github.log         
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          secrets: ${{ secrets }}
-          matrix: ${{ matrix}}
-          inputs: ${{ inputs }}
-          github: ${{ github }}
+          name: parameters
+          path: ./*.log
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -174,12 +195,19 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: ./.github/workflows/prepare
+      - name: log inputs
+        shell: bash
+        run: |
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          echo '${{ toJSON(github) }}' > github.log         
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          secrets: ${{ secrets }}
-          matrix: ${{ matrix}}
-          inputs: ${{ inputs }}
-          github: ${{ github }}
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
