@@ -23,7 +23,7 @@ docker cp dala-e2e-test-backend-1:/app/dataland-backend/build/jacoco/bootRun.exe
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
-grep "Searching for known Datatypes" ./dockerLogs/${CYPRESS_TEST_GROUP}/dala-e2e-test-backend-1.log && LOG_TEST_EXIT_CODE=$? || LOG_TEST_EXIT_CODE=$?
+docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes" && LOG_TEST_EXIT_CODE=$? || LOG_TEST_EXIT_CODE=$?
 
 
 # Testing admin-tunnel database connections
