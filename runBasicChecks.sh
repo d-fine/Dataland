@@ -2,29 +2,20 @@
 #This script is intended for developers to check whether or not basic tests in the pipeline will fail.
 #It takes one parameter to switch between full mode (if nothing or "full" is provided) and short mode (any other input).
 #The script must be executed from the same directory it is located in.
-set -u
+set -euo pipefail
 
-check_rc () {
+exit_log () {
   local rc=$1
   local message=$2
-  local mode=${3:-""}
-  if [[ ! $rc -eq 0 ]]; then
-    echo "ERROR: $message"
-    if [[ ! $mode == --soft ]]; then
-      exit 1
-    fi
-  fi
+  echo "ERROR: $message"
+  exit "$rc"
 }
 
 mode="${1:-full}"
 
 log_dir=./log
 mkdir -p "$log_dir"
-if [[ ! -d $log_dir ]]; then
-  echo "Log directory $log_dir does not exist and could not be created."
-  exit 1
-fi
-rm "$log_dir"/*.log 2>/dev/null
+rm "$log_dir"/*.log 2>/dev/null || echo "No files to clean up."
 
 declare -A pids
 declare -A commands
@@ -64,8 +55,7 @@ fi
 
 for step in $setup; do
   echo "Executing step: $step"
-  ./gradlew ${commands[$step]} &> $log_dir/"$step".log
-  check_rc $? "Step $step failed. Please check the log file $log_dir/$step.log"
+  ./gradlew ${commands[$step]} &> "$log_dir/$step.log" || exit_log $? "Step $step failed. Please check the log file $log_dir/$step.log"
 done
 
 echo "Starting tests in parallel:"
@@ -78,8 +68,7 @@ done
 
 for check in $tests; do
   echo "Waiting for test $check (pid ${pids[$check]})"
-  wait ${pids[$check]}
-  check_rc $? "Test $check failed. Please check the log file $log_dir/$check" --soft
+  wait ${pids[$check]} || echo "Test $check failed. Please check the log file $log_dir/$check"
 done
 
 echo "Finished script execution."
