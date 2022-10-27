@@ -1,7 +1,7 @@
 name: Cypress Build & Push
 env:
-  DATALAND_EDC_TOKEN: ${{ secrets.DATALAND_EDC_TOKEN }}
-  DATALAND_EDC_USER: ${{ secrets.DATALAND_EDC_USER }}
+  DATALAND_EDC_TOKEN: ${{ github.actor }}
+  DATALAND_EDC_USER: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   workflow_dispatch:
