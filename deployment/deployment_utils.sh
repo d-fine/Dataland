@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 setup_ssh () {
   mkdir -p ~/.ssh/

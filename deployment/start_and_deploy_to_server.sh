@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ux
+set -eux
 
 environment=$1
 source ./deployment/deployment_utils.sh
