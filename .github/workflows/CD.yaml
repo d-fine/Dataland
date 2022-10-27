@@ -1,10 +1,4 @@
 name: CD
-env:
-  DATALAND_SKYMINDERCLIENT_TOKEN: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-  DATALAND_SKYMINDERCLIENT_USER: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-  SKYMINDER_URL: ${{ secrets.SKYMINDER_URL }}
-  SKYMINDER_PW: ${{ secrets.SKYMINDER_PW }}
-  SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
 
 on:
   workflow_dispatch:
@@ -140,15 +134,20 @@ jobs:
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
-        run: ./deployment/setup_admin_ssh_tunnel.sh
+        run:  |
+          if [[ ${{ matrix.testGroup }} == 3 ]]; then
+            ./deployment/setup_admin_ssh_tunnel.sh
+          else
+            echo "There is no connection to admin ports established."
+          fi
         env:
           TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm install && npm run test${ENVIRONMENT}
+        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
-          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=localhost:8090,proxy,localhost,preview-dataland.duckdns.org,dev-dataland.duckdns.org,dataland-local.duckdns.org,dataland-letsencrypt.duckdns.org"
+          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=preview-dataland.duckdns.org,dev-dataland.duckdns.org,dev2-dataland.duckdns.org"
           CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
@@ -159,7 +158,7 @@ jobs:
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          CYPRESS_EXECUTION_ENVIRONMENT: ${{ format('{0}Cd', github.event.inputs.whichEnvironment) }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
       - name: Move Cypress Results
         if: always()
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/

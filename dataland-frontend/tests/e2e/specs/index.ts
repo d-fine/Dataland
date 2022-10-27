@@ -29,12 +29,15 @@ if (runPrepopulation) {
   }
 }
 
-if (cypressTestGroup === 102) {
+if (testGroupingDisabled || cypressTestGroup === 1) {
+  require("./landing-page");
+  require("./swagger-ui");
+  require("./company-metadata/SearchCompaniesForFrameworkDataDropdownFilter");
   require("./company-metadata/CompaniesOnlySearch");
 }
 
-if (testGroupingDisabled || cypressTestGroup === 1) {
-  require("./company-metadata");
+if (cypressTestGroup === 102) {
+  require("./company-metadata/CompaniesOnlySearch");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
@@ -48,7 +51,7 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require("./landing-page");
-  require("./skyminder-search");
-  require("./swagger-ui");
+  require("./company-metadata/SearchPagination");
+  require("./company-metadata/CompanyUpload");
+  require("./company-metadata/SearchCompaniesForFrameworkData");
 }

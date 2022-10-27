@@ -32,7 +32,7 @@ class UnknownErrorControllerAdvice(
             errorType = "unknown-internal-server-error",
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
             summary = "An internal server error occurred",
-            message = "An unexpected internal server error occurred. Please contact support, if this error persists",
+            message = "An unexpected internal server error occurred. Please contact support if this error persists",
             stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null
         )
         logger.error("An unknown internal server error occurred: $preparedError", ex)

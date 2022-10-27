@@ -62,7 +62,7 @@ class KnownErrorControllerAdvice(
                 errorType = "access-denied",
                 summary = "Access Denied",
                 message = "Access to this resource has been denied. " +
-                    "Please contact support, if you belive this to be an error",
+                    "Please contact support if you believe this to be an error",
                 httpStatus = HttpStatus.FORBIDDEN
             ),
             ex

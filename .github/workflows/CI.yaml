@@ -1,12 +1,7 @@
 name: CI
 env:
-  DATALAND_SKYMINDERCLIENT_TOKEN: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-  DATALAND_SKYMINDERCLIENT_USER: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
   DATALAND_EDC_TOKEN: ${{ secrets.DATALAND_EDC_TOKEN }}
   DATALAND_EDC_USER: ${{ secrets.DATALAND_EDC_USER }}
-  SKYMINDER_URL: ${{ secrets.SKYMINDER_URL }}
-  SKYMINDER_PW: ${{ secrets.SKYMINDER_PW }}
-  SKYMINDER_USER: ${{ secrets.SKYMINDER_USER }}
   REALDATA: false
 
 on:
@@ -23,8 +18,6 @@ jobs:
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
-          -e DATALAND_SKYMINDERCLIENT_TOKEN \
-          -e DATALAND_SKYMINDERCLIENT_USER \
           -e DATALAND_EDC_TOKEN \
           -e DATALAND_EDC_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
@@ -92,8 +85,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-          password: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -102,7 +95,6 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
-          SKYMINDER_URL: "http://skyminder-dummyserver:8080"
           KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
