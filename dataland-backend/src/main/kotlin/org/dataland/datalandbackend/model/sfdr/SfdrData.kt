@@ -209,7 +209,7 @@ data class SfdrData(
 
     val ceoToEmployeePayGap: DataPoint<BigDecimal>?,
 
-    val humanRightsDueDiligence : DataPoint<YesNo>?,
+    val humanRightsDueDiligence: DataPoint<YesNo>?,
 
     val traffickingInHumanBeingsPolicy: DataPoint<YesNo>?,
 
