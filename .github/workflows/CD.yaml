@@ -98,6 +98,8 @@ jobs:
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
+        with:
+          subfolder: 'build-prod-and-deploy'
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -175,3 +177,5 @@ jobs:
           path: ./dataland-frontend/cypressresult/
       - uses: ./.github/workflows/dockerLogs
         if: always()
+        with:
+          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'

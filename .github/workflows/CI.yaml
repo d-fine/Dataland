@@ -55,6 +55,8 @@ jobs:
           path: ./dataland-csvconverter/build/jacoco/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
+        with:
+          subfolder: 'unit-tests-backend'
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -185,6 +187,8 @@ jobs:
           path: ./dbdumps/
       - uses: ./.github/workflows/dockerLogs
         if: always()
+        with:
+          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -237,6 +241,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
+        with:
+          subfolder: 'sonar'
   summary:
     runs-on: ubuntu-latest
     if: success()
