@@ -16,6 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
@@ -48,6 +53,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -86,6 +96,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -160,6 +175,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin

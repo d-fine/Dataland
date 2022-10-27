@@ -1,23 +1,38 @@
 name: "Prepare Action"
 description: "Prepares the action and logs inputs"
+inputs:
+  secrets:
+    description: 'The Secrets to log'
+    required: true
+    default: 'N/A'
+  inputs:
+    description: 'The Inputs to log'
+    required: false
+    default: 'N/A'
+  matrix:
+    description: 'The Matrix to log'
+    required: false
+    default: 'N/A'
+  github:
+    description: 'The github object to log'
+    required: false
+    default: 'N/A'
+
 runs:
   using: "composite"
   steps:
     - name: log inputs
       shell: bash
       run: |
-        env > env.log
-        echo '${{ toJSON(secrets) }}' > secrets.log
-        echo '${{ toJSON(github) }}' > github.log
-        echo '${{ toJSON(matrix) }}' > github.log
+        echo '${{ toJSON(inputs) }}' > parameters.log
     - name: Store env and secrets
       uses: actions/upload-artifact@v3
       with:
-        name: envAndSecrets
+        name: parameters
         path: ./*.log
     - name: Login to Github Packages
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.secrets.GITHUB_TOKEN }}

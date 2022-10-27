@@ -36,6 +36,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - name: fail
         run: exit 1
       - uses: actions/setup-java@v2
@@ -102,6 +107,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - name: Get GitHub real data image on demand
         run: |
           if [[ $REALDATA == true ]]; then

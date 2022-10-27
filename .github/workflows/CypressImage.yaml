@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/prepare
+        with:
+          secrets: ${{ secrets }}
+          matrix: ${{ matrix}}
+          inputs: ${{ inputs }}
+          github: ${{ github }}
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
