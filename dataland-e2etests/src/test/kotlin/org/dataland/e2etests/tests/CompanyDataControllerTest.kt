@@ -88,7 +88,7 @@ class CompanyDataControllerTest {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numCompanies)
-        testCompanyInformation.forEachIndexed { index ,element ->
+        testCompanyInformation.forEachIndexed { index, element ->
             val receivedCompanyId = companyDataControllerApi.postCompany(element).companyId
             dataControllerApiForNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData[index])
