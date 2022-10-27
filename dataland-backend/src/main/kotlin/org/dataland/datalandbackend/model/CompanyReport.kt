@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.time.LocalDate
 
 /**

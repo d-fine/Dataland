@@ -11,4 +11,7 @@ data class CompanyReportReference(
     val report: String,
 
     val page: Long? = null,
+
+    val tagName: String? = null,
+
 )

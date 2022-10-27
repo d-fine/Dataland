@@ -4,7 +4,7 @@ import org.dataland.csvconverter.csv.CsvUtils.checkIfAnyFieldHasValue
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReport
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
