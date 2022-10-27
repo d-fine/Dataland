@@ -1,7 +1,9 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.assertThrows
 class CompanyDataControllerTest {
 
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val dataControllerApiForNonFinancials =
+        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     private val tokenHandler = TokenHandler()
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
@@ -78,11 +82,16 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post two dummy companies and check if the distinct endpoint returns all values`() {
+        val numCompanies = 2
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(2)
-        testCompanyInformation.forEach {
-            companyDataControllerApi.postCompany(it)
+            .getCompanyInformationWithoutIdentifiers(numCompanies)
+        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(2)
+        for (index in testCompanyInformation.indices) {
+            val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation[index]).companyId
+            dataControllerApiForNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(receivedCompanyId, testData[index])
+            )
         }
         val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
