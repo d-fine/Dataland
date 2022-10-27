@@ -4,4 +4,5 @@ vite.config.ts
 **/build/
 **/coverage
 **/cypress
+**/dist
 **/plugins/index.js

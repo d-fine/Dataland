@@ -35,16 +35,19 @@ commands[client_frontend]=dataland-frontend:generateAPIClientFrontend
 commands[client_e2e]=dataland-e2etests:generateBackendClient
 
 #Commands for the test block
-commands[ktlint]="./gradlew ktlintCheck"
+commands[ktlint]="./gradlew ktlintFormat"
 commands[detekt]="./gradlew detekt"
 commands[backend_unit_tests]="./gradlew dataland-backend:test"
 commands[csv_converter_test]="./gradlew dataland-csvconverter:test"
-commands[e2e_compilation_test]="./gradlew dataland-e2etests:compileTestKotlin"
-commands[eslint]="npm --prefix ./dataland-frontend run lintci"
-commands[frontend_compilation_test]="npm --prefix ./dataland-frontend run checkcypresscompilation"
+commands[e2e_compilation]="./gradlew dataland-e2etests:compileTestKotlin"
+commands[eslint]="npm --prefix ./dataland-frontend run lint"
+commands[cypress_compilation]="npm --prefix ./dataland-frontend run checkcypresscompilation"
+commands[frontend_compilation]="npm --prefix ./dataland-frontend run build"
+commands[fixture_compilation]="npm --prefix ./dataland-frontend run checkfakefixturecompilation"
 commands[dependency]="npm --prefix ./dataland-frontend run checkdependencies"
 commands[frontend_component_tests]="npm --prefix ./dataland-frontend run testcomponent"
 
+tests="ktlint detekt eslint dependency frontend_compilation cypress_compilation fixture_compilation e2e_compilation"
 if [[ $mode == full ]]; then
   if curl -L https://dataland-local.duckdns.org/api/actuator/health/ping 2>/dev/null | grep -q UP; then
     echo "ERROR: The backend is currently running. This will interfere with the generation of the new OpenAPI specs."
@@ -52,11 +55,10 @@ if [[ $mode == full ]]; then
     exit 1
   fi
   setup="clean client_frontend client_e2e"
-  tests="ktlint detekt backend_unit_tests csv_converter_test eslint frontend_compilation_test e2e_compilation_test dependency frontend_component_tests"
+  tests+=" backend_unit_tests csv_converter_test frontend_component_tests"
   echo "Preparing a clean state for running the tests."
 else
   setup=""
-  tests="ktlint detekt backend_unit_tests csv_converter_test eslint dependency"
   echo "Running in short mode, setup steps will be skipped."
 fi
 
