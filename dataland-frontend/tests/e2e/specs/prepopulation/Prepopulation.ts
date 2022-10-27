@@ -17,7 +17,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 const chunkSize = 15;
 
 describe(
-  "As a user, I want to be able to see some data on the DataLand webpage",
+  "As a user, I want to be able to see some data on the Dataland webpage",
   {
     defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000,
     retries: {

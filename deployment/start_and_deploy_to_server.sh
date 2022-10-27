@@ -31,21 +31,21 @@ persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
-ssh ubuntu@"$target_server_url" "cd $location && sudo docker-compose down"
+ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
-ssh ubuntu@"$target_server_url" "mkdir -p $keycloak_backup_dir &&
-                                 mkdir -p $persistent_keycloak_backup_dir &&
-                                 cp $keycloak_user_dir/*-users-*.json $keycloak_backup_dir &&
-                                 cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir"
-ssh ubuntu@"$target_server_url" "sudo rm -rf $location"
+echo "Exporting users and shutting down keycloak."
+scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
+ssh ubuntu@"$target_server_url" "\"$location\"/dataland-keycloak/migrate_keycloak_users.sh \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
+
+ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
 construction_dir=./dataland
 build_directories "$construction_dir"
 scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
-ssh ubuntu@"$target_server_url" "mv $keycloak_backup_dir/*-users-*.json $keycloak_user_dir"
+ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
@@ -71,7 +71,7 @@ if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
 fi
 
 echo "Starting docker compose stack."
-ssh ubuntu@"$target_server_url" "cd $location; sudo docker-compose pull; sudo docker-compose --profile $profile up -d --build"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"

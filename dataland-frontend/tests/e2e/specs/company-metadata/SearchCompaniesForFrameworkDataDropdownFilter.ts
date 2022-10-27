@@ -18,7 +18,9 @@ before(function () {
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   it("LKSG and SFDR should be displayed in the framework dropdown even though they are not yet implemented", () => {
     cy.ensureLoggedIn();
+    cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
     cy.visit("/companies")
+      .wait("@companies-meta-information")
       .get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
@@ -33,7 +35,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit(`/companies?framework=eutaxonomy-financials`)
+        .wait("@companies-meta-information")
         .get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
@@ -58,9 +62,11 @@ describe("As a user, I expect the search functionality on the /companies page to
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
       cy.ensureLoggedIn();
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit(
         `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
       )
+        .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
         .should("contain.text", "Sorry! Your search didn't return any results.")
         .get("#country-filter")
@@ -84,7 +90,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     )!.companyInformation;
 
     cy.ensureLoggedIn();
+    cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
     cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
+      .wait("@companies-meta-information")
       .get("div[class='col-12 text-left']")
       .should("contain.text", "Sorry! Your search didn't return any results.")
       .get("#sector-filter")
@@ -115,7 +123,15 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.visit("/companies").get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+
+      cy.visit("/companies")
+        .wait("@companies-meta-information")
+        .get("#framework-filter")
+        .click()
+        .get("div.p-multiselect-panel")
+        .should("exist");
+
       cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
       cy.scrollTo(0, 600, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
@@ -128,7 +144,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.visit("/companies").get("td[class='d-bg-white w-3 d-datatable-column-left']");
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.visit("/companies")
+        .wait("@companies-meta-information")
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']");
       cy.scrollTo(0, 500, { duration: 300 })
         .get("#framework-filter")
         .click()
@@ -146,7 +165,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {
-      executionEnvironments: ["developmentLocal", "development"],
+      executionEnvironments: ["developmentLocal", "development", "development_2"],
       dataEnvironments: ["fakeFixtures"],
     },
     function () {
@@ -182,7 +201,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
           createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
+          cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
+            .wait("@companies-meta-information")
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
