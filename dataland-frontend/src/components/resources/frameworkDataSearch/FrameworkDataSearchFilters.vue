@@ -189,7 +189,7 @@ export default defineComponent({
     },
     retrieveAvailableFrameworks() {
       this.availableFrameworks = Object.values(DataTypeEnum)
-        .filter((frameworkName) => frameworkName != "lksg")
+        .filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1)
         .map((it) => {
           return {
             frameworkDataType: it,
