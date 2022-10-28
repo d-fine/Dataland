@@ -39,18 +39,18 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click();
       verifyTaxonomySearchResultTable();
       cy.url()
-        .should("include", "/companies?framework=eutaxonomy-non-financials")
+        .should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-non-financials")
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
       cy.url()
-        .should("eq", getBaseUrl() + "/companies?framework")
+        .should("eq", getBaseUrl() + "/companies")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
-      cy.url().should("include", "/companies?framework=eutaxonomy-financials");
+      cy.url().should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-financials");
     }
   );
   it(
