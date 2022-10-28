@@ -42,7 +42,10 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("include", "/companies?framework=eutaxonomy-non-financials")
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
-        .click()
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url()
+        .should("eq", getBaseUrl() + "/companies?framework")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
         .click();
