@@ -6,6 +6,7 @@ import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -16,26 +17,23 @@ before(function () {
 });
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
-  it("LKSG and SFDR should be displayed in the framework dropdown even though they are not yet implemented", () => {
-    cy.ensureLoggedIn();
-    cy.visit("/companies")
-      .get("#framework-filter")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find("li.p-disabled:contains('SFDR')")
-      .should("exist")
-      .get("div.p-multiselect-panel")
-      .find("li.p-disabled:contains('LkSG')")
-      .should("exist");
-  });
   it(
-    "Check that the framework filter synchronises between the search bar and the URL",
+    "The framework filter should contain LKSG and SFDR  even though they are not yet implemented, and synchronise " +
+      "between the search bar and the URL",
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies?framework=eutaxonomy-financials`)
-        .get("#framework-filter")
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.visit("/companies").wait("@companies-meta-information");
+      verifyTaxonomySearchResultTable();
+      cy.get("#framework-filter")
         .click()
+        .get("div.p-multiselect-panel")
+        .find("li.p-disabled:contains('SFDR')")
+        .should("exist")
+        .get("div.p-multiselect-panel")
+        .find("li.p-disabled:contains('LkSG')")
+        .should("exist")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
         .click()
@@ -58,9 +56,11 @@ describe("As a user, I expect the search functionality on the /companies page to
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
       cy.ensureLoggedIn();
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit(
         `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
       )
+        .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
         .should("contain.text", "Sorry! Your search didn't return any results.")
         .get("#country-filter")
@@ -77,28 +77,34 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
     }
   );
-  it("Checks that the sector filter synchronises between the search bar and the drop down and works", () => {
-    const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-    const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
-      (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
-    )!.companyInformation;
+  it(
+    "Checks that the sector filter synchronises between the search bar and the drop down and works",
+    { scrollBehavior: false },
+    () => {
+      const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+      const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
+        (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
+      )!.companyInformation;
 
-    cy.ensureLoggedIn();
-    cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
-      .get("div[class='col-12 text-left']")
-      .should("contain.text", "Sorry! Your search didn't return any results.")
-      .get("#sector-filter")
-      .click()
-      .get("div.p-multiselect-panel")
-      .find(`li:contains('${demoCompanyToTestFor.sector}')`)
-      .click()
-      .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-      .contains(demoCompanyToTestFor.companyName)
-      .should("exist")
-      .url()
-      .should("contain", `sector=${demoCompanyToTestFor.sector}`);
-  });
-  it("Checks that the reset button works as expected", () => {
+      cy.ensureLoggedIn();
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
+        .wait("@companies-meta-information")
+        .get("div[class='col-12 text-left']")
+        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .get("#sector-filter")
+        .click()
+        .get("div.p-multiselect-panel")
+        .find(`li:contains('${demoCompanyToTestFor.sector}')`)
+        .click({ force: true })
+        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+        .contains(demoCompanyToTestFor.companyName)
+        .should("exist")
+        .url()
+        .should("contain", `sector=${demoCompanyToTestFor.sector}`);
+    }
+  );
+  it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     cy.ensureLoggedIn();
     cy.visit(
@@ -111,42 +117,37 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("eq", getBaseUrl() + "/companies");
   });
   it(
-    "Check that the filter dropdowns close when you scroll down from the top or anywhere in the middle, or when you scroll up",
+    "Check that the filter dropdowns close when you scroll, especially on the resulting query when you check a box while you are not at the top of the page",
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.visit("/companies").get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.visit("/companies").wait("@companies-meta-information");
+      verifyTaxonomySearchResultTable();
+      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+
       cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
       cy.scrollTo(0, 600, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-      cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-    }
-  );
-  it(
-    "Check that the filter dropdowns close on the resulting query when you check a box while you are not at the top of the page",
-    { scrollBehavior: false },
-    () => {
-      cy.ensureLoggedIn();
-      cy.visit("/companies").get("td[class='d-bg-white w-3 d-datatable-column-left']");
       cy.scrollTo(0, 500, { duration: 300 })
+        .get("div.p-multiselect-panel")
+        .should("not.exist")
         .get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item")
         .first()
-        .click()
-        .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-        .should("exist")
-        .get("div.p-multiselect-panel")
-        .should("not.exist");
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.get("div.p-multiselect-panel").should("not.exist");
     }
   );
 
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {
-      executionEnvironments: ["developmentLocal", "development"],
+      executionEnvironments: ["developmentLocal", "development", "development_2"],
       dataEnvironments: ["fakeFixtures"],
     },
     function () {
@@ -156,15 +157,27 @@ describe("As a user, I expect the search functionality on the /companies page to
       });
 
       it(
-        "Upload a company without uploading framework data for it and check if it neither appears in the + " +
-          "autocomplete suggestions nor in the search results, even though no framework filter is set.",
+        "Upload a company without uploading framework data for it, assure that its sector does not appear as filter " +
+          "option, and check if it neither appears in the autocomplete suggestions nor in the search results, " +
+          "even though no framework filter is set.",
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
-          createCompanyAndGetId(companyName);
+          const sector = "ThisSectorShouldNeverAppearInDropdown";
+          createCompanyAndGetId(companyName, sector);
           cy.visit(`/companies`);
+          cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
+            cy.get("#sector-filter")
+              .click({ scrollBehavior: false })
+              .get('input[placeholder="Search sectors"]')
+              .type(sector, { scrollBehavior: false })
+              .get("li")
+              .should("contain", `No results found`);
+          });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName);
+          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+            cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`)
@@ -181,7 +194,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
           createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
+          cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
+            .wait("@companies-meta-information")
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");

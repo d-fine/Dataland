@@ -12,7 +12,7 @@ fun <T, U> postOneCompanyAndItsData(
     myConstructor: (String, T) -> U
 ):
     Pair<DataMetaInformation, T> {
-    TokenHandler().obtainTokenForUserType(TokenHandler.UserType.Admin)
+    TokenHandler().obtainTokenForUserType(TokenHandler.UserType.Uploader)
     val testData = testDataProvider.getTData(1).first()
     val receivedCompanyId = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND).postCompany(
         testDataProvider.getCompanyInformationWithoutIdentifiers(1).first()

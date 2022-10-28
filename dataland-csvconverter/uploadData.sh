@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euxo pipefail
 # Utility script to update the data container image. Expects two inputs: the csv file to parse and the version number
 # for the data container
 

@@ -2,12 +2,11 @@
 # This script validates, whether the backend-container and other services are running.
 # It ensures that the e2e-test do not fail due to unreachable services.
 
-set -ex
+set -euxo pipefail
 
 is_infrastructure_up () {
   declare -A services
   services["backend"]=https://dataland-local.duckdns.org/api/actuator/health/ping
-  services["skyminder-dummyserver"]=http://skyminder-dummyserver:8080/actuator/health
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
   services["keycloak"]=http://dataland-local.duckdns.org/keycloak/realms/datalandsecurity/
 
@@ -33,7 +32,3 @@ if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
 else
   ./gradlew :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
 fi
-
-GRADLE_EXIT_CODE=$?
-echo "gradle exit code $GRADLE_EXIT_CODE"
-exit $GRADLE_EXIT_CODE

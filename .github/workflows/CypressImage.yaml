@@ -1,20 +1,30 @@
 name: Cypress Build & Push
 env:
-  DATALAND_SKYMINDERCLIENT_TOKEN: ${{ secrets.DATALAND_SKYMINDERCLIENT_TOKEN }}
-  DATALAND_SKYMINDERCLIENT_USER: ${{ secrets.DATALAND_SKYMINDERCLIENT_USER }}
-  DATALAND_EDC_TOKEN: ${{ secrets.DATALAND_EDC_TOKEN }}
-  DATALAND_EDC_USER: ${{ secrets.DATALAND_EDC_USER }}
+  GITHUB_USER: ${{ github.actor }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   workflow_dispatch:
 
 jobs:
-
   build-and-push-docker-image:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: log inputs
+        shell: bash
+        run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(github) }}' > github.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -27,18 +37,22 @@ jobs:
           cp -r /home/runner/.gradle ./gradlecache
           cp -r /home/runner/.cache/Cypress ./cypresscache
       - name: Login to Github Packages
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       - name: Build a cypress base image and push it to GitHub Container Registry
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./baseDockerfiles/cypressBaseImageDockerfile
           tags: ghcr.io/d-fine/dataland/cypressbase:latest
           push: true
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'build-and-push-docker-image'

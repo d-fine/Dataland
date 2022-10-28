@@ -5,7 +5,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 describeIf(
   "As a user, I want to be able to create new companies",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "development", "development_2"],
     dataEnvironments: ["fakeFixtures"],
   },
   () => {
@@ -20,7 +20,7 @@ describeIf(
 
     function uploadEuTaxonomyDataForNonFinancials(companyId: string): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
+      cy.get('button[name="postEUData"]').should("be.visible");
       cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
         force: true,
       });
@@ -33,7 +33,7 @@ describeIf(
       }
       cy.get("div[title=revenue] input[name=alignedPercentage]").type("0");
       cy.get("div[title=revenue] input[name=eligiblePercentage]").type("0");
-      cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
+      cy.get('button[name="postEUData"]').should("not.be.disabled");
       cy.get('button[name="postEUData"]').click({ force: true });
     }
 
@@ -83,12 +83,12 @@ describeIf(
       const missingDataMessage = "No data has been reported";
       createCompanyAndGetId("Missing field company").then((companyId) => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("be.visible");
+        cy.get('button[name="postEUData"]').should("be.visible");
         cy.get('input[id="reportingObligation-option-no"][value=No]').check({
           force: true,
         });
         cy.get('select[name="assurance"]').select("None");
-        cy.get('button[name="postEUData"]', { timeout: 2 * 1000 }).should("not.be.disabled");
+        cy.get('button[name="postEUData"]').should("not.be.disabled");
         cy.get('button[name="postEUData"]').click({ force: true });
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
