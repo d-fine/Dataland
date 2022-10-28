@@ -1,6 +1,6 @@
 import { wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { describeIf } from "../../support/TestUtility";
+import { describeIf } from "@e2e/support/TestUtility";
 
 describe("As a developer, I want to ensure that cypress behaves as expected", () => {
   describeIf(
