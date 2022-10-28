@@ -17,7 +17,7 @@ class InternalServerErrorApiException(
 
     constructor(internalMessage: String, internalCause: Throwable? = null) : this(
         "An internal server error occurred",
-        "An unexpected internal server error occurred. Please contact support, if this error persists",
+        "An unexpected internal server error occurred. Please contact support if this error persists",
         internalMessage, internalCause
     )
 
