@@ -6,37 +6,35 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.model.lksg.LksgData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Controller for the EU Taxonomy endpoints of financial companies
+ * Controller for the Lksg framework endpoints
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/eutaxonomy-financials")
+@RequestMapping("/data/lksg")
 @RestController
-class EuTaxonomyDataForFinancialsController(
+class LksgDataController(
     @Autowired var myDataManager: DataManagerInterface,
     @Autowired var myMetaDataManager: DataMetaInformationManagerInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<EuTaxonomyDataForFinancials>(
+) : DataController<LksgData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    EuTaxonomyDataForFinancials::class.java
+    LksgData::class.java
 ) {
-    @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> {
+    @Operation(operationId = "getCompanyAssociatedLksgData")
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> {
         return super.getCompanyAssociatedData(dataId)
     }
-
-    @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>):
+    @Operation(operationId = "postCompanyAssociatedLksgData")
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<LksgData>):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }

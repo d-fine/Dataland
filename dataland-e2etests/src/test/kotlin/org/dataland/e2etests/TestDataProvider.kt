@@ -10,6 +10,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.LksgData
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -36,7 +37,9 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
         EuTaxonomyDataForNonFinancials::class.java to
             File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
         EuTaxonomyDataForFinancials::class.java to
-            File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
+            File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
+        LksgData::class.java to
+            File("./build/resources/CompanyInformationWithLksgData.json")
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())

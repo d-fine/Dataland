@@ -1,8 +1,11 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { createCompanyAndGetId } from "../../utils/CompanyUpload";
+import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -14,15 +17,8 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedIn(uploader_name, uploader_pw);
   });
-
-  function verifyTaxonomySearchResultTable(): void {
-    cy.get("table.p-datatable-table").contains("th", "COMPANY");
-    cy.get("table.p-datatable-table").contains("th", "PERM ID");
-    cy.get("table.p-datatable-table").contains("th", "SECTOR");
-    cy.get("table.p-datatable-table").contains("th", "LOCATION");
-  }
 
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
@@ -184,11 +180,18 @@ describe("As a user, I expect the search functionality on the /companies page to
   });
 
   it("Check if the autocomplete entries are highlighted", () => {
+    const highlightedSubString = "this_is_highlighted";
+    const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
+    createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
     cy.visitAndCheckAppMount("/companies");
     cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=search_bar_top]").click({ force: true }).type("-");
+    cy.get("input[name=search_bar_top]").click({ force: true }).type(highlightedSubString);
     cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("-").should("exist");
+      cy.get(".p-autocomplete-item")
+        .eq(0)
+        .get("span[class='font-semibold']")
+        .contains(highlightedSubString)
+        .should("exist");
     });
   });
 });

@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.utils
 
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 
 /**
