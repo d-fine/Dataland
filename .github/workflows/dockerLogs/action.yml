@@ -1,0 +1,27 @@
+name: "Prepare Action"
+description: "Prepares the action and logs inputs"
+inputs:
+  subfolder:
+    description: The subfolder to put the logs in
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: log inputs
+      if: always()
+      shell: bash
+      run: |
+        # Write the logs of the docker container for later upload and analysis
+        mkdir -p ./dockerLogs/${{ inputs.subfolder }}
+        docker ps -a > ./dockerLogs/${{ inputs.subfolder }}/ps.log
+        for docker_service in $(sudo docker ps --all --format "{{.Names}}");
+        do
+        docker logs "$docker_service" > ./dockerLogs/${{ inputs.subfolder }}/"$docker_service".log 2>&1
+        done
+    - name: Upload docker log files
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: dockerLogs
+        path: ./dockerLogs

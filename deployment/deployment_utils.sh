@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 setup_ssh () {
   mkdir -p ~/.ssh/
