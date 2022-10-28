@@ -1,7 +1,7 @@
 import { wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
-import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { describeIf } from "../../support/TestUtility";
+
 describe("As a developer, I want to ensure that cypress behaves as expected", () => {
   describeIf(
     "In the CI pipeline and in the local development environment, testing endpoint should be exposed",
