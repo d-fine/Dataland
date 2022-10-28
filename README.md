@@ -44,9 +44,9 @@ Some environment variables are used within the project. Find attached the variab
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.
 
 ## Local HTTPS testing
-* Add A link for `dataland-local.duckdns.org` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`)
+* Add A link for `local-dev.dataland.com` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`)
 * The `startDevelopmentStack.sh` script will automatically retrieve signed SSL-Certificates for this domain.
-* Access the development stack at https://dataland-local.duckdns.org
+* Access the development stack at https://local-dev.dataland.com
 
 ## API Documentation
 The interactive backend API documentation is available via `[URL]/api/swagger-/api/swagger-ui/index.html`.
