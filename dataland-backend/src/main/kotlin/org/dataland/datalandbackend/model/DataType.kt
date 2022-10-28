@@ -41,7 +41,7 @@ data class DataType @JsonCreator constructor(
 
     init {
         if (!allowedDataTypes.contains(name)) {
-            throw throw InvalidInputApiException(
+            throw InvalidInputApiException(
                 "$name is not a recognised dataType",
                 "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values"
             )
