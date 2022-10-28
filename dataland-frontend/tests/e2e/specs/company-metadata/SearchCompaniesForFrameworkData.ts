@@ -1,6 +1,7 @@
 import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { createCompanyAndGetId } from "../../utils/CompanyUpload";
@@ -18,13 +19,6 @@ describe("As a user, I expect the search functionality on the /companies page to
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
   });
-
-  function verifyTaxonomySearchResultTable(): void {
-    cy.get("table.p-datatable-table").contains("th", "COMPANY");
-    cy.get("table.p-datatable-table").contains("th", "PERM ID");
-    cy.get("table.p-datatable-table").contains("th", "SECTOR");
-    cy.get("table.p-datatable-table").contains("th", "LOCATION");
-  }
 
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
