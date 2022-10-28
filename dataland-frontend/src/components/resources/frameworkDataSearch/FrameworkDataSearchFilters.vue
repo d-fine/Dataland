@@ -188,13 +188,15 @@ export default defineComponent({
       });
     },
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = Object.values(DataTypeEnum).map((it) => {
-        return {
-          frameworkDataType: it,
-          displayName: humanizeString(it),
-          disabled: false,
-        };
-      });
+      this.availableFrameworks = Object.values(DataTypeEnum)
+        .filter((frameworkName) => frameworkName != "lksg")
+        .map((it) => {
+          return {
+            frameworkDataType: it,
+            displayName: humanizeString(it),
+            disabled: false,
+          };
+        });
       this.availableFrameworks.push(
         {
           frameworkDataType: "sfdr" as DataTypeEnum,
