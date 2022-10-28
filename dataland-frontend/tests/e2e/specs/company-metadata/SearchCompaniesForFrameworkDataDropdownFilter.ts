@@ -36,12 +36,18 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("exist")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url()
+        .should("include", "/companies?framework=eutaxonomy-non-financials")
+        .get("div.p-multiselect-panel")
+        .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
         .click()
         .get("div.p-multiselect-panel")
-        .find("li:contains('EU Taxonomy for non-financial companies')")
-        .click()
-        .url()
-        .should("include", "/companies?framework=eutaxonomy-non-financials");
+        .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url().should("include", "/companies?framework=eutaxonomy-financials");
     }
   );
   it(
@@ -94,9 +100,11 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("contain.text", "Sorry! Your search didn't return any results.")
         .get("#sector-filter")
         .click()
-        .get("div.p-multiselect-panel")
-        .find(`li:contains('${demoCompanyToTestFor.sector}')`)
-        .click({ force: true })
+        .get('input[placeholder="Search sectors"]')
+        .type(`${demoCompanyToTestFor.sector}`)
+        .get("li")
+        .should("contain", `${demoCompanyToTestFor.sector}`)
+        .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
         .should("exist")
@@ -158,8 +166,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       it(
         "Upload a company without uploading framework data for it, assure that its sector does not appear as filter " +
-          "option, and check if it neither appears in the autocomplete suggestions nor in the search results, " +
-          "even though no framework filter is set.",
+          "option, and check if the company neither appears in the autocomplete suggestions nor in the " +
+          "search results, even though no framework filter is actively set.",
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
@@ -167,15 +175,19 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
+            verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
               .get('input[placeholder="Search sectors"]')
               .type(sector, { scrollBehavior: false })
-              .get("li")
-              .should("contain", `No results found`);
+              .get("div.p-multiselect-panel")
+              .find("li:contains('No results found')")
+              .should("exist");
           });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName, { scrollBehavior: false });
+          cy.get("input[name=search_bar_top]")
+            .click({ scrollBehavior: false })
+            .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
@@ -219,7 +231,10 @@ describe("As a user, I expect the search functionality on the /companies page to
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
-        cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
+        verifyTaxonomySearchResultTable();
+        cy.get("input[name=search_bar_top]")
+          .click({ scrollBehavior: false })
+          .type(companyNameMarker, { scrollBehavior: false });
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
