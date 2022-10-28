@@ -53,7 +53,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * Returns all available distinct country codes
      */
     @Query(
-        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company"
+        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company " +
+            "LEFT JOIN company.dataRegisteredByDataland data " +
+            "WHERE " +
+            "data.dataType NOT IN ('lksg')"
     )
     fun fetchDistinctCountryCodes(): Set<String>
 
@@ -61,7 +64,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * Returns all available distinct sectors
      */
     @Query(
-        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company"
+        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company " +
+            "LEFT JOIN company.dataRegisteredByDataland data " +
+            "WHERE " +
+            "data.dataType NOT IN ('lksg')"
     )
     fun fetchDistinctSectors(): Set<String>
 

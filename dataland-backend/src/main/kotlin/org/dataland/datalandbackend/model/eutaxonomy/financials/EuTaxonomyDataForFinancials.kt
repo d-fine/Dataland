@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.FrameworkBase
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData

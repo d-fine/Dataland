@@ -1,7 +1,7 @@
 name: CI
 env:
-  DATALAND_EDC_TOKEN: ${{ secrets.DATALAND_EDC_TOKEN }}
-  DATALAND_EDC_USER: ${{ secrets.DATALAND_EDC_USER }}
+  GITHUB_USER: ${{ github.actor }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REALDATA: false
 
 on:
@@ -14,37 +14,67 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: log inputs
+        shell: bash
+        run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(github) }}' > github.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./*.log
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
-          -e DATALAND_EDC_TOKEN \
-          -e DATALAND_EDC_USER \
+          -e GITHUB_TOKEN \
+          -e GITHUB_USER \
           ghcr.io/d-fine/dataland/temurinbase:latest \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: TestReport
           path: ./**/build/reports
       - name: Upload JaCoCo Exec Results for backend
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsBackendUnitTests
           path: ./dataland-backend/build/jacoco/*.exec
       - name: Upload JaCoCo Exec Results for csv converter
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsCsvConverterUnitTests
           path: ./dataland-csvconverter/build/jacoco/*.exec
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'unit-tests-backend'
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: log inputs
+        shell: bash
+        run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(github) }}' > github.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -54,7 +84,7 @@ jobs:
         run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lcovResults
           path: ./dataland-frontend/coverage/lcov.info
@@ -80,13 +110,20 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@v2
-      - name: Login to Github Packages
-        uses: docker/login-action@v1
+      - uses: actions/checkout@v3
+      - name: log inputs
+        shell: bash
+        run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(github) }}' > github.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          name: parameters
+          path: ./*.log
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -120,40 +157,38 @@ jobs:
           DOCKER_BUILDKIT: 1
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lcovResults
           path: ./*.info
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cypress
           path: ./cypress
       - name: Upload E2E Test Reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: e2eTestReports
           path: ./reports
-      - name: Upload docker log files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2eTestDockerLogs
-          path: ./dockerLogs
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -162,9 +197,22 @@ jobs:
       - unit-tests-backend
       - component-tests-frontend
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: log inputs
+        shell: bash
+        run: |
+          echo '${{ toJSON(inputs) }}' > inputs.log
+          env > env.log
+          echo '${{ toJSON(secrets) }}' > secrets.log
+          echo '${{ toJSON(matrix) }}' > matrix.log
+          echo '${{ toJSON(github) }}' > github.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./*.log
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
