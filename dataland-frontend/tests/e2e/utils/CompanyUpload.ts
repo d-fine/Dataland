@@ -2,13 +2,11 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=companyName]").type(companyName, { force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });
   cy.get("input[name=sector]").type("Handmade", { force: true });
-  cy.get("input[name=marketCap]").type("123", { force: true });
   cy.get("input[name=countryCode]").type("DE", { force: true });
-  cy.get("input[name=reportingDateOfMarketCap]").type("2021-09-02", {
-    force: true,
-  });
   cy.get("select[name=identifierType]").select("ISIN");
   cy.get("input[name=identifierValue]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("button[name=addAlternativeName]").click();
+  cy.get("input[name=0]").type(`Another Name`, { force: true });
 }
 
 export function createCompanyAndGetId(companyName: string): Cypress.Chainable<string> {
@@ -21,8 +19,7 @@ export function createCompanyAndGetId(companyName: string): Cypress.Chainable<st
     .get("body")
     .should("contain", "success")
     .get("span[title=companyId]")
-    .then<string>(($companyID) => {
-      const id = $companyID.text();
-      return id;
+    .then<string>(($companyID): string => {
+      return $companyID.text();
     });
 }

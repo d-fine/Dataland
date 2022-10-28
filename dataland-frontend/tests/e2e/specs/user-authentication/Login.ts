@@ -1,4 +1,5 @@
 import { getKeycloakToken, login, logout } from "@e2e/utils/Auth";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to login and I want the login page to behave as I expect", () => {
   it("Checks that login & logout works", () => {
@@ -12,7 +13,7 @@ describe("As a user I want to be able to login and I want the login page to beha
       .should("exist")
       .click()
       .url()
-      .should("eq", Cypress.config("baseUrl") + "/");
+      .should("eq", getBaseUrl() + "/");
   });
 
   it("Checks that the code verifier is included in the request token", () => {

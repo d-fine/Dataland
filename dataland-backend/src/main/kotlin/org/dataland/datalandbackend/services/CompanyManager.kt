@@ -39,13 +39,12 @@ class CompanyManager(
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
             companyName = companyInformation.companyName,
+            companyAlternativeNames = companyInformation.companyAlternativeNames,
             headquarters = companyInformation.headquarters,
             sector = companyInformation.sector,
-            marketCap = companyInformation.marketCap,
-            reportingDateOfMarketCap = companyInformation.reportingDateOfMarketCap,
-            countryCode = companyInformation.countryCode,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
+            countryCode = companyInformation.countryCode,
             isTeaserCompany = companyInformation.isTeaserCompany
         )
 
@@ -90,12 +89,16 @@ class CompanyManager(
     override fun searchCompanies(
         searchString: String,
         onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<DataType>
+        dataTypeFilter: Set<DataType>,
+        countryCodeFilter: Set<String>,
+        sectorFilter: Set<String>,
     ): List<StoredCompanyEntity> {
         val searchFilter = StoredCompanySearchFilter(
             searchString = searchString,
             nameOnlyFilter = onlyCompanyNames,
             dataTypeFilter = dataTypeFilter.map { it.name },
+            sectorFilter = sectorFilter.toList(),
+            countryCodeFilter = countryCodeFilter.toList(),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilter)
         val sortingMap = filteredAndSortedResults.mapIndexed {
@@ -104,10 +107,19 @@ class CompanyManager(
         }.toMap()
 
         var filteredResults = companyRepository.fetchIdentifiers(filteredAndSortedResults)
+        filteredResults = companyRepository.fetchAlternativeNames(filteredResults)
         filteredResults = companyRepository.fetchCompanyAssociatedByDataland(filteredResults)
         filteredResults = filteredResults.sortedBy { sortingMap[it.companyId]!! }
 
         return filteredResults
+    }
+
+    override fun getDistinctCountryCodes(): Set<String> {
+        return companyRepository.fetchDistinctCountryCodes()
+    }
+
+    override fun getDistinctSectors(): Set<String> {
+        return companyRepository.fetchDistinctSectors()
     }
 
     override fun getCompanyById(companyId: String): StoredCompanyEntity {

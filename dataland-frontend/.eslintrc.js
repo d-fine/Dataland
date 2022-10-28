@@ -1,17 +1,37 @@
+require("@rushstack/eslint-patch/modern-module-resolution")
+
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
-  extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/typescript"],
+  parser: 'vue-eslint-parser',
+  extends: [
+    'plugin:vue/base',
+    'eslint:recommended',
+    'plugin:vue/vue3-essential',
+    '@vue/eslint-config-typescript/recommended',
+    '@vue/eslint-config-prettier',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+  ],
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    parser: '@typescript-eslint/parser',
+    project: ["tsconfig.app.json", "tsconfig.cypress-ct.json", "tsconfig.cypress-e2e.json"],
+    tsconfigRootDir: __dirname,
+    extraFileExtensions: ['.vue'],
+    sourceType: "module"
   },
-  plugins: ["vue", "prettier"],
+  plugins: ['@typescript-eslint'],
   rules: {
-    "prettier/prettier": "warn",
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    'semi-spacing': 'error',
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowTypedFunctionExpressions": true,
+    }],
+    "vue/block-lang": ["error",
+      {
+        "script": {
+          "lang": "ts"
+        }
+      }
+    ]
   },
-};
+}

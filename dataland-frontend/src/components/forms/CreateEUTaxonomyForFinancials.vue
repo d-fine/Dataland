@@ -38,24 +38,24 @@
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
-          <FormKit
-            type="select"
-            name="attestation"
-            validation="required"
-            label="Attestation"
-            placeholder="Please choose"
-            :inner-class="innerClass"
-            :input-class="inputClass"
-            :options="{
-              None: humanizeString('None'),
-              LimitedAssurance: humanizeString('LimitedAssurance'),
-              ReasonableAssurance: humanizeString('ReasonableAssurance'),
-            }"
-          />
+          <FormKit type="group" name="assurance" label="Assurance">
+            <FormKit
+              type="select"
+              name="assurance"
+              label="Assurance"
+              placeholder="Please choose"
+              :inner-class="innerClass"
+              :input-class="inputClass"
+              :options="{
+                None: humanizeString('None'),
+                LimitedAssurance: humanizeString('LimitedAssurance'),
+                ReasonableAssurance: humanizeString('ReasonableAssurance'),
+              }"
+            />
+          </FormKit>
           <FormKit
             type="radio"
             name="reportingObligation"
-            validation="required"
             label="Reporting Obligation"
             :outer-class="{
               'formkit-outer': false,
@@ -77,78 +77,28 @@
               <div :name="fsType">
                 <FormKit type="group" :name="fsType">
                   <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
-                  <FormKit
-                    type="text"
-                    name="taxonomyEligibleActivity"
-                    validation="number"
-                    label="Taxonomy Eligible Activity"
-                    :inner-class="innerClass"
-                    :input-class="inputClass"
-                  />
-                  <FormKit
-                    type="text"
-                    name="derivatives"
-                    validation="number"
-                    label="Derivatives"
-                    :inner-class="innerClass"
-                    :input-class="inputClass"
-                  />
-                  <FormKit
-                    type="text"
-                    name="banksAndIssuers"
-                    validation="number"
-                    label="Banks and Issuers"
-                    :inner-class="innerClass"
-                    :input-class="inputClass"
-                  />
-                  <FormKit
-                    type="text"
-                    name="investmentNonNfrd"
-                    validation="number"
-                    label="Investment non Nfrd"
-                    :inner-class="innerClass"
-                    :input-class="inputClass"
-                  />
+                  <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                  <DataPointFormElement name="derivatives" label="Derivatives" />
+                  <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
+                  <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
                 </FormKit>
               </div>
             </template>
           </FormKit>
           <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
             <h4>Credit Institution KPIs</h4>
-            <FormKit
-              type="text"
-              name="tradingPortfolio"
-              validation="number"
-              label="Trading Portfolio"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
-            <FormKit
-              type="text"
-              name="interbankLoans"
-              validation="number"
-              label="Interbank Loans"
-              :inner-class="innerClass"
-              :input-class="inputClass"
-            />
-            <FormKit
-              type="text"
+            <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
+            <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
+            <DataPointFormElement
               name="tradingPortfolioAndInterbankLoans"
-              validation="number"
               label="Trading Portfolio and Interbank Loans (combined)"
-              :inner-class="innerClass"
-              :input-class="inputClass"
             />
           </FormKit>
           <FormKit type="group" name="insuranceKpis" label)="Insurance KPIs">
             <h4>Insurance KPIs</h4>
-            <FormKit
-              type="text"
+            <DataPointFormElement
               name="taxonomyEligibleNonLifeInsuranceActivities"
-              validation="number"
               label="Taxonomy Eligible non Life Insurance Activities"
-              :inner-class="innerClass"
-              :input-class="inputClass"
             />
           </FormKit>
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
@@ -166,17 +116,27 @@
     </template>
   </Card>
 </template>
-<script>
+
+<script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
+import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   name: "CreateEUTaxonomyForFinancials",
-  components: { FailedUpload, FormKit, SuccessUpload, Card },
+  components: { DataPointFormElement, FailedUpload, FormKit, SuccessUpload, Card },
 
   data: () => ({
     innerClass: {
@@ -199,14 +159,13 @@ export default {
       type: String,
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
-    async postEuTaxonomyDataForFinancials() {
+    async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedData1(this.formInputsModel);
@@ -219,5 +178,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

@@ -4,14 +4,14 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet['reportingObligation']"
+          :value="dataSet.reportingObligation"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         />
       </div>
       <div class="col-6">
         <TaxoInfoCard
           title="Level of Assurance"
-          :value="dataSet['attestation']"
+          :value="dataSet.assurance?.assurance"
           tooltipText="The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
@@ -24,15 +24,15 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible Revenue"
-          :percent="dataSet.revenue.eligiblePercentage"
-          :total="dataSet.revenue.totalAmount"
+          :percent="dataSet.revenue?.eligiblePercentage?.value"
+          :total="dataSet.revenue?.totalAmount?.value"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned Revenue"
-          :percent="dataSet.revenue.alignedPercentage"
-          :total="dataSet.revenue.totalAmount"
+          :percent="dataSet.revenue?.alignedPercentage?.value"
+          :total="dataSet.revenue?.totalAmount?.value"
         ></TaxoCard>
       </div>
     </div>
@@ -43,12 +43,16 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible CapEx"
-          :percent="dataSet.capex.eligiblePercentage"
-          :total="dataSet.capex.totalAmount"
+          :percent="dataSet.capex?.eligiblePercentage?.value"
+          :total="dataSet.capex?.totalAmount?.value"
         />
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned CapEx" :percent="dataSet.capex.alignedPercentage" :total="dataSet.capex.totalAmount" />
+        <TaxoCard
+          title="Aligned CapEx"
+          :percent="dataSet.capex?.alignedPercentage?.value"
+          :total="dataSet.capex?.totalAmount?.value"
+        />
       </div>
     </div>
     <div class="grid">
@@ -56,48 +60,66 @@
         <h3>OpEx</h3>
       </div>
       <div class="col-6">
-        <TaxoCard title="Eligible OpEx" :percent="dataSet.opex.eligiblePercentage" :total="dataSet.opex.totalAmount" />
+        <TaxoCard
+          title="Eligible OpEx"
+          :percent="dataSet.opex?.eligiblePercentage?.value"
+          :total="dataSet.opex?.totalAmount?.value"
+        />
       </div>
       <div class="col-6">
-        <TaxoCard title="Aligned OpEx" :percent="dataSet.opex.alignedPercentage" :total="dataSet.opex.totalAmount" />
+        <TaxoCard
+          title="Aligned OpEx"
+          :percent="dataSet.opex?.alignedPercentage?.value"
+          :total="dataSet.opex?.totalAmount?.value"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
+import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "EuTaxonomyPanelNonFinancials",
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      dataSet: null,
+      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
+    };
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   props: {
-    dataID: String,
+    dataID: {
+      type: String,
+    },
   },
   mounted() {
-    this.getCompanyEUDataset();
+    void this.getCompanyEuDataset();
   },
   watch: {
     dataID() {
-      this.getCompanyEUDataset();
+      void this.getCompanyEuDataset();
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
-    async getCompanyEUDataset() {
+    async getCompanyEuDataset() {
       try {
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         const companyAssociatedData = await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedData(
-          this.dataID
+          assertDefined(this.dataID)
         );
         this.dataSet = companyAssociatedData.data.data;
       } catch (error) {
@@ -105,5 +127,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

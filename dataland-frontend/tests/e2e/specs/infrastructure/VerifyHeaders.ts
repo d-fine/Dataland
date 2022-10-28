@@ -1,20 +1,18 @@
 import { describeIf } from "@e2e/support/TestUtility";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a developer, I want to ensure that security relevant headers are set.", () => {
-  function checkCommonHeaders(response: Cypress.Response<any>) {
+  function checkCommonHeaders(response: Cypress.Response<unknown>): void {
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
     expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
     expect(response.headers).to.have.property("x-content-type-options", "nosniff");
   }
 
-  function checkCommonCspHeaders(expectedHeader: string) {
-    const urlsToCheck = [
-      Cypress.config("baseUrl") + "/",
-      Cypress.config("baseUrl") + "/keycloak/realms/datalandsecurity",
-    ];
-    urlsToCheck.forEach((url) => {
-      it(`Check for local CSP headers in ${url}`, () => {
-        cy.request("GET", url).then((response) => {
+  function checkCommonCspHeaders(expectedHeader: string): void {
+    const urlsToCheck = [`${getBaseUrl()}/`, `${getBaseUrl()}/keycloak/realms/datalandsecurity`];
+    urlsToCheck.forEach((url): void => {
+      it(`Check for local CSP headers in ${url}`, (): void => {
+        cy.request("GET", url).then((response): void => {
           expect(response.headers).to.have.property("content-security-policy", expectedHeader);
         });
       });
@@ -39,7 +37,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   describeIf(
     "Check CSP headers in the CI/CD environment",
     {
-      executionEnvironments: ["development", "preview"],
+      executionEnvironments: ["development", "development_2", "preview"],
       dataEnvironments: ["realData", "fakeFixtures"],
     },
     () => {
@@ -53,14 +51,14 @@ describe("As a developer, I want to ensure that security relevant headers are se
   );
 
   it("test for frontend response", () => {
-    cy.request("GET", Cypress.config("baseUrl") + "/").then((response) => {
+    cy.request("GET", `${getBaseUrl()}/`).then((response): void => {
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
   });
 
   it("test for backend response", () => {
-    cy.request("GET", Cypress.config("baseUrl") + "/api/actuator/health").then((response) => {
+    cy.request("GET", `${getBaseUrl()}/api/actuator/health`).then((response): void => {
       expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
       expect(response.headers).to.have.property(
         "content-security-policy",
@@ -72,7 +70,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   });
 
   it("test for swagger ui response", () => {
-    cy.request("GET", Cypress.config("baseUrl") + "/api/swagger-ui/index.html").then((response) => {
+    cy.request("GET", `${getBaseUrl()}/api/swagger-ui/index.html`).then((response): void => {
       expect(response.headers).to.have.property(
         "content-security-policy",
         "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
@@ -84,9 +82,9 @@ describe("As a developer, I want to ensure that security relevant headers are se
   });
 
   it("test for keycloak response", () => {
-    cy.request("GET", Cypress.config("baseUrl") + "/keycloak/realms/datalandsecurity").then((response) => {
+    cy.request("GET", `${getBaseUrl()}/keycloak/realms/datalandsecurity`).then((response): void => {
       checkCommonHeaders(response);
-      assert.equal(`${response.headers["x-frame-options"]}`.toLowerCase(), "sameorigin");
+      assert.equal(response.headers["x-frame-options"].toString().toLowerCase(), "sameorigin");
     });
   });
 });

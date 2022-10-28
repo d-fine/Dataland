@@ -1,34 +1,44 @@
 <template>
   <div class="col-12">
     <PrimeButton
-      label="Login"
-      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-5rem ml-4"
+      label="Login to preview account"
+      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-15rem ml-4"
       name="login_dataland_button"
       @click="login"
     />
   </div>
 </template>
-<script>
-import PrimeButton from "primevue/button";
 
-export default {
+<script lang="ts">
+import PrimeButton from "primevue/button";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+
+export default defineComponent({
   name: "UserAuthenticationButtons",
   components: { PrimeButton },
-  inject: ["getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
+
   methods: {
     login() {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            let baseUrl = window.location.origin;
+            const baseUrl = window.location.origin;
             const url = keycloak.createLoginUrl({
               redirectUri: `${baseUrl}/companies`,
             });
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
-};
+});
 </script>

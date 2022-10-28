@@ -1,5 +1,5 @@
 export function fillEuTaxonomyNonFinancialsDummyUploadFields(): void {
-  cy.get("select[name=attestation]").select("Limited Assurance");
+  cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,
   });
@@ -19,8 +19,7 @@ export function uploadDummyEuTaxonomyDataForNonFinancials(companyId: string): Cy
     .get("body")
     .should("contain", "success")
     .get("span[title=dataId]")
-    .then<string>(($dataId) => {
-      const id = $dataId.text();
-      return id;
+    .then<string>(($dataId): string => {
+      return $dataId.text();
     });
 }

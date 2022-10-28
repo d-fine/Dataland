@@ -8,11 +8,11 @@
         <div class="col-12 bg-green-500 p-0 mt-3">
           <p class="text-white font-semibold flex justify-content-center">
             <i class="material-icons pr-2 flex align-items-center" aria-hidden="true">check_circle</i>
-            <span class="pr-2 flex align-items-center">Join Dataland with other people to access all the data.</span>
+            <span class="pr-2 flex align-items-center">Try Dataland with other people to access all the data.</span>
             <router-link
               to="/"
               class="p-button bg-white border-0 uppercase text-green-500 d-letters flex align-items-center no-underline"
-              >Join for free</router-link
+              >Create a preview account</router-link
             >
           </p>
         </div>
@@ -52,7 +52,7 @@
   </TheContent>
 </template>
 
-<script>
+<script lang="ts">
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -60,7 +60,11 @@ import TheContent from "@/components/generics/TheContent.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-export default {
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+
+export default defineComponent({
   name: "ViewEuTaxonomyNonFinancialsSample",
   components: {
     CompanyInformation,
@@ -70,24 +74,30 @@ export default {
     MarginWrapper,
     EuTaxonomyPanelNonFinancials,
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data: () => ({
-    companyID: null,
-    dataId: undefined,
+    companyID: "",
+    dataId: "",
   }),
   created() {
-    this.queryCompany();
+    void this.queryCompany();
   },
-  inject: ["getKeycloakPromise"],
   methods: {
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         this.companyID = companyResponse.data[0];
 
-        const metaDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise()).getMetaDataControllerApi();
+        const metaDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,
           "eutaxonomy-non-financials"
@@ -102,5 +112,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

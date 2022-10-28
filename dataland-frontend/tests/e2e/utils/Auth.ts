@@ -1,4 +1,5 @@
 import Chainable = Cypress.Chainable;
+import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 export function logout(): void {
   cy.visitAndCheckAppMount("/companies")
@@ -7,13 +8,13 @@ export function logout(): void {
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/")
+    .should("eq", getBaseUrl() + "/")
     .get("button[name='login_dataland_button']")
     .should("exist")
     .should("be.visible");
 }
 
-export function login(username = "data_reader", password: string = Cypress.env("KEYCLOAK_READER_PASSWORD")): void {
+export function login(username = reader_name, password = reader_pw): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
     .click()
@@ -29,7 +30,7 @@ export function login(username = "data_reader", password: string = Cypress.env("
     .click()
 
     .url()
-    .should("eq", Cypress.config("baseUrl") + "/companies");
+    .should("eq", getBaseUrl() + "/companies");
 }
 
 export function ensureLoggedIn(username?: string, password?: string): void {
@@ -42,16 +43,16 @@ export function ensureLoggedIn(username?: string, password?: string): void {
       validate: () => {
         cy.visit("/")
           .url()
-          .should("eq", Cypress.config("baseUrl") + "/companies");
+          .should("eq", getBaseUrl() + "/companies");
       },
     }
   );
 }
 
 export function getKeycloakToken(
-  username: string = "data_reader",
-  password: string = Cypress.env("KEYCLOAK_READER_PASSWORD"),
-  client_id: string = "dataland-public"
+  username = reader_name,
+  password = reader_pw,
+  client_id = "dataland-public"
 ): Chainable<string> {
   return cy
     .request({
@@ -71,5 +72,5 @@ export function getKeycloakToken(
     })
     .should("have.a.property", "body")
     .should("have.a.property", "access_token")
-    .then((token) => token.toString());
+    .then((token): string => token.toString());
 }

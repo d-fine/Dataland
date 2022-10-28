@@ -1,13 +1,9 @@
 <template>
-  <div v-if="getCompanyResponse" class="grid align-items-end text-left">
+  <div v-if="companyInformation" class="grid align-items-end text-left">
     <div class="col-12">
       <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
     </div>
 
-    <div class="col-4">
-      <span>Market Cap:</span>
-      <span class="font-semibold">€ {{ orderOfMagnitudeSuffix(companyInformation.marketCap) }}</span>
-    </div>
     <div class="col-4">
       <span>Headquarter: </span>
       <span class="font-semibold">{{ companyInformation.headquarters }}</span>
@@ -19,16 +15,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
+import { defineComponent, inject } from "vue";
+import { CompanyInformation } from "@clients/backend";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "CompanyInformation",
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
-      getCompanyResponse: null,
-      companyInformation: null,
+      companyInformation: null as CompanyInformation | null,
     };
   },
   props: {
@@ -37,30 +41,29 @@ export default {
     },
   },
   created() {
-    this.getCompanyInformation();
+    void this.getCompanyInformation();
   },
   watch: {
     companyID() {
-      this.getCompanyInformation();
+      void this.getCompanyInformation();
     },
   },
-  inject: ["getKeycloakPromise"],
   methods: {
     async getCompanyInformation() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise()
+          assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        this.getCompanyResponse = await companyDataControllerApi.getCompanyById(this.companyID);
-        this.companyInformation = this.getCompanyResponse.data.companyInformation;
+        const response = await companyDataControllerApi.getCompanyById(this.companyID as string);
+        this.companyInformation = response.data.companyInformation;
       } catch (error) {
         console.error(error);
-        this.getCompanyResponse = null;
+        this.companyInformation = null;
       }
     },
-    orderOfMagnitudeSuffix(value) {
+    orderOfMagnitudeSuffix(value: number): string {
       return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
-};
+});
 </script>

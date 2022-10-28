@@ -10,7 +10,8 @@ version: "3.8"
 services:
   proxy:
     build:
-      context: ./dataland-inbound-proxy
+      context: ./
+      dockerfile: ./dataland-inbound-proxy/Dockerfile
       args:
         PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
     restart: always
@@ -59,20 +60,15 @@ services:
       - backend-db
     environment:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
-      DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
-      DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
-      SKYMINDER_URL: ${SKYMINDER_URL}
-      SKYMINDER_USER: ${SKYMINDER_USER}
-      SKYMINDER_PW: ${SKYMINDER_PW}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
   backend-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:14.5
+    image: postgres:15.0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -87,8 +83,6 @@ services:
     networks:
       - external
     environment:
-      DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
-      DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
       DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
       DATALAND_EDC_USER: ${DATALAND_EDC_USER}
       CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
@@ -114,7 +108,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:18.9.0
+    image: node:18.11.0
     networks:
       - internal
     volumes:
@@ -134,17 +128,6 @@ services:
       - "80"
     networks:
       - internal
-  skyminder-dummyserver:
-    profiles: ["testing", "development"]
-    image: ghcr.io/d-fine/datalandskyminder/skyminderdummyserver:0.1.12
-    networks:
-      - internal
-      - external
-    ports:
-      - "8085:8080"
-    environment:
-      DATALAND_SKYMINDERCLIENT_TOKEN: ${DATALAND_SKYMINDERCLIENT_TOKEN}
-      DATALAND_SKYMINDERCLIENT_USER: ${DATALAND_SKYMINDERCLIENT_USER}
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development", "productionInMemory"]
@@ -183,7 +166,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:14.5
+    image: postgres:15.0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -204,6 +187,7 @@ services:
       - "8080"
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
   keycloak-initializer:
@@ -219,7 +203,8 @@ services:
       context: ./
       dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
     volumes:
-      - ./dataland-keycloak/realms:/opt/keycloak/data/import
+      - ./dataland-keycloak/realms:/keycloak_realms
+      - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
@@ -234,6 +219,8 @@ services:
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
       KEYCLOAK_LINKEDIN_SECRET: ${KEYCLOAK_LINKEDIN_SECRET}
+      KEYCLOAK_MAILJET_API_SECRET: ${KEYCLOAK_MAILJET_API_SECRET}
+      KEYCLOAK_MAILJET_API_ID: ${KEYCLOAK_MAILJET_API_ID}
     expose:
       - "8080"
     depends_on:

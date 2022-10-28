@@ -7,7 +7,7 @@
         <meta name="robots" content="noindex, nofollow">
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <title>DataLand Login</title>
+        <title>Dataland Login</title>
         <link rel="apple-touch-icon" sizes="180x180" href="${url.resourcesPath}/img/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="${url.resourcesPath}/img/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="${url.resourcesPath}/img/favicon-16x16.png">
@@ -27,7 +27,7 @@
         <!-- Main Content -->
         <div class="block ml-auto mr-auto pt-8" style="width: 364px;">
             <img src="${url.resourcesPath}/img/logo_dataland_long.svg" class="d-dataland-logo">
-            <h1><#nested "header"></h1>
+            <h1 class="text-6xl"><#nested "header"></h1>
             <div>
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                 <#-- during login.                                                                               -->

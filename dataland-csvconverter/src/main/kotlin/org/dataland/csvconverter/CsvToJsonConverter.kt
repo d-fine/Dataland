@@ -3,9 +3,16 @@ package org.dataland.csvconverter
 import org.dataland.csvconverter.csv.CompanyInformationCsvParser
 import org.dataland.csvconverter.csv.CsvFrameworkParser
 import org.dataland.csvconverter.csv.CsvUtils
-import org.dataland.csvconverter.csv.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
 import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
+import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
+import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
+import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
+import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
+import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.utils.YesNoNaParser
+import org.dataland.csvconverter.csv.utils.YesNoParser
 import org.dataland.csvconverter.json.JsonConfig
 import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
@@ -18,10 +25,33 @@ import java.io.File
 class CsvToJsonConverter {
 
     private var rawCsvData: List<Map<String, String>> = listOf()
+
     private val companyParser = CompanyInformationCsvParser()
-    private val euTaxonomyCommonFieldParser = EuTaxonomyCommonFieldParser()
-    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(euTaxonomyCommonFieldParser)
-    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(euTaxonomyCommonFieldParser)
+    private val euTaxonomyCommonFieldParser = EuTaxonomyCommonFieldParser(
+        YesNoNaParser(),
+        YesNoParser(),
+    )
+    private val companyTypeParser = CompanyTypeParser()
+    private val fiscalYearParser = FiscalYearParser()
+    private val companyReportParser = CompanyReportParser(YesNoNaParser())
+    private val dataPointParser = DataPointParser(companyReportParser)
+    private val assuranceDataParser = AssuranceDataParser(dataPointParser)
+    private val euTaxonomyForFinancialsCsvParser = EuTaxonomyForFinancialsCsvParser(
+        euTaxonomyCommonFieldParser,
+        companyTypeParser,
+        dataPointParser,
+        assuranceDataParser,
+        fiscalYearParser,
+        companyReportParser
+    )
+    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(
+        euTaxonomyCommonFieldParser,
+        companyTypeParser,
+        dataPointParser,
+        assuranceDataParser,
+        fiscalYearParser,
+        companyReportParser
+    )
 
     /**
      * Function to parse company-associated framework data from a CSV file
@@ -62,6 +92,7 @@ class CsvToJsonConverter {
      */
     fun parseCsvFile(filePath: String) {
         rawCsvData = CsvUtils.readCsvFile(filePath)
+        rawCsvData = rawCsvData.map { row -> row.mapKeys { it.key.lowercase() } }
     }
 
     companion object {

@@ -1,19 +1,13 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
-import org.dataland.e2etests.utils.copyNormalised
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -21,10 +15,7 @@ import org.junit.jupiter.api.assertThrows
 
 class CompanyDataControllerTest {
 
-    private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val euTaxonomyDataForNonFinancialsControllerApi =
-        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     private val tokenHandler = TokenHandler()
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
@@ -32,21 +23,11 @@ class CompanyDataControllerTest {
     private val testDataProviderForEuTaxonomyDataForNonFinancials =
         TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
 
-    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(): DataMetaInformation {
+    private fun postFirstCompanyWithoutIdentifiers(): StoredCompany {
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(1).first()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
-        val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val testCompanyId = companyDataControllerApi.postCompany(
-            testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
-        ).companyId
-        val testDataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedData(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
-        ).dataId
-        return DataMetaInformation(
-            companyId = testCompanyId,
-            dataId = testDataId,
-            dataType = testDataType
-        )
+        return companyDataControllerApi.postCompany(testCompanyInformation)
     }
 
     @Test
@@ -74,28 +55,71 @@ class CompanyDataControllerTest {
         val receivedCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         assertEquals(
-            StoredCompany(receivedCompanyId, testCompanyInformation, emptyList()).copyNormalised(),
-            companyDataControllerApi.getCompanyById(receivedCompanyId).copyNormalised(),
+            StoredCompany(receivedCompanyId, testCompanyInformation, emptyList()),
+            companyDataControllerApi.getCompanyById(receivedCompanyId),
             "Dataland does not contain the posted company."
         )
     }
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
-        val postCompanyResponse = companyDataControllerApi.postCompany(testCompanyInformation)
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val getCompaniesByNameResponse = companyDataControllerApi.getCompanies(
-            searchString = testCompanyInformation.companyName,
+            searchString = storedCompany.companyInformation.companyName,
             onlyCompanyNames = true,
-        ).map { it.copyNormalised() }
-        val expectedCompany = StoredCompany(postCompanyResponse.companyId, testCompanyInformation, emptyList())
-            .copyNormalised()
+        )
+        val expectedCompany = StoredCompany(storedCompany.companyId, storedCompany.companyInformation, emptyList())
         assertTrue(
             getCompaniesByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company."
+        )
+    }
+
+    @Test
+    fun `post two dummy companies and check if the distinct endpoint returns all values`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Admin)
+        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(2)
+        testCompanyInformation.forEach {
+            companyDataControllerApi.postCompany(it)
+        }
+        val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
+        assertTrue(
+            distinctValues.sectors!!.containsAll(testCompanyInformation.map { it.sector }),
+            "The list of all occurring sectors does not contain the sectors of the posted companies."
+        )
+        assertTrue(
+            distinctValues.countryCodes!!.containsAll(testCompanyInformation.map { it.countryCode }),
+            "The list of all occurring country codes does not contain the country codes of the posted companies."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
+            sectors = setOf(storedCompany.companyInformation.sector),
+            countryCodes = setOf(storedCompany.companyInformation.countryCode)
+        )
+        assertTrue(
+            getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company could not be found in the query results when querying for its country code and sector."
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
+        val storedCompany = postFirstCompanyWithoutIdentifiers()
+        val getCompaniesByCountryCodeAndSectorResponse = companyDataControllerApi.getCompanies(
+            sectors = setOf("${storedCompany.companyInformation.sector}a"),
+            countryCodes = setOf(storedCompany.companyInformation.countryCode)
+        )
+        assertTrue(
+            !getCompaniesByCountryCodeAndSectorResponse.contains(storedCompany),
+            "The posted company is in the query results," +
+                " even though the country code filter was set to a different country code."
+
         )
     }
 
@@ -117,26 +141,6 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
-        val testDataInformation = postOneCompanyAndEuTaxonomyDataForNonFinancials()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
-        val listOfDataMetaInfoForTestCompany = metaDataControllerApi.getListOfDataMetaInfo(
-            testDataInformation.companyId,
-            testDataInformation.dataType
-        )
-        assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(
-                DataMetaInformation(
-                    testDataInformation.dataId,
-                    testDataInformation.dataType,
-                    testDataInformation.companyId
-                )
-            ),
-            "The all-data-sets-list of the posted company does not contain the posted data set."
-        )
-    }
-
-    @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformation(1).first()
@@ -147,7 +151,8 @@ class CompanyDataControllerTest {
             companyDataControllerApi.getCompanies(
                 searchString = testCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false
-            ).any { it.companyId == testCompanyId }
+            ).any { it.companyId == testCompanyId },
+            "The posted company could not be found in the query results when querying for its first identifiers value."
         )
     }
 
@@ -165,7 +170,7 @@ class CompanyDataControllerTest {
             dataRegisteredByDataland = emptyList()
         )
         assertEquals(
-            expectedStoredTeaserCompany.copyNormalised(), getCompanyByIdResponse.copyNormalised(),
+            expectedStoredTeaserCompany, getCompanyByIdResponse,
             "The posted company does not equal the teaser company."
         )
     }
@@ -180,7 +185,10 @@ class CompanyDataControllerTest {
         val exception = assertThrows<IllegalArgumentException> {
             unauthorizedCompanyDataControllerApi.getCompanyById(testCompanyId)
         }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+        assertTrue(
+            exception.message!!.contains("Unauthorized access failed"),
+            "The exception message does not say that an unauthorized access was the cause."
+        )
     }
 
     @Test
@@ -190,6 +198,9 @@ class CompanyDataControllerTest {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.SomeUser)
         val exception =
             assertThrows<ClientException> { companyDataControllerApi.postCompany(testCompanyInformation).companyId }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(
+            "Client error : 403 ", exception.message,
+            "The exception message does not say that a 403 client error was the cause."
+        )
     }
 }

@@ -7,4 +7,5 @@ describe("User Authentication Tests", () => {
   require("./VisitPagesUnauth");
   require("./LandingPageRedirect");
   require("./VerifyPkceFlow");
+  require("./VerifyEmailLogoExists");
 });

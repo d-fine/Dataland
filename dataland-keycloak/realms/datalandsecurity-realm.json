@@ -22,7 +22,7 @@
   "accessCodeLifespanUserAction": 300,
   "accessCodeLifespanLogin": 1800,
   "actionTokenGeneratedByAdminLifespan": 43200,
-  "actionTokenGeneratedByUserLifespan": 300,
+  "actionTokenGeneratedByUserLifespan": 600,
   "oauth2DeviceCodeLifespan": 600,
   "oauth2DevicePollingInterval": 5,
   "enabled": true,
@@ -30,7 +30,7 @@
   "registrationAllowed": true,
   "registrationEmailAsUsername": true,
   "rememberMe": true,
-  "verifyEmail": false,
+  "verifyEmail": true,
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
@@ -480,7 +480,7 @@
       "username": "data_uploader",
       "enabled": true,
       "totp": false,
-      "emailVerified": false,
+      "emailVerified": true,
       "credentials": [
         {
           "id": "b0bb5d63-0e6b-47af-a3f7-462e1a881cd9",
@@ -505,7 +505,7 @@
       "username": "data_reader",
       "enabled": true,
       "totp": false,
-      "emailVerified": false,
+      "emailVerified": true,
       "credentials": [
         {
           "id": "2146c047-7342-4adb-ae73-33e268ab398b",
@@ -808,7 +808,7 @@
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
         "frontchannel.logout.session.required": "false",
-        "post.logout.redirect.uris": "https://dataland-local.duckdns.org/*##https://dev-dataland.duckdns.org/*##https://dataland.com/*",
+        "post.logout.redirect.uris": "https://dataland-local.duckdns.org/*##https://dev-dataland.duckdns.org/*##https://dev2-dataland.duckdns.org/*##https://dataland.com/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature.keyinfo.ext": "false",
@@ -1499,8 +1499,22 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "replyToDisplayName": "",
+    "starttls": "false",
+    "auth": "true",
+    "envelopeFrom": "",
+    "ssl": "true",
+    "password": "${KEYCLOAK_MAILJET_API_SECRET}",
+    "port": "465",
+    "host": "in-v3.mailjet.com",
+    "replyTo": "",
+    "from": "info@dataland.com",
+    "fromDisplayName": "",
+    "user": "${KEYCLOAK_MAILJET_API_ID}"
+  },
   "loginTheme": "dataland_theme",
+  "emailTheme": "dataland_theme",
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
@@ -2436,7 +2450,7 @@
     "clientSessionMaxLifespan": "0",
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}"
   },
-  "keycloakVersion": "18.0.1",
+  "keycloakVersion": "19.0.3",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

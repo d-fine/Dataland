@@ -5,33 +5,41 @@
       name="join_dataland_button"
       @click="register"
     >
-      <span class="d-letters d-button"> Join Dataland </span>
+      <span class="d-letters d-button"> Create a preview account </span>
       <i class="material-icons pl-1" aria-hidden="true" alt="chevron_right">chevron_right</i>
     </PrimeButton>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import PrimeButton from "primevue/button";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-export default {
+export default defineComponent({
   name: "JoinDatalandButton",
   components: { PrimeButton },
-  inject: ["authenticated", "getKeycloakPromise"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
+    };
+  },
   methods: {
     register() {
-      this.getKeycloakPromise()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            let baseUrl = window.location.origin;
+            const baseUrl = window.location.origin;
             const url = keycloak.createRegisterUrl({
               redirectUri: `${baseUrl}/companies`,
             });
             location.assign(url);
           }
         })
-        .catch((error) => console.log("error: " + error));
+        .catch((error) => console.log(error));
     },
   },
-};
+});
 </script>

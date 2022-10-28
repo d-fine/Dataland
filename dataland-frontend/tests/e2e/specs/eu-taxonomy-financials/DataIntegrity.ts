@@ -4,48 +4,40 @@ import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EligibilityKpis,
+  DataPointBigDecimal,
 } from "@clients/backend";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "development", "development_2"],
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
-    let element: Array<{
-      companyInformation: CompanyInformation;
-      t: EuTaxonomyDataForFinancials;
-    }>;
+    let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies) {
-        element = companies;
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
     });
 
-    function getCompanyAssociatedDataWithSpecificFinancialType(
-      serviceTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
-    ) {
-      return element.filter((it) => {
-        return (
-          serviceTypes.every((serviceType) => it.t.financialServicesTypes.includes(serviceType)) &&
-          serviceTypes.length === it.t.financialServicesTypes.length
-        );
-      });
+    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
+      return preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
     }
 
     function uploadDataAndVisitCompanyPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
-    ) {
-      createCompanyAndGetId(companyInformation.companyName).then((companyId) => {
+    ): void {
+      createCompanyAndGetId(companyInformation.companyName).then((companyId): void => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
         generateEuTaxonomyUpload(testData);
         submitEuTaxonomyFinancialsUploadForm();
@@ -53,11 +45,13 @@ describeIf(
       });
     }
 
-    function formatPercentNumber(value?: any): number {
-      return Math.round((value || 0) * 100 * 100) / 100;
+    function formatPercentNumber(value?: DataPointBigDecimal): string {
+      if (value === undefined || value === null || value.value === undefined || value.value === null)
+        return "No data has been reported";
+      return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
-    function checkCommonFields(type: string, data: EligibilityKpis) {
+    function checkCommonFields(type: string, data: EligibilityKpis): void {
       cy.get(`div[name="taxonomyEligibleActivity${type}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
         .should("contain", formatPercentNumber(data.taxonomyEligibleActivity));
@@ -72,7 +66,7 @@ describeIf(
         .should("contain", formatPercentNumber(data.investmentNonNfrd));
     }
 
-    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials) {
+    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
@@ -80,11 +74,7 @@ describeIf(
     }
 
     it("Create a CreditInstitution (combined field submission)", () => {
-      const testData = getCompanyAssociatedDataWithSpecificFinancialType([
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
-      ]).filter((it) => {
-        return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans !== undefined;
-      })[0];
+      const testData = getPreparedFixture("credit-institution-single-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
@@ -95,11 +85,7 @@ describeIf(
     });
 
     it("Create a CreditInstitution (individual field submission)", () => {
-      const testData = getCompanyAssociatedDataWithSpecificFinancialType([
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
-      ]).filter((it) => {
-        return it.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans === undefined;
-      })[0];
+      const testData = getPreparedFixture("credit-institution-dual-field-submission");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolio"]')
@@ -112,9 +98,7 @@ describeIf(
     });
 
     it("Create an insurance company", () => {
-      const testData = getCompanyAssociatedDataWithSpecificFinancialType([
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-      ])[0];
+      const testData = getPreparedFixture("insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
@@ -122,9 +106,7 @@ describeIf(
     });
 
     it("Create an Asset Manager", () => {
-      const testData = getCompanyAssociatedDataWithSpecificFinancialType([
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
-      ])[0];
+      const testData = getPreparedFixture("asset-management-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
@@ -133,10 +115,7 @@ describeIf(
     });
 
     it("Create a Company that is Asset Manager and Insurance", () => {
-      const testData = getCompanyAssociatedDataWithSpecificFinancialType([
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
-        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-      ])[0];
+      const testData = getPreparedFixture("asset-management-insurance-company");
       uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
       checkInsuranceValues(testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);

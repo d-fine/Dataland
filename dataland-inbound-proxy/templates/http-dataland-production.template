@@ -23,6 +23,10 @@ server {
       include utils/proxy.conf;
     }
 
+    location /images/ {
+      root /var/wwww;
+    }
+
     location /api {
       proxy_pass http://backend:8080/api;
       include utils/proxy.conf;

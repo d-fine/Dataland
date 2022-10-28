@@ -8,8 +8,6 @@ import {
   EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   MetaDataControllerApiInterface,
-  SkyminderControllerApi,
-  SkyminderControllerApiInterface,
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 export class ApiClientProvider {
@@ -57,9 +55,5 @@ export class ApiClientProvider {
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
-  }
-
-  async getSkyminderControllerApi(): Promise<SkyminderControllerApiInterface> {
-    return this.getConstructedApi(SkyminderControllerApi);
   }
 }

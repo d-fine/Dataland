@@ -1,7 +1,7 @@
-const testGroupingDisabled = isNaN(Cypress.env("TEST_GROUP"));
+const testGroupingDisabled = isNaN(Cypress.env("TEST_GROUP") as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parseInt(Cypress.env("TEST_GROUP"));
+  cypressTestGroup = parseInt(Cypress.env("TEST_GROUP") as string);
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
@@ -10,7 +10,7 @@ const runPrepopulation = Cypress.env("RUN_PREPOPULATION") !== false;
 if (testGroupingDisabled) {
   console.log("Test grouping disabled. Loading all tests...");
 } else {
-  console.log(`Test grouping enabled. Loading tests for group ${cypressTestGroup}`);
+  console.log(`Test grouping enabled. Loading tests for group ${String(cypressTestGroup)}`);
 }
 
 /**
@@ -30,7 +30,10 @@ if (runPrepopulation) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 1 || cypressTestGroup === 102) {
-  require("./company-metadata");
+  require("./landing-page");
+  require("./swagger-ui");
+  require("./company-metadata/SearchCompaniesForFrameworkDataDropdownFilter");
+  require("./company-metadata/CompaniesOnlySearch");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
@@ -44,7 +47,7 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require("./landing-page");
-  require("./skyminder-search");
-  require("./swagger-ui");
+  require("./company-metadata/SearchPagination");
+  require("./company-metadata/CompanyUpload");
+  require("./company-metadata/SearchCompaniesForFrameworkData");
 }

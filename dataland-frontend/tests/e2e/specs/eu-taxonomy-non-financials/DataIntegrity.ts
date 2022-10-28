@@ -1,18 +1,19 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 const timeout = 120 * 1000;
 describeIf(
   "As a user, I expect data that I upload for a company to be displayed correctly",
   {
-    executionEnvironments: ["developmentLocal", "development"],
+    executionEnvironments: ["developmentLocal", "development", "development_2"],
     dataEnvironments: ["fakeFixtures"],
   },
-  function () {
+  function (): void {
     const companyIdList: Array<string> = [];
     const companyNames: Array<string> = ["eligible & total", "eligible"];
     beforeEach(() => {
-      cy.ensureLoggedIn("data_uploader", Cypress.env("KEYCLOAK_UPLOADER_PASSWORD"));
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     /**
@@ -66,7 +67,7 @@ describeIf(
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
-          cy.get('select[name="attestation"]').select("None");
+          cy.get('select[name="assurance"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
             cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
@@ -90,7 +91,7 @@ describeIf(
           cy.get('input[name="reportingObligation"][value=Yes]').check({
             force: true,
           });
-          cy.get('select[name="attestation"]').select("None");
+          cy.get('select[name="assurance"]').select("None");
           for (const argument of ["capex", "opex", "revenue"]) {
             cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
           }
