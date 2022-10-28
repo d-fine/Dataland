@@ -18,16 +18,17 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
           name: parameters
-          path: ./*.log
+          path: ./logs/
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
@@ -65,16 +66,17 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
           name: parameters
-          path: ./*.log
+          path: ./logs/
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
@@ -114,16 +116,17 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
           name: parameters
-          path: ./*.log
+          path: ./logs/
       - name: Retrieve SSL certificates for dataland-local.duckdns.org
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -203,16 +206,17 @@ jobs:
       - name: log inputs
         shell: bash
         run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
           name: parameters
-          path: ./*.log
+          path: ./logs/
       - uses: actions/setup-java@v2
         with:
           distribution: temurin

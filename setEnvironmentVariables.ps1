@@ -39,3 +39,5 @@
 [Environment]::SetEnvironmentVariable("PROXY_PRIMARY_URL", "dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_LETSENCRYPT_PATH", "/etc/letsencrypt/dataland-local.duckdns.org", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_ENVIRONMENT", "development", [System.EnvironmentVariableTarget]::User)
+
+[Environment]::SetEnvironmentVariable("TUNNEL_STARTUP_LINK", "https://try7eflmqd.execute-api.eu-central-1.amazonaws.com/default?instance=i-0f2429445a5fbdcc4", [System.EnvironmentVariableTarget]::User)
