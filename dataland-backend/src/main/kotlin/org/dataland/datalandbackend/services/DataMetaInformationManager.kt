@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataType
@@ -35,7 +36,10 @@ class DataMetaInformationManager(
     override fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {
         val dataMetaInformationDbResponse = dataMetaInformationRepository.findById(dataId)
         if (dataMetaInformationDbResponse.isEmpty) {
-            throw IllegalArgumentException("Dataland does not know the data ID: $dataId")
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store."
+            )
         }
         return dataMetaInformationDbResponse.get()
     }

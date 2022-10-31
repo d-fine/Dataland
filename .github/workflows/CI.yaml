@@ -150,7 +150,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
-          CYPRESS_EXECUTION_ENVIRONMENT: "development"
+          CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
