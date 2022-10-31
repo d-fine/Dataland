@@ -12,7 +12,8 @@ import {
 import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "../CsvUtils";
 import {
   generateDatapointOrNotReportedAtRandom,
-  generateDatapointOrNotReportedAtYesNo, generateReferencedReports,
+  generateDatapointOrNotReportedAtYesNo,
+  generateReferencedReports,
 } from "../common/DataPointFixtures";
 import { getCsvCompanyMapping } from "../CompanyFixtures";
 import { getCsvDataPointMapping } from "../common/DataPointFixtures";

@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadDummyEuTaxonomyDataForFinancialsViaForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
@@ -174,7 +174,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
-          createCompanyAndGetId(companyName, sector);
+          uploadCompanyViaFormAndGetId(companyName, sector);
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
@@ -208,7 +208,9 @@ describe("As a user, I expect the search functionality on the /companies page to
           "framework filter is set to that framework, or to several frameworks including that framework",
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
-          createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
+          uploadCompanyViaFormAndGetId(companyName).then((companyId) =>
+            uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId)
+          );
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
             .wait("@companies-meta-information")
@@ -253,14 +255,14 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyNameFinancialPrefix = "CompanyWithFinancial";
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-          createCompanyAndGetId(companyNameFinancial).then((companyId) =>
-            uploadDummyEuTaxonomyDataForFinancials(companyId)
+          uploadCompanyViaFormAndGetId(companyNameFinancial).then((companyId) =>
+            uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId)
           );
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
 
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
-          createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
+          uploadCompanyViaFormAndGetId(companyNameNonFinancial).then((companyId) =>
             uploadDummyEuTaxonomyDataForNonFinancials(companyId)
           );
           checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "eutaxonomy-non-financials");

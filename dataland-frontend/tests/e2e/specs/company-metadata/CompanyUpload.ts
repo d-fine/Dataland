@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { createCompanyAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
+import { uploadCompanyViaFormAndGetId, fillCompanyUploadFields } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
@@ -39,7 +39,7 @@ describeIf(
 
     it("Upload a company by filling the upload form and assure that it can be accessed via the view company page", () => {
       const companyName = "Test company XX";
-      createCompanyAndGetId(companyName).then((id) => {
+      uploadCompanyViaFormAndGetId(companyName).then((id) => {
         cy.visitAndCheckAppMount(`/companies/${id}`);
         cy.get("body").should("contain", companyName);
       });
@@ -56,7 +56,7 @@ describeIf(
 
     it("Upload EU Taxonomy Dataset and assure that it can be viewed on the framework data view page", () => {
       const companyName = "Test non financial company";
-      createCompanyAndGetId(companyName).then((id) => {
+      uploadCompanyViaFormAndGetId(companyName).then((id) => {
         uploadEuTaxonomyDataForNonFinancials(id);
         cy.get("body").should("contain", "success").should("contain", "EU Taxonomy Data");
         cy.get("span[title=companyId]").then(($companyID) => {
@@ -72,7 +72,7 @@ describeIf(
     });
 
     it("Log in as data reader, fill the Eu Taxonomy data upload form and assure that upload fails because of insufficient rights", () => {
-      createCompanyAndGetId("Permission check company").then((id) => {
+      uploadCompanyViaFormAndGetId("Permission check company").then((id) => {
         cy.ensureLoggedIn();
         uploadEuTaxonomyDataForNonFinancials(id);
         cy.get("body").should("contain", "Sorry");
@@ -81,7 +81,7 @@ describeIf(
 
     it("Upload EU Taxonomy Dataset with no values for capex, opex and revenue and assure that an appropriate message is shown on the framework data view page", () => {
       const missingDataMessage = "No data has been reported";
-      createCompanyAndGetId("Missing field company").then((companyId) => {
+      uploadCompanyViaFormAndGetId("Missing field company").then((companyId) => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
         cy.get('button[name="postEUData"]').should("be.visible");
         cy.get('input[id="reportingObligation-option-no"][value=No]').check({

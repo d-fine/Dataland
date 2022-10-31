@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 const timeout = 120 * 1000;
@@ -50,7 +50,7 @@ describeIf(
 
     it("Create a Company providing only valid data", () => {
       companyNames.forEach((companyName) => {
-        createCompanyAndGetId(companyName).then((id) => {
+        uploadCompanyViaFormAndGetId(companyName).then((id) => {
           companyIdList.push(id);
           cy.visitAndCheckAppMount(`/companies/${id}`);
           cy.get("body").should("contain", companyName);

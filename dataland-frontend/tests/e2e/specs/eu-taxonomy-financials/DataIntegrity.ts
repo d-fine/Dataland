@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
 import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
@@ -37,7 +37,7 @@ describeIf(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
-      createCompanyAndGetId(companyInformation.companyName).then((companyId): void => {
+      uploadCompanyViaFormAndGetId(companyInformation.companyName).then((companyId): void => {
         cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
         generateEuTaxonomyUpload(testData);
         submitEuTaxonomyFinancialsUploadForm();

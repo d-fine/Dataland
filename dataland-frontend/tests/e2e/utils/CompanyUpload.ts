@@ -1,3 +1,12 @@
+import {
+  CompanyDataControllerApi,
+  CompanyIdentifierIdentifierTypeEnum,
+  CompanyInformation,
+  Configuration,
+  StoredCompany,
+} from "@clients/backend";
+import { faker } from "@faker-js/faker";
+
 export function fillCompanyUploadFields(companyName: string, sector?: string): void {
   cy.get("input[name=companyName]").type(companyName, { force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });
@@ -9,7 +18,7 @@ export function fillCompanyUploadFields(companyName: string, sector?: string): v
   cy.get("input[name=0]").type(`Another Name`, { force: true });
 }
 
-export function createCompanyAndGetId(companyName: string, sector?: string): Cypress.Chainable<string> {
+export function uploadCompanyViaFormAndGetId(companyName: string, sector?: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount("/companies/upload");
   fillCompanyUploadFields(companyName, sector);
   cy.intercept("**/api/companies").as("postCompany");
@@ -22,4 +31,27 @@ export function createCompanyAndGetId(companyName: string, sector?: string): Cyp
     .then<string>(($companyID): string => {
       return $companyID.text();
     });
+}
+
+export function generateDummyCompanyInformation(companyName: string): CompanyInformation {
+  return {
+    companyName: companyName,
+    headquarters: "Imaginary-City",
+    sector: "Imaginary-Sector",
+    identifiers: [
+      { identifierType: CompanyIdentifierIdentifierTypeEnum.PermId, identifierValue: faker.random.alphaNumeric(10) },
+    ],
+    countryCode: "DE",
+    isTeaserCompany: false,
+  };
+}
+
+export async function uploadCompanyViaApi(
+  token: string,
+  companyInformation: CompanyInformation
+): Promise<StoredCompany> {
+  const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
+    companyInformation
+  );
+  return data.data;
 }

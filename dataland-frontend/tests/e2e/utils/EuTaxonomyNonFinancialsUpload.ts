@@ -1,3 +1,12 @@
+import {
+  Configuration,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+} from "../../../build/clients/backend";
+import { FixtureData } from "../fixtures/FixtureUtils";
+import Chainable = Cypress.Chainable;
+
 export function fillEuTaxonomyNonFinancialsDummyUploadFields(): void {
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
@@ -22,4 +31,26 @@ export function uploadDummyEuTaxonomyDataForNonFinancials(companyId: string): Cy
     .then<string>(($dataId): string => {
       return $dataId.text();
     });
+}
+
+export function getFirstEuTaxonomyNonFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForNonFinancials> {
+  return cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+    const companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
+      FixtureData<EuTaxonomyDataForNonFinancials>
+    >;
+    return companiesWithEuTaxonomyDataForNonFinancials[0].t;
+  });
+}
+
+export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+  token: string,
+  companyId: string,
+  data?: EuTaxonomyDataForFinancials
+): Promise<void> {
+  await new EuTaxonomyDataForNonFinancialsControllerApi(
+    new Configuration({ accessToken: token })
+  ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
+    companyId,
+    data,
+  });
 }

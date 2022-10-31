@@ -1,4 +1,10 @@
-import { EuTaxonomyDataForFinancials, EligibilityKpis, DataPointBigDecimal } from "@clients/backend";
+import {
+  EuTaxonomyDataForFinancials,
+  EligibilityKpis,
+  DataPointBigDecimal,
+  EuTaxonomyDataForFinancialsControllerApi,
+  Configuration,
+} from "@clients/backend";
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
@@ -6,7 +12,7 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }
 
-export function uploadDummyEuTaxonomyDataForFinancials(companyId: string): Cypress.Chainable {
+export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string): Cypress.Chainable {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
   fillEuTaxonomyFinancialsDummyUploadFields();
   return submitEuTaxonomyFinancialsUploadForm();
@@ -58,4 +64,17 @@ function fillEuTaxonomyFinancialsDummyUploadFields(): void {
   cy.get("select[name=financialServicesTypes]").select("Credit Institution");
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[name="reportingObligation"][value=Yes]').check();
+}
+
+export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
+  token: string,
+  companyId: string,
+  data: EuTaxonomyDataForFinancials
+): Promise<void> {
+  await new EuTaxonomyDataForFinancialsControllerApi(
+    new Configuration({ accessToken: token })
+  ).postCompanyAssociatedEuTaxonomyDataForFinancials({
+    companyId,
+    data,
+  });
 }
