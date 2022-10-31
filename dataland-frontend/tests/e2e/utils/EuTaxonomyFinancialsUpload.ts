@@ -5,6 +5,8 @@ import {
   EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
 } from "@clients/backend";
+import { FixtureData } from "../fixtures/FixtureUtils";
+import Chainable = Cypress.Chainable;
 
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
@@ -64,6 +66,13 @@ function fillEuTaxonomyFinancialsDummyUploadFields(): void {
   cy.get("select[name=financialServicesTypes]").select("Credit Institution");
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[name="reportingObligation"][value=Yes]').check();
+}
+
+export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForFinancials> {
+  return cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+    const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    return companiesWithEuTaxonomyDataForFinancials[0].t;
+  });
 }
 
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(

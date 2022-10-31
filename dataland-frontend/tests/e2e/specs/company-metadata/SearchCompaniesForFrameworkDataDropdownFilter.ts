@@ -1,12 +1,16 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadDummyEuTaxonomyDataForFinancialsViaForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
-import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import {
+  getFirstEuTaxonomyFinancialsDatasetFromFixtures,
+  uploadOneEuTaxonomyFinancialsDatasetViaApi,
+} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -174,7 +178,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
-          uploadCompanyViaFormAndGetId(companyName, sector);
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+          });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
@@ -208,9 +214,13 @@ describe("As a user, I expect the search functionality on the /companies page to
           "framework filter is set to that framework, or to several frameworks including that framework",
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
-          uploadCompanyViaFormAndGetId(companyName).then((companyId) =>
-            uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId)
-          );
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+              uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+                uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, euTaxonomyFinancialsDataset);
+              });
+            });
+          });
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
             .wait("@companies-meta-information")
@@ -255,16 +265,37 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyNameFinancialPrefix = "CompanyWithFinancial";
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-          uploadCompanyViaFormAndGetId(companyNameFinancial).then((companyId) =>
-            uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId)
-          );
+
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+              uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
+                (storedCompany) => {
+                  uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                    token,
+                    storedCompany.companyId,
+                    euTaxonomyFinancialsDataset
+                  );
+                }
+              );
+            });
+          });
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
 
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
-          uploadCompanyViaFormAndGetId(companyNameNonFinancial).then((companyId) =>
-            uploadDummyEuTaxonomyDataForNonFinancials(companyId)
-          );
+
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
+              (storedCompany) => {
+                uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                  token,
+                  storedCompany.companyId,
+                  companiesWithEuTaxonomyDataForNonFinancials[0].t
+                );
+              }
+            );
+          });
+
           checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "eutaxonomy-non-financials");
         }
       );

@@ -33,11 +33,11 @@ export function uploadCompanyViaFormAndGetId(companyName: string, sector?: strin
     });
 }
 
-export function generateDummyCompanyInformation(companyName: string): CompanyInformation {
+export function generateDummyCompanyInformation(companyName: string, sector = "Imaginary-Sector"): CompanyInformation {
   return {
     companyName: companyName,
     headquarters: "Imaginary-City",
-    sector: "Imaginary-Sector",
+    sector: sector,
     identifiers: [
       { identifierType: CompanyIdentifierIdentifierTypeEnum.PermId, identifierValue: faker.random.alphaNumeric(10) },
     ],

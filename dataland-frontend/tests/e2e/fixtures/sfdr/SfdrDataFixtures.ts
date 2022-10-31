@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {  SfdrData } from "@clients/backend";
+import { SfdrData } from "@clients/backend";
 
 import {
   generateDatapointOrNotReportedAtRandom,
@@ -8,9 +8,8 @@ import {
 } from "../common/DataPointFixtures";
 
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "../common/YesNoFixtures";
-import {generateDataDate} from "../common/DateFixtures";
-import {generateIso4217CurrencyCode} from "../common/CurrencyFixtures";
-
+import { generateDataDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {} as SfdrData;
