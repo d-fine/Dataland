@@ -11,6 +11,7 @@ import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import {convertStringToQueryParamFormat} from "../../utils/Converters";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -116,7 +117,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .contains(demoCompanyToTestFor.companyName)
         .should("exist")
         .url()
-        .should("contain", `sector=${demoCompanyToTestFor.sector}`);
+        .should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
     }
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
