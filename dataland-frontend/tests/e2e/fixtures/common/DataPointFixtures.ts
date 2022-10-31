@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference } from "@clients/backend";
+import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo, YesNo } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
@@ -33,7 +33,41 @@ export function generateDatapointOrNotReportedAtRandom(
   return generateDatapoint(Math.random() > 0.1 ? value : null, reports);
 }
 
+export function generateDatapointOrNotReportedAtYesNo(
+  value: YesNo | undefined,
+  reports: ReferencedReports
+): DataPointYesNo | undefined {
+  if (value === undefined) return undefined;
+  return generateDatapointYesNo(Math.random() > 0.1 ? value : null, reports);
+}
+
 export function generateDatapoint(value: number | null, reports: ReferencedReports): DataPointBigDecimal {
+  const qualityBucket =
+    value === null
+      ? QualityOptions.Na
+      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+
+  let dataSource: CompanyReportReference | undefined = undefined;
+  let comment: string | undefined = undefined;
+  if (
+    qualityBucket === QualityOptions.Audited ||
+    qualityBucket === QualityOptions.Reported ||
+    ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
+      faker.datatype.boolean())
+  ) {
+    dataSource = generateDataSource(reports);
+    comment = faker.git.commitMessage();
+  }
+
+  return {
+    value: value || undefined,
+    dataSource: dataSource,
+    quality: qualityBucket,
+    comment: comment,
+  };
+}
+
+export function generateDatapointYesNo(value: YesNo | null, reports: ReferencedReports): DataPointYesNo {
   const qualityBucket =
     value === null
       ? QualityOptions.Na

@@ -6,8 +6,9 @@ import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
   const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
   return {
-    page: faker.mersenne.rand(1200, 1),
+    page: faker.datatype.number({ min: 1, max: 1200, precision: 1 }),
     report: chosenReport,
+    tagName: faker.company.bsNoun(),
   };
 }
 
