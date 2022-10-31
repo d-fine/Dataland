@@ -1,46 +1,20 @@
 import { faker } from "@faker-js/faker";
-import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  InsuranceKpis,
-  CreditInstitutionKpis,
-  InvestmentFirmKpis,
-  SfdrData,
-} from "../../../../build/clients/backend";
+import {  SfdrData } from "@clients/backend";
 
-import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "../CsvUtils";
 import {
   generateDatapointOrNotReportedAtRandom,
   generateDatapointOrNotReportedAtYesNo,
   generateReferencedReports,
 } from "../common/DataPointFixtures";
-import { getCsvCompanyMapping } from "../CompanyFixtures";
-import { getCsvDataPointMapping } from "../common/DataPointFixtures";
-import {
-  getCsvSharedEuTaxonomyValuesMapping,
-  populateSharedValues,
-} from "../eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { FixtureData, DataPoint, ReferencedReports } from "../FixtureUtils";
-import { randomPercentageValue } from "../common/NumberFixtures";
+
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "../common/YesNoFixtures";
-// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
-const { parse } = require("json2csv");
+import {generateDataDate} from "../common/DateFixtures";
+import {generateIso4217CurrencyCode} from "../common/CurrencyFixtures";
 
-export function generateDataDate(): string {
-  return faker.date.future(1).toISOString().split("T")[0];
-}
 
-export function generateIso4217CurrencyCode(): string {
-  const someCommonIso4217CurrencyCodes = ["USD", "EUR", "CHF", "CAD", "AUD"];
-  return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
-}
-
-// export function generateReports()
-
-export function generateSfdrData(reports: ReferencedReports): SfdrData {
-  const referencedReports = generateReferencedReports();
+export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {} as SfdrData;
+  const reports = generateReferencedReports();
   const scope1 = faker.datatype.number();
   const scope2 = faker.datatype.number();
   const scope3 = faker.datatype.number();
@@ -344,5 +318,6 @@ export function generateSfdrData(reports: ReferencedReports): SfdrData {
     reportedFinesOfBriberyCorruption,
     reports
   );
+  sfdr.referencedReports = reports;
   return sfdr;
 }
