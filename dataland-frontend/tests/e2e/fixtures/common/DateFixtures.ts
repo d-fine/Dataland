@@ -7,3 +7,7 @@ export function randomDate(): string {
 export function randomDateOrUndefined(): string | undefined {
   return faker.datatype.boolean() ? randomDate() : undefined;
 }
+
+export function generateDataDate(): string {
+  return faker.date.future(1).toISOString().split("T")[0];
+}
