@@ -5,6 +5,7 @@ import {
   generateEuTaxonomyDataForNonFinancials,
 } from "./EuTaxonomyDataForNonFinancialsFixtures";
 import fs from "fs";
+import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "../non-financials/EuTaxonomyDataForNonFinancialsPreparedFixtures";
 
 export function exportFixturesEuTaxonomyNonFinancial(): void {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
@@ -19,5 +20,10 @@ export function exportFixturesEuTaxonomyNonFinancial(): void {
   fs.writeFileSync(
     "../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv",
     generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials)
+  );
+  const preparedFixtureEuTaxonomyDataForNonFinancials = generateEuTaxonomyForNonFinancialsPreparedFixtures();
+  fs.writeFileSync(
+    "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures.json",
+    JSON.stringify(preparedFixtureEuTaxonomyDataForNonFinancials, null, "\t")
   );
 }

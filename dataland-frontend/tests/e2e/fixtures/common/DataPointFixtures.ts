@@ -27,13 +27,17 @@ export function generateReferencedReports(): ReferencedReports {
   return ret;
 }
 
-export function generateNumericDatapoint(reports: ReferencedReports): DataPointBigDecimal | undefined {
+export function generateNumericDatapoint(value: number, reports: ReferencedReports): DataPointBigDecimal {
+  return generateDatapoint<number, DataPointBigDecimal>(value, reports);
+}
+
+export function generateNumericOrEmptyDatapoint(reports: ReferencedReports): DataPointBigDecimal | undefined {
   const value = Math.random() > nullRatio ? faker.datatype.number() : null;
   if (Math.random() < undefinedRatio) return undefined;
   return generateDatapoint<number, DataPointBigDecimal>(value, reports);
 }
 
-export function generateYesNoDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
+export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
   const value = Math.random() > nullRatio ? randomYesNoUndefined() : null;
   if (value === undefined) return undefined;
   return generateDatapoint<YesNo, DataPointYesNo>(value, reports);
