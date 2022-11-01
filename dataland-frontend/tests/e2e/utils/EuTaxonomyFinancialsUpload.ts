@@ -20,7 +20,7 @@ export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string)
   return submitEuTaxonomyFinancialsUploadForm();
 }
 
-export function generateEuTaxonomyUpload(data: EuTaxonomyDataForFinancials): void {
+export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
   if (data.assurance?.assurance !== undefined) {

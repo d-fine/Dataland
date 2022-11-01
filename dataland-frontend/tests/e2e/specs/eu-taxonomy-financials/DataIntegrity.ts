@@ -1,6 +1,9 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import {
+  submitEuTaxonomyFinancialsUploadForm,
+  fillEuTaxonomyForFinancialsUploadForm,
+} from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
@@ -34,7 +37,7 @@ describeIf(
       return preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
     }
 
-    function uploadDataAndVisitCompanyPage(
+    function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
@@ -42,7 +45,7 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
             cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials/upload`);
-            generateEuTaxonomyUpload(testData);
+            fillEuTaxonomyForFinancialsUploadForm(testData);
             submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials`);
           }
@@ -80,7 +83,10 @@ describeIf(
 
     it("Create a CreditInstitution (combined field submission)", () => {
       const testData = getPreparedFixture("credit-institution-single-field-submission");
-      uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
         .should("contain", "Trading portfolio & on demand interbank loans")
@@ -91,7 +97,10 @@ describeIf(
 
     it("Create a CreditInstitution (individual field submission)", () => {
       const testData = getPreparedFixture("credit-institution-dual-field-submission");
-      uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
       checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
       cy.get('div[name="tradingPortfolio"]')
         .should("contain", "Trading portfolio")
@@ -104,7 +113,10 @@ describeIf(
 
     it("Create an insurance company", () => {
       const testData = getPreparedFixture("insurance-company");
-      uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
       checkInsuranceValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
@@ -112,7 +124,10 @@ describeIf(
 
     it("Create an Asset Manager", () => {
       const testData = getPreparedFixture("asset-management-company");
-      uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
@@ -121,7 +136,10 @@ describeIf(
 
     it("Create a Company that is Asset Manager and Insurance", () => {
       const testData = getPreparedFixture("asset-management-insurance-company");
-      uploadDataAndVisitCompanyPage(testData.companyInformation, testData.t);
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
       checkInsuranceValues(testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
