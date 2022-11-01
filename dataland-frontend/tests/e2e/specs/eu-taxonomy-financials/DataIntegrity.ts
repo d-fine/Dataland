@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitEuTaxonomyFinancialsUploadForm, generateEuTaxonomyUpload } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
@@ -9,6 +9,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -37,11 +38,15 @@ describeIf(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
-      uploadCompanyViaFormAndGetId(companyInformation.companyName).then((companyId): void => {
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
-        generateEuTaxonomyUpload(testData);
-        submitEuTaxonomyFinancialsUploadForm();
-        cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+          (companyId): void => {
+            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
+            generateEuTaxonomyUpload(testData);
+            submitEuTaxonomyFinancialsUploadForm();
+            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
+          }
+        );
       });
     }
 
