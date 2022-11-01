@@ -4,7 +4,7 @@ import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixture
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
-import { randomDateOrUndefined } from "./DateFixtures";
+import { randomPastDateOrUndefined } from "./DateFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
@@ -17,7 +17,7 @@ export function generateReferencedReports(): ReferencedReports {
     ret[reportName] = {
       reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
       isGroupLevel: randomYesNoNaUndefined(),
-      reportDate: randomDateOrUndefined(),
+      reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
     };
   });

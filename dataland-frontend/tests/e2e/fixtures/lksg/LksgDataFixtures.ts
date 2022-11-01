@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { LksgData, ProductionSite } from "@clients/backend";
 
 import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
-import { generateDataDate } from "../common/DateFixtures";
+import { randomFutureDate } from "../common/DateFixtures";
 import { generateIso4217CurrencyCode } from "../common/CurrencyFixtures";
 
 export function generateProductionSite(): ProductionSite {
@@ -58,7 +58,7 @@ export function generateLksgData(): LksgData {
   const returnBase: LksgData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
-  returnBase.dataDate = generateDataDate();
+  returnBase.dataDate = randomFutureDate();
   returnBase.companyLegalForm = getCompanyLegalForm();
   returnBase.vatIdentificationNumber = generateVatIdentificationNumber();
   returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });

@@ -8,7 +8,7 @@ import {
 } from "../common/DataPointFixtures";
 
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "../common/YesNoFixtures";
-import { generateDataDate } from "@e2e/fixtures/common/DateFixtures";
+import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 export function generateSfdrData(): SfdrData {
@@ -103,23 +103,23 @@ export function generateSfdrData(): SfdrData {
   const reportedFinesOfBriberyCorruption = faker.datatype.number();
 
   sfdr.fiscalYear = faker.datatype.string();
-  sfdr.fiscalYearEnd = generateDataDate();
+  sfdr.fiscalYearEnd = randomFutureDate();
   sfdr.annualReport = faker.datatype.string();
   sfdr.groupLevelAnnualReport = randomYesNoNaUndefined();
   sfdr.annualReport = faker.datatype.string();
-  sfdr.annualReportDate = generateDataDate();
+  sfdr.annualReportDate = randomFutureDate();
   sfdr.annualReportCurrency = generateIso4217CurrencyCode();
   sfdr.sustainabilityReport = faker.datatype.string();
   sfdr.groupLevelSustainabilityReport = randomYesNoNaUndefined();
-  sfdr.sustainabilityReportDate = generateDataDate();
+  sfdr.sustainabilityReportDate = randomFutureDate();
   sfdr.sustainabilityReportCurrency = generateIso4217CurrencyCode();
   sfdr.integratedReport = faker.datatype.string();
   sfdr.groupLevelIntegratedReport = randomYesNoNaUndefined();
-  sfdr.integratedReportDate = generateDataDate();
+  sfdr.integratedReportDate = randomFutureDate();
   sfdr.integratedReportCurrency = generateIso4217CurrencyCode();
   sfdr.esefReport = faker.datatype.string();
   sfdr.groupLevelEsefReport = randomYesNoNaUndefined();
-  sfdr.esefReportDate = generateDataDate();
+  sfdr.esefReportDate = randomFutureDate();
   sfdr.esefReportCurrency = generateIso4217CurrencyCode();
   sfdr.scopeOfEntities = randomYesNoNaUndefined();
   sfdr.scope1 = generateDatapointOrNotReportedAtRandom(scope1, reports);
