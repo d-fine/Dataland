@@ -25,5 +25,9 @@ export function getCsvDataSourceMapping<T>(
       label: `${dataPointName} Page`,
       value: (row: T): number | undefined => companyReportGetter(row)?.page,
     },
+    {
+      label: `${dataPointName} Tag`,
+      value: (row: T): string | undefined => companyReportGetter(row)?.tagName as string,
+    },
   ];
 }

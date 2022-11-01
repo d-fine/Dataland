@@ -180,7 +180,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-            uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
@@ -217,8 +217,12 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyName = "CompanyWithFinancial" + companyNameMarker;
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
-              uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-                uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, euTaxonomyFinancialsDataset);
+              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  token,
+                  storedCompany.companyId,
+                  euTaxonomyFinancialsDataset
+                );
               });
             });
           });
@@ -269,9 +273,9 @@ describe("As a user, I expect the search functionality on the /companies page to
 
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
-              uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
+              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
                 (storedCompany) => {
-                  uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompany.companyId,
                     euTaxonomyFinancialsDataset
@@ -286,9 +290,9 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
 
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-            uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
-                uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                   token,
                   storedCompany.companyId,
                   companiesWithEuTaxonomyDataForNonFinancials[0].t

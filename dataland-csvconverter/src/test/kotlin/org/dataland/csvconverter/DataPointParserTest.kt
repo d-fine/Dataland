@@ -19,14 +19,16 @@ class DataPointParserTest {
             quality: String,
             report: String,
             page: String,
-            comment: String
+            comment: String,
+            tag: String
         ): Map<String, String> {
             return mapOf(
                 "recipe" to value,
                 "recipe quality" to quality,
                 "recipe report" to report,
                 "recipe page" to page,
-                "recipe comment" to comment
+                "recipe comment" to comment,
+                "recipe tag" to tag
             )
         }
     }
@@ -42,7 +44,8 @@ class DataPointParserTest {
             "Reported",
             "Annual Report",
             "123",
-            "it's great"
+            "it's great",
+            "here"
         )
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
@@ -50,7 +53,7 @@ class DataPointParserTest {
             ),
             DataPoint(
                 value = 111.toBigDecimal(), quality = QualityOptions.Reported,
-                CompanyReportReference(report = "AnnualReport", page = 123), comment = "it's great"
+                CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here"), comment = "it's great"
             )
         )
     }
@@ -58,7 +61,7 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser returns null when no data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithNoData = buildDataRow("", "", "", "", "")
+        val rowWithNoData = buildDataRow("", "", "", "", "", "")
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
                 csvMapping, rowWithNoData, "rezept", BigDecimal.ONE
@@ -70,8 +73,8 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser returns null when mandatory values are left out`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithValueOnly = buildDataRow("111", "", "", "", "")
-        val rowWithPageOnly = buildDataRow("", "", "", "123", "")
+        val rowWithValueOnly = buildDataRow("111", "", "", "", "", "")
+        val rowWithPageOnly = buildDataRow("", "", "", "123", "", "")
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildDecimalDataPoint(csvMapping, rowWithValueOnly, "rezept", BigDecimal.ONE)
         }

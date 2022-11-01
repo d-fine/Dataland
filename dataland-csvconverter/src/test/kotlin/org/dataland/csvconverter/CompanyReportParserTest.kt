@@ -22,20 +22,21 @@ class CompanyReportParserTest {
             "Reported",
             "Annual Report",
             "123",
-            "it's great"
+            "it's great",
+            "here"
         )
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
                 csvMapping, validDataRow, "rezept"
             ),
-            CompanyReportReference(report = "AnnualReport", page = 123)
+            CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here")
         )
     }
 
     @Test
     fun `test that the company report parser returns null if no fields have been specified`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithNoReport = buildDataRow("", "", "", "", "")
+        val rowWithNoReport = buildDataRow("", "", "", "", "", "")
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
                 csvMapping, rowWithNoReport, "rezept"
@@ -47,7 +48,7 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report parser throws an error when only partial data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val roWithNoReportButWithPage = buildDataRow("", "", "", "123", "")
+        val roWithNoReportButWithPage = buildDataRow("", "", "", "123", "", "")
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildSingleCompanyReportReference(csvMapping, roWithNoReportButWithPage, "rezept")
         }
