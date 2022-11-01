@@ -1,10 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  submitEuTaxonomyFinancialsUploadForm,
-  fillEuTaxonomyForFinancialsUploadForm,
-  uploadOneEuTaxonomyFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
@@ -35,9 +31,15 @@ describeIf(
     });
 
     function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
-      return preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+      if (!preparedFixture) {
+        throw new Error("The provided company name could not be found in the prepared fixtures.");
+      } else {
+        return preparedFixture;
+      }
     }
 
+    /*
     function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
@@ -53,6 +55,7 @@ describeIf(
         );
       });
     }
+*/
 
     function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
@@ -97,9 +100,26 @@ describeIf(
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
-    it("Create a CreditInstitution (combined field submission)", () => {
+    /*
+    it("Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
+        "that the upload form works fine with all options", () => {
       const testData = getPreparedFixture("credit-institution-single-field-submission");
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+          testData.companyInformation,
+          testData.t
+      );
+      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
+      cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
+          .should("contain", "Trading portfolio & on demand interbank loans")
+          .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
+      cy.get("body").should("not.contain", /^Trading portfolio$/);
+      cy.get("body").should("not.contain", "On demand interbank loans");
+    });
+    */
+
+    it("Create a CreditInstitution (combined field submission)", () => {
+      const testData = getPreparedFixture("credit-institution-single-field-submission");
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
       );
