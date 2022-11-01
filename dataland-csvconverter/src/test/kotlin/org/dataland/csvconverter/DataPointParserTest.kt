@@ -14,21 +14,14 @@ import java.math.BigDecimal
 class DataPointParserTest {
 
     companion object {
-        fun buildDataRow(
-            value: String,
-            quality: String,
-            report: String,
-            page: String,
-            comment: String,
-            tag: String
-        ): Map<String, String> {
-            return mapOf(
-                "recipe" to value,
-                "recipe quality" to quality,
-                "recipe report" to report,
-                "recipe page" to page,
-                "recipe comment" to comment,
-                "recipe tag" to tag
+        fun emptyDataRow(): MutableMap<String, String> {
+            return mutableMapOf(
+                "recipe" to "",
+                "recipe quality" to "",
+                "recipe report" to "",
+                "recipe page" to "",
+                "recipe comment" to "",
+                "recipe tag" to ""
             )
         }
     }
@@ -39,13 +32,13 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser works when supplied with valid data`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val validDataRow = buildDataRow(
-            "111",
-            "Reported",
-            "Annual Report",
-            "123",
-            "it's great",
-            "here"
+        val validDataRow = mapOf(
+            "recipe" to "111",
+            "recipe quality" to "Reported",
+            "recipe report" to "Annual Report",
+            "recipe page" to "123",
+            "recipe comment" to "it's great",
+            "recipe tag" to "here"
         )
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
@@ -61,7 +54,7 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser returns null when no data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithNoData = buildDataRow("", "", "", "", "", "")
+        val rowWithNoData = emptyDataRow()
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
                 csvMapping, rowWithNoData, "rezept", BigDecimal.ONE
@@ -73,8 +66,10 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser returns null when mandatory values are left out`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithValueOnly = buildDataRow("111", "", "", "", "", "")
-        val rowWithPageOnly = buildDataRow("", "", "", "123", "", "")
+        val rowWithValueOnly = emptyDataRow()
+        rowWithValueOnly["value"]= "111"
+        val rowWithPageOnly = emptyDataRow()
+        rowWithValueOnly["page"] = "123"
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildDecimalDataPoint(csvMapping, rowWithValueOnly, "rezept", BigDecimal.ONE)
         }
