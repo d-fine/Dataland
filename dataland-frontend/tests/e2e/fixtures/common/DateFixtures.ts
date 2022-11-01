@@ -1,13 +1,13 @@
 import { faker } from "@faker-js/faker";
 
-export function randomDate(): string {
+export function randomPastDate(): string {
   return faker.date.past().toISOString().split("T")[0];
 }
 
-export function randomDateOrUndefined(): string | undefined {
-  return faker.datatype.boolean() ? randomDate() : undefined;
+export function randomPastDateOrUndefined(): string | undefined {
+  return faker.datatype.boolean() ? randomPastDate() : undefined;
 }
 
-export function generateDataDate(): string {
-  return faker.date.future(1).toISOString().split("T")[0];
+export function randomFutureDate(): string {
+  return faker.date.future().toISOString().split("T")[0];
 }
