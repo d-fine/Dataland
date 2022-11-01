@@ -40,11 +40,11 @@ describeIf(
     ): void {
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-          (companyId): void => {
-            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
+          (storedCompany): void => {
+            cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials/upload`);
             generateEuTaxonomyUpload(testData);
             submitEuTaxonomyFinancialsUploadForm();
-            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials`);
+            cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials`);
           }
         );
       });

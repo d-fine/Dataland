@@ -67,7 +67,7 @@ class DataPointParserTest {
     fun `test that the data point parser returns null when mandatory values are left out`() {
         val csvMapping = mapOf("rezept" to "recipe")
         val rowWithValueOnly = emptyDataRow()
-        rowWithValueOnly["value"]= "111"
+        rowWithValueOnly["value"] = "111"
         val rowWithPageOnly = emptyDataRow()
         rowWithValueOnly["page"] = "123"
         assertThrows<IllegalArgumentException> {

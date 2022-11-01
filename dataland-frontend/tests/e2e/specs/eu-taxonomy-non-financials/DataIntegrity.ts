@@ -2,7 +2,6 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "../../utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
-import { StoredCompany } from "../../../../build/clients/backend";
 
 const timeout = 120 * 1000;
 describeIf(
@@ -50,9 +49,9 @@ describeIf(
       });
     }
 
-    it("Create a Company providing only valid data", () => {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        companyNames.forEach((companyName) => {
+    it("Create companies providing only valid data", () => {
+      companyNames.forEach((companyName) => {
+        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then(
             (storedCompany): void => {
               companyIdList.push(storedCompany.companyId);
