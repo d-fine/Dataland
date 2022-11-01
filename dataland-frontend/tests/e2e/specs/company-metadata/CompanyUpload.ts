@@ -10,7 +10,7 @@ import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "../../utils/EuTaxon
 import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describeIf(
-  "As a user, I want to be able to upload new companies and framework data via forms if I have the rights",
+  "As a user, I want to be able to upload new companies via an upload form if I have the rights",
   {
     executionEnvironments: ["developmentLocal", "development", "development_2"],
     dataEnvironments: ["fakeFixtures"],
