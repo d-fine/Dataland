@@ -8,6 +8,6 @@ describe("As a user, I want to get redirected to a useful error page when I visi
       .should("contain.text", "Dataland")
       .click({ force: true })
       .url()
-      .should("eq", `${getBaseUrl()}/`);
+      .should("eq", getBaseUrl() + "/");
   });
 });

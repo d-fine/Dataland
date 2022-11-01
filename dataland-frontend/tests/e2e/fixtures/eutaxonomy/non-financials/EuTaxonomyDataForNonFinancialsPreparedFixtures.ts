@@ -1,8 +1,8 @@
 import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
-import { generateNumericDatapoint } from "../../common/DataPointFixtures";
-import { randomEuroValue, randomPercentageValue } from "../../common/NumberFixtures";
+import { generateNumericDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>

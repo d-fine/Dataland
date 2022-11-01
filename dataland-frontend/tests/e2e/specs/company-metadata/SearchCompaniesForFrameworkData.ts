@@ -9,7 +9,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import {
   getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
-} from "../../utils/EuTaxonomyNonFinancialsUpload";
+} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 

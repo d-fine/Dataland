@@ -11,8 +11,8 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { uploadOneLksgDataset } from "../../utils/LksgUpload";
-import { uploadOneSfdrDataset } from "../../utils/SfdrUpload";
+import { uploadOneLksgDataset } from "@e2e/utils/LksgUpload";
+import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 const chunkSize = 15;
 
 describe(

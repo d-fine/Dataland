@@ -88,7 +88,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .contains(demoCompanyToTestFor.companyName)
         .should("exist")
         .url()
-        .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
+        .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
     }
   );
   it(

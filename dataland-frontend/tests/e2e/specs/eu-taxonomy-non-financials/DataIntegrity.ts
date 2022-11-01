@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getKeycloakToken } from "../../utils/Auth";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 const timeout = 120 * 1000;
 describeIf(
