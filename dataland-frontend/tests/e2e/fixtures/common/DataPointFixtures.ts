@@ -2,11 +2,13 @@ import { faker } from "@faker-js/faker";
 import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo, YesNo } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNoNaUndefined } from "./YesNoFixtures";
+import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomPastDateOrUndefined } from "./DateFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
+const nullRatio = 0.1;
+const undefinedRatio = 0.25;
 
 export function generateReferencedReports(): ReferencedReports {
   const availableReports = faker.helpers.arrayElements(possibleReports);
@@ -25,23 +27,27 @@ export function generateReferencedReports(): ReferencedReports {
   return ret;
 }
 
+export function generateNumericDatapoint(reports: ReferencedReports): DataPointBigDecimal | undefined {
+  const value = Math.random() > nullRatio ? faker.datatype.number() : null;
+  if (Math.random() < undefinedRatio) return undefined;
+  return generateDatapoint<number, DataPointBigDecimal>(value, reports);
+}
+
+export function generateYesNoDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
+  const value = Math.random() > nullRatio ? randomYesNoUndefined() : null;
+  if (value === undefined) return undefined;
+  return generateDatapoint<YesNo, DataPointYesNo>(value, reports);
+}
+
 export function generateDatapointOrNotReportedAtRandom(
   value: number | undefined,
   reports: ReferencedReports
 ): DataPointBigDecimal | undefined {
   if (value === undefined) return undefined;
-  return generateDatapoint(Math.random() > 0.1 ? value : null, reports);
+  return generateDatapoint<number, DataPointBigDecimal>(Math.random() > nullRatio ? value : null, reports);
 }
 
-export function generateDatapointOrNotReportedAtYesNo(
-  value: YesNo | undefined,
-  reports: ReferencedReports
-): DataPointYesNo | undefined {
-  if (value === undefined) return undefined;
-  return generateDatapointYesNo(Math.random() > 0.1 ? value : null, reports);
-}
-
-export function generateDatapoint(value: number | null, reports: ReferencedReports): DataPointBigDecimal {
+export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedReports): Y {
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -64,33 +70,7 @@ export function generateDatapoint(value: number | null, reports: ReferencedRepor
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-  };
-}
-
-export function generateDatapointYesNo(value: YesNo | null, reports: ReferencedReports): DataPointYesNo {
-  const qualityBucket =
-    value === null
-      ? QualityOptions.Na
-      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
-
-  let dataSource: CompanyReportReference | undefined = undefined;
-  let comment: string | undefined = undefined;
-  if (
-    qualityBucket === QualityOptions.Audited ||
-    qualityBucket === QualityOptions.Reported ||
-    ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
-      faker.datatype.boolean())
-  ) {
-    dataSource = generateDataSource(reports);
-    comment = faker.git.commitMessage();
-  }
-
-  return {
-    value: value || undefined,
-    dataSource: dataSource,
-    quality: qualityBucket,
-    comment: comment,
-  };
+  } as Y;
 }
 
 export function getCsvDataPointMapping<T>(

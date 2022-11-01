@@ -7,7 +7,6 @@ export function randomYesNoUndefined(): YesNo | undefined {
 }
 
 const possibleYesNoNaUndefinedValues = [undefined, ...Object.values(YesNoNa)];
-
 export function randomYesNoNaUndefined(): YesNoNa | undefined {
   return faker.helpers.arrayElement(possibleYesNoNaUndefinedValues);
 }
