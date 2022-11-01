@@ -1,0 +1,162 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "only-eglibile-numbers",
+			"companyAlternativeNames": [],
+			"headquarters": "Neu Yannick",
+			"sector": "portals",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "35disqc2snpg9jo4w6hs"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "c8g6aqp"
+				}
+			],
+			"countryCode": "EH",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "http://xn--rtlich-pulver-hmb.net/lang-hochhaus.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "TRY"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"fiscalYearEnd": "2022-10-14",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Hentschke, Kurnicki und Beggerow"
+			},
+			"scopeOfEntities": "NA",
+			"numberOfEmployees": 86041,
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.2028,
+					"dataSource": {
+						"page": 1191,
+						"report": "ESEFReport",
+						"tagName": "systems"
+					},
+					"quality": "Reported",
+					"comment": "index virtual port"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.0608,
+					"dataSource": {
+						"page": 360,
+						"report": "ESEFReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Audited",
+					"comment": "reboot optical firewall"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.1464,
+					"dataSource": {
+						"page": 188,
+						"report": "ESEFReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Reported",
+					"comment": "index neural monitor"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eglibile-and-total-numbers",
+			"companyAlternativeNames": [
+				"Laux Gruppe"
+			],
+			"headquarters": "Ylviedorf",
+			"sector": "blockchains",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "z1vn0ed75912"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ixvyezz7nqjqlo0zks04"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "mnyslxdawf"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "6n05se1"
+				}
+			],
+			"countryCode": "BZ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "https://xn--eintrglich-rudern-uqb.de/marktgerecht-bewusstsein.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-04-04",
+					"currency": "LYD"
+				}
+			},
+			"fiscalYearEnd": "2022-09-18",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "NA",
+			"opex": {
+				"totalAmount": {
+					"value": 143144.05,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.9495,
+					"quality": "Incomplete"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 518343.29,
+					"dataSource": {
+						"page": 64,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Audited",
+					"comment": "override multi-byte transmitter"
+				},
+				"eligiblePercentage": {
+					"value": 0.8419,
+					"quality": "Incomplete"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 426503.68,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.3005,
+					"dataSource": {
+						"page": 815,
+						"report": "AnnualReport",
+						"tagName": "users"
+					},
+					"quality": "Incomplete",
+					"comment": "bypass solid state capacitor"
+				}
+			}
+		}
+	}
+]
