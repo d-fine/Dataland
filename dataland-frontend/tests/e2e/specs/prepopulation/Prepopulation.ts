@@ -1,11 +1,18 @@
 import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
-import { EuTaxonomyDataForNonFinancials, EuTaxonomyDataForFinancials, DataTypeEnum, LksgData } from "@clients/backend";
+import {
+  EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForFinancials,
+  DataTypeEnum,
+  LksgData,
+  SfdrData,
+} from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { uploadOneLksgDataset } from "../../utils/LksgUpload";
+import { uploadOneSfdrDataset } from "../../utils/SfdrUpload";
 const chunkSize = 15;
 
 describe(
@@ -21,7 +28,7 @@ describe(
   () => {
     function prepopulate(
       companiesWithFrameworkData: Array<
-        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData>
+        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData | SfdrData>
       >,
       // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneFrameworkDataset: Function
@@ -101,6 +108,24 @@ describe(
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
+      });
+    });
+
+    describe("Upload and validate Sfdr data", () => {
+      let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
+
+      before(function () {
+        cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
+          companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
+        });
+      });
+
+      it("Upload Lksg fake-fixtures", () => {
+        prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
       });
     });
   }
