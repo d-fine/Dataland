@@ -1,6 +1,8 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getKeycloakToken } from "../../utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
+import { StoredCompany } from "../../../../build/clients/backend";
 
 const timeout = 120 * 1000;
 describeIf(
@@ -49,11 +51,15 @@ describeIf(
     }
 
     it("Create a Company providing only valid data", () => {
-      companyNames.forEach((companyName) => {
-        uploadCompanyViaFormAndGetId(companyName).then((id) => {
-          companyIdList.push(id);
-          cy.visitAndCheckAppMount(`/companies/${id}`);
-          cy.get("body").should("contain", companyName);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        companyNames.forEach((companyName) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then(
+            (storedCompany): void => {
+              companyIdList.push(storedCompany.companyId);
+              cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}`);
+              cy.get("body").should("contain", companyName);
+            }
+          );
         });
       });
     });
