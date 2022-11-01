@@ -3,6 +3,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import {
   submitEuTaxonomyFinancialsUploadForm,
   fillEuTaxonomyForFinancialsUploadForm,
+  uploadOneEuTaxonomyFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
@@ -53,6 +54,21 @@ describeIf(
       });
     }
 
+    function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+      companyInformation: CompanyInformation,
+      testData: EuTaxonomyDataForFinancials
+    ): void {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+          (storedCompany) => {
+            return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, testData).then(() => {
+              cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials`);
+            });
+          }
+        );
+      });
+    }
+
     function formatPercentNumber(value?: DataPointBigDecimal): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
@@ -97,7 +113,7 @@ describeIf(
 
     it("Create a CreditInstitution (individual field submission)", () => {
       const testData = getPreparedFixture("credit-institution-dual-field-submission");
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
       );
@@ -113,7 +129,7 @@ describeIf(
 
     it("Create an insurance company", () => {
       const testData = getPreparedFixture("insurance-company");
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
       );
@@ -124,7 +140,7 @@ describeIf(
 
     it("Create an Asset Manager", () => {
       const testData = getPreparedFixture("asset-management-company");
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
       );
@@ -136,7 +152,7 @@ describeIf(
 
     it("Create a Company that is Asset Manager and Insurance", () => {
       const testData = getPreparedFixture("asset-management-insurance-company");
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
       );
