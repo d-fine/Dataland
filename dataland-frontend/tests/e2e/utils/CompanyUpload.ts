@@ -20,6 +20,7 @@ export function fillCompanyUploadFields(companyName: string, sector?: string): v
 
 export function uploadCompanyViaFormAndGetId(companyName: string, sector?: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount("/companies/upload");
+  cy.get('button[name="postCompanyData"]').should("be.disabled");
   fillCompanyUploadFields(companyName, sector);
   cy.intercept("**/api/companies").as("postCompany");
   cy.get('button[name="postCompanyData"]').click();
