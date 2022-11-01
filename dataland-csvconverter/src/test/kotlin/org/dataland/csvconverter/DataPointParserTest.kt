@@ -24,6 +24,16 @@ class DataPointParserTest {
                 "recipe tag" to ""
             )
         }
+        fun fullDataRow(): MutableMap<String, String> {
+            return mutableMapOf(
+                "recipe" to "111",
+                "recipe quality" to "Reported",
+                "recipe report" to "Annual Report",
+                "recipe page" to "123",
+                "recipe comment" to "it's great",
+                "recipe tag" to "here"
+            )
+        }
     }
 
     private val companyReportParser = CompanyReportParser(YesNoNaParser())
@@ -32,14 +42,7 @@ class DataPointParserTest {
     @Test
     fun `test that the data point parser works when supplied with valid data`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val validDataRow = mapOf(
-            "recipe" to "111",
-            "recipe quality" to "Reported",
-            "recipe report" to "Annual Report",
-            "recipe page" to "123",
-            "recipe comment" to "it's great",
-            "recipe tag" to "here"
-        )
+        val validDataRow = fullDataRow()
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
                 csvMapping, validDataRow, "rezept", BigDecimal.ONE
@@ -67,9 +70,9 @@ class DataPointParserTest {
     fun `test that the data point parser returns null when mandatory values are left out`() {
         val csvMapping = mapOf("rezept" to "recipe")
         val rowWithValueOnly = emptyDataRow()
-        rowWithValueOnly["value"] = "111"
+        rowWithValueOnly["recipe"] = "111"
         val rowWithPageOnly = emptyDataRow()
-        rowWithValueOnly["page"] = "123"
+        rowWithPageOnly["recipe page"] = "123"
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildDecimalDataPoint(csvMapping, rowWithValueOnly, "rezept", BigDecimal.ONE)
         }
