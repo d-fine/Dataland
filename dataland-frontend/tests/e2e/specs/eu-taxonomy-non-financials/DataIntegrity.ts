@@ -11,8 +11,6 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   function (): void {
-    const companyIdList: Array<string> = [];
-    const companyNames: Array<string> = ["eligible & total", "eligible"];
     beforeEach(() => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
@@ -49,66 +47,61 @@ describeIf(
       });
     }
 
-    it("Create companies providing only valid data", () => {
-      companyNames.forEach((companyName) => {
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then(
-            (storedCompany): void => {
-              companyIdList.push(storedCompany.companyId);
-              cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}`);
-              cy.get("body").should("contain", companyName);
+    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
+      const eligible = 0.67;
+      const total = "15422154";
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation("eligible & total")).then((storedCompany) => {
+          uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
+            storedCompany.companyId,
+            () => {
+              cy.get('input[name="reportingObligation"][value=Yes]').check({
+                force: true,
+              });
+              cy.get('select[name="assurance"]').select("None");
+              for (const argument of ["capex", "opex", "revenue"]) {
+                cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
+                cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
+              }
+            },
+            () => {
+              cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
+              cy.get("body")
+                .should("contain", "Eligible Revenue")
+                .should("contain", `${100 * eligible}%`);
+              cy.get(".font-medium.text-3xl").should("contain", "€");
             }
           );
         });
       });
     });
 
-    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
-      const eligible = 0.67;
-      const total = "15422154";
-      uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
-        companyIdList[0],
-        () => {
-          cy.get('input[name="reportingObligation"][value=Yes]').check({
-            force: true,
-          });
-          cy.get('select[name="assurance"]').select("None");
-          for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
-            cy.get(`div[title=${argument}] input[name=totalAmount]`).type(total);
-          }
-        },
-        () => {
-          cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
-          cy.get("body")
-            .should("contain", "Eligible Revenue")
-            .should("contain", `${100 * eligible}%`);
-          cy.get(".font-medium.text-3xl").should("contain", "€");
-        }
-      );
-    });
-
     it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
       const eligible = 0.67;
-      uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
-        companyIdList[1],
-        () => {
-          cy.get('input[name="reportingObligation"][value=Yes]').check({
-            force: true,
-          });
-          cy.get('select[name="assurance"]').select("None");
-          for (const argument of ["capex", "opex", "revenue"]) {
-            cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
-          }
-        },
-        () => {
-          cy.get("body")
-            .should("contain", "Eligible OpEx")
-            .should("contain", `${100 * eligible}%`);
-          cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
-          cy.get(".font-medium.text-3xl").should("not.contain", "€");
-        }
-      );
+
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation("eligible")).then((storedCompany) => {
+          uploadEuTaxonomyDataAndVerifyEuTaxonomyPage(
+            storedCompany.companyId,
+            () => {
+              cy.get('input[name="reportingObligation"][value=Yes]').check({
+                force: true,
+              });
+              cy.get('select[name="assurance"]').select("None");
+              for (const argument of ["capex", "opex", "revenue"]) {
+                cy.get(`div[title=${argument}] input[name=eligiblePercentage]`).type(eligible.toString());
+              }
+            },
+            () => {
+              cy.get("body")
+                .should("contain", "Eligible OpEx")
+                .should("contain", `${100 * eligible}%`);
+              cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
+              cy.get(".font-medium.text-3xl").should("not.contain", "€");
+            }
+          );
+        });
+      });
     });
   }
 );
