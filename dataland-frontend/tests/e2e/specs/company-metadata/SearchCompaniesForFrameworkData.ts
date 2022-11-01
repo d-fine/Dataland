@@ -197,8 +197,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           getFirstEuTaxonomyNonFinancialsDatasetFromFixtures().then((data) => {
-            uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
             });
           });
         });
