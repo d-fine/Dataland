@@ -5,8 +5,7 @@ import {
   uploadCompanyViaApi,
   generateDummyCompanyInformation,
 } from "@e2e/utils/CompanyUpload";
-import { uploader_name, uploader_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
-import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "../../utils/EuTaxonomyNonFinancialsUpload";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describeIf(

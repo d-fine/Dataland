@@ -40,6 +40,7 @@ class DataPointParser(
         return mapOf(
             "${baseString}Report" to "${generalMap.getValue(baseString)} Report",
             "${baseString}Page" to "${generalMap.getValue(baseString)} Page",
+            "${baseString}Tag" to "${generalMap.getValue(baseString)} Tag",
         )
     }
 
@@ -64,7 +65,9 @@ class DataPointParser(
                         " has been specified but no report was found"
                 ),
             page = buildMapForSpecificDatapoint(generalMap, baseString)
-                .readCsvLong("${baseString}Page", row)
+                .readCsvLong("${baseString}Page", row),
+            tagName = buildMapForSpecificDatapoint(generalMap, baseString)
+                .getCsvValueAllowingNull("${baseString}Tag", row)
         )
     }
 
