@@ -14,12 +14,13 @@ import java.math.BigDecimal
 class DataPointParserTest {
 
     companion object {
+        var page = "recipe page"
         fun emptyDataRow(): MutableMap<String, String> {
             return mutableMapOf(
                 "recipe" to "",
                 "recipe quality" to "",
                 "recipe report" to "",
-                "recipe page" to "",
+                page to "",
                 "recipe comment" to "",
                 "recipe tag" to ""
             )
@@ -29,7 +30,7 @@ class DataPointParserTest {
                 "recipe" to "111",
                 "recipe quality" to "Reported",
                 "recipe report" to "Annual Report",
-                "recipe page" to "123",
+                page to "123",
                 "recipe comment" to "it's great",
                 "recipe tag" to "here"
             )
@@ -72,7 +73,7 @@ class DataPointParserTest {
         val rowWithValueOnly = emptyDataRow()
         rowWithValueOnly["recipe"] = "111"
         val rowWithPageOnly = emptyDataRow()
-        rowWithPageOnly["recipe page"] = "123"
+        rowWithPageOnly[page] = "123"
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildDecimalDataPoint(csvMapping, rowWithValueOnly, "rezept", BigDecimal.ONE)
         }

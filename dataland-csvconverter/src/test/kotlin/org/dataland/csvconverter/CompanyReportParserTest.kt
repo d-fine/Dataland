@@ -2,6 +2,7 @@ package org.dataland.csvconverter
 
 import org.dataland.csvconverter.DataPointParserTest.Companion.emptyDataRow
 import org.dataland.csvconverter.DataPointParserTest.Companion.fullDataRow
+import org.dataland.csvconverter.DataPointParserTest.Companion.page
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.utils.YesNoNaParser
@@ -43,7 +44,7 @@ class CompanyReportParserTest {
     fun `test that the company report parser throws an error when only partial data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
         val rowWithNoReportButWithPage = emptyDataRow()
-        rowWithNoReportButWithPage["recipe page"] = "123"
+        rowWithNoReportButWithPage[page] = "123"
         assertThrows<IllegalArgumentException> {
             dataPointParser.buildSingleCompanyReportReference(csvMapping, rowWithNoReportButWithPage, "rezept")
         }
