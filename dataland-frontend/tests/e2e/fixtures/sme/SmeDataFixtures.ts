@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { SmeData } from "@clients/backend";
 
 import { randomBranchOrUndefined, randomCompanyAgeBracketOrUndefined } from "./SmeEnumFixtures";
-import {randomYesNoUndefined} from "../common/YesNoFixtures";
+import { randomYesNoUndefined } from "../common/YesNoFixtures";
 
 export function generateSmeData(): SmeData {
   const returnBase: SmeData = {};
