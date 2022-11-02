@@ -6,6 +6,8 @@ set -euxo pipefail
 # rebuild_docker_images.sh image_name dockerfile [additional_relevant_files...]
 # e.g.: rebuild_docker_images.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
 #TODO stick to naming convention - local variables lower case
+# TODO: Change the cat for the md5 hash to: tar all input files, and the md5 the tar file
+# TODO: Store md5 hash as ci parameter/variable
 DOCKER_IMAGE_NAME=$1
 
 # shift removes the first argument which is not a file.
