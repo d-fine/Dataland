@@ -5,6 +5,7 @@ set -euxo pipefail
 # usage:
 # rebuild_docker_images.sh image_name dockerfile [additional_relevant_files...]
 # e.g.: rebuild_docker_images.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
+#TODO stick to naming convention - local variables lower case
 DOCKER_IMAGE_NAME=$1
 
 # shift removes the first argument which is not a file.
