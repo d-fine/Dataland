@@ -1,0 +1,5276 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "Sachse UG",
+			"companyAlternativeNames": [
+				"Leschnik, Olbrich und Battke",
+				"Köpernick, Schellenbeck und Belz",
+				"Landmann-Sauer"
+			],
+			"headquarters": "Noltestadt",
+			"sector": "experiences",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "31va2vcxn"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "lahuubrox1bx"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "etqh38m74qmiuvrz4ggy"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "3ucvkvpx1x"
+				}
+			],
+			"countryCode": "PM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Jungbluth GmbH & Co. KG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 53524,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 72453,
+			"revenue": 69986,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kowalinski GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Paesler GmbH & Co. KG"
+			],
+			"headquarters": "Valentinadorf",
+			"sector": "systems",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ooo5vlmen"
+				}
+			],
+			"countryCode": "BQ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kesselschläger, Brehmer und Wachenbrunner",
+			"branch": "Handel",
+			"numberOfEmployees": 79029,
+			"businessYear": 2019,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 21729,
+			"revenue": 68
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Poser, Koleiski und Denner",
+			"companyAlternativeNames": [
+				"Schelk GmbH",
+				"Leipold-Schwerdtner"
+			],
+			"headquarters": "Neu Constantin",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "pigyrfv0d"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "hndqqzqo54sx"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "jd5ebg4dd5mqfvfjwohg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "vkv0vcd"
+				}
+			],
+			"countryCode": "GA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kowalick GmbH",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 93066,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 83696,
+			"revenue": 3127
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Restorff, Schellenbeck und Vahlensieck",
+			"companyAlternativeNames": [
+				"Dauth Gruppe"
+			],
+			"headquarters": "Ost Maximilian",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "bccjac9l98"
+				}
+			],
+			"countryCode": "MM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hengmith-Ranftl",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 9349,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 29413,
+			"revenue": 20584,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Danneberg-Maurer",
+			"companyAlternativeNames": [
+				"Hense GmbH",
+				"Cotthardt Gruppe",
+				"Hentschke, Schmid und Schlachter",
+				"Schorr-Roggatz"
+			],
+			"headquarters": "Enderburg",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "sb6ni0t3d"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ga18m7kiodcz"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "fnnjx8rz3xlzjz0vzf9k"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "2ektd9qrde"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "wlpsk18"
+				}
+			],
+			"countryCode": "ST",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Strieder KG",
+			"numberOfEmployees": 80429,
+			"businessYear": 2018,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 13205,
+			"revenue": 31788,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hübl-Jarets",
+			"companyAlternativeNames": [
+				"Bloch, Klauder und Laws",
+				"Merkel UG",
+				"Heydemüller-Hannecker"
+			],
+			"headquarters": "Opheyburg",
+			"sector": "synergies",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "sldhrlzroq"
+				}
+			],
+			"countryCode": "TF",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Huebel, Bühler und Lobinger",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 28803,
+			"businessYear": 2019,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 53768,
+			"revenue": 57976,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bittner-Schmidtchen",
+			"companyAlternativeNames": [
+				"Klapper, Eckhardt und Kreutz"
+			],
+			"headquarters": "Ost Benjamindorf",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "5vpsig6yi"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "74zq40oxxzml"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "on5y6zuly54vpozbtowa"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5ejr55uz9o"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "27hibk7"
+				}
+			],
+			"countryCode": "SE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Koch-Grosser",
+			"branch": "Handel",
+			"numberOfEmployees": 94937,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 22720,
+			"revenue": 14164,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Krabbe GmbH",
+			"companyAlternativeNames": [],
+			"headquarters": "Johannesstadt",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ty920b0of"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "g3jt6a8lkho1"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "cxjg9s8p72glcniqymsu"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "cbr5zme"
+				}
+			],
+			"countryCode": "SX",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Eckhardt Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 70989,
+			"businessYear": 2018,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 88499,
+			"revenue": 36026,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Delonge AG",
+			"companyAlternativeNames": [],
+			"headquarters": "Alt Frieda",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ql2roalfz"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "xpn63cht7w5b"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "gecgz0ltbxi1lek1p0ty"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "q3s2cumikq"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "yqsdwji"
+				}
+			],
+			"countryCode": "BN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Dieckmann, Wöschler und Ney",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 78952,
+			"businessYear": 2021,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 73927,
+			"revenue": 53071,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Sievers-Krug",
+			"companyAlternativeNames": [],
+			"headquarters": "West Jonna",
+			"sector": "partnerships",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ocsw65uil"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "o8x9cyn333i7"
+				}
+			],
+			"countryCode": "GF",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schweisfurth, Schröder und Görmer",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 89481,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 6445,
+			"revenue": 56183,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schwidde GmbH",
+			"companyAlternativeNames": [
+				"Anggreny, Thiomas und Zapletal"
+			],
+			"headquarters": "Timmburg",
+			"sector": "content",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "c6qeibddn"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "8eqts0wg8fun"
+				}
+			],
+			"countryCode": "GP",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Radtke AG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 94868,
+			"businessYear": 2021,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 43240,
+			"revenue": 89915
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Osenberg-Ernst",
+			"companyAlternativeNames": [],
+			"headquarters": "West Maxim",
+			"sector": "communities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "6y88u84lp"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "tqbq1do4hbsx"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "x8ogv1yqhwla6wd6id4k"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "3ur43tkd9n"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "jqi9rry"
+				}
+			],
+			"countryCode": "PN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Gürbig-Cierpinski",
+			"numberOfEmployees": 77444,
+			"businessYear": 2020,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 96562,
+			"revenue": 29743,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Knippel KG",
+			"companyAlternativeNames": [],
+			"headquarters": "Bad Ricodorf",
+			"sector": "blockchains",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "qjs5jv1ox"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "rstumr4ses85"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "pn3nhix"
+				}
+			],
+			"countryCode": "CN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Habel, Böttner und Bürger",
+			"numberOfEmployees": 38481,
+			"businessYear": 2019,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 29509,
+			"revenue": 4924
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Görmer GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Köhrbrück-Röttger",
+				"Schwarzmeier, Kern und Sollner",
+				"Alexander-Günther"
+			],
+			"headquarters": "Süd Zoeyburg",
+			"sector": "infomediaries",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "i2xbpkxwqhcsgfnsxjgr"
+				}
+			],
+			"countryCode": "GW",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Strausa AG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 63130,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 16081,
+			"revenue": 20564
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Everts, Nowak und Motzenbbäcker",
+			"companyAlternativeNames": [
+				"Rossler AG",
+				"Otto-Arndt",
+				"Uliczka Gruppe",
+				"Schuff UG"
+			],
+			"headquarters": "Mathildaburg",
+			"sector": "markets",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0qgxw75"
+				}
+			],
+			"countryCode": "SI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Winkelmann UG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 55217,
+			"businessYear": 2020,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 489,
+			"revenue": 60172,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schuhaj, Osei und Rentz",
+			"companyAlternativeNames": [],
+			"headquarters": "Ost Tildorf",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ghco4jtqq"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "valh11n5o881"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "0d13ff5sk6acuwri5w1y"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ts5gzlnpx3"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "7o3e1un"
+				}
+			],
+			"countryCode": "BZ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Gröss-Zekl",
+			"branch": "Handel",
+			"numberOfEmployees": 77391,
+			"businessYear": 2020,
+			"electricityConsumption": 8294,
+			"revenue": 54522,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Büngener AG",
+			"companyAlternativeNames": [
+				"Kovacs, Gabius und Hackbusch",
+				"Ringer, Dittmer und Reichel"
+			],
+			"headquarters": "West Husseinland",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "aikqt4971"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "cfcowbhhn0dl"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "o34afraoirac3taxq1no"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "apih3xmiqg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "rorj7am"
+				}
+			],
+			"countryCode": "HR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Henry AG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 91675,
+			"businessYear": 2019,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 486,
+			"revenue": 19069,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ade-Ruckdeschel",
+			"companyAlternativeNames": [
+				"Löser, Franz und Cotthardt",
+				"Gerhardt-Anggreny",
+				"Reinberg Gruppe"
+			],
+			"headquarters": "Nord Linadorf",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "csrk53k9s"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "qnse2lw1djmo"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "2tbeflabphkh6u97wkto"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "0rd0y99pot"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "hwuipzu"
+				}
+			],
+			"countryCode": "BD",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Liebold-Ertl",
+			"branch": "Handel",
+			"numberOfEmployees": 86048,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 2454,
+			"revenue": 75370
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Streit KG",
+			"companyAlternativeNames": [],
+			"headquarters": "Maliaburg",
+			"sector": "functionalities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "dgzz4owhe"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0l1loqr"
+				}
+			],
+			"countryCode": "RE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Jeorga, Krohn und Rittweg",
+			"numberOfEmployees": 96078,
+			"businessYear": 2017,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 56402,
+			"revenue": 32165,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reimann, Esenwein und Cierpinski",
+			"companyAlternativeNames": [
+				"Reuber-Bock"
+			],
+			"headquarters": "Bad Fabio",
+			"sector": "niches",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "pzkvmb9f7"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "aqqekv9h5wfh"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "pqm4hj1abjpmo26jrjie"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5qadws805n"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "sxgflu1"
+				}
+			],
+			"countryCode": "FI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Breu, Bogenrieder und Knoblich",
+			"numberOfEmployees": 17415,
+			"businessYear": 2019,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 10771,
+			"revenue": 41991,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schrader, Cierpinski und Herweg",
+			"companyAlternativeNames": [],
+			"headquarters": "Justinland",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "c0l5rx3j9"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "9cd7w1e"
+				}
+			],
+			"countryCode": "BS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Forkel Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 75095,
+			"businessYear": 2019,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 82145,
+			"revenue": 46815
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Krohn, Walther und Gerson",
+			"companyAlternativeNames": [],
+			"headquarters": "Bad Alan",
+			"sector": "partnerships",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "xsgcqlid8bzqje31ps3z"
+				}
+			],
+			"countryCode": "GI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hense-Steffny",
+			"branch": "Handel",
+			"numberOfEmployees": 94638,
+			"businessYear": 2016,
+			"electricityConsumption": 70792,
+			"revenue": 79463
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hauke Gruppe",
+			"companyAlternativeNames": [
+				"Schröder AG",
+				"Baarck-Stürmer",
+				"Buder, Umminger und Motzenbbäcker",
+				"Riermeier-Banse"
+			],
+			"headquarters": "Alt Jimmy",
+			"sector": "deliverables",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "tekehwlgr"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "vl4g6pootehv"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "e2d1ptrap3gmcydgqm11"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "j57ggvham6"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "3ynhjxs"
+				}
+			],
+			"countryCode": "RS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Koenig, Kahles und Hirsch",
+			"numberOfEmployees": 35738,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 66670,
+			"revenue": 91385,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Räntsch-Neimke",
+			"companyAlternativeNames": [
+				"Kosenkow-Tasche",
+				"Leipold GmbH",
+				"Kloss AG",
+				"Eckhardt UG"
+			],
+			"headquarters": "Bad Ian",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "tabbl7i81bdp"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zstkjupf2mo4lj58mdja"
+				}
+			],
+			"countryCode": "TZ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hütter-Becker",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 10230,
+			"businessYear": 2022,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 11540,
+			"revenue": 22672,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Berning, Schwartz und Dix",
+			"companyAlternativeNames": [
+				"Gastel, Schrader und Fenner",
+				"Rahn-Fahner",
+				"Schnürer, Sujew und Bertenbreiter",
+				"Malek-Rietscher"
+			],
+			"headquarters": "Alt Levin",
+			"sector": "platforms",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "2ooef3i1cjj1dh9ewskr"
+				}
+			],
+			"countryCode": "SR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Ruth, Volk und Braun",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 63733,
+			"businessYear": 2019,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 10356,
+			"revenue": 59380,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gangnus-Kúhnert",
+			"companyAlternativeNames": [
+				"Geiger GmbH"
+			],
+			"headquarters": "Neu Alicia",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "5wku82kij"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ihikyisjmqqj"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "f0lnbx0wx4ymp5jy8t69"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "vb8olfkulg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "jaqs7t1"
+				}
+			],
+			"countryCode": "LV",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kampschulte-Prah",
+			"branch": "Handel",
+			"numberOfEmployees": 42862,
+			"businessYear": 2020,
+			"electricityConsumption": 79320,
+			"revenue": 52610
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stifel AG",
+			"companyAlternativeNames": [
+				"Sillah Gruppe"
+			],
+			"headquarters": "Jimburg",
+			"sector": "models",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "hx2025eb7"
+				}
+			],
+			"countryCode": "LU",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Börgeling AG",
+			"numberOfEmployees": 20279,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 22329,
+			"revenue": 29799,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gollnow GmbH",
+			"companyAlternativeNames": [
+				"Seibold, Roggatz und Loska",
+				"Rupprecht-Urban"
+			],
+			"headquarters": "Bad Kayraburg",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "8myes7n13"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "hd8yaw29ar"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "84iu75g"
+				}
+			],
+			"countryCode": "ST",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Scherz, Melzer und Ade",
+			"numberOfEmployees": 74057,
+			"businessYear": 2021,
+			"electricityConsumption": 24256,
+			"revenue": 81379,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schwartz KG",
+			"companyAlternativeNames": [
+				"Haverney-Jambor",
+				"Hooss-Krüger",
+				"Brand UG"
+			],
+			"headquarters": "Sailescheid",
+			"sector": "interfaces",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "gu6mu8grm"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "hm95vuxbxsrwyth0a64m"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "bhdotlg"
+				}
+			],
+			"countryCode": "PS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Koha-Kowalick",
+			"numberOfEmployees": 39126,
+			"businessYear": 2019,
+			"electricityConsumption": 54531,
+			"revenue": 69404,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reifenrath GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Sailer AG",
+				"Urban, Jaros und Just",
+				"Rüdiger-Sihler"
+			],
+			"headquarters": "West Marialand",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "g4ctwi6om"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "rw9bk3969u2k"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "imd1n4ji5gbyt79k1f1p"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "q4r2f42223"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "cdrj24u"
+				}
+			],
+			"countryCode": "HM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Koehl-Neupert",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 57139,
+			"businessYear": 2019,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 64667,
+			"revenue": 99516,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schüppel, Rangen und Laack",
+			"companyAlternativeNames": [
+				"Kern OHG",
+				"Losch-Tischmann",
+				"Nerius OHG"
+			],
+			"headquarters": "Steigaufstadt",
+			"sector": "solutions",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "hl279t40q"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "jtwdzhpzejo0"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "6s1whx1wxs"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "tppakbl"
+				}
+			],
+			"countryCode": "SS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Byrd-Rietmüller",
+			"branch": "Handel",
+			"numberOfEmployees": 80316,
+			"businessYear": 2018,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 24966,
+			"revenue": 9403,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Holzdeppe AG",
+			"companyAlternativeNames": [],
+			"headquarters": "West Femkedorf",
+			"sector": "deliverables",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "qifptj5h9jsug3cp4htb"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "z71lbqj2jz"
+				}
+			],
+			"countryCode": "KH",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Lokar, Goebel und Fried",
+			"branch": "Handel",
+			"numberOfEmployees": 36957,
+			"businessYear": 2015,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 57402,
+			"revenue": 16128
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bremser UG",
+			"companyAlternativeNames": [
+				"Bremer GmbH & Co. KG"
+			],
+			"headquarters": "Noackscheid",
+			"sector": "web services",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "7gywcxb6kark9fpiiqqa"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5cx99demdz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "ybhibsz"
+				}
+			],
+			"countryCode": "GI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Geiger, Krodinger und Freimann",
+			"numberOfEmployees": 24217,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 62252,
+			"revenue": 34715,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bäcker, Vieweg und Thiomas",
+			"companyAlternativeNames": [
+				"Rüter OHG",
+				"Wessinghage, Münch und Haupt",
+				"Neurohr AG"
+			],
+			"headquarters": "Süd Raik",
+			"sector": "deliverables",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "07mzortvb"
+				}
+			],
+			"countryCode": "LA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kupprion, Hiebl und Schonberg",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 23117,
+			"businessYear": 2022,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 66525,
+			"revenue": 50908
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gutjahr, Siebel und Chapron",
+			"companyAlternativeNames": [
+				"Ostendarp, Matthes und Spelmeyer",
+				"Wiese, Gromisch und Schötz"
+			],
+			"headquarters": "Neu Malia",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "mxged9kkk"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "vc81l5th1fnv"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "b36h640ci6"
+				}
+			],
+			"countryCode": "KM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Biba-Hermann",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 14756,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 84255,
+			"revenue": 53591
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Weiss OHG",
+			"companyAlternativeNames": [
+				"Orthmann-Ullrich",
+				"Ekpo KG",
+				"Dylus-Schwerdtner"
+			],
+			"headquarters": "Edgarscheid",
+			"sector": "partnerships",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "twzowlbno"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4z54sifuuuqd"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "tjg98c8cmvk3w6um7sx9"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5h2nko9vd3"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "i6dlqey"
+				}
+			],
+			"countryCode": "BT",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Viellehner-Illing",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 22472,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 13321,
+			"revenue": 46396
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stratmann OHG",
+			"companyAlternativeNames": [
+				"Lohse GmbH",
+				"Höcke, Ritosek und Helpling"
+			],
+			"headquarters": "Nord Celinestadt",
+			"sector": "infrastructures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "dj4mhjxxh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "qrcltllhwu1g"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "an5dtfjgg4ln081ko9bu"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ivq0io5q77"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "2mzekdm"
+				}
+			],
+			"countryCode": "RO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Woytkowska GmbH & Co. KG",
+			"numberOfEmployees": 85867,
+			"businessYear": 2018,
+			"electricityConsumption": 66007,
+			"revenue": 99327,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Strunz Gruppe",
+			"companyAlternativeNames": [
+				"Sporrer, Rath und Northoff",
+				"Elbe, Stanger und Bruder",
+				"Jarets, Rockmeier und Heidelmann",
+				"Feld, Kasten und Böttner"
+			],
+			"headquarters": "Neu Abdullahdorf",
+			"sector": "platforms",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "elm2h5xg9"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "858j0dcc6qt9"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "7mn9nvdon3zsw3yuk3re"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "utxh04tr6y"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "wih4omi"
+				}
+			],
+			"countryCode": "KI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Seitz OHG",
+			"branch": "Handel",
+			"numberOfEmployees": 77060,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 23443,
+			"revenue": 96527,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Fehrig, Kahlert und Fried",
+			"companyAlternativeNames": [
+				"Lindenberg KG",
+				"Wischer, Ehrig und Florczak",
+				"Zeyhle-Uibel"
+			],
+			"headquarters": "Bad Elanurscheid",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "ur6v3ll"
+				}
+			],
+			"countryCode": "PF",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Dylus-Jakobs",
+			"branch": "Handel",
+			"numberOfEmployees": 49566,
+			"businessYear": 2017,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 81183,
+			"revenue": 65126,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Peters, Weidlich und Kähler",
+			"companyAlternativeNames": [
+				"Tietze GmbH",
+				"Battke, Forkel und Rumpf"
+			],
+			"headquarters": "Neu Jared",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "eobsm4ub6pm1"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "rijrgefjp6hp3innhppk"
+				}
+			],
+			"countryCode": "VE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Krämer-Pomp",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 64477,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 24604,
+			"revenue": 42029,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reif-Rittweg",
+			"companyAlternativeNames": [
+				"Ackermann, Jung und Pinnock"
+			],
+			"headquarters": "Sorayaburg",
+			"sector": "markets",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ai5gntsqs8z5"
+				}
+			],
+			"countryCode": "BG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Martin, Koster und Heberstreit",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 1598,
+			"businessYear": 2017,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 682,
+			"revenue": 58712
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Breuer Gruppe",
+			"companyAlternativeNames": [
+				"Buder-Buss",
+				"Hanenberger-Hüttcher",
+				"Ophey, Pusch und Wilky",
+				"Walton-Knut"
+			],
+			"headquarters": "Nord Emrescheid",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "1vvd5wnts"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "9jhoswu0t9"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "yiohaen"
+				}
+			],
+			"countryCode": "GI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Thieke-Filsinger",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 63828,
+			"businessYear": 2022,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 61864,
+			"revenue": 87372,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stoll-Salzmann",
+			"companyAlternativeNames": [
+				"Kirch-Tächl",
+				"Gabler, Grothaus und Stief",
+				"Bruckmann, Patzwahl und Ruth"
+			],
+			"headquarters": "Werleburg",
+			"sector": "communities",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ncmn3snlgekmtyqclz2k"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "suqkipn"
+				}
+			],
+			"countryCode": "CK",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Siegling-Golomski",
+			"numberOfEmployees": 49029,
+			"businessYear": 2020,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 70762,
+			"revenue": 1237,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Leitheim GmbH",
+			"companyAlternativeNames": [
+				"Thränhardt, Röse und Berends",
+				"Glatting, Sussmann und Klapper",
+				"Hanenberger-Dauer"
+			],
+			"headquarters": "Bad Tabeaburg",
+			"sector": "networks",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "q3lr4g8zd"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "tc5ru75agh7m"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "o351zqbdt1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "u8y9kgw"
+				}
+			],
+			"countryCode": "VA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Abramovic GmbH",
+			"branch": "Handel",
+			"numberOfEmployees": 85520,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 41192,
+			"revenue": 93587
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Radtke-Jungbluth",
+			"companyAlternativeNames": [],
+			"headquarters": "West Chantal",
+			"sector": "content",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "y7gjnw7yk"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ljpm26v9ehcx"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zlcru5hdnvpbpgnpql1y"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "6hg24ljepy"
+				}
+			],
+			"countryCode": "MX",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kawohl AG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 51276,
+			"businessYear": 2022,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 60197,
+			"revenue": 49002
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ackermann, Spöttel und Betz",
+			"companyAlternativeNames": [
+				"Cleve GmbH",
+				"Stenzel UG"
+			],
+			"headquarters": "Alt Levinland",
+			"sector": "mindshare",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "4phbnsr07"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "00swv6k"
+				}
+			],
+			"countryCode": "LB",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Normann Gruppe",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 11566,
+			"businessYear": 2021,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 92474,
+			"revenue": 90650
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dix AG",
+			"companyAlternativeNames": [],
+			"headquarters": "Alt Carlaburg",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "95826e5t9"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "0sc2nkaygb4x"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "y1kizzieix9g89c3nzxg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "fd1ywe7r6c"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "1ewh56l"
+				}
+			],
+			"countryCode": "KI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Eggenmueller-Siener",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 86024,
+			"businessYear": 2020,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 81027,
+			"revenue": 43102,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ludolf GmbH",
+			"companyAlternativeNames": [
+				"Chapron Gruppe",
+				"Tremmel, Stauss und Laack"
+			],
+			"headquarters": "West Leif",
+			"sector": "solutions",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "xqcxbyoaj"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "6q7junwqlr5y"
+				}
+			],
+			"countryCode": "MQ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Ruckdeschel-Kozakiewicz",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 81947,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 84338,
+			"revenue": 7747
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rose GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Rabenstein-Haschke",
+				"Siebert, Kunz und Tittman",
+				"Mohr-Sattelmaier",
+				"Pietsch-Rieger"
+			],
+			"headquarters": "Süd Marleenstadt",
+			"sector": "networks",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "0b1a3uoeanwj"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "s6f8p2epxs5hy4xlaigj"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "xiba2nuhqb"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "aruyf06"
+				}
+			],
+			"countryCode": "IN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Onnen, Greger und Figl",
+			"branch": "Handel",
+			"numberOfEmployees": 70252,
+			"businessYear": 2022,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 62970,
+			"revenue": 25394,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Malucha UG",
+			"companyAlternativeNames": [
+				"Gotz, Scheurer und Laws",
+				"Volk-Hoffmann"
+			],
+			"headquarters": "Arianland",
+			"sector": "synergies",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "blv57aso1"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "vcma5jpybtli"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "mx1mf4fw3g8eduq9h5mg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "2d8d6kgvsz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "won838o"
+				}
+			],
+			"countryCode": "NO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Matschke-Teichmann",
+			"branch": "Handel",
+			"numberOfEmployees": 1885,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 56523,
+			"revenue": 90842
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Seibold GmbH",
+			"companyAlternativeNames": [],
+			"headquarters": "Nord Giadascheid",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "28hc5nwcu2w25qf9oxfe"
+				}
+			],
+			"countryCode": "CA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Ackermann UG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 67549,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 72213,
+			"revenue": 49008,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hanenberger-Pingpank",
+			"companyAlternativeNames": [
+				"Hehl KG",
+				"Ehm, Zeuch und Malkus",
+				"Barth UG",
+				"Schwandke GmbH"
+			],
+			"headquarters": "Livdorf",
+			"sector": "portals",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "63pqnumdq"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "j3dozfo95hbjujxbwviz"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "h5g1jpu5p0"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "8y1bf6d"
+				}
+			],
+			"countryCode": "ML",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Huber-Krämer",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 68777,
+			"businessYear": 2015,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 37292,
+			"revenue": 90922,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hillard-Geissler",
+			"companyAlternativeNames": [
+				"Gürbig, Dehmel und Ruch",
+				"John UG",
+				"Roos KG"
+			],
+			"headquarters": "Neu Lyaburg",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "z7d9blzci"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zb3hr0vmge7jxc47kiej"
+				}
+			],
+			"countryCode": "GB",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Soller, Fleischmann und Lokar",
+			"branch": "Handel",
+			"numberOfEmployees": 28590,
+			"businessYear": 2017,
+			"electricityConsumption": 58335,
+			"revenue": 19651
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Steffen-Mikitenko",
+			"companyAlternativeNames": [],
+			"headquarters": "Cedricland",
+			"sector": "niches",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "x4ts5u28ibl8"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "236ggnk"
+				}
+			],
+			"countryCode": "FI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Lienshöft-Geiger",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 32578,
+			"businessYear": 2022,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 6412,
+			"revenue": 16305
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kúhn, Taufratshofer und Ringer",
+			"companyAlternativeNames": [
+				"Möller-Suthe"
+			],
+			"headquarters": "Abdullahburg",
+			"sector": "functionalities",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "pf26ym86bnbwyoyqzt74"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "c6txf8o"
+				}
+			],
+			"countryCode": "ML",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Polizzi KG",
+			"numberOfEmployees": 77179,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 38325,
+			"revenue": 11858
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schreck-Humbert",
+			"companyAlternativeNames": [],
+			"headquarters": "Ost Rasmusland",
+			"sector": "infrastructures",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "6hdoiwrxix91sxo9reya"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "uhbczh6"
+				}
+			],
+			"countryCode": "SM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Alexander, Piesker und Greb",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 41265,
+			"businessYear": 2017,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 88540,
+			"revenue": 209
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schmuhl KG",
+			"companyAlternativeNames": [],
+			"headquarters": "Veraland",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "c2bjmcjzg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "2g46oowp48"
+				}
+			],
+			"countryCode": "AQ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schultz AG",
+			"numberOfEmployees": 92315,
+			"businessYear": 2020,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 69793,
+			"revenue": 49032,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schilling UG",
+			"companyAlternativeNames": [
+				"Börner, Holinski und Bieler",
+				"Hahn Gruppe",
+				"Bürger, Cordes und Glatting"
+			],
+			"headquarters": "Bad Nikolai",
+			"sector": "relationships",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "g9fgip3q4"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "vasedvcp20"
+				}
+			],
+			"countryCode": "YT",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Crosskofp GmbH",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 5949,
+			"businessYear": 2015,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 25397,
+			"revenue": 24670,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Carlowitz KG",
+			"companyAlternativeNames": [
+				"Wehrsen GmbH & Co. KG",
+				"Salow GmbH"
+			],
+			"headquarters": "Bad Leonardoscheid",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "hpd5l696n"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "6sra5jfirioldag1a5rc"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "7cjxwjjw1o"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "tpl4d7p"
+				}
+			],
+			"countryCode": "LT",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Sprenger Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 18586,
+			"businessYear": 2015,
+			"electricityConsumption": 60751,
+			"revenue": 26043,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Liebe AG",
+			"companyAlternativeNames": [],
+			"headquarters": "Knollscheid",
+			"sector": "e-services",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "grxk9bvgc4dn"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "veotm0xe7mhva9ay7e9c"
+				}
+			],
+			"countryCode": "BE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Farber GmbH",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 40427,
+			"businessYear": 2019,
+			"electricityConsumption": 57423,
+			"revenue": 61889
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schäfer, Lang und Liebich",
+			"companyAlternativeNames": [],
+			"headquarters": "Ost Laurenz",
+			"sector": "initiatives",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "pf3gk8omy"
+				}
+			],
+			"countryCode": "BL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Meissner-Holz",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 83869,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 15705,
+			"revenue": 96794,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Goy-Börgeling",
+			"companyAlternativeNames": [
+				"Kleiss-Kaesmacher"
+			],
+			"headquarters": "Kernstadt",
+			"sector": "infrastructures",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "s26zuw86m3jk"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "yxzn3b58fmrm4lqz3vvy"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "jv2oydbzfz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "66cbvjf"
+				}
+			],
+			"countryCode": "IO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Diekmann, Rokossa und Effler",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 83030,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 36914,
+			"revenue": 14706,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Burger Gruppe",
+			"companyAlternativeNames": [
+				"Köhrbrück, Kette und Biba"
+			],
+			"headquarters": "Süd Yasinland",
+			"sector": "relationships",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "x23wwio3x"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "xvvz730bxuug"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "7xrjn8cmknf02e0aw585"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "i96m85n"
+				}
+			],
+			"countryCode": "FI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Ponitzsch-Hirschberg",
+			"numberOfEmployees": 47353,
+			"businessYear": 2017,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 85688,
+			"revenue": 96214,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Geisler Gruppe",
+			"companyAlternativeNames": [
+				"Lange GmbH & Co. KG",
+				"Vontein GmbH",
+				"Floder-Green"
+			],
+			"headquarters": "Doldscheid",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "hgsu7468eehb"
+				}
+			],
+			"countryCode": "MP",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Weniger-Sonnabend",
+			"numberOfEmployees": 36635,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 73433,
+			"revenue": 16278,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Menne, Stern und Bayer",
+			"companyAlternativeNames": [
+				"Gebhardt, Döbel und Glatting"
+			],
+			"headquarters": "Ost Luana",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ohstug3918ba"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "4lf5xlap2l"
+				}
+			],
+			"countryCode": "TO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Tremmel, Hirt und Vahlensieck",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 42835,
+			"businessYear": 2019,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 92791,
+			"revenue": 65936
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Jossa, Nowak und Hentel",
+			"companyAlternativeNames": [
+				"Dolch-Kluwe",
+				"Friedenberg-Ender",
+				"Rüter, Prah und Elbe"
+			],
+			"headquarters": "Neu Tore",
+			"sector": "infrastructures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "8009ntczq"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "xm2r68fl00pd"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "kqy26etm96"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "gwj178g"
+				}
+			],
+			"countryCode": "IL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Baseda-Hingst",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 72331,
+			"businessYear": 2017,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 11269,
+			"revenue": 30599,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Weimer GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Sommer GmbH",
+				"Krabbe GmbH & Co. KG"
+			],
+			"headquarters": "Floderland",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "hib8xd1pe"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "x1y24p9i8h2x"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "lwhoallx6nz9gdpu9f1g"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "96vpxvj"
+				}
+			],
+			"countryCode": "FK",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Käther GmbH",
+			"branch": "Handel",
+			"numberOfEmployees": 26093,
+			"businessYear": 2018,
+			"electricityConsumption": 77728,
+			"revenue": 59839,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bolm-Poehn",
+			"companyAlternativeNames": [
+				"Christ-Huke",
+				"Amberg, Abicht und Dauer",
+				"Krüger, Busch und Beushausen",
+				"Mehlhorn, Rödiger und Grüner"
+			],
+			"headquarters": "Catharinaburg",
+			"sector": "e-business",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "t0pucl4dgdwl"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ohyk76peyd"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "nzppy4u"
+				}
+			],
+			"countryCode": "MA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Nolte-Grün",
+			"numberOfEmployees": 90439,
+			"businessYear": 2022,
+			"electricityConsumption": 9199,
+			"revenue": 65143,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schreck, Humbert und Einert",
+			"companyAlternativeNames": [],
+			"headquarters": "Daimerburg",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "liute5xae"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "5lfz0etllqml"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "0ocvvarwn4b20exiznfp"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "j4xddxrr82"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "nhrc0b4"
+				}
+			],
+			"countryCode": "NA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Walter, Ziegler und Noack",
+			"numberOfEmployees": 63197,
+			"businessYear": 2017,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 14210,
+			"revenue": 78199,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ostwald UG",
+			"companyAlternativeNames": [],
+			"headquarters": "West Arneland",
+			"sector": "content",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "xkecwbcqe"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "uruaaafl1km4"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "744x3yrz6c42jvowapke"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "quzxwb1wwp"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "jpvai8t"
+				}
+			],
+			"countryCode": "AE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Stöwer GmbH & Co. KG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 83391,
+			"businessYear": 2022,
+			"electricityConsumption": 85374,
+			"revenue": 69248,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Pöge OHG",
+			"companyAlternativeNames": [
+				"Häfner Gruppe",
+				"Neubauer GmbH & Co. KG",
+				"Klinger-Ackermann"
+			],
+			"headquarters": "Bad Nela",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "qr2az3pfo"
+				}
+			],
+			"countryCode": "MU",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schreck, Kufahl und Wolff",
+			"branch": "Handel",
+			"numberOfEmployees": 39243,
+			"businessYear": 2020,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 4728,
+			"revenue": 44162,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kerl-Gromisch",
+			"companyAlternativeNames": [
+				"Bienias, Bauschke und Götzelmann",
+				"Geese-Hentschel",
+				"Kuhnen AG"
+			],
+			"headquarters": "Josefinescheid",
+			"sector": "systems",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "8st327fpu"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0ds8y9n"
+				}
+			],
+			"countryCode": "PF",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schumann-Hehl",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 4679,
+			"businessYear": 2016,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 13296,
+			"revenue": 11080,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Eplinius OHG",
+			"companyAlternativeNames": [
+				"Schlicht-Dietrich",
+				"Paschke AG"
+			],
+			"headquarters": "Normandorf",
+			"sector": "web-readiness",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "kaotchskb"
+				}
+			],
+			"countryCode": "MR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Rädler, Boyde und Forst",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 49902,
+			"businessYear": 2022,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 83044,
+			"revenue": 63913,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Strege GmbH",
+			"companyAlternativeNames": [
+				"Heydemüller GmbH & Co. KG",
+				"Stephan AG"
+			],
+			"headquarters": "Alt Jondorf",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "f5q9eabd9"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "n0ibbmg6hy7xmq0pnv4r"
+				}
+			],
+			"countryCode": "CL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Neupert, Christ und Ehrig",
+			"branch": "Handel",
+			"numberOfEmployees": 3233,
+			"businessYear": 2018,
+			"electricityConsumption": 76220,
+			"revenue": 3838,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reuss OHG",
+			"companyAlternativeNames": [
+				"Friedmann GmbH",
+				"Tiedtke UG",
+				"Alexander, Da und Knoblich"
+			],
+			"headquarters": "Diesdorf",
+			"sector": "infomediaries",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "mj4306r9x"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "vo6uuh1exs9w"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "3pozcm15x0mkr86qrgaa"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "18bwlc0wpz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "fz0h0h7"
+				}
+			],
+			"countryCode": "BV",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Franzis, Keutel und Eckhardt",
+			"numberOfEmployees": 39585,
+			"businessYear": 2019,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 73552,
+			"revenue": 48177,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kosenkow AG",
+			"companyAlternativeNames": [],
+			"headquarters": "Jamborburg",
+			"sector": "infomediaries",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "kev0etslt"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "pwq45o8v9koaj3mrmilu"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "xjm0xus8my"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "v5nsasd"
+				}
+			],
+			"countryCode": "SY",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Timmermann-Linke",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 88204,
+			"businessYear": 2020,
+			"electricityConsumption": 40748,
+			"revenue": 42890
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ludolf Gruppe",
+			"companyAlternativeNames": [
+				"Schreiner GmbH & Co. KG",
+				"Heck, Hardy und Sprenger",
+				"Burkhardt KG",
+				"Hanniske UG"
+			],
+			"headquarters": "Seanstadt",
+			"sector": "metrics",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "bjoymx5j9x6k"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "xjgpyp9uwlyyn9cqubky"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "fjfor3pv73"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "fnx9mci"
+				}
+			],
+			"countryCode": "KW",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Steuk, Poser und Nicolay",
+			"numberOfEmployees": 72924,
+			"businessYear": 2017,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 794,
+			"revenue": 82417,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Balzer-Rosbach",
+			"companyAlternativeNames": [
+				"Heidelmann-Baganz",
+				"Mathiszik-Nerius",
+				"Prah, Knoll und Konya"
+			],
+			"headquarters": "Süd Kiana",
+			"sector": "methodologies",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "pofvme1tn"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "917waifjvwny"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5vj4pv62dw"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "nhc4ao9"
+				}
+			],
+			"countryCode": "LC",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Frank KG",
+			"numberOfEmployees": 80846,
+			"businessYear": 2020,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 29481,
+			"revenue": 86257,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Cierpinski, Illing und Mertens",
+			"companyAlternativeNames": [
+				"Kahlert-Mikitenko",
+				"Urhig-Gakstädter",
+				"Briesenick GmbH",
+				"Gesell UG"
+			],
+			"headquarters": "Drewsland",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "c96z00eecd"
+				}
+			],
+			"countryCode": "CO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Balcer AG",
+			"branch": "Handel",
+			"numberOfEmployees": 36803,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 83807,
+			"revenue": 29626,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Falter, Kuschewitz und Ecker",
+			"companyAlternativeNames": [
+				"Mörsch KG",
+				"Grube-Köhre"
+			],
+			"headquarters": "Keinerstadt",
+			"sector": "systems",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "5wqguwswm"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "sivskswkmp"
+				}
+			],
+			"countryCode": "KW",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Teichmann OHG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 25583,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 85716,
+			"revenue": 65173
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Leiter-Vieweg",
+			"companyAlternativeNames": [
+				"Heidelmann-Schönherr",
+				"Polizzi UG",
+				"Bosler-Bozsik"
+			],
+			"headquarters": "Nord Judystadt",
+			"sector": "communities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "dfbu1jms7"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "j3ff4dqmxtgb"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "013kh3rkfb"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "orjjm9j"
+				}
+			],
+			"countryCode": "GA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Pohle, Cors und Goldfuss",
+			"numberOfEmployees": 99503,
+			"businessYear": 2018,
+			"electricityConsumption": 19053,
+			"revenue": 62162
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Strunz-Löwa",
+			"companyAlternativeNames": [
+				"Wilts, Stoutjesdijk und Laurén",
+				"Hudak-Grossheim",
+				"Klemme, Philipp und Wagner"
+			],
+			"headquarters": "Alt Josuaburg",
+			"sector": "methodologies",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "rmq1is9c4meh"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zr4wbox6wj1a5ft475pt"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "6x0cia79eu"
+				}
+			],
+			"countryCode": "ST",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Obergföll, Hedermann und Stanger",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 26789,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 21674,
+			"revenue": 73453,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Losch GmbH",
+			"companyAlternativeNames": [
+				"Krüger KG",
+				"Kröckert-Schwidde",
+				"Haug Gruppe"
+			],
+			"headquarters": "Sienerstadt",
+			"sector": "bandwidth",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "q7xoeyqxissh"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "vwfc3i4oq6ck7jnotvsq"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "krwh4jg"
+				}
+			],
+			"countryCode": "PK",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Koderisch-Gotthardt",
+			"numberOfEmployees": 3587,
+			"businessYear": 2020,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 53839,
+			"revenue": 42267
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Krueger, Möcks und Frenzel",
+			"companyAlternativeNames": [
+				"Roloff, Ringel und Reichel",
+				"Reimann, Jamrozy und Wilky",
+				"Fusenig AG",
+				"Lübke AG"
+			],
+			"headquarters": "Vogtscheid",
+			"sector": "paradigms",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ir67rrpc8"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "8qkowed89x0g65pfmu9n"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "wyml5d51uv"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "kg58vsz"
+				}
+			],
+			"countryCode": "DO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Mörsch, Koester und Brinkmann",
+			"branch": "Handel",
+			"numberOfEmployees": 58192,
+			"businessYear": 2015,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 39640,
+			"revenue": 42527,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Volk, Roecker und Kleininger",
+			"companyAlternativeNames": [],
+			"headquarters": "Elanurstadt",
+			"sector": "synergies",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "v4v3sk5vfpfx"
+				}
+			],
+			"countryCode": "MG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Elss, Kreissig und Brüggmann",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 58432,
+			"businessYear": 2022,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 58157,
+			"revenue": 54136,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Melzer AG",
+			"companyAlternativeNames": [
+				"Mai, Thöne und Lipske"
+			],
+			"headquarters": "Mikadorf",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "zrtk0u2ze"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "bfcwe7n"
+				}
+			],
+			"countryCode": "BR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Franzis, Kock und Hartmann",
+			"branch": "Handel",
+			"numberOfEmployees": 52665,
+			"businessYear": 2016,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 88731,
+			"revenue": 69907,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Raukuc, Behr und Mohr",
+			"companyAlternativeNames": [],
+			"headquarters": "Alt Rebecca",
+			"sector": "e-business",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "6afbszpp2"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "nncelxglly38"
+				}
+			],
+			"countryCode": "CN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Sailer GmbH",
+			"branch": "Handel",
+			"numberOfEmployees": 2294,
+			"businessYear": 2022,
+			"electricityConsumption": 70332,
+			"revenue": 19062,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Will Gruppe",
+			"companyAlternativeNames": [
+				"Schweisfurth AG",
+				"Demut-Krauspe"
+			],
+			"headquarters": "Süd Mirkoburg",
+			"sector": "mindshare",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "sykl72edeg3g"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "80l1kx6"
+				}
+			],
+			"countryCode": "FM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Boxhammer, Richter und Smieja",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 37147,
+			"businessYear": 2016,
+			"electricityConsumption": 50183,
+			"revenue": 1769,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Arendt, Edorh und Wachenbrunner",
+			"companyAlternativeNames": [
+				"Poschmann-Ullmann",
+				"Kummle GmbH"
+			],
+			"headquarters": "Nord Esther",
+			"sector": "partnerships",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ye3dje8jv"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "1vl9tqm"
+				}
+			],
+			"countryCode": "AW",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Wiechmann, Kluge und Viellehner",
+			"numberOfEmployees": 54025,
+			"businessYear": 2019,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 48373,
+			"revenue": 82952
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stürmer-Hentschel",
+			"companyAlternativeNames": [
+				"Kazmarek, Tremmel und Stoll",
+				"Kempter, Roloff und Leipold"
+			],
+			"headquarters": "Florentineland",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "oyn0dnt5fdy2"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "y9864df884z78epsg037"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ysm1z0r5m2"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0dfl0of"
+				}
+			],
+			"countryCode": "CD",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Aigner Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 9822,
+			"businessYear": 2019,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 24006,
+			"revenue": 68532
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lufft-Richter",
+			"companyAlternativeNames": [
+				"Agostini-Kurschilgen",
+				"Logsch, Hüttcher und Beavogui"
+			],
+			"headquarters": "Wolffdorf",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "7v62a6upwrrh"
+				}
+			],
+			"countryCode": "BJ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kemper, Bruckmann und Häber",
+			"numberOfEmployees": 51669,
+			"businessYear": 2015,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 16688,
+			"revenue": 56886
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Prange, Abel und Dutkiewicz",
+			"companyAlternativeNames": [],
+			"headquarters": "Neu Tina",
+			"sector": "mindshare",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "bnr6xfosm"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "yxcu17jqhd"
+				}
+			],
+			"countryCode": "SE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kresse-Wassilew",
+			"numberOfEmployees": 14471,
+			"businessYear": 2019,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 77200,
+			"revenue": 47405,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kühnert-Kühnke",
+			"companyAlternativeNames": [
+				"Tillack, Mues und Kaul",
+				"Balnuweit-Motchebon"
+			],
+			"headquarters": "Burkharddorf",
+			"sector": "web services",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "zg19kcgw8"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "8cqrxw97l7fa"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "o4ypkh68h6dshrp2fwus"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "slqr4bjpdz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0he6z9c"
+				}
+			],
+			"countryCode": "IR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Nolte OHG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 36850,
+			"businessYear": 2022,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 66448,
+			"revenue": 36374,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Jess, Kempter und Taufratshofer",
+			"companyAlternativeNames": [
+				"Grüner-Welzel",
+				"Wessel KG",
+				"Orth, Dippl und Mordhorst",
+				"Stelkens, Rupprecht und Weiler"
+			],
+			"headquarters": "Süd Juriburg",
+			"sector": "mindshare",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "kovpndke6m2f"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "qvev29nbnc"
+				}
+			],
+			"countryCode": "IR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Engel, Leipold und Reinberg",
+			"branch": "Handel",
+			"numberOfEmployees": 79719,
+			"businessYear": 2021,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 25827,
+			"revenue": 31409,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Felke-Hübner",
+			"companyAlternativeNames": [
+				"Sarvari-Lipus"
+			],
+			"headquarters": "Alexandraland",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "4frtw2ijg5"
+				}
+			],
+			"countryCode": "BD",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Erm-Faulhaber",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 31182,
+			"businessYear": 2016,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 56511,
+			"revenue": 74075,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Drews, Roba und Kohlmann",
+			"companyAlternativeNames": [
+				"Grötzinger KG",
+				"Von UG",
+				"Tächl, Weight und Giesche"
+			],
+			"headquarters": "Alt Alinadorf",
+			"sector": "portals",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "t2pywxbmct1v"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "comihxe3ib6nczgwrtdf"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "3vte9mm"
+				}
+			],
+			"countryCode": "IM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Langfeld GmbH & Co. KG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 43787,
+			"businessYear": 2017,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 76603,
+			"revenue": 16518,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kluge AG",
+			"companyAlternativeNames": [
+				"Hübner KG",
+				"Gabius, Riekmann und Sievers",
+				"Kiessling-Frantz",
+				"Steinmetz GmbH & Co. KG"
+			],
+			"headquarters": "Bad Lucasburg",
+			"sector": "initiatives",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "a24ae7r90"
+				}
+			],
+			"countryCode": "BT",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Grube-Kofferschlager",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 50550,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 64876,
+			"revenue": 72289
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Höft-Schütze",
+			"companyAlternativeNames": [
+				"Restorff GmbH",
+				"Schonberg-Mrugalla",
+				"Schreiber-Losch",
+				"Moedl-Storp"
+			],
+			"headquarters": "Ermscheid",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "thyjrkg5x"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ww5vwqzimc34"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "lwv4tbdd9rlldv4m9fce"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "67qiuo2l6w"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "lz3fh96"
+				}
+			],
+			"countryCode": "NR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Norris-Gilde",
+			"branch": "Handel",
+			"numberOfEmployees": 34550,
+			"businessYear": 2021,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 53733,
+			"revenue": 18145
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Grube, Schneider und Tonat",
+			"companyAlternativeNames": [
+				"Spitzmüller-Schwirkschlies"
+			],
+			"headquarters": "Gramsscheid",
+			"sector": "supply-chains",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "kpbsxbg11"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "f5ym4x1saget"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "8srzoxx6uz"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "s0ysaou"
+				}
+			],
+			"countryCode": "RU",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Görlich, Meier und Hassfeld",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 78339,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 48390,
+			"revenue": 93181
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Teufel, Frenzel und Hoppe",
+			"companyAlternativeNames": [
+				"Lenz, Rehwagen und Wanner"
+			],
+			"headquarters": "Nikolaischeid",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "bxfkug6ql1"
+				}
+			],
+			"countryCode": "AQ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Beushausen, Kúhnert und Herms",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 81662,
+			"businessYear": 2019,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 82263,
+			"revenue": 99027,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Poschmann, Tillack und Goedicke",
+			"companyAlternativeNames": [
+				"Götz, Thöne und Zekl"
+			],
+			"headquarters": "Amaliadorf",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "0m79fv163wpz"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zv7t55vzmgxn737trcgo"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "k1qtcy03u0"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "2gp8zkt"
+				}
+			],
+			"countryCode": "KI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Clarius-Graf",
+			"branch": "Handel",
+			"numberOfEmployees": 39934,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 11095,
+			"revenue": 98079,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Spitzmüller KG",
+			"companyAlternativeNames": [
+				"Kirst-Bartels",
+				"Clarius, Bickel und Astafei",
+				"Hold GmbH"
+			],
+			"headquarters": "Dietrichland",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "bfmrcyylr"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "iqjtfawbmpt3"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "viismr2tgafi4aijr46k"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "vf9hs1f05o"
+				}
+			],
+			"countryCode": "MA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Mues, Tuch und Mikitenko",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 46382,
+			"businessYear": 2017,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 18383,
+			"revenue": 19122,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kalinowski-Unger",
+			"companyAlternativeNames": [
+				"Kramer-Woytkowska",
+				"Dutkiewicz-Strogies",
+				"Prediger-Schlachter",
+				"Buchrucker, Hengmith und Griem"
+			],
+			"headquarters": "Petzoldburg",
+			"sector": "initiatives",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "cvebb0dv3tm9rkqz0qyb"
+				}
+			],
+			"countryCode": "BS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schlitzer KG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 95887,
+			"businessYear": 2017,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 25133,
+			"revenue": 89523,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Wilky, Krämer und Leist",
+			"companyAlternativeNames": [
+				"Tischler-Komoll",
+				"Strunz-Winkelmann",
+				"Umbach, Vahlensieck und Burghagen",
+				"Fleischmann, Dutkiewicz und Reinhardt"
+			],
+			"headquarters": "Süd Carolinstadt",
+			"sector": "synergies",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "zgmc8wiwe"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "secxdudlz5i7"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "s135qd62yf5yx15huash"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "wqdf1oyxbu"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "3mt3ekp"
+				}
+			],
+			"countryCode": "EH",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Blum, Roos und Dreissigacker",
+			"numberOfEmployees": 72760,
+			"businessYear": 2015,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 29501,
+			"revenue": 86453,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kwadwo, Lufft und Polifka",
+			"companyAlternativeNames": [
+				"Rabenstein-Börner",
+				"Arndt, Gatzka und Vogel",
+				"Kuschmann-Pottel",
+				"Stenzel KG"
+			],
+			"headquarters": "Hartwigdorf",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "bgx7j08cfg"
+				}
+			],
+			"countryCode": "KI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Knobel UG",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 23745,
+			"businessYear": 2018,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 20415,
+			"revenue": 60928
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Engel-Beggerow",
+			"companyAlternativeNames": [
+				"Rangen, Nerius und Ahlke"
+			],
+			"headquarters": "Grünerdorf",
+			"sector": "markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ryxp8qsh2"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "s14voe19xajas6g4wwg3"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "u7yuvzvle1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "xhn9lsb"
+				}
+			],
+			"countryCode": "CL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kral-Spitzmüller",
+			"numberOfEmployees": 11873,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 93433,
+			"revenue": 83721,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schmidt, Dittmer und Barth",
+			"companyAlternativeNames": [
+				"Reumann, Bruhns und Schönbeck",
+				"Steidl, Emmelmann und Thöne",
+				"Zapletal AG"
+			],
+			"headquarters": "Connerland",
+			"sector": "web services",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "jd4e2cqoh"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ab5e6bleocn6xs4slx9b"
+				}
+			],
+			"countryCode": "MT",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Faller KG",
+			"branch": "Handel",
+			"numberOfEmployees": 48620,
+			"businessYear": 2019,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 77496,
+			"revenue": 94944,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Honz OHG",
+			"companyAlternativeNames": [
+				"Wilky, Jungton und Diezel"
+			],
+			"headquarters": "Bad Melvin",
+			"sector": "supply-chains",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "hrm0gxs35"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "k0130j7932vx"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "5i3o3ln"
+				}
+			],
+			"countryCode": "TR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Göckeritz Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 9148,
+			"businessYear": 2021,
+			"electricityConsumption": 30740,
+			"revenue": 21042
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Spank-Gehrke",
+			"companyAlternativeNames": [
+				"Koubaa Gruppe",
+				"Grundmann, Meyer und Alexander"
+			],
+			"headquarters": "Drechslerdorf",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "iv1t0wft82oaik4a4g9x"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "er8kblxdqk"
+				}
+			],
+			"countryCode": "NA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Liebe OHG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 52319,
+			"businessYear": 2020,
+			"electricityConsumption": 88131,
+			"revenue": 54447,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kesselschläger, Kühnel und Montag",
+			"companyAlternativeNames": [
+				"Rodehau, Blassneck und Just"
+			],
+			"headquarters": "Schuffstadt",
+			"sector": "models",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "nfq8gj9s4"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "jy8zs7t4jw"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "l0s4d0l"
+				}
+			],
+			"countryCode": "NA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Maybach-Reinberg",
+			"branch": "Handel",
+			"numberOfEmployees": 74861,
+			"businessYear": 2015,
+			"electricityConsumption": 80232,
+			"revenue": 65540
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Boyde GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Büchele-Bruns",
+				"Schersing, Logsch und Friess",
+				"Ahrenberg-Rhoden"
+			],
+			"headquarters": "Bad Simon",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "k1i0uwvcm"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "v9gith2ej5o0"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "4zyu9qimoiuvb59bihwu"
+				}
+			],
+			"countryCode": "HN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Sischka-Hold",
+			"numberOfEmployees": 84007,
+			"businessYear": 2019,
+			"electricityConsumption": 6628,
+			"revenue": 17673,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Eggenmueller Gruppe",
+			"companyAlternativeNames": [
+				"Philipp-Lipske",
+				"Kiessling GmbH",
+				"Schütz-Pfingsten"
+			],
+			"headquarters": "Theeleland",
+			"sector": "e-tailers",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "b2335lccp"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "dbjqtxizfct6"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "mafmh91i3f9kqrfsrjzv"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "wqej4lgzqk"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "ls7reoc"
+				}
+			],
+			"countryCode": "SI",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hamann OHG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 48547,
+			"businessYear": 2019,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 26720,
+			"revenue": 21197,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Förster GmbH",
+			"companyAlternativeNames": [
+				"Doskoczynski UG",
+				"Krueger-Lange"
+			],
+			"headquarters": "Linnburg",
+			"sector": "web-readiness",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "f6vs128zzwwf"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "trjv3bara0a5i28w7yqg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "dyp3g3ksh1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "tspeyna"
+				}
+			],
+			"countryCode": "IS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hetzler OHG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 42689,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 88603,
+			"revenue": 53039,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Metzger, Boruschewski und Beer",
+			"companyAlternativeNames": [
+				"Franta KG"
+			],
+			"headquarters": "Clemensdorf",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "t9bmuo8"
+				}
+			],
+			"countryCode": "IS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Roggatz, Burkhard und Gerson",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 97551,
+			"businessYear": 2017,
+			"electricityConsumption": 25696,
+			"revenue": 25910
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ehmann GmbH",
+			"companyAlternativeNames": [
+				"Frosch-Strohschank",
+				"Graf, Liebach und Forst",
+				"Raabe-Terlecki"
+			],
+			"headquarters": "Alt Justineland",
+			"sector": "markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "qo0jnrf1n"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "9oh39drmt8i4"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "lvhgyjn9gw5y48sbqve4"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "si0pe5kwvn"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "5mcc68m"
+				}
+			],
+			"countryCode": "ME",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Schouren-Moll",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 40952,
+			"businessYear": 2016,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 19406,
+			"revenue": 74179,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rodehau-Sander",
+			"companyAlternativeNames": [],
+			"headquarters": "Martinland",
+			"sector": "channels",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "uk28wlfvsx411tninx67"
+				}
+			],
+			"countryCode": "UM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Bak KG",
+			"numberOfEmployees": 67539,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 38555,
+			"revenue": 62430
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Marten-Sladek",
+			"companyAlternativeNames": [
+				"Hartwig UG"
+			],
+			"headquarters": "Lennstadt",
+			"sector": "methodologies",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "85s346cazs"
+				}
+			],
+			"countryCode": "PG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Piesker-Urbansky",
+			"branch": "Handel",
+			"numberOfEmployees": 63878,
+			"businessYear": 2019,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 76352,
+			"revenue": 68406,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Marquart, Roecker und Lakomy",
+			"companyAlternativeNames": [],
+			"headquarters": "Geyerburg",
+			"sector": "paradigms",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "20xi8jd0tno7"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0ynghw2"
+				}
+			],
+			"countryCode": "KY",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Benecke-Bosler",
+			"branch": "Handel",
+			"numberOfEmployees": 41897,
+			"businessYear": 2018,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 29188,
+			"revenue": 96657
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Beckel, Schulte und Storp",
+			"companyAlternativeNames": [
+				"Treff KG"
+			],
+			"headquarters": "Süd Berkayburg",
+			"sector": "metrics",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "d1q8kor6w"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "6rwsuc1dzqiu9kemmiht"
+				}
+			],
+			"countryCode": "KZ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Gunkel Gruppe",
+			"branch": "Handel",
+			"numberOfEmployees": 2470,
+			"businessYear": 2019,
+			"electricityConsumption": 94127,
+			"revenue": 96892
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Frank-Graf",
+			"companyAlternativeNames": [
+				"Koczulla-Biedermann",
+				"Rietmüller Gruppe",
+				"Lichtenhagen, Roba und Raubuch",
+				"Sewald-Decker"
+			],
+			"headquarters": "Lukoschekburg",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "jzlunhwy1"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "zlfbj76mr0iq"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "3aipjxtiparm63onz3im"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5s19gv0f4p"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "qzr3n4n"
+				}
+			],
+			"countryCode": "ER",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Weiss-Dörre",
+			"branch": "Handel",
+			"numberOfEmployees": 81565,
+			"businessYear": 2021,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 95472,
+			"revenue": 31306,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Daubner UG",
+			"companyAlternativeNames": [],
+			"headquarters": "Arvedburg",
+			"sector": "infomediaries",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "wr43qbmffze3"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "d8oi6dwsorgzjk4f9xy7"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "qrto1by9zn"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "8pyqpdl"
+				}
+			],
+			"countryCode": "JM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Geese GmbH",
+			"branch": "Handel",
+			"numberOfEmployees": 59162,
+			"businessYear": 2017,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 44981,
+			"revenue": 29518
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Tischler KG",
+			"companyAlternativeNames": [
+				"Urbansky-Aigner",
+				"Otte-Heinze"
+			],
+			"headquarters": "Meslohburg",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "7sxzl2trb"
+				}
+			],
+			"countryCode": "WF",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Maybach, Baganz und Koester",
+			"branch": "Handel",
+			"numberOfEmployees": 39492,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 54410,
+			"revenue": 66318,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Frahmeke, Möcks und Bethke",
+			"companyAlternativeNames": [],
+			"headquarters": "Alyssadorf",
+			"sector": "niches",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "vpdkrrign5y37bwz4ajz"
+				}
+			],
+			"countryCode": "KN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Filipowski-Sillah",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 88599,
+			"businessYear": 2020,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 18507,
+			"revenue": 5447
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gürbig GmbH",
+			"companyAlternativeNames": [
+				"Kaczmarek, Schmitt und Többen"
+			],
+			"headquarters": "Süd Jennaburg",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "vk8s2t4mf8zui6e7j15k"
+				}
+			],
+			"countryCode": "GA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Dittmar, Schäfer und Ghirmai",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 62219,
+			"businessYear": 2018,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 76205,
+			"revenue": 92343
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Busemann-Schütze",
+			"companyAlternativeNames": [
+				"Jegorov, Daub und Schröder"
+			],
+			"headquarters": "Ost Domenikdorf",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "mmbycp2ah8bm"
+				}
+			],
+			"countryCode": "LA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Sander AG",
+			"branch": "Handel",
+			"numberOfEmployees": 63948,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 94859,
+			"revenue": 79244,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Krug, Schramm und Trautmann",
+			"companyAlternativeNames": [
+				"Krohn, Kinzy und Bruckmann",
+				"Schmidtchen-Effler"
+			],
+			"headquarters": "Süd Monique",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "o64gz49a0pj1zrouem4q"
+				}
+			],
+			"countryCode": "PM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Piesker Gruppe",
+			"numberOfEmployees": 59312,
+			"businessYear": 2021,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 87628,
+			"revenue": 76841,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Prediger AG",
+			"companyAlternativeNames": [
+				"Jegorov-Newton",
+				"Tschiers GmbH"
+			],
+			"headquarters": "Raabedorf",
+			"sector": "e-services",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "0ndejikyr"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "coq4z30p4dai"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "1z0o7rp8rd"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "q7nb7av"
+				}
+			],
+			"countryCode": "AR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Decker-Schreiber",
+			"branch": "Handel",
+			"numberOfEmployees": 95688,
+			"businessYear": 2015,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 66427,
+			"revenue": 22809,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hannecker-Höcke",
+			"companyAlternativeNames": [
+				"Mai-Dahm",
+				"Hess Gruppe",
+				"Storp-Nussbeck",
+				"Schupp-Tress"
+			],
+			"headquarters": "Nord Corvinland",
+			"sector": "functionalities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "avhuivefs"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "0v361614kkbt"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "tmjzn7eir3sm1qwmzhhg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "i4tk5cokl8"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "y02h0wb"
+				}
+			],
+			"countryCode": "PA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Lienshöft, Ponitzsch und Ritschel",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 30520,
+			"businessYear": 2016,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 56314,
+			"revenue": 39211
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hassfeld, Weigel und Marner",
+			"companyAlternativeNames": [
+				"Helmke, Scc und Lufft",
+				"Herschmann-Rentz",
+				"Kraft GmbH & Co. KG"
+			],
+			"headquarters": "Vaterstadt",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "ewmnzzocws7n"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "xl8oej126k79t7p9iv75"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "tn8musery8"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "plg86ms"
+				}
+			],
+			"countryCode": "TD",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Wischek-Dolch",
+			"numberOfEmployees": 68164,
+			"businessYear": 2020,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 91272,
+			"revenue": 17913,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Haack-Ranz",
+			"companyAlternativeNames": [],
+			"headquarters": "Battkeland",
+			"sector": "metrics",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "9ja2wzjztg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "dl9qqq2"
+				}
+			],
+			"countryCode": "TD",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Wartenberg-Kröckert",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 86349,
+			"businessYear": 2017,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 21563,
+			"revenue": 82524,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Sailer KG",
+			"companyAlternativeNames": [
+				"Gerbennow, Metzger und Huth",
+				"Hildebrand Gruppe",
+				"Erlei Gruppe"
+			],
+			"headquarters": "Schötzstadt",
+			"sector": "eyeballs",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "thceebr319ba"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "oqa76nsgig76eox3jmlz"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "j05wjuthec"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "kuuy98h"
+				}
+			],
+			"countryCode": "CN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Menga KG",
+			"numberOfEmployees": 44024,
+			"businessYear": 2020,
+			"electricityConsumption": 86936,
+			"revenue": 61246,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Porth AG",
+			"companyAlternativeNames": [],
+			"headquarters": "Schwandkedorf",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "jl51xol7g"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "66gkfzcjb99z"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ehblnrpwlyofqjoa6ckd"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "nsnqhbj"
+				}
+			],
+			"countryCode": "AE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Jasinski, Otte und Ertl",
+			"numberOfEmployees": 96196,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 23584,
+			"revenue": 5329
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Buder, Nitzsche und Schäning",
+			"companyAlternativeNames": [],
+			"headquarters": "Tucholkedorf",
+			"sector": "markets",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "vc89w3w5r"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "c3gkeyvgmv5n"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "tglooyhhcsi5mv6m8sql"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "adowcar"
+				}
+			],
+			"countryCode": "CG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Sprenger OHG",
+			"branch": "Handel",
+			"numberOfEmployees": 48006,
+			"businessYear": 2015,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 87563,
+			"revenue": 21529
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Neurohr UG",
+			"companyAlternativeNames": [],
+			"headquarters": "Lennyland",
+			"sector": "methodologies",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "en08wxqh5"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "autmgbk6v6hk"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "vu37cti"
+				}
+			],
+			"countryCode": "DE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Bayer, Meier und Ladewig",
+			"branch": "Handel",
+			"numberOfEmployees": 7702,
+			"businessYear": 2016,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 57379,
+			"revenue": 11349,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Karhoff KG",
+			"companyAlternativeNames": [
+				"Werle, Tillack und Byrd",
+				"Hiller OHG",
+				"Wiechmann-Köpernick"
+			],
+			"headquarters": "Süd Aleynaland",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4j01esr3dd3p"
+				}
+			],
+			"countryCode": "RS",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Biedermann GmbH & Co. KG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 76263,
+			"businessYear": 2020,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 12062,
+			"revenue": 21390
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hartmann-Vangermain",
+			"companyAlternativeNames": [],
+			"headquarters": "Neu Jarnescheid",
+			"sector": "e-business",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "o8atvxbxk5atn5ro10sf"
+				}
+			],
+			"countryCode": "DE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kölotzei, Gutjahr und Rüter",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 44372,
+			"businessYear": 2015,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 43760,
+			"revenue": 64385,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Paesler-Grube",
+			"companyAlternativeNames": [],
+			"headquarters": "Bethkedorf",
+			"sector": "web-readiness",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "1jer8a7uayn4"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "mzm7dqjui89pppx5ncjp"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "zczq233"
+				}
+			],
+			"countryCode": "LK",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Stifel-Krippner",
+			"branch": "Handel",
+			"numberOfEmployees": 40343,
+			"businessYear": 2020,
+			"companyAge": "LessThanOneYear",
+			"electricityConsumption": 32053,
+			"revenue": 72162,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Leiwesmeier, Zintl und Moller",
+			"companyAlternativeNames": [
+				"Willwacher AG",
+				"Kosenkow Gruppe",
+				"Schaffarzik, Pusch und Cronjäger"
+			],
+			"headquarters": "Karolinestadt",
+			"sector": "supply-chains",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "f4tj085"
+				}
+			],
+			"countryCode": "TL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Ghirmai UG",
+			"branch": "Handel",
+			"numberOfEmployees": 20515,
+			"businessYear": 2017,
+			"companyAge": "MoreThanTenYears",
+			"electricityConsumption": 47071,
+			"revenue": 30812
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Belz GmbH & Co. KG",
+			"companyAlternativeNames": [
+				"Dragu, Loska und Lipske",
+				"Hering-Decker",
+				"Scherer-Jansen",
+				"Danner-Wassilew"
+			],
+			"headquarters": "Alt Patrizia",
+			"sector": "interfaces",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "m3yhfhsem"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "7xjyx6tjrx8x"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "bt34wo4zrn"
+				}
+			],
+			"countryCode": "TK",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Hellmann-Ekpo",
+			"numberOfEmployees": 72011,
+			"businessYear": 2017,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 9060,
+			"revenue": 15800,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schildhauer-Sielemann",
+			"companyAlternativeNames": [
+				"Büchele GmbH & Co. KG"
+			],
+			"headquarters": "Aliceburg",
+			"sector": "architectures",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ph6qmz77z"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "d54vkfquyn6h"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "kmluhu40j08mjdgghjf9"
+				}
+			],
+			"countryCode": "DJ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Nabein Gruppe",
+			"numberOfEmployees": 90977,
+			"businessYear": 2021,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 70647,
+			"revenue": 69697,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kaiser GmbH",
+			"companyAlternativeNames": [
+				"Lobinger GmbH & Co. KG",
+				"Mögenburg, Freimuth und Sander",
+				"Tucholke-Schönenberger",
+				"Rietmüller, Wyludda und Steuk"
+			],
+			"headquarters": "Lauxstadt",
+			"sector": "deliverables",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "4i5qvj9ai"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "u95acwfje9eu"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "q6d19lr3xj3qqw00gkjg"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "bo7u0mnlam"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "1mx0bqx"
+				}
+			],
+			"countryCode": "EH",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kofferschlager KG",
+			"branch": "Handel",
+			"numberOfEmployees": 18715,
+			"businessYear": 2020,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 98370,
+			"revenue": 36192,
+			"workerProtectionMeasures": "Yes"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lipus-Stöppler",
+			"companyAlternativeNames": [],
+			"headquarters": "Neu Johannes",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "y3iyjox4ejpi"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "a34bsi2klt"
+				}
+			],
+			"countryCode": "VE",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Finke UG",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 9746,
+			"businessYear": 2018,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 64402,
+			"revenue": 2383,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Fahner, Haferkamp und Baganz",
+			"companyAlternativeNames": [],
+			"headquarters": "Meierdorf",
+			"sector": "functionalities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "j6u2euejh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "nrj577dowfnd"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "g8iph9f7t3wc0dzqmffb"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "fafl4jn"
+				}
+			],
+			"countryCode": "BV",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Kühnert, Hodea und Riediger",
+			"numberOfEmployees": 38114,
+			"businessYear": 2016,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 51073,
+			"revenue": 88409
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Roba-Schott",
+			"companyAlternativeNames": [
+				"Mehlhorn, Best und Leyckes",
+				"Stöwer, Döring und Förster"
+			],
+			"headquarters": "Alt Onurland",
+			"sector": "convergence",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "602ndgg0h"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "2rb44t6d0red"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "x6qojuf3z42io7yz5zng"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "2lrgq2h"
+				}
+			],
+			"countryCode": "NO",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Urhig, Drechsler und Bethke",
+			"numberOfEmployees": 7021,
+			"businessYear": 2022,
+			"companyAge": "FiveToTenYears",
+			"electricityConsumption": 91411,
+			"revenue": 43403
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hengmith-Teichmann",
+			"companyAlternativeNames": [
+				"Erhardt GmbH"
+			],
+			"headquarters": "Nadjaland",
+			"sector": "metrics",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "3jgt213iz"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "vu01jmttdg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "r8wh5so"
+				}
+			],
+			"countryCode": "SN",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Heinze, Töpfer und Heidelmann",
+			"branch": "VerarbeitendesGewerbe",
+			"numberOfEmployees": 93226,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 69524,
+			"revenue": 80606
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bos AG",
+			"companyAlternativeNames": [
+				"Bahl, Dippl und Streese",
+				"Ghosh, Spiegelburg und Finke",
+				"Kupfer, Kaesmacher und Caspers"
+			],
+			"headquarters": "Neu Greta",
+			"sector": "networks",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "h84tn3e2xm0q"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "99cht9r"
+				}
+			],
+			"countryCode": "KR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Lausecker, Willwacher und Manns",
+			"branch": "Baugewerbe",
+			"numberOfEmployees": 18683,
+			"businessYear": 2022,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 18915,
+			"revenue": 91300,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hillard-Cleve",
+			"companyAlternativeNames": [],
+			"headquarters": "Josephinburg",
+			"sector": "blockchains",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "kty3uppjo"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "yp7mlx4qdpax"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "lup8lbl"
+				}
+			],
+			"countryCode": "TM",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Meier KG",
+			"numberOfEmployees": 54155,
+			"businessYear": 2016,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 88640,
+			"revenue": 86318,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Soller, Isak und Raukuc",
+			"companyAlternativeNames": [],
+			"headquarters": "Ost Toni",
+			"sector": "functionalities",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "rhv9t0jfw"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "zw8xixa"
+				}
+			],
+			"countryCode": "MR",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Florczak, Trauth und Stanger",
+			"numberOfEmployees": 52904,
+			"businessYear": 2020,
+			"electricityConsumption": 29172,
+			"revenue": 90169,
+			"workerProtectionMeasures": "No"
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Grötzinger-Ehm",
+			"companyAlternativeNames": [
+				"Schwarzkopf GmbH",
+				"Gastel, Orth und Kreutz",
+				"Buss-Jossa"
+			],
+			"headquarters": "Alt Juliana",
+			"sector": "ROI",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "7otmqjc"
+				}
+			],
+			"countryCode": "DJ",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Loska-Will",
+			"numberOfEmployees": 8228,
+			"businessYear": 2022,
+			"electricityConsumption": 40923,
+			"revenue": 98482
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "Demut AG",
+			"companyAlternativeNames": [
+				"Kühn Gruppe"
+			],
+			"headquarters": "Taufratshoferstadt",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "qmvshs7q9o9fka7ecn2d"
+				}
+			],
+			"countryCode": "ZA",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"companyName": "Fleischmann, Kohrt und Büttner",
+			"numberOfEmployees": 47400,
+			"businessYear": 2016,
+			"companyAge": "OneToFiveYears",
+			"electricityConsumption": 15958,
+			"revenue": 9572,
+			"workerProtectionMeasures": "Yes"
+		}
+	}
+]

@@ -6,35 +6,35 @@ import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
-import org.dataland.datalandbackend.model.lksg.LksgData
+import org.dataland.datalandbackend.model.sme.SmeData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Controller for the LkSG framework endpoints
+ * Controller for the SME framework endpoints
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/lksg")
+@RequestMapping("/data/sme")
 @RestController
-class LksgDataController(
+class SmeDataController(
     @Autowired var myDataManager: DataManagerInterface,
     @Autowired var myMetaDataManager: DataMetaInformationManagerInterface,
     @Autowired var myObjectMapper: ObjectMapper
-) : DataController<LksgData>(
+) : DataController<SmeData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    LksgData::class.java
+    SmeData::class.java
 ) {
-    @Operation(operationId = "getCompanyAssociatedLksgData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> {
+    @Operation(operationId = "getCompanyAssociatedSmeData")
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SmeData>> {
         return super.getCompanyAssociatedData(dataId)
     }
-    @Operation(operationId = "postCompanyAssociatedLksgData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<LksgData>):
+    @Operation(operationId = "postCompanyAssociatedSmeData")
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SmeData>):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
