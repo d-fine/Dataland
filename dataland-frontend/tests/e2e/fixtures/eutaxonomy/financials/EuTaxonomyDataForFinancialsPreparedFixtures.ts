@@ -84,6 +84,7 @@ function createAllValuesCompany(
     "CreditInstitution",
     "AssetManagement",
     "InsuranceOrReinsurance",
+    "InvestmentFirm",
   ]);
   input.t.creditInstitutionKpis = {
     interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
@@ -99,6 +100,27 @@ function createAllValuesCompany(
   };
   input.t.eligibilityKpis = {
     CreditInstitution: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    AssetManagement: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    InsuranceOrReinsurance: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    InvestmentFirm: {
       banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
       derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
       investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
