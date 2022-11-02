@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.exceptions.InternalServerErrorApiException
+import org.dataland.datalandbackend.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
@@ -13,6 +16,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import javax.transaction.Transactional
 
 /**
  * Implementation of a data manager for Dataland including meta data storages
@@ -32,14 +36,17 @@ class DataManager(
     ): DataMetaInformationEntity {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
-            throw IllegalArgumentException(
-                "The data with the id: $dataId is registered as type ${dataMetaInformation.dataType} by Dataland " +
-                    "instead of your requested type $dataType."
+            throw InvalidInputApiException(
+                "Requested data $dataId not of type $dataType",
+                "The data with the id: $dataId is registered as type" +
+                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
+                    " type $dataType."
             )
         }
         return dataMetaInformation
     }
 
+    @Transactional
     override fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -65,6 +72,7 @@ class DataManager(
                 "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
                     "Correlation ID: $correlationId"
             )
+            // TODO: Throw a proper exception
             throw e
         }
         logger.info(
@@ -78,16 +86,18 @@ class DataManager(
         val dataTypeNameExpectedByDataland = getTypeNameExpectedByDataland(dataId, dataType, correlationId)
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
-            throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store."
+            throw ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "No dataset with the id: $dataId could be found in the data store."
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        if (dataAsStorableDataSet.dataType != DataType.valueOf(dataTypeNameExpectedByDataland)) {
-            throw IllegalArgumentException(
-                "The data set with the id: $dataId came back as type ${dataAsStorableDataSet.dataType} from the " +
-                    "data store instead of type $dataTypeNameExpectedByDataland as registered by Dataland."
+        if (dataAsStorableDataSet.dataType != dataType) {
+            throw InternalServerErrorApiException(
+                    "Dataland-Internal inconsistency regarding dataset $dataId",
+                    "We are having some internal issues with the dataset $dataId, please contact support.",
+                    "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
             )
         }
         return dataAsStorableDataSet

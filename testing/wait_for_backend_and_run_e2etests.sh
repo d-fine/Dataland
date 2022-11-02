@@ -2,7 +2,7 @@
 # This script validates, whether the backend-container and other services are running.
 # It ensures that the e2e-test do not fail due to unreachable services.
 
-set -ex
+set -euxo pipefail
 
 is_infrastructure_up () {
   declare -A services
@@ -32,7 +32,3 @@ if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
 else
   ./gradlew :dataland-frontend:npm_run_testpipeline --no-daemon --stacktrace
 fi
-
-GRADLE_EXIT_CODE=$?
-echo "gradle exit code $GRADLE_EXIT_CODE"
-exit $GRADLE_EXIT_CODE

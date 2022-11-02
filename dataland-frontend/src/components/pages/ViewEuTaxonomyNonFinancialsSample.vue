@@ -80,8 +80,8 @@ export default defineComponent({
     };
   },
   data: () => ({
-    companyID: "",
-    dataId: "",
+    companyID: "loading",
+    dataId: "loading",
   }),
   created() {
     void this.queryCompany();

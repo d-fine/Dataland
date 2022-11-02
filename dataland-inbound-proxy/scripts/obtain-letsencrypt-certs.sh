@@ -1,4 +1,6 @@
 #!/bin/sh
+set -euxo pipefail
+
 while ! curl http://localhost/.well-known/d-statuscheck 2>/dev/null | grep -q UP; do
   echo "Waiting for NGINX to finish booting..."
   sleep 1;

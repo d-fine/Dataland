@@ -3,7 +3,7 @@ package org.dataland.csvconverter.csv.commonfieldparsers
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
 import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNo
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import java.math.BigDecimal
 
