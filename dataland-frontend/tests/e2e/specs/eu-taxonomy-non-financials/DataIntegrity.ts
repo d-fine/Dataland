@@ -40,11 +40,9 @@ describeIf(
     }
 
     /**
-     * This function opens the upload page. Then the uploadFormFiller is executed. It's intended to fill the upload form.
-     * Then, the upload button is clicked, and the resulting id is taken. Next, the EU Taxonomy Page is opened.
-     * On this page, the euTaxonomyPageVerifier is executed - it's intended to verify contents of the EU Taxonomy page.
-     * @param companyId the company ID to upload the data for
-     * @param uploadFormFiller the fill method for the upload Form
+     * This function uploads fixture data of one company and the associated data via API. Afterwards the result is
+     * checked using the provided verifier.
+     * @param fixtureData the company and its associated data
      * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
      */
     function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(
