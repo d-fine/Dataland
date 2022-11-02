@@ -71,14 +71,13 @@ describeIf(
 
     it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eglibile-and-total-numbers");
-      expect(preparedFixture.t.revenue.eligiblePercentage.value).not.to.be.undefined;
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
         cy.get("body")
           .should("contain", "Eligible Revenue")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue.eligiblePercentage.value)}%`
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligiblePercentage!.value!)}%`
           );
         cy.get(".font-medium.text-3xl").should("contain", "€");
       });
@@ -86,13 +85,12 @@ describeIf(
 
     it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eglibile-numbers");
-      expect(preparedFixture.t.revenue.eligiblePercentage.value).not.to.be.undefined;
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue.eligiblePercentage.value)}%`
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligiblePercentage!.value!)}%`
           );
         cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
