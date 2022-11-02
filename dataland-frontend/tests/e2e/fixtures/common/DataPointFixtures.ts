@@ -26,8 +26,10 @@ export function generateReferencedReports(): ReferencedReports {
   return referencedReports;
 }
 
-export function generateNumericOrEmptyDatapoint(reports: ReferencedReports): DataPointBigDecimal | undefined {
-  const value = Math.random() > nullRatio ? faker.datatype.number() : null;
+export function generateNumericOrEmptyDatapoint(
+  reports: ReferencedReports,
+  value: number | null = Math.random() > nullRatio ? faker.datatype.number() : null
+): DataPointBigDecimal | undefined {
   if (Math.random() < undefinedRatio) return undefined;
   return generateDatapoint(value, reports);
 }

@@ -5,11 +5,12 @@ import {
   generateNumericOrEmptyDatapoint,
   generateYesNoOrEmptyDatapoint,
   generateReferencedReports,
-} from "../common/DataPointFixtures";
+} from "@e2e/fixtures/common/DataPointFixtures";
 
-import { randomYesNoNaUndefined } from "../common/YesNoFixtures";
+import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 
 export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {} as SfdrData;
@@ -38,8 +39,8 @@ export function generateSfdrData(): SfdrData {
   sfdr.scope1 = generateNumericOrEmptyDatapoint(reports);
   sfdr.scope2 = generateNumericOrEmptyDatapoint(reports);
   sfdr.scope3 = generateNumericOrEmptyDatapoint(reports);
-  sfdr.enterpriseValue = generateNumericOrEmptyDatapoint(reports);
-  sfdr.totalRevenue = generateNumericOrEmptyDatapoint(reports);
+  sfdr.enterpriseValue = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
+  sfdr.totalRevenue = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
   sfdr.fossilFuelSectorExposure = generateYesNoOrEmptyDatapoint(reports);
   sfdr.renewableEnergyProduction = generateNumericOrEmptyDatapoint(reports);
   sfdr.renewableEnergyConsumption = generateNumericOrEmptyDatapoint(reports);
@@ -76,8 +77,8 @@ export function generateSfdrData(): SfdrData {
   sfdr.violationOfTaxRulesAndRegulation = generateYesNoOrEmptyDatapoint(reports);
   sfdr.unGlobalCompactPrinciplesCompliancePolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.oecdGuidelinesForMultinationalEnterprisesPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.averageGrossHourlyEarningsMaleEmployees = generateNumericOrEmptyDatapoint(reports);
-  sfdr.averageGrossHourlyEarningsFemaleEmployees = generateNumericOrEmptyDatapoint(reports);
+  sfdr.averageGrossHourlyEarningsMaleEmployees = generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100));
+  sfdr.averageGrossHourlyEarningsFemaleEmployees = generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100));
   sfdr.femaleBoardMembers = generateNumericOrEmptyDatapoint(reports);
   sfdr.maleBoardMembers = generateNumericOrEmptyDatapoint(reports);
   sfdr.controversialWeaponsExposure = generateYesNoOrEmptyDatapoint(reports);
@@ -107,7 +108,7 @@ export function generateSfdrData(): SfdrData {
   sfdr.securitiesNotCertifiedAsGreen = generateYesNoOrEmptyDatapoint(reports);
   sfdr.workplaceAccidentPreventionPolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.rateOfAccidents = generateNumericOrEmptyDatapoint(reports);
-  sfdr.workdaysLost = generateNumericOrEmptyDatapoint(reports);
+  sfdr.workdaysLost = generateNumericOrEmptyDatapoint(reports, randomNumber(10000));
   sfdr.supplierCodeOfConduct = generateYesNoOrEmptyDatapoint(reports);
   sfdr.grievanceHandlingMechanism = generateYesNoOrEmptyDatapoint(reports);
   sfdr.whistleblowerProtectionPolicy = generateYesNoOrEmptyDatapoint(reports);
@@ -121,7 +122,7 @@ export function generateSfdrData(): SfdrData {
   sfdr.reportedIncidentsOfHumanRights = generateNumericOrEmptyDatapoint(reports);
   sfdr.reportedCasesOfBriberyCorruption = generateYesNoOrEmptyDatapoint(reports);
   sfdr.reportedConvictionsOfBriberyCorruption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.reportedFinesOfBriberyCorruption = generateNumericOrEmptyDatapoint(reports);
+  sfdr.reportedFinesOfBriberyCorruption = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
   sfdr.referencedReports = reports;
   return sfdr;
 }

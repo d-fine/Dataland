@@ -4,8 +4,8 @@ const percentagePrecision = 0.0001;
 const maxEuro = 1000000;
 const minEuro = 50000;
 
-export function randomEuroValue(): number {
-  return faker.datatype.float({ min: minEuro, max: maxEuro });
+export function randomEuroValue(min: number = minEuro, max: number = maxEuro): number {
+  return faker.datatype.float({ min: min, max: max });
 }
 
 export function randomNumber(max: number): number {
