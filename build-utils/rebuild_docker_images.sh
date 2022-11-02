@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxx pipefail
+set -euxo pipefail
 # This Script checks if a docker image for a given set of input files already exists in the registry.
 # If not, it will be rebuilt and pushed
 # usage:
