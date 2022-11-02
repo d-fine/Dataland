@@ -22,7 +22,7 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
-    @field:Schema(example=JsonExampleFormattingConstants.EligibilityKpisDefaultValue)
+    @field:Schema(example = JsonExampleFormattingConstants.EligibilityKpisDefaultValue)
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
