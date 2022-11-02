@@ -1,6 +1,10 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import {
+  fillEuTaxonomyForFinancialsUploadForm,
+  submitEuTaxonomyFinancialsUploadForm,
+  uploadOneEuTaxonomyFinancialsDatasetViaApi,
+} from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
@@ -39,7 +43,6 @@ describeIf(
       }
     }
 
-    /*
     function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
@@ -55,7 +58,6 @@ describeIf(
         );
       });
     }
-*/
 
     function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
@@ -78,19 +80,19 @@ describeIf(
       return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
-    function checkCommonFields(type: string, data: EligibilityKpis): void {
-      cy.get(`div[name="taxonomyEligibleActivity${type}"]`)
+    function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
+      cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(data.taxonomyEligibleActivity));
-      cy.get(`div[name="derivatives${type}"]`)
+        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivity));
+      cy.get(`div[name="derivatives${financialCompanyType}"]`)
         .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(data.derivatives));
-      cy.get(`div[name="banksAndIssuers${type}"]`)
+        .should("contain", formatPercentNumber(eligibilityKpis.derivatives));
+      cy.get(`div[name="banksAndIssuers${financialCompanyType}"]`)
         .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(data.banksAndIssuers));
-      cy.get(`div[name="investmentNonNfrd${type}"]`)
+        .should("contain", formatPercentNumber(eligibilityKpis.banksAndIssuers));
+      cy.get(`div[name="investmentNonNfrd${financialCompanyType}"]`)
         .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(data.investmentNonNfrd));
+        .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrd));
     }
 
     function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
@@ -100,22 +102,50 @@ describeIf(
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
-    /*
-    it("Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-        "that the upload form works fine with all options", () => {
-      const testData = getPreparedFixture("credit-institution-single-field-submission");
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+    function checkCreditInstitutionValues(
+      testData: EuTaxonomyDataForFinancials,
+      individualFieldSubmission: boolean,
+      dualFieldSubmission: boolean
+    ): void {
+      checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
+      if (individualFieldSubmission) {
+        cy.get('div[name="tradingPortfolio"]')
+          .should("contain", "Trading portfolio")
+          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolio));
+        cy.get('div[name="onDemandInterbankLoans"]')
+          .should("contain", "On demand interbank loans")
+          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.interbankLoans));
+        if (!dualFieldSubmission) {
+          cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
+        }
+      }
+      if (dualFieldSubmission) {
+        cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
+          .should("contain", "Trading portfolio & on demand interbank loans")
+          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
+        if (!individualFieldSubmission) {
+          cy.get("body").should("not.contain", /^Trading portfolio$/);
+          cy.get("body").should("not.contain", "On demand interbank loans");
+        }
+      }
+    }
+
+    it(
+      "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
+        "that the upload form works fine with all options",
+      () => {
+        const testData = getPreparedFixture("company-for-all-types");
+        uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
           testData.companyInformation,
           testData.t
-      );
-      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
-      cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
-          .should("contain", "Trading portfolio & on demand interbank loans")
-          .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
-      cy.get("body").should("not.contain", /^Trading portfolio$/);
-      cy.get("body").should("not.contain", "On demand interbank loans");
-    });
-    */
+        );
+        checkCreditInstitutionValues(testData.t, true, true);
+
+        checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+
+        checkInsuranceValues(testData.t);
+      }
+    );
 
     it("Create a CreditInstitution (combined field submission)", () => {
       const testData = getPreparedFixture("credit-institution-single-field-submission");
@@ -123,12 +153,7 @@ describeIf(
         testData.companyInformation,
         testData.t
       );
-      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
-      cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
-        .should("contain", "Trading portfolio & on demand interbank loans")
-        .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
-      cy.get("body").should("not.contain", /^Trading portfolio$/);
-      cy.get("body").should("not.contain", "On demand interbank loans");
+      checkCreditInstitutionValues(testData.t, false, true);
     });
 
     it("Create a CreditInstitution (individual field submission)", () => {
@@ -137,14 +162,7 @@ describeIf(
         testData.companyInformation,
         testData.t
       );
-      checkCommonFields("CreditInstitution", testData.t.eligibilityKpis!.CreditInstitution);
-      cy.get('div[name="tradingPortfolio"]')
-        .should("contain", "Trading portfolio")
-        .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.tradingPortfolio));
-      cy.get('div[name="onDemandInterbankLoans"]')
-        .should("contain", "On demand interbank loans")
-        .should("contain", formatPercentNumber(testData.t.creditInstitutionKpis!.interbankLoans));
-      cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
+      checkCreditInstitutionValues(testData.t, true, false);
     });
 
     it("Create an insurance company", () => {
