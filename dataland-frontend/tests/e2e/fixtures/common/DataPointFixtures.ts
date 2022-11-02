@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo, YesNo } from "@clients/backend";
+import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
@@ -14,33 +14,28 @@ export function generateReferencedReports(): ReferencedReports {
   const availableReports = faker.helpers.arrayElements(possibleReports);
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
 
-  const ret: ReferencedReports = {};
+  const referencedReports: ReferencedReports = {};
   availableReports.forEach((reportName) => {
-    ret[reportName] = {
+    referencedReports[reportName] = {
       reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
       isGroupLevel: randomYesNoNaUndefined(),
       reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
     };
   });
-
-  return ret;
-}
-
-export function generateNumericDatapoint(value: number, reports: ReferencedReports): DataPointBigDecimal {
-  return generateDatapoint<number, DataPointBigDecimal>(value, reports);
+  return referencedReports;
 }
 
 export function generateNumericOrEmptyDatapoint(reports: ReferencedReports): DataPointBigDecimal | undefined {
   const value = Math.random() > nullRatio ? faker.datatype.number() : null;
   if (Math.random() < undefinedRatio) return undefined;
-  return generateDatapoint<number, DataPointBigDecimal>(value, reports);
+  return generateDatapoint(value, reports);
 }
 
 export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
   const value = Math.random() > nullRatio ? randomYesNoUndefined() : null;
   if (value === undefined) return undefined;
-  return generateDatapoint<YesNo, DataPointYesNo>(value, reports);
+  return generateDatapoint(value, reports);
 }
 
 export function generateDatapointOrNotReportedAtRandom(
@@ -48,7 +43,7 @@ export function generateDatapointOrNotReportedAtRandom(
   reports: ReferencedReports
 ): DataPointBigDecimal | undefined {
   if (value === undefined) return undefined;
-  return generateDatapoint<number, DataPointBigDecimal>(Math.random() > nullRatio ? value : null, reports);
+  return generateDatapoint(Math.random() > nullRatio ? value : null, reports);
 }
 
 export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedReports): Y {

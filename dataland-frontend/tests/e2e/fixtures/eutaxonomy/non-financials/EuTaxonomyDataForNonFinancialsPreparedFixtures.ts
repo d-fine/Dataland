@@ -1,7 +1,7 @@
 import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
-import { generateNumericDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
@@ -30,17 +30,17 @@ function createOnlyEglibileNumbers(
   input.t.opex = {
     alignedPercentage: undefined,
     totalAmount: undefined,
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.capex = {
     alignedPercentage: undefined,
     totalAmount: undefined,
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.revenue = {
     alignedPercentage: undefined,
     totalAmount: undefined,
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   return input;
 }
@@ -51,18 +51,18 @@ function createOnlyEligibleAndTotalNumbers(
   input.companyInformation.companyName = "only-eglibile-and-total-numbers";
   input.t.opex = {
     alignedPercentage: undefined,
-    totalAmount: generateNumericDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.capex = {
     alignedPercentage: undefined,
-    totalAmount: generateNumericDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.revenue = {
     alignedPercentage: undefined,
-    totalAmount: generateNumericDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligiblePercentage: generateNumericDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
+    eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   return input;
 }
