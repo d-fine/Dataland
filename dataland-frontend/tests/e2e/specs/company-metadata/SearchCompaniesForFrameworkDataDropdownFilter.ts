@@ -29,7 +29,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     () => {
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit("/companies?framework=eutaxonomy-financials").wait("@companies-meta-information");
+      cy.visit("/companies").wait("@companies-meta-information");
       verifyTaxonomySearchResultTable();
       cy.get("#framework-filter")
         .click()
