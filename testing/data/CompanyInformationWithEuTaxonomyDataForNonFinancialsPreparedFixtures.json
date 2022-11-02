@@ -3,69 +3,92 @@
 		"companyInformation": {
 			"companyName": "only-eglibile-numbers",
 			"companyAlternativeNames": [
-				"Schäffel GmbH",
-				"Ullrich GmbH"
+				"Frauen-Wolf",
+				"Faller Gruppe",
+				"Krabbe AG",
+				"Jeorga-Brix"
 			],
-			"headquarters": "Giehlscheid",
-			"sector": "models",
+			"headquarters": "Wiebescheid",
+			"sector": "vortals",
 			"identifiers": [
 				{
+					"identifierType": "Duns",
+					"identifierValue": "iatd5q0hl"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "tnw8nh568nlx"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "jw7ko2fyzccxcxzqptc4"
+				},
+				{
 					"identifierType": "PermId",
-					"identifierValue": "ccl1g0p2x0"
+					"identifierValue": "q9hobne6tn"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "usfu4kt"
 				}
 			],
-			"countryCode": "SC",
+			"countryCode": "MW",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://leidenschaftlich-haus.name/spektakul%C3%A4r-zinn.pdf",
-					"currency": "TMT"
-				},
-				"ESEFReport": {
-					"reference": "https://xn--unabhngig-knchel-znb54a.de/unersetzlich-messing.pdf",
+					"reference": "https://xn--ausnahmslos-gebude-ztb.com/froh-h%C3%BCtte.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2021-11-10",
-					"currency": "VUV"
+					"reportDate": "2022-05-09",
+					"currency": "KYD"
+				},
+				"SustainabilityReport": {
+					"reference": "http://autark-schiff.org/bedacht-venus.pdf",
+					"currency": "VES"
+				},
+				"IntegratedReport": {
+					"reference": "http://sachkundig-proton.net/empathisch-bein.pdf",
+					"reportDate": "2022-03-02",
+					"currency": "XPF"
 				}
 			},
-			"fiscalYearDeviation": "No",
-			"fiscalYearEnd": "2022-07-02",
+			"fiscalYearDeviation": "Yes",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"numberOfEmployees": 2306,
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"numberOfEmployees": 34629,
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.857,
-					"dataSource": {
-						"page": 25,
-						"report": "AnnualReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Incomplete",
-					"comment": "transmit mobile program"
+					"value": 0.2867,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8699,
-					"quality": "Estimated"
+					"value": 0.3761,
+					"dataSource": {
+						"page": 462,
+						"report": "AnnualReport",
+						"tagName": "functionalities"
+					},
+					"quality": "Audited",
+					"comment": "navigate back-end microchip"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.7131,
+					"value": 0.6354,
 					"dataSource": {
-						"page": 736,
-						"report": "ESEFReport",
-						"tagName": "e-services"
+						"page": 870,
+						"report": "SustainabilityReport",
+						"tagName": "metrics"
 					},
 					"quality": "Audited",
-					"comment": "generate back-end interface"
+					"comment": "synthesize redundant capacitor"
 				}
 			}
 		}
@@ -74,108 +97,110 @@
 		"companyInformation": {
 			"companyName": "only-eglibile-and-total-numbers",
 			"companyAlternativeNames": [
-				"Steinert Gruppe"
+				"Sattelmaier Gruppe",
+				"Kappler, Többen und Rokossa",
+				"Duma GmbH"
 			],
-			"headquarters": "Alt Adrianaburg",
-			"sector": "systems",
+			"headquarters": "Tabeascheid",
+			"sector": "methodologies",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "03corx0kh"
+					"identifierValue": "zalslm8hw"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "36d8dg3dmu0t"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "ny7g4t0araem9efd40p9"
+					"identifierValue": "smjr3g2hb15a9od0swx0"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "tuhymjaxm8"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "a4xt1jo"
+					"identifierValue": "1va1sl7"
 				}
 			],
-			"countryCode": "IM",
+			"countryCode": "MP",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://xn--hartnckig-bogen-4kb.name/f%C3%BCrsorglich-dach.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2021-12-15",
-					"currency": "NZD"
-				},
-				"IntegratedReport": {
-					"reference": "https://knallig-schaukelstuhl.com/tauglich-pulver.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-03-12",
-					"currency": "XBB"
+				"AnnualReport": {
+					"reference": "http://emotional-comic.org/farbenfroh-grad.pdf",
+					"isGroupLevel": "NA",
+					"currency": "BIF"
 				}
 			},
-			"fiscalYearEnd": "2022-03-01",
+			"fiscalYearDeviation": "No",
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Ne AG"
+				"provider": "Schreiter-Fietz"
 			},
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 77458,
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 385919.3,
+					"value": 620347.28,
 					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.7091,
+					"value": 0.541,
 					"dataSource": {
-						"page": 1103,
-						"report": "SustainabilityReport",
-						"tagName": "e-tailers"
+						"page": 422,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Reported",
-					"comment": "program open-source alarm"
+					"quality": "Incomplete",
+					"comment": "transmit bluetooth bandwidth"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 457061.99,
+					"value": 683860.33,
 					"dataSource": {
-						"page": 205,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
+						"page": 393,
+						"report": "AnnualReport",
+						"tagName": "ROI"
 					},
-					"quality": "Incomplete",
-					"comment": "input cross-platform capacitor"
+					"quality": "Audited",
+					"comment": "back up online circuit"
 				},
 				"eligiblePercentage": {
-					"value": 0.9214,
+					"value": 0.2591,
 					"dataSource": {
-						"page": 573,
-						"report": "IntegratedReport",
-						"tagName": "experiences"
+						"page": 695,
+						"report": "AnnualReport",
+						"tagName": "interfaces"
 					},
-					"quality": "Reported",
-					"comment": "transmit 1080p port"
+					"quality": "Estimated",
+					"comment": "parse redundant transmitter"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 331009.76,
+					"value": 679117.15,
 					"dataSource": {
-						"page": 458,
-						"report": "IntegratedReport",
-						"tagName": "infrastructures"
+						"page": 321,
+						"report": "AnnualReport",
+						"tagName": "applications"
 					},
-					"quality": "Incomplete",
-					"comment": "transmit back-end firewall"
+					"quality": "Reported",
+					"comment": "program primary system"
 				},
 				"eligiblePercentage": {
-					"value": 0.4317,
+					"value": 0.2806,
 					"dataSource": {
-						"page": 218,
-						"report": "IntegratedReport",
-						"tagName": "e-services"
+						"page": 280,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Incomplete",
-					"comment": "input primary program"
+					"quality": "Estimated",
+					"comment": "override wireless program"
 				}
 			}
 		}
