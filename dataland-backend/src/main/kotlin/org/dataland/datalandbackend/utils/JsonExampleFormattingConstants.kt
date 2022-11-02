@@ -1,7 +1,10 @@
 package org.dataland.datalandbackend.utils
 
+/**
+ * Stores constants which do not seem fit to be defined at point of use
+ */
 object JsonExampleFormattingConstants {
-    const val EligibilityKpisDefaultValue: String = "{" +
+    const val ELIGIBILITY_KPIS_DEFAULT_VALUE: String = "{" +
         "\"CreditInstitution\": {" +
         "\"taxonomyEligibleActivity\": {" +
         "\"value\": 0," +

@@ -22,7 +22,7 @@ import java.util.EnumSet
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
-    @field:Schema(example = JsonExampleFormattingConstants.EligibilityKpisDefaultValue)
+    @field:Schema(example = JsonExampleFormattingConstants.ELIGIBILITY_KPIS_DEFAULT_VALUE)
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
