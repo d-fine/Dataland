@@ -9,10 +9,10 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
+import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.EnumSet
-import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 
 /**
  * --- API model ---
