@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.FrameworkBase
@@ -11,6 +12,7 @@ import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.EnumSet
+import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 
 /**
  * --- API model ---
@@ -20,6 +22,7 @@ import java.util.EnumSet
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
+    @field:Schema(example=JsonExampleFormattingConstants.EligibilityKpisDefaultValue)
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
