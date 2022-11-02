@@ -60,8 +60,8 @@ services:
       - backend-db
     environment:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
-      DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-      DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_USER: ${GITHUB_USER}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
   backend-db:
     restart: always
@@ -83,8 +83,8 @@ services:
     networks:
       - external
     environment:
-      DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-      DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_USER: ${GITHUB_USER}
       CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       CYPRESS_KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
@@ -122,8 +122,8 @@ services:
       context: ./
       dockerfile: ${FRONTEND_DOCKERFILE:-./dataland-frontend/DockerfileTest}
       args:
-        DATALAND_EDC_TOKEN: ${DATALAND_EDC_TOKEN}
-        DATALAND_EDC_USER: ${DATALAND_EDC_USER}
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+        GITHUB_USER: ${GITHUB_USER}
     expose:
       - "80"
     networks:

@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums.eutaxonomy
+package org.dataland.datalandbackend.model.enums.commons
 
 import io.swagger.v3.oas.annotations.media.Schema
 

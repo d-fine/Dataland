@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -euxo pipefail
 source "$(dirname "$0")"/deployment_utils.sh
 
 location=$1
