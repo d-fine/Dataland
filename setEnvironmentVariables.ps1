@@ -16,7 +16,6 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_ADMIN", "admin", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_ADMIN_PASSWORD", "admin", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_DOCKERFILE", "./dataland-keycloak/Dockerfile", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_FRONTEND_URL", "https://dataland-local.duckdns.org/keycloak", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_PASSWORD", "test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_SALT", "6ZN+5rRT/wQcQqvNhXIsfA==", [System.EnvironmentVariableTarget]::User)

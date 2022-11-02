@@ -29,6 +29,14 @@ jobs:
         with:
           name: parameters
           path: ./logs/
+      - name: Build Dockerfiles
+        run: |
+          ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile ./dataland-keycloak/dataland_theme/login/dist/ 
+          tar cvf - /path/to/folder | sha1sum
+          COPY 
+          COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
+          COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
+
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
