@@ -29,7 +29,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     () => {
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit("/companies").wait("@companies-meta-information");
+      cy.visit("/companies?framework=eutaxonomy-financials").wait("@companies-meta-information");
       verifyTaxonomySearchResultTable();
       cy.get("#framework-filter")
         .click()
@@ -163,7 +163,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {
-      executionEnvironments: ["developmentLocal", "development", "development_2"],
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       dataEnvironments: ["fakeFixtures"],
     },
     function () {
@@ -184,6 +184,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          verifyTaxonomySearchResultTable();
           cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
             verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")

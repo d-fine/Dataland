@@ -4,7 +4,7 @@ export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
   dataEnvironments: Array<DataEnvironment>;
 }
-export type ExecutionEnvironment = "developmentLocal" | "development" | "development_2" | "preview";
+export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" | "previewCd";
 export type DataEnvironment = "fakeFixtures" | "realData";
 
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
