@@ -10,9 +10,42 @@ on:
       - '**'
 
 jobs:
+  rebuild-docker-images:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v3
+      - name: log inputs
+        shell: bash
+        run: |
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Dockerfiles
+        run: |
+          ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
+                   ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh
+          echo $GIHUV_ENV > logs/$GITHUV_JOB/github_env.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: parameters
+          path: ./logs/
   unit-tests-backend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
       - name: log inputs
@@ -35,10 +68,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Dockerfiles
-        run: | 
-          ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
-                   ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
@@ -68,15 +97,11 @@ jobs:
         if: always()
         with:
           subfolder: 'unit-tests-backend'
-      - name: Upload JaCoCo Exec Results for csv converter
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Github-Env-File
-          path: ${GITHUB_ENV}
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
       - name: log inputs
@@ -111,6 +136,8 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     strategy:
       fail-fast: false
       matrix:
