@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
@@ -80,16 +81,29 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             .map { it.t }
     }
 
-    fun getCompaniesWithTData(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
-        Map<CompanyInformation, List<T>> {
-        val companies = getCompanyInformation(requiredNumberOfCompanies)
-        return companies.associateWith { getTData(dataSetsPerCompany) }
-    }
-
     fun getCompaniesWithTDataAndNoIdentifiers(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
         Map<CompanyInformation, List<T>> {
         val companies = getCompanyInformationWithoutIdentifiers(requiredNumberOfCompanies)
         return companies.associateWith { getTData(dataSetsPerCompany) }
+    }
+
+    fun getRandomAlphaNumericString(): String {
+        val allowedChars = ('a'..'z') + ('0'..'9')
+        return (1..10)
+            .map { allowedChars.random() }
+            .joinToString("")
+    }
+
+    fun generateCustomCompanyInformation(companyName: String, sector: String): CompanyInformation {
+        return CompanyInformation(
+            companyName, "DummyCity", sector,
+            (
+                listOf(
+                    CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString())
+                )
+                ),
+            "DE"
+        )
     }
 }
 

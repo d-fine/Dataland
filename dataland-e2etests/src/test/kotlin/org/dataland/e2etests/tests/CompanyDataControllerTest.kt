@@ -2,11 +2,19 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
+import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
+import org.dataland.e2etests.FRONTEND_DISPLAYED_FRAMEWORKS
 import org.dataland.e2etests.TestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
@@ -18,14 +26,23 @@ import org.junit.jupiter.api.assertThrows
 class CompanyDataControllerTest {
 
     private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val dataControllerApiForNonFinancials =
-        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-
     private val tokenHandler = TokenHandler()
     private val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
+    private val dataControllerApiForNonFinancials =
+        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testDataProviderForEuTaxonomyDataForNonFinancials =
         TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+
+    private val dataControllerApiForLksgData =
+        LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val testDataProviderForLksgData =
+        TestDataProvider(LksgData::class.java)
+
+    private val dataControllerApiForSfdrData =
+        SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val testDataProviderForSfdrData =
+        TestDataProvider(SfdrData::class.java)
 
     private fun postFirstCompanyWithoutIdentifiers(): StoredCompany {
         val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
@@ -102,6 +119,34 @@ class CompanyDataControllerTest {
         assertTrue(
             distinctValues.countryCodes!!.containsAll(testCompanyInformation.map { it.countryCode }),
             "The list of all occurring country codes does not contain the country codes of the posted companies."
+        )
+    }
+
+    @Test
+    fun `post dummy companies with frontend-excluded framework data and check if the distinct endpoint ignores`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        val testCompanyInformation = listOf(
+            testDataProviderForLksgData.generateCustomCompanyInformation("CompanyForLksg", "SectorShouldBeHidden1928"),
+            testDataProviderForSfdrData.generateCustomCompanyInformation("CompanyForSfdr", "SectorShouldBeHidden2891")
+        )
+        val testLksgData = testDataProviderForLksgData.getTData(1)[0]
+        val receivedCompanyIdForLksgCompany = companyDataControllerApi.postCompany(testCompanyInformation[0]).companyId
+        dataControllerApiForLksgData.postCompanyAssociatedLksgData(
+            CompanyAssociatedDataLksgData(receivedCompanyIdForLksgCompany, testLksgData)
+        )
+        val testSfdrData = testDataProviderForSfdrData.getTData(1)[0]
+        val receivedCompanyIdForSfdrCompany = companyDataControllerApi.postCompany(testCompanyInformation[1]).companyId
+        dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
+            CompanyAssociatedDataSfdrData(receivedCompanyIdForSfdrCompany, testSfdrData)
+        )
+        val distinctValues = companyDataControllerApi.getAvailableCompanySearchFilters()
+        assertEquals(
+            DataTypeEnum.values().size - FRONTEND_DISPLAYED_FRAMEWORKS.size, testCompanyInformation.size,
+            "Not all excluded frameworks are covered by this test. Please extend it."
+        )
+        assertTrue(
+            distinctValues.sectors!!.intersect(testCompanyInformation.map { it.sector }.toSet()).isEmpty(),
+            "At least one sector of the frontend-excluded data sets appears in the distinct sector value list."
         )
     }
 
