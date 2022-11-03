@@ -9,7 +9,7 @@ version: "3.8"
 
 services:
   proxy:
-    image: ghcr.io/d-fine/dataland/dataland_inbound_proxy_${PROXY_ENVIRONMENT:-development}:${DATALAND_INBOUND_PROXY_PRODUCTION_VERSION}
+    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
@@ -46,7 +46,7 @@ services:
     networks:
       - internal
       - backend-db
-    image: ghcr.io/d-fine/dataland/dataland_backend_${BACKEND_ENVIRONMENT:-test}:${DATALAND_BACKEND_PRODUCTION_VERSION}
+    image: ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
     expose:
       - "8080"
     depends_on:
