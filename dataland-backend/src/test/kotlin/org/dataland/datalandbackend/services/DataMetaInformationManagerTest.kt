@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -17,35 +18,26 @@ import javax.transaction.Transactional
 class DataMetaInformationManagerTest(
     @Autowired val dataMetaInformationManager: DataMetaInformationManagerInterface,
 ) {
-
-    private fun getNonExistingCompanyIdMessage(requestedCompanyId: String): String {
-        return "Dataland does not know the company ID $requestedCompanyId"
-    }
-
-    private fun getNonExistingDataIdMessage(requestedDataId: String): String {
-        return "Dataland does not know the data ID: $requestedDataId"
-    }
-
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
-        val thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<ResourceNotFoundApiException> {
             dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId)
         }
         assertEquals(
-            getNonExistingCompanyIdMessage(nonExistingCompanyId),
+            "Dataland does not know the company ID nonExistingCompanyId",
             thrown.message
         )
     }
 
     @Test
     fun `check that an exception is thrown when non existing data id is provided to get meta data`() {
-        val nonExistingDataId = "nonExistingCompanyId"
-        val thrown = assertThrows<IllegalArgumentException> {
+        val nonExistingDataId = "nonExistingDataId"
+        val thrown = assertThrows<ResourceNotFoundApiException> {
             dataMetaInformationManager.getDataMetaInformationByDataId(dataId = nonExistingDataId)
         }
         assertEquals(
-            getNonExistingDataIdMessage(nonExistingDataId),
+            "No dataset with the id: nonExistingDataId could be found in the data store.",
             thrown.message
         )
     }

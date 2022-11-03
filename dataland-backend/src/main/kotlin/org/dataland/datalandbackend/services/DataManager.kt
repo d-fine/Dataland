@@ -72,8 +72,12 @@ class DataManager(
                 "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
                     "Correlation ID: $correlationId"
             )
-            // TODO: Throw a proper exception
-            throw e
+            throw InternalServerErrorApiException(
+                "Uplaod to Storage failed", "The upload of the dataset to the Storage failed",
+                "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
+                    "Correlation ID: $correlationId",
+                e
+            )
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
@@ -83,21 +87,21 @@ class DataManager(
     }
 
     override fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        val dataTypeNameExpectedByDataland = getTypeNameExpectedByDataland(dataId, dataType, correlationId)
+        getTypeNameExpectedByDataland(dataId, dataType, correlationId)
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "No dataset with the id: $dataId could be found in the data store."
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store."
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != dataType) {
             throw InternalServerErrorApiException(
-                    "Dataland-Internal inconsistency regarding dataset $dataId",
-                    "We are having some internal issues with the dataset $dataId, please contact support.",
-                    "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
+                "Dataland-Internal inconsistency regarding dataset $dataId",
+                "We are having some internal issues with the dataset $dataId, please contact support.",
+                "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
             )
         }
         return dataAsStorableDataSet

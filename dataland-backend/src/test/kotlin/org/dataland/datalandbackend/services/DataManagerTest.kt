@@ -2,11 +2,12 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.edcClient.model.InsertDataResponse
+import org.dataland.datalandbackend.exceptions.InternalServerErrorApiException
+import org.dataland.datalandbackend.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -36,24 +37,6 @@ class DataManagerTest(
     val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
     val correlationId = UUID.randomUUID().toString()
 
-    private fun getNonMatchingDataIdDataTypeMessage(registeredDataId: String, registereTypeName: String): String {
-        return "The data with the id: $registeredDataId is registered as type $registereTypeName by " +
-            "Dataland instead of your requested type eutaxonomy-financials."
-    }
-
-    private fun getNoDataFoundMessage(requestedDataId: String): String {
-        return "No data set with the id: $requestedDataId could be found in the data store."
-    }
-
-    private fun getWrongDataTypeMessage(
-        requestedDataId: String,
-        unexpectedDataTypeName: String,
-        expectedDataTypeName: String
-    ): String {
-        return "The data set with the id: $requestedDataId came back as type $unexpectedDataTypeName from the data " +
-            "store instead of type $expectedDataTypeName as registered by Dataland."
-    }
-
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val companyId = companyManager.addCompany(companyInformation).companyId
@@ -66,7 +49,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenThrow(ServerException::class.java)
-        assertThrows<ServerException> {
+        assertThrows<InternalServerErrorApiException> {
             dataManager.addDataSet(storableDataSet, correlationId)
         }
     }
@@ -97,11 +80,12 @@ class DataManagerTest(
             )
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        val thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<InvalidInputApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
         assertEquals(
-            getNonMatchingDataIdDataTypeMessage(dataId, storableDataSet.dataType.name),
+            "The data with the id: XXXsomeUUIDXXX is registered as type eutaxonomy-non-financials by " +
+                "Dataland instead of your requested type eutaxonomy-financials.",
             thrown.message
         )
     }
@@ -117,10 +101,10 @@ class DataManagerTest(
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn("")
-        val thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
-        assertEquals(getNoDataFoundMessage(dataId), thrown.message)
+        assertEquals("No dataset with the id: XXXsomeUUIDXXX could be found in the data store.", thrown.message)
     }
 
     @Test
@@ -136,13 +120,17 @@ class DataManagerTest(
         val unexpectedDataTypeName = "eutaxonomy-financials"
         val expectedDataTypeName = getExpectedDataTypeName(storableDataSet, dataId, unexpectedDataTypeName)
         val thrown =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<InternalServerErrorApiException> {
                 dataManager.getDataSet(
                     dataId, DataType(expectedDataTypeName),
                     correlationId
                 )
             }
-        assertEquals(getWrongDataTypeMessage(dataId, unexpectedDataTypeName, expectedDataTypeName), thrown.message)
+        assertEquals(
+            "Dataset XXXsomeUUIDXXX should be of type eutaxonomy-non-financials " +
+                "but is of type eutaxonomy-financials",
+            thrown.message
+        )
     }
 
     private fun getExpectedDataTypeName(
