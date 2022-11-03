@@ -12,7 +12,7 @@ import {
   LksgData,
   LksgDataControllerApi,
 } from "@clients/backend";
-import { retrieveDataIdsList, retrieveCompanyIdsList, countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 const chunkSize = 50;
 
