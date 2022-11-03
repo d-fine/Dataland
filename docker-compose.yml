@@ -29,8 +29,7 @@ services:
       # These are the config options for the initial LetsEncrypt certificate request
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
   admin-proxy:
-    build:
-      context: ./dataland-inbound-admin-proxy
+    image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
     profiles: [ "production", "testing", "productionInMemory", "development" ]
     networks:
