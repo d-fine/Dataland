@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { LksgData, ProductionSite } from "@clients/backend";
-
 import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
-import { randomFutureDate } from "../common/DateFixtures";
-import { generateIso4217CurrencyCode } from "../common/CurrencyFixtures";
+import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();

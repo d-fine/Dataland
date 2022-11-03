@@ -13,7 +13,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,
   });
-  for (const argument of ["capex", "opex"]) {
+  for (const argument of ["capex", "opex", "revenue"]) {
     cy.get(`div[title=${argument}] input`).each(($element, index) => {
       const inputNumber = 10 * index + 7;
       cy.wrap($element).type(inputNumber.toString(), { force: true });
