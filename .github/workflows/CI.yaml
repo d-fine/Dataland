@@ -31,10 +31,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Dockerfiles
+        id: build-dockerfiles
         run: |
           ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
           cp $GITHUB_ENV logs/$GITHUB_JOB/github_env.log
+          echo "shaSum=sha1_manifest" >> $GITHUB_OUTPUT
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         if: always()
