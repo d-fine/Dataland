@@ -109,12 +109,7 @@ services:
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
-    build:
-      context: ./
-      dockerfile: ${FRONTEND_DOCKERFILE:-./dataland-frontend/DockerfileTest}
-      args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN}
-        GITHUB_USER: ${GITHUB_USER}
+    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     expose:
       - "80"
     networks:
