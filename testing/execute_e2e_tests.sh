@@ -2,10 +2,10 @@
 set -euxo pipefail
 
 #Start E2E Test and wait for E2E Test completion
-echo ghcr.io/d-fine/dataland/dataland-inbound-proxy-${PROXY_ENVIRONMENT:-development}:${DATALAND-INBOUND-PROXY-PRODUCTION_VERSION}
-docker pull ghcr.io/d-fine/dataland/dataland-inbound-proxy-${PROXY_ENVIRONMENT:-development}:${DATALAND-INBOUND-PROXY-PRODUCTION_VERSION}
-echo ghcr.io/d-fine/dataland/dataland-keycloak:${DATALAND-KEYCLOAK_VERSION}
-docker pull ghcr.io/d-fine/dataland/dataland-keycloak:${DATALAND-KEYCLOAK_VERSION}
+echo ghcr.io/d-fine/dataland/dataland_inbound_proxy_${PROXY_ENVIRONMENT:-development}:${DATALAND_INBOUND_PROXY_PRODUCTION_VERSION}
+docker pull ghcr.io/d-fine/dataland/dataland_inbound_proxy_${PROXY_ENVIRONMENT:-development}:${DATALAND_INBOUND_PROXY_PRODUCTION_VERSION}
+echo ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
+docker pull ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
 
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
 timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
