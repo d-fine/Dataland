@@ -72,9 +72,7 @@ services:
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
   e2etests:
     profiles: ["testing"]
-    build:
-      context: ./
-      dockerfile: ./dataland-e2etests/Dockerfile
+    image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
     networks:
       - external
     environment:
