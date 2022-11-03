@@ -30,7 +30,7 @@ jobs:
           name: parameters
           path: ./logs/
       - name: Build Dockerfiles
-        run: |
+        run: chmod +x |
           ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile ./dataland-keycloak/dataland_theme/login/dist/ 
           tar cvf - /path/to/folder | sha1sum
           COPY 
