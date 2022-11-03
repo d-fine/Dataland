@@ -93,7 +93,7 @@ jobs:
           docker run -v $(pwd):/app:rw \
           -e GITHUB_TOKEN \
           -e GITHUB_USER \
-          ghcr.io/d-fine/dataland/temurinbase:latest \
+          ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_PRODUCTION_VERSION} \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports
         if: always()

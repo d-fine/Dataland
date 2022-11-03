@@ -1,4 +1,4 @@
-FROM ghcr.io/d-fine/dataland/temurinbase:latest as builder
+FROM eclipse-temurin:17.0.4.1_1-jdk-jammy as builder
 
 COPY . /build
 WORKDIR /build
