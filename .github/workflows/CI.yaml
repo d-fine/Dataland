@@ -37,6 +37,11 @@ jobs:
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
           cp $GITHUB_ENV logs/$GITHUB_JOB/github_env.log
           echo "shaSum=sha1_manifest" >> $GITHUB_OUTPUT
+      - name: Store docker image versions
+        uses: actions/upload-artifact@v3
+        with:
+          name: dockerImageVersions
+          path: $GITHUB_ENV
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         if: always()
@@ -158,6 +163,9 @@ jobs:
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: dockerImageVersions
       - name: log inputs
         shell: bash
         run: |
@@ -269,16 +277,16 @@ jobs:
           cache: gradle
       - name: Build project
         run: ./gradlew assemble --no-daemon --stacktrace
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsBackendUnitTests
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsCsvConverterUnitTests
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsE2ETest
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: lcovResults
           path: fe-coverage
