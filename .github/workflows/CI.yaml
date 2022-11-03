@@ -34,13 +34,14 @@ jobs:
       - name: Build Dockerfiles
         id: build-dockerfiles
         run: |
+          echo {"commit":"$(git rev-parse HEAD)","time":"$(git show -s --format=%aI HEAD)","branch":"$(git rev-parse --abbrev-ref HEAD)"} > gitinfo
           ./build-utils/rebuild_docker_images.sh dataland_keycloak ./dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh \
                    ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           PROXY_ENVIRONMENT="production" ./build-utils/rebuild_docker_images.sh dataland_inbound_proxy_production \
-                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/
+                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/ ./gitinfo
           PROXY_ENVIRONMENT="development" ./build-utils/rebuild_docker_images.sh dataland_inbound_proxy_development \
-                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/
+                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/ ./gitinfo
           ./build-utils/rebuild_docker_images.sh dataland_backend_production ./dataland-backend/Dockerfile ./dataland-backend/ \
                    ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           ./build-utils/rebuild_docker_images.sh dataland_backend_test ./dataland-backend/DockerfileTest ./dataland-backend/ \

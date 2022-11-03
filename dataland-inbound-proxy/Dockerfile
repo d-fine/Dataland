@@ -1,7 +1,7 @@
 FROM nginx:1.23.1
 ARG PROXY_ENVIRONMENT
 # Install certbot and cron and delete default nginx config
-RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean
+RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add CronJob for certificate renewal (Add 00:00 on every day)
 RUN echo "0 0 * * * root sh /scripts/renew-certificates.sh" > /etc/cron.d/certbot-renew
@@ -16,6 +16,7 @@ COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
 COPY dataland-inbound-proxy/api_errors.json /var/www/html/api_errors.json
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
+COPY ./gitinfo /var/www/html/gitinfo
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 
