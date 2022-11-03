@@ -2,9 +2,9 @@
 set -euxo pipefail
 
 #Start E2E Test and wait for E2E Test completion
-docker pull ghcr.io/d-fine/dataland/dataland_inbound_proxy_${PROXY_ENVIRONMENT:-development}:${DATALAND_INBOUND_PROXY_PRODUCTION_VERSION}
+docker pull ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
 docker pull ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
-docker pull ghcr.io/d-fine/dataland/dataland_backend_${BACKEND_ENVIRONMENT:-test}:${DATALAND_BACKEND_PRODUCTION_VERSION}
+docker pull ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
 docker pull ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
 docker pull ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
 docker pull ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
