@@ -2,93 +2,70 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eglibile-numbers",
-			"companyAlternativeNames": [
-				"Frauen-Wolf",
-				"Faller Gruppe",
-				"Krabbe AG",
-				"Jeorga-Brix"
-			],
-			"headquarters": "Wiebescheid",
-			"sector": "vortals",
+			"companyAlternativeNames": [],
+			"headquarters": "Bad Maritdorf",
+			"sector": "web services",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "iatd5q0hl"
+					"identifierValue": "0iksjvfe2"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "tnw8nh568nlx"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "jw7ko2fyzccxcxzqptc4"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "q9hobne6tn"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "usfu4kt"
+					"identifierValue": "o2lqhusyq4jf"
 				}
 			],
-			"countryCode": "MW",
+			"countryCode": "YE",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://xn--ausnahmslos-gebude-ztb.com/froh-h%C3%BCtte.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-05-09",
-					"currency": "KYD"
-				},
-				"SustainabilityReport": {
-					"reference": "http://autark-schiff.org/bedacht-venus.pdf",
-					"currency": "VES"
-				},
-				"IntegratedReport": {
-					"reference": "http://sachkundig-proton.net/empathisch-bein.pdf",
-					"reportDate": "2022-03-02",
-					"currency": "XPF"
+					"reference": "https://vorzeigenswert-kommunismus.net/delikat-meer.pdf",
+					"currency": "AWG"
 				}
 			},
 			"fiscalYearDeviation": "Yes",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"provider": "Nau Gruppe"
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
-			"numberOfEmployees": 34629,
-			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2867,
-					"quality": "Estimated"
+					"value": 0.643,
+					"dataSource": {
+						"page": 270,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Incomplete",
+					"comment": "bypass cross-platform interface"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3761,
+					"value": 0.9313,
 					"dataSource": {
-						"page": 462,
+						"page": 88,
 						"report": "AnnualReport",
-						"tagName": "functionalities"
+						"tagName": "users"
 					},
 					"quality": "Audited",
-					"comment": "navigate back-end microchip"
+					"comment": "bypass back-end capacitor"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6354,
+					"value": 0.4495,
 					"dataSource": {
-						"page": 870,
-						"report": "SustainabilityReport",
-						"tagName": "metrics"
+						"page": 762,
+						"report": "AnnualReport",
+						"tagName": "users"
 					},
 					"quality": "Audited",
-					"comment": "synthesize redundant capacitor"
+					"comment": "navigate neural panel"
 				}
 			}
 		}
@@ -97,110 +74,95 @@
 		"companyInformation": {
 			"companyName": "only-eglibile-and-total-numbers",
 			"companyAlternativeNames": [
-				"Sattelmaier Gruppe",
-				"Kappler, Többen und Rokossa",
-				"Duma GmbH"
+				"Dietz-Krebs",
+				"Orth-Kulimann",
+				"Renk KG"
 			],
-			"headquarters": "Tabeascheid",
-			"sector": "methodologies",
+			"headquarters": "Lindenstadt",
+			"sector": "content",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "zalslm8hw"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "36d8dg3dmu0t"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "smjr3g2hb15a9od0swx0"
-				},
-				{
 					"identifierType": "PermId",
-					"identifierValue": "tuhymjaxm8"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "1va1sl7"
+					"identifierValue": "na6rb5zmtv"
 				}
 			],
-			"countryCode": "MP",
+			"countryCode": "ME",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://emotional-comic.org/farbenfroh-grad.pdf",
-					"isGroupLevel": "NA",
-					"currency": "BIF"
+				"SustainabilityReport": {
+					"reference": "https://fabelhaft-lepra.org/halb-sache.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-07-08",
+					"currency": "LRD"
 				}
 			},
 			"fiscalYearDeviation": "No",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Schreiter-Fietz"
+				"assurance": "ReasonableAssurance",
+				"provider": "Kern, Kinzel und Lack",
+				"dataSource": {
+					"page": 1054,
+					"report": "SustainabilityReport",
+					"tagName": "partnerships"
+				}
 			},
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 620347.28,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.541,
+					"value": 114724.04,
 					"dataSource": {
-						"page": 422,
-						"report": "AnnualReport",
+						"page": 62,
+						"report": "SustainabilityReport",
 						"tagName": "portals"
 					},
-					"quality": "Incomplete",
-					"comment": "transmit bluetooth bandwidth"
+					"quality": "Reported",
+					"comment": "copy mobile sensor"
+				},
+				"eligiblePercentage": {
+					"value": 0.9566,
+					"dataSource": {
+						"page": 770,
+						"report": "SustainabilityReport",
+						"tagName": "web-readiness"
+					},
+					"quality": "Audited",
+					"comment": "compress back-end capacitor"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 683860.33,
+					"value": 810579.94,
 					"dataSource": {
-						"page": 393,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 132,
+						"report": "SustainabilityReport",
+						"tagName": "portals"
 					},
 					"quality": "Audited",
-					"comment": "back up online circuit"
+					"comment": "input online feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.2591,
-					"dataSource": {
-						"page": 695,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Estimated",
-					"comment": "parse redundant transmitter"
+					"value": 0.7704,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 679117.15,
-					"dataSource": {
-						"page": 321,
-						"report": "AnnualReport",
-						"tagName": "applications"
-					},
-					"quality": "Reported",
-					"comment": "program primary system"
+					"value": 496349.14,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.2806,
+					"value": 0.6915,
 					"dataSource": {
-						"page": 280,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 166,
+						"report": "SustainabilityReport",
+						"tagName": "architectures"
 					},
-					"quality": "Estimated",
-					"comment": "override wireless program"
+					"quality": "Audited",
+					"comment": "program auxiliary card"
 				}
 			}
 		}
