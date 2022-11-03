@@ -37,7 +37,9 @@ describeIf(
     function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
       const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
       if (!preparedFixture) {
-        throw new Error("The provided company name could not be found in the prepared fixtures.");
+        throw new ReferenceError(
+          "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
+        );
       } else {
         return preparedFixture;
       }
