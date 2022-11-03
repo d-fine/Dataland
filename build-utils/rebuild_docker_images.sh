@@ -5,9 +5,6 @@ set -euxo pipefail
 # usage:
 # rebuild_docker_images.sh image_name dockerfile [additional_relevant_files...]
 # e.g.: rebuild_docker_images.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
-#TODO stick to naming convention - local variables lower case
-# TODO: Change the cat for the md5 hash to: tar all input files, and the md5 the tar file
-# TODO: Store md5 hash as ci parameter/variable
 docker_image_name=$1
 
 # shift removes the first argument which is not a file.
@@ -15,25 +12,20 @@ docker_image_name=$1
 shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
-set +x # don't print out file contents
-input_files_content=$(cat "$@" build-utils/rebuild_docker_images.sh)
-echo "$input_files_content" > "${CI_PROJECT_DIR}"/logs/rebuild_"${docker_image_name}"_file_content.log
-input_md5=$(echo "$input_files_content" | md5sum | awk '{print $1}')
-echo Input MD5 Hash: "$input_md5"
-echo slug commit ref name: "$CI_COMMIT_REF_SLUG"
-set -x
+tar -cvf input_files_content.tar "$@"
+input_sha1=$(sha1sum input_files_content.tar | awk '{print $1}')
+rm input_files_content.tar
+
+echo Input sha1 Hash: "$input_sha1"
 
 # Only execute the "build" command if the manifests are different.
-md5_manifest=$(docker manifest inspect "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$input_md5" || echo "no MD5 manifest")
-commit_ref_manifest=$(docker manifest inspect "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$CI_COMMIT_REF_SLUG" || echo "no commit ref manifest")
-if [ "$md5_manifest" == "$commit_ref_manifest" ]
-
+full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha1"
+echo "${docker_image_name^^}_VERSION=$input_sha1" >> $GITHUB_ENV
+sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
+if [ "$sha1_manifest" == "no sha1 manifest" ]
 then
   echo "Requirements already satisfied!"
 else
-  docker pull "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$input_md5" || \
-  docker build -f "$dockerfile" . -t "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$input_md5"
-  docker push "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$input_md5"
-  docker tag "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$input_md5" "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$CI_COMMIT_REF_SLUG"
-  docker push "$CI_REGISTRY_IMAGE"/"$docker_image_name":"$CI_COMMIT_REF_SLUG"
+  docker build -f "$dockerfile" . -t "$full_image_reference"
+  docker push "$full_image_reference"
 fi
