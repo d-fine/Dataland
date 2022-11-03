@@ -123,7 +123,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post dummy companies with frontend-excluded framework data and check if the distinct endpoint ignores`() {
+    fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testCompanyInformation = listOf(
             testDataProviderForLksgData.generateCustomCompanyInformation("CompanyForLksg", "SectorShouldBeHidden1928"),
