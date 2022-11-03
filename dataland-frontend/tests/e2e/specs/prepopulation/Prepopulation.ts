@@ -14,7 +14,7 @@ import {
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-const chunkSize = 50;
+const chunkSize = 15;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
