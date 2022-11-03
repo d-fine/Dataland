@@ -1,168 +1,202 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "only-eglibile-numbers",
-			"companyAlternativeNames": [],
-			"headquarters": "Bad Maritdorf",
-			"sector": "web services",
+			"companyName": "only-eligible-numbers",
+			"companyAlternativeNames": [
+				"Matthes-Edorh",
+				"Hornung-Agostini"
+			],
+			"headquarters": "Stöwerdorf",
+			"sector": "content",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "0iksjvfe2"
+					"identifierValue": "8catzyhr4"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "o2lqhusyq4jf"
+					"identifierValue": "xzm0hwd23nyq"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "i66r3rkfwt0r870leb7w"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "7jzne0ohi1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "hsf1gc4"
 				}
 			],
-			"countryCode": "YE",
+			"countryCode": "IL",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "http://chancenlos-leber.de/heldenhaft-internet.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2021-11-17",
+					"currency": "MDL"
+				},
+				"ESEFReport": {
+					"reference": "http://konstant-milch.org/festlich-schule.pdf",
+					"reportDate": "2022-08-04",
+					"currency": "ZWL"
+				},
 				"AnnualReport": {
-					"reference": "https://vorzeigenswert-kommunismus.net/delikat-meer.pdf",
-					"currency": "AWG"
+					"reference": "http://gravierend-milz.info/traditionell-schule.pdf",
+					"currency": "KRW"
+				},
+				"IntegratedReport": {
+					"reference": "http://spontan-cholera.de/jahrelang-jupiter.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-04-23",
+					"currency": "CZK"
 				}
 			},
-			"fiscalYearDeviation": "Yes",
+			"fiscalYearEnd": "2022-09-18",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Nau Gruppe"
+				"assurance": "None"
 			},
 			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
+			"numberOfEmployees": 40657,
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.643,
+					"value": 0.6593,
 					"dataSource": {
-						"page": 270,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 38,
+						"report": "ESEFReport",
+						"tagName": "networks"
 					},
-					"quality": "Incomplete",
-					"comment": "bypass cross-platform interface"
+					"quality": "Audited",
+					"comment": "compress mobile transmitter"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9313,
+					"value": 0.7388,
 					"dataSource": {
-						"page": 88,
-						"report": "AnnualReport",
-						"tagName": "users"
+						"page": 121,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
 					},
 					"quality": "Audited",
-					"comment": "bypass back-end capacitor"
+					"comment": "generate optical application"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.4495,
-					"dataSource": {
-						"page": 762,
-						"report": "AnnualReport",
-						"tagName": "users"
-					},
-					"quality": "Audited",
-					"comment": "navigate neural panel"
+					"value": 0.773,
+					"quality": "Incomplete"
 				}
 			}
 		}
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eglibile-and-total-numbers",
+			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Dietz-Krebs",
-				"Orth-Kulimann",
-				"Renk KG"
+				"Koenig KG",
+				"Möllenbeck, Huhn und Wilky",
+				"Dohring UG",
+				"Jess, Polizzi und Schwab"
 			],
-			"headquarters": "Lindenstadt",
-			"sector": "content",
+			"headquarters": "Süd Anastasiadorf",
+			"sector": "paradigms",
 			"identifiers": [
 				{
+					"identifierType": "Duns",
+					"identifierValue": "llyfrxluv"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "u81is1zyyv3j"
+				},
+				{
 					"identifierType": "PermId",
-					"identifierValue": "na6rb5zmtv"
+					"identifierValue": "ql6izjngt6"
 				}
 			],
-			"countryCode": "ME",
+			"countryCode": "TC",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "https://fabelhaft-lepra.org/halb-sache.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-08",
-					"currency": "LRD"
+				"AnnualReport": {
+					"reference": "http://penibel-zinn.name/sanft-gramm.pdf",
+					"isGroupLevel": "NA",
+					"currency": "IQD"
 				}
 			},
 			"fiscalYearDeviation": "No",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Kern, Kinzel und Lack",
-				"dataSource": {
-					"page": 1054,
-					"report": "SustainabilityReport",
-					"tagName": "partnerships"
-				}
+				"assurance": "ReasonableAssurance"
 			},
 			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 114724.04,
+					"value": 111822.06,
 					"dataSource": {
-						"page": 62,
-						"report": "SustainabilityReport",
-						"tagName": "portals"
+						"page": 254,
+						"report": "AnnualReport",
+						"tagName": "e-services"
 					},
 					"quality": "Reported",
-					"comment": "copy mobile sensor"
+					"comment": "quantify bluetooth circuit"
 				},
 				"eligiblePercentage": {
-					"value": 0.9566,
+					"value": 0.9772,
 					"dataSource": {
-						"page": 770,
-						"report": "SustainabilityReport",
-						"tagName": "web-readiness"
+						"page": 326,
+						"report": "AnnualReport",
+						"tagName": "platforms"
 					},
-					"quality": "Audited",
-					"comment": "compress back-end capacitor"
+					"quality": "Reported",
+					"comment": "index primary application"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 810579.94,
+					"value": 65194.74,
 					"dataSource": {
-						"page": 132,
-						"report": "SustainabilityReport",
-						"tagName": "portals"
+						"page": 892,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Audited",
-					"comment": "input online feed"
+					"quality": "Estimated",
+					"comment": "navigate open-source application"
 				},
 				"eligiblePercentage": {
-					"value": 0.7704,
-					"quality": "Estimated"
+					"value": 0.2534,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 496349.14,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.6915,
+					"value": 743409.76,
 					"dataSource": {
-						"page": 166,
-						"report": "SustainabilityReport",
-						"tagName": "architectures"
+						"page": 1048,
+						"report": "AnnualReport",
+						"tagName": "users"
 					},
 					"quality": "Audited",
-					"comment": "program auxiliary card"
+					"comment": "connect multi-byte program"
+				},
+				"eligiblePercentage": {
+					"value": 0.9086,
+					"dataSource": {
+						"page": 339,
+						"report": "AnnualReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Reported",
+					"comment": "navigate mobile port"
 				}
 			}
 		}

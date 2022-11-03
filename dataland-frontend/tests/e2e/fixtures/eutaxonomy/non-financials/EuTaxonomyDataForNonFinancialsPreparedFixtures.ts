@@ -26,7 +26,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 function createOnlyEglibileNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
-  input.companyInformation.companyName = "only-eglibile-numbers";
+  input.companyInformation.companyName = "only-eligible-numbers";
   input.t.opex = {
     alignedPercentage: undefined,
     totalAmount: undefined,
@@ -48,7 +48,7 @@ function createOnlyEglibileNumbers(
 function createOnlyEligibleAndTotalNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
-  input.companyInformation.companyName = "only-eglibile-and-total-numbers";
+  input.companyInformation.companyName = "only-eligible-and-total-numbers";
   input.t.opex = {
     alignedPercentage: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),

@@ -70,7 +70,7 @@ describeIf(
     }
 
     it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eglibile-and-total-numbers");
+      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers");
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
         cy.get("body")
@@ -84,7 +84,7 @@ describeIf(
     });
 
     it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eglibile-numbers");
+      const preparedFixture = getPreparedFixture("only-eligible-numbers");
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")
