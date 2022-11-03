@@ -7,9 +7,10 @@
     <img
       ref="profile-picture"
       class="d-profile-picture"
-      src="@/assets/images/elements/default_user_icon.svg"
+      :src="profilePictureSource"
       alt="User profile picture"
       referrerpolicy="no-referrer"
+      @error="handleProfilePicError"
     />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
@@ -35,6 +36,7 @@ import { defineComponent, inject, ref } from "vue";
 import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
 
 export default defineComponent({
   name: "UserProfileDropDown",
@@ -69,6 +71,7 @@ export default defineComponent({
           clickAction: this.logoutViaDropdown,
         },
       ],
+      profilePictureSource: defaultProfilePicture,
     };
   },
 
@@ -93,13 +96,17 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    handleProfilePicError() {
+      if (this.profilePictureSource !== defaultProfilePicture) {
+        this.profilePictureSource = defaultProfilePicture;
+      }
+    },
   },
   created() {
     assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-          this.$refs["profile-picture"].src = keycloak.idTokenParsed.picture;
+          this.profilePictureSource = keycloak.idTokenParsed.picture as string;
         }
       })
       .catch((error) => console.log(error));
