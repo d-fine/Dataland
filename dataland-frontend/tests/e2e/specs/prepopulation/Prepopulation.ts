@@ -11,7 +11,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { uploadOneLksgDataset } from "@e2e/utils/LksgUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 const chunkSize = 15;
 
@@ -103,7 +103,7 @@ describe(
       });
 
       it("Upload Lksg fake-fixtures", () => {
-        prepopulate(companiesWithLksgData, uploadOneLksgDataset);
+        prepopulate(companiesWithLksgData, uploadOneLksgDatasetViaApi);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
