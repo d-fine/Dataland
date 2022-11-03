@@ -47,7 +47,7 @@ jobs:
           ./build-utils/rebuild_docker_images.sh dataland_inbound_admin_proxy ./dataland-inbound-admin-proxy/Dockerfile
           ./build-utils/rebuild_docker_images.sh dataland_e2etests ./dataland-e2etests/Dockerfile \
                  ./dataland-e2etests/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
-          ./build-utils/rebuild_docker_images.sh dataland_pgadmin ./dataland-pgadmin/
+          ./build-utils/rebuild_docker_images.sh dataland_pgadmin ./dataland-pgadmin/Dockerfile
           cp $GITHUB_ENV github_env.log
           echo "shaSum=sha1_manifest" >> $GITHUB_OUTPUT
       - name: Store docker image versions
