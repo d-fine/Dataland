@@ -2,6 +2,8 @@
 set -euxo pipefail
 
 #Start E2E Test and wait for E2E Test completion
+echo ${PROXY_IMAGE:-notset}
+echo ${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION:-notset}
 echo ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
 echo ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
 docker pull ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
