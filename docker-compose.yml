@@ -46,9 +46,7 @@ services:
     networks:
       - internal
       - backend-db
-    build:
-      context: ./
-      dockerfile: ${BACKEND_DOCKERFILE:-./dataland-backend/DockerfileTest}
+    image: ghcr.io/d-fine/dataland/dataland_backend_${BACKEND_ENVIRONMENT:-test}:${DATALAND_BACKEND_PRODUCTION_VERSION}
     expose:
       - "8080"
     depends_on:
@@ -217,7 +215,7 @@ services:
     depends_on:
       - keycloak-db
   pgadmin:
-    build: dataland-pgadmin
+    image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
     networks:
       - keycloak-db
       - backend-db
