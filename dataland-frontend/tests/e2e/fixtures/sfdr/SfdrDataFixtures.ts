@@ -1,19 +1,17 @@
 import { faker } from "@faker-js/faker";
 import { SfdrData } from "@clients/backend";
-
 import {
   generateNumericOrEmptyDatapoint,
   generateYesNoOrEmptyDatapoint,
   generateReferencedReports,
 } from "@e2e/fixtures/common/DataPointFixtures";
-
 import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 
 export function generateSfdrData(): SfdrData {
-  const sfdr: SfdrData = {} as SfdrData;
+  const sfdr: SfdrData = {};
   const reports = generateReferencedReports();
 
   sfdr.fiscalYear = faker.datatype.string();
