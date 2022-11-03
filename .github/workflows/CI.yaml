@@ -35,13 +35,13 @@ jobs:
         run: |
           ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
-          cp $GITHUB_ENV logs/$GITHUB_JOB/github_env.log
+          cp $GITHUB_ENV github_env.log
           echo "shaSum=sha1_manifest" >> $GITHUB_OUTPUT
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
           name: dockerImageVersions
-          path: $GITHUB_ENV
+          path: ./github_env.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         if: always()
@@ -163,9 +163,13 @@ jobs:
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - name: Download Image Versions
+        uses: actions/download-artifact@v3
         with:
           name: dockerImageVersions
+      - name: Make Image Versions Available
+        shell: bash
+        run: cat ./github_env.log >> $GITHUB_ENV
       - name: log inputs
         shell: bash
         run: |
