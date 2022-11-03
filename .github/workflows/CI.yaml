@@ -34,12 +34,12 @@ jobs:
         id: build-dockerfiles
         run: |
           ./build-utils/rebuild_docker_images.sh dataland_keycloak ./dataland-keycloak/Dockerfile \
-                   ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
+                   ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*
           PROXY_ENVIRONMENT="production" ./build-utils/rebuild_docker_images.sh dataland_inbound_proxy_production \
-                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/                   
+                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/
           PROXY_ENVIRONMENT="development" ./build-utils/rebuild_docker_images.sh dataland_inbound_proxy_development \
                   ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/
-          ./build-utils/rebuild_docker_images.sh dataland_inbound_admin_proxy ./dataland-inbound-admin-proxy/Dockerfile 
+          ./build-utils/rebuild_docker_images.sh dataland_inbound_admin_proxy ./dataland-inbound-admin-proxy/Dockerfile
           ./build-utils/rebuild_docker_images.sh dataland_e2etests ./dataland-e2etests/Dockerfile \
                  ./dataland-e2etests/ ./*gradle*
           cp $GITHUB_ENV github_env.log
