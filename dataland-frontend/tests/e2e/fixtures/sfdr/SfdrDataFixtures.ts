@@ -70,7 +70,7 @@ export function generateSfdrData(): SfdrData {
   sfdr.humanRightsDueDiligencePolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.childForcedDiscriminationPolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.iso14001 = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.briberyCoruptionPolicy = generateYesNoOrEmptyDatapoint(reports);
+  sfdr.briberyCorruptionPolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.fairBusinessMarketingAdvertisingPolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.technologiesExpertiseTransferPolicy = generateYesNoOrEmptyDatapoint(reports);
   sfdr.fairCompetitionPolicy = generateYesNoOrEmptyDatapoint(reports);

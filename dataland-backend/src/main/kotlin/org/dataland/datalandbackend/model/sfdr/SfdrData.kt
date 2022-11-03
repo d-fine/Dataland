@@ -120,7 +120,7 @@ data class SfdrData(
 
     val iso14001: DataPoint<YesNo>?,
 
-    val briberyCoruptionPolicy: DataPoint<YesNo>?,
+    val briberyCorruptionPolicy: DataPoint<YesNo>?,
 
     val fairBusinessMarketingAdvertisingPolicy: DataPoint<YesNo>?,
 
