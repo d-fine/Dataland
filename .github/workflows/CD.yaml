@@ -25,6 +25,9 @@ on:
         type: string
         default: integration
 
+env:
+  GITHUB_USER: ${{ github.actor }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build-prod-and-deploy:
