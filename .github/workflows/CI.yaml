@@ -34,7 +34,7 @@ jobs:
         run: |
           ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
-          echo $GIHUV_ENV > logs/$GITHUV_JOB/github_env.log
+          cp $GIHUV_ENV logs/$GITHUB_JOB/github_env.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         if: always()
