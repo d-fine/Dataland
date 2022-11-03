@@ -9,11 +9,7 @@ version: "3.8"
 
 services:
   proxy:
-    build:
-      context: ./
-      dockerfile: ./dataland-inbound-proxy/Dockerfile
-      args:
-        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
+    image: ghcr.io/d-fine/dataland/dataland-inbound-proxy-${PROXY_ENVIRONMENT:-development}:${DATALAND-INBOUND-PROXY-PRODUCTION_VERSION}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:

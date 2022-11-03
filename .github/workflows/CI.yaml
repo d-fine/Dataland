@@ -33,8 +33,12 @@ jobs:
       - name: Build Dockerfiles
         id: build-dockerfiles
         run: |
-          ./build-utils/rebuild_docker_images.sh dataland-keycloak dataland-keycloak/Dockerfile \
+          ./build-utils/rebuild_docker_images.sh dataland-keycloak ./dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh ./*gradle*                   
+          PROXY_ENVIRONMENT="production" ./build-utils/rebuild_docker_images.sh dataland-inbound-proxy-production \  
+                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/                   
+          PROXY_ENVIRONMENT="development" ./build-utils/rebuild_docker_images.sh dataland-inbound-proxy-development \  
+                  ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/                   
           cp $GITHUB_ENV github_env.log
           echo "shaSum=sha1_manifest" >> $GITHUB_OUTPUT
       - name: Store docker image versions
