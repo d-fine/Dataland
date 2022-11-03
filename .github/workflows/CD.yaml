@@ -39,11 +39,12 @@ jobs:
         shell: bash
         run: |
           mkdir -p logs/$GITHUB_JOB
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
           env > logs/$GITHUB_JOB/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
+          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
@@ -119,11 +120,12 @@ jobs:
         shell: bash
         run: |
           mkdir -p logs/$GITHUB_JOB
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs.log
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
           env > logs/$GITHUB_JOB/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
+          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
