@@ -26,8 +26,8 @@ jobs:
           - rebuild_inbound_proxy_images.sh
           - rebuild_keycloak_image.sh
           - rebuild_pgadmin_image.sh
-        env:
-          BUILD_SCRIPT: ${{ matrix.buildScript }}
+    env:
+      BUILD_SCRIPT: ${{ matrix.buildScript }}
     steps:
       - uses: actions/checkout@v3
       - name: log inputs
