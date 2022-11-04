@@ -36,12 +36,11 @@ ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
 DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
-echo $DOCKER_IMAGE_VERSIONS
 
 echo "Exporting users and shutting down keycloak."
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
-ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
+ssh ubuntu@"$target_server_url" "export $DOCKER_IMAGE_VERSIONS; \"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
