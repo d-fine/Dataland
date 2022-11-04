@@ -111,6 +111,10 @@ jobs:
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
+      - name: Download Image Versions
+        uses: actions/download-artifact@v3
+        with:
+          name: dockerImageVersions
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
