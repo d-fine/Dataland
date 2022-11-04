@@ -47,7 +47,7 @@ construction_dir=./dataland
 build_directories "$construction_dir"
 scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
-ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
+ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\" || true"
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
