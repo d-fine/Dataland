@@ -20,7 +20,7 @@ dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 input_sha1=$( \
   tar \
-  --exclude="node_modules/**" --exclude="build/**" --exclude=".gradle/**" --exclude="dist/**" \
+  --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
   --sort=name --owner=root:0 --group=root:0 --mtime='UTC 2019-01-01' -cvf - "$0" "$@" \
   | sha1sum | awk '{print $1}' \
 )
