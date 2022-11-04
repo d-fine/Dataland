@@ -26,18 +26,20 @@ jobs:
           - rebuild_inbound_proxy_images.sh
           - rebuild_keycloak_image.sh
           - rebuild_pgadmin_image.sh
+        env:
+          BUILD_SCRIPT: ${{ matrix.buildScript }}
     steps:
       - uses: actions/checkout@v3
       - name: log inputs
         shell: bash
         run: |
-          mkdir -p logs/$GITHUB_JOB
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
-          env > logs/$GITHUB_JOB/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
-          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
+          mkdir -p logs/$GITHUB_JOB/$BUILD_SCRIPT/
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/inputs_json.log
+          env > logs/$GITHUB_JOB/$BUILD_SCRIPT/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/secrets_json.log
+          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/env_json.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/matrix_json.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/github_json.log
       - name: Login to Github Packages
         uses: docker/login-action@v2
         with:
@@ -46,14 +48,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Dockerfiles
         id: build-dockerfiles
-        env:
-          BUILD_SCRIPT: ${{ matrix.buildScript }}
         run: bash -c ./build-utils/$BUILD_SCRIPT
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
           name: dockerImageVersions
-          path: ./github_env.log
+          path: ./*github_env.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         if: always()
@@ -73,7 +73,7 @@ jobs:
           name: dockerImageVersions
       - name: Make Image Versions Available
         shell: bash
-        run: cat ./github_env.log >> $GITHUB_ENV
+        run: cat ./*github_env.log >> $GITHUB_ENV
       - name: log inputs
         shell: bash
         run: |
@@ -190,7 +190,7 @@ jobs:
           name: dockerImageVersions
       - name: Make Image Versions Available
         shell: bash
-        run: cat ./github_env.log >> $GITHUB_ENV
+        run: cat ./*github_env.log >> $GITHUB_ENV
       - name: log inputs
         shell: bash
         run: |
