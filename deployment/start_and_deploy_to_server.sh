@@ -35,6 +35,9 @@ ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
+DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
+echo $DOCKER_IMAGE_VERSIONS
+
 echo "Exporting users and shutting down keycloak."
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
@@ -47,9 +50,6 @@ build_directories "$construction_dir"
 scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
-
-DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
-echo $DOCKER_IMAGE_VERSIONS
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
