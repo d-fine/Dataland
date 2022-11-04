@@ -48,7 +48,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Dockerfiles
         id: build-dockerfiles
-        run: bash -c ./build-utils/$BUILD_SCRIPT
+        run: eval "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
