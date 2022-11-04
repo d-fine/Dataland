@@ -111,8 +111,6 @@ jobs:
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
-      - name: Initialize docker image versions
-        run: DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
@@ -145,7 +143,7 @@ jobs:
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          DOCKER_IMAGE_VERSIONS: $DOCKER_IMAGE_VERSIONS
+          DOCKER_IMAGE_VERSIONS: ${ cat ./*github_env.log }
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
