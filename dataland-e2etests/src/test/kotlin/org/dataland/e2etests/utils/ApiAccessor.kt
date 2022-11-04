@@ -129,4 +129,4 @@ data class CompanyUpload(
 
     val actualStoredCompany: StoredCompany,
 
-    )
+)
