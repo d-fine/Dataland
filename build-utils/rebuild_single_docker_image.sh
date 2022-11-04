@@ -8,7 +8,7 @@ set -euxo pipefail
 docker_image_name=$1
 if [[ "$docker_image_name" == *"-"* ]];
 then
-  echo "ERROR: Docker image name contains a '-' which is forbidden"
+  echo "ERROR: Docker image name '$docker_image_name' contains a '-' which is forbidden"
   exit 1
 fi
 
