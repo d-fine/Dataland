@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 export GITHUB_ENV=${GITHUB_ENV:-./.env}
-./build-utils/rebuild_single_docker_image.sh dataland_keycloak ./dataland-keycloak/Dockerfile \
+./build-utils/rebuild_single_docker_image.sh dataland-keycloak ./dataland-keycloak/Dockerfile \
          ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh \
          ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
 ./build-utils/rebuild_single_docker_image.sh dataland_proxy_base \
