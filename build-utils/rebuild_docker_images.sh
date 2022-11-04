@@ -23,8 +23,7 @@ echo "${docker_image_name^^}_VERSION=$input_sha1" >> $GITHUB_ENV
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
 if [ "$sha1_manifest" == "no sha1 manifest" ]
 then
-  docker build -f "$dockerfile" . -t "$full_image_reference" --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" --build-arg GITHUB_USER="${GITHUB_USER:-}"
-
+  docker build -f "$dockerfile" . -t "$full_image_reference" --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" --build-arg GITHUB_USER="${GITHUB_USER:-}" --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}"
   docker push "$full_image_reference"
 else
   echo "Requirements already satisfied!"
