@@ -80,6 +80,8 @@ jobs:
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - rebuild-docker-images
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
