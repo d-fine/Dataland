@@ -31,11 +31,12 @@ persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
-ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
+ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down" || true
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
 echo "Exporting users and shutting down keycloak."
+ssh ubuntu@"$target_server_url" "mkdir -p ./dataland/dataland-keycloak"
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
