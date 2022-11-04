@@ -49,6 +49,7 @@ scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
 
 DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
+echo $DOCKER_IMAGE_VERSIONS
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
