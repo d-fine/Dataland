@@ -149,7 +149,7 @@ jobs:
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          DOCKER_IMAGE_VERSIONS: $DOCKER_IMAGE_VERSIONS
+          DOCKER_IMAGE_VERSIONS: ${ DOCKER_IMAGE_VERSIONS }
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
