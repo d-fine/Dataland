@@ -66,6 +66,21 @@ jobs:
           path: ./dataland-frontend/build/clients/backend/
       - name: Build KeyCloak theme
         run: ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Dockerfiles
+        id: build-dockerfiles
+        run: |
+          ./build-utils/rebuild_dataland_images.sh
+      - name: Store docker image versions
+        uses: actions/upload-artifact@v3
+        with:
+          name: dockerImageVersions
+          path: ./github_env.log
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
