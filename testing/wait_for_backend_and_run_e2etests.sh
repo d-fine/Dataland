@@ -19,12 +19,6 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 
-if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
-  ./gradlew :dataland-e2etests:compileTestKotlin --no-daemon --stacktrace
-else
-  ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace
-fi
-
 timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
 
 if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then

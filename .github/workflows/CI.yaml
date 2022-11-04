@@ -49,10 +49,12 @@ jobs:
                    ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           ./build-utils/rebuild_docker_images.sh dataland_inbound_admin_proxy ./dataland-inbound-admin-proxy/Dockerfile
           ./build-utils/rebuild_docker_images.sh dataland_e2etests ./dataland-e2etests/Dockerfile \
-                 ./dataland-e2etests/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
+                 ./dataland-backend/ ./dataland-e2etests/ ./dataland-frontend/tests/ \
+                 ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           ./build-utils/rebuild_docker_images.sh dataland_pgadmin ./dataland-pgadmin/Dockerfile
+          shopt -s extglob
           ./build-utils/rebuild_docker_images.sh dataland_frontend_production ./dataland-frontend/Dockerfile \
-                   ./dataland-frontend/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
+                   ./dataland-frontend/!(tests*) ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           ./build-utils/rebuild_docker_images.sh dataland_frontend_test ./dataland-frontend/DockerfileTest \
                    ./dataland-frontend/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
           cp $GITHUB_ENV github_env.log
