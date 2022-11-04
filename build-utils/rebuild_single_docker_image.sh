@@ -20,7 +20,7 @@ dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 input_sha1=$( \
   tar \
-  --exclude="node_modules/**" --exclude="build/**" --exclude=".gradle/**" --exclude="dist/**" \
+  --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
   --sort=name --owner=root:0 --group=root:0 --mtime='UTC 2019-01-01' -cvf - "$0" "$@" \
   | sha1sum | awk '{print $1}' \
 )
@@ -29,8 +29,7 @@ echo Input sha1 Hash: "$input_sha1"
 
 # Only execute the "build" command if the manifests are different.
 full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha1"
-echo "${docker_image_name^^}_VERSION=$input_sha1" >> "$GITHUB_ENV"
-echo "${docker_image_name^^}_VERSION=$input_sha1" >> "$DOCKER_IMAGE_VERSIONS"
+echo "${docker_image_name^^}_VERSION=$input_sha1" >> ./${BUILD_SCRIPT:-default}_github_env.log
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
 if [ "$sha1_manifest" == "no sha1 manifest" ] || [ "${FORCE_BUILD:-}" == "true" ] || [[ "${COMMIT_MESSAGE:-}" == *"FORCE_BUILD"* ]];
 then
