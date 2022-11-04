@@ -61,7 +61,7 @@ ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLO
                                  export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
                                  export KEYCLOAK_MAILJET_API_SECRET=\"$KEYCLOAK_MAILJET_API_SECRET\";
                                  export KEYCLOAK_MAILJET_API_ID=\"$KEYCLOAK_MAILJET_API_ID\";
-                                 export $(cat ./dockerImageVersions.env);
+                                 export $DOCKER_IMAGE_VERSIONS;
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 
 echo "Cleaning up exported user files."
