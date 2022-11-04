@@ -17,6 +17,9 @@ describe("As a developer, I want to ensure that the deployment is okay", () => {
     cy.request(`${getBaseUrl()}/gitinfo`)
       .should("have.a.property", "body")
       .should("have.a.property", "commit")
-      .should("eq", (Cypress.env("commit_id") as string) + "a");
+      .should("eq", "Dummy");
+    /**
+     * .should("eq", (Cypress.env("commit_id") as string) + "a");
+     */
   });
 });
