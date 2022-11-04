@@ -6,7 +6,7 @@ set -euxo pipefail
 # rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
 # e.g.: rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
 docker_image_name=$1
-if [ "$docker_image_name" == "*-*" ];
+if [[ "$docker_image_name" == *"-"* ]];
 then
   echo "ERROR: Docker image name contains a '-' which is forbidden"
   exit 1
