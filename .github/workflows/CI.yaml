@@ -34,7 +34,7 @@ jobs:
       - name: Build Dockerfiles
         id: build-dockerfiles
         run: |
-          echo {"commit":"$(git rev-parse HEAD)","time":"$(git show -s --format=%aI HEAD)","branch":"$(git rev-parse --abbrev-ref HEAD)"} > gitinfo
+          echo "{\"commit\":\""$(git rev-parse HEAD)"\",\"time\":\""$(git show -s --format=%aI HEAD)"\",\"branch\":\""$(git rev-parse --abbrev-ref HEAD)"\"}" > gitinfo
           export GITHUB_ENV=${GITHUB_ENV:-./.env}
           ./build-utils/rebuild_docker_images.sh dataland_keycloak ./dataland-keycloak/Dockerfile \
                    ./dataland-keycloak/dataland_theme/ ./dataland-keycloak/start_keycloak.sh \
