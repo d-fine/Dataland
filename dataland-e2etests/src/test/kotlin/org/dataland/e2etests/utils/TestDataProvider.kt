@@ -9,6 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
@@ -66,11 +67,6 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
 
     private val testCompanyInformationWithTData = convertJsonToList(getJsonFileForTesting())
 
-    fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
-        return testCompanyInformationWithTData.slice(0 until requiredQuantity)
-            .map { it.companyInformation }
-    }
-
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map { it.companyInformation.copy(identifiers = emptyList()) }
@@ -87,14 +83,14 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
         return companies.associateWith { getTData(dataSetsPerCompany) }
     }
 
-    fun getRandomAlphaNumericString(): String {
+    private fun getRandomAlphaNumericString(): String {
         val allowedChars = ('a'..'z') + ('0'..'9')
         return (1..10)
             .map { allowedChars.random() }
             .joinToString("")
     }
 
-    fun generateCustomCompanyInformation(companyName: String, sector: String): CompanyInformation {
+    fun generateCompanyInformation(companyName: String, sector: String): CompanyInformation {
         return CompanyInformation(
             companyName, "DummyCity", sector,
             (
@@ -104,6 +100,28 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
                 ),
             "DE"
         )
+    }
+
+    fun generateOneCompanyInformationPerBackendOnlyFramework(): List<CompanyInformation> {
+        val listWithOneCompanyInformationPerBackendOnlyFramework = listOf(
+            generateCompanyInformation("LksgCompany", "HiddenSector1928"),
+            generateCompanyInformation("SfdrCompany", "HiddenSector2891")
+        )
+        val totalNumberOfBackendOnlyFrameworks = listWithOneCompanyInformationPerBackendOnlyFramework.size
+        val totalNumberOfFrameworksInBackend = DataTypeEnum.values().size
+        if (totalNumberOfFrameworksInBackend - FRONTEND_DISPLAYED_FRAMEWORKS.size ==
+            totalNumberOfBackendOnlyFrameworks
+        ) {
+            return listWithOneCompanyInformationPerBackendOnlyFramework
+        } else {
+            throw IllegalArgumentException(
+                "The list returned by this function needs exactly one companyInformation data set " +
+                    "for each backend-only framework in Dataland. " +
+                    "Please assure that you haven't added a new framework to the Dataland backend without " +
+                    "including it in this function."
+
+            )
+        }
     }
 }
 
