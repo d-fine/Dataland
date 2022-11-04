@@ -4,6 +4,8 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
+echo $DOCKER_IMAGE_VERSIONS
+
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
 else
