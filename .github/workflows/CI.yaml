@@ -13,6 +13,19 @@ jobs:
   rebuild-docker-images:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        buildScript:
+          - rebuild_backend_production_image.sh
+          - rebuild_backend_test_image.sh
+          - rebuild_e2etests_image.sh
+          - rebuild_frontend_prod_image.sh
+          - rebuild_frontend_test_image.sh
+          - rebuild_inbound_admin_proxy_image.sh
+          - rebuild_inbound_proxy_images.sh
+          - rebuild_keycloak_image.sh
+          - rebuild_pgadmin_image.sh
     steps:
       - uses: actions/checkout@v3
       - name: log inputs
@@ -33,8 +46,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Dockerfiles
         id: build-dockerfiles
-        run: |
-          ./build-utils/rebuild_dataland_images.sh
+        env:
+          BUILD_SCRIPT: ${{ matrix.buildScript }}
+        run: bash -c $BUILD_SCRIPT
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:

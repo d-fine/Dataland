@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euxo pipefail
+
+./build-utils/rebuild_single_docker_image.sh dataland_frontend_test ./dataland-frontend/DockerfileTest \
+         ./dataland-frontend/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
