@@ -29,4 +29,4 @@ PROXY_ENVIRONMENT="production" ./build-utils/rebuild_single_docker_image.sh data
         ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/ ./gitinfo
 PROXY_ENVIRONMENT="development" ./build-utils/rebuild_single_docker_image.sh dataland_inbound_proxy_development \
         ./dataland-inbound-proxy/Dockerfile ./dataland-inbound-proxy/ ./dataland-frontend/src/assets/images/ ./gitinfo
-cp $GITHUB_ENV github_env.log
+cp $GITHUB_ENV ./github_env.log
