@@ -4,9 +4,6 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
-echo $DOCKER_IMAGE_VERSIONS
-DOCKER_IMAGE_VERSIONS=$DOCKER_IMAGE_VERSIONS
-
 if [[ $IN_MEMORY == true ]]; then
   profile=productionInMemory
 else
@@ -50,6 +47,8 @@ build_directories "$construction_dir"
 scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
+
+DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
