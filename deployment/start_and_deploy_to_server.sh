@@ -69,11 +69,11 @@ ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persisten
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
-  ssh ubuntu@"$target_server_url" "export $(cat ./dockerImageVersions.env); source $location/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"backend_data\""
+  ssh ubuntu@"$target_server_url" "source $location/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"backend_data\""
 fi
 
 echo "Starting docker compose stack."
-ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
+ssh ubuntu@"$target_server_url" "export $(cat ./dockerImageVersions.env); cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
