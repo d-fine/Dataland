@@ -13,7 +13,7 @@ docker_image_name=$1
 shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
-input_sha1=$(tar --sort=name --owner=root:0 --group=root:0 --mtime='UTC 2019-01-01' -cvf - "$@" | sha1sum | awk '{print $1}')
+input_sha1=$(tar --sort=name --owner=root:0 --group=root:0 --mtime='UTC 2019-01-01' -cvf - "$0" "$@" | sha1sum | awk '{print $1}')
 
 echo Input sha1 Hash: "$input_sha1"
 
