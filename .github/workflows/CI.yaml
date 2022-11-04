@@ -48,7 +48,7 @@ jobs:
         id: build-dockerfiles
         env:
           BUILD_SCRIPT: ${{ matrix.buildScript }}
-        run: bash -c ./$BUILD_SCRIPT
+        run: bash -c ./build-utils/$BUILD_SCRIPT
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
