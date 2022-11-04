@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 DOCKER_IMAGE_VERSIONS=./dockerImageVersions.env
-rm "$DOCKER_IMAGE_VERSIONS"
+rm "$DOCKER_IMAGE_VERSIONS" || true
 touch "$DOCKER_IMAGE_VERSIONS"
 export DOCKER_IMAGE_VERSIONS="$DOCKER_IMAGE_VERSIONS"
 export GITHUB_ENV="${GITHUB_ENV:-./.env}"
