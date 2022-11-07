@@ -1,5 +1,6 @@
 import Chainable = Cypress.Chainable;
 import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
+import { verifyTaxonomySearchResultTable } from "./VerifyingElements";
 
 export function logout(): void {
   cy.visitAndCheckAppMount("/companies")
@@ -40,7 +41,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
         .click();
     });
   }
-
+  verifyTaxonomySearchResultTable();
   cy.url().should("eq", getBaseUrl() + "/companies");
 }
 
