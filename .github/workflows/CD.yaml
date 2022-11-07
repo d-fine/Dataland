@@ -192,11 +192,8 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
           fi
-      - name: Download frontend API client
-        uses: actions/download-artifact@v3
-        with:
-          name: frontendApiClient
-          path: ./dataland-frontend/build/clients/backend/
+      - name: Execute Frontend Component Tests
+        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
