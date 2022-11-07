@@ -62,6 +62,7 @@ export default defineComponent({
         {
           label: "USER SETTINGS",
           icon: "settings",
+          id: "profile-pocture-dropdown-settings-button",
           clickAction: this.gotoUserSettings,
         },
         {

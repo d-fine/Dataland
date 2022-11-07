@@ -1,4 +1,5 @@
 import { login, logout } from "@e2e/utils/Auth";
+import { authenticator } from "otplib";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -72,5 +73,46 @@ describe("As a user I want to be able to register for an account and be able to 
       });
     });
     logout();
+  });
+
+  it("Checks that TOTP-Based 2FA can be enabled for the newly registered account", () => {
+    cy.task("getEmail").then((returnEmail) => {
+      cy.task("getPassword").then((returnPassword) => {
+        const username = returnEmail as string;
+        const password = returnPassword as string;
+        login(username, password);
+        cy.visitAndCheckAppMount("/companies")
+          .get("div[id='profile-picture-dropdown-toggle']")
+          .click()
+          .get("a[id='profile-pocture-dropdown-settings-button']")
+          .click()
+          .get("div[id='landing-signingin'] > a")
+          .should("be.visible", { timeout: 20000 })
+          .click()
+          .get("button:contains('Set up authenticator application')")
+          .should("be.visible", { timeout: 20000 })
+          .click()
+          .get("a:contains('Unable to scan')")
+          .should("be.visible", { timeout: 10000 })
+          .click()
+          .get("span[id='kc-totp-secret-key']")
+          .should("be.visible", { timeout: 10000 })
+          .invoke("text")
+          .then((text) => {
+            const totpKey = text.replace(/\s/g, "");
+            cy.get("input[id='totp']")
+              .type(authenticator.generate(totpKey))
+              .get("input[id='saveTOTPBtn']")
+              .click()
+              .get("button[id='signOutButton']")
+              .should("be.visible", { timeout: 20000 });
+
+            logout();
+            login(username, password, () => {
+              return authenticator.generate(totpKey);
+            });
+          });
+      });
+    });
   });
 });
