@@ -131,29 +131,29 @@ describe(
         checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
       });
     });
-  }
-describe("Upload and validate Sme data", () => {
-  let companiesWithSmeData: Array<FixtureData<SmeData>>;
 
-  before(function () {
-    cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-      companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
-    });
-  });
+    describe("Upload and validate Sme data", () => {
+      let companiesWithSmeData: Array<FixtureData<SmeData>>;
 
-  it("Upload Lksg fake-fixtures", () => {
-    async function uploadOneSmeDataset(token: string, companyId: string, data: SmeData): Promise<void> {
-      await new SmeDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedSmeData({
-        companyId,
-        data,
+      before(function () {
+        cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+          companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+        });
       });
-    }
-    prepopulate(companiesWithSmeData, uploadOneSmeDataset);
-  });
 
-  it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-    checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
-  });
-});
-}
+      it("Upload Lksg fake-fixtures", () => {
+        async function uploadOneSmeDataset(token: string, companyId: string, data: SmeData): Promise<void> {
+          await new SmeDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedSmeData({
+            companyId,
+            data,
+          });
+        }
+        prepopulate(companiesWithSmeData, uploadOneSmeDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
+      });
+    });
+  }
 );

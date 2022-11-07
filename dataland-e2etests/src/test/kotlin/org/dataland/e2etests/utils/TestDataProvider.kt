@@ -46,8 +46,8 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             File("./build/resources/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
             File("./build/resources/CompanyInformationWithSfdrData.json")
-                SmeData::class.java to
-                File("./build/resources/CompanyInformationWithSmeData.json")
+            SmeData::class.java to
+            File("./build/resources/CompanyInformationWithSmeData.json")
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
