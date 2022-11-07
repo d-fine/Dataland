@@ -122,7 +122,7 @@ describe(
         });
       });
 
-      it("Upload Lksg fake-fixtures", () => {
+      it("Upload Sfdr fake-fixtures", () => {
         prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
       });
 
