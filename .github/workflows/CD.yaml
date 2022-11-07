@@ -76,6 +76,11 @@ jobs:
         with:
           name: parameters
           path: ./logs/
+      - name: Store generated frontend API client for use by cypress
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -106,11 +111,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Store generated frontend API client for use by cypress
-        uses: actions/upload-artifact@v3
-        with:
-          name: frontendApiClient
-          path: ./dataland-frontend/build/clients/backend/
       - name: Download Image Versions
         uses: actions/download-artifact@v3
         with:
