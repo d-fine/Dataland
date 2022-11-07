@@ -23,23 +23,25 @@ class AssuranceDataParserTest {
         assurance: String,
         assuranceProvider: String,
         assuranceReport: String,
-        assurancePage: String
+        assurancePage: String,
+        assuranceTag: String
     ): Map<String, String> {
         return mapOf(
             "assurance" to assurance,
             "assurance provider" to assuranceProvider,
             "assurance report" to assuranceReport,
-            "assurance page" to assurancePage
+            "assurance page" to assurancePage,
+            "assurance tag" to assuranceTag,
         )
     }
 
     @Test
     fun `test AssuranceDataParser`() {
-        val row = buildDataRow("reasonable", "Baker", "Annual Report", "123")
+        val row = buildDataRow("reasonable", "Baker", "Annual Report", "123", "here")
         assertEquals(
             AssuranceData(
                 assurance = AssuranceOptions.ReasonableAssurance,
-                provider = "Baker", CompanyReportReference(report = "AnnualReport", page = 123)
+                provider = "Baker", CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here")
             ),
             assuranceParser
                 .buildSingleAssuranceData(row),
@@ -48,7 +50,7 @@ class AssuranceDataParserTest {
 
     @Test
     fun `test AssuranceDataParser with empty row`() {
-        val rowWithNoAssurance = buildDataRow("", "", "", "")
+        val rowWithNoAssurance = buildDataRow("", "", "", "", "")
         assertEquals(
             null,
             assuranceParser.buildSingleAssuranceData(rowWithNoAssurance),
@@ -57,7 +59,7 @@ class AssuranceDataParserTest {
 
     @Test
     fun `test AssuranceDataParser with missing arguments`() {
-        val rowWithProviderOnly = buildDataRow("", "Baker", "", "")
+        val rowWithProviderOnly = buildDataRow("", "Baker", "", "", "")
         assertThrows<IllegalArgumentException> {
             assuranceParser.buildSingleAssuranceData(rowWithProviderOnly)
         }

@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv.utils
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
 /**
  * This class only passes the map for the YesNoNa Enum to the EnumCsv

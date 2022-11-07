@@ -1,19 +1,18 @@
 import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
 import {
-  CompanyInformation,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
-  Configuration,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApi,
   DataTypeEnum,
-  StoredCompany,
-  CompanyDataControllerApi,
   LksgData,
-  LksgDataControllerApi,
+  SfdrData,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 const chunkSize = 15;
 
 describe(
@@ -27,16 +26,9 @@ describe(
   },
 
   () => {
-    async function uploadOneCompany(token: string, companyInformation: CompanyInformation): Promise<StoredCompany> {
-      const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-        companyInformation
-      );
-      return data.data;
-    }
-
     function prepopulate(
       companiesWithFrameworkData: Array<
-        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData>
+        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData | SfdrData>
       >,
       // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneFrameworkDataset: Function
@@ -45,7 +37,7 @@ describe(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         doThingsInChunks(companiesWithFrameworkData, chunkSize, async (it) => {
-          const storedCompany = await uploadOneCompany(token, it.companyInformation);
+          const storedCompany = await uploadCompanyViaApi(token, it.companyInformation);
           await uploadOneFrameworkDataset(token, storedCompany.companyId, it.t);
         });
       });
@@ -73,19 +65,7 @@ describe(
       });
 
       it("Upload eutaxonomy-financials fake-fixtures", () => {
-        async function uploadOneEuTaxonomyFinancialsDataset(
-          token: string,
-          companyId: string,
-          data: EuTaxonomyDataForFinancials
-        ): Promise<void> {
-          await new EuTaxonomyDataForFinancialsControllerApi(
-            new Configuration({ accessToken: token })
-          ).postCompanyAssociatedEuTaxonomyDataForFinancials({
-            companyId,
-            data,
-          });
-        }
-        prepopulate(companiesWithEuTaxonomyDataForFinancials, uploadOneEuTaxonomyFinancialsDataset);
+        prepopulate(companiesWithEuTaxonomyDataForFinancials, uploadOneEuTaxonomyFinancialsDatasetViaApi);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
@@ -105,19 +85,7 @@ describe(
       });
 
       it("Upload eutaxonomy-non-financials fake-fixtures", () => {
-        async function uploadOneEuTaxonomyNonFinancialsDataset(
-          token: string,
-          companyId: string,
-          data: EuTaxonomyDataForFinancials
-        ): Promise<void> {
-          await new EuTaxonomyDataForNonFinancialsControllerApi(
-            new Configuration({ accessToken: token })
-          ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
-            companyId,
-            data,
-          });
-        }
-        prepopulate(companiesWithEuTaxonomyDataForNonFinancials, uploadOneEuTaxonomyNonFinancialsDataset);
+        prepopulate(companiesWithEuTaxonomyDataForNonFinancials, uploadOneEuTaxonomyNonFinancialsDatasetViaApi);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
@@ -135,17 +103,29 @@ describe(
       });
 
       it("Upload Lksg fake-fixtures", () => {
-        async function uploadOneLksgDataset(token: string, companyId: string, data: LksgData): Promise<void> {
-          await new LksgDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedLksgData({
-            companyId,
-            data,
-          });
-        }
-        prepopulate(companiesWithLksgData, uploadOneLksgDataset);
+        prepopulate(companiesWithLksgData, uploadOneLksgDatasetViaApi);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
+      });
+    });
+
+    describe("Upload and validate Sfdr data", () => {
+      let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
+
+      before(function () {
+        cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
+          companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
+        });
+      });
+
+      it("Upload Lksg fake-fixtures", () => {
+        prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
       });
     });
   }

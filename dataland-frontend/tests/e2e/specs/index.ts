@@ -53,5 +53,6 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require("./company-metadata/SearchPagination");
   require("./company-metadata/CompanyUpload");
+  require("./company-metadata/FrameworkDataUpload");
   require("./company-metadata/SearchCompaniesForFrameworkData");
 }

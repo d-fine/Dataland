@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { LksgData, ProductionSite } from "@clients/backend";
-
 import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();
@@ -32,10 +33,6 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
   return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
 }
 
-export function generateDataDate(): string {
-  return faker.date.future(1).toISOString().split("T")[0];
-}
-
 export function generateVatIdentificationNumber(): string {
   const fakeCountryCode = faker.address.countryCode();
   const randomNineDigitNumber = faker.random.numeric(9);
@@ -56,16 +53,11 @@ export function getCompanyLegalForm(): string {
   return legalForms[Math.floor(Math.random() * legalForms.length)];
 }
 
-export function generateIso4217CurrencyCode(): string {
-  const someCommonIso4217CurrencyCodes = ["USD", "EUR", "CHF", "CAD", "AUD"];
-  return someCommonIso4217CurrencyCodes[Math.floor(Math.random() * someCommonIso4217CurrencyCodes.length)];
-}
-
 export function generateLksgData(): LksgData {
   const returnBase: LksgData = {};
 
   returnBase.betterWorkProgramCertificate = randomYesNoUndefined();
-  returnBase.dataDate = generateDataDate();
+  returnBase.dataDate = randomFutureDate();
   returnBase.companyLegalForm = getCompanyLegalForm();
   returnBase.vatIdentificationNumber = generateVatIdentificationNumber();
   returnBase.numberOfEmployees = faker.datatype.number({ min: 1000, max: 200000 });

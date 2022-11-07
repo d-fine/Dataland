@@ -63,6 +63,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancialsSample",
@@ -102,10 +103,13 @@ export default defineComponent({
           this.companyID,
           "eutaxonomy-non-financials"
         );
-        const listOfMetaData = apiResponse.data;
-
-        if (listOfMetaData.length > 0) {
-          this.dataId = listOfMetaData[0].dataId;
+        const filteredData = apiResponse.data.filter((dataItem) => {
+          if (dataItem.dataType === DataTypeEnum.EutaxonomyNonFinancials) {
+            return dataItem;
+          }
+        });
+        if (filteredData.length > 0) {
+          this.dataId = filteredData[0].dataId;
         }
       } catch (error) {
         console.error(error);
