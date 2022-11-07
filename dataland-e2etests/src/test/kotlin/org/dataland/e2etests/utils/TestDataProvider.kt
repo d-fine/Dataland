@@ -122,7 +122,7 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
                 "The list returned by this function needs exactly one companyInformation data set " +
                     "for each backend-only framework in Dataland. " +
                     "Please assure that you haven't added a new framework to the Dataland backend without " +
-                    "including it in this function."
+                    "including it in this function and in the test where it is used."
 
             )
         }
