@@ -113,7 +113,7 @@ services:
       - internal
     volumes:
       - ./dataland-frontend:/app
-      - /app/node_modules
+      - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
@@ -131,7 +131,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development", "productionInMemory"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.8
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.30-SNAPSHOT
     environment:
       SERVER_PORT: 9191
       SERVER_SERVLET_CONTEXT-PATH: /api
@@ -147,16 +147,14 @@ services:
   dataland-edc:
     restart: always
     profiles: ["production"]
-    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.8
+    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.30-SNAPSHOT
     networks:
       - internal
     expose:
       - "9191"
       - "9292"
     environment:
-      DATALAND_EDC_WEB_URI: ${DATALAND_EDC_WEB_URI}
-      DATALAND_EDC_IDS_URI: ${DATALAND_EDC_IDS_URI}
-      TRUSTEE_WEB_URI: ${TRUSTEE_WEB_URI}
+      DATALAND_EDC_ASSET_ACCESS_URI: ${DATALAND_EDC_ASSET_ACCESS_URI}
       TRUSTEE_IDS_URI: ${TRUSTEE_IDS_URI}
       EDC_OAUTH_PROVIDER_AUDIENCE: ${EDC_OAUTH_PROVIDER_AUDIENCE}
       EDC_OAUTH_PROVIDER_JWKS_URL: ${EDC_OAUTH_PROVIDER_JWKS_URL}
@@ -237,6 +235,7 @@ services:
     volumes:
       - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
       - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
+      - pgadmin-config:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -255,4 +254,8 @@ volumes:
   backend_data:
     driver: local
   letsencrypt:
+    driver: local
+  pgadmin-config:
+    driver: local
+  frontend-dev-node-modules:
     driver: local
