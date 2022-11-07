@@ -29,6 +29,8 @@ on:
 jobs:
   rebuild-docker-images:
     runs-on: ubuntu-latest
+    outputs:
+      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
     strategy:
       fail-fast: false
       matrix:
@@ -153,10 +155,11 @@ jobs:
           subfolder: 'build-prod-and-deploy'
   e2e-tests:
     runs-on: ubuntu-latest
-    container: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
+    container: ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }}
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
+      - rebuild-docker-images
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
@@ -193,13 +196,6 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
           fi
-      - name: Download Image Versions
-        uses: actions/download-artifact@v3
-        with:
-          name: dockerImageVersions
-      - name: Make Image Versions Available
-        shell: bash
-        run: cat ./*github_env.log >> $GITHUB_ENV
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
@@ -214,7 +210,7 @@ jobs:
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
+        run: cd dataland-frontend && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=preview-dataland.duckdns.org,dev-dataland.duckdns.org,dev2-dataland.duckdns.org"
           CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
