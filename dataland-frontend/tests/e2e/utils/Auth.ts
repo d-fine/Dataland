@@ -30,6 +30,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
     .click();
 
   if (otpGenerator) {
+    // cy.then used to ensure that the OTP is only generated right before it is entered
     cy.then(() => {
       cy.get("input[id='otp']")
         .should("exist")
