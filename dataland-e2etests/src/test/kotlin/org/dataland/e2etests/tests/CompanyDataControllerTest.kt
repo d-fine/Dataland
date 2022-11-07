@@ -97,6 +97,12 @@ class CompanyDataControllerTest {
             listOf(testCompanyInformation[2]), listOf(apiAccessor.testDataProviderForSmeData.getTData(1)[0]),
             apiAccessor.smeUploaderFunction
         )
+        /* TODO we should assure somehow, that the uploads above cover all backend-only-frameworks.
+        I had some ideas on how we could "enforce" that, but thos ideas would lead to this method having more than 20
+        lines of code and therefore detekt failing.
+        Maybe we should think about building an iterator that iterates through datatypes you give to it and does
+        things with the matching testDataProvicer and controller.
+        */
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
             distinctValues.sectors!!.intersect(testCompanyInformation.map { it.sector }.toSet()).isEmpty(),
