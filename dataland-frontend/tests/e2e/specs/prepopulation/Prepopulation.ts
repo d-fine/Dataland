@@ -5,7 +5,6 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  LksgDataControllerApi,
   SmeData,
   SmeDataControllerApi,
 } from "@clients/backend";
@@ -138,6 +137,12 @@ describe(
       before(function () {
         cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
           companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+    describe("Upload and validate Sfdr data", () => {
+      let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
+
+      before(function () {
+        cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
+          companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
         });
       });
 
@@ -153,6 +158,11 @@ describe(
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
+        prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
       });
     });
   }

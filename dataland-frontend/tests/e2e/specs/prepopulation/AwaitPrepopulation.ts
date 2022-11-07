@@ -53,14 +53,21 @@ describe("I want to ensure that the prepopulation has finished before executing 
           const lksgResponse = await countCompanyAndDataIds(token, DataTypeEnum.Lksg);
           assert(
             lksgResponse.matchingCompanies >= minimumNumberLksgCompanies,
-            `Found ${financialResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
+            `Found ${lksgResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
+          );
+          const sfdrResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sfdr);
+          assert(
+            sfdrResponse.matchingCompanies >= minimumNumberSfdrCompanies,
+            `Found ${sfdrResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSfdrCompanies})`
           );
           const smeResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sme);
           assert(
             smeResponse.matchingCompanies >= minimumNumberSmeCompanies,
-            `Found ${financialResponse.matchingCompanies} SME companies (Expecting at least ${minimumNumberSmeCompanies})`
+            `Found ${smeResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSmeCompanies})`
           );
         });
     }
   );
 });
+
+
