@@ -2,8 +2,6 @@
 set -euxo pipefail
 source "$(dirname "$0")"/deployment_utils.sh
 
-echo $DATALAND_KEYCLOAK_VERSION
-
 location=$1
 keycloak_user_dir=$2
 keycloak_backup_dir=$3
