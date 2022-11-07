@@ -192,6 +192,7 @@ services:
       - ./dataland-keycloak/realms:/keycloak_realms
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
+    env_file: .env
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
