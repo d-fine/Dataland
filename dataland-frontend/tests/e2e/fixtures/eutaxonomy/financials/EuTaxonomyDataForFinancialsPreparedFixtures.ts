@@ -16,6 +16,7 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createCreditInstitutionSingleFieldSubmission,
     createInsuranceCompany,
     createAssetManagementCompany,
+    createAllValuesCompany,
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
@@ -55,7 +56,7 @@ function createInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "insurance-company";
-  input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
+  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
   return input;
 }
 
@@ -63,7 +64,7 @@ function createAssetManagementCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-company";
-  input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
+  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
   return input;
 }
 
@@ -71,6 +72,61 @@ function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-insurance-company";
-  input.t = input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
+  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
+  return input;
+}
+
+function createAllValuesCompany(
+  input: FixtureData<EuTaxonomyDataForFinancials>
+): FixtureData<EuTaxonomyDataForFinancials> {
+  input.companyInformation.companyName = "company-for-all-types";
+  input.t = generateEuTaxonomyDataForFinancialsWithTypes([
+    "CreditInstitution",
+    "AssetManagement",
+    "InsuranceOrReinsurance",
+    "InvestmentFirm",
+  ]);
+  input.t.creditInstitutionKpis = {
+    interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    tradingPortfolio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    tradingPortfolioAndInterbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+  };
+  input.t.insuranceKpis = {
+    taxonomyEligibleNonLifeInsuranceActivities: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+  };
+  input.t.investmentFirmKpis = {
+    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+  };
+  input.t.eligibilityKpis = {
+    CreditInstitution: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    AssetManagement: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    InsuranceOrReinsurance: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+    InvestmentFirm: {
+      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    },
+  };
   return input;
 }

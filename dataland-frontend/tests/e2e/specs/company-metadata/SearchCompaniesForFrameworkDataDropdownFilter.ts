@@ -1,12 +1,17 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadDummyEuTaxonomyDataForFinancials } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { createCompanyAndGetId } from "@e2e/utils/CompanyUpload";
-import { uploadDummyEuTaxonomyDataForNonFinancials } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import {
+  getFirstEuTaxonomyFinancialsDatasetFromFixtures,
+  uploadOneEuTaxonomyFinancialsDatasetViaApi,
+} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -24,7 +29,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     () => {
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit("/companies?framework=eutaxonomy-financials").wait("@companies-meta-information");
+      cy.visit("/companies").wait("@companies-meta-information");
       verifyTaxonomySearchResultTable();
       cy.get("#framework-filter")
         .click()
@@ -36,12 +41,21 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("exist")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
-        .click()
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url()
+        .should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-non-financials")
         .get("div.p-multiselect-panel")
-        .find("li:contains('EU Taxonomy for non-financial companies')")
-        .click()
-        .url()
-        .should("include", "/companies?framework=eutaxonomy-non-financials");
+        .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url()
+        .should("eq", getBaseUrl() + "/companies")
+        .get("div.p-multiselect-panel")
+        .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
+        .click();
+      verifyTaxonomySearchResultTable();
+      cy.url().should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-financials");
     }
   );
   it(
@@ -74,7 +88,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .contains(demoCompanyToTestFor.companyName)
         .should("exist")
         .url()
-        .should("contain", `countryCode=${demoCompanyToTestFor.countryCode}`);
+        .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
     }
   );
   it(
@@ -94,14 +108,16 @@ describe("As a user, I expect the search functionality on the /companies page to
         .should("contain.text", "Sorry! Your search didn't return any results.")
         .get("#sector-filter")
         .click()
-        .get("div.p-multiselect-panel")
-        .find(`li:contains('${demoCompanyToTestFor.sector}')`)
-        .click({ force: true })
+        .get('input[placeholder="Search sectors"]')
+        .type(`${demoCompanyToTestFor.sector}`)
+        .get("li")
+        .should("contain", `${demoCompanyToTestFor.sector}`)
+        .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
         .should("exist")
         .url()
-        .should("contain", `sector=${demoCompanyToTestFor.sector}`);
+        .should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
     }
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
@@ -158,25 +174,31 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       it(
         "Upload a company without uploading framework data for it, assure that its sector does not appear as filter " +
-          "option, and check if it neither appears in the autocomplete suggestions nor in the search results, " +
-          "even though no framework filter is set.",
+          "option, and check if the company neither appears in the autocomplete suggestions nor in the " +
+          "search results, even though no framework filter is actively set.",
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
-          createCompanyAndGetId(companyName, sector);
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+          });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           verifyTaxonomySearchResultTable();
           cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
+            verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
               .get('input[placeholder="Search sectors"]')
               .type(sector, { scrollBehavior: false })
-              .get("li")
-              .should("contain", `No results found`);
+              .get("div.p-multiselect-panel")
+              .find("li:contains('No results found')")
+              .should("exist");
           });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(companyName, { scrollBehavior: false });
+          cy.get("input[name=search_bar_top]")
+            .click({ scrollBehavior: false })
+            .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
@@ -194,7 +216,17 @@ describe("As a user, I expect the search functionality on the /companies page to
           "framework filter is set to that framework, or to several frameworks including that framework",
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
-          createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  token,
+                  storedCompany.companyId,
+                  euTaxonomyFinancialsDataset
+                );
+              });
+            });
+          });
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
             .wait("@companies-meta-information")
@@ -220,7 +252,10 @@ describe("As a user, I expect the search functionality on the /companies page to
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
-        cy.get("input[name=search_bar_top]").click({ force: true }).type(companyNameMarker);
+        verifyTaxonomySearchResultTable();
+        cy.get("input[name=search_bar_top]")
+          .click({ scrollBehavior: false })
+          .type(companyNameMarker, { scrollBehavior: false });
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
@@ -236,16 +271,37 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyNameFinancialPrefix = "CompanyWithFinancial";
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-          createCompanyAndGetId(companyNameFinancial).then((companyId) =>
-            uploadDummyEuTaxonomyDataForFinancials(companyId)
-          );
+
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
+                (storedCompany) => {
+                  return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                    token,
+                    storedCompany.companyId,
+                    euTaxonomyFinancialsDataset
+                  );
+                }
+              );
+            });
+          });
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
 
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
-          createCompanyAndGetId(companyNameNonFinancial).then((companyId) =>
-            uploadDummyEuTaxonomyDataForNonFinancials(companyId)
-          );
+
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
+              (storedCompany) => {
+                return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                  token,
+                  storedCompany.companyId,
+                  companiesWithEuTaxonomyDataForNonFinancials[0].t
+                );
+              }
+            );
+          });
+
           checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "eutaxonomy-non-financials");
         }
       );
