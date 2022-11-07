@@ -37,7 +37,9 @@ build_directories () {
   mkdir -p $target_dir/dataland-keycloak/users;
 
   cat ./*github_env.log > "$target_dir"/.env
+  set -o allexport
   source "$target_dir"/.env
+  set +o allexport
   envsubst < environments/.env.template >> "$target_dir"/.env
 
   echo "Copying general files."
