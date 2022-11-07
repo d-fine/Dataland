@@ -36,8 +36,9 @@ build_directories () {
 
   mkdir -p $target_dir/dataland-keycloak/users;
 
-  envsubst < environments/.env.template > "$target_dir"/.env
-  cat ./*github_env.log >> "$target_dir"/.env
+  cat ./*github_env.log > "$target_dir"/.env
+  source "$target_dir"/.env
+  envsubst < environments/.env.template >> "$target_dir"/.env
 
   echo "Copying general files."
   cp ./docker-compose.yml "$target_dir"
