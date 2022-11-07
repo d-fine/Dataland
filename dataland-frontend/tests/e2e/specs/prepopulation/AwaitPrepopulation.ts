@@ -52,18 +52,18 @@ describe("I want to ensure that the prepopulation has finished before executing 
           );
           const lksgResponse = await countCompanyAndDataIds(token, DataTypeEnum.Lksg);
           assert(
-            financialResponse.matchingCompanies >= minimumNumberLksgCompanies,
-            `Found ${financialResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
+            lksgResponse.matchingCompanies >= minimumNumberLksgCompanies,
+            `Found ${lksgResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
           );
-            const sfdrResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sfdr);
-            assert(
-                financialResponse.matchingCompanies >= minimumNumberSfdrCompanies,
-                `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSfdrCompanies})`
-            );
+          const sfdrResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sfdr);
+          assert(
+            sfdrResponse.matchingCompanies >= minimumNumberSfdrCompanies,
+            `Found ${sfdrResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSfdrCompanies})`
+          );
           const smeResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sme);
           assert(
-            financialResponse.matchingCompanies >= minimumNumberSmeCompanies,
-            `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSmeCompanies})`
+            smeResponse.matchingCompanies >= minimumNumberSmeCompanies,
+            `Found ${smeResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSmeCompanies})`
           );
         });
     }
