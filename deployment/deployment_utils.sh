@@ -34,9 +34,6 @@ build_directories () {
   echo "Assembling deployment folder."
   mkdir -p "$target_dir"
 
-  mkdir -p $target_dir/jar;
-  mkdir -p $target_dir/dataland-keycloak/dataland_theme/login;
-  mkdir -p $target_dir/dataland-frontend/src/assets
   mkdir -p $target_dir/dataland-keycloak/users;
 
   envsubst < environments/.env.template > "$target_dir"/.env
@@ -51,11 +48,7 @@ build_directories () {
   cp -r ./dataland-frontend/src/assets/images "$target_dir"/dataland-frontend/src/assets
 
   echo "Copying keycloak files."
-  cp ./dataland-keycloak/start_keycloak.sh "$target_dir"/dataland-keycloak/start_keycloak.sh
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
-  cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
-  cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
-  cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme
 
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }
