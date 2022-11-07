@@ -110,7 +110,6 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
             generateCompanyInformation("LksgCompany", "HiddenSector1928"),
             generateCompanyInformation("SfdrCompany", "HiddenSector2891"),
             generateCompanyInformation("SmeCompany", "HiddenSector3891")
-
         )
         val totalNumberOfBackendOnlyFrameworks = listWithOneCompanyInformationPerBackendOnlyFramework.size
         val totalNumberOfFrameworksInBackend = DataTypeEnum.values().size

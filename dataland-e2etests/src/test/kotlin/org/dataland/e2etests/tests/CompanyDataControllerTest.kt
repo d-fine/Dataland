@@ -93,6 +93,10 @@ class CompanyDataControllerTest {
             listOf(testCompanyInformation[1]), listOf(apiAccessor.testDataProviderForSfdrData.getTData(1)[0]),
             apiAccessor.sfdrUploaderFunction
         )
+        apiAccessor.uploadCompanyAndFrameworkData(
+            listOf(testCompanyInformation[2]), listOf(apiAccessor.testDataProviderForSmeData.getTData(1)[0]),
+            apiAccessor.smeUploaderFunction
+        )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
             distinctValues.sectors!!.intersect(testCompanyInformation.map { it.sector }.toSet()).isEmpty(),

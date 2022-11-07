@@ -4,15 +4,18 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.TestDataProvider
@@ -60,6 +63,17 @@ class ApiAccessor {
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
             companyAssociatedSfdrData
+        )
+    }
+
+    private val dataControllerApiForSmeData =
+        SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForSmeData =
+        TestDataProvider(SmeData::class.java)
+    val smeUploaderFunction = { companyId: String, smeData: SmeData ->
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
+        dataControllerApiForSmeData.postCompanyAssociatedSmeData(
+            companyAssociatedSmeData
         )
     }
 
