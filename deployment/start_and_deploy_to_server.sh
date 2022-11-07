@@ -35,12 +35,10 @@ ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
-DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
-
 echo "Exporting users and shutting down keycloak."
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
-ssh ubuntu@"$target_server_url" "export $DOCKER_IMAGE_VERSIONS; \"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
+ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
@@ -51,19 +49,7 @@ scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
 
 echo "Set up Keycloak from scratch."
-ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
-                                 export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
-                                 export KEYCLOAK_READER_VALUE=\"$KEYCLOAK_READER_VALUE\";
-                                 export KEYCLOAK_READER_SALT=\"$KEYCLOAK_READER_SALT\";
-                                 export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
-                                 export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
-                                 export KEYCLOAK_GOOGLE_SECRET=\"$KEYCLOAK_GOOGLE_SECRET\";
-                                 export KEYCLOAK_GOOGLE_ID=\"$KEYCLOAK_GOOGLE_ID\";
-                                 export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
-                                 export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
-                                 export KEYCLOAK_MAILJET_API_SECRET=\"$KEYCLOAK_MAILJET_API_SECRET\";
-                                 export KEYCLOAK_MAILJET_API_ID=\"$KEYCLOAK_MAILJET_API_ID\";
-                                 export $DOCKER_IMAGE_VERSIONS;
+ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; set +o allexport;
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 
 echo "Cleaning up exported user files."
@@ -75,7 +61,7 @@ if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
 fi
 
 echo "Starting docker compose stack."
-ssh ubuntu@"$target_server_url" "export $DOCKER_IMAGE_VERSIONS; cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"

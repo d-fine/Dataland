@@ -40,6 +40,7 @@ build_directories () {
   mkdir -p $target_dir/dataland-keycloak/users;
 
   envsubst < environments/.env.template > "$target_dir"/.env
+  cat ./*github_env.log >> "$target_dir"/.env
 
   echo "Copying general files."
   cp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf "$target_dir"
