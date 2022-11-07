@@ -131,12 +131,6 @@ describe(
       });
     });
 
-    describe("Upload and validate Sme data", () => {
-      let companiesWithSmeData: Array<FixtureData<SmeData>>;
-
-      before(function () {
-        cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-          companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
     describe("Upload and validate Sfdr data", () => {
       let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 
