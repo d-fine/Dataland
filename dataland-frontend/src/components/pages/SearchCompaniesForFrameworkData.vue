@@ -121,7 +121,7 @@ export default defineComponent({
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: Object.values(DataTypeEnum).filter(
-        (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
+        (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
       ) as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
@@ -233,13 +233,15 @@ export default defineComponent({
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = Object.values(DataTypeEnum).filter(
-          (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
+          (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
         ) as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
       } else {
-        return Object.values(DataTypeEnum).filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1);
+        return Object.values(DataTypeEnum).filter(
+          (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
+        );
       }
     },
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
@@ -312,7 +314,7 @@ export default defineComponent({
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
       const allFrameworksSelected = Object.values(DataTypeEnum)
-        .filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1)
+        .filter((frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1)
         .every((it) => this.currentFilteredFrameworks.includes(it));
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;

@@ -115,7 +115,7 @@ export default defineComponent({
         return {
           companyNameFilter: "",
           frameworkFilter: Object.values(DataTypeEnum).filter(
-            (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
+            (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
           ),
           sectorFilter: [],
           countryCodeFilter: [],

@@ -23,7 +23,7 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   it(
-    "The framework filter should contain LKSG and SFDR  even though they are not yet implemented, and synchronise " +
+    "The framework filter should contain LKSG and SFDR even though they are not yet implemented, and synchronise " +
       "between the search bar and the URL",
     { scrollBehavior: false },
     () => {
