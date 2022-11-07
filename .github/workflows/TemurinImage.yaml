@@ -25,7 +25,7 @@ jobs:
         with:
           name: parameters
           path: ./*.log
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
