@@ -31,11 +31,12 @@ persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
-ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down"
+ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down) || true"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
 echo "Exporting users and shutting down keycloak."
+ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
@@ -46,14 +47,14 @@ construction_dir=./dataland
 build_directories "$construction_dir"
 scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 
-ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\""
+ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\" || true"
 
 echo "Set up Keycloak from scratch."
 ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; set +o allexport;
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 
 echo "Cleaning up exported user files."
-ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir; rm $keycloak_user_dir/*.json"
+ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir; rm $keycloak_user_dir/*.json || true"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
