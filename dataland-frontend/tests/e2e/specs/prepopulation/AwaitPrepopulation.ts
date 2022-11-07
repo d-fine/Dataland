@@ -6,6 +6,10 @@ import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 describe("I want to ensure that the prepopulation has finished before executing any further tests", () => {
   let minimumNumberNonFinancialCompanies = 0;
   let minimumNumberFinancialCompanies = 0;
+  let minimumNumberLksgCompanies = 0;
+  let minimumNumberSfdrCompanies = 0;
+  let minimumNumberSmeCompanies = 0;
+
   before(function () {
     cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (companies: []) {
       minimumNumberNonFinancialCompanies += companies.length;
@@ -13,6 +17,15 @@ describe("I want to ensure that the prepopulation has finished before executing 
     cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies: []) {
       minimumNumberFinancialCompanies += companies.length;
     });
+      cy.fixture("CompanyInformationWithLksgData").then(function (companies: []) {
+          minimumNumberLksgCompanies += companies.length;
+      });
+      cy.fixture("CompanyInformationWithSfdrData").then(function (companies: []) {
+          minimumNumberSfdrCompanies += companies.length;
+      });
+      cy.fixture("CompanyInformationWithSmeData").then(function (companies: []) {
+          minimumNumberSmeCompanies += companies.length;
+      });
   });
 
   it(
@@ -37,7 +50,19 @@ describe("I want to ensure that the prepopulation has finished before executing 
             nonFinancialResponse.matchingCompanies >= minimumNumberNonFinancialCompanies,
             `Found ${nonFinancialResponse.matchingCompanies} non-financial companies (Expecting at least ${minimumNumberNonFinancialCompanies})`
           );
+          const lksgResponse = await countCompanyAndDataIds(token, DataTypeEnum.Lksg);
+          assert(
+            financialResponse.matchingCompanies >= minimumNumberLksgCompanies,
+            `Found ${financialResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
+          );
+          const smeResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sme);
+          assert(
+            financialResponse.matchingCompanies >= minimumNumberSmeCompanies,
+            `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSmeCompanies})`
+          );
         });
     }
   );
 });
+
+
