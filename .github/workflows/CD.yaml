@@ -153,6 +153,7 @@ jobs:
           subfolder: 'build-prod-and-deploy'
   e2e-tests:
     runs-on: ubuntu-latest
+    container: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
@@ -192,8 +193,13 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
           fi
-      - name: Execute Frontend Component Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend --no-daemon --stacktrace
+      - name: Download Image Versions
+        uses: actions/download-artifact@v3
+        with:
+          name: dockerImageVersions
+      - name: Make Image Versions Available
+        shell: bash
+        run: cat ./*github_env.log >> $GITHUB_ENV
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
