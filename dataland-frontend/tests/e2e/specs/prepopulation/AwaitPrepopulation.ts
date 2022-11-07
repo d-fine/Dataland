@@ -17,15 +17,15 @@ describe("I want to ensure that the prepopulation has finished before executing 
     cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (companies: []) {
       minimumNumberFinancialCompanies += companies.length;
     });
-      cy.fixture("CompanyInformationWithLksgData").then(function (companies: []) {
-          minimumNumberLksgCompanies += companies.length;
-      });
-      cy.fixture("CompanyInformationWithSfdrData").then(function (companies: []) {
-          minimumNumberSfdrCompanies += companies.length;
-      });
-      cy.fixture("CompanyInformationWithSmeData").then(function (companies: []) {
-          minimumNumberSmeCompanies += companies.length;
-      });
+    cy.fixture("CompanyInformationWithLksgData").then(function (companies: []) {
+      minimumNumberLksgCompanies += companies.length;
+    });
+    cy.fixture("CompanyInformationWithSfdrData").then(function (companies: []) {
+      minimumNumberSfdrCompanies += companies.length;
+    });
+    cy.fixture("CompanyInformationWithSmeData").then(function (companies: []) {
+      minimumNumberSmeCompanies += companies.length;
+    });
   });
 
   it(
@@ -55,6 +55,11 @@ describe("I want to ensure that the prepopulation has finished before executing 
             financialResponse.matchingCompanies >= minimumNumberLksgCompanies,
             `Found ${financialResponse.matchingCompanies} LKSG companies (Expecting at least ${minimumNumberLksgCompanies})`
           );
+            const sfdrResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sfdr);
+            assert(
+                financialResponse.matchingCompanies >= minimumNumberSfdrCompanies,
+                `Found ${financialResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSfdrCompanies})`
+            );
           const smeResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sme);
           assert(
             financialResponse.matchingCompanies >= minimumNumberSmeCompanies,
@@ -64,5 +69,3 @@ describe("I want to ensure that the prepopulation has finished before executing 
     }
   );
 });
-
-
