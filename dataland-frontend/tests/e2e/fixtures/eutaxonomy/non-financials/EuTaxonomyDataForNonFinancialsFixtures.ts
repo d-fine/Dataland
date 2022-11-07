@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import {
   DataPointBigDecimal,
   EuTaxonomyDataForNonFinancials,
@@ -9,15 +8,12 @@ import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtu
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
-import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
 const { parse } = require("json2csv");
 
-const maxEuro = 1000000;
-const minEuro = 50000;
-
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): EuTaxonomyDetailsPerCashFlowType {
-  const total = faker.datatype.float({ min: minEuro, max: maxEuro });
+  const total = randomEuroValue();
   const eligiblePercentage = randomPercentageValue();
   const alignedPercentage = randomPercentageValue();
 

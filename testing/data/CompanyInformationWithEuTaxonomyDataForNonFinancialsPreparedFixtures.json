@@ -1,0 +1,204 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-numbers",
+			"companyAlternativeNames": [
+				"Matthes-Edorh",
+				"Hornung-Agostini"
+			],
+			"headquarters": "Stöwerdorf",
+			"sector": "content",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "8catzyhr4"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "xzm0hwd23nyq"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "i66r3rkfwt0r870leb7w"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "7jzne0ohi1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "hsf1gc4"
+				}
+			],
+			"countryCode": "IL",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "http://chancenlos-leber.de/heldenhaft-internet.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2021-11-17",
+					"currency": "MDL"
+				},
+				"ESEFReport": {
+					"reference": "http://konstant-milch.org/festlich-schule.pdf",
+					"reportDate": "2022-08-04",
+					"currency": "ZWL"
+				},
+				"AnnualReport": {
+					"reference": "http://gravierend-milz.info/traditionell-schule.pdf",
+					"currency": "KRW"
+				},
+				"IntegratedReport": {
+					"reference": "http://spontan-cholera.de/jahrelang-jupiter.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-04-23",
+					"currency": "CZK"
+				}
+			},
+			"fiscalYearEnd": "2022-09-18",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"numberOfEmployees": 40657,
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.6593,
+					"dataSource": {
+						"page": 38,
+						"report": "ESEFReport",
+						"tagName": "networks"
+					},
+					"quality": "Audited",
+					"comment": "compress mobile transmitter"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.7388,
+					"dataSource": {
+						"page": 121,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
+					},
+					"quality": "Audited",
+					"comment": "generate optical application"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.773,
+					"quality": "Incomplete"
+				}
+			}
+		}
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"companyAlternativeNames": [
+				"Koenig KG",
+				"Möllenbeck, Huhn und Wilky",
+				"Dohring UG",
+				"Jess, Polizzi und Schwab"
+			],
+			"headquarters": "Süd Anastasiadorf",
+			"sector": "paradigms",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "llyfrxluv"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "u81is1zyyv3j"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ql6izjngt6"
+				}
+			],
+			"countryCode": "TC",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "http://penibel-zinn.name/sanft-gramm.pdf",
+					"isGroupLevel": "NA",
+					"currency": "IQD"
+				}
+			},
+			"fiscalYearDeviation": "No",
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"scopeOfEntities": "Yes",
+			"activityLevelReporting": "No",
+			"opex": {
+				"totalAmount": {
+					"value": 111822.06,
+					"dataSource": {
+						"page": 254,
+						"report": "AnnualReport",
+						"tagName": "e-services"
+					},
+					"quality": "Reported",
+					"comment": "quantify bluetooth circuit"
+				},
+				"eligiblePercentage": {
+					"value": 0.9772,
+					"dataSource": {
+						"page": 326,
+						"report": "AnnualReport",
+						"tagName": "platforms"
+					},
+					"quality": "Reported",
+					"comment": "index primary application"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 65194.74,
+					"dataSource": {
+						"page": 892,
+						"report": "AnnualReport",
+						"tagName": "content"
+					},
+					"quality": "Estimated",
+					"comment": "navigate open-source application"
+				},
+				"eligiblePercentage": {
+					"value": 0.2534,
+					"quality": "Incomplete"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 743409.76,
+					"dataSource": {
+						"page": 1048,
+						"report": "AnnualReport",
+						"tagName": "users"
+					},
+					"quality": "Audited",
+					"comment": "connect multi-byte program"
+				},
+				"eligiblePercentage": {
+					"value": 0.9086,
+					"dataSource": {
+						"page": 339,
+						"report": "AnnualReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Reported",
+					"comment": "navigate mobile port"
+				}
+			}
+		}
+	}
+]

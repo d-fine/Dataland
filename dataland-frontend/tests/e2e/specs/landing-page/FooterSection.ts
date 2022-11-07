@@ -47,7 +47,9 @@ describe("As a user, I expect the footer section to be present and contain relev
       });
     });
 
-    const frameworksToCheck = Object.values(DataTypeEnum).filter((frameworkName) => frameworkName != "lksg");
+    const frameworksToCheck = Object.values(DataTypeEnum).filter(
+      (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
+    );
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
         getKeycloakToken(reader_name, reader_pw).then((token) => {

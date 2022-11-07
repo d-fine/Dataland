@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.math.BigDecimal
 import java.time.LocalDate
 
