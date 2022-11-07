@@ -1,6 +1,8 @@
 package org.dataland.csvconverter
 
-import org.dataland.csvconverter.DataPointParserTest.Companion.buildDataRow
+import org.dataland.csvconverter.DataPointParserTest.Companion.emptyDataRow
+import org.dataland.csvconverter.DataPointParserTest.Companion.fullDataRow
+import org.dataland.csvconverter.DataPointParserTest.Companion.page
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.utils.YesNoNaParser
@@ -17,25 +19,19 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report reference parser works on valid data`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val validDataRow = buildDataRow(
-            "111",
-            "Reported",
-            "Annual Report",
-            "123",
-            "it's great"
-        )
+        val validDataRow = fullDataRow()
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
                 csvMapping, validDataRow, "rezept"
             ),
-            CompanyReportReference(report = "AnnualReport", page = 123)
+            CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here")
         )
     }
 
     @Test
     fun `test that the company report parser returns null if no fields have been specified`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val rowWithNoReport = buildDataRow("", "", "", "", "")
+        val rowWithNoReport = emptyDataRow()
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
                 csvMapping, rowWithNoReport, "rezept"
@@ -47,9 +43,10 @@ class CompanyReportParserTest {
     @Test
     fun `test that the company report parser throws an error when only partial data is supplied`() {
         val csvMapping = mapOf("rezept" to "recipe")
-        val roWithNoReportButWithPage = buildDataRow("", "", "", "123", "")
+        val rowWithNoReportButWithPage = emptyDataRow()
+        rowWithNoReportButWithPage[page] = "123"
         assertThrows<IllegalArgumentException> {
-            dataPointParser.buildSingleCompanyReportReference(csvMapping, roWithNoReportButWithPage, "rezept")
+            dataPointParser.buildSingleCompanyReportReference(csvMapping, rowWithNoReportButWithPage, "rezept")
         }
     }
 }
