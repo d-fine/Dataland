@@ -35,11 +35,17 @@ ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down) 
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
 
+DOCKER_IMAGE_VERSIONS=$(cat ./*github_env.log)
+EXPORT_STRING=""
+for DOCKER_IMAGE_VERSION in $DOCKER_IMAGE_VERSIONS; do
+  EXPORT_STRING=$EXPORT_STRING"export $DOCKER_IMAGE_VERSION; "
+done
+
 echo "Exporting users and shutting down keycloak."
 ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
-ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
+ssh ubuntu@"$target_server_url" "$EXPORT_STRING \"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
@@ -62,7 +68,7 @@ if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
 fi
 
 echo "Starting docker compose stack."
-ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
+ssh ubuntu@"$target_server_url" "$EXPORT_STRING cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
