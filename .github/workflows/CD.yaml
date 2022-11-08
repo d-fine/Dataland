@@ -78,6 +78,20 @@ jobs:
         with:
           name: parameters
           path: ./logs/
+  upload-dataland-frontend-client:
+    runs-on: ubuntu-latest
+    needs:
+      - rebuild-docker-images
+    steps:
+      - name: Extract Frontend Client from E2Etest Image
+        run: |
+          mkdir -p ./dataland-frontend/build/clients/ 
+          docker run --rm -v --entrypoint cp $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} /app/dataland-fronted/build/clients/backend/ /hostdir/dataland-fronted/build/clients
+      - name: Store generated frontend API client for use by cypress
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
   build-prod-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -150,11 +164,9 @@ jobs:
           subfolder: 'build-prod-and-deploy'
   e2e-tests:
     runs-on: ubuntu-latest
-    container: ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }}
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
-      - rebuild-docker-images
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
@@ -191,6 +203,11 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
           fi
+      - name: Download frontend API client
+        uses: actions/download-artifact@v3
+        with:
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
