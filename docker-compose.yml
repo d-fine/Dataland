@@ -216,9 +216,6 @@ services:
       - backend-db
       - internal
     profiles: [ "production", "testing", "productionInMemory", "development" ]
-    volumes:
-      - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
-      - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
