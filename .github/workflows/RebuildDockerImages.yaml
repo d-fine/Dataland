@@ -21,6 +21,13 @@ jobs:
           # this magic ls-to-json-array-conversion was found on https://stackoverflow.com/questions/10234327/convert-bash-ls-output-to-json-array
           BUILDSCRIPT_JSON_ARRAY=$(ls rebuild*.sh | awk ' BEGIN { ORS = ""; print "["; } { print "\/\@"$0"\/\@"; } END { print "]"; }' | sed "s^\"^\\\\\"^g;s^\/\@\/\@^\", \"^g;s^\/\@^\"^g")
           echo "BUILDSCRIPT_JSON_ARRAY='$BUILDSCRIPT_JSON_ARRAY'" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+  log:
+    runs-on: ubuntu-latest
+    needs:
+      - gather-buildscripts
+    steps:
+      - run: echo ${{ toJSON(needs) }}
   rebuild-docker-images:
     runs-on: ubuntu-latest
     needs: gather-buildscripts
