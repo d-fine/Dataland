@@ -37,7 +37,7 @@ jobs:
           echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
           echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
           echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/needs_json.log
+          echo '${{ toJSON(needs) }}' > logs/$GITHUB_JOB/needs_json.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
