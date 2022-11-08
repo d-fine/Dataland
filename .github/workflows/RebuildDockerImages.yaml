@@ -13,6 +13,7 @@ jobs:
     outputs:
       buildscript_json_array: ${{ steps.gather-buildscripts-step.outputs.BUILDSCRIPT_JSON_ARRAY }}
     steps:
+      - uses: actions/checkout@v3
       - name: Gather Buildscripts
         id: gather-buildscripts-step
         run: |
