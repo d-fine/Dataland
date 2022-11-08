@@ -18,10 +18,6 @@ scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local
 ./build-utils/rebuild_keycloak_image.sh
 ./build-utils/rebuild_pgadmin_image.sh
 set -o allexport
-source ./.env
-set +o allexport
-
-set -o allexport
 source ./*github_env.log
 set +o allexport
 
