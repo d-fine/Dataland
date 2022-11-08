@@ -34,6 +34,22 @@ jobs:
     needs:
       - rebuild-docker-images
     steps:
+      - name: log inputs
+        shell: bash
+        run: |
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
+          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
+          echo '${{ toJSON(needs) }}' > logs/$GITHUB_JOB/needs_json.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./logs/
       - name: Extract Frontend Client from E2Etest Image
         run: |
           mkdir -p ./dataland-frontend/ 
