@@ -3,8 +3,8 @@ set -euxo pipefail
 # This Script checks if a docker image for a given set of input files already exists in the registry.
 # If not, it will be rebuilt and pushed
 # usage:
-# rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
-# e.g.: rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
+# base_rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
+# e.g.: base_rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
 docker_image_name=$1
 if [[ "$docker_image_name" == *"-"* ]];
 then
