@@ -167,6 +167,7 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
+      - upload-dataland-frontend-client
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
