@@ -86,7 +86,7 @@ jobs:
       - name: Extract Frontend Client from E2Etest Image
         run: |
           mkdir -p ./dataland-frontend/build/clients/ 
-          docker run --rm -v --entrypoint cp $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} /app/dataland-fronted/build/clients/backend/ /hostdir/dataland-fronted/build/clients
+          docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} /app/dataland-fronted/build/clients/backend/ /hostdir/dataland-fronted/build/clients
       - name: Store generated frontend API client for use by cypress
         uses: actions/upload-artifact@v3
         with:
