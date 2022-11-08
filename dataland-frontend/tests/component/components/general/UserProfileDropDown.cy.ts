@@ -20,10 +20,16 @@ describe("Component test for UserProfileDropDown", () => {
       },
     });
     void wrapper.vm.$nextTick(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-call */
       // @ts-ignore
       expect(wrapper.vm.$refs["profile-picture"].src).to.be.equal(testImagePath);
-      done();
+      // @ts-ignore
+      wrapper.vm.handleProfilePicError();
+      void wrapper.vm.$nextTick(() => {
+        // @ts-ignore
+        expect(wrapper.vm.$refs["profile-picture"].src).not.equal(testImagePath);
+        done();
+      });
     });
   });
 });
