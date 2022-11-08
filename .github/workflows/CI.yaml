@@ -46,7 +46,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Dockerfiles
+      - name: Build Docke Images
         id: build-dockerfiles
         run: eval "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
