@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: gather-buildscripts
     outputs:
-      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
+      dataland_e2tests_version: ${{ steps.build-dockerimages.outputs.DATALAND_E2ETESTS_VERSION }}
     strategy:
       fail-fast: false
       matrix:
@@ -52,10 +52,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker Images
-        id: build-dockerfiles
+        id: build-dockerimages
         run: |
           echo "running ./build-utils/$BUILD_SCRIPT"  
           eval "./build-utils/$BUILD_SCRIPT"
+          cat $GITHUB_OUTPUT
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
