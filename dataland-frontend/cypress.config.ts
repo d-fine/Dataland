@@ -1,6 +1,7 @@
 import { defineConfig } from "cypress";
 let returnEmail: string;
 let returnPassword: string;
+let returnTotpKey: string;
 export default defineConfig({
   numTestsKeptInMemory: 2,
   defaultCommandTimeout: 10000,
@@ -31,6 +32,14 @@ export default defineConfig({
         },
         getPassword: () => {
           return returnPassword;
+        },
+      });
+      on("task", {
+        setTotpKey: (val: string) => {
+          return (returnTotpKey = val);
+        },
+        getTotpKey: () => {
+          return returnTotpKey;
         },
       });
       return require("./tests/e2e/plugins/index.js")(on, config);

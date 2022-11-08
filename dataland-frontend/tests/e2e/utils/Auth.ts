@@ -1,6 +1,5 @@
 import Chainable = Cypress.Chainable;
 import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { verifyTaxonomySearchResultTable } from "./VerifyingElements";
 
 export function logout(): void {
   cy.visitAndCheckAppMount("/companies")
@@ -31,17 +30,16 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
     .click();
 
   if (otpGenerator) {
-    // cy.then used to ensure that the OTP is only generated right before it is entered
-    cy.then(() => {
-      cy.get("input[id='otp']")
-        .should("exist")
-        .type(otpGenerator(), { force: true })
-        .get("#kc-login")
-        .should("exist")
-        .click();
-    });
+    cy.get("input[id='otp']")
+      .should("exist")
+      .then((it) => {
+        // cy.then used to ensure that the OTP is only generated right before it is entered
+        cy.wrap(it).type(otpGenerator());
+      })
+      .get("#kc-login")
+      .should("exist")
+      .click();
   }
-  verifyTaxonomySearchResultTable();
   cy.url().should("eq", getBaseUrl() + "/companies");
 }
 
