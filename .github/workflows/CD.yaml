@@ -29,6 +29,8 @@ on:
 jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
+    outputs:
+      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
   upload-dataland-frontend-client:
     runs-on: ubuntu-latest
     needs:

@@ -5,8 +5,6 @@ on:
 jobs:
   rebuild-docker-images:
     runs-on: ubuntu-latest
-    outputs:
-      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
     strategy:
       fail-fast: false
       matrix:
