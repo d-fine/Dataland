@@ -1,5 +1,4 @@
 name: "Rebuild Docker Images Action"
-description: "Rebuilds the docker images needed for Datland"
 on:
   workflow_call
 
