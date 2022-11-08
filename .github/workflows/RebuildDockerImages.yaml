@@ -4,7 +4,7 @@ on:
     outputs:
       dataland_e2tests_version:
         description: The Version for the E2Etest Image
-        value: ${{ jobs.rebuild-docker-images.outputs.dataland_e2etests_version }}
+        value: ${{ jobs }}
 
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
