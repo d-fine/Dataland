@@ -2,11 +2,11 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.lksg.LksgData
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/lksg")
 @RestController
 class LksgDataController(
-    @Autowired var myDataManager: DataManagerInterface,
-    @Autowired var myMetaDataManager: DataMetaInformationManagerInterface,
+    @Autowired var myDataManager: DataManager,
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper
 ) : DataController<LksgData>(
     myDataManager,

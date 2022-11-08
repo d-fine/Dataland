@@ -2,24 +2,26 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataAPI
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import java.util.UUID.randomUUID
 
 /**
- * Implementation of the API for data exchange
- * @param dataManager implementation of the DataManagerInterface that defines how
- * Dataland handles data */
+ * Abstract implementation of the controller for data exchange of an abstract type T
+ * @param dataManager service to handle data
+ * @param dataMetaInformationManager service for handling data meta information
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ */
 
 abstract class DataController<T>(
-    var dataManager: DataManagerInterface,
-    var dataMetaInformationManager: DataMetaInformationManagerInterface,
+    var dataManager: DataManager,
+    var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
 ) : DataAPI<T> {

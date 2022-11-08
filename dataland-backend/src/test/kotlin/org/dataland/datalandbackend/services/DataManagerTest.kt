@@ -33,9 +33,10 @@ class DataManagerTest(
 ) {
 
     val testDataProvider = TestDataProvider(objectMapper)
-    val edcClientMock = mock(DefaultApi::class.java)
+    val edcClientMock: DefaultApi = mock(DefaultApi::class.java)
     val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
     val correlationId = UUID.randomUUID().toString()
+    val dataUUId = "JustSomeUUID"
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
@@ -59,9 +60,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(
-                "XXXsomeUUIDXXX"
-            )
+            InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(edcClientMock.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
@@ -75,16 +74,14 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(
-                "XXXsomeUUIDXXX"
-            )
+            InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val thrown = assertThrows<InvalidInputApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
         assertEquals(
-            "The data with the id: XXXsomeUUIDXXX is registered as type eutaxonomy-non-financials by " +
+            "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
                 "Dataland instead of your requested type eutaxonomy-financials.",
             thrown.message
         )
@@ -95,16 +92,14 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(
-                "XXXsomeUUIDXXX"
-            )
+            InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn("")
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
-        assertEquals("No dataset with the id: XXXsomeUUIDXXX could be found in the data store.", thrown.message)
+        assertEquals("No dataset with the id: $dataId could be found in the data store.", thrown.message)
     }
 
     @Test
@@ -112,9 +107,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(
-                "XXXsomeUUIDXXX"
-            )
+            InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val unexpectedDataTypeName = "eutaxonomy-financials"
@@ -127,7 +120,7 @@ class DataManagerTest(
                 )
             }
         assertEquals(
-            "Dataset XXXsomeUUIDXXX should be of type eutaxonomy-non-financials " +
+            "Dataset $dataId should be of type eutaxonomy-non-financials " +
                 "but is of type eutaxonomy-financials",
             thrown.message
         )

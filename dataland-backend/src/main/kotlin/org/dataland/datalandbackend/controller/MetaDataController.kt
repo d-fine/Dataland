@@ -1,22 +1,21 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Implementation of the API for company data exchange
- * @param dataManager implementation of the DataManagerInterface that defines how
- * Dataland handles data
+ * Controller for the company metadata endpoints
+ * @param dataMetaInformationManager service for handling data meta information
  */
 
 @RestController
 class MetaDataController(
-    @Autowired var dataMetaInformationManager: DataMetaInformationManagerInterface,
+    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
 ) : MetaDataApi {
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: DataType?):

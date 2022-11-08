@@ -4,30 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackend.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
-import org.dataland.datalandbackend.interfaces.DataManagerInterface
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 /**
- * Implementation of a data manager for Dataland including meta data storages
+ * Implementation of a data manager for Dataland including metadata storages
+ * @param edcClient API client to communicate with the data storage service
+ * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param companyManager service for managing company data
+ * @param metaDataManager service for managing metadata
  */
 @Component("DataManager")
 class DataManager(
     @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper,
-    @Autowired var companyManager: CompanyManagerInterface,
-    @Autowired var metaDataManager: DataMetaInformationManagerInterface
-) : DataManagerInterface {
+    @Autowired var companyManager: CompanyManager,
+    @Autowired var metaDataManager: DataMetaInformationManager
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private fun getDataMetaInformationByIdAndVerifyDataType(
@@ -46,22 +46,27 @@ class DataManager(
         return dataMetaInformation
     }
 
+    /**
+     * Method to make the data manager add data to a data store and store meta data in Dataland
+     * @param storableDataSet contains all the inputs needed by Dataland
+     * @return ID of the newly stored data in the data store
+     */
     @Transactional
-    override fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
+    fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "${storableDataSet.companyId}, Company Name ${company.companyName} to EuroDaT Interface. " +
+                "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId"
         )
-        val dataId: String = storeDataSet(storableDataSet, company, correlationId)
+        val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
         return dataId
     }
 
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
-        company: StoredCompanyEntity,
+        companyName: String,
         correlationId: String
     ): String {
         val dataId: String
@@ -73,7 +78,7 @@ class DataManager(
                     "Correlation ID: $correlationId"
             )
             throw InternalServerErrorApiException(
-                "Uplaod to Storage failed", "The upload of the dataset to the Storage failed",
+                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
                 "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
                     "Correlation ID: $correlationId",
                 e
@@ -81,12 +86,18 @@ class DataManager(
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name ${company.companyName} received ID $dataId from EuroDaT. Correlation ID: $correlationId"
+                " Company Name $companyName received ID $dataId from EuroDaT. Correlation ID: $correlationId"
         )
         return dataId
     }
 
-    override fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
+    /**
+     * Method to make the data manager get the data of a single entry from the data store
+     * @param dataId to identify the stored data
+     * @param dataType to check the correctness of the type of the retrieved data
+     * @return data set associated with the data ID provided in the input
+     */
+    fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         getTypeNameExpectedByDataland(dataId, dataType, correlationId)
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
@@ -134,7 +145,12 @@ class DataManager(
         return dataAsString
     }
 
-    override fun isDataSetPublic(dataId: String): Boolean {
+    /**
+     * Method to check if a data set belongs to a teaser company and hence is publicly available
+     * @param dataId the ID of the data set to be checked
+     * @return a boolean signalling if the data is public or not
+     */
+    fun isDataSetPublic(dataId: String): Boolean {
         val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
         return companyManager.isCompanyPublic(associatedCompanyId)
     }

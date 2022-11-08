@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -10,19 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import javax.transaction.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@Transactional
 class DataMetaInformationManagerTest(
-    @Autowired val dataMetaInformationManager: DataMetaInformationManagerInterface,
+    @Autowired val dataMetaInformationManager: DataMetaInformationManager,
 ) {
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
         val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId)
+            dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId, dataType = null)
         }
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
