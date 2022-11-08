@@ -223,7 +223,7 @@ jobs:
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
+        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=preview-dataland.duckdns.org,dev-dataland.duckdns.org,dev2-dataland.duckdns.org"
           CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
