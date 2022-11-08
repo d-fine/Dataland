@@ -1,10 +1,16 @@
 name: "Rebuild Docker Images Action"
 on:
-  workflow_call
+  workflow_call:
+    outputs:
+      dataland_e2tests_version:
+        description: The Version for the E2Etest Image
+        value: ${{ jobs.rebuild-docker-images.outputs.dataland_e2etests_version }}
 
 jobs:
   rebuild-docker-images:
     runs-on: ubuntu-latest
+    outputs:
+      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
     strategy:
       fail-fast: false
       matrix:
