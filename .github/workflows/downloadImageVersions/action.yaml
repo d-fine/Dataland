@@ -1,0 +1,13 @@
+name: "Download Image Versions"
+description: "Download Image Versions and make them available as env-vars"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Image Versions
+      uses: actions/download-artifact@v3
+      with:
+        name: dockerImageVersions
+    - name: Make Image Versions Available
+      shell: bash
+      run: cat ./*github_env.log >> $GITHUB_ENV

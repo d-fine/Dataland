@@ -19,13 +19,7 @@ jobs:
       - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
-      - name: Download Image Versions
-        uses: actions/download-artifact@v3
-        with:
-          name: dockerImageVersions
-      - name: Make Image Versions Available
-        shell: bash
-        run: cat ./*github_env.log >> $GITHUB_ENV
+      - uses: ./.github/workflows/downloadImageVersions
       - name: log inputs
         shell: bash
         run: |
@@ -136,13 +130,7 @@ jobs:
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
-      - name: Download Image Versions
-        uses: actions/download-artifact@v3
-        with:
-          name: dockerImageVersions
-      - name: Make Image Versions Available
-        shell: bash
-        run: cat ./*github_env.log >> $GITHUB_ENV
+      - uses: ./.github/workflows/downloadImageVersions
       - name: log inputs
         shell: bash
         run: |
