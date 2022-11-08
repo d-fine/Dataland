@@ -9,9 +9,6 @@ mkdir -p ./local/certs
 scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local.duckdns.org/* ./local/certs
 
 find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
-set -o allexport
-source ./.env
-set +o allexport
 
 set -o allexport
 source ./*github_env.log
