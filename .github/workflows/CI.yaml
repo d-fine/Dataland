@@ -112,6 +112,8 @@ jobs:
     if: github.event_name != 'workflow_dispatch'
     needs:
       - rebuild-docker-images
+    env:
+      CYPRESS_GIT_COMMIT_ID: ${{ github.sha }}
     strategy:
       fail-fast: false
       matrix:
