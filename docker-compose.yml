@@ -97,8 +97,6 @@ services:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
-    # TODO: Can we make use of the image
-    #  image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}} here?
     restart: always
     profiles: ["development"]
     image: node:18.11.0
@@ -192,7 +190,6 @@ services:
       - ./dataland-keycloak/realms:/keycloak_realms
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
-    env_file: .env
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}

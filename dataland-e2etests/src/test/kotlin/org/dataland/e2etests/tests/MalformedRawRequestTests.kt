@@ -125,9 +125,7 @@ class MalformedRawRequestTests {
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body?.string() ?: ""
-        val containsStackTrace = responseBodyString.contains("\"stackTrace\"")
-        val shouldContainStackTrace = System.getenv("PROXY_ENVIRONMENT") == "development"
-        assertEquals(shouldContainStackTrace, containsStackTrace)
+        assertTrue(responseBodyString.contains("\"stackTrace\""))
         assertEquals(404, response.code)
     }
 

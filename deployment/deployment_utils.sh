@@ -42,7 +42,7 @@ build_directories () {
   set +o allexport
   envsubst < environments/.env.template >> "$target_dir"/.env
 
-  echo "Copying general files."
+  echo "Copying docker compose file."
   cp ./docker-compose.yml "$target_dir"
 
   echo "Copying keycloak files."
