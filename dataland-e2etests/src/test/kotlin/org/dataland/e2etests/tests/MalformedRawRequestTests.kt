@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -125,7 +126,7 @@ class MalformedRawRequestTests {
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body?.string() ?: ""
-        assertTrue(responseBodyString.contains("\"stackTrace\""))
+        assertFalse(responseBodyString.contains("\"stackTrace\""))
         assertEquals(404, response.code)
     }
 
