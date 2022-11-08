@@ -237,7 +237,6 @@ jobs:
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
-          CYPRESS_EXPECT_STACKTRACE: false
       - name: Move Cypress Results
         if: always()
         run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
