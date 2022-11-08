@@ -73,6 +73,8 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
     networks:
       - external
+    volumes:
+      - ./dataland-frontend:/app
     environment:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       GITHUB_USER: ${GITHUB_USER}
@@ -90,6 +92,7 @@ services:
       CYPRESS_REALDATA: ${REALDATA}
       CYPRESS_PREPOPULATE_TIMEOUT_S: 180
       CYPRESS_PREVISIT_TIMEOUT_S: 180
+      CYPRESS_GIT_COMMIT_ID: ${CYPRESS_GIT_COMMIT_ID}
     links:
       - proxy:dataland-local.duckdns.org
       - admin-proxy:dataland-admin

@@ -203,7 +203,9 @@ jobs:
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
       - name: Move Cypress Results
         if: always()
-        run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+        run: |
+          ls -R ./dataland-frontend
+          mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
