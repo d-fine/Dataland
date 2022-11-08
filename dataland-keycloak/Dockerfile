@@ -19,6 +19,7 @@ ENV KC_HOSTNAME_ADMIN=dataland-admin:6789
 COPY --from=builder /build/dataland-keycloak/dataland_theme/login/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
+COPY ./dataland-keycloak/realms /keycloak_realms
 
 RUN /opt/keycloak/bin/kc.sh build
 ENTRYPOINT ["/opt/keycloak/bin/start_keycloak.sh"]

@@ -187,7 +187,6 @@ services:
           - keycloak
     image: ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
     volumes:
-      - ./dataland-keycloak/realms:/keycloak_realms
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
