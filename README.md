@@ -36,6 +36,7 @@ Some environment variables are used within the project. Find attached the variab
 | PROXY_LETSENCRYPT_PATH            | The LetsEncrypt path for the domain (usually /etc/letsencrypt/live/FIRST_DOMAIN                                                                     | `/etc/letsencrypt/live/dataland.com`                             |
 | PROXY_LETSENCRYPT_ARGS            | The LetsEncrypt Certbot arguments for the initial certificate request                                                                               | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
 | PGADMIN_PASSWORD                  | The password for the PGAdmin interface                                                                                                              | `password`                                                       |
+| EXPECT_STACKTRACE                 | Set to true if the e2etests should expect a stacktrace for malicious request to the backend. Should be true locally, else not set.                  | `true`                                                           |
 
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.
 
