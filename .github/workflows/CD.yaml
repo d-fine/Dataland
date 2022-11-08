@@ -87,7 +87,6 @@ jobs:
         run: |
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
-          ls -R ./dataland-frontend/build
       - name: Store generated frontend API client for use by cypress
         uses: actions/upload-artifact@v3
         with:
