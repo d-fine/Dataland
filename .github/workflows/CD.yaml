@@ -68,7 +68,6 @@ jobs:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     steps:
-      - run: exit 1
       - uses: actions/checkout@v3
       - name: log inputs
         shell: bash
