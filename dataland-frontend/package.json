@@ -9,7 +9,7 @@
     "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0 --no-fix",
     "cypress": "cypress open",
     "checkcypresscompilation": "tsc --noEmit -P tsconfig.cypress-e2e.json && tsc --noEmit -P tsconfig.cypress-ct.json",
-    "testcomponent": "cypress run --component --config video=false",
+    "testcomponent": "cypress run --component --config",
     "testpipeline": "cypress run",
     "testgithubenvironment": "cypress run --config \"{\\\"e2e\\\": {\\\"baseUrl\\\": \\\"$npm_config_url\\\"}}\"",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
