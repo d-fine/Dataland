@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script checks if LetsEncrypt certificates are available
 # and rewrites the symlink for the nginx certificates accordingly
