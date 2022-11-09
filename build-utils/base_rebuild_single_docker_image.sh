@@ -27,7 +27,8 @@ input_sha1=$( \
   grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json' | \
   xargs sha1sum | \
   sort | \
-  sha1sum
+  sha1sum | \
+  awk '{print $1}'
 )
 
 echo Input sha1 Hash: "$input_sha1"
