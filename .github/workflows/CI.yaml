@@ -11,6 +11,8 @@ on:
 
 jobs:
   log-everything:
+    runs-on: ubuntu-latest
+    steps:
     - uses: ./.github/workflows/logObjects
       name: log everything
       with:

@@ -9,6 +9,8 @@ on:
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
   log-everything:
+    runs-on: ubuntu-latest
+    steps:
     - uses: ./.github/workflows/logObjects
       name: log everything
       with:
