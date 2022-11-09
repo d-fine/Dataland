@@ -30,8 +30,189 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo "VARIABLE_1=VALUE_1" >> $GITHUB_ENV
-          echo "export VARIABLE_1=VALUE_1" >> $GITHUB_ENV
-      - run: |
-          env | grep VARIABLE
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log everything
+        with:
+          github: ${{ toJSON(github) }}
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          runner: ${{ toJSON(runner) }}
+          secrets: ${{ toJSON(secrets) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+  rebuild-docker-images:
+    uses: ./.github/workflows/RebuildDockerImages.yaml
+  upload-dataland-frontend-client:
+    runs-on: ubuntu-latest
+    needs:
+      - rebuild-docker-images
+    steps:
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - name: Extract Frontend Client from E2Etest Image
+        run: |
+          mkdir -p ./dataland-frontend/ 
+          docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
+      - name: Store generated frontend API client for use by cypress
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
+  build-prod-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - rebuild-docker-images
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - uses: ./.github/workflows/downloadImageVersions
+      - name: Start server and deploy to it (either Preview or Dev)
+        run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
+        env:
+          TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TRUSTEE_BASE_URL: ${{ secrets.TRUSTEE_BASE_URL }}
+          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
+          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
+          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
+          BACKEND_DB_PASSWORD: ${{ secrets.BACKEND_DB_PASSWORD }}
+          PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+          KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
+          KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
+          KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
+          KEYCLOAK_UPLOADER_SALT: ${{ secrets.KEYCLOAK_UPLOADER_SALT }}
+          KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
+          KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
+          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
+          KEYCLOAK_LINKEDIN_ID: ${{ secrets.KEYCLOAK_LINKEDIN_ID }}
+          KEYCLOAK_LINKEDIN_SECRET: ${{ secrets.KEYCLOAK_LINKEDIN_SECRET }}
+          KEYCLOAK_MAILJET_API_SECRET: ${{ secrets.KEYCLOAK_MAILJET_API_SECRET }}
+          KEYCLOAK_MAILJET_API_ID: ${{ secrets.KEYCLOAK_MAILJET_API_ID }}
+          PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
+          PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
+          PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+          RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'build-prod-and-deploy'
+  e2e-tests:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - build-prod-and-deploy
+      - upload-dataland-frontend-client
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
+    strategy:
+      fail-fast: false
+      matrix:
+        testGroup: [ 1,2,3,4 ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get GitHub real data image on demand
+        run: |
+          if [[ $REALDATA == true ]]; then
+            echo "Retrieving real data"
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
+          fi
+      - name: Download frontend API client
+        uses: actions/download-artifact@v3
+        with:
+          name: frontendApiClient
+          path: ./dataland-frontend/build/clients/backend/
+      - name: Install UPower to disable warning messages
+        run: sudo apt update && sudo apt install upower
+      - name: Setup SSH tunnel to admin NGINX
+        run:  |
+          if [[ ${{ matrix.testGroup }} == 3 ]]; then
+            ./deployment/setup_admin_ssh_tunnel.sh
+          else
+            echo "There is no connection to admin ports established."
+          fi
+        env:
+          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: check deployment
+        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
+        env:
+          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=preview-dataland.duckdns.org,dev-dataland.duckdns.org,dev2-dataland.duckdns.org"
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
+          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
+          CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
+          CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          CYPRESS_KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          CYPRESS_KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          CYPRESS_PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_SINGLE_POPULATE: true
+          CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
+      - name: Move Cypress Results
+        if: always()
+        run: |
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+      - name: Upload FE E2E Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress
+          path: ./dataland-frontend/cypressresult/
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
