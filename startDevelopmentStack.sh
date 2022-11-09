@@ -8,6 +8,7 @@ docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 mkdir -p ./local/certs
 scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local.duckdns.org/* ./local/certs
 
+rm ./*github_env.log
 find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
 set -o allexport
