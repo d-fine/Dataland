@@ -237,7 +237,7 @@ services:
     volumes:
       - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
       - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
-      - pgadmin-config:/var/lib/pgadmin
+      - pgadmin_config:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -257,7 +257,7 @@ volumes:
     driver: local
   letsencrypt:
     driver: local
-  pgadmin-config:
+  pgadmin_config:
     driver: local
   frontend-dev-node-modules:
     driver: local
