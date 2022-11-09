@@ -13,7 +13,7 @@ then
 fi
 
 
-# shift removes the first argument which is not a file.
+# shift removes the first argument (it's the docker image name - hence not not a file)
 # Now $@ contains only filenames where a change in any file content should trigger a rebuild
 shift
 dockerfile=$1
