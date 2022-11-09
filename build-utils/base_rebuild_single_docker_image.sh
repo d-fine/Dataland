@@ -20,7 +20,7 @@ dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 
 # remove empty directories to increase image hash matches
-find . -type d -empty -delete
+find "$(dirname "$0")"/../ -type d -empty -delete
 
 input_sha1=$( \
   tar \
