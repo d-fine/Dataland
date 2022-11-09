@@ -1,0 +1,73 @@
+name: "Log Inputs Action"
+description: "Logs provided inputs"
+inputs:
+  github:
+    description: the github object
+    required: false
+    default: ""
+  env:
+    description: the env object
+    required: false
+    default: ""
+  job:
+    description: the job object
+    required: false
+    default: ""
+  jobs:
+    description: the jobs object
+    required: false
+    default: ""
+  steps:
+    description: the steps object
+    required: false
+    default: ""
+  runner:
+    description: the runner object
+    required: false
+    default: ""
+  secrets:
+    description: the secrets object
+    required: false
+    default: ""
+  strategy:
+    description: the strategy object
+    required: false
+    default: ""
+  matrix:
+    description: the matrix object
+    required: false
+    default: ""
+  needs:
+    description: the needs object
+    required: false
+    default: ""
+  inputs:
+    description: the inputs object
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: log inputs
+      shell: bash
+      run: |
+        mkdir -p logs/$GITHUB_JOB
+        env > logs/$GITHUB_JOB/env.log
+        echo '${{ inputs.github }}' > logs/$GITHUB_JOB/github_json.log
+        echo '${{ inputs.env }}' > logs/$GITHUB_JOB/env_json.log
+        echo '${{ inputs.job }}' > logs/$GITHUB_JOB/job_json.log
+        echo '${{ inputs.jobs }}' > logs/$GITHUB_JOB/jobs_json.log
+        echo '${{ inputs.steps }}' > logs/$GITHUB_JOB/steps_json.log
+        echo '${{ inputs.runner }}' > logs/$GITHUB_JOB/runner_json.log
+        echo '${{ inputs.secrets }}' > logs/$GITHUB_JOB/secrets_json.log
+        echo '${{ inputs.strategy }}' > logs/$GITHUB_JOB/strategy_json.log
+        echo '${{ inputs.matrix }}' > logs/$GITHUB_JOB/matrix_json.log
+        echo '${{ inputs.needs }}' > logs/$GITHUB_JOB/needs_json.log
+        echo '${{ inputs.inputs }}' > logs/$GITHUB_JOB/inputs_json.log
+        find logs/$GITHUB_JOB -type f -size -2c -delete
+    - name: Store env and secrets
+      uses: actions/upload-artifact@v3
+      with:
+        name: parameters
+        path: ./logs/

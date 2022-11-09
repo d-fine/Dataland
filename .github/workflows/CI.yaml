@@ -20,21 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/downloadImageVersions
-      - name: log inputs
-        shell: bash
-        run: |
-          mkdir -p logs/$GITHUB_JOB
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
-          env > logs/$GITHUB_JOB/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
-          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/logObjects
         with:
-          name: parameters
-          path: ./logs/
+          secrets: ${{ toJSON(secrets) }}
+          env: ${{ toJSON(env) }}
+          inputs: ${{ toJSON(inputs) }}
+          github: ${{ toJSON(github) }}
       - name: Login to Github Packages
         uses: docker/login-action@v2
         with:

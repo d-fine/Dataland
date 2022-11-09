@@ -17,16 +17,8 @@ echo "Clearing frontend clients..."
 ./gradlew clean
 ./gradlew assemble
 
-./build-utils/rebuild_backend_production_image.sh &
-./build-utils/rebuild_backend_test_image.sh &
-./build-utils/rebuild_e2etests_image.sh &
-./build-utils/rebuild_frontend_prod_image.sh &
-./build-utils/rebuild_frontend_test_image.sh &
-./build-utils/rebuild_inbound_admin_proxy_image.sh &
-./build-utils/rebuild_inbound_proxy_images.sh &
-./build-utils/rebuild_keycloak_image.sh &
-./build-utils/rebuild_pgadmin_image.sh &
-wait
+rm ./*github_env.log
+find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
 set -o allexport
 source ./*github_env.log
