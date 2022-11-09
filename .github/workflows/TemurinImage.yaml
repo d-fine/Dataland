@@ -7,21 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  log-everything:
+    - uses: ./.github/workflows/logObjects
+      name: log everything
+      with:
+        github: ${{ toJSON(github) }}
+        env: ${{ toJSON(env) }}
+        job: ${{ toJSON(job) }}
+        jobs: ${{ toJSON(jobs) }}
+        steps: ${{ toJSON(steps) }}
+        runner: ${{ toJSON(runner) }}
+        secrets: ${{ toJSON(secrets) }}
+        strategy: ${{ toJSON(strategy) }}
+        matrix: ${{ toJSON(matrix) }}
+        needs: ${{ toJSON(needs) }}
+        inputs: ${{ toJSON(inputs) }}
   build-and-push-docker-image:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          mkdir -p logs/$GITHUB_JOB
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
-          env > logs/$GITHUB_JOB/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
-          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
       - name: Store env and secrets
         uses: actions/upload-artifact@v3
         with:
