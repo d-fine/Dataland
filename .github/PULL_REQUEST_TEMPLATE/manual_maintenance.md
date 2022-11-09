@@ -53,10 +53,10 @@ Update versions in the following dockerfiles
 
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
-- [ ] dev-dataland.duckdns.org
-- [ ] dev2-dataland.duckdns.org
-- [ ] dataland-tunnel.duckdns.org
-- [ ] dataland-letsencrypt.duckdns.org
+- [ ] dev1.dataland.com
+- [ ] dev2.dataland.com
+- [ ] tunnel.dataland.com
+- [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
 
 ## Check e-mails sent by keycloak

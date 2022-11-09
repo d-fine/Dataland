@@ -23,7 +23,7 @@ services:
       - ./local/certs:/certs/custom
     environment:
       # The primary server URL all other URLS get redirected to
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       # This is the path to the letsencrypt directory (usually /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
@@ -55,7 +55,7 @@ services:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       GITHUB_USER: ${GITHUB_USER}
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
@@ -93,7 +93,7 @@ services:
       CYPRESS_PREPOPULATE_TIMEOUT_S: 180
       CYPRESS_PREVISIT_TIMEOUT_S: 180
     links:
-      - proxy:dataland-local.duckdns.org
+      - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
