@@ -24,9 +24,10 @@ find "$(dirname "$0")"/../ -type d -empty -delete
 
 input_sha1=$( \
   find "$0" "$@" -type f | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json' | \
+  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log' | \
   xargs sha1sum | \
   sort | \
+  awk '{print $1}' | \
   sha1sum | \
   awk '{print $1}'
 )
