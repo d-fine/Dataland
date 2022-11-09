@@ -65,7 +65,7 @@ runs:
         echo '${{ inputs.matrix }}' > logs/$GITHUB_JOB/matrix_json.log
         echo '${{ inputs.needs }}' > logs/$GITHUB_JOB/needs_json.log
         echo '${{ inputs.inputs }}' > logs/$GITHUB_JOB/inputs_json.log
-        find logs/$GITHUB_JOB -type f -size -2c -delete
+        find logs/$GITHUB_JOB -type f -size -4c -delete
     - name: Store env and secrets
       uses: actions/upload-artifact@v3
       with:
