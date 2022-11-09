@@ -18,6 +18,10 @@ fi
 shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
+
+# remove empty directories to increase image hash matches
+find . -type d -empty -delete
+
 input_sha1=$( \
   tar \
   --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
