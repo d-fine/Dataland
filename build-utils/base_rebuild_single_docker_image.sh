@@ -23,7 +23,7 @@ echo Rebuilding docker image. Parameters: "$@"
 find "$(dirname "$0")"/../ -type d -empty -delete
 
 input_sha1=$( \
-  find $0 "$@" -type f | \
+  find "$0" "$@" -type f | \
   grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json' | \
   xargs sha1sum | \
   sort | \
