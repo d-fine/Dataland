@@ -13,19 +13,20 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-    - uses: ./.github/workflows/logObjects
-      name: log everything
-      with:
-        github: ${{ toJSON(github) }}
-        env: ${{ toJSON(env) }}
-        job: ${{ toJSON(job) }}
-        steps: ${{ toJSON(steps) }}
-        runner: ${{ toJSON(runner) }}
-        secrets: ${{ toJSON(secrets) }}
-        strategy: ${{ toJSON(strategy) }}
-        matrix: ${{ toJSON(matrix) }}
-        needs: ${{ toJSON(needs) }}
-        inputs: ${{ toJSON(inputs) }}
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log everything
+        with:
+          github: ${{ toJSON(github) }}
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          runner: ${{ toJSON(runner) }}
+          secrets: ${{ toJSON(secrets) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   unit-tests-backend:
