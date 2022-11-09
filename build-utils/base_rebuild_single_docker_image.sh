@@ -25,7 +25,7 @@ find . -type d -empty -delete
 input_sha1=$( \
   tar \
   --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
-  --sort=name --owner=root:0 --group=root:0 --mtime='2019-01-01 00:00:00' -cvf - "$0" "./build-utils/base_rebuild_single_docker_image.sh" "$@" \
+  --sort=name --owner=root:0 --group=root:0 --mtime='2019-01-01 00:00:00' -cvf - "$0" "$@" \
   | sha1sum | awk '{print $1}' \
 )
 
