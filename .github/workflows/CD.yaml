@@ -51,6 +51,7 @@ jobs:
     needs:
       - rebuild-docker-images
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
