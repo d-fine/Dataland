@@ -41,5 +41,5 @@ if [ "$sha1_manifest" == "no sha1 manifest" ] || [ "${FORCE_BUILD:-}" == "true" 
   docker build -f "$dockerfile" . -t "$full_image_reference" --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" --build-arg GITHUB_USER="${GITHUB_USER:-}" --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}"
   docker push "$full_image_reference"
 else
-  echo "Requirements already satisfied!"
+  echo "No Rebuild for $docker_image_name required"
 fi
