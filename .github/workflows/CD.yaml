@@ -204,8 +204,7 @@ jobs:
       - name: Move Cypress Results
         if: always()
         run: |
-          ls -R ./dataland-frontend
-          mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
