@@ -23,10 +23,11 @@ echo Rebuilding docker image. Parameters: "$@"
 find "$(dirname "$0")"/../ -type d -empty -delete
 
 input_sha1=$( \
-  tar \
-  --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
-  --sort=name --owner=root:0 --group=root:0 --mtime='2019-01-01 00:00:00' -cvf - "$0" "$@" \
-  | sha1sum | awk '{print $1}' \
+  find . -type f | \
+  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json' | \
+  xargs sha1sum | \
+  sort | \
+  sha1sum
 )
 
 echo Input sha1 Hash: "$input_sha1"
