@@ -131,7 +131,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development", "productionInMemory"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.30-SNAPSHOT
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.8
     environment:
       SERVER_PORT: 9191
       SERVER_SERVLET_CONTEXT-PATH: /api
@@ -147,14 +147,16 @@ services:
   dataland-edc:
     restart: always
     profiles: ["production"]
-    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.30-SNAPSHOT
+    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.8
     networks:
       - internal
     expose:
       - "9191"
       - "9292"
     environment:
-      DATALAND_EDC_ASSET_ACCESS_URI: ${DATALAND_EDC_ASSET_ACCESS_URI}
+      DATALAND_EDC_WEB_URI: ${DATALAND_EDC_WEB_URI}
+      DATALAND_EDC_IDS_URI: ${DATALAND_EDC_IDS_URI}
+      TRUSTEE_WEB_URI: ${TRUSTEE_WEB_URI}
       TRUSTEE_IDS_URI: ${TRUSTEE_IDS_URI}
       EDC_OAUTH_PROVIDER_AUDIENCE: ${EDC_OAUTH_PROVIDER_AUDIENCE}
       EDC_OAUTH_PROVIDER_JWKS_URL: ${EDC_OAUTH_PROVIDER_JWKS_URL}
