@@ -3,8 +3,8 @@ set -euxo pipefail
 # This Script checks if a docker image for a given set of input files already exists in the registry.
 # If not, it will be rebuilt and pushed
 # usage:
-# rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
-# e.g.: rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
+# base_rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
+# e.g.: base_rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
 docker_image_name=$1
 if [[ "$docker_image_name" == *"-"* ]];
 then
@@ -18,10 +18,14 @@ fi
 shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
+
+# remove empty directories to increase image hash matches
+find . -type d -empty -delete
+
 input_sha1=$( \
   tar \
   --exclude="node_modules" --exclude="build" --exclude=".gradle" --exclude="dist" \
-  --sort=name --owner=root:0 --group=root:0 --mtime='UTC 2019-01-01' -cvf - "$0" "./build-utils/rebuild_single_docker_image.sh" "$@" \
+  --sort=name --owner=root:0 --group=root:0 --mtime='2019-01-01 00:00:00' -cvf - "$0" "./build-utils/base_rebuild_single_docker_image.sh" "$@" \
   | sha1sum | awk '{print $1}' \
 )
 

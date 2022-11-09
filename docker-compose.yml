@@ -73,6 +73,8 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
     networks:
       - external
+    volumes:
+      - ./.git:/app/.git
     environment:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       GITHUB_USER: ${GITHUB_USER}

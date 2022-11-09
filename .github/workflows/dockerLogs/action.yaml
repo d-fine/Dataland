@@ -1,5 +1,5 @@
-name: "Prepare Action"
-description: "Prepares the action and logs inputs"
+name: "Docker Log Action"
+description: "Gathers and upload docker logs"
 inputs:
   subfolder:
     description: The subfolder to put the logs in

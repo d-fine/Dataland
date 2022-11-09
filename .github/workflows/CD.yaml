@@ -28,61 +28,28 @@ on:
 
 jobs:
   rebuild-docker-images:
-    runs-on: ubuntu-latest
-    outputs:
-      dataland_e2tests_version: ${{ steps.build-dockerfiles.outputs.DATALAND_E2ETESTS_VERSION }}
-    strategy:
-      fail-fast: false
-      matrix:
-        buildScript:
-          - rebuild_backend_production_image.sh
-          - rebuild_backend_test_image.sh
-          - rebuild_e2etests_image.sh
-          - rebuild_frontend_prod_image.sh
-          - rebuild_frontend_test_image.sh
-          - rebuild_inbound_admin_proxy_image.sh
-          - rebuild_inbound_proxy_images.sh
-          - rebuild_keycloak_image.sh
-          - rebuild_pgadmin_image.sh
-    env:
-      BUILD_SCRIPT: ${{ matrix.buildScript }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          mkdir -p logs/$GITHUB_JOB/$BUILD_SCRIPT/
-          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/inputs_json.log
-          env > logs/$GITHUB_JOB/$BUILD_SCRIPT/env.log
-          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/secrets_json.log
-          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/env_json.log
-          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/matrix_json.log
-          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/$BUILD_SCRIPT/github_json.log
-      - name: Login to Github Packages
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Docker Images
-        id: build-dockerfiles
-        run: eval "./build-utils/$BUILD_SCRIPT"
-      - name: Store docker image versions
-        uses: actions/upload-artifact@v3
-        with:
-          name: dockerImageVersions
-          path: ./*github_env.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: parameters
-          path: ./logs/
+    uses: ./.github/workflows/RebuildDockerImages.yaml
   upload-dataland-frontend-client:
     runs-on: ubuntu-latest
     needs:
       - rebuild-docker-images
     steps:
+      - name: log inputs
+        shell: bash
+        run: |
+          mkdir -p logs/$GITHUB_JOB
+          echo '${{ toJSON(inputs) }}' > logs/$GITHUB_JOB/inputs_json.log
+          env > logs/$GITHUB_JOB/env.log
+          echo '${{ toJSON(secrets) }}' > logs/$GITHUB_JOB/secrets_json.log
+          echo '${{ toJSON(env) }}' > logs/$GITHUB_JOB/env_json.log
+          echo '${{ toJSON(matrix) }}' > logs/$GITHUB_JOB/matrix_json.log
+          echo '${{ toJSON(github) }}' > logs/$GITHUB_JOB/github_json.log
+          echo '${{ toJSON(needs) }}' > logs/$GITHUB_JOB/needs_json.log
+      - name: Store env and secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: parameters
+          path: ./logs/
       - name: Extract Frontend Client from E2Etest Image
         run: |
           mkdir -p ./dataland-frontend/ 
@@ -122,10 +89,7 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Download Image Versions
-        uses: actions/download-artifact@v3
-        with:
-          name: dockerImageVersions
+      - uses: ./.github/workflows/downloadImageVersions
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
@@ -239,7 +203,8 @@ jobs:
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
       - name: Move Cypress Results
         if: always()
-        run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+        run: |
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
