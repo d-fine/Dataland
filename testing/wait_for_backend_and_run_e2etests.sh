@@ -6,9 +6,9 @@ set -euxo pipefail
 
 is_infrastructure_up () {
   declare -A services
-  services["backend"]=https://dataland-local.duckdns.org/api/actuator/health/ping
+  services["backend"]=https://local-dev.dataland.com/api/actuator/health/ping
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
-  services["keycloak"]=http://dataland-local.duckdns.org/keycloak/realms/datalandsecurity/
+  services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
 
   for service in "${!services[@]}"; do
     if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then
