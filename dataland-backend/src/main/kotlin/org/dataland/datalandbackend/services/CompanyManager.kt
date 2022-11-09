@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
@@ -28,7 +30,7 @@ class CompanyManager(
 
     override fun verifyCompanyIdExists(companyId: String) {
         if (!companyRepository.existsById(companyId)) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
+            throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
     }
 
@@ -66,9 +68,9 @@ class CompanyManager(
         } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                throw IllegalArgumentException(
-                    "Could not insert company as one company identifier " +
-                        "is already used to identify another company"
+                throw InvalidInputApiException(
+                    "Company identifier already used",
+                    "Could not insert company as one company identifier is already used to identify another company"
                 )
             }
             throw ex
@@ -124,7 +126,7 @@ class CompanyManager(
     override fun getCompanyById(companyId: String): StoredCompanyEntity {
         val storedCompanySearchResult = companyRepository.findById(companyId)
         if (storedCompanySearchResult.isEmpty) {
-            throw IllegalArgumentException("Dataland does not know the company ID $companyId")
+            throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
         return storedCompanySearchResult.get()
     }

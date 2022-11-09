@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -107,6 +108,15 @@ class MetaDataControllerTest {
             dataMetaInformation,
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
+    }
+
+    @Test
+    fun `search for a company that does not exist and check that a 404 error is returned`() {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        val clientException = assertThrows<ClientException> {
+            companyDataControllerApi.getCompanyById("this-should-not-exist")
+        }
+        assertEquals(clientException.statusCode, 404)
     }
 
     @Test

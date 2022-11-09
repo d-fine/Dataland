@@ -3,6 +3,9 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.edcClient.api.DefaultApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.exceptions.InternalServerErrorApiException
+import org.dataland.datalandbackend.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.interfaces.DataManagerInterface
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
@@ -28,7 +31,8 @@ class DataManager(
     ): DataMetaInformationEntity {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
-            throw IllegalArgumentException(
+            throw InvalidInputApiException(
+                "Requested data $dataId not of type $dataType",
                 "The data with the id: $dataId is registered as type" +
                     " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
                     " type $dataType."
@@ -46,19 +50,20 @@ class DataManager(
     }
 
     override fun getDataSet(dataId: String, dataType: DataType): StorableDataSet {
-        val dataMetaInformation = getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
+        getDataMetaInformationByIdAndVerifyDataType(dataId, dataType)
         val dataAsString = edcClient.selectDataById(dataId)
         if (dataAsString == "") {
-            throw IllegalArgumentException(
-                "No data set with the id: $dataId could be found in the data store."
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store."
             )
         }
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != dataType) {
-            throw IllegalArgumentException(
-                "The data set with the id: $dataId " +
-                    "came back as type ${dataAsStorableDataSet.dataType} from the data store instead of type " +
-                    "${dataMetaInformation.dataType} as registered by Dataland."
+            throw InternalServerErrorApiException(
+                "Dataland-Internal inconsistency regarding dataset $dataId",
+                "We are having some internal issues with the dataset $dataId, please contact support.",
+                "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
             )
         }
         return dataAsStorableDataSet

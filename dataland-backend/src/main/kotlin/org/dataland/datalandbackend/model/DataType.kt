@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
+import org.dataland.datalandbackend.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**
@@ -26,7 +27,7 @@ data class DataType @JsonCreator constructor(
         fun valueOf(input: String): DataType {
             val str = allowedDataTypes.find {
                 it.equals(input, ignoreCase = true)
-            } ?: throw IllegalArgumentException("$input is not a recognised dataType")
+            } ?: input
             return DataType(str)
         }
 
@@ -40,7 +41,10 @@ data class DataType @JsonCreator constructor(
 
     init {
         if (!allowedDataTypes.contains(name)) {
-            throw IllegalArgumentException("$name is not a recognised dataType")
+            throw InvalidInputApiException(
+                "$name is not a recognised dataType",
+                "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values"
+            )
         }
     }
 

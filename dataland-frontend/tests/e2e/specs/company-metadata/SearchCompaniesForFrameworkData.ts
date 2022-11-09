@@ -4,8 +4,12 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { createCompanyAndGetId } from "../../utils/CompanyUpload";
-import { uploadDummyEuTaxonomyDataForFinancials } from "../../utils/EuTaxonomyFinancialsUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import {
+  getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
+  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
+} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -17,7 +21,7 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
+    cy.ensureLoggedIn();
   });
 
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
@@ -179,19 +183,36 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Check if the autocomplete entries are highlighted", () => {
-    const highlightedSubString = "this_is_highlighted";
-    const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
-    createCompanyAndGetId(companyName).then((companyId) => uploadDummyEuTaxonomyDataForFinancials(companyId));
-    cy.visitAndCheckAppMount("/companies");
-    cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=search_bar_top]").click({ force: true }).type(highlightedSubString);
-    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.get(".p-autocomplete-item")
-        .eq(0)
-        .get("span[class='font-semibold']")
-        .contains(highlightedSubString)
-        .should("exist");
-    });
-  });
+  describeIf(
+    "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      dataEnvironments: ["fakeFixtures"],
+    },
+    () => {
+      // following test needs the DataIntegrity.ts test to be executed before
+      it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
+        cy.ensureLoggedIn();
+        const highlightedSubString = "this_is_highlighted";
+        const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
+        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getFirstEuTaxonomyNonFinancialsDatasetFromFixtures().then((data) => {
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
+            });
+          });
+        });
+        cy.visitAndCheckAppMount("/companies");
+        cy.intercept("**/api/companies*").as("searchCompany");
+        cy.get("input[name=search_bar_top]").click({ force: true }).type(highlightedSubString);
+        cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+          cy.get(".p-autocomplete-item")
+            .eq(0)
+            .get("span[class='font-semibold']")
+            .contains(highlightedSubString)
+            .should("exist");
+        });
+      });
+    }
+  );
 });

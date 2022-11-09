@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.model.enums.eutaxonomy.YesNoNa
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal

@@ -75,7 +75,7 @@ jobs:
         with:
           name: parameters
           path: ./*.log
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
@@ -150,7 +150,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
-          CYPRESS_EXECUTION_ENVIRONMENT: "development"
+          CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
@@ -213,23 +213,23 @@ jobs:
         with:
           name: parameters
           path: ./*.log
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
           cache: gradle
       - name: Build project
         run: ./gradlew assemble --no-daemon --stacktrace
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsBackendUnitTests
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsCsvConverterUnitTests
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsE2ETest
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: lcovResults
           path: fe-coverage

@@ -2,4 +2,4 @@ FROM ghcr.io/d-fine/dataland/temurinbase:latest
 COPY . /app/
 WORKDIR /app
 
-CMD ./gradlew :dataland-backend:bootRun --no-daemon --stacktrace
+CMD ./gradlew :dataland-backend:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace

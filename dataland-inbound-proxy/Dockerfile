@@ -12,9 +12,10 @@ COPY dataland-inbound-proxy/templates/http-letsencrypt.template /etc/nginx/templ
 COPY dataland-inbound-proxy/dhparam.pem /certs/dhparam.pem
 COPY dataland-inbound-proxy/docker-entrypoint.d/* /docker-entrypoint.d/
 COPY dataland-inbound-proxy/scripts /scripts
-COPY dataland-inbound-proxy/custom_errors.html /var/wwww/html/custom_errors.html
-COPY dataland-inbound-proxy/robots.txt /var/wwww/html/robots.txt
-COPY dataland-frontend/src/assets/images /var/wwww/images
+COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
+COPY dataland-inbound-proxy/api_errors.json /var/www/html/api_errors.json
+COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
+COPY dataland-frontend/src/assets/images /var/www/images
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 

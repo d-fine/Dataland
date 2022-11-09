@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.interfaces.DataMetaInformationManagerInterface
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -18,14 +19,14 @@ class DataManagerTest(
 ) {
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
-        assertThrows<IllegalArgumentException> {
+        assertThrows<ResourceNotFoundApiException> {
             dataMetaInformationManager.searchDataMetaInfo(companyId = "error")
         }
     }
 
     @Test
     fun `check that an exception is thrown when non existing data id is provided to get meta data`() {
-        assertThrows<IllegalArgumentException> {
+        assertThrows<ResourceNotFoundApiException> {
             dataMetaInformationManager.getDataMetaInformationByDataId(dataId = "error")
         }
     }
