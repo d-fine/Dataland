@@ -36,7 +36,6 @@ jobs:
         github: ${{ toJSON(github) }}
         env: ${{ toJSON(env) }}
         job: ${{ toJSON(job) }}
-        jobs: ${{ toJSON(jobs) }}
         steps: ${{ toJSON(steps) }}
         runner: ${{ toJSON(runner) }}
         secrets: ${{ toJSON(secrets) }}
@@ -56,7 +55,6 @@ jobs:
         with:
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
-          jobs: ${{ toJSON(jobs) }}
           steps: ${{ toJSON(steps) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
@@ -86,7 +84,6 @@ jobs:
         with:
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
-          jobs: ${{ toJSON(jobs) }}
           steps: ${{ toJSON(steps) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
@@ -154,7 +151,6 @@ jobs:
         with:
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
-          jobs: ${{ toJSON(jobs) }}
           steps: ${{ toJSON(steps) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}

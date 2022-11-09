@@ -16,7 +16,6 @@ jobs:
         github: ${{ toJSON(github) }}
         env: ${{ toJSON(env) }}
         job: ${{ toJSON(job) }}
-        jobs: ${{ toJSON(jobs) }}
         steps: ${{ toJSON(steps) }}
         runner: ${{ toJSON(runner) }}
         secrets: ${{ toJSON(secrets) }}
