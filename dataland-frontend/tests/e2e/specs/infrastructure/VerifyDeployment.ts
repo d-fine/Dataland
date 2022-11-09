@@ -21,11 +21,6 @@ describe("As a developer, I want to ensure that the deployment is okay", () => {
     cy.request(`${getBaseUrl()}/gitinfo`)
       .then((response) => JSON.parse(response.body as string) as GitInfoResponse)
       .should("have.a.property", "commit")
-      .then((commit_id) =>
-        assert(
-          Cypress.env("COMMIT_ID") === "ignore" || commit_id === Cypress.env("COMMIT_ID"),
-          "checking that commit_id of deployment matches the current one"
-        )
-      );
+      .should("eq", Cypress.env("commit_id") as string);
   });
 });
