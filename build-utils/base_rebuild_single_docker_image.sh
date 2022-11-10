@@ -38,7 +38,12 @@ echo "${docker_image_name^^}_VERSION=$input_sha1" >> ${GITHUB_OUTPUT:-/dev/null}
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
 if [ "$sha1_manifest" == "no sha1 manifest" ] || [ "${FORCE_BUILD:-}" == "true" ] || [[ "${COMMIT_MESSAGE:-}" == *"FORCE_BUILD"* ]]; then
   echo "rebuilding image $full_image_reference"
-  docker build -f "$dockerfile" . -t "$full_image_reference" --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" --build-arg GITHUB_USER="${GITHUB_USER:-}" --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}"
+  docker build -f "$dockerfile" . -t "$full_image_reference" \
+     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
+     --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" \
+     --build-arg GITHUB_USER="${GITHUB_USER:-}" \
+     --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
+     --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}"
   docker push "$full_image_reference"
 else
   echo "No Rebuild for $docker_image_name required"
