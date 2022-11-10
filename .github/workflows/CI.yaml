@@ -246,7 +246,6 @@ jobs:
           path: ./**/build
   sonar:
     runs-on: ubuntu-latest
-    if: always() && github.event_name != 'workflow_dispatch'
     needs:
       - e2e-tests
       - unit-tests-backend
