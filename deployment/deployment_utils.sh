@@ -15,7 +15,7 @@ wait_for_health () {
 delete_docker_volume_if_existent () {
   volume_name=$(search_volume "$1")
   if [[ -n $volume_name ]]; then
-    delete_docker_volume volume_name
+    delete_docker_volume $volume_name
   fi
 }
 
