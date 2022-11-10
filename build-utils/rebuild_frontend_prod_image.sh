@@ -1,4 +1,5 @@
 #!/bin/bash
+# adapted
 set -euxo pipefail
 
 shopt -s extglob
