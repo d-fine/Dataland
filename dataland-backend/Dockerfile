@@ -1,7 +1,7 @@
 FROM ghcr.io/d-fine/dataland/temurinbase:latest as builder
 COPY ./gradle/ /app/gradle/
 COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./gradlew /app/
-COPY ./dataland-backend/ /app/dataland-backend
+COPY ./dataland-backend/ /app/dataland-backend/
 COPY ./.git/ /app/.git
 WORKDIR /app
 RUN ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
