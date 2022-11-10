@@ -19,9 +19,6 @@ shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 
-# remove empty directories to increase image hash matches
-find "$(dirname "$0")"/../ -type d -empty -delete
-
 input_sha1=$( \
   find "$0" "$@" -type f | \
   grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log' | \
