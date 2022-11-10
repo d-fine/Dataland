@@ -106,7 +106,7 @@ services:
       - internal
     volumes:
       - ./dataland-frontend:/app
-      - /app/node_modules
+      - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
@@ -217,6 +217,8 @@ services:
       - backend-db
       - internal
     profiles: [ "production", "testing", "productionInMemory", "development" ]
+    volumes:
+      - pgadmin_config:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -235,4 +237,8 @@ volumes:
   backend_data:
     driver: local
   letsencrypt:
+    driver: local
+  pgadmin_config:
+    driver: local
+  frontend-dev-node-modules:
     driver: local
