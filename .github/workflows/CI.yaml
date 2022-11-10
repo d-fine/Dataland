@@ -251,7 +251,7 @@ jobs:
       - e2e-tests
       - unit-tests-backend
       - component-tests-frontend
-      - gradle-assemble
+      - gradle-build
     steps:
       - uses: actions/checkout@v3
         with:
