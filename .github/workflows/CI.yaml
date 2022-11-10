@@ -274,9 +274,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: gradleBuildFolders
-      - run: ls -R | grep build
-      - name: Build project
-        run: ./gradlew assemble --no-daemon --stacktrace
       - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsBackendUnitTests
