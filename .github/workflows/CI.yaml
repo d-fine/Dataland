@@ -243,7 +243,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: gradleBuildFolders
-          path: ./**/build
+          path: |
+            ./**/build/classes
   sonar:
     runs-on: ubuntu-latest
     needs:
