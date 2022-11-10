@@ -216,7 +216,7 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
-  gradle-build:
+  gradle-assemble:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
     steps:
@@ -236,8 +236,8 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Build project
-        run: ./gradlew build --no-daemon --stacktrace
+      - name: assemble project
+        run: ./gradlew assemble --no-daemon --stacktrace
       - name: Upload build folders
         if:
         uses: actions/upload-artifact@v3
@@ -251,7 +251,7 @@ jobs:
       - e2e-tests
       - unit-tests-backend
       - component-tests-frontend
-      - gradle-build
+      - gradle-assemble
     steps:
       - uses: actions/checkout@v3
         with:
