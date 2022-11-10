@@ -1,4 +1,4 @@
-FROM cypress/included:10.10.0
+FROM cypress/base:10.10.0
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 RUN apt-get update && \
@@ -21,7 +21,7 @@ COPY ./dataland-e2etests/ /app/dataland-e2etests
 COPY ./testing/ /app/testing
 
 WORKDIR /app
-RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew :dataland-e2etests:compileTestKotlin :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace
+RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew :dataland-e2etests:compileTestKotlin :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && rm -rf /root/.npm /root/.gradle /usr/local/lib/node_modules
 
 ENTRYPOINT ["/bin/sh","-c"]
 CMD ["/app/testing/wait_for_backend_and_run_e2etests.sh"]
