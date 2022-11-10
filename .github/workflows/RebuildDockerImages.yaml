@@ -9,9 +9,9 @@ on:
       GITHUB_USER:
         required: true
         type: string
+    secrets:
       GITHUB_TOKEN:
         required: true
-        type: string
 
 env:
   GITHUB_USER: ${{ inputs.GITHUB_USER }}
