@@ -237,7 +237,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build project
-        run: ./gradlew assemble --no-daemon --stacktrace
+        run: ./gradlew build --no-daemon --stacktrace
       - name: Upload build folders
         if:
         uses: actions/upload-artifact@v3
