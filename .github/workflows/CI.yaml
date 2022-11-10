@@ -216,6 +216,34 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
+  gradle-assemble:
+    runs-on: ubuntu-latest
+    if: always() && github.event_name != 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Build project
+        run: ./gradlew assemble --no-daemon --stacktrace
+      - name: Upload build folders
+        if:
+        uses: actions/upload-artifact@v3
+        with:
+          name: gradleBuildFolders
+          path: ./**/build
   sonar:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
@@ -223,6 +251,7 @@ jobs:
       - e2e-tests
       - unit-tests-backend
       - component-tests-frontend
+      - gradle-assemble
     steps:
       - uses: actions/checkout@v3
         with:
@@ -242,6 +271,10 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - uses: actions/download-artifact@v3
+        with:
+          name: gradleBuildFolders
+      - run: ls -R | grep build
       - name: Build project
         run: ./gradlew assemble --no-daemon --stacktrace
       - uses: actions/download-artifact@v3
