@@ -1,4 +1,4 @@
-FROM cypress/base:10.10.0
+FROM cypress/base:18.12.0
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 RUN apt-get update && \
