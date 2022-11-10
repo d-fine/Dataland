@@ -8,9 +8,12 @@ docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 mkdir -p ./local/certs
 scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 
+rm ./*github_env.log || true
+find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
-./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
-./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon --stacktrace
+set -o allexport
+source ./*github_env.log
+set +o allexport
 
 # start containers with the stack except frontend and backend
 docker compose --profile development down

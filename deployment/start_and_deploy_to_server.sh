@@ -31,14 +31,14 @@ persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
-ssh ubuntu@"$target_server_url" "cd \"$location\" && sudo docker compose down --remove-orphans" || true
+ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down --remove-orphans) || true"
 # make sure no remnants remain when docker-compose file changes
 ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q -a); docker rm $(docker ps -q -a); docker system prune --force; docker info"
 # delete pgadmin_config volume
 delete_docker_volume_if_existent_remotely "pgadmin_config" "$target_server_url" "$location"
 
 echo "Exporting users and shutting down keycloak."
-ssh ubuntu@"$target_server_url" "mkdir -p ./dataland/dataland-keycloak"
+ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
 scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$location"/dataland-keycloak
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
@@ -52,22 +52,11 @@ scp -r "$construction_dir" ubuntu@"$target_server_url":"$location"
 ssh ubuntu@"$target_server_url" "mv \"$keycloak_backup_dir\"/*-users-*.json \"$keycloak_user_dir\" || true"
 
 echo "Set up Keycloak from scratch."
-ssh ubuntu@"$target_server_url" "export KEYCLOAK_UPLOADER_VALUE=\"$KEYCLOAK_UPLOADER_VALUE\";
-                                 export KEYCLOAK_UPLOADER_SALT=\"$KEYCLOAK_UPLOADER_SALT\";
-                                 export KEYCLOAK_READER_VALUE=\"$KEYCLOAK_READER_VALUE\";
-                                 export KEYCLOAK_READER_SALT=\"$KEYCLOAK_READER_SALT\";
-                                 export KEYCLOAK_ADMIN=\"$KEYCLOAK_ADMIN\";
-                                 export KEYCLOAK_ADMIN_PASSWORD=\"$KEYCLOAK_ADMIN_PASSWORD\";
-                                 export KEYCLOAK_GOOGLE_SECRET=\"$KEYCLOAK_GOOGLE_SECRET\";
-                                 export KEYCLOAK_GOOGLE_ID=\"$KEYCLOAK_GOOGLE_ID\";
-                                 export KEYCLOAK_LINKEDIN_ID=\"$KEYCLOAK_LINKEDIN_ID\";
-                                 export KEYCLOAK_LINKEDIN_SECRET=\"$KEYCLOAK_LINKEDIN_SECRET\";
-                                 export KEYCLOAK_MAILJET_API_SECRET=\"$KEYCLOAK_MAILJET_API_SECRET\";
-                                 export KEYCLOAK_MAILJET_API_ID=\"$KEYCLOAK_MAILJET_API_ID\";
+ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; set +o allexport;
                                  \"$location\"/dataland-keycloak/initialize_keycloak.sh $location $keycloak_user_dir" || exit 1
 
 echo "Cleaning up exported user files."
-ssh ubuntu@"$target_server_url" "cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir; rm $keycloak_user_dir/*.json" || true
+ssh ubuntu@"$target_server_url" "(cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir; rm $keycloak_user_dir/*.json) || true"
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Ensure /certs director is present and permissions are configured accordingly
 mkdir -p /certs
 chown -R root:root /certs

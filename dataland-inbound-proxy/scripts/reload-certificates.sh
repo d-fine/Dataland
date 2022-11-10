@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Remount certificate directory
 sh /scripts/configure-certificate-link.sh
 
