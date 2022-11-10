@@ -12,7 +12,7 @@
 **/build/
 **/node_modules/
 
-local
+**/local/
 
 **/dist/
 **/coverage
