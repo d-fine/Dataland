@@ -13,10 +13,17 @@ wait_for_health () {
 }
 
 delete_docker_volume_if_existent () {
-  old_volume=$(search_volume "$1")
-  if [[ -n $old_volume ]]; then
-    delete_docker_volume $old_volume
+  volume_name=$(search_volume "$1")
+  if [[ -n $volume_name ]]; then
+    delete_docker_volume $volume_name
   fi
+}
+
+delete_docker_volume_if_existent_remotely () {
+  volume_name_fragment="$1"
+  target_server_url="$2"
+  location="$3"
+  ssh ubuntu@"$target_server_url" "source \"$location\"/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"$volume_name_fragment\""
 }
 
 delete_docker_volume () {

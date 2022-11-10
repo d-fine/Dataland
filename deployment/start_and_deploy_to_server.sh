@@ -31,9 +31,11 @@ persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 
 # shut down currently running dataland application and purge files on server
-ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down) || true"
+ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down --remove-orphans) || true"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q); docker system prune --force; docker info"
+ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q -a); docker rm $(docker ps -q -a); docker system prune --force; docker info"
+# delete pgadmin_config volume
+delete_docker_volume_if_existent_remotely "pgadmin_config" "$target_server_url" "$location"
 
 echo "Exporting users and shutting down keycloak."
 ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-keycloak"
@@ -58,7 +60,7 @@ ssh ubuntu@"$target_server_url" "(cp $keycloak_user_dir/*-users-*.json $persiste
 
 if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
   echo "Resetting backend database"
-  ssh ubuntu@"$target_server_url" "source $location/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"backend_data\""
+  delete_docker_volume_if_existent_remotely "backend_data" "$target_server_url" "$location"
 fi
 
 echo "Starting docker compose stack."

@@ -17,6 +17,7 @@ set +o allexport
 
 # start containers with the stack except frontend and backend
 docker compose --profile development down
+docker volume rm $(docker volume ls -q | grep _pgadmin_config) || true
 docker compose --profile development pull
 docker compose --profile development up -d --build
 
