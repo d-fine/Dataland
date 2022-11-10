@@ -21,7 +21,7 @@ echo Rebuilding docker image. Parameters: "$@"
 
 input_sha1=$( \
   find "$0" "$@" -type f | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log\|/local/\|/.nyc_outputs/' | \
+  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log\|/local/\|/.nyc_output/' | \
   xargs sha1sum | \
   sort | \
   awk '{print $1}' | \
