@@ -29,6 +29,9 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
+    with:
+      GITHUB_USER: ${{ github.actor }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   unit-tests-backend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'

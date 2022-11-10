@@ -46,6 +46,9 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
+    with:
+      GITHUB_USER: ${{ github.actor }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   upload-dataland-frontend-client:
     runs-on: ubuntu-latest
     needs:
