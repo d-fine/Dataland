@@ -15,7 +15,7 @@ on:
 
 env:
   GITHUB_USER: ${{ inputs.GITHUB_USER }}
-  GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
