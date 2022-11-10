@@ -31,8 +31,7 @@ jobs:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
       GITHUB_USER: ${{ github.actor }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
   unit-tests-backend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
