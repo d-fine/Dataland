@@ -216,7 +216,7 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
-  gradle-assemble:
+  gradle-build:
     runs-on: ubuntu-latest
     if: always() && github.event_name != 'workflow_dispatch'
     steps:
