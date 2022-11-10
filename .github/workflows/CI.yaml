@@ -124,7 +124,7 @@ jobs:
         with:
           name: parameters
           path: ./*.log
-      - name: Retrieve SSL certificates for dataland-local.duckdns.org
+      - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
           DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
@@ -132,7 +132,7 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
-          KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
+          KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
@@ -146,8 +146,8 @@ jobs:
           KEYCLOAK_ADMIN_PASSWORD: "admin"
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
-          PROXY_PRIMARY_URL: dataland-local.duckdns.org
-          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
+          PROXY_PRIMARY_URL: local-dev.dataland.com
+          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
           PROXY_ENVIRONMENT: production
           ENVIRONMENT: "development"
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
