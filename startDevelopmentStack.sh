@@ -14,6 +14,7 @@ scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com
 
 # start containers with the stack except frontend and backend
 docker compose --profile development down
+docker volume rm dataland_pgadmin_config || true
 docker compose --profile development pull
 docker compose --profile development up -d --build
 
