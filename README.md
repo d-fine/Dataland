@@ -24,10 +24,7 @@ Some environment variables are used within the project. Find attached the variab
 
 | Variable name                     | Description                                                                                                                                         | example values                                                   |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
-| FRONTEND_DOCKERFILE               | Defines the dockerfile to be used for the fronted container in the docker compose stack                                                             | `./dataland-frontend/DockerfileTest`                             |
-| BACKEND_DOCKERFILE                | Defines the dockerfile to be used for the backend container in the docker compose stack                                                             | `./dataland-backend/DockerfileTest`                              |
 | BACKEND_DB_PASSWORD               | Defines the password for the backend DB when keycloak is set up from scratch                                                                        |                                                                  |
-| KEYCLOAK_DOCKERFILE               | Defines the dockerfile to be used for the keycloak container in the docker compose stack                                                            | `./dataland-keycloak/Dockerfile`                                 |
 | KEYCLOAK_ADMIN                    | Defines the name of the admin user when keycloak is set up from scratch                                                                             |                                                                  |
 | KEYCLOAK_ADMIN_PASSWORD           | Defines the password for the admin user when keycloak is set up from scratch                                                                        |                                                                  |
 | KEYCLOAK_FRONTEND_URL             | Defines the frontend URL to be used when keycloak is set up from scratch                                                                            |                                                                  |
@@ -38,15 +35,15 @@ Some environment variables are used within the project. Find attached the variab
 | PROXY_PRIMARY_URL                 | The primary URL of the webservice. Requests to other URLS will get redirected to here (make sure this is consistent with the KEYCLOAK_FRONTEND_URL) | `dataland.com`                                                   |
 | PROXY_LETSENCRYPT_PATH            | The LetsEncrypt path for the domain (usually /etc/letsencrypt/live/FIRST_DOMAIN                                                                     | `/etc/letsencrypt/live/dataland.com`                             |
 | PROXY_LETSENCRYPT_ARGS            | The LetsEncrypt Certbot arguments for the initial certificate request                                                                               | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
-| PROXY_ENVIRONMENT                 | The environment of the proxy server (development or production). Used during Docker build process                                                   | `development` or `production`                                    |
 | PGADMIN_PASSWORD                  | The password for the PGAdmin interface                                                                                                              | `password`                                                       |
+| EXPECT_STACKTRACE                 | Set to true if the e2etests should expect a stacktrace for malicious request to the backend. Should be true locally, else not set.                  | `true`                                                           |
 
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.
 
 ## Local HTTPS testing
-* Add A link for `dataland-local.duckdns.org` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`)
+* Add A link for `local-dev.dataland.com` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`)
 * The `startDevelopmentStack.sh` script will automatically retrieve signed SSL-Certificates for this domain.
-* Access the development stack at https://dataland-local.duckdns.org
+* Access the development stack at https://local-dev.dataland.com
 
 ## API Documentation
 The interactive backend API documentation is available via `[URL]/api/swagger-/api/swagger-ui/index.html`.

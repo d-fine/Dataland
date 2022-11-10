@@ -1,5 +1,5 @@
-name: "Prepare Action"
-description: "Prepares the action and logs inputs"
+name: "Docker Log Action"
+description: "Gathers and upload docker logs"
 inputs:
   subfolder:
     description: The subfolder to put the logs in
@@ -8,7 +8,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: log inputs
+    - name: log docker container logs
       if: always()
       shell: bash
       run: |

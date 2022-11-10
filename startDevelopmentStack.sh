@@ -4,13 +4,16 @@ set -euxo pipefail
 
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 
-# Retrieve the SSL-Certificates for dataland-local.duckdns.org
+# Retrieve the SSL-Certificates for local-dev.dataland.com
 mkdir -p ./local/certs
-scp ubuntu@dataland-letsencrypt.duckdns.org:/etc/letsencrypt/live/dataland-local.duckdns.org/* ./local/certs
+scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 
+rm ./*github_env.log || true
+find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
-./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
-./gradlew dataland-frontend:generateAPIClientFrontend --no-daemon --stacktrace
+set -o allexport
+source ./*github_env.log
+set +o allexport
 
 # start containers with the stack except frontend and backend
 docker compose --profile development down
