@@ -17,7 +17,7 @@ echo "Clearing frontend clients..."
 ./gradlew clean
 ./gradlew assemble
 
-rm ./*github_env.log
+rm ./*github_env.log || true
 find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
 set -o allexport
