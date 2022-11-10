@@ -12,7 +12,6 @@ is_infrastructure_up () {
 
   for service in "${!services[@]}"; do
     if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then
-      curl -L ${services[$service]}
       echo "$service not yet there"
       return 1
     fi
