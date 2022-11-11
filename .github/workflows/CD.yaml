@@ -91,7 +91,6 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
-          secrets: ${{ toJSON(secrets) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
