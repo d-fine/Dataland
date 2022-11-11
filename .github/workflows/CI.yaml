@@ -148,7 +148,6 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
-          secrets: ${{ toJSON(secrets) }}
       - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
