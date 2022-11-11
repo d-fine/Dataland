@@ -27,43 +27,77 @@ on:
 
 
 jobs:
-  build-prod-and-deploy:
+  log-everything:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.whichEnvironment }}
-    env:
-      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
-      REALDATA: ${{ github.event.inputs.realData }}
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
+      - uses: ./.github/workflows/logObjects
+        name: log everything
+        with:
+          github: ${{ toJSON(github) }}
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          runner: ${{ toJSON(runner) }}
+          secrets: ${{ toJSON(secrets) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+  rebuild-docker-images:
+    uses: ./.github/workflows/RebuildDockerImages.yaml
+  upload-dataland-frontend-client:
+    runs-on: ubuntu-latest
+    needs:
+      - rebuild-docker-images
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - name: Extract Frontend Client from E2Etest Image
         run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
-        with:
-          name: parameters
-          path: ./*.log
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-      - name: Build backend and Assemble boot jar
-        run: ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
-      - name: Build frontend
-        run: ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+          mkdir -p ./dataland-frontend/ 
+          docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
       - name: Store generated frontend API client for use by cypress
         uses: actions/upload-artifact@v3
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
-      - name: Build KeyCloak theme
-        run: ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
+  build-prod-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.whichEnvironment }}
+    needs:
+      - rebuild-docker-images
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      REALDATA: ${{ github.event.inputs.realData }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          secrets: ${{ toJSON(secrets) }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - uses: ./.github/workflows/downloadImageVersions
       - name: Start server and deploy to it (either Preview or Dev)
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
@@ -105,6 +139,7 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - build-prod-and-deploy
+      - upload-dataland-frontend-client
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
@@ -114,19 +149,16 @@ jobs:
         testGroup: [ 1,2,3,4 ]
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
         with:
-          name: parameters
-          path: ./*.log
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
       - name: Login to Github Packages
         uses: docker/login-action@v2
         with:
@@ -137,7 +169,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.12
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.13
           fi
       - name: Download frontend API client
         uses: actions/download-artifact@v3
@@ -174,7 +206,8 @@ jobs:
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
       - name: Move Cypress Results
         if: always()
-        run: mkdir -p ./dataland-frontend/cypressresult && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
+        run: |
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3

@@ -13,10 +13,17 @@ wait_for_health () {
 }
 
 delete_docker_volume_if_existent () {
-  old_volume=$(search_volume "$1")
-  if [[ -n $old_volume ]]; then
-    delete_docker_volume $old_volume
+  volume_name=$(search_volume "$1")
+  if [[ -n $volume_name ]]; then
+    delete_docker_volume $volume_name
   fi
+}
+
+delete_docker_volume_if_existent_remotely () {
+  volume_name_fragment="$1"
+  target_server_url="$2"
+  location="$3"
+  ssh ubuntu@"$target_server_url" "source \"$location\"/dataland-keycloak/deployment_utils.sh; delete_docker_volume_if_existent \"$volume_name_fragment\""
 }
 
 delete_docker_volume () {
@@ -34,27 +41,19 @@ build_directories () {
   echo "Assembling deployment folder."
   mkdir -p "$target_dir"
 
-  mkdir -p $target_dir/jar;
-  mkdir -p $target_dir/dataland-keycloak/dataland_theme/login;
-  mkdir -p $target_dir/dataland-frontend/src/assets
   mkdir -p $target_dir/dataland-keycloak/users;
 
-  envsubst < environments/.env.template > "$target_dir"/.env
+  cat ./*github_env.log > "$target_dir"/.env
+  set -o allexport
+  source "$target_dir"/.env
+  set +o allexport
+  envsubst < environments/.env.template >> "$target_dir"/.env
 
-  echo "Copying general files."
-  cp -r ./dataland-frontend/dist ./docker-compose.yml ./dataland-inbound-proxy/ ./dataland-inbound-admin-proxy/ ./dataland-frontend/default.conf "$target_dir"
-  cp -r ./dataland-pgadmin "$target_dir"
-  cp ./dataland-frontend/Dockerfile "$target_dir"/DockerfileFrontend
-  cp ./dataland-backend/Dockerfile "$target_dir"/DockerfileBackend
-  cp ./dataland-backend/build/libs/dataland-backend*.jar "$target_dir"/jar/dataland-backend.jar
-  cp -r ./dataland-frontend/src/assets/images "$target_dir"/dataland-frontend/src/assets
+  echo "Copying docker compose file."
+  cp ./docker-compose.yml "$target_dir"
 
   echo "Copying keycloak files."
-  cp ./dataland-keycloak/start_keycloak.sh "$target_dir"/dataland-keycloak/start_keycloak.sh
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
-  cp ./dataland-keycloak/Dockerfile "$target_dir"/DockerfileKeycloak
-  cp -r ./dataland-keycloak/dataland_theme/login/dist "$target_dir"/dataland-keycloak/dataland_theme/login
-  cp -r ./dataland-keycloak/dataland_theme/email "$target_dir"/dataland-keycloak/dataland_theme
 
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }
