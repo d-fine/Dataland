@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             library("okhttp", "com.squareup.okhttp3:okhttp:4.10.0")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
-            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.30-SNAPSHOT")
+            library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.9")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.19.0")
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.19.0")

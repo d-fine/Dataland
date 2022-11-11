@@ -119,7 +119,7 @@ services:
   edc-dummyserver:
     restart: always
     profiles: ["testing", "development", "productionInMemory"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.30-SNAPSHOT
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
     environment:
       SERVER_PORT: 9191
       SERVER_SERVLET_CONTEXT-PATH: /api
@@ -135,7 +135,7 @@ services:
   dataland-edc:
     restart: always
     profiles: ["production"]
-    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.30-SNAPSHOT
+    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.9
     networks:
       - internal
     expose:
