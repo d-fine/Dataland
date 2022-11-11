@@ -56,7 +56,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.7.10" apply false
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.sonarqube") version "3.4.0.2513"
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.4.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false

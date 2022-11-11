@@ -1,4 +1,4 @@
-FROM nginx:1.23.1
+FROM nginx:1.23.2
 ARG PROXY_ENVIRONMENT
 # Install certbot and cron and delete default nginx config
 RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean
