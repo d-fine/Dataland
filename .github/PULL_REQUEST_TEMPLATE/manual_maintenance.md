@@ -3,7 +3,7 @@ Note: To create a PR using this template add the query parameter `template=manua
 # Maintenance tasks (to be completed by the assignee)
 ## EDC
 - [ ] Complete manual maintenance in the EDC Repo
-- [ ] Release a new version `0.2.9`and replace the version number in the text here with the next version number to come.
+- [ ] Release a new version `0.2.10`and replace the version number in the text here with the next version number to come.
 - [ ] Upgrade to the new version of the edc-client in the `settings.gradle.kts`
 - [ ] Upgrade to the new version of the edc-dummyserver in the `docker-compose.yml` file.
 - [ ] Upgrade to the new version of the edc-server in the `docker-compose.yml` file.
