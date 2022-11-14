@@ -38,8 +38,6 @@ The following known issues need to be reviewed in case a compatible version is a
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
-- [ ] `./baseDockerfiles/temurinBaseImageDockerfile`
-  - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
 - [ ] `./dataland-pgadmin/Dockerfile`
