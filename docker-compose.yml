@@ -61,7 +61,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:15.0
+    image: postgres:15.1
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -101,7 +101,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:18.11.0
+    image: node:18.12.1
     networks:
       - internal
     volumes:
@@ -154,7 +154,7 @@ services:
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:15.0
+    image: postgres:15.1
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:

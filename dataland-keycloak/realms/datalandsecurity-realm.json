@@ -2450,7 +2450,7 @@
     "clientSessionMaxLifespan": "0",
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}"
   },
-  "keycloakVersion": "19.0.3",
+  "keycloakVersion": "20.0.1",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

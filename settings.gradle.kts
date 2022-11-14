@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             library("swagger-gradle-plugin", "io.swagger.core.v3:swagger-gradle-plugin:2.2.2")
             library("swagger-annotations", "io.swagger.core.v3:swagger-annotations:2.2.2")
 
-            library("okhttp", "com.squareup.okhttp3:okhttp:4.10.0")
+            library("okhttp", "com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.9")
@@ -37,12 +37,12 @@ dependencyResolutionManagement {
 
             library("slf4j-api", "org.slf4j:slf4j-api:1.7.36")
 
-            library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.4")
-            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.4")
-            library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4")
-            library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
+            library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.14.0")
+            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.14.0")
+            library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.0")
+            library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
 
-            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:19.0.3")
+            library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:20.0.1")
 
             library("database-h2", "com.h2database:h2:2.1.214")
             library("database-postgres", "org.postgresql:postgresql:42.5.0")
