@@ -9,6 +9,7 @@ mkdir -p ./local/certs
 scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 
 rm ./*github_env.log || true
+./build-utils/base_rebuild_gradle_base_dockerfile.sh
 find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
 set -o allexport

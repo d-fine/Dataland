@@ -1,11 +1,11 @@
 # build stage
-FROM eclipse-temurin:17.0.5_8-jdk-jammy as build-stage
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 WORKDIR /app
 
-COPY ./gradle/ /app/gradle/
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./gradlew /app/
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
 COPY ./dataland-backend/ /app/dataland-backend
 COPY ./.git/ /app/.git
 COPY ./dataland-frontend/ /app/dataland-frontend/

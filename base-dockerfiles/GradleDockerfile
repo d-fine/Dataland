@@ -1,0 +1,4 @@
+FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
+COPY ./gradle/ /app/gradle/
+COPY ./gradlew /app/
+RUN /app/gradlew
