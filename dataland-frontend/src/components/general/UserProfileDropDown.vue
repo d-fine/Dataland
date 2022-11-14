@@ -41,6 +41,7 @@ import defaultProfilePicture from "@/assets/images/elements/default_user_icon.sv
 export default defineComponent({
   name: "UserProfileDropDown",
   components: { PrimeMenu },
+  emits: ["profilePictureLoadingError", "profilePictureObtained"],
   setup() {
     const menu: Ref<PrimeMenu | undefined> = ref();
     function toggleDropdownMenu(event: Event): void {
@@ -99,6 +100,7 @@ export default defineComponent({
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
+        this.$emit("profilePictureLoadingError");
         this.profilePictureSource = defaultProfilePicture;
       }
     },
@@ -107,7 +109,9 @@ export default defineComponent({
     assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
-          this.profilePictureSource = keycloak.idTokenParsed.picture as string;
+          const profilePictureUrl = keycloak.idTokenParsed.picture as string;
+          this.$emit("profilePictureObtained", profilePictureUrl);
+          this.profilePictureSource = profilePictureUrl;
         }
       })
       .catch((error) => console.log(error));
