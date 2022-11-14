@@ -16,7 +16,6 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
 - [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
-- [ ] org.jetbrains.kotlin:kotlin-compiler-embeddable 1.7.20 (CD runs were not possible)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
 
 ### Gradle update
