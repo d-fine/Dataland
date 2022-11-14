@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.4.1_1-jdk-jammy as builder
+FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
@@ -9,7 +9,7 @@ COPY ./dataland-keycloak/dataland_theme/login /app/dataland-keycloak/dataland_th
 WORKDIR /app
 RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM quay.io/keycloak/keycloak:19.0.3
+FROM quay.io/keycloak/keycloak:20.0.1
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
