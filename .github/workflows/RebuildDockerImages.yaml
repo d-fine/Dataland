@@ -68,7 +68,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build base docker images
-        run: ./build-utils/base_rebuild_gradle_base_dockerfile.sh
+        run: ./build-utils/base_rebuild_gradle_dockerfile.sh
       - name: Build Docker Images
         id: build-dockerimages
         env:
