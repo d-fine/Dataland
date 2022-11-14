@@ -14,7 +14,7 @@ COPY ./dataland-e2etests/ /app/dataland-e2etests
 COPY ./testing/ /app/testing
 
 WORKDIR /app
-RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew :dataland-e2etests:compileTestKotlin :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && rm -rf /root/.npm /root/.gradle /usr/local/lib/node_modules
+RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew :dataland-e2etests:compileTestKotlin :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && rm -rf /root/.npm /root/.gradle
 
 ENTRYPOINT ["/bin/sh","-c"]
 CMD ["/app/testing/wait_for_backend_and_run_e2etests.sh"]
