@@ -105,31 +105,19 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
         )
     }
 
-    fun generateOneCompanyInformationPerBackendOnlyFramework(): List<CompanyInformation> {
-        val listWithOneCompanyInformationPerBackendOnlyFramework = listOf(
-            generateCompanyInformation("LksgCompany", "HiddenSector1928"),
-            generateCompanyInformation("SfdrCompany", "HiddenSector2891"),
-            generateCompanyInformation("SmeCompany", "HiddenSector3891")
-        )
-        val totalNumberOfBackendOnlyFrameworks = listWithOneCompanyInformationPerBackendOnlyFramework.size
-        val totalNumberOfFrameworksInBackend = DataTypeEnum.values().size
-        if (totalNumberOfFrameworksInBackend - FRONTEND_DISPLAYED_FRAMEWORKS.size ==
-            totalNumberOfBackendOnlyFrameworks
-        ) {
-            return listWithOneCompanyInformationPerBackendOnlyFramework
-        } else {
-            throw IllegalArgumentException(
-                "The list returned by this function needs exactly one companyInformation data set " +
-                    "for each backend-only framework in Dataland. " +
-                    "Please assure that you haven't added a new framework to the Dataland backend without " +
-                    "including it in this function and in the test where it is used."
+    private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
+        return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
+    }
 
-            )
+    fun generateOneCompanyInformationPerBackendOnlyFramework(): Map<DataTypeEnum, CompanyInformation> {
+        val map = mutableMapOf<DataTypeEnum, CompanyInformation>()
+        getListOfBackendOnlyFrameworks().forEach {
+            map[it] = generateCompanyInformation(it.name + "Company", it.name + "HiddenSector")
         }
+        return map.toMap()
     }
 }
-
-data class CompanyInformationWithT<T> (
+data class CompanyInformationWithT<T>(
     @Json var companyInformation: CompanyInformation,
     @Json var t: T
 )

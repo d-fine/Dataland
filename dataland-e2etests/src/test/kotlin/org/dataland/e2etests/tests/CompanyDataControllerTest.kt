@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.utils.ApiAccessor
@@ -66,7 +67,7 @@ class CompanyDataControllerTest {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val testData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numCompanies)
-        apiAccessor.uploadCompanyAndFrameworkData(
+        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             testCompanyInformation, testData,
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction
         )
@@ -85,16 +86,16 @@ class CompanyDataControllerTest {
     fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .generateOneCompanyInformationPerBackendOnlyFramework()
-        apiAccessor.uploadCompanyAndFrameworkData(
-            listOf(testCompanyInformation[0]), listOf(apiAccessor.testDataProviderForLksgData.getTData(1)[0]),
+        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(testCompanyInformation[DataTypeEnum.lksg]!!), listOf(apiAccessor.testDataProviderForLksgData.getTData(1)[0]),
             apiAccessor.lksgUploaderFunction
         )
-        apiAccessor.uploadCompanyAndFrameworkData(
-            listOf(testCompanyInformation[1]), listOf(apiAccessor.testDataProviderForSfdrData.getTData(1)[0]),
+        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(testCompanyInformation[DataTypeEnum.sfdr]!!), listOf(apiAccessor.testDataProviderForSfdrData.getTData(1)[0]),
             apiAccessor.sfdrUploaderFunction
         )
-        apiAccessor.uploadCompanyAndFrameworkData(
-            listOf(testCompanyInformation[2]), listOf(apiAccessor.testDataProviderForSmeData.getTData(1)[0]),
+        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(testCompanyInformation[DataTypeEnum.sme]!!), listOf(apiAccessor.testDataProviderForSmeData.getTData(1)[0]),
             apiAccessor.smeUploaderFunction
         )
         /* TODO we should assure somehow, that the uploads above cover all backend-only-frameworks.
@@ -105,7 +106,7 @@ class CompanyDataControllerTest {
         */
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.intersect(testCompanyInformation.map { it.sector }.toSet()).isEmpty(),
+            distinctValues.sectors!!.intersect(testCompanyInformation.map { it.value.sector }.toSet()).isEmpty(),
             "At least one sector of the frontend-excluded data sets appears in the distinct sector value list."
         )
     }

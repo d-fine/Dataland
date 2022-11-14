@@ -77,7 +77,7 @@ class ApiAccessor {
         )
     }
 
-    fun <T> uploadCompanyAndFrameworkData(
+    fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation
