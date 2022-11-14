@@ -1,6 +1,6 @@
 # build stage
 ARG DATALAND_GRADLE_BASE_VERSION
-FROM dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 WORKDIR /app

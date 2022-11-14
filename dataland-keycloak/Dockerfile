@@ -1,5 +1,5 @@
 ARG DATALAND_GRADLE_BASE_VERSION
-FROM dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 

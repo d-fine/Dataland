@@ -10,7 +10,11 @@ scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com
 
 rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh
-find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
+set -o allexport
+source ./*github_env.log
+set +o allexport
+
+find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1" || echo "ERROR - could not execute $1"' shell {} \;
 
 set -o allexport
 source ./*github_env.log
@@ -19,7 +23,7 @@ set +o allexport
 # start containers with the stack except frontend and backend
 docker compose --profile development down
 docker volume rm $(docker volume ls -q | grep _pgadmin_config) || true
-docker compose --profile development pull
+docker compose --profile development pull --ignore-pull-failures --include-deps
 docker compose --profile development up -d --build
 
 #start the backend
