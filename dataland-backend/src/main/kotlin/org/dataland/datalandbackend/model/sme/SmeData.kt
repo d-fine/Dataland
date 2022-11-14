@@ -1,13 +1,12 @@
 package org.dataland.datalandbackend.model.sme
 
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.model.enums.sme.Branch
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.model.enums.sme.CompanyAgeBracket
 import org.dataland.datalandbackend.model.enums.sme.EnergyEfficiencyBracket
 import org.dataland.datalandbackend.model.enums.sme.EnergyProductionBracket
 import org.dataland.datalandbackend.model.enums.sme.HeatSource
-import org.dataland.datalandbackend.model.enums.sme.LegalForm
+import org.dataland.datalandbackend.model.enums.sme.Industry
 import java.math.BigDecimal
 
 /**
@@ -16,30 +15,72 @@ import java.math.BigDecimal
  */
 @DataType("sme")
 data class SmeData(
-    val companyName: String?,
+    val industry: Industry?,
 
-    val companyAge: CompanyAgeBracket?,
+    val financialYear: Long?,
 
-    val companyLegalForm: LegalForm?,
+    val totalRevenue: BigDecimal?,
 
-    val shareOfInvestmentsForEnergyEfficiency: EnergyEfficiencyBracket?,
+    val researchAndDevelopmentExpenses: BigDecimal?,
 
-    val businessYear: Long?,
+    val energyEfficiencyInvestments: EnergyEfficiencyBracket?,
 
-    val branch: Branch?,
+    val operatingCosts: BigDecimal?,
 
-    val renewableEnergy: YesNo?,
+    val totalAssets: BigDecimal?,
 
-    val heatSource: HeatSource?,
+    val yearsSinceFounded: CompanyAgeBracket?,
 
-    val shareOfSelfProducedEnergy: EnergyProductionBracket?,
+    val productCategoryHighestSales: String?,
+
+    val productCategoryHighestSalesShareOfSales: BigDecimal?,
+
+    val productCategorySecondHighestSales: String?,
+
+    val productCategorySecondHighestSalesShareOfSales: BigDecimal?,
+
+    val totalAreaCompany: BigDecimal?,
+
+    val totalPowerConsumption: BigDecimal?,
+
+    val totalPowerCosts: BigDecimal?,
+
+    val useOfGreenElectricity: YesNoNa?,
+
+    val heatingEnergyConsumption: BigDecimal?,
+
+    val totalHeatingCosts: BigDecimal?,
+
+    val roomWaterHeating: HeatSource?,
+
+    val shareOwnEnergyProduction: EnergyProductionBracket?,
+
+    val waterSewageCosts: BigDecimal?,
+
+    val wasteDisposalCosts: BigDecimal?,
+
+    val wasteRecyclingRate: BigDecimal?,
 
     val numberOfEmployees: Long?,
 
-    val revenue: BigDecimal?,
+    val numberOfTemporaryWorkers: Long?,
 
-    val electricityConsumption: BigDecimal?,
+    val shareOfFullTimeEmployees: BigDecimal?,
 
-    val workerProtectionMeasures: YesNo?,
+    val shareOfEmployeesSubjectToSocialSecurityContributions: BigDecimal?,
+
+    val employeeFluctuation: BigDecimal?,
+
+    val shareOfFemaleEmployees: BigDecimal?,
+
+    val proportionOfFemaleEmployeesInManagement: BigDecimal?,
+
+    val oshMeasures: YesNoNa?,
+
+    val healthAndOldAgeOffers: YesNoNa?,
+
+    val numberVacationDays: Long?,
+
+    val nonProfitProjects: YesNoNa?,
 
 )

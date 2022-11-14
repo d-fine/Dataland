@@ -3,96 +3,90 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Matthes-Edorh",
-				"Hornung-Agostini"
+				"Hasler, Wölpert und Sinnhuber",
+				"Schoberg, Rockmeier und Fahner",
+				"Greger, Schult und Gradzki"
 			],
-			"headquarters": "Stöwerdorf",
-			"sector": "content",
+			"companyLegalForm": "users",
+			"headquarters": "Niladorf",
+			"headquartersPostalCode": "37513",
+			"sector": "infomediaries",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "8catzyhr4"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "xzm0hwd23nyq"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "i66r3rkfwt0r870leb7w"
+					"identifierValue": "cnrd5h7o6"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "7jzne0ohi1"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "hsf1gc4"
+					"identifierValue": "pd8nywhsc4"
 				}
 			],
-			"countryCode": "IL",
+			"countryCode": "IM",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://chancenlos-leber.de/heldenhaft-internet.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2021-11-17",
-					"currency": "MDL"
+				"AnnualReport": {
+					"reference": "https://jahrelang-frau.org/loyal-pop.pdf",
+					"isGroupLevel": "No",
+					"currency": "DZD"
 				},
 				"ESEFReport": {
-					"reference": "http://konstant-milch.org/festlich-schule.pdf",
-					"reportDate": "2022-08-04",
-					"currency": "ZWL"
-				},
-				"AnnualReport": {
-					"reference": "http://gravierend-milz.info/traditionell-schule.pdf",
-					"currency": "KRW"
+					"reference": "https://gewissenhaft-teppich.de/profiliert-reaktion.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "BIF"
 				},
 				"IntegratedReport": {
-					"reference": "http://spontan-cholera.de/jahrelang-jupiter.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-04-23",
-					"currency": "CZK"
+					"reference": "https://xn--resolut-l-77a.name/diplomatisch-klinge.pdf",
+					"currency": "TOP"
 				}
 			},
-			"fiscalYearEnd": "2022-09-18",
+			"fiscalYearDeviation": "No",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"provider": "Polifka OHG",
+				"dataSource": {
+					"page": 1102,
+					"report": "IntegratedReport",
+					"tagName": "interfaces"
+				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"numberOfEmployees": 40657,
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 22938,
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.6593,
+					"value": 0.735,
 					"dataSource": {
-						"page": 38,
+						"page": 834,
 						"report": "ESEFReport",
-						"tagName": "networks"
+						"tagName": "paradigms"
 					},
 					"quality": "Audited",
-					"comment": "compress mobile transmitter"
+					"comment": "compress back-end program"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.7388,
+					"value": 0.7606,
 					"dataSource": {
-						"page": 121,
+						"page": 574,
 						"report": "IntegratedReport",
-						"tagName": "relationships"
+						"tagName": "technologies"
 					},
 					"quality": "Audited",
-					"comment": "generate optical application"
+					"comment": "back up digital microchip"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.773,
-					"quality": "Incomplete"
+					"value": 0.2826,
+					"dataSource": {
+						"page": 625,
+						"report": "AnnualReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Reported",
+					"comment": "copy haptic matrix"
 				}
 			}
 		}
@@ -101,102 +95,94 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Koenig KG",
-				"Möllenbeck, Huhn und Wilky",
-				"Dohring UG",
-				"Jess, Polizzi und Schwab"
+				"Lakomy-Olbrich",
+				"Hackbusch, Soboll und Gadschiew"
 			],
-			"headquarters": "Süd Anastasiadorf",
-			"sector": "paradigms",
+			"companyLegalForm": "e-tailers",
+			"headquarters": "Muckenthalerburg",
+			"headquartersPostalCode": "98208",
+			"sector": "e-business",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "llyfrxluv"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "u81is1zyyv3j"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "ql6izjngt6"
+					"identifierType": "Lei",
+					"identifierValue": "ng0fdg9wl7grgu8ur0eh"
 				}
 			],
-			"countryCode": "TC",
+			"countryCode": "AM",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://penibel-zinn.name/sanft-gramm.pdf",
-					"isGroupLevel": "NA",
-					"currency": "IQD"
+				"SustainabilityReport": {
+					"reference": "http://resolut-haus.com/wohlgesinnt-benzin.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2021-11-25",
+					"currency": "KES"
 				}
 			},
 			"fiscalYearDeviation": "No",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
-			"activityLevelReporting": "No",
+			"numberOfEmployees": 94423,
 			"opex": {
 				"totalAmount": {
-					"value": 111822.06,
+					"value": 244007.42,
 					"dataSource": {
-						"page": 254,
-						"report": "AnnualReport",
-						"tagName": "e-services"
+						"page": 777,
+						"report": "SustainabilityReport",
+						"tagName": "systems"
 					},
 					"quality": "Reported",
-					"comment": "quantify bluetooth circuit"
+					"comment": "synthesize solid state capacitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.9772,
+					"value": 0.9275,
 					"dataSource": {
-						"page": 326,
-						"report": "AnnualReport",
-						"tagName": "platforms"
+						"page": 1057,
+						"report": "SustainabilityReport",
+						"tagName": "niches"
 					},
-					"quality": "Reported",
-					"comment": "index primary application"
+					"quality": "Audited",
+					"comment": "program open-source hard drive"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 65194.74,
-					"dataSource": {
-						"page": 892,
-						"report": "AnnualReport",
-						"tagName": "content"
-					},
-					"quality": "Estimated",
-					"comment": "navigate open-source application"
+					"value": 627583.38,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.2534,
-					"quality": "Incomplete"
+					"value": 0.2045,
+					"dataSource": {
+						"page": 478,
+						"report": "SustainabilityReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Reported",
+					"comment": "parse bluetooth program"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 743409.76,
+					"value": 966129.36,
 					"dataSource": {
-						"page": 1048,
-						"report": "AnnualReport",
-						"tagName": "users"
+						"page": 642,
+						"report": "SustainabilityReport",
+						"tagName": "content"
 					},
 					"quality": "Audited",
-					"comment": "connect multi-byte program"
+					"comment": "reboot auxiliary hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.9086,
+					"value": 0.4582,
 					"dataSource": {
-						"page": 339,
-						"report": "AnnualReport",
-						"tagName": "initiatives"
+						"page": 725,
+						"report": "SustainabilityReport",
+						"tagName": "ROI"
 					},
-					"quality": "Reported",
-					"comment": "navigate mobile port"
+					"quality": "Audited",
+					"comment": "navigate redundant firewall"
 				}
 			}
 		}

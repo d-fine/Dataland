@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import {
-  Branch,
+  Industry,
   CompanyAgeBracket,
   EnergyEfficiencyBracket,
   EnergyProductionBracket,
   HeatSource,
-  LegalForm,
 } from "@clients/backend";
 
 const possibleCompanyAgeBracketUndefinedValues = [undefined, ...Object.values(CompanyAgeBracket)];
@@ -13,9 +12,9 @@ export function randomCompanyAgeBracketOrUndefined(): CompanyAgeBracket | undefi
   return faker.helpers.arrayElement(possibleCompanyAgeBracketUndefinedValues);
 }
 
-const possibleBranchUndefinedValues = [undefined, ...Object.values(Branch)];
-export function randomBranchOrUndefined(): Branch | undefined {
-  return faker.helpers.arrayElement(possibleBranchUndefinedValues);
+const possibleIndustryUndefinedValues = [undefined, ...Object.values(Industry)];
+export function randomIndustryOrUndefined(): Industry | undefined {
+  return faker.helpers.arrayElement(possibleIndustryUndefinedValues);
 }
 
 const possibleHeatSourceUndefinedValues = [undefined, ...Object.values(HeatSource)];
@@ -33,7 +32,7 @@ export function randomEnergyProductionBracketOrUndefined(): EnergyProductionBrac
   return faker.helpers.arrayElement(possibleEnergyProductionBracketUndefinedValues);
 }
 
-const possibleLegalFormUndefinedValues = [undefined, ...Object.values(LegalForm)];
-export function randomLegalFormOrUndefined(): LegalForm | undefined {
-  return faker.helpers.arrayElement(possibleLegalFormUndefinedValues);
-}
+//const possibleLegalFormUndefinedValues = [undefined, ...Object.values(LegalForm)];
+//export function randomLegalFormOrUndefined(): LegalForm | undefined {
+//  return faker.helpers.arrayElement(possibleLegalFormUndefinedValues);
+//}

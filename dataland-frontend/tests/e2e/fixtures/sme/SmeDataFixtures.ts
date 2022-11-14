@@ -2,31 +2,51 @@ import { faker } from "@faker-js/faker";
 import { SmeData } from "@clients/backend";
 
 import {
-  randomBranchOrUndefined,
+  randomIndustryOrUndefined,
   randomCompanyAgeBracketOrUndefined,
   randomEnergyEfficiencyBracketOrUndefined,
   randomEnergyProductionBracketOrUndefined,
   randomHeatSourceOrUndefined,
-  randomLegalFormOrUndefined,
 } from "./SmeEnumFixtures";
-import { randomYesNoUndefined } from "../common/YesNoFixtures";
+import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 export function generateSmeData(): SmeData {
   const returnBase: SmeData = {};
 
-  returnBase.companyName = faker.company.name();
-  returnBase.companyAge = randomCompanyAgeBracketOrUndefined();
-  returnBase.companyLegalForm = randomLegalFormOrUndefined();
-  returnBase.shareOfInvestmentsForEnergyEfficiency = randomEnergyEfficiencyBracketOrUndefined();
-  returnBase.businessYear = faker.datatype.number({ min: 2015, max: 2022 });
-  returnBase.branch = randomBranchOrUndefined();
-  returnBase.renewableEnergy = randomYesNoUndefined();
-  returnBase.heatSource = randomHeatSourceOrUndefined();
-  returnBase.shareOfSelfProducedEnergy = randomEnergyProductionBracketOrUndefined();
-  returnBase.numberOfEmployees = faker.datatype.number();
-  returnBase.revenue = faker.datatype.number();
-  returnBase.electricityConsumption = faker.datatype.number();
-  returnBase.workerProtectionMeasures = randomYesNoUndefined();
-
+  returnBase.industry = randomIndustryOrUndefined();
+  returnBase.financialYear = faker.datatype.number({ min: 2010, max: 2022 });
+  returnBase.totalRevenue = randomEuroValue();
+  returnBase.researchAndDevelopmentExpenses = randomEuroValue();
+  returnBase.energyEfficiencyInvestments = randomEnergyEfficiencyBracketOrUndefined();
+  returnBase.operatingCosts = randomEuroValue();
+  returnBase.totalAssets = randomEuroValue();
+  returnBase.yearsSinceFounded = randomCompanyAgeBracketOrUndefined();
+  returnBase.productCategoryHighestSales = faker.company.bsNoun();
+  returnBase.productCategoryHighestSalesShareOfSales = randomPercentageValue();
+  returnBase.productCategorySecondHighestSales = faker.company.bsNoun();
+  returnBase.productCategorySecondHighestSalesShareOfSales = randomPercentageValue();
+  returnBase.totalAreaCompany = faker.datatype.number();
+  returnBase.totalPowerConsumption = faker.datatype.number();
+  returnBase.totalPowerCosts = randomEuroValue();
+  returnBase.useOfGreenElectricity = randomYesNoNaUndefined();
+  returnBase.heatingEnergyConsumption = faker.datatype.number();
+  returnBase.totalHeatingCosts = randomEuroValue();
+  returnBase.roomWaterHeating = randomHeatSourceOrUndefined();
+  returnBase.shareOwnEnergyProduction = randomEnergyProductionBracketOrUndefined();
+  returnBase.waterSewageCosts = randomEuroValue();
+  returnBase.wasteDisposalCosts = randomEuroValue();
+  returnBase.wasteRecyclingRate = randomPercentageValue();
+  returnBase.numberOfEmployees = faker.datatype.number({ min: 1, max: 1000 });
+  returnBase.numberOfTemporaryWorkers = faker.datatype.number({ min: 1, max: 1000 });
+  returnBase.shareOfFullTimeEmployees = randomPercentageValue();
+  returnBase.shareOfEmployeesSubjectToSocialSecurityContributions = randomPercentageValue();
+  returnBase.employeeFluctuation = randomPercentageValue();
+  returnBase.shareOfFemaleEmployees = randomPercentageValue();
+  returnBase.proportionOfFemaleEmployeesInManagement = randomPercentageValue();
+  returnBase.oshMeasures = randomYesNoNaUndefined();
+  returnBase.healthAndOldAgeOffers = randomYesNoNaUndefined();
+  returnBase.numberVacationDays = faker.datatype.number({ min: 1, max: 50 });
+  returnBase.nonProfitProjects = randomYesNoNaUndefined();
   return returnBase;
 }

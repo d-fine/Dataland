@@ -9,5 +9,5 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true
 )
 enum class HeatSource {
-    Oil, Gas, Electricity, DistrictHeating
+    Oil, Gas, Electricity, DistrictHeat
 }
