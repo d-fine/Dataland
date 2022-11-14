@@ -28,6 +28,6 @@ describe("As a user I expect the admin console only to be reachable using admin-
       .get("#kc-login")
       .should("exist")
       .click();
-    cy.get("h1").should("exist").should("contain", "Master realm");
+    cy.get("h1").should("exist").should("contain", "master realm");
   });
 });
