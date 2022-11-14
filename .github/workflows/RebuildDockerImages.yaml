@@ -69,6 +69,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker Images
         id: build-dockerimages
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "running ./build-utils/$BUILD_SCRIPT"  
           eval "./build-utils/$BUILD_SCRIPT"

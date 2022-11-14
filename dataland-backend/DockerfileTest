@@ -1,6 +1,4 @@
-FROM ghcr.io/d-fine/dataland/temurinbase:latest
-COPY . /app/
-WORKDIR /app
-RUN ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
+ARG DATALAND_BACKEND_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_backend_base:${DATALAND_BACKEND_BASE_VERSION}
 
 CMD ./gradlew :dataland-backend:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace

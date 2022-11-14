@@ -1,7 +1,5 @@
-FROM ghcr.io/d-fine/dataland/temurinbase:latest as builder
-COPY . /app/
-WORKDIR /app
-RUN ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
+ARG DATALAND_BACKEND_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_backend_base:${DATALAND_BACKEND_BASE_VERSION} as builder
 
 FROM eclipse-temurin:17.0.5_8-jre-alpine
 COPY --from=builder /app/dataland-backend/build/libs/dataland-backend-0.0.1-SNAPSHOT.jar /jar/dataland-backend.jar
