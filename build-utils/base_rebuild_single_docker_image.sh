@@ -45,10 +45,13 @@ if [ "$sha1_manifest" == "no sha1 manifest" ] || [ "${FORCE_BUILD:-}" == "true" 
      --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
      --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
      --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}"
-  if [ "$GITHUB_ACTIONS" == "true" ]; then
+  if [ "${GITHUB_ACTIONS:-}" == "true" ]; then
     echo "Running in CI - Pushing images to ghcr"
     docker push "$full_image_reference"
+  else
+    echo "Running outside Github Actions - skipping docker push"
   fi
+
 else
   echo "No Rebuild for $docker_image_name required"
 fi
