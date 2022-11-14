@@ -6,6 +6,7 @@ export default defineConfig({
   defaultCommandTimeout: 10000,
   viewportHeight: 684,
   viewportWidth: 1536,
+  video: false,
 
   retries: {
     runMode: 2,
@@ -15,7 +16,7 @@ export default defineConfig({
   fixturesFolder: "../testing/data",
 
   e2e: {
-    baseUrl: "https://dataland-local.duckdns.org",
+    baseUrl: "https://local-dev.dataland.com",
     setupNodeEvents(on, config) {
       on("task", {
         setEmail: (val: string) => {

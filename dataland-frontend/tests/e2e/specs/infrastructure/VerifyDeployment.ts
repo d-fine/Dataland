@@ -1,11 +1,12 @@
 import { ActuatorApi } from "@clients/backend";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 interface HealthResponse {
   status: string;
 }
 
-interface InfoResponse {
-  git: { commit: { id: { full: string } } };
+interface GitInfoResponse {
+  status: string;
 }
 
 describe("As a developer, I want to ensure that the deployment is okay", () => {
@@ -17,9 +18,9 @@ describe("As a developer, I want to ensure that the deployment is okay", () => {
   });
 
   it("retrieve info endpoint and check commit", () => {
-    cy.browserThen(new ActuatorApi().info()).then((infoResponse) => {
-      const data = infoResponse.data as InfoResponse;
-      expect(data.git.commit.id.full).to.equal(Cypress.env("commit_id"));
-    });
+    cy.request(`${getBaseUrl()}/gitinfo`)
+      .then((response) => JSON.parse(response.body as string) as GitInfoResponse)
+      .should("have.a.property", "commit")
+      .should("eq", Cypress.env("commit_id") as string);
   });
 });

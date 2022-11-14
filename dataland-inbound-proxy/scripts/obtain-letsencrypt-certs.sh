@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -euxo pipefail
 
 while ! curl http://localhost/.well-known/d-statuscheck 2>/dev/null | grep -q UP; do

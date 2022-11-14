@@ -10,30 +10,55 @@ on:
       - '**'
 
 jobs:
+  log-everything:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log everything
+        with:
+          github: ${{ toJSON(github) }}
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          runner: ${{ toJSON(runner) }}
+          secrets: ${{ toJSON(secrets) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+  rebuild-docker-images:
+    uses: ./.github/workflows/RebuildDockerImages.yaml
   unit-tests-backend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/downloadImageVersions
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
         with:
-          name: parameters
-          path: ./*.log
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute Backend unit tests by using base image from GitHub Registry
         run: |
           docker run -v $(pwd):/app:rw \
           -e GITHUB_TOKEN \
           -e GITHUB_USER \
-          ghcr.io/d-fine/dataland/temurinbase:latest \
+          ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION} \
           /app/gradlew -p /app ktlintcheck detekt :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
       - name: Upload Test Reports
         if: always()
@@ -60,21 +85,20 @@ jobs:
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
         with:
-          name: parameters
-          path: ./*.log
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -93,6 +117,8 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
+    needs:
+      - rebuild-docker-images
     strategy:
       fail-fast: false
       matrix:
@@ -111,20 +137,18 @@ jobs:
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
-      - name: log inputs
-        shell: bash
-        run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/downloadImageVersions
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
         with:
-          name: parameters
-          path: ./*.log
-      - name: Retrieve SSL certificates for dataland-local.duckdns.org
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
           DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
@@ -132,7 +156,7 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
-          KEYCLOAK_FRONTEND_URL: "https://dataland-local.duckdns.org/keycloak"
+          KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
@@ -146,9 +170,9 @@ jobs:
           KEYCLOAK_ADMIN_PASSWORD: "admin"
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
-          PROXY_PRIMARY_URL: dataland-local.duckdns.org
-          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/dataland-local.duckdns.org
-          PROXY_ENVIRONMENT: production
+          PROXY_PRIMARY_URL: local-dev.dataland.com
+          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
+          PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy_production:${{ env.DATALAND_INBOUND_PROXY_PRODUCTION_VERSION }}
           ENVIRONMENT: "development"
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
@@ -200,19 +224,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: log inputs
-        shell: bash
-        run: |
-          echo '${{ toJSON(inputs) }}' > inputs.log
-          env > env.log
-          echo '${{ toJSON(secrets) }}' > secrets.log
-          echo '${{ toJSON(matrix) }}' > matrix.log
-          echo '${{ toJSON(github) }}' > github.log
-      - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
         with:
-          name: parameters
-          path: ./*.log
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin

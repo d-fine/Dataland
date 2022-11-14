@@ -43,6 +43,10 @@ server {
       include utils/proxy.conf;
     }
 
+    location = /gitinfo {
+       root /var/www/html;
+    }
+
     # additional config
     include utils/keycloak.conf;
     include utils/general.conf;
