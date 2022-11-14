@@ -9,11 +9,7 @@ version: "3.8"
 
 services:
   proxy:
-    build:
-      context: ./
-      dockerfile: ./dataland-inbound-proxy/Dockerfile
-      args:
-        PROXY_ENVIRONMENT: ${PROXY_ENVIRONMENT:-development}
+    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
     restart: always
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
@@ -27,14 +23,13 @@ services:
       - ./local/certs:/certs/custom
     environment:
       # The primary server URL all other URLS get redirected to
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       # This is the path to the letsencrypt directory (usually /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
   admin-proxy:
-    build:
-      context: ./dataland-inbound-admin-proxy
+    image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
     profiles: [ "production", "testing", "productionInMemory", "development" ]
     networks:
@@ -51,9 +46,7 @@ services:
     networks:
       - internal
       - backend-db
-    build:
-      context: ./
-      dockerfile: ${BACKEND_DOCKERFILE:-./dataland-backend/DockerfileTest}
+    image: ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
     expose:
       - "8080"
     depends_on:
@@ -62,7 +55,7 @@ services:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       GITHUB_USER: ${GITHUB_USER}
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-dataland-local.duckdns.org}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
@@ -77,11 +70,11 @@ services:
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
   e2etests:
     profiles: ["testing"]
-    build:
-      context: ./
-      dockerfile: ./dataland-e2etests/Dockerfile
+    image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
     networks:
       - external
+    volumes:
+      - ./.git:/app/.git
     environment:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       GITHUB_USER: ${GITHUB_USER}
@@ -100,7 +93,7 @@ services:
       CYPRESS_PREPOPULATE_TIMEOUT_S: 180
       CYPRESS_PREVISIT_TIMEOUT_S: 180
     links:
-      - proxy:dataland-local.duckdns.org
+      - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
@@ -113,17 +106,12 @@ services:
       - internal
     volumes:
       - ./dataland-frontend:/app
-      - /app/node_modules
+      - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]
-    build:
-      context: ./
-      dockerfile: ${FRONTEND_DOCKERFILE:-./dataland-frontend/DockerfileTest}
-      args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN}
-        GITHUB_USER: ${GITHUB_USER}
+    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     expose:
       - "80"
     networks:
@@ -181,9 +169,7 @@ services:
     networks:
       - internal
       - keycloak-db
-    build:
-      context: ./
-      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    image: ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
     command: ${KEYCLOAK_START_COMMAND:-start}
     expose:
       - "8080"
@@ -201,11 +187,8 @@ services:
       keycloak-db:
         aliases:
           - keycloak
-    build:
-      context: ./
-      dockerfile: ${KEYCLOAK_DOCKERFILE:-./dataland-keycloak/Dockerfile}
+    image: ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
     volumes:
-      - ./dataland-keycloak/realms:/keycloak_realms
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
@@ -228,15 +211,14 @@ services:
     depends_on:
       - keycloak-db
   pgadmin:
-    build: dataland-pgadmin
+    image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
     networks:
       - keycloak-db
       - backend-db
       - internal
     profiles: [ "production", "testing", "productionInMemory", "development" ]
     volumes:
-      - ./dataland-pgadmin/servers.json:/pgadmin4/servers.json:ro
-      - ./dataland-pgadmin/pgpass.template:/pgpass.template:ro
+      - pgadmin_config:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dataland.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -255,4 +237,8 @@ volumes:
   backend_data:
     driver: local
   letsencrypt:
+    driver: local
+  pgadmin_config:
+    driver: local
+  frontend-dev-node-modules:
     driver: local
