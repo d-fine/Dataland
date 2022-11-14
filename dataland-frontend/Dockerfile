@@ -1,5 +1,5 @@
 # build stage
-FROM eclipse-temurin:17.0.4.1_1-jdk-jammy as build-stage
+FROM eclipse-temurin:17.0.5_8-jdk-jammy as build-stage
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 WORKDIR /app
