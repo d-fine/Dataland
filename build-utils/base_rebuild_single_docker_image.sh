@@ -44,6 +44,7 @@ if [ "$sha1_manifest" == "no sha1 manifest" ] || [ "${FORCE_BUILD:-}" == "true" 
      --build-arg GITHUB_USER="${GITHUB_USER:-}" \
      --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
      --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}"
+     --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}"
   docker push "$full_image_reference"
 else
   echo "No Rebuild for $docker_image_name required"
