@@ -1,10 +1,10 @@
-FROM eclipse-temurin:17.0.4.1_1-jdk-jammy as builder
+FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
 
 COPY . /build
 WORKDIR /build
 RUN ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM quay.io/keycloak/keycloak:20.0.0
+FROM quay.io/keycloak/keycloak:20.0.1
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
