@@ -42,7 +42,7 @@ Update versions in the following dockerfiles
 - [ ] `./baseDockerfiles/temurinBaseImageDockerfile`
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile`
+- [ ] `./dataland-keycloak/Dockerfile` (also update realm json files with new version)
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
