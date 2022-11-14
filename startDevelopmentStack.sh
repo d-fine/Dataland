@@ -28,4 +28,3 @@ docker compose --profile development up -d --build
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
-
