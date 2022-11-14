@@ -4,7 +4,6 @@ ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
 WORKDIR /app
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
 COPY ./dataland-keycloak/build.gradle.kts /app/dataland-keycloak/
 COPY ./dataland-keycloak/dataland_theme/login /app/dataland-keycloak/dataland_theme/login
 RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace

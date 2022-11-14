@@ -1,4 +1,6 @@
 FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
+WORKDIR /app
 COPY ./gradle/ /app/gradle/
 COPY ./gradlew /app/
-RUN /app/gradlew
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
+RUN ./gradlew --no-daemon

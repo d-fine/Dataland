@@ -9,6 +9,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
 
+WORKDIR /app
 COPY ./gradle/ /app/gradle/
 COPY ./gradlew /app/
-RUN /app/gradlew
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
+RUN ./gradlew --no-daemon

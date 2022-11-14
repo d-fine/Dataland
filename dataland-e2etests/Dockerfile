@@ -4,7 +4,6 @@ ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
 WORKDIR /app
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
 COPY ./dataland-backend/ /app/dataland-backend
 COPY ./dataland-frontend/tests /app/dataland-frontend/tests
 COPY ./dataland-frontend/src /app/dataland-frontend/src
