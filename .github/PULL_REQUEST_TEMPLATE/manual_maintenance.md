@@ -53,6 +53,7 @@ Update versions in the following dockerfiles
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
+- [ ] test.dataland.com
 - [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com

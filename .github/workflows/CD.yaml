@@ -192,7 +192,7 @@ jobs:
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
-          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,dev1.dataland.com,dev2.dataland.com"
+          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
           CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
           CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
