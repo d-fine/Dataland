@@ -38,14 +38,13 @@ The following known issues need to be reviewed in case a compatible version is a
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
-- [ ] `./baseDockerfiles/cypressBaseImageDockerfile`
-  - [ ] On any change run the corresponding job in GitHub
 - [ ] `./baseDockerfiles/temurinBaseImageDockerfile`
   - [ ] On any change run the corresponding job in GitHub
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-csvconverter/Dockerfile`
+TODO: Add all dockerfiles
 - [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
 - [ ] Update the versions of all postgres images in the `docker-compose.yml` file
 - [ ] Update the version of the node image in the `docker-compose.yml` file
