@@ -34,7 +34,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should("exist")
       .then((it) => {
         // cy.then used to ensure that the OTP is only generated right before it is entered
-        cy.wrap(it).type(otpGenerator());
+        return cy.wrap(it).type(otpGenerator());
       })
       .get("#kc-login")
       .should("exist")
