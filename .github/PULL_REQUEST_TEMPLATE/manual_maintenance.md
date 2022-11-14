@@ -48,7 +48,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile`
 - [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] Update the image versions of backend-db, frontend-dev and keycloak-db
 - [ ] Update the image versions of edcdummyserver and dataland-edc
