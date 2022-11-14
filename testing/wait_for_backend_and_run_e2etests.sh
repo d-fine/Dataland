@@ -16,7 +16,9 @@ is_infrastructure_up () {
       return 1
     fi
   done
+  echo "-----------------------------"
   echo "All infrastructure is up now!"
+  echo "-----------------------------"
 }
 export -f is_infrastructure_up
 
