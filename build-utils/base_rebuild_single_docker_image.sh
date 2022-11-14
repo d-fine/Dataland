@@ -54,6 +54,7 @@ if [[ "$sha1_manifest" == "no sha1 manifest" ]] || [[ "${FORCE_BUILD:-}" == "tru
      --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
      --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
      --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
+     --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
      "${docker_push_commandline_fragment[@]}" "${docker_cache_commandline_fragment[@]}"
 else
   echo "No Rebuild for $docker_image_name required"
