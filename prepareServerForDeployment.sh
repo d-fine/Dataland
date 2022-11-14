@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 targetserver_url=$1
 
 ssh ubuntu@"$targetserver_url" 'mkdir -p ./dataland/dataland-keycloak'
