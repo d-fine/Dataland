@@ -36,17 +36,19 @@ The following known issues need to be reviewed in case a compatible version is a
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
-- [ ] `./baseDockerfiles/cypressBaseImageDockerfile`
-  - [ ] On any change run the corresponding job in GitHub
-- [ ] `./baseDockerfiles/temurinBaseImageDockerfile`
-  - [ ] On any change run the corresponding job in GitHub
+- [ ] `./dataland-backend/DatalandBackendBaseDockerfile`
 - [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile` (also update realm json files with new version)
-- [ ] `./dataland-pgadmin/Dockerfile`
+- [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-e2etests/e2etestsCoreDockerfile`
+- [ ] `./dataland-frontend/Dockerfile`
+- [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
+- [ ] `./dataland-inbound-proxy/DockerfileBase`
+- [ ] `./dataland-inbound-proxy/Dockerfile`
+- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./dataland-csvconverter/Dockerfile`
-- [ ] Search for all Dockerfiles that use a nginx image and update it. Find them by searching for `FROM nginx` in the whole code.
-- [ ] Update the versions of all postgres images in the `docker-compose.yml` file
-- [ ] Update the version of the node image in the `docker-compose.yml` file
+- [ ] Update the image versions of backend-db, frontend-dev and keycloak-db
+- [ ] Update the image versions of edcdummyserver and dataland-edc
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Server updates

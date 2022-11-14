@@ -1,1 +1,19 @@
-**/.gradle
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.exec
+
+/.idea/
+**/.gradle/
+**/build/
+**/node_modules/
+
+**/local/
+
+**/dist/
+**/coverage
+**/.nyc_output/
