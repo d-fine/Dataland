@@ -67,15 +67,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build base docker images
-        run: ./build-utils/base_rebuild_gradle_dockerfile.sh
       - name: Build Docker Images
         id: build-dockerimages
         env:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "running ./build-utils/$BUILD_SCRIPT"  
+          echo "Matrix Job for ./build-utils/$BUILD_SCRIPT"  
+          ./build-utils/base_rebuild_gradle_dockerfile.sh
+          set -o allexport
+          source ./*github_env.log
+          set +o allexport
           eval "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
