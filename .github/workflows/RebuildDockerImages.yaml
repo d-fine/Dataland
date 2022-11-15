@@ -78,7 +78,7 @@ jobs:
           set -o allexport
           source ./*github_env.log
           set +o allexport
-          eval "./build-utils/$BUILD_SCRIPT"
+          "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
         uses: actions/upload-artifact@v3
         with:
