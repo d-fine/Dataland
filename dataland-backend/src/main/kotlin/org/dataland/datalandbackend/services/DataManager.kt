@@ -76,7 +76,7 @@ class DataManager(
             dataId = edcClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val message = "Error sending insertData Request to Eurodat." +
-                    " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
+                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(message)
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
