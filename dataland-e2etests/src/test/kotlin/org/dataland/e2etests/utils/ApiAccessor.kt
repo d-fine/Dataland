@@ -182,6 +182,11 @@ class ApiAccessor {
             onlyCompanyNames = true
         )
     }
+
+    fun getNumberOfStoredCompanies(): Int {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        return companyDataControllerApi.getCompanies().size
+    }
 }
 
 data class CompanyUpload(

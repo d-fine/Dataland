@@ -60,8 +60,8 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    @Suppress("kotlin:S138")
-    fun `post two dummy companies and check if the distinct endpoint returns all values`() {
+    @Suppress("kotlin:S138") // TODO who included this and why? is it required?
+    fun `post two dummy companies with framework data and check if the distinct endpoint returns all values`() {
         val numCompanies = 2
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
@@ -127,11 +127,9 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
-        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
-        val allCompaniesListSizeBefore = apiAccessor.companyDataControllerApi.getCompanies().size
+        val allCompaniesListSizeBefore = apiAccessor.getNumberOfStoredCompanies()
         val companyUploads = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
-        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
-        val allCompaniesListSizeAfter = apiAccessor.companyDataControllerApi.getCompanies().size
+        val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
         assertEquals(
             companyUploads.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
             "The size of the all-companies-list did not increase by ${companyUploads.size}."
