@@ -13,10 +13,10 @@
                     <p class="m-0 mb-3">${msg("loginTotpStep1")}</p>
                     <ul class="p-tfa-unordered-list-with-linebreak pl-0"
                         id="kc-totp-supported-apps">
-                        <#list totp.policy.supportedApplications as app>
+                        <#list totp.supportedApplications as app>
                             <li class="flex align-items-center">
                                 <img src="${url.resourcesPath}/img/check.svg">
-                                &emsp;${app}
+                                &emsp;${msg(app)}
                             </li>
                         </#list>
                     </ul>

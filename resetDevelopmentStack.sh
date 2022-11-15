@@ -2,7 +2,7 @@
 
 set -euox pipefail
 
-if curl -L https://dataland-local.duckdns.org/api/actuator/health/ping 2>/dev/null | grep -q UP; then
+if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
   echo "ERROR: The backend is currently running. This will prevent the new backend from starting."
   echo "Shut down the running process and restart the script."
   exit 1
