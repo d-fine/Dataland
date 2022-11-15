@@ -25,14 +25,14 @@ class GeneralTestDataProvider() {
         )
     }
 
-    private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
+    fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
         return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
     }
 
-    fun generateOneCompanyInformationPerBackendOnlyFramework(): Map<DataTypeEnum, CompanyInformation> {
-        val map = mutableMapOf<DataTypeEnum, CompanyInformation>()
+    fun generateOneCompanyInformationPerBackendOnlyFramework(): Map<DataTypeEnum, List<CompanyInformation>> {
+        val map = mutableMapOf<DataTypeEnum, List<CompanyInformation>>()
         getListOfBackendOnlyFrameworks().forEach {
-            map[it] = generateCompanyInformation(it.name + "Company", it.name + "HiddenSector")
+            map[it] = listOf(generateCompanyInformation(it.name + "Company", it.name + "HiddenSector"))
         }
         return map.toMap()
     }

@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.utils.ApiAccessor
@@ -86,27 +85,14 @@ class CompanyDataControllerTest {
     fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
         val testCompanyInformation = apiAccessor.generalTestDataProvider
             .generateOneCompanyInformationPerBackendOnlyFramework()
-        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.lksg]!!), apiAccessor.testDataProviderForLksgData.getTData(1),
-            apiAccessor.lksgUploaderFunction
+        apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+            apiAccessor.generalTestDataProvider.getListOfBackendOnlyFrameworks(),
+            testCompanyInformation,
+            1
         )
-        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.sfdr]!!), apiAccessor.testDataProviderForSfdrData.getTData(1),
-            apiAccessor.sfdrUploaderFunction
-        )
-        apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.sme]!!), apiAccessor.testDataProviderForSmeData.getTData(1),
-            apiAccessor.smeUploaderFunction
-        )
-        /* TODO we should assure somehow, that the uploads above cover all backend-only-frameworks.
-        I had some ideas on how we could "enforce" that, but thos ideas would lead to this method having more than 20
-        lines of code and therefore detekt failing.
-        Maybe we should think about building an iterator that iterates through datatypes you give to it and does
-        things with the matching testDataProvicer and controller.
-        */
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.intersect(testCompanyInformation.map { it.value.sector }.toSet()).isEmpty(),
+            distinctValues.sectors!!.intersect(testCompanyInformation.map { it.value[0].sector }.toSet()).isEmpty(),
             "At least one sector of the frontend-excluded data sets appears in the distinct sector value list."
         )
     }
