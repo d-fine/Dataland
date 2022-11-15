@@ -1,10 +1,11 @@
-package org.dataland.e2etests
+package org.dataland.e2etests.utils
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.e2etests.FRONTEND_DISPLAYED_FRAMEWORKS
 
-class GeneralTestDataProvider() {
+class GeneralTestDataProvider {
 
     private fun getRandomAlphaNumericString(): String {
         val allowedChars = ('a'..'z') + ('0'..'9')

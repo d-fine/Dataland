@@ -3,8 +3,8 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.FrameworkTestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
+import org.dataland.e2etests.utils.FrameworkTestDataProvider
 
 fun <T, U> postOneCompanyAndItsData(
     frameworkTestDataProvider: FrameworkTestDataProvider<T>,

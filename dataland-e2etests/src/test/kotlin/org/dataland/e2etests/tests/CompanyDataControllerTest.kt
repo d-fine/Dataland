@@ -60,7 +60,6 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    @Suppress("kotlin:S138") // TODO who included this and why? is it required?
     fun `post two dummy companies with framework data and check if the distinct endpoint returns all values`() {
         val numCompanies = 2
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials

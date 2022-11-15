@@ -22,10 +22,10 @@ export function generateSmeData(): SmeData {
   returnBase.operatingCosts = randomEuroValue();
   returnBase.totalAssets = randomEuroValue();
   returnBase.yearsSinceFounded = randomCompanyAgeBracketOrUndefined();
-  returnBase.productCategoryHighestSales = faker.company.bsNoun();
-  returnBase.productCategoryHighestSalesShareOfSales = randomPercentageValue();
-  returnBase.productCategorySecondHighestSales = faker.company.bsNoun();
-  returnBase.productCategorySecondHighestSalesShareOfSales = randomPercentageValue();
+  returnBase.productCategoryWithHighestSales = faker.company.bsNoun();
+  returnBase.productCategoryWithHighestSalesShareOfSales = randomPercentageValue();
+  returnBase.productCategoryWithSecondHighestSales = faker.company.bsNoun();
+  returnBase.productCategoryWithSecondHighestSalesShareOfSales = randomPercentageValue();
   returnBase.totalAreaCompany = faker.datatype.number();
   returnBase.totalPowerConsumption = faker.datatype.number();
   returnBase.totalPowerCosts = randomEuroValue();

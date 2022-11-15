@@ -14,4 +14,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma 
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` in dataland-frontend

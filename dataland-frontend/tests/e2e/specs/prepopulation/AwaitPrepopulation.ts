@@ -58,12 +58,12 @@ describe("I want to ensure that the prepopulation has finished before executing 
           const sfdrResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sfdr);
           assert(
             sfdrResponse.matchingCompanies >= minimumNumberSfdrCompanies,
-            `Found ${sfdrResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSfdrCompanies})`
+            `Found ${sfdrResponse.matchingCompanies} SFDR companies (Expecting at least ${minimumNumberSfdrCompanies})`
           );
           const smeResponse = await countCompanyAndDataIds(token, DataTypeEnum.Sme);
           assert(
             smeResponse.matchingCompanies >= minimumNumberSmeCompanies,
-            `Found ${smeResponse.matchingCompanies} financial companies (Expecting at least ${minimumNumberSmeCompanies})`
+            `Found ${smeResponse.matchingCompanies} SME companies (Expecting at least ${minimumNumberSmeCompanies})`
           );
         });
     }

@@ -21,8 +21,6 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.FrameworkTestDataProvider
-import org.dataland.e2etests.GeneralTestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
 
@@ -134,11 +132,13 @@ class ApiAccessor {
                 )
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                     companyInformationPerFramework[it]!!,
-                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyNonFinancialsUploaderFunction
+                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework),
+                    euTaxonomyNonFinancialsUploaderFunction
                 )
                 DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                     companyInformationPerFramework[it]!!,
-                    testDataProviderForEuTaxonomyDataForFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyFinancialsUploaderFunction
+                    testDataProviderForEuTaxonomyDataForFinancials.getTData(numberOfDataSetsPerFramework),
+                    euTaxonomyFinancialsUploaderFunction
                 )
             }
         }

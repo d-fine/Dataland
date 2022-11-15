@@ -17,7 +17,7 @@ import java.math.BigDecimal
 data class SmeData(
     val industry: Industry?,
 
-    val financialYear: Long?,
+    val financialYear: BigDecimal?,
 
     val totalRevenue: BigDecimal?,
 
@@ -31,13 +31,13 @@ data class SmeData(
 
     val yearsSinceFounded: CompanyAgeBracket?,
 
-    val productCategoryHighestSales: String?,
+    val productCategoryWithHighestSales: String?,
 
-    val productCategoryHighestSalesShareOfSales: BigDecimal?,
+    val productCategoryWithHighestSalesShareOfSales: BigDecimal?,
 
-    val productCategorySecondHighestSales: String?,
+    val productCategoryWithSecondHighestSales: String?,
 
-    val productCategorySecondHighestSalesShareOfSales: BigDecimal?,
+    val productCategoryWithSecondHighestSalesShareOfSales: BigDecimal?,
 
     val totalAreaCompany: BigDecimal?,
 
@@ -61,9 +61,9 @@ data class SmeData(
 
     val wasteRecyclingRate: BigDecimal?,
 
-    val numberOfEmployees: Long?,
+    val numberOfEmployees: BigDecimal?,
 
-    val numberOfTemporaryWorkers: Long?,
+    val numberOfTemporaryWorkers: BigDecimal?,
 
     val shareOfFullTimeEmployees: BigDecimal?,
 
@@ -79,7 +79,7 @@ data class SmeData(
 
     val healthAndOldAgeOffers: YesNoNa?,
 
-    val numberVacationDays: Long?,
+    val numberVacationDays: BigDecimal?,
 
     val nonProfitProjects: YesNoNa?,
 

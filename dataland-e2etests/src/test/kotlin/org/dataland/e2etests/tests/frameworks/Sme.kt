@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

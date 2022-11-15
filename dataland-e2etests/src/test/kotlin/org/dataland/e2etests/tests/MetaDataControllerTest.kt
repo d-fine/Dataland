@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedMetaDataControllerApi
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,7 +36,8 @@ class MetaDataControllerTest {
 
     private val testDataProviderEuTaxonomyForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
-    private val testDataProviderEuTaxonomyForFinancials = FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
+    private val testDataProviderEuTaxonomyForFinancials =
+        FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
 
     private val numberOfCompaniesToPostPerFramework = 4
     private val numberOfDataSetsToPostPerCompany = 5
