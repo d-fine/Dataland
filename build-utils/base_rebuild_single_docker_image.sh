@@ -39,11 +39,11 @@ sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1
 if [[ "$sha1_manifest" == "no sha1 manifest" ]] || [[ "${FORCE_BUILD:-}" == "true" ]] || [[ "${COMMIT_MESSAGE:-}" == *"FORCE_BUILD"* ]]; then
   if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
     echo "Running in Github Actions - using gha-type cache and --push flag"
-    docker_push_commandline_fragment=(--push)
+    docker_push_commandline_fragment="--push"
     docker_cache_commandline_fragment=(--cache-to "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name" --cache-from "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name")
   else
     echo "Running outside Github Actions - using no cache and no --push flag"
-    docker_push_commandline_fragment=( )
+    docker_push_commandline_fragment=""
     docker_cache_commandline_fragment=( )
   fi
   echo "rebuilding image $full_image_reference"
@@ -55,7 +55,7 @@ if [[ "$sha1_manifest" == "no sha1 manifest" ]] || [[ "${FORCE_BUILD:-}" == "tru
      --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
      --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
      --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
-     "${docker_push_commandline_fragment[@]}" "${docker_cache_commandline_fragment[@]}"
+     "$docker_push_commandline_fragment" "${docker_cache_commandline_fragment[@]}"
 else
   echo "No Rebuild for $docker_image_name required"
 fi
