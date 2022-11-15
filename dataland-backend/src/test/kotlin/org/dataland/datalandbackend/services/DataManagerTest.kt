@@ -110,18 +110,12 @@ class DataManagerTest(
             InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        val unexpectedDataTypeName = "eutaxonomy-financials"
-        val expectedDataTypeName = getExpectedDataTypeName(storableDataSet, dataId, unexpectedDataTypeName)
-        val thrown =
-            assertThrows<InternalServerErrorApiException> {
-                dataManager.getDataSet(
-                    dataId, DataType(expectedDataTypeName),
-                    correlationId
-                )
-            }
+        val expectedDataTypeName = getExpectedDataTypeName(storableDataSet, dataId, "eutaxonomy-financials")
+        val thrown = assertThrows<InternalServerErrorApiException> {
+            dataManager.getDataSet(dataId, DataType(expectedDataTypeName), correlationId)
+        }
         assertEquals(
-            "Dataset $dataId should be of type eutaxonomy-non-financials " +
-                "but is of type eutaxonomy-financials",
+            "Dataset $dataId should be of type eutaxonomy-non-financials but is of type eutaxonomy-financials",
             thrown.message
         )
     }

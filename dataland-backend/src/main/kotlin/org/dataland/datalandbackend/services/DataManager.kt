@@ -30,21 +30,21 @@ class DataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
-            dataId: String,
-            dataType: DataType,
-            correlationId: String
+        dataId: String,
+        dataType: DataType,
+        correlationId: String
     ) {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
             throw InvalidInputApiException(
-                    "Requested data $dataId not of type $dataType",
-                    "The data with the id: $dataId is registered as type" +
-                            " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                            " type $dataType."
+                "Requested data $dataId not of type $dataType",
+                "The data with the id: $dataId is registered as type" +
+                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
+                    " type $dataType."
             )
         }
         logger.info(
-                "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: $correlationId"
+            "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: $correlationId"
         )
     }
 
@@ -57,9 +57,9 @@ class DataManager(
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
-                "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                        "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
-                        "Correlation ID: $correlationId"
+            "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
+                "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
+                "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
@@ -67,26 +67,26 @@ class DataManager(
     }
 
     private fun storeDataSet(
-            storableDataSet: StorableDataSet,
-            companyName: String,
-            correlationId: String
+        storableDataSet: StorableDataSet,
+        companyName: String,
+        correlationId: String
     ): String {
         val dataId: String
         try {
             dataId = edcClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val message = "Error sending insertData Request to Eurodat. Received ServerException with Message: ${e.message}. " +
-                    "Correlation ID: $correlationId"
+                "Correlation ID: $correlationId"
             logger.error(message)
             throw InternalServerErrorApiException(
-                    "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                    message,
-                    e
+                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
+                message,
+                e
             )
         }
         logger.info(
-                "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                        " Company Name $companyName received ID $dataId from EuroDaT. Correlation ID: $correlationId"
+            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
+                " Company Name $companyName received ID $dataId from EuroDaT. Correlation ID: $correlationId"
         )
         return dataId
     }
@@ -102,17 +102,17 @@ class DataManager(
         val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "No dataset with the id: $dataId could be found in the data store."
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store."
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         if (dataAsStorableDataSet.dataType != dataType) {
             throw InternalServerErrorApiException(
-                    "Dataland-Internal inconsistency regarding dataset $dataId",
-                    "We are having some internal issues with the dataset $dataId, please contact support.",
-                    "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
+                "Dataland-Internal inconsistency regarding dataset $dataId",
+                "We are having some internal issues with the dataset $dataId, please contact support.",
+                "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
             )
         }
         return dataAsStorableDataSet
@@ -125,8 +125,8 @@ class DataManager(
             dataAsString = edcClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
-                    "Error sending selectDataById request to Eurodat. Received ServerException with Message:" +
-                            " ${e.message}. Correlation ID: $correlationId"
+                "Error sending selectDataById request to Eurodat. Received ServerException with Message:" +
+                    " ${e.message}. Correlation ID: $correlationId"
             )
             throw e
         }
