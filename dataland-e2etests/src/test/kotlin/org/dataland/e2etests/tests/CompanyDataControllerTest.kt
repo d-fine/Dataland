@@ -87,15 +87,15 @@ class CompanyDataControllerTest {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .generateOneCompanyInformationPerBackendOnlyFramework()
         apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.lksg]!!), listOf(apiAccessor.testDataProviderForLksgData.getTData(1)[0]),
+            listOf(testCompanyInformation[DataTypeEnum.lksg]!!), apiAccessor.testDataProviderForLksgData.getTData(1),
             apiAccessor.lksgUploaderFunction
         )
         apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.sfdr]!!), listOf(apiAccessor.testDataProviderForSfdrData.getTData(1)[0]),
+            listOf(testCompanyInformation[DataTypeEnum.sfdr]!!), apiAccessor.testDataProviderForSfdrData.getTData(1),
             apiAccessor.sfdrUploaderFunction
         )
         apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(testCompanyInformation[DataTypeEnum.sme]!!), listOf(apiAccessor.testDataProviderForSmeData.getTData(1)[0]),
+            listOf(testCompanyInformation[DataTypeEnum.sme]!!), apiAccessor.testDataProviderForSmeData.getTData(1),
             apiAccessor.smeUploaderFunction
         )
         /* TODO we should assure somehow, that the uploads above cover all backend-only-frameworks.

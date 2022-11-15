@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfd
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
@@ -94,6 +95,26 @@ class ApiAccessor {
                     "and the list of frameworkData has ${listOfFrameworkData.size} elements. " +
                     "The numbers of elements of both lists need to match."
             )
+        }
+    }
+
+    fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        frameworksToConsider: List<DataTypeEnum>,
+        companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
+        numberOfDataSetsPerFramework: Int
+        ) {
+        frameworksToConsider.forEach {
+            when (it) {
+                DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
+                    testDataProviderForLksgData.getTData(numberOfDataSetsPerFramework), lksgUploaderFunction)
+                DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
+                    testDataProviderForSfdrData.getTData(numberOfDataSetsPerFramework), sfdrUploaderFunction)
+                DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
+                    testDataProviderForSmeData.getTData(numberOfDataSetsPerFramework), smeUploaderFunction)
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
+                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyNonFinancialsUploaderFunction)
+                DataTypeEnum.eutaxonomyMinusFinancials -> println("e") //TODO
+            }
         }
     }
 
