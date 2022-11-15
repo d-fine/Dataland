@@ -14,7 +14,7 @@ export function logout(): void {
     .should("be.visible");
 }
 
-export function login(username = reader_name, password = reader_pw): void {
+export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.visitAndCheckAppMount("/")
     .get("button[name='login_dataland_button']")
     .click()
@@ -27,10 +27,20 @@ export function login(username = reader_name, password = reader_pw): void {
 
     .get("#kc-login")
     .should("exist")
-    .click()
+    .click();
 
-    .url()
-    .should("eq", getBaseUrl() + "/companies");
+  if (otpGenerator) {
+    cy.get("input[id='otp']")
+      .should("exist")
+      .then((it) => {
+        // cy.then used to ensure that the OTP is only generated right before it is entered
+        return cy.wrap(it).type(otpGenerator());
+      })
+      .get("#kc-login")
+      .should("exist")
+      .click();
+  }
+  cy.url().should("eq", getBaseUrl() + "/companies");
 }
 
 export function ensureLoggedIn(username?: string, password?: string): void {
