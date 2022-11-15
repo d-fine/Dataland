@@ -3,7 +3,7 @@ FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
 RUN mkdir /app
 WORKDIR /app
 
-COPY ./gradle/ /app/gradle/
-COPY ./gradlew /app/
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts /app/
+COPY ./gradle/ ./gradle/
+COPY ./gradlew .
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts .
 RUN ./gradlew --no-daemon

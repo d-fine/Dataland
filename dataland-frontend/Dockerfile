@@ -5,9 +5,9 @@ ARG GITHUB_USER
 ARG GITHUB_TOKEN
 WORKDIR /app
 
-COPY ./dataland-backend/ /app/dataland-backend
-COPY ./dataland-frontend/ /app/dataland-frontend/
-COPY ./.git/ /app/.git
+COPY ./dataland-backend/ ./dataland-backend
+COPY ./dataland-frontend/ ./dataland-frontend/
+COPY ./.git/ ./.git
 
 RUN GITHUB_USER=${GITHUB_USER} \
     GITHUB_TOKEN=${GITHUB_TOKEN} \

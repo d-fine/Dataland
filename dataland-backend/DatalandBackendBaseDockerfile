@@ -4,6 +4,6 @@ ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
 WORKDIR /app
-COPY ./dataland-backend/ /app/dataland-backend/
-COPY ./.git/ /app/.git
+COPY ./dataland-backend/ ./dataland-backend/
+COPY ./.git/ ./.git
 RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
