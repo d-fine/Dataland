@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuT
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.FrameworkTestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataControllerApi
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,7 +26,7 @@ class DataControllerTest {
     private val unauthorizedEuTaxonomyDataControllerApi = UnauthorizedEuTaxonomyDataControllerApi()
 
     private val testDataProviderForEuTaxonomyDataForNonFinancials =
-        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+        FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
 
     private val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
 

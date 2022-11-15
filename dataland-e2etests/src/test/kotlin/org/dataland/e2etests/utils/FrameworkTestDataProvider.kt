@@ -7,9 +7,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
@@ -35,7 +33,7 @@ object LocalDateAdapter {
     fun toJson(value: LocalDate) = value.toString()
 }
 
-class TestDataProvider <T> (private val clazz: Class<T>) {
+class FrameworkTestDataProvider <T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
         EuTaxonomyDataForNonFinancials::class.java to
@@ -84,37 +82,6 @@ class TestDataProvider <T> (private val clazz: Class<T>) {
         Map<CompanyInformation, List<T>> {
         val companies = getCompanyInformationWithoutIdentifiers(requiredNumberOfCompanies)
         return companies.associateWith { getTData(dataSetsPerCompany) }
-    }
-
-    private fun getRandomAlphaNumericString(): String {
-        val allowedChars = ('a'..'z') + ('0'..'9')
-        return (1..10)
-            .map { allowedChars.random() }
-            .joinToString("")
-    }
-
-    fun generateCompanyInformation(companyName: String, sector: String): CompanyInformation {
-        return CompanyInformation(
-            companyName, "DummyCity", sector,
-            (
-                listOf(
-                    CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString())
-                )
-                ),
-            "DE"
-        )
-    }
-
-    private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
-        return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
-    }
-
-    fun generateOneCompanyInformationPerBackendOnlyFramework(): Map<DataTypeEnum, CompanyInformation> {
-        val map = mutableMapOf<DataTypeEnum, CompanyInformation>()
-        getListOfBackendOnlyFrameworks().forEach {
-            map[it] = generateCompanyInformation(it.name + "Company", it.name + "HiddenSector")
-        }
-        return map.toMap()
     }
 }
 data class CompanyInformationWithT<T>(

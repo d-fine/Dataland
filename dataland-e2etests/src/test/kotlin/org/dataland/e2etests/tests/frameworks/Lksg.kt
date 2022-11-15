@@ -5,14 +5,14 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class Lksg {
 
     private val lksgDataControllerApi = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForLksgData = TestDataProvider(LksgData::class.java)
+    private val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     @Test

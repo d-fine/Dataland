@@ -19,7 +19,8 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.FrameworkTestDataProvider
+import org.dataland.e2etests.GeneralTestDataProvider
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
 
@@ -29,10 +30,12 @@ class ApiAccessor {
     val tokenHandler = TokenHandler()
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
+    val generalTestDataProvider = GeneralTestDataProvider()
+
     private val dataControllerApiForEuTaxonomyNonFinancials =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForEuTaxonomyDataForNonFinancials =
-        TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+        FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     val euTaxonomyNonFinancialsUploaderFunction =
         { companyId: String, euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials ->
             val companyAssociatedEuTaxonomyNonFinancialsData =
@@ -43,12 +46,12 @@ class ApiAccessor {
         }
 
     private val testDataProviderForEuTaxonomyDataForFinancials =
-        TestDataProvider(EuTaxonomyDataForFinancials::class.java)
+        FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
 
     private val dataControllerApiForLksgData =
         LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForLksgData =
-        TestDataProvider(LksgData::class.java)
+        FrameworkTestDataProvider(LksgData::class.java)
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
@@ -59,7 +62,7 @@ class ApiAccessor {
     private val dataControllerApiForSfdrData =
         SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData =
-        TestDataProvider(SfdrData::class.java)
+        FrameworkTestDataProvider(SfdrData::class.java)
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
@@ -70,7 +73,7 @@ class ApiAccessor {
     private val dataControllerApiForSmeData =
         SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSmeData =
-        TestDataProvider(SmeData::class.java)
+        FrameworkTestDataProvider(SmeData::class.java)
     val smeUploaderFunction = { companyId: String, smeData: SmeData ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
@@ -102,18 +105,26 @@ class ApiAccessor {
         frameworksToConsider: List<DataTypeEnum>,
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerFramework: Int
-        ) {
+    ) {
         frameworksToConsider.forEach {
             when (it) {
-                DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
-                    testDataProviderForLksgData.getTData(numberOfDataSetsPerFramework), lksgUploaderFunction)
-                DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
-                    testDataProviderForSfdrData.getTData(numberOfDataSetsPerFramework), sfdrUploaderFunction)
-                DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
-                    testDataProviderForSmeData.getTData(numberOfDataSetsPerFramework), smeUploaderFunction)
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(companyInformationPerFramework[it]!!,
-                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyNonFinancialsUploaderFunction)
-                DataTypeEnum.eutaxonomyMinusFinancials -> println("e") //TODO
+                DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
+                    companyInformationPerFramework[it]!!,
+                    testDataProviderForLksgData.getTData(numberOfDataSetsPerFramework), lksgUploaderFunction
+                )
+                DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
+                    companyInformationPerFramework[it]!!,
+                    testDataProviderForSfdrData.getTData(numberOfDataSetsPerFramework), sfdrUploaderFunction
+                )
+                DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
+                    companyInformationPerFramework[it]!!,
+                    testDataProviderForSmeData.getTData(numberOfDataSetsPerFramework), smeUploaderFunction
+                )
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
+                    companyInformationPerFramework[it]!!,
+                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyNonFinancialsUploaderFunction
+                )
+                DataTypeEnum.eutaxonomyMinusFinancials -> println("e") // TODO
             }
         }
     }
@@ -144,7 +155,7 @@ class ApiAccessor {
 
     fun uploadOneCompanyWithRandomIdentifier(): CompanyUpload {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForFinancials
+        val testCompanyInformation = generalTestDataProvider
             .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
         return CompanyUpload(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }

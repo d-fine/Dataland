@@ -5,13 +5,13 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class EuTaxonomyNonFinancials {
     private val dataControllerApi = EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProvider = TestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    private val testDataProvider = FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     @Test

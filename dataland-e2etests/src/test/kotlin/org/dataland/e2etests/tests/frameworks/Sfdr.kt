@@ -5,14 +5,14 @@ import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.TestDataProvider
+import org.dataland.e2etests.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class Sfdr {
 
     private val dataControllerApi = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProvider = TestDataProvider(SfdrData::class.java)
+    private val testDataProvider = FrameworkTestDataProvider(SfdrData::class.java)
     private val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     @Test

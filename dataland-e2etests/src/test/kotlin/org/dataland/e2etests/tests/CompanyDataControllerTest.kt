@@ -84,7 +84,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
-        val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        val testCompanyInformation = apiAccessor.generalTestDataProvider
             .generateOneCompanyInformationPerBackendOnlyFramework()
         apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOf(testCompanyInformation[DataTypeEnum.lksg]!!), apiAccessor.testDataProviderForLksgData.getTData(1),
