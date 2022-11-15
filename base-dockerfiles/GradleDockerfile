@@ -1,6 +1,5 @@
 FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
 
-RUN mkdir /app
 WORKDIR /app
 
 COPY ./gradle/ ./gradle/
