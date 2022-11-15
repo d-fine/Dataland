@@ -9,7 +9,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /app
 WORKDIR /app
 COPY ./gradle/ ./gradle/
 COPY ./gradlew .
