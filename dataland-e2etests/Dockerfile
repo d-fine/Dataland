@@ -5,7 +5,7 @@ ARG GITHUB_TOKEN
 
 WORKDIR /app
 COPY ./dataland-backend/ ./dataland-backend
-COPY ./dataland-frontend/ ./dataland-frontend/
+COPY ./dataland-frontend/ ./dataland-frontend
 COPY ./dataland-e2etests/ ./dataland-e2etests
 COPY ./testing/ ./testing
 COPY ./.git/ ./.git
