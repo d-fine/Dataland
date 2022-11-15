@@ -834,7 +834,7 @@
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
         "frontchannel.logout.session.required": "false",
-        "post.logout.redirect.uris": "https://local-dev.dataland.com/*##https://dev1.dataland.com/*##https://dev2.dataland.com/*##https://dataland.com/*",
+        "post.logout.redirect.uris": "https://local-dev.dataland.com/*##https://dev1.dataland.com/*##https://dev2.dataland.com/*##https://test.dataland.com/*##https://dataland.com/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature.keyinfo.ext": "false",
