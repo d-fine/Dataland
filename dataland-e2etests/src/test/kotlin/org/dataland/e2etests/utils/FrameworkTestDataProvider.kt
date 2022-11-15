@@ -77,12 +77,6 @@ class FrameworkTestDataProvider <T> (private val clazz: Class<T>) {
         return testCompanyInformationWithTData.slice(0 until numberOfDataSets)
             .map { it.t }
     }
-
-    fun getCompaniesWithTDataAndNoIdentifiers(requiredNumberOfCompanies: Int, dataSetsPerCompany: Int):
-        Map<CompanyInformation, List<T>> {
-        val companies = getCompanyInformationWithoutIdentifiers(requiredNumberOfCompanies)
-        return companies.associateWith { getTData(dataSetsPerCompany) }
-    }
 }
 data class CompanyInformationWithT<T>(
     @Json var companyInformation: CompanyInformation,

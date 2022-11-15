@@ -26,7 +26,7 @@ class GeneralTestDataProvider {
         )
     }
 
-    fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
+    private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
         return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
     }
 

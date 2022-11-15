@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
@@ -23,12 +24,17 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
+import org.dataland.e2etests.accessmanagement.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val tokenHandler = TokenHandler()
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
+
+    val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
+
+    val tokenHandler = TokenHandler()
 
     val generalTestDataProvider = GeneralTestDataProvider()
 
@@ -47,9 +53,9 @@ class ApiAccessor {
 
     private val dataControllerApiForEuTaxonomyFinancials =
         EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForEuTaxonomyDataForFinancials =
+    val testDataProviderEuTaxonomyForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
-    val euTaxonomyFinancialsUploaderFunction =
+    private val euTaxonomyFinancialsUploaderFunction =
         { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials ->
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, euTaxonomyFinancialsData)
@@ -91,88 +97,103 @@ class ApiAccessor {
         )
     }
 
-    fun <T> uploadCompanyAndFrameworkDataForOneFramework(
+    private fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation
-    ) {
-        if (listOfCompanyInformation.size == listOfFrameworkData.size) {
-            tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-            listOfCompanyInformation.forEachIndexed { index, companyInformation ->
-                val receivedCompanyId = companyDataControllerApi.postCompany(companyInformation).companyId
-                frameworkDataUploadFunction(receivedCompanyId, listOfFrameworkData[index])
+    ): List<UploadInfo> {
+        val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        listOfCompanyInformation.forEach { companyInformation ->
+            val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
+            listOfFrameworkData.forEach { frameworkDataSet ->
+                val receivedDataMetaInformation =
+                    frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet)
+                listOfUploadInfo.add(
+                    UploadInfo(
+                        companyInformation,
+                        receivedStoredCompany,
+                        receivedDataMetaInformation
+                    )
+                )
             }
-        } else {
-            throw throw IllegalArgumentException(
-                "The list of companyInformation has ${listOfCompanyInformation.size} elements, " +
-                    "and the list of frameworkData has ${listOfFrameworkData.size} elements. " +
-                    "The numbers of elements of both lists need to match."
-            )
         }
+        return listOfUploadInfo
     }
 
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
-        frameworksToConsider: List<DataTypeEnum>,
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
-        numberOfDataSetsPerFramework: Int
-    ) {
-        frameworksToConsider.forEach {
+        numberOfDataSetsPerCompany: Int,
+    ): List<UploadInfo> {
+        val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
+        companyInformationPerFramework.keys.forEach {
             when (it) {
-                DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
-                    companyInformationPerFramework[it]!!,
-                    testDataProviderForLksgData.getTData(numberOfDataSetsPerFramework), lksgUploaderFunction
+                DataTypeEnum.lksg -> listOfUploadInfo.addAll(
+                    uploadCompanyAndFrameworkDataForOneFramework(
+                        companyInformationPerFramework[it]!!,
+                        testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany), lksgUploaderFunction
+                    )
                 )
-                DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
-                    companyInformationPerFramework[it]!!,
-                    testDataProviderForSfdrData.getTData(numberOfDataSetsPerFramework), sfdrUploaderFunction
+                DataTypeEnum.sfdr -> listOfUploadInfo.addAll(
+                    uploadCompanyAndFrameworkDataForOneFramework(
+                        companyInformationPerFramework[it]!!,
+                        testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany), sfdrUploaderFunction
+                    )
                 )
-                DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
-                    companyInformationPerFramework[it]!!,
-                    testDataProviderForSmeData.getTData(numberOfDataSetsPerFramework), smeUploaderFunction
+                DataTypeEnum.sme -> listOfUploadInfo.addAll(
+                    uploadCompanyAndFrameworkDataForOneFramework(
+                        companyInformationPerFramework[it]!!,
+                        testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany), smeUploaderFunction
+                    )
                 )
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                    companyInformationPerFramework[it]!!,
-                    testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework),
-                    euTaxonomyNonFinancialsUploaderFunction
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> listOfUploadInfo.addAll(
+                    uploadCompanyAndFrameworkDataForOneFramework(
+                        companyInformationPerFramework[it]!!,
+                        testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
+                        euTaxonomyNonFinancialsUploaderFunction
+                    )
                 )
-                DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                    companyInformationPerFramework[it]!!,
-                    testDataProviderForEuTaxonomyDataForFinancials.getTData(numberOfDataSetsPerFramework),
-                    euTaxonomyFinancialsUploaderFunction
+                DataTypeEnum.eutaxonomyMinusFinancials -> listOfUploadInfo.addAll(
+                    uploadCompanyAndFrameworkDataForOneFramework(
+                        companyInformationPerFramework[it]!!,
+                        testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
+                        euTaxonomyFinancialsUploaderFunction
+                    )
                 )
             }
         }
+        return listOfUploadInfo
     }
 
-    fun uploadNCompaniesWithoutIdentifiers(numCompanies: Int): List<CompanyUpload> {
+    fun uploadNCompaniesWithoutIdentifiers(numCompanies: Int): List<UploadInfo> {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val listOfCompanyInformation = testDataProviderForEuTaxonomyDataForFinancials
+        val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
-        val listOfCompanyUploads = mutableListOf<CompanyUpload>()
+        val listOfUploadInfos = mutableListOf<UploadInfo>()
         listOfCompanyInformation.forEach {
                 companyInformation ->
-            listOfCompanyUploads.add(
-                CompanyUpload(
+            listOfUploadInfos.add(
+                UploadInfo(
                     companyInformation,
                     companyDataControllerApi.postCompany(companyInformation)
                 )
             )
         }
-        return listOfCompanyUploads
+        return listOfUploadInfos
     }
 
-    fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): CompanyUpload {
+    fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForFinancials
+        val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = setAsTeaserCompany)
-        return CompanyUpload(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
+        return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
-    fun uploadOneCompanyWithRandomIdentifier(): CompanyUpload {
+    fun uploadOneCompanyWithRandomIdentifier(): UploadInfo {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
         val testCompanyInformation = generalTestDataProvider
             .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
-        return CompanyUpload(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
+        return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
     fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
@@ -187,12 +208,19 @@ class ApiAccessor {
         tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         return companyDataControllerApi.getCompanies().size
     }
+
+    fun getNumberOfDataMetaInfo(companyId: String? = null, dataType: DataTypeEnum? = null): Int {
+        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        return metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType).size
+    }
 }
 
-data class CompanyUpload(
+data class UploadInfo(
 
     val inputCompanyInformation: CompanyInformation,
 
     val actualStoredCompany: StoredCompany,
+
+    val actualStoredDataMetaInfo: DataMetaInformation? = null
 
 )
