@@ -1,6 +1,8 @@
 {
   "id": "datalandsecurity",
   "realm": "datalandsecurity",
+  "displayName": "",
+  "displayNameHtml": "",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -390,6 +392,15 @@
           "attributes": {}
         },
         {
+          "id": "10d49b81-59e7-4382-80a0-230890e387c4",
+          "name": "view-groups",
+          "description": "${role_view-groups}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "a979df2f-c240-4055-b68a-b132d4d1494e",
+          "attributes": {}
+        },
+        {
           "id": "0973068b-7a93-4915-aa77-f59a1eeff9f9",
           "name": "manage-account",
           "description": "${role_manage-account}",
@@ -445,9 +456,10 @@
   "otpPolicyDigits": 6,
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyPeriod": 30,
+  "otpPolicyCodeReusable": false,
   "otpSupportedApplications": [
-    "FreeOTP",
-    "Google Authenticator"
+    "totpAppGoogleName",
+    "totpAppFreeOTPName"
   ],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": [
@@ -538,7 +550,8 @@
       {
         "client": "account-console",
         "roles": [
-          "manage-account"
+          "manage-account",
+          "view-groups"
         ]
       }
     ]
@@ -568,7 +581,9 @@
       "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -611,6 +626,7 @@
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
+        "post.logout.redirect.uris": "+",
         "pkce.code.challenge.method": "S256",
         "login_theme": "dataland_theme"
       },
@@ -661,7 +677,9 @@
       "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -699,7 +717,9 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -740,6 +760,7 @@
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
         "frontchannel.logout.session.required": "false",
+        "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature.keyinfo.ext": "false",
@@ -784,6 +805,11 @@
     {
       "id": "9c594354-2d02-4394-9d36-c9bf625b42a2",
       "clientId": "dataland-public",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": true,
@@ -884,7 +910,9 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -929,6 +957,7 @@
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
+        "post.logout.redirect.uris": "+",
         "pkce.code.challenge.method": "S256"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1529,7 +1558,7 @@
       "providerId": "google",
       "enabled": true,
       "updateProfileFirstLoginMode": "on",
-      "trustEmail": false,
+      "trustEmail": true,
       "storeToken": false,
       "addReadTokenRoleOnCreate": false,
       "authenticateByDefault": false,
@@ -1549,18 +1578,22 @@
       "providerId": "linkedin",
       "enabled": true,
       "updateProfileFirstLoginMode": "on",
-      "trustEmail": false,
+      "trustEmail": true,
       "storeToken": false,
       "addReadTokenRoleOnCreate": false,
       "authenticateByDefault": false,
       "linkOnly": false,
       "firstBrokerLoginFlowAlias": "Dataland First Broker Login",
       "config": {
+        "hideOnLoginPage": "false",
+        "acceptsPromptNoneForwardFromClient": "false",
         "clientId": "${KEYCLOAK_LINKEDIN_ID}",
+        "disableUserInfo": "false",
         "syncMode": "IMPORT",
         "clientSecret": "${KEYCLOAK_LINKEDIN_SECRET}",
         "defaultScope": "r_emailaddress,r_liteprofile",
         "guiOrder": "1",
+        "profileProjection": "(id,firstName,lastName,profilePicture(displayImage~:playableStreams))",
         "useJwksUrl": "true"
       }
     }
@@ -1574,6 +1607,19 @@
       "config": {
         "syncMode": "FORCE",
         "jsonField": "picture",
+        "userAttribute": "picture"
+      }
+    },
+    {
+      "id": "68d1b843-fb6e-40c7-af79-71f14a7d3cf3",
+      "name": "picture",
+      "identityProviderAlias": "linkedin",
+      "identityProviderMapper": "linkedin-user-attribute-mapper",
+      "config": {
+        "claims": "[]",
+        "syncMode": "FORCE",
+        "attributes": "[]",
+        "jsonField": "profilePicture.displayImage~.elements[0].identifiers[0].identifier",
         "userAttribute": "picture"
       }
     }
@@ -2444,11 +2490,13 @@
     "userProfileEnabled": "false",
     "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
+    "realmReusableOtpCode": "false",
     "cibaExpiresIn": "120",
     "oauth2DeviceCodeLifespan": "600",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
-    "frontendUrl": "${KEYCLOAK_FRONTEND_URL}"
+    "frontendUrl": "${KEYCLOAK_FRONTEND_URL}",
+    "acr.loa.map": "{}"
   },
   "keycloakVersion": "20.0.1",
   "userManagedAccessAllowed": false,
