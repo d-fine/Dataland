@@ -1,10 +1,12 @@
 package org.dataland.e2etests.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
@@ -45,14 +47,24 @@ class ApiAccessor {
             )
         }
 
+    private val dataControllerApiForEuTaxonomyFinancials =
+        EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testDataProviderForEuTaxonomyDataForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
+    val euTaxonomyFinancialsUploaderFunction =
+        { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials ->
+            val companyAssociatedEuTaxonomyFinancialsData =
+                CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, euTaxonomyFinancialsData)
+            dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
+                companyAssociatedEuTaxonomyFinancialsData
+            )
+        }
 
     private val dataControllerApiForLksgData =
         LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForLksgData =
+    private val testDataProviderForLksgData =
         FrameworkTestDataProvider(LksgData::class.java)
-    val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
+    private val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
             companyAssociatedLksgData
@@ -61,9 +73,9 @@ class ApiAccessor {
 
     private val dataControllerApiForSfdrData =
         SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSfdrData =
+    private val testDataProviderForSfdrData =
         FrameworkTestDataProvider(SfdrData::class.java)
-    val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
+    private val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
             companyAssociatedSfdrData
@@ -72,9 +84,9 @@ class ApiAccessor {
 
     private val dataControllerApiForSmeData =
         SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData =
+    private val testDataProviderForSmeData =
         FrameworkTestDataProvider(SmeData::class.java)
-    val smeUploaderFunction = { companyId: String, smeData: SmeData ->
+    private val smeUploaderFunction = { companyId: String, smeData: SmeData ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
             companyAssociatedSmeData
@@ -124,7 +136,10 @@ class ApiAccessor {
                     companyInformationPerFramework[it]!!,
                     testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyNonFinancialsUploaderFunction
                 )
-                DataTypeEnum.eutaxonomyMinusFinancials -> println("e") // TODO
+                DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
+                    companyInformationPerFramework[it]!!,
+                    testDataProviderForEuTaxonomyDataForFinancials.getTData(numberOfDataSetsPerFramework), euTaxonomyFinancialsUploaderFunction
+                )
             }
         }
     }
