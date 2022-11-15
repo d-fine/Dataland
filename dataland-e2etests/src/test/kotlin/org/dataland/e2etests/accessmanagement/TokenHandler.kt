@@ -36,7 +36,7 @@ class TokenHandler {
     private fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Token request failed, response is: $response")
-        val responseBodyAsString = response.body!!.string()
+        val responseBodyAsString = response.body.string()
         val node: ObjectNode = objectMapper.readValue(responseBodyAsString, ObjectNode::class.java)
         return node.get("access_token").toString().trim('"')
     }

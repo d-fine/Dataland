@@ -1,12 +1,11 @@
-FROM eclipse-temurin:17.0.5_8-jdk-jammy as builder
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
-COPY ./gradle/ /app/gradle/
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./gradlew /app/
-COPY ./dataland-keycloak/build.gradle.kts /app/dataland-keycloak/
-COPY ./dataland-keycloak/dataland_theme/login /app/dataland-keycloak/dataland_theme/login
 WORKDIR /app
+COPY ./dataland-keycloak/build.gradle.kts ./dataland-keycloak/
+COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme/login
 RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
 FROM quay.io/keycloak/keycloak:20.0.1

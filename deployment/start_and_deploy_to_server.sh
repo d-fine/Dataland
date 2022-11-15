@@ -9,7 +9,7 @@ if [[ $IN_MEMORY == true ]]; then
 else
   profile=production
   echo "Checking if EuroDaT is available before deploying to target server."
-  if ! curl -f -X 'GET' "${TRUSTEE_BASE_URL}/${TRUSTEE_ENVIRONMENT_NAME}/api/ids/description" -H 'accept: application/json' >/dev/null 2>&1; then
+  if ! curl -f -X 'GET' "${TRUSTEE_BASE_URL}/${TRUSTEE_ENVIRONMENT_NAME}/api/check/health" -H 'accept: application/json' >/dev/null 2>&1; then
     echo "EuroDaT is not available."
     exit 1
   fi

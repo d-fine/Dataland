@@ -1,25 +1,24 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyAPI
-import org.dataland.datalandbackend.interfaces.CompanyManagerInterface
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.services.CompanyManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Implementation of the API for company data exchange
- * @param companyManager implementation of the DataManagerInterface that defines how
- * Dataland handles data
+ * Controller for the company data endpoints
+ * @param companyManager the company manager service to handle company information
  */
 
 @RestController
 class CompanyDataController(
-    @Autowired var companyManager: CompanyManagerInterface,
+    @Autowired var companyManager: CompanyManager,
 ) : CompanyAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -47,7 +46,7 @@ class CompanyDataController(
                 dataTypes ?: setOf(),
                 countryCodes ?: setOf(),
                 sectors ?: setOf()
-            ).map { it.toApiModel() }
+            )
         )
     }
 
@@ -61,7 +60,7 @@ class CompanyDataController(
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
-        return ResponseEntity.ok(companyManager.getCompanyById(companyId).toApiModel())
+        return ResponseEntity.ok(companyManager.getCompanyApiModelById(companyId))
     }
 
     override fun getTeaserCompanies(): List<String> {
