@@ -9,7 +9,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] At least one E2E Test exists testing the new feature
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to a dev server using this branch
+- [ ] The new version is deployed to the dev server "dev1" using this branch
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI

@@ -55,6 +55,7 @@ Update versions in the following dockerfiles
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
+- [ ] test.dataland.com
 - [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
@@ -83,8 +84,8 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
-  - [ ] Go to the swagger-UI, authorize, run a "GET" request to the company endpoint and assure that your authorization has worked by assuring that you get a 200 response
+  - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
 
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
-- [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the company endpoint and assure that your authorization has worked by assuring that you get a 200 response
+- [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
