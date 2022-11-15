@@ -68,6 +68,7 @@
             </div>
         </form>
 
+        <#if social.providers??>
         <div id="kc-social-providers">
             <div class="d-separator">
                 <div class="d-line"></div>
@@ -76,6 +77,7 @@
             </div>
 
             <div>
+
                 <#list social.providers as p>
                     <#if p.alias="linkedin">
                         <div id="social-linkedin">
@@ -101,9 +103,8 @@
                     </#if>
                 </#list>
             </div>
-
-
         </div>
+        </#if>
 
 
 
