@@ -1,17 +1,13 @@
 # build stage
 ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
-ARG GITHUB_USER
-ARG GITHUB_TOKEN
 WORKDIR /app
 
 COPY ./dataland-backend/ ./dataland-backend
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN GITHUB_USER=${GITHUB_USER} \
-    GITHUB_TOKEN=${GITHUB_TOKEN} \
-    ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
