@@ -38,7 +38,7 @@ class ApiAccessor {
 
     val generalTestDataProvider = GeneralTestDataProvider()
 
-    private val dataControllerApiForEuTaxonomyNonFinancials =
+    val dataControllerApiForEuTaxonomyNonFinancials =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
@@ -51,11 +51,11 @@ class ApiAccessor {
             )
         }
 
-    private val dataControllerApiForEuTaxonomyFinancials =
+    val dataControllerApiForEuTaxonomyFinancials =
         EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderEuTaxonomyForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
-    private val euTaxonomyFinancialsUploaderFunction =
+    val euTaxonomyFinancialsUploaderFunction =
         { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials ->
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, euTaxonomyFinancialsData)
@@ -121,46 +121,45 @@ class ApiAccessor {
         return listOfUploadInfo
     }
 
+    private fun uploadForDataType(
+        dataType: DataTypeEnum,
+        listOfCompanyInformation: List<CompanyInformation>,
+        numberOfDataSetsPerCompany: Int
+    ): List<UploadInfo> {
+        return when (dataType) {
+            DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation, testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
+                lksgUploaderFunction
+            )
+            DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation, testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
+                sfdrUploaderFunction
+            )
+            DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation, testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
+                smeUploaderFunction
+            )
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation,
+                testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
+                euTaxonomyNonFinancialsUploaderFunction
+            )
+            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation, testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
+                euTaxonomyFinancialsUploaderFunction
+            )
+        }
+    }
+
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         companyInformationPerFramework.keys.forEach {
-            when (it) {
-                DataTypeEnum.lksg -> listOfUploadInfo.addAll(
-                    uploadCompanyAndFrameworkDataForOneFramework(
-                        companyInformationPerFramework[it]!!,
-                        testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany), lksgUploaderFunction
-                    )
-                )
-                DataTypeEnum.sfdr -> listOfUploadInfo.addAll(
-                    uploadCompanyAndFrameworkDataForOneFramework(
-                        companyInformationPerFramework[it]!!,
-                        testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany), sfdrUploaderFunction
-                    )
-                )
-                DataTypeEnum.sme -> listOfUploadInfo.addAll(
-                    uploadCompanyAndFrameworkDataForOneFramework(
-                        companyInformationPerFramework[it]!!,
-                        testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany), smeUploaderFunction
-                    )
-                )
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> listOfUploadInfo.addAll(
-                    uploadCompanyAndFrameworkDataForOneFramework(
-                        companyInformationPerFramework[it]!!,
-                        testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
-                        euTaxonomyNonFinancialsUploaderFunction
-                    )
-                )
-                DataTypeEnum.eutaxonomyMinusFinancials -> listOfUploadInfo.addAll(
-                    uploadCompanyAndFrameworkDataForOneFramework(
-                        companyInformationPerFramework[it]!!,
-                        testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
-                        euTaxonomyFinancialsUploaderFunction
-                    )
-                )
-            }
+            listOfUploadInfo.addAll(
+                uploadForDataType(it, companyInformationPerFramework[it]!!, numberOfDataSetsPerCompany)
+            )
         }
         return listOfUploadInfo
     }
