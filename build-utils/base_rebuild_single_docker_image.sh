@@ -46,7 +46,8 @@ if [[ "$images_found" == "1" ]] ; then
   echo "docker image already present locally. No rebuild for $full_image_reference required"
   exit 0
 fi
-export DOCKER_SECRET=$(printf "GITHUB_TOKEN=%s\nGITHUB_USER=%s\n" "${GITHUB_TOKEN:-}" "${GITHUB_USER:-}")
+DOCKER_SECRET=$(printf "githubUser=%s\ngithubToken=%s\n" "${GITHUB_TOKEN:-}" "${GITHUB_USER:-}")
+export DOCKER_SECRET
 docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --secret id=DOCKER_SECRET \
                         --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
