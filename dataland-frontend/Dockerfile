@@ -7,8 +7,8 @@ COPY ./dataland-backend/ ./dataland-backend
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN --mount=type=secret,id=GITHUB_TOKEN --mount=type=secret,id=GITHUB_USER \
-     cp /run/secrets/mymsecret ~/.gradle/gradle.properties && \
+RUN --mount=type=secret,id=DOCKER_SECRET \
+     cp /run/secrets/DOCKER_SECRET ~/.gradle/gradle.properties && \
      ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace &&  \
      rm -rf ~/.gradle/gradle.properties
 
