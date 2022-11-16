@@ -7,7 +7,10 @@ COPY ./dataland-backend/ ./dataland-backend
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+RUN --mount=type=secret,id=GITHUB_TOKEN --mount=type=secret,id=GITHUB_USER \
+     cp /run/secrets/mymsecret ~/.gradle/gradle.properties && \
+     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace &&  \
+     rm -rf ~/.gradle/gradle.properties
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html

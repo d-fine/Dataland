@@ -48,8 +48,8 @@ if [[ "$images_found" == "1" ]] ; then
 fi
 
 docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
-                        --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" \
-                        --build-arg GITHUB_USER="${GITHUB_USER:-}" \
+                        --secret id=GITHUB_TOKEN \
+                        --secret id=GITHUB_USER \
                         --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
                         --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
                         --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \

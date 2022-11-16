@@ -4,4 +4,7 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 WORKDIR /app
 COPY ./dataland-backend/ ./dataland-backend/
 COPY ./.git/ ./.git
-RUN ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
+RUN --mount=type=secret,id=GITHUB_TOKEN --mount=type=secret,id=GITHUB_USER \
+     cp /run/secrets/mymsecret ~/.gradle/gradle.properties && \
+     ./gradlew dataland-backend:bootJar --no-daemon --stacktrace &&  \
+     rm -rf ~/.gradle/gradle.properties
