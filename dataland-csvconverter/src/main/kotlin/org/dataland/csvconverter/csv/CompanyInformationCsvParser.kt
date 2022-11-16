@@ -36,9 +36,10 @@ class CompanyInformationCsvParser {
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
             companyAlternativeNames = companyInformationColumnMapping
                 .readMultiValuedCsvField("companyAlternativeNames", row),
-            companyLegalForm = companyInformationColumnMapping.getCsvValue("companyLegalForm", row),
+            companyLegalForm = companyInformationColumnMapping.getCsvValueAllowingNull("companyLegalForm", row),
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
-            headquartersPostalCode = companyInformationColumnMapping.getCsvValue("headquartersPostalCode", row),
+            headquartersPostalCode = companyInformationColumnMapping
+                .getCsvValueAllowingNull("headquartersPostalCode", row),
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),

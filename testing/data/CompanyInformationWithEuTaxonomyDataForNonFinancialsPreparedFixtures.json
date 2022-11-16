@@ -3,102 +3,88 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Balzer, Klabuhn und Lippe"
+				"Esser GmbH & Co. KG",
+				"Neubert UG",
+				"Hohenberger-Caspers"
 			],
-			"companyLegalForm": "initiatives",
-			"headquarters": "West Lara",
-			"headquartersPostalCode": "37852",
-			"sector": "solutions",
+			"companyLegalForm": "vortals",
+			"headquarters": "Saphiradorf",
+			"headquartersPostalCode": "97624",
+			"sector": "eyeballs",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "pmpcal0vh"
+					"identifierValue": "27kfwc3ri"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "fqhxv2q1dtsd"
+					"identifierValue": "jf652t7pzsgo"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "y7zcfy6mbfwu6c86sfo8"
+					"identifierValue": "02wsrp1h7txt9lr6ucvc"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "xknx9epemd"
+					"identifierValue": "11aum7stea"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "m6h6ep1"
+					"identifierValue": "j85s1iv"
 				}
 			],
-			"countryCode": "JO",
+			"countryCode": "IS",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://friedselig-bestrafung.name/geerdet-demokratie.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "AZN"
-				},
-				"IntegratedReport": {
-					"reference": "http://xn--wieselflink-brcke-g3b.de/dezidiert-denker.pdf",
-					"reportDate": "2022-05-14",
-					"currency": "MVR"
-				},
-				"ESEFReport": {
-					"reference": "http://zuversichtlich-regal.name/sensibel-erde.pdf",
-					"isGroupLevel": "No",
-					"currency": "EUR"
-				},
-				"SustainabilityReport": {
-					"reference": "https://eloquent-blindheit.org/attraktiv-getr%C3%A4nke.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-08-10",
-					"currency": "MAD"
+					"reference": "https://xn--mitreiend-lnge-5fb9f.info/feinsinnig-pilz.pdf",
+					"reportDate": "2022-05-15",
+					"currency": "LVL"
 				}
 			},
-			"fiscalYearEnd": "2022-01-14",
 			"assurance": {
 				"assurance": "ReasonableAssurance",
-				"provider": "Nannen Gruppe",
+				"provider": "Marquart, Thränhardt und Brehmer",
 				"dataSource": {
-					"page": 1163,
-					"report": "ESEFReport",
-					"tagName": "models"
+					"page": 987,
+					"report": "AnnualReport",
+					"tagName": "infrastructures"
 				}
 			},
-			"scopeOfEntities": "No",
-			"numberOfEmployees": 13928,
+			"scopeOfEntities": "NA",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 2043,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.9051,
+					"value": 0.4392,
 					"dataSource": {
-						"page": 315,
-						"report": "IntegratedReport",
-						"tagName": "e-services"
+						"page": 523,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Estimated",
-					"comment": "copy back-end protocol"
+					"quality": "Audited",
+					"comment": "back up primary pixel"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3795,
-					"quality": "Incomplete"
+					"value": 0.8863,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.3212,
+					"value": 0.5916,
 					"dataSource": {
-						"page": 1064,
+						"page": 231,
 						"report": "AnnualReport",
-						"tagName": "technologies"
+						"tagName": "supply-chains"
 					},
-					"quality": "Estimated",
-					"comment": "navigate digital circuit"
+					"quality": "Audited",
+					"comment": "override solid state protocol"
 				}
 			}
 		}
@@ -107,89 +93,92 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Zeuch UG",
-				"Heinke-Bickel",
-				"Kappe Gruppe"
+				"Bielert, Soller und Goy",
+				"Gerhardt-Zümsande",
+				"Bak GmbH",
+				"Splinter-Karst"
 			],
-			"companyLegalForm": "architectures",
-			"headquarters": "Hannahland",
-			"headquartersPostalCode": "63325",
-			"sector": "vortals",
+			"headquarters": "Savoialand",
+			"headquartersPostalCode": "39006",
+			"sector": "metrics",
 			"identifiers": [
 				{
+					"identifierType": "Lei",
+					"identifierValue": "oyblu9g4pry6e3g13dsn"
+				},
+				{
 					"identifierType": "PermId",
-					"identifierValue": "i8dp7qrg5t"
+					"identifierValue": "mm9u4eqffx"
 				}
 			],
-			"countryCode": "KW",
+			"countryCode": "BJ",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "https://erregend-palast.ch/eitel-bein.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-07",
-					"currency": "XDR"
+				"AnnualReport": {
+					"reference": "http://geschickt-durchfall.name/plausibel-erde.pdf",
+					"currency": "GIP"
 				}
 			},
+			"fiscalYearEnd": "2022-11-01",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Retzke-Grau",
-				"dataSource": {
-					"page": 382,
-					"report": "SustainabilityReport",
-					"tagName": "e-commerce"
-				}
+				"assurance": "None"
 			},
-			"reportingObligation": "No",
+			"scopeOfEntities": "NA",
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 459638.03,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.9418,
+					"value": 994712.45,
 					"dataSource": {
-						"page": 168,
-						"report": "SustainabilityReport",
-						"tagName": "e-business"
+						"page": 225,
+						"report": "AnnualReport",
+						"tagName": "architectures"
 					},
 					"quality": "Reported",
-					"comment": "override 1080p pixel"
+					"comment": "quantify virtual circuit"
+				},
+				"eligiblePercentage": {
+					"value": 0.6481,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 200418.25,
+					"value": 122371.64,
 					"dataSource": {
-						"page": 251,
-						"report": "SustainabilityReport",
-						"tagName": "infomediaries"
+						"page": 1119,
+						"report": "AnnualReport",
+						"tagName": "ROI"
 					},
-					"quality": "Reported",
-					"comment": "override neural interface"
+					"quality": "Audited",
+					"comment": "generate cross-platform monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.4439,
+					"value": 0.8255,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 152029.44,
+					"value": 233159.07,
 					"dataSource": {
-						"page": 647,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"page": 985,
+						"report": "AnnualReport",
+						"tagName": "systems"
 					},
-					"quality": "Audited",
-					"comment": "copy online bandwidth"
+					"quality": "Reported",
+					"comment": "back up online alarm"
 				},
 				"eligiblePercentage": {
-					"value": 0.3881,
-					"quality": "Estimated"
+					"value": 0.3553,
+					"dataSource": {
+						"page": 372,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Audited",
+					"comment": "synthesize mobile program"
 				}
 			}
 		}

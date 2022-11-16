@@ -3,11 +3,12 @@ import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeE
 import { FixtureData, DataPoint } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
+import { valueOrUndefined } from "./common/DataPointFixtures";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
-  const headquartersPostalCode = faker.address.zipCode();
+  const headquartersPostalCode = valueOrUndefined(faker.address.zipCode());
   const sector = faker.company.bsNoun();
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
@@ -40,7 +41,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
   });
-  const companyLegalForm = faker.company.bsNoun();
+  const companyLegalForm = valueOrUndefined(faker.company.bsNoun());
 
   return {
     companyName: companyName,
