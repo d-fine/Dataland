@@ -240,3 +240,5 @@ volumes:
     driver: local
   frontend-dev-node-modules:
     driver: local
+    labels:
+      - keep

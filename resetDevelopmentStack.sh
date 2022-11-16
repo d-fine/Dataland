@@ -10,7 +10,7 @@ fi
 
 echo "Clearing Docker..."
 docker compose down --remove-orphans
-docker volume prune -f
+docker volume prune --filter "label!=keep" --force
 docker image prune -a -f
 
 echo "Clearing frontend clients..."
@@ -18,6 +18,11 @@ echo "Clearing frontend clients..."
 ./gradlew assemble
 
 rm ./*github_env.log || true
+./build-utils/base_rebuild_gradle_dockerfile.sh
+set -o allexport
+source ./*github_env.log
+set +o allexportdocke
+
 find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
 
 set -o allexport
