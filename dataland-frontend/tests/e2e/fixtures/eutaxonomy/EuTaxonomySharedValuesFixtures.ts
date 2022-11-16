@@ -13,10 +13,11 @@ import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/comm
 import { generateAssuranceData } from "./AssuranceDataFixture";
 import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
 import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
-  input.fiscalYearDeviation = randomYesNoUndefined();
+  input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
   input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();

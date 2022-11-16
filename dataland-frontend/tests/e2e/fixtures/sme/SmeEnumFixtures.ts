@@ -31,8 +31,3 @@ const possibleEnergyProductionBracketUndefinedValues = [undefined, ...Object.val
 export function randomEnergyProductionBracketOrUndefined(): EnergyProductionBracket | undefined {
   return faker.helpers.arrayElement(possibleEnergyProductionBracketUndefinedValues);
 }
-
-//const possibleLegalFormUndefinedValues = [undefined, ...Object.values(LegalForm)];
-//export function randomLegalFormOrUndefined(): LegalForm | undefined {
-//  return faker.helpers.arrayElement(possibleLegalFormUndefinedValues);
-//}

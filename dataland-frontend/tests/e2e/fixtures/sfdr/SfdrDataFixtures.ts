@@ -9,12 +9,13 @@ import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
 export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {};
   const reports = generateReferencedReports();
 
-  sfdr.fiscalYear = faker.datatype.string();
+  sfdr.fiscalYear = randomFiscalYearDeviationOrUndefined();
   sfdr.fiscalYearEnd = randomFutureDate();
   sfdr.annualReport = faker.datatype.string();
   sfdr.groupLevelAnnualReport = randomYesNoNaUndefined();

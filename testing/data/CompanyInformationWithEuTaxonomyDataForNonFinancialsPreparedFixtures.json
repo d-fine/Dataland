@@ -3,90 +3,102 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Hasler, Wölpert und Sinnhuber",
-				"Schoberg, Rockmeier und Fahner",
-				"Greger, Schult und Gradzki"
+				"Balzer, Klabuhn und Lippe"
 			],
-			"companyLegalForm": "users",
-			"headquarters": "Niladorf",
-			"headquartersPostalCode": "37513",
-			"sector": "infomediaries",
+			"companyLegalForm": "initiatives",
+			"headquarters": "West Lara",
+			"headquartersPostalCode": "37852",
+			"sector": "solutions",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "cnrd5h7o6"
+					"identifierValue": "pmpcal0vh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "fqhxv2q1dtsd"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "y7zcfy6mbfwu6c86sfo8"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "pd8nywhsc4"
+					"identifierValue": "xknx9epemd"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "m6h6ep1"
 				}
 			],
-			"countryCode": "IM",
+			"countryCode": "JO",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://jahrelang-frau.org/loyal-pop.pdf",
-					"isGroupLevel": "No",
-					"currency": "DZD"
-				},
-				"ESEFReport": {
-					"reference": "https://gewissenhaft-teppich.de/profiliert-reaktion.pdf",
+					"reference": "https://friedselig-bestrafung.name/geerdet-demokratie.pdf",
 					"isGroupLevel": "Yes",
-					"currency": "BIF"
+					"currency": "AZN"
 				},
 				"IntegratedReport": {
-					"reference": "https://xn--resolut-l-77a.name/diplomatisch-klinge.pdf",
-					"currency": "TOP"
+					"reference": "http://xn--wieselflink-brcke-g3b.de/dezidiert-denker.pdf",
+					"reportDate": "2022-05-14",
+					"currency": "MVR"
+				},
+				"ESEFReport": {
+					"reference": "http://zuversichtlich-regal.name/sensibel-erde.pdf",
+					"isGroupLevel": "No",
+					"currency": "EUR"
+				},
+				"SustainabilityReport": {
+					"reference": "https://eloquent-blindheit.org/attraktiv-getr%C3%A4nke.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-08-10",
+					"currency": "MAD"
 				}
 			},
-			"fiscalYearDeviation": "No",
+			"fiscalYearEnd": "2022-01-14",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Polifka OHG",
+				"assurance": "ReasonableAssurance",
+				"provider": "Nannen Gruppe",
 				"dataSource": {
-					"page": 1102,
-					"report": "IntegratedReport",
-					"tagName": "interfaces"
+					"page": 1163,
+					"report": "ESEFReport",
+					"tagName": "models"
 				}
 			},
 			"scopeOfEntities": "No",
-			"numberOfEmployees": 22938,
+			"numberOfEmployees": 13928,
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.735,
+					"value": 0.9051,
 					"dataSource": {
-						"page": 834,
-						"report": "ESEFReport",
-						"tagName": "paradigms"
+						"page": 315,
+						"report": "IntegratedReport",
+						"tagName": "e-services"
 					},
-					"quality": "Audited",
-					"comment": "compress back-end program"
+					"quality": "Estimated",
+					"comment": "copy back-end protocol"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.7606,
-					"dataSource": {
-						"page": 574,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
-					},
-					"quality": "Audited",
-					"comment": "back up digital microchip"
+					"value": 0.3795,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2826,
+					"value": 0.3212,
 					"dataSource": {
-						"page": 625,
+						"page": 1064,
 						"report": "AnnualReport",
-						"tagName": "e-commerce"
+						"tagName": "technologies"
 					},
-					"quality": "Reported",
-					"comment": "copy haptic matrix"
+					"quality": "Estimated",
+					"comment": "navigate digital circuit"
 				}
 			}
 		}
@@ -95,94 +107,89 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Lakomy-Olbrich",
-				"Hackbusch, Soboll und Gadschiew"
+				"Zeuch UG",
+				"Heinke-Bickel",
+				"Kappe Gruppe"
 			],
-			"companyLegalForm": "e-tailers",
-			"headquarters": "Muckenthalerburg",
-			"headquartersPostalCode": "98208",
-			"sector": "e-business",
+			"companyLegalForm": "architectures",
+			"headquarters": "Hannahland",
+			"headquartersPostalCode": "63325",
+			"sector": "vortals",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "ng0fdg9wl7grgu8ur0eh"
+					"identifierType": "PermId",
+					"identifierValue": "i8dp7qrg5t"
 				}
 			],
-			"countryCode": "AM",
+			"countryCode": "KW",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "http://resolut-haus.com/wohlgesinnt-benzin.pdf",
+					"reference": "https://erregend-palast.ch/eitel-bein.pdf",
 					"isGroupLevel": "Yes",
-					"reportDate": "2021-11-25",
-					"currency": "KES"
+					"reportDate": "2022-10-07",
+					"currency": "XDR"
 				}
 			},
-			"fiscalYearDeviation": "No",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Retzke-Grau",
+				"dataSource": {
+					"page": 382,
+					"report": "SustainabilityReport",
+					"tagName": "e-commerce"
+				}
 			},
-			"numberOfEmployees": 94423,
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 244007.42,
-					"dataSource": {
-						"page": 777,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "synthesize solid state capacitor"
+					"value": 459638.03,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.9275,
+					"value": 0.9418,
 					"dataSource": {
-						"page": 1057,
+						"page": 168,
 						"report": "SustainabilityReport",
-						"tagName": "niches"
+						"tagName": "e-business"
 					},
-					"quality": "Audited",
-					"comment": "program open-source hard drive"
+					"quality": "Reported",
+					"comment": "override 1080p pixel"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 627583.38,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.2045,
+					"value": 200418.25,
 					"dataSource": {
-						"page": 478,
+						"page": 251,
 						"report": "SustainabilityReport",
-						"tagName": "e-commerce"
+						"tagName": "infomediaries"
 					},
 					"quality": "Reported",
-					"comment": "parse bluetooth program"
+					"comment": "override neural interface"
+				},
+				"eligiblePercentage": {
+					"value": 0.4439,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 966129.36,
+					"value": 152029.44,
 					"dataSource": {
-						"page": 642,
+						"page": 647,
 						"report": "SustainabilityReport",
-						"tagName": "content"
+						"tagName": "markets"
 					},
 					"quality": "Audited",
-					"comment": "reboot auxiliary hard drive"
+					"comment": "copy online bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.4582,
-					"dataSource": {
-						"page": 725,
-						"report": "SustainabilityReport",
-						"tagName": "ROI"
-					},
-					"quality": "Audited",
-					"comment": "navigate redundant firewall"
+					"value": 0.3881,
+					"quality": "Estimated"
 				}
 			}
 		}
