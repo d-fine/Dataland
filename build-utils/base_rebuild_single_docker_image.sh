@@ -61,10 +61,9 @@ if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
   docker_build_environment_parameters=(--push --cache-to "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name" --cache-from "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name")
 else
   echo "Running outside Github Actions - using no cache and no --push flag"
-  docker_build_environment_parameters=(--builder default)
+  docker_build_environment_parameters=(--builder default --load)
 fi
 echo "rebuilding image $full_image_reference"
 docker buildx build -f "$dockerfile" . -t "$full_image_reference" \
-   --load \
    "${docker_build_args[@]}" \
    "${docker_build_environment_parameters[@]}"
