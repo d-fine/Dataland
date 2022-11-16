@@ -24,6 +24,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
+import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.accessmanagement.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
@@ -40,6 +41,7 @@ class ApiAccessor {
 
     val dataControllerApiForEuTaxonomyNonFinancials =
         EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     val euTaxonomyNonFinancialsUploaderFunction =
@@ -121,6 +123,7 @@ class ApiAccessor {
         return listOfUploadInfo
     }
 
+    @Suppress("kotlin:S138")
     private fun uploadForDataType(
         dataType: DataTypeEnum,
         listOfCompanyInformation: List<CompanyInformation>,
