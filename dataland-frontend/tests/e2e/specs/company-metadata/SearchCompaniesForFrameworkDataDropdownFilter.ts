@@ -63,13 +63,11 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-      const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
-      const regexStringForDemoCompanyCountryNameExactMatch = "^" + demoCompanyToTestForCountryName + "$"
-      const regexForDemoCompanyCountryNameExactMatch = RegExp(regexStringForDemoCompanyCountryNameExactMatch)
-
       const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
       )!.companyInformation;
+
+      const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
@@ -84,7 +82,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search countries"]')
         .type(`${demoCompanyToTestForCountryName}`)
         .get("li")
-        .contains(regexForDemoCompanyCountryNameExactMatch)
+        .should("contain", `${demoCompanyToTestForCountryName}`)
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
@@ -98,9 +96,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-        const regexStringForDemoCompanySectorExactMatch = "^" + demoCompanyToTestFor.sector + "$"
-        const regexForDemoCompanySectorExactMatch = RegExp(regexStringForDemoCompanySectorExactMatch)
-
       const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
       )!.companyInformation;
@@ -116,7 +111,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search sectors"]')
         .type(`${demoCompanyToTestFor.sector}`)
         .get("li")
-        .contains(regexForDemoCompanySectorExactMatch)
+        .should("contain", `${demoCompanyToTestFor.sector}`)
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
