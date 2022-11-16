@@ -1,58 +1,56 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.accessmanagement.TokenHandler
-import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataControllerApi
-import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
 
-class DataControllerTest {
+class DataControllerTest{
 
-    private val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val euTaxonomyDataForNonFinancialsControllerApi =
-        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val apiAccessor = ApiAccessor()
 
-    private val tokenHandler = TokenHandler()
-    private val unauthorizedEuTaxonomyDataControllerApi = UnauthorizedEuTaxonomyDataControllerApi()
+    private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getTData(1).first()
 
-    private val testDataProviderForEuTaxonomyDataForNonFinancials =
-        FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getCompanyInformationWithoutIdentifiers(1).first()
 
-    private val testData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
+    private val testCompanyInformationNonTeaser =
+        testCompanyInformation.copy(isTeaserCompany = false)
+    private val testCompanyInformationTeaser =
+        testCompanyInformation.copy(isTeaserCompany = true)
 
     private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
     ):
         Map<String, String> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val companyId = companyDataControllerApi.postCompany((companyInformation)).companyId
-        val dataId = euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, euTaxonomyDataForNonFinancials)
-        ).dataId
+        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(companyInformation),
+            listOf(euTaxonomyDataForNonFinancials),
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction
+        )
+        val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
+        val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         return mapOf("companyId" to companyId, "dataId" to dataId)
     }
 
     @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
+        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation,
+            testDataEuTaxonomyNonFinancials)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
-            euTaxonomyDataForNonFinancialsControllerApi
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         assertEquals(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testData),
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testDataEuTaxonomyNonFinancials),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
             "The posted and the received eu taxonomy data sets and their company IDs are not equal."
         )
@@ -60,14 +58,12 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-            .copy(isTeaserCompany = true)
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
-        val getDataByIdResponse = unauthorizedEuTaxonomyDataControllerApi
+        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+            testCompanyInformationTeaser, testDataEuTaxonomyNonFinancials)
+        val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
             .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-            mapOfIds["companyId"]!!, testData
+            mapOfIds["companyId"]!!, testDataEuTaxonomyNonFinancials
         )
         assertEquals(
             expectedCompanyAssociatedData, getDataByIdResponse,
@@ -77,12 +73,10 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-            .copy(isTeaserCompany = false)
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation, testData)
+        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformationNonTeaser,
+            testDataEuTaxonomyNonFinancials)
         val exception = assertThrows<IllegalArgumentException> {
-            unauthorizedEuTaxonomyDataControllerApi
+            apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                 .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         }
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
@@ -90,15 +84,13 @@ class DataControllerTest {
 
     @Test
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
-        val testCompanyInformation = testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        val testCompanyId = companyDataControllerApi.postCompany(testCompanyInformation).companyId
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        val testCompanyId  = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         val exception =
             assertThrows<ClientException> {
-                euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                    CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testData)
+                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                    .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                    CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testDataEuTaxonomyNonFinancials)
                 )
             }
         assertEquals("Client error : 403 ", exception.message)
