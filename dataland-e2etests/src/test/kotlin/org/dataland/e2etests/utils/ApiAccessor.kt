@@ -64,40 +64,40 @@ class ApiAccessor {
             )
         }
 
-    private val dataControllerApiForLksgData =
+    val dataControllerApiForLksgData =
         LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForLksgData =
+    val testDataProviderForLksgData =
         FrameworkTestDataProvider(LksgData::class.java)
-    private val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
+    val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
             companyAssociatedLksgData
         )
     }
 
-    private val dataControllerApiForSfdrData =
+    val dataControllerApiForSfdrData =
         SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForSfdrData =
+    val testDataProviderForSfdrData =
         FrameworkTestDataProvider(SfdrData::class.java)
-    private val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
+    val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
             companyAssociatedSfdrData
         )
     }
 
-    private val dataControllerApiForSmeData =
+    val dataControllerApiForSmeData =
         SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    private val testDataProviderForSmeData =
+    val testDataProviderForSmeData =
         FrameworkTestDataProvider(SmeData::class.java)
-    private val smeUploaderFunction = { companyId: String, smeData: SmeData ->
+    val smeUploaderFunction = { companyId: String, smeData: SmeData ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
             companyAssociatedSmeData
         )
     }
 
-    private fun <T> uploadCompanyAndFrameworkDataForOneFramework(
+    fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation
