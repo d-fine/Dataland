@@ -64,7 +64,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     () => {
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
-      const regexForDemoCompanyCountryName = RegExp(demoCompanyToTestForCountryName)
+      const regexStringForDemoCompanyCountryNameExactMatch = "^" + demoCompanyToTestForCountryName + "$"
+      const regexForDemoCompanyCountryNameExactMatch = RegExp(regexStringForDemoCompanyCountryNameExactMatch)
 
       const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
@@ -83,7 +84,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search countries"]')
         .type(`${demoCompanyToTestForCountryName}`)
         .get("li")
-        .contains(regexForDemoCompanyCountryName)
+        .contains(regexForDemoCompanyCountryNameExactMatch)
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
@@ -97,7 +98,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-      const regexForDemoCompanySector = RegExp(demoCompanyToTestFor.sector)
+        const regexStringForDemoCompanySectorExactMatch = "^" + demoCompanyToTestFor.sector + "$"
+        const regexForDemoCompanySectorExactMatch = RegExp(regexStringForDemoCompanySectorExactMatch)
 
       const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
         (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
@@ -114,7 +116,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search sectors"]')
         .type(`${demoCompanyToTestFor.sector}`)
         .get("li")
-        .contains(regexForDemoCompanySector)
+        .contains(regexForDemoCompanySectorExactMatch)
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
