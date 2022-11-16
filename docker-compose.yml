@@ -40,6 +40,18 @@ services:
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5434:5433-5434"
+  api-key-manager:
+    restart: always
+    profiles: ["production", "testing", "productionInMemory", "development"]
+    networks:
+      - internal
+    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
+    expose:
+      - "8080"
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_USER: ${GITHUB_USER}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend:
     restart: always
     profiles: ["production", "testing", "productionInMemory"]

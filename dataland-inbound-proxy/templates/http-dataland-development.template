@@ -36,6 +36,11 @@ server {
       root /var/www;
     }
 
+    location /api-keys {
+      proxy_pass http://api-key-manager:8080/api-keys;
+      include utils/proxy.conf;
+    }
+
     location /api {
       proxy_pass http://host.docker.internal:8080/api;
       include utils/proxy.conf;

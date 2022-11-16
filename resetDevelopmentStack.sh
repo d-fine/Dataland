@@ -18,8 +18,12 @@ echo "Clearing frontend clients..."
 ./gradlew assemble
 
 rm ./*github_env.log || true
-find ./build-utils/ -name "rebuild*.sh" -exec bash -c 'eval "$1"' shell {} \;
+./build-utils/base_rebuild_gradle_dockerfile.sh
+set -o allexport
+source ./*github_env.log
+set +o allexport
 
+./build-utils/rebuild_keycloak_image.sh
 set -o allexport
 source ./*github_env.log
 set +o allexport

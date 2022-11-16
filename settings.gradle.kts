@@ -1,6 +1,7 @@
 rootProject.name = "dataland"
 include(
     "dataland-backend",
+    "dataland-api-key-manager",
     "dataland-e2etests",
     "dataland-frontend",
     "dataland-csvconverter",
