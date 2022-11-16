@@ -45,7 +45,7 @@ services:
     profiles: ["production", "testing", "productionInMemory", "development"]
     networks:
       - internal
-    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
+    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
     expose:
       - "8080"
     environment:
