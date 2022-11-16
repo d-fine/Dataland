@@ -36,28 +36,35 @@ full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha1"
 echo "${docker_image_name^^}_VERSION=$input_sha1" >> ./${BUILD_SCRIPT:-default}_github_env.log
 echo "${docker_image_name^^}_VERSION=$input_sha1" >> ${GITHUB_OUTPUT:-/dev/null}
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
-if [[ "$sha1_manifest" == "no sha1 manifest" ]] || [[ "${FORCE_BUILD:-}" == "true" ]] || [[ "${COMMIT_MESSAGE:-}" == *"FORCE_BUILD"* ]]; then
-  docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
-                          --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" \
-                          --build-arg GITHUB_USER="${GITHUB_USER:-}" \
-                          --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
-                          --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
-                          --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
-                          --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}"
-                    )
-
-  if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
-    echo "Running in Github Actions - using gha-type cache and --push flag"
-    docker_build_environment_parameters=(--push --cache-to "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name" --cache-from "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name")
-  else
-    echo "Running outside Github Actions - using no cache and no --push flag"
-    docker_build_environment_parameters=(--builder default)
-  fi
-  echo "rebuilding image $full_image_reference"
-  docker buildx build -f "$dockerfile" . -t "$full_image_reference" \
-     --load \
-     "${docker_build_args[@]}" \
-     "${docker_build_environment_parameters[@]}"
-else
-  echo "No Rebuild for $docker_image_name required"
+if [[ "$sha1_manifest" != "no sha1 manifest" ]] ; then
+  echo "docker manifest found. No rebuild for $full_image_reference required"
+  exit 0
 fi
+
+images_found=$(docker image ls --quiet "$full_image_reference" | wc -w)
+if [[ "$images_found" == "1" ]] ; then
+  echo "docker image already present locally. No rebuild for $full_image_reference required"
+  exit 0
+fi
+
+docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
+                        --build-arg GITHUB_TOKEN="${GITHUB_TOKEN:-}" \
+                        --build-arg GITHUB_USER="${GITHUB_USER:-}" \
+                        --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
+                        --build-arg DATALAND_E2ETESTS_CORE_VERSION="${DATALAND_E2ETESTS_CORE_VERSION:-}" \
+                        --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
+                        --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}"
+                  )
+
+if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
+  echo "Running in Github Actions - using gha-type cache and --push flag"
+  docker_build_environment_parameters=(--push --cache-to "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name" --cache-from "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name")
+else
+  echo "Running outside Github Actions - using no cache and no --push flag"
+  docker_build_environment_parameters=(--builder default)
+fi
+echo "rebuilding image $full_image_reference"
+docker buildx build -f "$dockerfile" . -t "$full_image_reference" \
+   --load \
+   "${docker_build_args[@]}" \
+   "${docker_build_environment_parameters[@]}"
