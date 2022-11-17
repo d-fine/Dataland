@@ -5,6 +5,7 @@ import org.dataland.datalandapikeymanager.model.ApiKey
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
 import org.springframework.http.ResponseEntity
 import org.springframework.http.server.ServerHttpRequest
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 import javax.servlet.http.HttpServletRequest
@@ -15,15 +16,15 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(daysValid: Long?, request: ServerHttpRequest): ResponseEntity<ApiKey> {
-        val expiryDate: LocalDate? = if (daysValid == null) null else LocalDate.now().plusDays(daysValid)
-        return ResponseEntity.ok(ApiKey(getKeycloakUsername(request), expiryDate, "5678"))
+    override fun generateApiKey(daysValid: Long?, baererToken: String): ResponseEntity<ApiKey> {
+        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid)
+        return ResponseEntity.ok(ApiKey(getKeycloakUsername(baererToken), expiryDate, "5678"))
     }
 
-    private fun getKeycloakUsername(request: ServerHttpRequest): String {
+    private fun getKeycloakUsername(baererToken: String): String {
         // TODO this is not working yet
-        val authenticationToken = request.principal as KeycloakAuthenticationToken
-        return authenticationToken.account.keycloakSecurityContext.idToken.subject
+        val encodedData = baererToken.split(".")[1]
+        return encodedData
     }
 
     override fun validateApiKey(apiKey: String?): ResponseEntity<Boolean> {

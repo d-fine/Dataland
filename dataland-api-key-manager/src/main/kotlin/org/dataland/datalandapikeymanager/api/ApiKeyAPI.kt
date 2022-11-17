@@ -7,6 +7,8 @@ import org.dataland.datalandapikeymanager.model.ApiKey
 import org.springframework.http.ResponseEntity
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestParam
 import javax.servlet.http.HttpServletRequest
 
@@ -33,7 +35,7 @@ interface ApiKeyAPI {
      * @param daysValid int determining how many days the generated API key can be used
      * @return new API key for the user
      */
-    fun generateApiKey(@RequestParam daysValid: Long? = null, request: ServerHttpRequest): ResponseEntity<ApiKey>
+    fun generateApiKey(@RequestParam daysValid: Long? = null, @RequestHeader("Authorization") baererToken: String): ResponseEntity<ApiKey>
 
 
     @Operation(
