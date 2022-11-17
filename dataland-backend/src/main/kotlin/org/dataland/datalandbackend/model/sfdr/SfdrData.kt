@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model.sfdr
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.math.BigDecimal
@@ -14,7 +15,7 @@ import java.time.LocalDate
  */
 @DataType("sfdr")
 data class SfdrData(
-    val fiscalYear: String?,
+    val fiscalYear: FiscalYearDeviation?,
 
     val fiscalYearEnd: LocalDate?,
 

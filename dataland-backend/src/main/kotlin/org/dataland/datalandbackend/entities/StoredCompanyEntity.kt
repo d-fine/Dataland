@@ -28,8 +28,14 @@ data class StoredCompanyEntity(
     @Column(name = "company_alternative_names")
     var companyAlternativeNames: List<String>?,
 
+    @Column(name = "company_legal_form")
+    var companyLegalForm: String?,
+
     @Column(name = "headquarters")
     var headquarters: String,
+
+    @Column(name = "headquarters_postal_code")
+    var headquartersPostalCode: String?,
 
     @Column(name = "sector")
     var sector: String,
@@ -53,7 +59,9 @@ data class StoredCompanyEntity(
             companyInformation = CompanyInformation(
                 companyName = companyName,
                 companyAlternativeNames = companyAlternativeNames,
+                companyLegalForm = companyLegalForm,
                 headquarters = headquarters,
+                headquartersPostalCode = headquartersPostalCode,
                 sector = sector,
                 identifiers = identifiers.map { it.toApiModel() }.toList(),
                 countryCode = countryCode,

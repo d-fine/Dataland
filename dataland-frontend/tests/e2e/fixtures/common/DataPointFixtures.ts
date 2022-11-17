@@ -10,6 +10,14 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
 const nullRatio = 0.1;
 const undefinedRatio = 0.25;
 
+export function valueOrNull<T>(value: T): T | null {
+  return Math.random() > nullRatio ? value : null;
+}
+
+export function valueOrUndefined<T>(value: T): T | undefined {
+  return Math.random() > undefinedRatio ? value : undefined;
+}
+
 export function generateReferencedReports(): ReferencedReports {
   const availableReports = faker.helpers.arrayElements(possibleReports);
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
@@ -28,14 +36,14 @@ export function generateReferencedReports(): ReferencedReports {
 
 export function generateNumericOrEmptyDatapoint(
   reports: ReferencedReports,
-  value: number | null = Math.random() > nullRatio ? faker.datatype.number() : null
+  value: number | null = valueOrNull(faker.datatype.number())
 ): DataPointBigDecimal | undefined {
   if (Math.random() < undefinedRatio) return undefined;
   return generateDatapoint(value, reports);
 }
 
 export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
-  const value = Math.random() > nullRatio ? randomYesNoUndefined() : null;
+  const value = valueOrNull(randomYesNoUndefined());
   if (value === undefined) return undefined;
   return generateDatapoint(value, reports);
 }
@@ -45,7 +53,7 @@ export function generateDatapointOrNotReportedAtRandom(
   reports: ReferencedReports
 ): DataPointBigDecimal | undefined {
   if (value === undefined) return undefined;
-  return generateDatapoint(Math.random() > nullRatio ? value : null, reports);
+  return generateDatapoint(valueOrNull(value), reports);
 }
 
 export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedReports): Y {

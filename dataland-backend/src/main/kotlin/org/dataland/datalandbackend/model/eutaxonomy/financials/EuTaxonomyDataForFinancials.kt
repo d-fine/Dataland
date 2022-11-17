@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.FrameworkBase
+import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
@@ -31,7 +32,7 @@ data class EuTaxonomyDataForFinancials(
 
     val insuranceKpis: InsuranceKpis? = null,
 
-    override val fiscalYearDeviation: YesNo? = null,
+    override val fiscalYearDeviation: FiscalYearDeviation? = null,
 
     override val fiscalYearEnd: LocalDate? = null,
 

@@ -23,7 +23,7 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   it(
-    "The framework filter should contain LKSG and SFDR  even though they are not yet implemented, and synchronise " +
+    "The framework filter should contain LKSG and SFDR even though they are not yet implemented, and synchronise " +
       "between the search bar and the URL",
     { scrollBehavior: false },
     () => {
@@ -82,7 +82,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search countries"]')
         .type(`${demoCompanyToTestForCountryName}`)
         .get("li")
-        .should("contain", `${demoCompanyToTestForCountryName}`)
+        .contains(RegExp(`^${demoCompanyToTestForCountryName}$`))
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
@@ -111,7 +111,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search sectors"]')
         .type(`${demoCompanyToTestFor.sector}`)
         .get("li")
-        .should("contain", `${demoCompanyToTestFor.sector}`)
+        .contains(RegExp(`^${demoCompanyToTestFor.sector}$`))
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)

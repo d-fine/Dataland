@@ -15,7 +15,9 @@ class CompanyInformationCsvParser {
     private val companyInformationColumnMapping = mapOf(
         "companyName" to "Unternehmensname",
         "companyAlternativeNames" to "Alternative Names",
+        "companyLegalForm" to "Company Legal Form",
         "headquarters" to "Headquarter",
+        "headquartersPostalCode" to "Headquarter Postal Code",
         "countryCode" to "Countrycode",
         "sector" to "Sector",
         IdentifierType.Isin.name to "ISIN",
@@ -34,7 +36,10 @@ class CompanyInformationCsvParser {
             companyName = companyInformationColumnMapping.getCsvValue("companyName", row),
             companyAlternativeNames = companyInformationColumnMapping
                 .readMultiValuedCsvField("companyAlternativeNames", row),
+            companyLegalForm = companyInformationColumnMapping.getCsvValueAllowingNull("companyLegalForm", row),
             headquarters = companyInformationColumnMapping.getCsvValue("headquarters", row),
+            headquartersPostalCode = companyInformationColumnMapping
+                .getCsvValueAllowingNull("headquartersPostalCode", row),
             sector = companyInformationColumnMapping.getCsvValue("sector", row),
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
