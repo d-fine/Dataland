@@ -5,6 +5,7 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
+  SmeData,
 } from "@clients/backend";
 import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -13,6 +14,7 @@ import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonom
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { uploadOneSmeDataset } from "../../utils/SmeUpload";
 const chunkSize = 15;
 
 describe(
@@ -28,7 +30,7 @@ describe(
   () => {
     function prepopulate(
       companiesWithFrameworkData: Array<
-        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData | SfdrData>
+        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData | SfdrData | SmeData>
       >,
       // eslint-disable-next-line @typescript-eslint/ban-types
       uploadOneFrameworkDataset: Function
@@ -120,12 +122,30 @@ describe(
         });
       });
 
-      it("Upload Lksg fake-fixtures", () => {
+      it("Upload Sfdr fake-fixtures", () => {
         prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
+      });
+    });
+
+    describe("Upload and validate Sme data", () => {
+      let companiesWithSmeData: Array<FixtureData<SmeData>>;
+
+      before(function () {
+        cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+          companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+        });
+      });
+
+      it("Upload Sme fake-fixtures", () => {
+        prepopulate(companiesWithSmeData, uploadOneSmeDataset);
+      });
+
+      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+        checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
       });
     });
   }

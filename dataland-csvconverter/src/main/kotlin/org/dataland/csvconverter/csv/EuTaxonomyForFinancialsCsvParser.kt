@@ -43,7 +43,7 @@ class EuTaxonomyForFinancialsCsvParser(
         "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm"
     )
 
-    private val financialServicesParser = EnumCsvParser<FinancialServicesType>(
+    private val financialServicesParser = EnumCsvParser(
         mapOf(
             "1" to FinancialServicesType.CreditInstitution,
             "2" to FinancialServicesType.InsuranceOrReinsurance,

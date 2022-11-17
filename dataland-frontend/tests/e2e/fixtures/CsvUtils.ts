@@ -2,8 +2,7 @@ import {
   AssuranceDataAssuranceEnum,
   CompanyIdentifier,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  YesNo,
-  YesNoNa,
+  FiscalYearDeviation,
 } from "@clients/backend";
 import Big from "big.js";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -23,17 +22,17 @@ export function getAssurance(assurance: AssuranceDataAssuranceEnum | undefined):
   throw Error(`Unknown assurance type ${String(assurance)}`);
 }
 
-export function getFiscalYearDeviation(isdeviation: YesNo | undefined): string | undefined {
-  switch (isdeviation) {
+export function getFiscalYearDeviation(isDeviation: FiscalYearDeviation | undefined): string | undefined {
+  switch (isDeviation) {
     case undefined:
     case null:
       return undefined;
-    case YesNoNa.Yes:
+    case FiscalYearDeviation.Deviation:
       return "Deviation";
-    case YesNoNa.No:
+    case FiscalYearDeviation.NoDeviation:
       return "No Deviation";
   }
-  throw Error(`Unknown yesno type ${String(isdeviation)}`);
+  throw Error(`Unknown fiscal year deviation type ${String(isDeviation)}`);
 }
 
 export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum): string {

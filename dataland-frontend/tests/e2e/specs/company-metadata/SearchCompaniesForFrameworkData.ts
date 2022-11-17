@@ -169,17 +169,24 @@ describe("As a user, I expect the search functionality on the /companies page to
   });
 
   it("Click on an autocomplete-suggestion and check if forwarded to company framework data page", () => {
-    cy.visitAndCheckAppMount("/companies");
-    cy.intercept("**/api/companies*").as("searchCompany");
-    cy.get("input[name=search_bar_top]").click({ force: true }).type("b");
-    cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-      cy.get(".p-autocomplete-item")
-        .eq(0)
-        .click({ force: true })
-        .url()
-        .should("include", "/companies/")
-        .url()
-        .should("include", "/frameworks/eutaxonomy");
+    getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+        (storedCompanies: Array<StoredCompany>) => {
+          const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
+          cy.visitAndCheckAppMount("/companies");
+          cy.intercept("**/api/companies*").as("searchCompany");
+          cy.get("input[name=search_bar_top]").click({ force: true }).type(searchString);
+          cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+            cy.get(".p-autocomplete-item")
+              .eq(0)
+              .click({ force: true })
+              .url()
+              .should("include", "/companies/")
+              .url()
+              .should("include", "/frameworks/eutaxonomy");
+          });
+        }
+      );
     });
   });
 

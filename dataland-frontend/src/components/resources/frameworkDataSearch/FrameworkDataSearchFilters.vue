@@ -67,6 +67,7 @@ import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 interface CountryCodeSelectableItem extends SelectableItem {
   countryCode: string;
@@ -188,15 +189,13 @@ export default defineComponent({
       });
     },
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = Object.values(DataTypeEnum)
-        .filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1)
-        .map((it) => {
-          return {
-            frameworkDataType: it,
-            displayName: humanizeString(it),
-            disabled: false,
-          };
-        });
+      this.availableFrameworks = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.map((it) => {
+        return {
+          frameworkDataType: it,
+          displayName: humanizeString(it),
+          disabled: false,
+        };
+      });
       this.availableFrameworks.push(
         {
           frameworkDataType: "sfdr" as DataTypeEnum,
