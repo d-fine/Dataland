@@ -8,11 +8,12 @@ class Lksg {
 
     private val apiAccessor = ApiAccessor()
 
+    private val listOfOneLksgDataSet = apiAccessor.testDataProviderForLksgData.getTData(1)
+    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
+        .getCompanyInformationWithoutIdentifiers(1)
+
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val listOfOneLksgDataSet = apiAccessor.testDataProviderForLksgData.getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
-            .getCompanyInformationWithoutIdentifiers(1)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneLksgDataSet,

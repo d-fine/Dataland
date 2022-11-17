@@ -8,12 +8,13 @@ class EuTaxonomyNonFinancials {
 
     private val apiAccessor = ApiAccessor()
 
+    private val listOfOneEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getTData(1)
+    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getCompanyInformationWithoutIdentifiers(1)
+
     @Test
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
-        val listOfOneEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
@@ -32,10 +33,6 @@ class EuTaxonomyNonFinancials {
 
     @Test
     fun `post a company with EuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
-        val listOfOneEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,

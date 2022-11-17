@@ -8,11 +8,12 @@ class Sfdr {
 
     private val apiAccessor = ApiAccessor()
 
+    private val listOfOneSfdrDataSet = apiAccessor.testDataProviderForSfdrData.getTData(1)
+    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData
+        .getCompanyInformationWithoutIdentifiers(1)
+
     @Test
     fun `post a company with Sfdr data and check if the data can be retrieved correctly`() {
-        val listOfOneSfdrDataSet = apiAccessor.testDataProviderForSfdrData.getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData
-            .getCompanyInformationWithoutIdentifiers(1)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneSfdrDataSet,

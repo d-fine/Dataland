@@ -8,11 +8,12 @@ class Sme {
 
     private val apiAccessor = ApiAccessor()
 
+    private val listOfOneSmeDataSet = apiAccessor.testDataProviderForSmeData.getTData(1)
+    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSmeData
+        .getCompanyInformationWithoutIdentifiers(1)
+
     @Test
     fun `post a company with SME data and check if the data can be retrieved correctly`() {
-        val listOfOneSmeDataSet = apiAccessor.testDataProviderForSmeData.getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderForSmeData
-            .getCompanyInformationWithoutIdentifiers(1)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneSmeDataSet,

@@ -7,26 +7,23 @@ import org.junit.jupiter.api.Test
 class EuTaxonomyFinancials {
     private val apiAccessor = ApiAccessor()
 
+    private val listOfOneEuTaxonomyFinancialsDataSet = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)
+    private val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
+        .getCompanyInformationWithoutIdentifiers(1)
+
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
-
-        val listOfOneEuTaxonomyFinancialsDataSet = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)
-        val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
-            .getCompanyInformationWithoutIdentifiers(1)
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+        val receivedDataMetaInformation = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyFinancialsDataSet,
             apiAccessor.euTaxonomyFinancialsUploaderFunction
-        )
-        val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        )[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .getCompanyAssociatedEuTaxonomyDataForFinancials(receivedDataMetaInformation!!.dataId)
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
             .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        // Sorting is required here as the backend models this field as a Set but this info is lost during the openApi
-        // conversion
         Assertions.assertEquals(
             listOfOneEuTaxonomyFinancialsDataSet[0].copy(
                 financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted()
@@ -37,3 +34,5 @@ class EuTaxonomyFinancials {
         )
     }
 }
+/* Sorting is required in the last assertion as the backend models this field as a Set but this info is lost during the
+  conversion */
