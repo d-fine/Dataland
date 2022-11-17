@@ -95,7 +95,10 @@ class DataControllerTest {
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                     .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                        CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testDataEuTaxonomyNonFinancials)
+                        CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                            testCompanyId,
+                            testDataEuTaxonomyNonFinancials
+                        )
                     )
             }
         assertEquals("Client error : 403 ", exception.message)
