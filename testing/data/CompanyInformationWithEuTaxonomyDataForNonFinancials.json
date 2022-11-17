@@ -153,7 +153,7 @@
 			"companyLegalForm": "metrics",
 			"headquarters": "West Connerland",
 			"headquartersPostalCode": "98652",
-			"sector": "bandwidth action-items",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
 					"identifierType": "Isin",
@@ -271,7 +271,7 @@
 			],
 			"headquarters": "Neu Smillascheid",
 			"headquartersPostalCode": "29392",
-			"sector": "infomediaries bandwith",
+			"sector": "infomediaries",
 			"identifiers": [
 				{
 					"identifierType": "Isin",
