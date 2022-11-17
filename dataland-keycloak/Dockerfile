@@ -4,10 +4,8 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 WORKDIR /app
 COPY ./dataland-keycloak/build.gradle.kts ./dataland-keycloak/
 COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme/login
-RUN --mount=type=secret,id=DOCKER_SECRET \
-     cp /run/secrets/DOCKER_SECRET ~/.gradle/gradle.properties && \
-     ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace && \
-     rm -rf ~/.gradle/gradle.properties
+RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
+     ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
 FROM quay.io/keycloak/keycloak:20.0.1
 

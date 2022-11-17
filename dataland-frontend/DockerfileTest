@@ -7,12 +7,10 @@ COPY ./dataland-backend/ ./dataland-backend
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN --mount=type=secret,id=DOCKER_SECRET \
-     cp /run/secrets/DOCKER_SECRET ~/.gradle/gradle.properties && \
+RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      VITE_COVERAGE=true \
      BUILD_INSTRUMENTED=true \
-     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace && \
-     rm -rf ~/.gradle/gradle.properties
+     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
