@@ -25,7 +25,7 @@ class ApiKeyController : ApiKeyAPI {
     private fun getKeycloakUsername(): String {
         // TODO this is not working yet
         val authentication = SecurityContextHolder.getContext().authentication
-        return if(authentication.isAuthenticated) authentication.name else "NOT AUTHENTICATED"
+        return if(authentication.isAuthenticated) "authenticated :)" else "NOT AUTHENTICATED"
     }
 
     override fun validateApiKey(apiKey: String?): ResponseEntity<Boolean> {
