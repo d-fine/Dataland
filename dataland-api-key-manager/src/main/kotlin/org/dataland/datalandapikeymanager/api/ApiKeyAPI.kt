@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * Defines the restful dataland-backend API regarding company data.
+ * Defines the restful api-key-manager API.
  */
 interface ApiKeyAPI {
 
