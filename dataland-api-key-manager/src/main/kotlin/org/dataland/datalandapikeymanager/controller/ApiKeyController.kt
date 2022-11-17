@@ -5,6 +5,7 @@ import org.dataland.datalandapikeymanager.model.ApiKey
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
 import org.springframework.http.ResponseEntity
 import org.springframework.http.server.ServerHttpRequest
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
@@ -23,8 +24,7 @@ class ApiKeyController : ApiKeyAPI {
 
     private fun getKeycloakUsername(bearerToken: String?): String {
         // TODO this is not working yet
-        val encodedData = bearerToken!!.split(".")[1]
-        return encodedData
+        return SecurityContextHolder.getContext().authentication.name
     }
 
     override fun validateApiKey(apiKey: String?): ResponseEntity<Boolean> {
