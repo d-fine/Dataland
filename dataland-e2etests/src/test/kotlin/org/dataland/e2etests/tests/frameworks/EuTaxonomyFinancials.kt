@@ -8,7 +8,7 @@ class EuTaxonomyFinancials {
     private val apiAccessor = ApiAccessor()
 
     private val listOfOneEuTaxonomyFinancialsDataSet = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)
-    private val euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes =  listOfOneEuTaxonomyFinancialsDataSet[0]
+    private val euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0]
         .copy(financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted())
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
         .getCompanyInformationWithoutIdentifiers(1)
