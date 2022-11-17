@@ -7,6 +7,7 @@ import org.dataland.datalandapikeymanager.model.ApiKey
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Defines the restful api-key-manager API.
@@ -31,5 +32,5 @@ interface ApiKeyAPI {
      * @param daysValid int determining how many days the generated API key can be used
      * @return new API key for the user
      */
-    fun generateApiKey(@RequestParam daysValid: Long? = null): ResponseEntity<ApiKey>
+    fun generateApiKey(@RequestParam daysValid: Long? = null, request: HttpServletRequest): ResponseEntity<ApiKey>
 }
