@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(daysValid: Long?, bearerToken: String?): ResponseEntity<ApiKey> {
+    override fun generateApiKey(daysValid: Long?): ResponseEntity<ApiKey> {
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid)
-        return ResponseEntity.ok(ApiKey(getKeycloakUsername(bearerToken), expiryDate, "5678"))
+        return ResponseEntity.ok(ApiKey(getKeycloakUsername(), expiryDate, "5678"))
     }
 
-    private fun getKeycloakUsername(bearerToken: String?): String {
+    private fun getKeycloakUsername(): String {
         // TODO this is not working yet
         return SecurityContextHolder.getContext().authentication.name
     }
