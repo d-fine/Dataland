@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
 
-class DataControllerTest{
+class DataControllerTest {
 
     private val apiAccessor = ApiAccessor()
 
@@ -44,8 +44,10 @@ class DataControllerTest{
 
     @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformation,
-            testDataEuTaxonomyNonFinancials)
+        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+            testCompanyInformation,
+            testDataEuTaxonomyNonFinancials
+        )
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
@@ -59,7 +61,8 @@ class DataControllerTest{
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
-            testCompanyInformationTeaser, testDataEuTaxonomyNonFinancials)
+            testCompanyInformationTeaser, testDataEuTaxonomyNonFinancials
+        )
         val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
             .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
@@ -73,8 +76,10 @@ class DataControllerTest{
 
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(testCompanyInformationNonTeaser,
-            testDataEuTaxonomyNonFinancials)
+        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+            testCompanyInformationNonTeaser,
+            testDataEuTaxonomyNonFinancials
+        )
         val exception = assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                 .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
@@ -84,14 +89,14 @@ class DataControllerTest{
 
     @Test
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
-        val testCompanyId  = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val testCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                     .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                    CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testDataEuTaxonomyNonFinancials)
-                )
+                        CompanyAssociatedDataEuTaxonomyDataForNonFinancials(testCompanyId, testDataEuTaxonomyNonFinancials)
+                    )
             }
         assertEquals("Client error : 403 ", exception.message)
     }
