@@ -2,6 +2,8 @@
 
 val jacocoVersion: String by project
 val ktlintVersion: String by project
+val githubUser: String by project
+val githubToken: String by project
 
 allprojects {
     repositories {
@@ -10,8 +12,8 @@ allprojects {
             name = "GitHubPackagesEDCClient"
             url = uri("https://maven.pkg.github.com/d-fine/datalandEDC")
             credentials {
-                username = System.getenv("GITHUB_USER")
-                password = System.getenv("GITHUB_TOKEN")
+                username = System.getenv("GITHUB_USER") ?: githubUser
+                password = System.getenv("GITHUB_TOKEN") ?: githubToken
             }
         }
     }
