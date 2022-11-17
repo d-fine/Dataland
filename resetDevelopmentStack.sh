@@ -10,7 +10,7 @@ fi
 
 echo "Clearing Docker..."
 docker compose down --remove-orphans
-docker volume prune --filter "label!=keep" --force
+docker volume prune --force
 docker image prune -a -f
 
 echo "Clearing frontend clients..."
