@@ -82,7 +82,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get('input[placeholder="Search countries"]')
         .type(`${demoCompanyToTestForCountryName}`)
         .get("li")
-        .should("contain", `${demoCompanyToTestForCountryName}`)
+        .contains(RegExp(`^${demoCompanyToTestForCountryName}$`))
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
