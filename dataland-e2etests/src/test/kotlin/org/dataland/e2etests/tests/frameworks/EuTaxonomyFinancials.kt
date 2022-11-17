@@ -8,16 +8,19 @@ class EuTaxonomyFinancials {
     private val apiAccessor = ApiAccessor()
 
     private val listOfOneEuTaxonomyFinancialsDataSet = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)
+    private val euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes =  listOfOneEuTaxonomyFinancialsDataSet[0]
+        .copy(financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted())
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
         .getCompanyInformationWithoutIdentifiers(1)
 
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
-        val receivedDataMetaInformation = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyFinancialsDataSet,
             apiAccessor.euTaxonomyFinancialsUploaderFunction
-        )[0].actualStoredDataMetaInfo
+        )
+        val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .getCompanyAssociatedEuTaxonomyDataForFinancials(receivedDataMetaInformation!!.dataId)
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
@@ -25,9 +28,7 @@ class EuTaxonomyFinancials {
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
         Assertions.assertEquals(
-            listOfOneEuTaxonomyFinancialsDataSet[0].copy(
-                financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted()
-            ),
+            euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes,
             downloadedAssociatedData.data?.copy(
                 financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted()
             )
