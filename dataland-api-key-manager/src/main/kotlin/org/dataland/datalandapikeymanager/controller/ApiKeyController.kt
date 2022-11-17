@@ -4,6 +4,7 @@ import org.dataland.datalandapikeymanager.api.ApiKeyAPI
 import org.dataland.datalandapikeymanager.model.ApiKey
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 /**
  * Controller for the api key manager
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(username: String?, expiryDate: String?): ResponseEntity<ApiKey> {
-        return ResponseEntity.ok(ApiKey("testuser1234", "somewhere future", "5678"))
+    override fun generateApiKey(username: String?, expiryDate: LocalDate?): ResponseEntity<ApiKey> {
+        return ResponseEntity.ok(ApiKey("testuser1234", LocalDate.now(), "5678"))
     }
 }

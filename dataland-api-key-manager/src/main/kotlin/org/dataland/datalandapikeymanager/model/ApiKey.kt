@@ -1,6 +1,7 @@
 package org.dataland.datalandapikeymanager.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -14,7 +15,7 @@ data class ApiKey(
     val username: String,
 
     @field:JsonProperty(required = true)
-    val expiryDate: String,
+    val expiryDate: LocalDate,
 
     @field:JsonProperty(required = true)
     val apiKey: String

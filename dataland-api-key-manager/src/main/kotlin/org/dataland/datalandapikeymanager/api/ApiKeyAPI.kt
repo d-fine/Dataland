@@ -7,6 +7,7 @@ import org.dataland.datalandapikeymanager.model.ApiKey
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.time.LocalDate
 
 /**
  * Defines the restful api-key-manager API.
@@ -34,6 +35,6 @@ interface ApiKeyAPI {
      */
     fun generateApiKey(
         @RequestParam username: String? = null,
-        @RequestParam expiryDate: String? = null
+        @RequestParam expiryDate: LocalDate? = null
     ): ResponseEntity<ApiKey>
 }
