@@ -29,7 +29,8 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/actuator/info",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/generateApiKey"
+        "/generateApiKey",
+        "/validateApiKey"
     )
 
     /**

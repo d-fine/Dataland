@@ -36,4 +36,30 @@ interface ApiKeyAPI {
         @RequestParam username: String? = null,
         @RequestParam expiryDate: String? = null
     ): ResponseEntity<ApiKey>
+
+    @Operation(
+        summary = "Validate an API key.",
+        description = "Check if an API key is valid."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "API key validation process finished.")
+        ]
+    )
+    @GetMapping(
+        value = ["/validateApiKey"],
+        produces = ["application/json"]
+    )
+    /**
+     * A method to validate an API key
+     * @param apiKey holds the apiKey which needs to be validated
+     * @return "true" if API key is valid, else "false"
+     */
+
+    /* TODO / idea for later: Give more detailed message like "Api Key valid",
+    "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
+     */
+    fun validateApiKey(
+        @RequestParam apiKey: String? = null,
+    ): ResponseEntity<Boolean>
 }
