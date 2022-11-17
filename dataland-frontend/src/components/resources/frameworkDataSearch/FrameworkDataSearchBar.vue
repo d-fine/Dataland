@@ -84,6 +84,7 @@ import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;
@@ -114,9 +115,7 @@ export default defineComponent({
       default(): FrameworkDataSearchFilterInterface {
         return {
           companyNameFilter: "",
-          frameworkFilter: Object.values(DataTypeEnum).filter(
-            (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
-          ),
+          frameworkFilter: ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS,
           sectorFilter: [],
           countryCodeFilter: [],
         };
