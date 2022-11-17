@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.mosh
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
-class UnauthorizedEuTaxonomyDataControllerApi {
+class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
 
     private val client = OkHttpClient()
 

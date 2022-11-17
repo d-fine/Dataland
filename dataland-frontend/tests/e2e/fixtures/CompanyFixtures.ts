@@ -3,10 +3,12 @@ import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeE
 import { FixtureData, DataPoint } from "./FixtureUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
+import { valueOrUndefined } from "./common/DataPointFixtures";
 
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
+  const headquartersPostalCode = valueOrUndefined(faker.address.zipCode());
   const sector = faker.company.bsNoun();
 
   const identifiers: Array<CompanyIdentifier> = faker.helpers
@@ -39,11 +41,14 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
   });
+  const companyLegalForm = valueOrUndefined(faker.company.bsNoun());
 
   return {
     companyName: companyName,
     companyAlternativeNames: companyAlternativeNames,
+    companyLegalForm: companyLegalForm,
     headquarters: headquarters,
+    headquartersPostalCode: headquartersPostalCode,
     sector: sector,
     identifiers: identifiers,
     countryCode: countryCode,
@@ -63,8 +68,16 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
         row.companyInformation.companyAlternativeNames?.map((name) => `"${name}"`).join(", "),
     },
     {
+      label: "Company Legal Form",
+      value: (row: FixtureData<T>): string | undefined => row.companyInformation.companyLegalForm,
+    },
+    {
       label: "Headquarter",
       value: (row: FixtureData<T>): string => row.companyInformation.headquarters,
+    },
+    {
+      label: "Headquarter Postal Code",
+      value: (row: FixtureData<T>): string | undefined => row.companyInformation.headquartersPostalCode,
     },
     {
       label: "Sector",

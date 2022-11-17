@@ -93,6 +93,7 @@ import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkData
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
@@ -120,9 +121,7 @@ export default defineComponent({
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: Object.values(DataTypeEnum).filter(
-        (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
-      ) as Array<DataTypeEnum>,
+      currentFilteredFrameworks: ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -232,14 +231,12 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
-        const allowedDataTypeEnumValues = Object.values(DataTypeEnum).filter(
-          (frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1
-        ) as Array<string>;
+        const allowedDataTypeEnumValues = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((it) =>
           allowedDataTypeEnumValues.includes(it)
         ) as Array<DataTypeEnum>;
       } else {
-        return Object.values(DataTypeEnum).filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1);
+        return ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS;
       }
     },
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
@@ -311,9 +308,9 @@ export default defineComponent({
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = Object.values(DataTypeEnum)
-        .filter((frameworkName) => ["lksg", "sfdr"].indexOf(frameworkName) === -1)
-        .every((it) => this.currentFilteredFrameworks.includes(it));
+      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((it) =>
+        this.currentFilteredFrameworks.includes(it)
+      );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;
       if (this.currentFilteredFrameworks.length == 0) queryFrameworks = null;
