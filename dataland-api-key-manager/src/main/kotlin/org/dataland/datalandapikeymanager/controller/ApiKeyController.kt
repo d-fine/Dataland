@@ -16,14 +16,14 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(daysValid: Long?, baererToken: String): ResponseEntity<ApiKey> {
+    override fun generateApiKey(daysValid: Long?, bearerToken: String?): ResponseEntity<ApiKey> {
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid)
-        return ResponseEntity.ok(ApiKey(getKeycloakUsername(baererToken), expiryDate, "5678"))
+        return ResponseEntity.ok(ApiKey(getKeycloakUsername(bearerToken), expiryDate, "5678"))
     }
 
-    private fun getKeycloakUsername(baererToken: String): String {
+    private fun getKeycloakUsername(bearerToken: String?): String {
         // TODO this is not working yet
-        val encodedData = baererToken.split(".")[1]
+        val encodedData = bearerToken!!.split(".")[1]
         return encodedData
     }
 
