@@ -12,7 +12,8 @@ import java.time.LocalDate
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(username: String?, expiryDate: LocalDate?): ResponseEntity<ApiKey> {
-        return ResponseEntity.ok(ApiKey("testuser1234", LocalDate.now(), "5678"))
+    override fun generateApiKey(daysValid: Long?): ResponseEntity<ApiKey> {
+        val expiryDate: LocalDate? = if (daysValid == null) null else LocalDate.now().plusDays(daysValid)
+        return ResponseEntity.ok(ApiKey("testuser1234", expiryDate, "5678"))
     }
 }

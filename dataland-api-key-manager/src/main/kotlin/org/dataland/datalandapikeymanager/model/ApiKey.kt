@@ -15,7 +15,7 @@ data class ApiKey(
     val username: String,
 
     @field:JsonProperty(required = true)
-    val expiryDate: LocalDate,
+    val expiryDate: LocalDate?,
 
     @field:JsonProperty(required = true)
     val apiKey: String
