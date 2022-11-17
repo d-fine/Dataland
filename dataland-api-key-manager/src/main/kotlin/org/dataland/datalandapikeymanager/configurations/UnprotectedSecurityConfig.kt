@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
  */
 @Profile("unprotected")
 @KeycloakConfiguration
+// TODO: get rid of deprecated WebSecurityConfigurerAdapter
 class UnprotectedSecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     @Bean

@@ -10,7 +10,7 @@ fi
 
 echo "Clearing Docker..."
 docker compose down --remove-orphans
-docker volume prune -f
+docker volume prune --force
 docker image prune -a -f
 
 echo "Clearing frontend clients..."
@@ -23,7 +23,8 @@ set -o allexport
 source ./*github_env.log
 set +o allexport
 
-./build-utils/rebuild_keycloak_image.sh
+find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
+
 set -o allexport
 source ./*github_env.log
 set +o allexport
