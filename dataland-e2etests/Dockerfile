@@ -11,7 +11,7 @@ COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET \
      cp /run/secrets/DOCKER_SECRET ~/.gradle/gradle.properties && \
      ./gradlew :dataland-e2etests:compileTestKotlin :dataland-e2etests:testClasses :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && \
-     rm -rf /root/.npm /root/.gradle &&  \
+     rm -rf /root/.npm &&  \
      rm -rf ~/.gradle/gradle.properties
 
 ENTRYPOINT ["/bin/sh","-c"]
