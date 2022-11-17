@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @Configuration
 @Order(SwaggerUiSecurityConfig.CONFIG_ORDER)
+// TODO: get rid of deprecated WebSecurityConfigurerAdapter
 class SwaggerUiSecurityConfig : WebSecurityConfigurerAdapter() {
     companion object {
         const val CONFIG_ORDER = 99

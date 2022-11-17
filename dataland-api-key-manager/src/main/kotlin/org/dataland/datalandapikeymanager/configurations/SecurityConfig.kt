@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component
 @Profile("!unprotected")
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+// TODO: get rid of deprecated WebSecurityConfigurerAdapter
 class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     private val publicLinks = arrayOf(
@@ -29,7 +30,8 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         "/actuator/info",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/generateApiKey"
+        "/generateApiKey",
+        "/validateApiKey"
     )
 
     /**
