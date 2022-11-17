@@ -53,8 +53,6 @@ services:
       - backend-db
     environment:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
-      GITHUB_USER: ${GITHUB_USER}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend-db:
     restart: always
@@ -76,8 +74,6 @@ services:
     volumes:
       - ./.git:/app/.git
     environment:
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
-      GITHUB_USER: ${GITHUB_USER}
       CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       CYPRESS_KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
