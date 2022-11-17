@@ -1,5 +1,6 @@
 package org.dataland.datalandapikeymanager.controller
 
+import org.apache.catalina.User
 import org.dataland.datalandapikeymanager.api.ApiKeyAPI
 import org.dataland.datalandapikeymanager.model.ApiKey
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
@@ -24,8 +25,8 @@ class ApiKeyController : ApiKeyAPI {
 
     private fun getKeycloakUsername(): String {
         // TODO this is not working yet
-        val authentication = SecurityContextHolder.getContext().authentication
-        return if(authentication.isAuthenticated) "authenticated :)" else "NOT AUTHENTICATED"
+        val authentication = SecurityContextHolder.getContext().authentication.principal as org.springframework.security.core.userdetails.User
+        return authentication.username
     }
 
     override fun validateApiKey(apiKey: String?): ResponseEntity<Boolean> {
