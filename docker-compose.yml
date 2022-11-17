@@ -49,8 +49,6 @@ services:
     expose:
       - "8080"
     environment:
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
-      GITHUB_USER: ${GITHUB_USER}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend:
     restart: always

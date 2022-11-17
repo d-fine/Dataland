@@ -6,13 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandapikeymanager.model.ApiKey
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-backend API regarding company data.
  */
-@RequestMapping("/api-keys")
 interface ApiKeyAPI {
 
     @Operation(
