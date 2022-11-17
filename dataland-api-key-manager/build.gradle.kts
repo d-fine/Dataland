@@ -26,7 +26,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation(libs.springdoc.openapi.ui)
-    //implementation(libs.dataland.edc.client)
+    // implementation(libs.dataland.edc.client)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -37,9 +37,9 @@ dependencies {
     implementation(libs.keycloak.spring.boot.starter)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    //runtimeOnly(libs.database.postgres)
-    //runtimeOnly(libs.database.h2)
+    // implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    // runtimeOnly(libs.database.postgres)
+    // runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
