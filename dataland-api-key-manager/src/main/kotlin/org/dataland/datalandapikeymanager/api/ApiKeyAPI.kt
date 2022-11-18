@@ -3,14 +3,11 @@ package org.dataland.datalandapikeymanager.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandapikeymanager.model.ApiKey
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandapikeymanager.model.ApiKeyData
 import org.springframework.http.ResponseEntity
-import org.springframework.http.server.ServerHttpRequest
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestParam
-import javax.servlet.http.HttpServletRequest
 
 /**
  * Defines the restful api-key-manager API.
@@ -30,12 +27,14 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
+    @SecurityRequirement(name = "default-bearer-auth")
+    @SecurityRequirement(name = "default-oauth")
     /**
      * A method to generate a new API key
      * @param daysValid int determining how many days the generated API key can be used
      * @return new API key for the user
      */
-    fun generateApiKey(@RequestParam daysValid: Long? = null): ResponseEntity<ApiKey>
+    fun generateApiKey(@RequestParam daysValid: Long? = null): ResponseEntity<ApiKeyData>
 
 
     @Operation(
