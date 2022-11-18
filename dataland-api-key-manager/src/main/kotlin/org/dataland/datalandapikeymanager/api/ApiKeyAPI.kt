@@ -36,7 +36,6 @@ interface ApiKeyAPI {
      */
     fun generateApiKey(@RequestParam daysValid: Long? = null): ResponseEntity<ApiKeyData>
 
-
     @Operation(
         summary = "Validate an API key.",
         description = "Check if an API key is valid."

@@ -19,7 +19,12 @@ plugins {
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-val backendOpenApiSpecConfig by configurations.creating {
+val backendOpenApiSpecConfig: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+val apiKeyManagerOpenApiSpecConfig: Configuration by configurations.creating {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
@@ -34,6 +39,7 @@ dependencies {
     implementation(libs.log4j.to.slf4j)
     implementation("org.springframework.boot:spring-boot-starter-web")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
+    apiKeyManagerOpenApiSpecConfig(project(mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -45,23 +51,32 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+val openApiClientsOutputDir = "$buildDir/clients"
+
 val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val taskName = "generateBackendClient"
-val clientOutputDir = "$buildDir/Clients/backend"
-val apiSpecLocation = "$buildDir/$backendOpenApiJson"
-val destinationPackage = "org.dataland.datalandbackend.openApiClient"
+val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
+
+val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiSpecConfig)
     into("$buildDir")
+    dependsOn("getApiKeyManagerOpenApiSpec")
+    dependsOn("generateApiKeyManagerClient")
 }
 
-tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(apiSpecLocation).path
-    outputDir.set(clientOutputDir)
-    modelPackage.set("$destinationPackage.model")
-    apiPackage.set("$destinationPackage.api")
-    packageName.set(destinationPackage)
+tasks.register<Copy>("getApiKeyManagerOpenApiSpec") {
+    from(apiKeyManagerOpenApiSpecConfig)
+    into("$buildDir")
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    input = project.file("$buildDir/$backendOpenApiJson").path
+    outputDir.set("$openApiClientsOutputDir/backend")
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
     generatorName.set("kotlin")
 
     additionalProperties.set(
@@ -78,9 +93,27 @@ tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.Generate
     dependsOn("getBackendOpenApiSpec")
 }
 
+tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    input = project.file("$buildDir/$apiKeyManagerOpenApiJson").path
+    outputDir.set("$openApiClientsOutputDir/api-key-manager")
+    packageName.set(apiKeyManagerClientDestinationPackage)
+    modelPackage.set("$apiKeyManagerClientDestinationPackage.model")
+    apiPackage.set("$apiKeyManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true"
+        )
+    )
+    dependsOn("getApiKeyManagerOpenApiSpec")
+}
+
 sourceSets {
     val main by getting
-    main.java.srcDir("$clientOutputDir/src/main/kotlin")
+    main.kotlin.srcDir("$openApiClientsOutputDir/backend/src/main/kotlin")
+    main.kotlin.srcDir("$openApiClientsOutputDir/api-key-manager/src/main/kotlin")
 }
 
 ktlint {
