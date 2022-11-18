@@ -20,7 +20,7 @@ class ApiKeyController : ApiKeyAPI {
     }
 
     private fun getKeycloakUsername(request: HttpServletRequest): String {
-        //return "NOT IMPLEMENTED"
+        // return "NOT IMPLEMENTED"
         val authenticationToken = request.userPrincipal as KeycloakAuthenticationToken
         return authenticationToken.account.keycloakSecurityContext.idToken.subject
     }
