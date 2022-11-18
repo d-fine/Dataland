@@ -9,6 +9,7 @@ is_infrastructure_up () {
   services["backend"]=https://local-dev.dataland.com/api/actuator/health/ping
   services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
   services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
+  services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
 
   for service in "${!services[@]}"; do
     if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then

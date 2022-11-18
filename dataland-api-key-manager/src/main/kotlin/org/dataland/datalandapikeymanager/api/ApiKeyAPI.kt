@@ -55,7 +55,7 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    /* TODO / idea for later: Give more detailed message like "Api Key valid",
+    /* TODO / idea for later: Give more detailed info like "Api Key valid",
     "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
      */
     fun validateApiKey(

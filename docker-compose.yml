@@ -11,7 +11,7 @@ services:
   proxy:
     image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
     restart: always
-    profiles: ["production", "testing", "productionInMemory", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - external
       - internal
@@ -31,7 +31,7 @@ services:
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
-    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - external
       - internal
@@ -42,7 +42,7 @@ services:
       - "127.0.0.1:5433-5434:5433-5434"
   api-key-manager:
     restart: always
-    profiles: ["production", "testing", "productionInMemory", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - internal
     image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
@@ -52,7 +52,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend:
     restart: always
-    profiles: ["production", "testing", "productionInMemory"]
+    profiles: ["production", "productionInMemory", "testing"]
     networks:
       - internal
       - backend-db
@@ -116,7 +116,7 @@ services:
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
-    profiles: ["production", "testing", "productionInMemory"]
+    profiles: ["production", "productionInMemory", "testing"]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     expose:
       - "80"
@@ -124,7 +124,7 @@ services:
       - internal
   edc-dummyserver:
     restart: always
-    profiles: ["testing", "development", "productionInMemory"]
+    profiles: ["productionInMemory", "testing", "development"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
     environment:
       SERVER_PORT: 9191
@@ -183,7 +183,7 @@ services:
     depends_on:
       - keycloak-db
   keycloak-initializer:
-    profiles: [ "init", "testing" ]
+    profiles: ["testing", "init"]
     networks:
       internal:
         aliases:
@@ -220,7 +220,7 @@ services:
       - keycloak-db
       - backend-db
       - internal
-    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
     environment:

@@ -10,14 +10,14 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme
 import io.swagger.v3.oas.annotations.servers.Server
 
 /**
- * Basic configuration for the OpenAPI Swagger-UI available at /api-keys/swagger-ui/index.html
+ * Basic configuration for the OpenAPI Swagger-UI available at /api/swagger-ui/index.html
  */
 @OpenAPIDefinition(
     info = Info(
         title = "Dataland API key manager API documentation",
         version = "1.0.0"
     ),
-    servers = [Server(url = "/api-keys")]
+    servers = [Server(url = "/api")]
 )
 @SecurityScheme(
     name = "default-bearer-auth",
