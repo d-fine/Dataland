@@ -1,6 +1,6 @@
 package org.dataland.datalandapikeymanager.utils
 
-import org.dataland.datalandapikeymanager.model.ApiKey
+import org.dataland.datalandapikeymanager.model.ApiKeyData
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
 import java.security.SecureRandom
 import java.time.LocalDate
@@ -17,9 +17,9 @@ class ApiKeyGenerator {
         return HexFormat.of().formatHex(bytes)
     }
 
-    fun getNewApiKey(daysValid: Long?, request: HttpServletRequest): ApiKey {
+    fun getNewApiKey(daysValid: Long?, request: HttpServletRequest): ApiKeyData {
         val expiryDate: LocalDate? = if (daysValid == null) null else LocalDate.now().plusDays(daysValid)
-        return ApiKey(getKeycloakUsername(request), expiryDate, generateApiKey())
+        return ApiKeyData(getKeycloakUsername(request), expiryDate, generateApiKey())
     }
 
     private fun getKeycloakUsername(request: HttpServletRequest): String {
