@@ -38,12 +38,11 @@ class ApiKeyGenerator {
         return Base64.getDecoder().decode(input)
     }
 
-    private fun hashApiKey(apiKey: String): String {
-        val salt = generateSalt()
+    private fun hashApiKey(apiKey: String, salt: ByteArray): String {
         val builder = Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
             .withVersion(Argon2Parameters.ARGON2_VERSION_13)
             .withIterations(3)
-            .withMemoryPowOfTwo(12)
+            .withMemoryPowOfTwo(16)
             .withParallelism(1)
             .withSalt(salt)
         val generator = Argon2BytesGenerator()
