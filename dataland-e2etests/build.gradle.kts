@@ -112,8 +112,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$openApiClientsOutputDir/backend/src/main/kotlin")
-    main.java.srcDir("$openApiClientsOutputDir/api-key-manager/src/main/kotlin")
+    main.kotlin.srcDir("$openApiClientsOutputDir/backend/src/main/kotlin")
+    main.kotlin.srcDir("$openApiClientsOutputDir/api-key-manager/src/main/kotlin")
 }
 
 ktlint {
