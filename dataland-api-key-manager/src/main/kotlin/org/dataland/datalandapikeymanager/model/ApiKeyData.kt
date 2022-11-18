@@ -10,7 +10,7 @@ import java.time.LocalDate
  * @param expiryDate specifies how long the API key can be used
  * @param apiKey is the actual API key
  */
-data class ApiKey(
+data class ApiKeyData(
     @field:JsonProperty(required = true)
     val username: String,
 
