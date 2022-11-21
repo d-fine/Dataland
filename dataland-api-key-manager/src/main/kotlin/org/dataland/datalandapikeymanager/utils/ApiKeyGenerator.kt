@@ -66,13 +66,13 @@ class ApiKeyGenerator {
         val newApiKey = generateApiKey()
         val newSalt = generateSalt()
         val newSaltEncoded = encodeToStorageFormat(newSalt)
-        val newHashedApiKey = hashApiKey(newApiKey, newSalt)
+        val newHashedApiKeyEncoded = hashApiKey(newApiKey, newSalt)
 
         // TODO Storage process => needs to be in postgres. map is just temporary
         val apiKeyMetaInfo = ApiKeyMetaInfo(username, role, expiryDate)
-        val storedHashedApiKey = StoredHashedApiKey(newHashedApiKey, apiKeyMetaInfo, newSaltEncoded)
+        val storedHashedApiKey = StoredHashedApiKey(newHashedApiKeyEncoded, apiKeyMetaInfo, newSaltEncoded)
         mapOfUsernameAndStoredHashedApiKey[username] = storedHashedApiKey
-        logger.info("Generated Api Key with hashed value $newHashedApiKey and meta info ${apiKeyMetaInfo}.")
+        logger.info("Generated Api Key with hashed value $newHashedApiKeyEncoded and meta info ${apiKeyMetaInfo}.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 
