@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(daysValid: Long?): ResponseEntity<ApiKeyData> {
+    override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyData> {
         return ResponseEntity.ok(ApiKeyGenerator().getNewApiKey(daysValid))
     }
 

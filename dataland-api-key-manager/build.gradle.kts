@@ -50,7 +50,7 @@ val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
 
 openApi {
     outputFileName.set("$apiKeyManagerOpenApiJson")
-    apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
     }

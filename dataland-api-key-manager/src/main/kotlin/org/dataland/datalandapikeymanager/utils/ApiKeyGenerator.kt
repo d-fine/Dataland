@@ -52,10 +52,10 @@ class ApiKeyGenerator {
         return encodeToStorageFormat(hash)
     }
 
-    fun getNewApiKey(daysValid: Long?): ApiKeyData {
+    fun getNewApiKey(daysValid: Int?): ApiKeyData {
         val username = SecurityContextHolder.getContext().authentication.principal.toString()
         val role = SecurityContextHolder.getContext().authentication.authorities.toString()
-        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid)
+        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid.toLong())
         val newApiKey = generateApiKey()
         return ApiKeyData(username, role, expiryDate, newApiKey)
     }
