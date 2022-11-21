@@ -5,12 +5,12 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Class for defining the data associated to an API key
+ * Class for defining the meta info associated to an API key
  * @param username of the owning user
+ * @param role defines the role of the user
  * @param expiryDate specifies how long the API key can be used
- * @param apiKey is the actual API key
  */
-data class ApiKeyData(
+data class ApiKeyMetaInfo(
     @field:JsonProperty(required = true)
     val username: String,
 
@@ -19,7 +19,4 @@ data class ApiKeyData(
 
     @field:JsonProperty(required = true)
     val expiryDate: LocalDate?,
-
-    @field:JsonProperty(required = true)
-    val apiKey: String
 )
