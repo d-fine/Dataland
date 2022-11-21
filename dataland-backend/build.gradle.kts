@@ -46,7 +46,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
-    //kapt("org.springframework.boot:spring-boot-configuration-processor")
+    // TODO: Reparieren
+    // kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:4.8.0")
@@ -103,7 +104,6 @@ val openApiClientsOutputDir = "$buildDir/clients"
 val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
 val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
 
-
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file("$buildDir/$apiKeyManagerOpenApiJson").path
     outputDir.set("$openApiClientsOutputDir/api-key-manager")
@@ -113,10 +113,10 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     generatorName.set("kotlin")
 
     configOptions.set(
-            mapOf(
-                    "dateLibrary" to "java17",
-                    "useTags" to "true"
-            )
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true"
+        )
     )
     dependsOn("getApiKeyManagerOpenApiSpec")
 }

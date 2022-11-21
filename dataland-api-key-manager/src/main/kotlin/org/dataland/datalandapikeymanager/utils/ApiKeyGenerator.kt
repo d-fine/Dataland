@@ -12,10 +12,9 @@ import java.time.LocalDate
 import java.util.Base64
 import java.util.HexFormat
 
-
 class ApiKeyGenerator {
 
-    //TODO temporary
+    // TODO temporary
     private val mapOfUsernameAndStoredHashedApiKey = mutableMapOf<String, StoredHashedApiKey>()
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -47,11 +46,11 @@ class ApiKeyGenerator {
 
     private fun hashApiKey(apiKey: String, salt: ByteArray): String {
         val builder = Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-                .withVersion(Argon2Parameters.ARGON2_VERSION_13)
-                .withIterations(3)
-                .withMemoryPowOfTwo(16)
-                .withParallelism(1)
-                .withSalt(salt)
+            .withVersion(Argon2Parameters.ARGON2_VERSION_13)
+            .withIterations(3)
+            .withMemoryPowOfTwo(16)
+            .withParallelism(1)
+            .withSalt(salt)
         val generator = Argon2BytesGenerator()
         generator.init(builder.build())
         val hash = ByteArray(hashByteLength)
@@ -61,7 +60,7 @@ class ApiKeyGenerator {
 
     fun getNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val username = SecurityContextHolder.getContext().authentication.principal.toString()
-        val role = SecurityContextHolder.getContext().authentication.authorities.map{ it.authority!! }.toList()
+        val role = SecurityContextHolder.getContext().authentication.authorities.map { it.authority!! }.toList()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid.toLong())
         val newApiKey = generateApiKey()
         val newSalt = generateSalt()
@@ -72,7 +71,7 @@ class ApiKeyGenerator {
         val apiKeyMetaInfo = ApiKeyMetaInfo(username, role, expiryDate)
         val storedHashedApiKey = StoredHashedApiKey(newHashedApiKey, apiKeyMetaInfo, newSaltEncoded)
         mapOfUsernameAndStoredHashedApiKey[username] = storedHashedApiKey
-        logger.info("Generated Api Key with hashed value $newHashedApiKey and meta info ${apiKeyMetaInfo}.")
+        logger.info("Generated Api Key with hashed value $newHashedApiKey and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 

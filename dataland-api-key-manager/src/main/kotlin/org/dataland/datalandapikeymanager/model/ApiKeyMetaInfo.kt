@@ -11,12 +11,12 @@ import java.time.LocalDate
  * @param expiryDate specifies how long the API key can be used
  */
 data class ApiKeyMetaInfo(
-        @field:JsonProperty(required = true)
+    @field:JsonProperty(required = true)
     val username: String,
 
-        @field:JsonProperty(required = true)
+    @field:JsonProperty(required = true)
     val roles: List<String>,
 
-        @field:JsonProperty(required = true)
+    @field:JsonProperty(required = true)
     val expiryDate: LocalDate?,
 )

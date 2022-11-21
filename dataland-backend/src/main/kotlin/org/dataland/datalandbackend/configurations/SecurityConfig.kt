@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.configurations
 
 import org.dataland.datalandbackend.apikey.ApiKeyAuthenticationManager
-// import org.dataland.datalandbackend.apikey.ApiKeyAuthenticationProvider
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Component
 class SecurityConfig(
     @Autowired val apiKeyAuthenticationManager: ApiKeyAuthenticationManager
 ) : KeycloakWebSecurityConfigurerAdapter() {
-
 
     private val publicLinks = arrayOf(
         "/actuator/health",
