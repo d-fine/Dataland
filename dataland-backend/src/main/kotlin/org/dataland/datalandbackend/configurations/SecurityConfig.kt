@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.configurations
 
+import org.dataland.datalandbackend.apikey.ApiKeyAuthenticationManager
+// import org.dataland.datalandbackend.apikey.ApiKeyAuthenticationProvider
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
+import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
@@ -22,7 +26,10 @@ import org.springframework.stereotype.Component
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 // TODO: get rid of deprecated WebSecurityConfigurerAdapter
-class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
+class SecurityConfig(
+    @Autowired val apiKeyAuthenticationManager: ApiKeyAuthenticationManager
+) : KeycloakWebSecurityConfigurerAdapter() {
+
 
     private val publicLinks = arrayOf(
         "/actuator/health",
@@ -69,8 +76,15 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     @Override
     override fun configure(http: HttpSecurity) {
         super.configure(http)
+
+        val apiKeyFilter = RequestHeaderAuthenticationFilter()
+        apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
+        apiKeyFilter.setExceptionIfHeaderMissing(false)
+        apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
+
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
             .authorizeRequests()
             .antMatchers(*publicLinks).permitAll()
             .anyRequest().fullyAuthenticated()
