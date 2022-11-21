@@ -20,7 +20,8 @@ class ApiKeyController : ApiKeyAPI {
         return ResponseEntity.ok(apiKeyGenerator.getNewApiKey(daysValid))
     }
 
-    override fun validateApiKey(username: String, apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
+    override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
+        val username="TODO: Der muss aus dem apikey extrahiert werden"
         return ResponseEntity.ok(apiKeyGenerator.validateApiKey(username, apiKey))
     }
 }
