@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 
 /**
- * This class contains all security configurations for the backend to make all endpoints public.
+ * This class contains all security configurations for the api key manager to make all endpoints public.
  * It is only activated for the Spring profile "unprotected" to enable running unit tests without
  * the need of any token-authorization.
  */
