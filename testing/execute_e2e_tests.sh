@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
-source ./e2e_test_utils.sh
+source "$(dirname "$0")"/e2e_test_utils.sh
 
 #Start E2E Test and wait for E2E Test completion
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
