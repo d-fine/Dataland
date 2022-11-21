@@ -7,7 +7,7 @@ docker compose --project-name dala-e2e-test --profile testing up -d || exit
 timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
 # Check and validate that all docker containers are indeed healthy
-health_check_results = $(require_services_healthy "proxy" "admin-proxy" "backend" "backend-db" "frontend" "keycloak-db" "keycloak-initializer" "pgadmin")
+health_check_results=$(require_services_healthy "proxy" "admin-proxy" "backend" "backend-db" "frontend" "keycloak-db" "keycloak-initializer" "pgadmin")
 if [ -z "$health_check_results" ]; then
   echo "All relevant containers are healthy!"
 else
