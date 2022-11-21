@@ -14,6 +14,7 @@ import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
+import org.dataland.e2etests.utils.UserType
 
 class TokenHandler {
 
@@ -49,10 +50,5 @@ class TokenHandler {
         }
         ApiClientBackend.Companion.accessToken = token
         ApiClientApiKeyManager.Companion.accessToken = token
-    }
-
-    enum class UserType {
-        Uploader,
-        Reader
     }
 }

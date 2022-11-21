@@ -105,7 +105,7 @@ class ApiAccessor {
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         listOfCompanyInformation.forEach { companyInformation ->
             val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
             listOfFrameworkData.forEach { frameworkDataSet ->
@@ -167,8 +167,23 @@ class ApiAccessor {
         return listOfUploadInfo
     }
 
+    fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+        companyInformation: CompanyInformation,
+        euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
+    ):
+            Map<String, String> {
+        val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(companyInformation),
+            listOf(euTaxonomyDataForNonFinancials),
+            euTaxonomyNonFinancialsUploaderFunction
+        )
+        val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
+        val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
+        return mapOf("companyId" to companyId, "dataId" to dataId)
+    }
+
     fun uploadNCompaniesWithoutIdentifiers(numCompanies: Int): List<UploadInfo> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val listOfUploadInfos = mutableListOf<UploadInfo>()
@@ -185,21 +200,21 @@ class ApiAccessor {
     }
 
     fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = setAsTeaserCompany)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
     fun uploadOneCompanyWithRandomIdentifier(): UploadInfo {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val testCompanyInformation = generalTestDataProvider
             .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
     fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         return companyDataControllerApi.getCompanies(
             searchString,
             onlyCompanyNames = true
@@ -207,12 +222,12 @@ class ApiAccessor {
     }
 
     fun getNumberOfStoredCompanies(): Int {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         return companyDataControllerApi.getCompanies().size
     }
 
     fun getNumberOfDataMetaInfo(companyId: String? = null, dataType: DataTypeEnum? = null): Int {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         return metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType).size
     }
 }
