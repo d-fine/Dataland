@@ -66,6 +66,10 @@ services:
       POSTGRES_DB: backend
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 30s
+      timeout: 3s
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -157,6 +161,10 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 30s
+      timeout: 3s
   keycloak:
     restart: always
     profiles: ["production", "productionInMemory", "development"]
