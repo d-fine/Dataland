@@ -36,7 +36,7 @@ interface ApiKeyAPI {
      * @param daysValid int determining how many days the generated API key can be used
      * @return new API key for the user
      */
-    fun generateApiKey(@RequestParam daysValid: Long? = null): ResponseEntity<ApiKeyData>
+    fun generateApiKey(@RequestParam(required = false) daysValid: Long? = null): ResponseEntity<ApiKeyData>
 
     @Operation(
         summary = "Validate an API key.",
