@@ -26,3 +26,5 @@ COPY ./dataland-keycloak/realms /keycloak_realms
 
 RUN /opt/keycloak/bin/kc.sh build
 ENTRYPOINT ["/opt/keycloak/bin/start_keycloak.sh"]
+
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/keycloak/realms/datalandsecurity/ | grep -q 'datalandsecurity'
