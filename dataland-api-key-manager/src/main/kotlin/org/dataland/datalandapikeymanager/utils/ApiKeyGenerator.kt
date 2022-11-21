@@ -54,7 +54,7 @@ class ApiKeyGenerator {
 
     fun getNewApiKey(daysValid: Long?): ApiKeyData {
         val username = SecurityContextHolder.getContext().authentication.principal.toString()
-        val role = "NOT IMPLEMENTED"
+        val role = SecurityContextHolder.getContext().authentication.authorities.toString()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid)
         val newApiKey = generateApiKey()
         return ApiKeyData(username, role, expiryDate, newApiKey)

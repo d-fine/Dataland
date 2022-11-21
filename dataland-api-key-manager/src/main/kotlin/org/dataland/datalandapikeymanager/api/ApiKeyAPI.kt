@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandapikeymanager.model.ApiKeyData
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -27,6 +28,7 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
