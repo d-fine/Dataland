@@ -1,7 +1,7 @@
 package org.dataland.e2etests.accessmanagement
 
 import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
-import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyData
+import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyAndMetaInfo
 import org.dataland.e2etests.utils.UserType
 
 class ApiKeyHandler {
@@ -9,7 +9,7 @@ class ApiKeyHandler {
     private val tokenHandler = TokenHandler()
     private val apiKeyManagerClient = ApiKeyControllerApi()
 
-    private fun requestApiKey(asUserType: UserType, daysValid: Int): ApiKeyData {
+    private fun requestApiKey(asUserType: UserType, daysValid: Int): ApiKeyAndMetaInfo {
 
         tokenHandler.obtainTokenForUserType(asUserType)
         return apiKeyManagerClient.generateApiKey(daysValid)
