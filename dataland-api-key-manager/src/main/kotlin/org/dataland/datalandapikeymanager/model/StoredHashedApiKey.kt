@@ -8,7 +8,7 @@ package org.dataland.datalandapikeymanager.model
  * @param apiKeyMetaInfo contains meta info about the API key (username, role and expiry date)
  * @param salt is a specific salt value just for this user/API key
  */
-data class StoredApiKey(
+data class StoredHashedApiKey(
     val hashedApiKey: String,
 
     val apiKeyMetaInfo: ApiKeyMetaInfo,

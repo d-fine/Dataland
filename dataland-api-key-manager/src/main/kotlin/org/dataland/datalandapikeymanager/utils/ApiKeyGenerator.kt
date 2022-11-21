@@ -4,6 +4,7 @@ import org.bouncycastle.crypto.generators.Argon2BytesGenerator
 import org.bouncycastle.crypto.params.Argon2Parameters
 import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
+import org.dataland.datalandapikeymanager.model.StoredHashedApiKey
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 import java.security.SecureRandom
@@ -15,8 +16,7 @@ import java.util.HexFormat
 class ApiKeyGenerator {
 
     //TODO temporary
-    private val mapOfUsernameAndDecodedSalt = mutableMapOf<String, String>()
-    private val mapOfHashedApiKeyAndUsername = mutableMapOf<String,String>()
+    private val mapOfUsernameAndStoredHashedApiKey = mutableMapOf<String, StoredHashedApiKey>()
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val keyByteLength = 40
@@ -69,23 +69,19 @@ class ApiKeyGenerator {
         val newHashedApiKey = hashApiKey(newApiKey, newSalt)
 
         // TODO Storage process => needs to be in postgres. map is just temporary
-        mapOfUsernameAndDecodedSalt[username] = newSaltEncoded
-        mapOfHashedApiKeyAndUsername[newHashedApiKey] = username
-
-        val apiKeyAndMetaInfo = ApiKeyAndMetaInfo(newApiKey, ApiKeyMetaInfo(username, role, expiryDate))
-
-        println(newSalt)
-
-        logger.info("Generated Api Key with hashed value $newHashedApiKey and meta info ${apiKeyAndMetaInfo.apiKeyMetaInfo}.")
-        return ApiKeyAndMetaInfo(newApiKey, ApiKeyMetaInfo(username, role, expiryDate))
+        val apiKeyMetaInfo = ApiKeyMetaInfo(username, role, expiryDate)
+        val storedHashedApiKey = StoredHashedApiKey(newHashedApiKey, apiKeyMetaInfo, newSaltEncoded)
+        mapOfUsernameAndStoredHashedApiKey[username] = storedHashedApiKey
+        logger.info("Generated Api Key with hashed value $newHashedApiKey and meta info ${apiKeyMetaInfo}.")
+        return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 
     fun validateApiKey(username: String, apiKey: String): Boolean {
 
         // TODO Validation process => needs to be in postgres. map is just temporary
-        val salt = decodeFromStorageFormat(mapOfUsernameAndDecodedSalt[username]!!)
+        val salt = decodeFromStorageFormat(mapOfUsernameAndStoredHashedApiKey[username]!!.salt)
         val hashedApiKey = hashApiKey(apiKey, salt)
-        val validationResult = mapOfHashedApiKeyAndUsername[hashedApiKey] == username
+        val validationResult = mapOfUsernameAndStoredHashedApiKey[username]!!.hashedApiKey == hashedApiKey
 
         logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKey to $validationResult")
         return validationResult
