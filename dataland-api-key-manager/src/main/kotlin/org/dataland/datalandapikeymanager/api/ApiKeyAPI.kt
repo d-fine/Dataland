@@ -62,7 +62,6 @@ interface ApiKeyAPI {
     "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
      */
     fun validateApiKey(
-        @RequestParam username: String,
         @RequestParam apiKey: String,
     ): ResponseEntity<ApiKeyMetaInfo>
 }
