@@ -19,4 +19,5 @@ RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 
 VOLUME /etc/letsencrypt
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -fk https://localhost || exit 1
+#HEALTHCHECK --interval=30s --timeout=3s CMD curl -fk https://localhost || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD exit 1
