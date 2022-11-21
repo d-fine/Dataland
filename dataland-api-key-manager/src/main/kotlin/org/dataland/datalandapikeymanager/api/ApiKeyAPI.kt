@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
+import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -63,5 +64,5 @@ interface ApiKeyAPI {
     fun validateApiKey(
         @RequestParam username: String,
         @RequestParam apiKey: String,
-    ): ResponseEntity<Boolean>
+    ): ResponseEntity<ApiKeyMetaInfo>
 }

@@ -15,7 +15,7 @@ data class ApiKeyMetaInfo(
     val username: String,
 
     @field:JsonProperty(required = true)
-    val role: String,
+    val role: List<String>,
 
     @field:JsonProperty(required = true)
     val expiryDate: LocalDate?,

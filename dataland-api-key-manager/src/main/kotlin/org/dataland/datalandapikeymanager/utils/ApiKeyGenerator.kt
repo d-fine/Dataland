@@ -47,11 +47,11 @@ class ApiKeyGenerator {
 
     private fun hashApiKey(apiKey: String, salt: ByteArray): String {
         val builder = Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-            .withVersion(Argon2Parameters.ARGON2_VERSION_13)
-            .withIterations(3)
-            .withMemoryPowOfTwo(16)
-            .withParallelism(1)
-            .withSalt(salt)
+                .withVersion(Argon2Parameters.ARGON2_VERSION_13)
+                .withIterations(3)
+                .withMemoryPowOfTwo(16)
+                .withParallelism(1)
+                .withSalt(salt)
         val generator = Argon2BytesGenerator()
         generator.init(builder.build())
         val hash = ByteArray(hashByteLength)
@@ -61,7 +61,7 @@ class ApiKeyGenerator {
 
     fun getNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val username = SecurityContextHolder.getContext().authentication.principal.toString()
-        val role = SecurityContextHolder.getContext().authentication.authorities.toString()
+        val role = SecurityContextHolder.getContext().authentication.authorities.map{ it.authority!! }.toList()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid.toLong())
         val newApiKey = generateApiKey()
         val newSalt = generateSalt()
@@ -76,14 +76,14 @@ class ApiKeyGenerator {
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 
-    fun validateApiKey(username: String, apiKey: String): Boolean {
+    fun validateApiKey(username: String, apiKey: String): ApiKeyMetaInfo {
 
         // TODO Validation process => needs to be in postgres. map is just temporary
-        val salt = decodeFromStorageFormat(mapOfUsernameAndStoredHashedApiKey[username]!!.salt)
+        val storedHashedApiKey = mapOfUsernameAndStoredHashedApiKey[username]!!
+        val salt = decodeFromStorageFormat(storedHashedApiKey.salt)
         val hashedApiKey = hashApiKey(apiKey, salt)
-        val validationResult = mapOfUsernameAndStoredHashedApiKey[username]!!.hashedApiKey == hashedApiKey
 
-        logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKey to $validationResult")
-        return validationResult
+        logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKey.")
+        return storedHashedApiKey.apiKeyMetaInfo
     }
 }
