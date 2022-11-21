@@ -205,6 +205,7 @@ services:
     depends_on:
       - keycloak-db
   pgadmin:
+    restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
     networks:
       - keycloak-db
