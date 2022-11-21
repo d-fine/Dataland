@@ -9,6 +9,9 @@ import org.dataland.datalandbackend.services.CompanyManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -25,6 +28,13 @@ class CompanyDataController(
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
+    }
+
+    // TODO: Remove
+    @GetMapping("/auth")
+    fun getAuth(): ResponseEntity<Authentication> {
+        val authentication = SecurityContextHolder.getContext().getAuthentication()
+        return ResponseEntity.ok(authentication)
     }
 
     override fun getCompanies(
