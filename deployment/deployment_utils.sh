@@ -57,3 +57,21 @@ build_directories () {
 
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
 }
+
+are_docker_containers_healthy_remote () {
+  target_server_url=$1
+  docker_healthcheck=$(ssh ubuntu@"$target_server_url" "docker inspect --format='\"{{index .Config.Labels \"com.docker.compose.service\"}}\";{{ if .State.Health}}{{.State.Health.Status}}{{else}}unknown{{end}}' \$(docker ps -aq)")
+  for service in ("proxy" "admin-proxy" "backend" "backend-db" "frontend" "keycloak-db" "keycloak" "pgadmin")
+  do
+    if [[ $docker_healthcheck != *"\"$service\";healthy"* ]]; then
+      echo "Service $service not yet healthy... Waiting.."
+      return 1
+    fi
+  done
+}
+
+export -f are_docker_containers_healthy_remote
+
+wait_for_docker_containers_healthy_remote () {
+  timeout 240 bash -c "while ! are_docker_containers_healthy_remote "$1"; do echo 'Containers not all healthy yet - retrying in 1s'; sleep 1; done; echo 'All containers healthy!'"
+}

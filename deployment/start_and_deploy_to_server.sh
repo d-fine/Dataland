@@ -66,5 +66,8 @@ fi
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
+# Wait for all docker containers to become healthy
+wait_for_docker_containers_healthy_remote $target_server_url
+
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
