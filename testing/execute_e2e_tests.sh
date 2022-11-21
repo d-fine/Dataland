@@ -1,9 +1,21 @@
 #!/bin/bash
 set -euxo pipefail
+source ./e2e_test_utils.sh
 
 #Start E2E Test and wait for E2E Test completion
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
 timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
+
+# Check and validate that all docker containers are indeed healthy
+health_check_results = $(require_services_healthy "proxy" "admin-proxy" "backend" "backend-db" "e2etests" "frontend" "keycloak-db" "keycloak-initializer" "pgadmin")
+if [ -z "$health_check_results" ]; then
+  echo "All relevant containers are healthy!"
+else
+  echo "Some containers are NOT HEALTHY"
+  echo "$health_check_results"
+  exit 1
+fi
+
 mkdir -p ./cypress/${CYPRESS_TEST_GROUP}
 mkdir -p ./reports/${CYPRESS_TEST_GROUP}
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/lcov.info ./lcov-${CYPRESS_TEST_GROUP}.info || true
