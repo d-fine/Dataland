@@ -1,0 +1,61 @@
+package org.dataland.keycloakAdapter.config
+
+import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
+
+/**
+ * Configuration applied on all web endpoints defined for this
+ * application. Any configuration on specific resources is applied
+ * in addition to these global rules.
+ */
+@Configuration
+@Profile("!unprotected")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+class WebSecurityConfig(
+    private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter
+) {
+    private val publicLinks = arrayOf(
+        "/actuator/health",
+        "/actuator/health/ping",
+        "/actuator/info",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/companies/**",
+        "/data/**",
+        "/metadata",
+        "/metadata/**"
+    )
+
+    @Bean
+    @Override
+    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
+        return NullAuthenticatedSessionStrategy()
+    }
+
+    @Suppress("SpreadOperator")
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .authorizeRequests()
+            .antMatchers(*publicLinks).permitAll()
+            .anyRequest()
+            .fullyAuthenticated().and()
+            .csrf().disable()
+            .oauth2ResourceServer().jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
+        http
+            .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
+            .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+
+        return http.build()
+    }
+}

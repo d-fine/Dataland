@@ -1,21 +1,23 @@
 package org.dataland.datalandbackend.configurations
 
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.web.SecurityFilterChain
 
 /**
  * This class is used to configure the CSP for the Swagger-UI as the default content does not allow loading anything
  */
 @Configuration
 @Order(SwaggerUiSecurityConfig.CONFIG_ORDER)
-class SwaggerUiSecurityConfig : WebSecurityConfigurerAdapter() {
+class SwaggerUiSecurityConfig {
     companion object {
         const val CONFIG_ORDER = 99
     }
 
-    override fun configure(http: HttpSecurity) {
+    @Bean
+    fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .antMatcher("/swagger-ui/**")
             // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
@@ -24,5 +26,6 @@ class SwaggerUiSecurityConfig : WebSecurityConfigurerAdapter() {
                     " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
                     " img-src 'self' data:"
             )
+        return http.build()
     }
 }
