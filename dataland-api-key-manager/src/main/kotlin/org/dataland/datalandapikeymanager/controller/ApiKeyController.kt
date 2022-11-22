@@ -17,11 +17,10 @@ class ApiKeyController : ApiKeyAPI {
     val apiKeyGenerator = ApiKeyGenerator()
 
     override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
-        return ResponseEntity.ok(apiKeyGenerator.getNewApiKey(daysValid))
+        return ResponseEntity.ok(apiKeyGenerator.generateNewApiKey(daysValid))
     }
 
     override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
-        val username = "TODO: Der muss aus dem apikey extrahiert werden"
-        return ResponseEntity.ok(apiKeyGenerator.validateApiKey(username, apiKey))
+        return ResponseEntity.ok(apiKeyGenerator.validateApiKey(apiKey))
     }
 }
