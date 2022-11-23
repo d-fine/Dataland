@@ -1,4 +1,4 @@
-package org.dataland.datalandapikeymanager.model
+package org.dataland.datalandbackendutils.apikey
 
 /**
  * --- Non-API model ---

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ApiKeyController : ApiKeyAPI {
 
-    val apiKeyManager = ApiKeyManager()
+    private val apiKeyManager = ApiKeyManager()
 
     override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
         return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))

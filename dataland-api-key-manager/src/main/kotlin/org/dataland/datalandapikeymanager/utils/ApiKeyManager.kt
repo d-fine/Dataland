@@ -6,19 +6,19 @@ import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
+import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
+import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.keycloak.KeycloakPrincipal
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 import java.security.SecureRandom
 import java.time.LocalDate
-import java.util.Base64
 import java.util.HexFormat
-import java.util.zip.CRC32
 
 class ApiKeyManager {
 
-    private val apiKeyParser = ApiKeyParser()
+    private val apiKeyPreValidator = ApiKeyPreValidator()
 
     // TODO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys = mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
@@ -52,20 +52,6 @@ class ApiKeyManager {
         return bytes
     }
 
-    private fun encodeToBase64(input: ByteArray): String {
-        return Base64.getEncoder().encodeToString(input)
-    }
-
-    private fun decodeFromBase64(input: String): ByteArray {
-        return Base64.getDecoder().decode(input)
-    }
-
-    private fun calculateCrc32Value(inputByteArray: ByteArray): Long {
-        val crc32Instance = CRC32()
-        crc32Instance.update(inputByteArray)
-        return crc32Instance.value
-    }
-
     private fun generateSalt(): ByteArray {
         return generateRandomByteArray(saltByteLength)
     }
@@ -90,19 +76,19 @@ class ApiKeyManager {
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
-        val keycloakUserIdBase64Encoded = encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
+        val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid.toLong())
         val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
 
         val newSalt = generateSalt()
         val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
-        val newCrc32Value = calculateCrc32Value(newApiKeyWithoutCrc32Value.toByteArray(utf8Charset))
+        val newCrc32Value = EncodingUtils.calculateCrc32Value(newApiKeyWithoutCrc32Value.toByteArray(utf8Charset))
         val newApiKey = newApiKeyWithoutCrc32Value + "_" + newCrc32Value
         val newHashedApiKey = hashString(newApiKey, newSalt)
-        val newHashedApiKeyBase64Encoded = encodeToBase64(newHashedApiKey)
+        val newHashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(newHashedApiKey)
 
-        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded, apiKeyMetaInfo, encodeToBase64(newSalt))
+        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded, apiKeyMetaInfo, EncodingUtils.encodeToBase64(newSalt))
 
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
@@ -113,23 +99,16 @@ class ApiKeyManager {
     }
 
     fun validateApiKey(apiKey: String): ApiKeyMetaInfo {
-        val parsedApiKey = apiKeyParser.parseApiKeyAndValidateFormats(apiKey)
-        val expectedCrc32Value = calculateCrc32Value(parsedApiKey.parsedApiKeyWithoutCrc32Value.toByteArray(utf8Charset)).toString()
-        if (parsedApiKey.parsedCrc32Value != expectedCrc32Value) {
-            throw IllegalArgumentException(
-                "The cyclic redundancy check for the provided Api-Key failed. " +
-                    "There must be parts of the Api-Key that are missing or it might have a typo."
-            )
-        }
+        val parsedApiKey = apiKeyPreValidator.preValidateApiKey(apiKey)
 
-        val keycloakUserId = decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded).toString(utf8Charset)
+        val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded).toString(utf8Charset)
 
         // TODO Validation process => needs to be in postgres. map is just temporary
         val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!
         // TODO
 
-        val salt = decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
-        val hashedApiKeyBase64Encoded = encodeToBase64(hashString(apiKey, salt))
+        val salt = EncodingUtils.decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
+        val hashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(apiKey, salt))
         if (hashedApiKeyBase64Encoded == storedHashedApiKey.hashedApiKeyBase64Encoded) {
             logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKeyBase64Encoded.")
         }
