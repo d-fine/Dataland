@@ -18,7 +18,6 @@ import java.util.zip.CRC32
 
 class ApiKeyManager {
 
-    val apiKeyParser = ApiKeyParser()
 
     // TODO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys = mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
