@@ -147,8 +147,8 @@ class ApiKeyManager {
     fun revokeApiKey(): RevokeApiKeyResponse {
         val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
-        var revokementProcessSuccessful: Boolean
-        var revokementProcessMessage: String
+        val revokementProcessSuccessful: Boolean
+        val revokementProcessMessage: String
 
         println("Map before was: $mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys")
 
