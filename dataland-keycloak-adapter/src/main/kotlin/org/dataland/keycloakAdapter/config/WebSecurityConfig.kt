@@ -23,7 +23,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
-    @Value("org.dataland.authorization.publiclinks") private val publicLinks: String
+    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String
 ) {
     @Bean
     @Override
