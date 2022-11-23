@@ -10,6 +10,7 @@ import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
@@ -75,14 +76,14 @@ interface ApiKeyAPI {
             ApiResponse(responseCode = "200", description = "API key revokement process finished.")
         ]
     )
-    @GetMapping(
-        value = ["/revokeApiKey"],
-        produces = ["application/json"]
+    @PostMapping(
+        produces = ["application/json"],
+        consumes = ["application/json"]
     )
-            /**
-             * A method to revoke the API key of the requesting user.
-             * @return "true" if API key is valid, else "false"
-             */
+    /**
+     * A method to revoke the API key of the requesting user.
+     * @return "true" if API key is valid, else "false"
+     */
 
     @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     @SecurityRequirement(name = "default-bearer-auth")
