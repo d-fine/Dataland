@@ -1,7 +1,8 @@
 package org.dataland.datalandapikeymanager.controller
 
 import org.dataland.datalandapikeymanager.api.ApiKeyAPI
-import org.dataland.datalandapikeymanager.model.ApiKeyData
+import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
+import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.utils.ApiKeyGenerator
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -12,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ApiKeyController : ApiKeyAPI {
-    override fun generateApiKey(daysValid: Long?): ResponseEntity<ApiKeyData> {
-        return ResponseEntity.ok(ApiKeyGenerator().getNewApiKey(daysValid))
+
+    val apiKeyGenerator = ApiKeyGenerator()
+
+    override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
+        return ResponseEntity.ok(apiKeyGenerator.generateNewApiKey(daysValid))
     }
 
-    override fun validateApiKey(apiKey: String?): ResponseEntity<Boolean> {
-        return ResponseEntity.ok(true)
+    override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
+        return ResponseEntity.ok(apiKeyGenerator.validateApiKey(apiKey))
     }
 }

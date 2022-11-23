@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandapikeymanager.model.ApiKeyData
+import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
+import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -36,7 +37,7 @@ interface ApiKeyAPI {
      * @param daysValid int determining how many days the generated API key can be used
      * @return new API key for the user
      */
-    fun generateApiKey(@RequestParam(required = false) daysValid: Long? = null): ResponseEntity<ApiKeyData>
+    fun generateApiKey(@RequestParam(required = false) daysValid: Int? = null): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(
         summary = "Validate an API key.",
@@ -61,6 +62,6 @@ interface ApiKeyAPI {
     "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
      */
     fun validateApiKey(
-        @RequestParam apiKey: String? = null,
-    ): ResponseEntity<Boolean>
+        @RequestParam apiKey: String,
+    ): ResponseEntity<ApiKeyMetaInfo>
 }

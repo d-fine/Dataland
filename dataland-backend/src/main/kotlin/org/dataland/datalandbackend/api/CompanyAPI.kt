@@ -61,7 +61,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    @PreAuthorize("authorisationService.isAuthorised()")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
     /**
      * A method to retrieve specific companies identified by different filters
      * If the filters are not set, all companies in the data store are returned.

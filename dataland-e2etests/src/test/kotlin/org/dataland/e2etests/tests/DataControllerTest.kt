@@ -2,10 +2,8 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
-import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -27,24 +25,9 @@ class DataControllerTest {
     private val testCompanyInformationTeaser =
         testCompanyInformation.copy(isTeaserCompany = true)
 
-    private fun postOneCompanyAndEuTaxonomyDataForNonFinancials(
-        companyInformation: CompanyInformation,
-        euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
-    ):
-        Map<String, String> {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(companyInformation),
-            listOf(euTaxonomyDataForNonFinancials),
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction
-        )
-        val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
-        return mapOf("companyId" to companyId, "dataId" to dataId)
-    }
-
     @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+        val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials
         )
@@ -54,13 +37,13 @@ class DataControllerTest {
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testDataEuTaxonomyNonFinancials),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and their company IDs are not equal."
+            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal."
         )
     }
 
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+        val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformationTeaser, testDataEuTaxonomyNonFinancials
         )
         val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
@@ -76,7 +59,7 @@ class DataControllerTest {
 
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
-        val mapOfIds = postOneCompanyAndEuTaxonomyDataForNonFinancials(
+        val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials
         )
@@ -90,7 +73,7 @@ class DataControllerTest {
     @Test
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
