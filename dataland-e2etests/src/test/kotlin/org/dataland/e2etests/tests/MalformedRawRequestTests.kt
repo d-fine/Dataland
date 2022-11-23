@@ -9,6 +9,7 @@ import okhttp3.internal.EMPTY_REQUEST
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.accessmanagement.TokenHandler
+import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -20,7 +21,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a request to a non existent endpoint should yield a 404 response`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("this-endpoint-does-not-exist")
@@ -37,7 +38,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a request with missing properties should result in a 400 response`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("companies")
@@ -56,7 +57,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a request with additional non requested json properties should result in a 400 response`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Uploader)
+        tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("data")
@@ -76,7 +77,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a request with a non implemented request method results in a 405 error`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("companies")
@@ -93,7 +94,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a funny request results in a 400 error`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("companies")
@@ -112,7 +113,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `test that the stacktrace is present in the local development environment but not in the production build`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("this-endpoint-does-not-exist")
@@ -133,7 +134,7 @@ class MalformedRawRequestTests {
 
     @Test
     fun `sending a request with a malformed dataType should result in a 400 error`() {
-        tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
             .addPathSegment("companies")

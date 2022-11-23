@@ -3,8 +3,8 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.e2etests.accessmanagement.TokenHandler
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ class MetaDataControllerTest {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTestCompanyInformation), 1
         )
-        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val dataMetaInformation =
             apiAccessor.metaDataControllerApi.getDataMetaInfo(listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId)
         assertEquals(
@@ -49,7 +49,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
-        apiAccessor.tokenHandler.obtainTokenForUserType(TokenHandler.UserType.Reader)
+        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val clientException = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.getCompanyById("this-should-not-exist")
         }
