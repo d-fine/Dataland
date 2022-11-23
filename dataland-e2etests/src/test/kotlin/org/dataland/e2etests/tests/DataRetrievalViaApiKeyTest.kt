@@ -58,4 +58,7 @@ class DataRetrievalViaApiKeyTest {
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal."
         )
     }
+
+    /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
+    Api key exists)*/
 }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
+import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,7 +30,7 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)") // TODO why?  (Emanuel asking)
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
@@ -64,4 +65,27 @@ interface ApiKeyAPI {
     fun validateApiKey(
         @RequestParam apiKey: String,
     ): ResponseEntity<ApiKeyMetaInfo>
+
+    @Operation(
+        summary = "Revoke an existing API key.",
+        description = "Check if API key exists in storage for the requesting user and then revoke it."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "API key revokement process finished.")
+        ]
+    )
+    @GetMapping(
+        value = ["/revokeApiKey"],
+        produces = ["application/json"]
+    )
+            /**
+             * A method to revoke the API key of the requesting user.
+             * @return "true" if API key is valid, else "false"
+             */
+
+    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    @SecurityRequirement(name = "default-bearer-auth")
+    @SecurityRequirement(name = "default-oauth")
+    fun revokeApiKey(): ResponseEntity<RevokeApiKeyResponse>
 }

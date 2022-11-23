@@ -4,6 +4,7 @@ import org.bouncycastle.crypto.generators.Argon2BytesGenerator
 import org.bouncycastle.crypto.params.Argon2Parameters
 import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
+import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
 import org.keycloak.KeycloakPrincipal
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
@@ -15,7 +16,9 @@ import java.util.Base64
 import java.util.HexFormat
 import java.util.zip.CRC32
 
-class ApiKeyGenerator {
+class ApiKeyManager {
+
+    val apiKeyParser = ApiKeyParser()
 
     // TODO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys = mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
@@ -106,7 +109,7 @@ class ApiKeyGenerator {
 
         val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded, apiKeyMetaInfo, encodeToBase64(newSalt))
 
-        // TODO Storage process => needs to be in postgres. map is just temporary
+        // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
         // TODO
 
@@ -127,11 +130,11 @@ class ApiKeyGenerator {
                     "There must be parts of the Api-Key that are missing or it might have a typo.")
         }
 
-        val userIdBase64Encoded = apiKey.substringBefore("_")
-        val userId = decodeFromBase64(userIdBase64Encoded).toString(utf8Charset)
+        val keycloakUserIdBase64Encoded = apiKey.substringBefore("_")
+        val keycloakUserId = decodeFromBase64(keycloakUserIdBase64Encoded).toString(utf8Charset)
 
         // TODO Validation process => needs to be in postgres. map is just temporary
-        val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[userId]!!
+        val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!
         // TODO
 
         val salt = decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
@@ -140,5 +143,41 @@ class ApiKeyGenerator {
             logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKeyBase64Encoded.")
         }
         return storedHashedApiKey.apiKeyMetaInfo
+    }
+
+    fun revokeApiKey(): RevokeApiKeyResponse {
+        val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
+        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
+        var revokementProcessSuccessful: Boolean
+        var revokementProcessMessage: String
+
+        println("Map before was: $mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys")
+
+        if (
+
+            // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
+            !mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.containsKey(keycloakUserId)
+            // TODO
+
+        ) {
+            revokementProcessSuccessful = false
+            revokementProcessMessage = "No revokement took place since there is no Api key registered for the " +
+                    "Keycloak user Id $keycloakUserId."
+        }
+        else {
+
+            // TODO Deleting process => needs to be in postgres. map is just temporary
+            val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
+            // TODO
+            revokementProcessSuccessful = true
+            revokementProcessMessage = "The Api key for the Keycloak user Id ${keycloakUserId} was successfully " +
+                    "removed from storage."
+        }
+
+        println("Map afterwards was: $mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys")
+
+
+        return RevokeApiKeyResponse(revokementProcessSuccessful, revokementProcessMessage)
+
     }
 }
