@@ -62,8 +62,7 @@ are_docker_containers_healthy_remote () {
   target_server_url=$1
   docker_healthcheck=$(ssh ubuntu@"$target_server_url" "docker inspect --format='\"{{index .Config.Labels \"com.docker.compose.service\"}}\";{{ if .State.Health}}{{.State.Health.Status}}{{else}}unknown{{end}}' \$(docker ps -aq)")
   service_list=("proxy" "admin-proxy" "backend" "backend-db" "frontend" "keycloak-db" "keycloak" "pgadmin")
-  for service in $service_list
-  do
+  for service in ${service_list[@]}; do
     if [[ $docker_healthcheck != *"\"$service\";healthy"* ]]; then
       echo "Service $service not yet healthy... Waiting.."
       return 1
