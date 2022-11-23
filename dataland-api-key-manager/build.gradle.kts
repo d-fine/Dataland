@@ -25,7 +25,7 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation(project(":dataland-spring-base"))
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     // implementation(libs.dataland.edc.client)
     implementation(libs.okhttp)

@@ -1,6 +1,6 @@
 rootProject.name = "dataland"
 include(
-    "dataland-spring-base",
+    "dataland-backend-utils",
     "dataland-backend",
     "dataland-api-key-manager",
     "dataland-e2etests",

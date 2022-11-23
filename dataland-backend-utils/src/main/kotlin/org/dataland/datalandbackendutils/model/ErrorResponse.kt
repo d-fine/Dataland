@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackendutils.model
 
 /**
  * --- API model ---

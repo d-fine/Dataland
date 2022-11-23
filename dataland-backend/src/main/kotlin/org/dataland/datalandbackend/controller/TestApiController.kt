@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.TestApi
-import org.dataland.datalandbackend.exceptions.InternalServerErrorApiException
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController

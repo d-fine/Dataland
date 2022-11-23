@@ -5,6 +5,6 @@ ARG GITHUB_TOKEN
 
 WORKDIR /app
 COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
-COPY ./dataland-spring-base/ ./dataland-spring-base/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
 RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-api-key-manager:bootJar --no-daemon --stacktrace

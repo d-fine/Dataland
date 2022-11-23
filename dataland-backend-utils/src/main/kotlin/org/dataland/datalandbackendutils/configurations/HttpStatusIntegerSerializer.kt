@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.configurations
+package org.dataland.datalandbackendutils.configurations
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer

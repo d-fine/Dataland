@@ -1,10 +1,10 @@
 package org.dataland.datalandapikeymanager
 
 import org.dataland.datalandapikeymanager.configurations.OpenAPIConfiguration
-import org.dataland.datalandspringbase.configurations.DefaultResponseSchemaCustomizer
-import org.dataland.datalandspringbase.configurations.RequestRejectedExceptionHandler
-import org.dataland.datalandspringbase.controller.advice.KnownErrorControllerAdvice
-import org.dataland.datalandspringbase.controller.advice.UnknownErrorControllerAdvice
+import org.dataland.datalandbackendutils.configurations.DefaultResponseSchemaCustomizer
+import org.dataland.datalandbackendutils.configurations.RequestRejectedExceptionHandler
+import org.dataland.datalandbackendutils.controller.advice.KnownErrorControllerAdvice
+import org.dataland.datalandbackendutils.controller.advice.UnknownErrorControllerAdvice
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import

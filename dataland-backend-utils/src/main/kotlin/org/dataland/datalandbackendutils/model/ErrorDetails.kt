@@ -1,11 +1,11 @@
-package org.dataland.datalandspringbase.model
+package org.dataland.datalandbackendutils.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandspringbase.configurations.HttpStatusIntegerSerializer
+import org.dataland.datalandbackendutils.configurations.HttpStatusIntegerSerializer
 import org.springframework.http.HttpStatus
 
 /**
