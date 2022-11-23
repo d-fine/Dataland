@@ -18,6 +18,7 @@ import java.util.zip.CRC32
 
 class ApiKeyManager {
 
+    private val apiKeyParser = ApiKeyParser()
 
     // TODO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys = mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
@@ -72,11 +73,11 @@ class ApiKeyManager {
     private fun generateApiKeySecretAndEncodeToHex(): String {
         return HexFormat.of().formatHex(generateRandomByteArray(keyByteLength))
     }
-    
+
     private fun getKeycloakAuthenticationToken(): KeycloakAuthenticationToken {
         return SecurityContextHolder.getContext().authentication as KeycloakAuthenticationToken
     }
-    
+
     private fun getKeycloakUserId(keycloakAuthenticationToken: KeycloakAuthenticationToken): String {
         var userIdByToken = ""
         val principal = keycloakAuthenticationToken.principal
@@ -95,16 +96,11 @@ class ApiKeyManager {
         val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
 
         val newSalt = generateSalt()
-        val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded+"_"+generateApiKeySecretAndEncodeToHex()
-        println(newApiKeyWithoutCrc32Value)
+        val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
         val newCrc32Value = calculateCrc32Value(newApiKeyWithoutCrc32Value.toByteArray(utf8Charset))
-        println(newCrc32Value)
-        val newApiKey = newApiKeyWithoutCrc32Value+"_"+newCrc32Value
-        println(newApiKey)
+        val newApiKey = newApiKeyWithoutCrc32Value + "_" + newCrc32Value
         val newHashedApiKey = hashString(newApiKey, newSalt)
-        println(newHashedApiKey)
         val newHashedApiKeyBase64Encoded = encodeToBase64(newHashedApiKey)
-        println(newHashedApiKeyBase64Encoded)
 
         val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded, apiKeyMetaInfo, encodeToBase64(newSalt))
 
@@ -112,25 +108,21 @@ class ApiKeyManager {
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
         // TODO
 
-        logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info ${apiKeyMetaInfo}.")
+        logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 
     fun validateApiKey(apiKey: String): ApiKeyMetaInfo {
-        println(apiKey)
-        val receivedCrc32Value = apiKey.substringAfterLast("_").toLong()
-        println(receivedCrc32Value)
-        val apiKeyWithoutCrc32Value = apiKey.substringBeforeLast("_")
-        println(apiKeyWithoutCrc32Value)
-        val expectedCrc32Value = calculateCrc32Value(apiKeyWithoutCrc32Value.toByteArray(utf8Charset))
-        println(expectedCrc32Value)
-        if (receivedCrc32Value != expectedCrc32Value) {
-            throw IllegalArgumentException("The cyclic redundancy check for the provided Api-Key failed. " +
-                    "There must be parts of the Api-Key that are missing or it might have a typo.")
+        val parsedApiKey = apiKeyParser.parseApiKeyAndValidateFormats(apiKey)
+        val expectedCrc32Value = calculateCrc32Value(parsedApiKey.parsedApiKeyWithoutCrc32Value.toByteArray(utf8Charset)).toString()
+        if (parsedApiKey.parsedCrc32Value != expectedCrc32Value) {
+            throw IllegalArgumentException(
+                "The cyclic redundancy check for the provided Api-Key failed. " +
+                    "There must be parts of the Api-Key that are missing or it might have a typo."
+            )
         }
 
-        val keycloakUserIdBase64Encoded = apiKey.substringBefore("_")
-        val keycloakUserId = decodeFromBase64(keycloakUserIdBase64Encoded).toString(utf8Charset)
+        val keycloakUserId = decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded).toString(utf8Charset)
 
         // TODO Validation process => needs to be in postgres. map is just temporary
         val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!
@@ -150,8 +142,6 @@ class ApiKeyManager {
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
 
-        println("Map before was: $mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys")
-
         if (
 
             // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
@@ -161,22 +151,17 @@ class ApiKeyManager {
         ) {
             revokementProcessSuccessful = false
             revokementProcessMessage = "No revokement took place since there is no Api key registered for the " +
-                    "Keycloak user Id $keycloakUserId."
-        }
-        else {
+                "Keycloak user Id $keycloakUserId."
+        } else {
 
             // TODO Deleting process => needs to be in postgres. map is just temporary
-            val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
+            mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
             // TODO
             revokementProcessSuccessful = true
-            revokementProcessMessage = "The Api key for the Keycloak user Id ${keycloakUserId} was successfully " +
-                    "removed from storage."
+            revokementProcessMessage = "The Api key for the Keycloak user Id $keycloakUserId was successfully " +
+                "removed from storage."
         }
 
-        println("Map afterwards was: $mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys")
-
-
         return RevokeApiKeyResponse(revokementProcessSuccessful, revokementProcessMessage)
-
     }
 }
