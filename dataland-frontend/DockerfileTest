@@ -4,6 +4,7 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 WORKDIR /app
 
 COPY ./dataland-backend/ ./dataland-backend
+COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
