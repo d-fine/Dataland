@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  * Allows to extract granted authorities from a given JWT.
  */
 @Component
-class KeycloakGrantedAuthoritiesConverter: Converter<Jwt, Collection<GrantedAuthority?>> {
+class KeycloakGrantedAuthoritiesConverter : Converter<Jwt, Collection<GrantedAuthority?>> {
     /**
      * the convert method
      */

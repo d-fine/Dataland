@@ -16,6 +16,9 @@ class SwaggerUiSecurityConfig {
         const val CONFIG_ORDER = 99
     }
 
+    /**
+     * The SecurityFilterChain Bean that defines the security for the swagger-ui
+     */
     @Bean
     fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
