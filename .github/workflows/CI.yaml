@@ -234,7 +234,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: assemble project
-        run: ./gradlew assemble --no-daemon --stacktrace
+        run: ./gradlew assemble ktlintCheck detekt --no-daemon --stacktrace
       - name: Upload build folders
         if:
         uses: actions/upload-artifact@v3

@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.controller.advice.UnknownErrorControlle
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ComponentScan
 
 /**
  * Class to define the spring boot application
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Import
     UnknownErrorControllerAdvice::class,
     DefaultResponseSchemaCustomizer::class,
     RequestRejectedExceptionHandler::class])
+@ComponentScan(basePackages = ["org.dataland.datalandbackend", "org.dataland.keycloakAdapter"])
 class DatalandBackend : OpenAPIConfiguration
 
 /**
