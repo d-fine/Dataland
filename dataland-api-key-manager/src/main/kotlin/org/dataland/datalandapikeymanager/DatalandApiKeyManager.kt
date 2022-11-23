@@ -13,10 +13,14 @@ import org.springframework.context.annotation.Import
  * Class to define the spring boot application
  */
 @SpringBootApplication
-@Import(value = [ KnownErrorControllerAdvice::class,
-    UnknownErrorControllerAdvice::class,
-    DefaultResponseSchemaCustomizer::class,
-    RequestRejectedExceptionHandler::class])
+@Import(
+    value = [
+        KnownErrorControllerAdvice::class,
+        UnknownErrorControllerAdvice::class,
+        DefaultResponseSchemaCustomizer::class,
+        RequestRejectedExceptionHandler::class
+    ]
+)
 class DatalandApiKeyManager : OpenAPIConfiguration
 
 /**

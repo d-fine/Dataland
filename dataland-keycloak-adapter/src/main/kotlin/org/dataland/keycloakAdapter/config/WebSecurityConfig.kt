@@ -1,5 +1,6 @@
 package org.dataland.keycloakAdapter.config
 
+import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationManager
 import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
+import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
@@ -23,7 +26,9 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
-    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String
+    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String,
+    @Value("\${org.dataland.authorization.apikey.enable:false}") private val isApiKeyAuthorizationEnabled: Boolean,
+    private val apiKeyAuthenticationManager: ApiKeyAuthenticationManager
 ) {
     /**
      * Defines the Session Authentication Strategy
@@ -41,7 +46,16 @@ class WebSecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        if (isApiKeyAuthorizationEnabled) {
+            val apiKeyFilter = RequestHeaderAuthenticationFilter()
+            apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
+            apiKeyFilter.setExceptionIfHeaderMissing(false)
+            apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
+            http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
+        }
+
+        http
             .authorizeRequests()
             .antMatchers(*publicLinksArray).permitAll()
             .anyRequest()

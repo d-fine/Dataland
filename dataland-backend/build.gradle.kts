@@ -24,10 +24,6 @@ plugins {
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-val apiKeyManagerOpenApiSpecConfig: Configuration by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)

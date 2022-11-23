@@ -21,7 +21,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-//apply(plugin = "io.spring.dependency-management")
+// apply(plugin = "io.spring.dependency-management")
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
@@ -32,8 +32,8 @@ dependencies {
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)
-    implementation(libs.keycloak.spring.boot.starter)
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 }
 
 tasks.bootJar {
