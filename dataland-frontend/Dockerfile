@@ -17,4 +17,4 @@ COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/uti
 COPY ./dataland-inbound-proxy/config/utils/security.conf /etc/nginx/utils/security.conf
 CMD ["nginx", "-g", "daemon off;"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost/health/frontend | grep -q 'UP'
