@@ -25,12 +25,17 @@ class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
     @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String
 ) {
+    /**
+     * Defines the Session Authentication Strategy
+     */
     @Bean
-    @Override
     fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return NullAuthenticatedSessionStrategy()
     }
 
+    /**
+     * Defines the default Security Filter Chain
+     */
     @Suppress("SpreadOperator")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {

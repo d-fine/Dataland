@@ -7,12 +7,13 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
 
 /**
- * Allows to extract granted authorities from a given JWT. The authorities
- * are determined by combining the realm (overarching) and client (application-specific)
- * roles, and normalizing them (configure them to the default format).
+ * Allows to extract granted authorities from a given JWT.
  */
 @Component
 class KeycloakGrantedAuthoritiesConverter() : Converter<Jwt, Collection<GrantedAuthority?>> {
+    /**
+     * the convert method
+     */
     override fun convert(jwt: Jwt): Collection<GrantedAuthority> {
         val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<String>?
         return realmRoles?.map { SimpleGrantedAuthority(it) } ?: listOf()

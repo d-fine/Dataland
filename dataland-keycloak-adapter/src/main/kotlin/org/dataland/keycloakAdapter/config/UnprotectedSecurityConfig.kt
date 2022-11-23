@@ -16,11 +16,17 @@ import org.springframework.stereotype.Component
 @Profile("unprotected")
 @Component
 class UnprotectedSecurityConfig {
+    /**
+     * Defines the Session Authentication Strategy
+     */
     @Bean
     fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return NullAuthenticatedSessionStrategy()
     }
 
+    /**
+     * Defines the default Security Filter Chain
+     */
     @Bean
     fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
         http

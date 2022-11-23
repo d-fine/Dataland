@@ -10,10 +10,13 @@ import org.springframework.security.oauth2.jwt.JwtValidators
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 
 /**
- * Configures JWT handling (decoder and validator)
+ * Configures JWT handling decoder
  */
 @Configuration
 internal class JwtSecurityConfig {
+    /**
+     * A Bean that provides a jwtDecoder - a thing that will convert strings to JWT-Objects
+     */
     @Bean
     fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder {
         val jwtDecoder = NimbusJwtDecoder
