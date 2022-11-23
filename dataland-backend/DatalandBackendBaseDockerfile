@@ -3,6 +3,7 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 
 WORKDIR /app
 COPY ./dataland-backend/ ./dataland-backend/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-backend:bootJar --no-daemon --stacktrace

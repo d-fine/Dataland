@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.configurations
+package org.dataland.datalandbackendutils.configurations
 
 import io.swagger.v3.core.converter.ModelConverters
 import io.swagger.v3.oas.models.OpenAPI
@@ -7,8 +7,8 @@ import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.responses.ApiResponse
-import org.dataland.datalandbackend.model.ErrorDetails
-import org.dataland.datalandbackend.model.ErrorResponse
+import org.dataland.datalandbackendutils.model.ErrorDetails
+import org.dataland.datalandbackendutils.model.ErrorResponse
 import org.springdoc.core.customizers.OpenApiCustomiser
 import org.springframework.stereotype.Component
 

@@ -2,14 +2,14 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.exceptions.InvalidInputApiException
-import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

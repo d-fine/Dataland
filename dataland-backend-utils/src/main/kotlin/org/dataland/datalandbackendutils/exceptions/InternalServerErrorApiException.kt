@@ -1,6 +1,6 @@
-package org.dataland.datalandbackend.exceptions
+package org.dataland.datalandbackendutils.exceptions
 
-import org.dataland.datalandbackend.model.ErrorDetails
+import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**

@@ -1,9 +1,9 @@
-package org.dataland.datalandbackend.configurations
+package org.dataland.datalandbackendutils.configurations
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dataland.datalandbackend.model.ErrorDetails
-import org.dataland.datalandbackend.model.ErrorResponse
+import org.dataland.datalandbackendutils.model.ErrorDetails
+import org.dataland.datalandbackendutils.model.ErrorResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration

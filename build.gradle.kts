@@ -69,6 +69,7 @@ plugins {
 
 extra["backendOpenApiJson"] = "backendOpenApi.json"
 extra["apiKeyManagerOpenApiJson"] = "apiKeyManagerOpenApi.json"
+extra["springBaseOpenApiJson"] = "springBaseOpenApiJson.json"
 
 sonarqube {
     properties {

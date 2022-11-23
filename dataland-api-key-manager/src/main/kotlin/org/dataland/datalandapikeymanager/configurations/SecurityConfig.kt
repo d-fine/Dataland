@@ -16,7 +16,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 import org.springframework.stereotype.Component
 
 /**
- * This class contains all security configurations for the backend to secure endpoints with keycloak.
+ * This class contains all security configurations for the api key manager to secure endpoints with keycloak.
  */
 @Profile("!unprotected")
 @KeycloakConfiguration
@@ -36,8 +36,8 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     /**
      * The Role Container is a component which maps actual roles from the Dataland keycloak service to the role
-     * definitions which are used in the Dataland backend code to decouple the role namings in the keycloak service
-     * from the ones in backend.
+     * definitions which are used in the Dataland api key manager code to decouple the role namings in the keycloak service
+     * from the ones in api key manager.
      */
     @Component("RoleContainer")
     object RoleContainer {

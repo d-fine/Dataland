@@ -1,8 +1,8 @@
-package org.dataland.datalandbackend.controller.advice
+package org.dataland.datalandbackendutils.controller.advice
 
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dataland.datalandbackend.model.ErrorDetails
-import org.dataland.datalandbackend.model.ErrorResponse
+import org.dataland.datalandbackendutils.model.ErrorDetails
+import org.dataland.datalandbackendutils.model.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
