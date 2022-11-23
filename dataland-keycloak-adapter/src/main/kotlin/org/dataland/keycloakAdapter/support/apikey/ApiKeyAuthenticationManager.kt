@@ -1,8 +1,7 @@
-package org.dataland.datalandbackend.apikey
+package org.dataland.keycloakAdapter.support.apikey
 
 import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
@@ -18,8 +17,6 @@ import java.time.LocalDate
 class ApiKeyAuthenticationManager(
     @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String
 ) : AuthenticationManager {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     override fun authenticate(authentication: Authentication?): Authentication {
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         val customToken: String

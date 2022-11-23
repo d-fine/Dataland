@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**
  * This is a utility class that encapsultes the name of DataTypes.

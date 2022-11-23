@@ -6,7 +6,8 @@ include(
     "dataland-e2etests",
     "dataland-frontend",
     "dataland-csvconverter",
-    "dataland-keycloak:dataland_theme:login"
+    "dataland-keycloak:dataland_theme:login",
+    "dataland-keycloak-adapter"
 )
 
 dependencyResolutionManagement {
@@ -44,6 +45,7 @@ dependencyResolutionManagement {
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.0")
             library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
 
+            // TODO: Remove this!
             library("keycloak-spring-boot-starter", "org.keycloak:keycloak-spring-boot-starter:20.0.1")
 
             library("database-h2", "com.h2database:h2:2.1.214")
