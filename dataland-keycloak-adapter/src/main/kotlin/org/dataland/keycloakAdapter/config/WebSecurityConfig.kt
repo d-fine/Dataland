@@ -1,6 +1,7 @@
 package org.dataland.keycloakAdapter.config
 
 import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -21,20 +22,9 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @Profile("!unprotected")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
-    private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter
+    private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
+    @Value("org.dataland.authorization.publiclinks") private val publicLinks: String
 ) {
-    private val publicLinks = arrayOf(
-        "/actuator/health",
-        "/actuator/health/ping",
-        "/actuator/info",
-        "/swagger-ui/**",
-        "/v3/api-docs/**",
-        "/companies/**",
-        "/data/**",
-        "/metadata",
-        "/metadata/**"
-    )
-
     @Bean
     @Override
     fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
@@ -44,10 +34,11 @@ class WebSecurityConfig(
     @Suppress("SpreadOperator")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
-            .antMatchers(*publicLinks).permitAll()
+            .antMatchers(*publicLinksArray).permitAll()
             .anyRequest()
             .fullyAuthenticated().and()
             .csrf().disable()
