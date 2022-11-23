@@ -20,7 +20,6 @@ internal class JwtSecurityConfig {
             .withJwkSetUri(properties.getJwt().getJwkSetUri())
             .jwsAlgorithms { algs -> algs.addAll(setOf(SignatureAlgorithm.RS256, SignatureAlgorithm.ES256)) }
             .build()
-        // TODO: Check what comes in here
         val validators = JwtValidators.createDefaultWithIssuer(properties.jwt.issuerUri)
         jwtDecoder.setJwtValidator(DelegatingOAuth2TokenValidator(validators))
         return jwtDecoder
