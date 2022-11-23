@@ -1,9 +1,9 @@
-package org.dataland.datalandapikeymanager.controller.advice
+package org.dataland.datalandspringbase.controller.advice
 
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dataland.datalandapikeymanager.exceptions.SingleApiException
-import org.dataland.datalandapikeymanager.model.ErrorDetails
-import org.dataland.datalandapikeymanager.model.ErrorResponse
+import org.dataland.datalandspringbase.exceptions.SingleApiException
+import org.dataland.datalandspringbase.model.ErrorDetails
+import org.dataland.datalandspringbase.model.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order

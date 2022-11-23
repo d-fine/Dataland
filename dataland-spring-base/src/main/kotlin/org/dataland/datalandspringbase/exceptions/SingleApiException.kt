@@ -1,6 +1,6 @@
-package org.dataland.datalandapikeymanager.exceptions
+package org.dataland.datalandspringbase.exceptions
 
-import org.dataland.datalandapikeymanager.model.ErrorDetails
+import org.dataland.datalandspringbase.model.ErrorDetails
 
 /**
  * This abstract class serves as a basis for Dataland-Specific ApiExceptions that only return a single error

@@ -1,9 +1,9 @@
-package org.dataland.datalandapikeymanager.configurations
+package org.dataland.datalandspringbase.configurations
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dataland.datalandapikeymanager.model.ErrorDetails
-import org.dataland.datalandapikeymanager.model.ErrorResponse
+import org.dataland.datalandspringbase.model.ErrorDetails
+import org.dataland.datalandspringbase.model.ErrorResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration

@@ -1,4 +1,4 @@
-package org.dataland.datalandapikeymanager.model
+package org.dataland.datalandspringbase.model
 
 /**
  * --- API model ---

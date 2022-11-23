@@ -1,4 +1,4 @@
-package org.dataland.datalandapikeymanager.configurations
+package org.dataland.datalandspringbase.configurations
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer

@@ -1,4 +1,4 @@
-// dataland-api-key-manager
+// dataland-spring-base
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -12,6 +12,7 @@ val jacocoClasses by extra(
 val jacocoVersion: String by project
 
 plugins {
+    id("java-library")
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
@@ -22,10 +23,14 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
-    implementation(project(":dataland-spring-base"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.google.guava:guava:31.0.1-jre")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    api("org.apache.commons:commons-math3:3.6.1")
+
     implementation(libs.springdoc.openapi.ui)
     // implementation(libs.dataland.edc.client)
     implementation(libs.okhttp)
@@ -47,10 +52,10 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.8.0")
 }
 
-val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
+val springBaseOpenApiJson = rootProject.extra["springBaseOpenApiJson"]
 
 openApi {
-    outputFileName.set("$apiKeyManagerOpenApiJson")
+    outputFileName.set("$springBaseOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
@@ -62,7 +67,7 @@ val openApiSpec: Configuration by configurations.creating {
     isCanBeResolved = false
 }
 artifacts {
-    add("openApiSpec", project.file("$buildDir/$apiKeyManagerOpenApiJson")) {
+    add("openApiSpec", project.file("$buildDir/$springBaseOpenApiJson")) {
         builtBy("generateOpenApiDocs")
     }
 }

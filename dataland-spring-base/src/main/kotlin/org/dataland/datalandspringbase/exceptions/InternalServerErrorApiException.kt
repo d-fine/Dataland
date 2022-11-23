@@ -1,6 +1,6 @@
-package org.dataland.datalandapikeymanager.exceptions
+package org.dataland.datalandspringbase.exceptions
 
-import org.dataland.datalandapikeymanager.model.ErrorDetails
+import org.dataland.datalandspringbase.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
