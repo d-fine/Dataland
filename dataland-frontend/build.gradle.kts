@@ -17,6 +17,15 @@ node {
     version.set("18.12.1")
 }
 
+val backendOpenApiFile="${project.rootDir}/dataland-backend/backendOpenApi.json"
+val clientOutputDir = "$buildDir/clients/backend"
+
+tasks.register<Copy>("getBackendOpenApiSpec") {
+    from(backendOpenApiFile)
+    into(clientOutputDir)
+    filter({ line -> line.replace("http://localhost:8080/api", "/api") })
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateAPIClientFrontend")
 }
@@ -27,8 +36,8 @@ tasks.withType<NpmTask> {
 
 tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
-    outputDir.set("$buildDir/clients/backend")
+    input = project.file(backendOpenApiFile).path
+    outputDir.set(clientOutputDir)
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -44,6 +53,7 @@ tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.pl
             "withSeparateModelsAndApi" to "true"
         )
     )
+    dependsOn("getBackendOpenApiSpec")
 }
 
 sourceSets {

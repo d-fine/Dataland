@@ -10,7 +10,7 @@ COPY ./testing/ ./testing
 COPY ./.git/ ./.git
 
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-     ./gradlew :dataland-keycloak-adapter:assemble :dataland-e2etests:compileTestKotlin :dataland-e2etests:testClasses :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && \
+     ./gradlew :dataland-e2etests:compileTestKotlin :dataland-e2etests:testClasses :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npmInstall :dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace && \
      rm -rf /root/.npm
 
 ENTRYPOINT ["/bin/sh","-c"]
