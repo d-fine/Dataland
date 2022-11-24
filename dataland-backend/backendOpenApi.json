@@ -1059,54 +1059,6 @@
         ]
       }
     },
-    "/companies/auth": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "operationId": "getAuth",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Authentication"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/actuator": {
       "get": {
         "tags": [
@@ -2761,40 +2713,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "Authentication": {
-        "type": "object",
-        "properties": {
-          "credentials": {
-            "type": "object"
-          },
-          "principal": {
-            "type": "object"
-          },
-          "authenticated": {
-            "type": "boolean"
-          },
-          "authorities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "details": {
-            "type": "object"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "GrantedAuthority": {
-        "type": "object",
-        "properties": {
-          "authority": {
-            "type": "string"
           }
         }
       },
