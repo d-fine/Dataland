@@ -76,7 +76,7 @@ class ApiKeyPreValidator { // TODO not too happy with that name
         if (parsedApiKey.parsedCrc32Value != expectedCrc32Value) {
             throw IllegalArgumentException(
                 "The cyclic redundancy check for the provided Api-Key failed. " +
-                        "There must be parts of the Api-Key that are missing or it might have a typo."
+                    "There must be parts of the Api-Key that are missing or it might have a typo."
             )
         }
     }
