@@ -87,7 +87,7 @@ class ApiKeyManager {
      */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val keycloakAuthenticationToken = getAuthentication()
-        //TODO: Fix usage of !! operator
+        // TODO: Fix usage of !! operator
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
@@ -148,7 +148,7 @@ class ApiKeyManager {
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
         val authetication = getAuthentication()
-        //Todo: Fix the !! operator
+        // Todo: Fix the !! operator
         val keycloakUserId = getKeycloakUserId(authetication!!)
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
