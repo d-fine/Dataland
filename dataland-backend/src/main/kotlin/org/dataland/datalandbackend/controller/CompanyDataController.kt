@@ -30,17 +30,6 @@ class CompanyDataController(
         return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
     }
 
-    // TODO: Remove
-    /**
-     * This seems to be an endpoint that is at the wrong place and should not persist anyways
-     * @return the authentication of the request
-     */
-    @GetMapping("/auth")
-    fun getAuth(): ResponseEntity<Authentication> {
-        val authentication = SecurityContextHolder.getContext().getAuthentication()
-        return ResponseEntity.ok(authentication)
-    }
-
     override fun getCompanies(
         searchString: String?,
         dataTypes: Set<DataType>?,
