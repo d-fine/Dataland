@@ -100,9 +100,11 @@ class ApiKeyManager {
         val newHashedApiKey = hashString(newApiKey, newSalt)
         val newHashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(newHashedApiKey)
 
-        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded,
+        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(
+            newHashedApiKeyBase64Encoded,
             apiKeyMetaInfo,
-            EncodingUtils.encodeToBase64(newSalt))
+            EncodingUtils.encodeToBase64(newSalt)
+        )
 
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
