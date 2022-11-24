@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.e2etests.accessmanagement.ApiKeyHandler
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -11,7 +10,7 @@ class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
 
-    private val apiKeyHandler = ApiKeyHandler()
+    // private val apiKeyHandler = ApiKeyHandler()
 
     @Test
     fun `Create a non-teaser company, generate an API key and get the non-teaser company with it`() {

@@ -24,6 +24,10 @@ class ApiKeyManager {
         private const val keyByteLength = 40
         private const val saltByteLength = 16
         private const val hashByteLength = 32
+
+        private const val argon2Iterations = 3
+        private const val argon2MemoryPowOfTwo = 16
+        private const val argon2Parallelisms = 1
     }
 
     private val apiKeyPreValidator = ApiKeyPrevalidator()
@@ -40,9 +44,9 @@ class ApiKeyManager {
     private fun hashString(inputString: String, salt: ByteArray): ByteArray {
         val builder = Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
             .withVersion(Argon2Parameters.ARGON2_VERSION_13)
-            .withIterations(3)
-            .withMemoryPowOfTwo(16)
-            .withParallelism(1)
+            .withIterations(argon2Iterations)
+            .withMemoryPowOfTwo(argon2MemoryPowOfTwo)
+            .withParallelism(argon2Parallelisms)
             .withSalt(salt)
         val generator = Argon2BytesGenerator()
         generator.init(builder.build())

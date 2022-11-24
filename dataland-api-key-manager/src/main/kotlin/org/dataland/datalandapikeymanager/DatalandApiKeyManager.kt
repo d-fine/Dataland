@@ -27,5 +27,5 @@ class DatalandApiKeyManager : OpenAPIConfiguration
  * Main function to be executed for running the spring boot dataland API key manager process
  */
 fun main(args: Array<String>) {
-    runApplication<DatalandApiKeyManager>(*args)
+    runApplication<DatalandApiKeyManager>(args = args)
 }
