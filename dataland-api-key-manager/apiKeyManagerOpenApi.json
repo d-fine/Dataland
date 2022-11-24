@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.2",
   "info": {
     "title": "Dataland API key manager API documentation",
     "version": "1.0.0"
@@ -501,11 +501,6 @@
       }
     },
     "securitySchemes": {
-      "dataland-api-key": {
-        "type": "apiKey",
-        "name": "dataland-api-key",
-        "in": "header"
-      },
       "default-bearer-auth": {
         "type": "http",
         "in": "header",

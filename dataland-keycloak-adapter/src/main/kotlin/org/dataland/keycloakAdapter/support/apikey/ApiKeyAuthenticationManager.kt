@@ -6,6 +6,7 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerExc
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.CredentialsExpiredException
@@ -21,6 +22,7 @@ import java.time.LocalDate
 /**
  * A class to validate an authentication and the corresponding token
  */
+@ConditionalOnProperty("org.dataland.authorization.apikey.enable", havingValue = "true")
 @Component
 class ApiKeyAuthenticationManager(
     @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String

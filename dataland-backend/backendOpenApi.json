@@ -2767,7 +2767,10 @@
       "Authentication": {
         "type": "object",
         "properties": {
-          "details": {
+          "credentials": {
+            "type": "object"
+          },
+          "principal": {
             "type": "object"
           },
           "authorities": {
@@ -2776,14 +2779,11 @@
               "$ref": "#/components/schemas/GrantedAuthority"
             }
           },
-          "credentials": {
+          "details": {
             "type": "object"
           },
           "authenticated": {
             "type": "boolean"
-          },
-          "principal": {
-            "type": "object"
           },
           "name": {
             "type": "string"
