@@ -3,6 +3,7 @@ package org.dataland.keycloakAdapter.config
 import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationManager
 import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -27,8 +28,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
     @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String,
-    @Value("\${org.dataland.authorization.apikey.enable:false}") private val isApiKeyAuthorizationEnabled: Boolean,
-    private val apiKeyAuthenticationManager: ApiKeyAuthenticationManager
+    private val context: ApplicationContext
 ) {
     /**
      * Defines the Session Authentication Strategy
@@ -47,7 +47,8 @@ class WebSecurityConfig(
         val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        if (isApiKeyAuthorizationEnabled) {
+        if(context.containsBean("ApiKeyAuthenticationManager")) {
+            val apiKeyAuthenticationManager = context.getBean("ApiKeyAuthenticationManager") as ApiKeyAuthenticationManager
             val apiKeyFilter = RequestHeaderAuthenticationFilter()
             apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
             apiKeyFilter.setExceptionIfHeaderMissing(false)
