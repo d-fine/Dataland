@@ -48,23 +48,11 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.8.0")
 }
 
-val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
-
 openApi {
-    outputFileName.set("$apiKeyManagerOpenApiJson")
+    outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
     apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
-    }
-}
-
-val openApiSpec: Configuration by configurations.creating {
-    isCanBeConsumed = true
-    isCanBeResolved = false
-}
-artifacts {
-    add("openApiSpec", project.file("$buildDir/$apiKeyManagerOpenApiJson")) {
-        builtBy("generateOpenApiDocs")
     }
 }
 
