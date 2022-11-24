@@ -6,6 +6,7 @@ WORKDIR /app
 COPY ./dataland-backend/ ./dataland-backend
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
