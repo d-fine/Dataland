@@ -39,9 +39,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
-
-
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
