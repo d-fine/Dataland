@@ -6,8 +6,8 @@ COPY ./dataland-backend/ ./dataland-backend/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
-COPY ./dataland-frontend/ ./dataland-frontend
-COPY ./dataland-e2etests/ ./dataland-e2etests
+COPY ./dataland-frontend/ ./dataland-frontend/
+COPY ./dataland-e2etests/ ./dataland-e2etests/
 COPY ./testing/ ./testing
 COPY ./.git/ ./.git
 

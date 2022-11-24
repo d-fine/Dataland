@@ -3,7 +3,7 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 WORKDIR /app
 
-COPY ./dataland-backend/ ./dataland-backend
+COPY ./dataland-backend/ ./dataland-backend/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
