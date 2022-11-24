@@ -48,7 +48,8 @@ class WebSecurityConfig(
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         if (context.containsBean("ApiKeyAuthenticationManager")) {
-            val apiKeyAuthenticationManager = context.getBean("ApiKeyAuthenticationManager") as ApiKeyAuthenticationManager
+            val apiKeyAuthenticationManager =
+                    context.getBean("ApiKeyAuthenticationManager") as ApiKeyAuthenticationManager
             val apiKeyFilter = RequestHeaderAuthenticationFilter()
             apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
             apiKeyFilter.setExceptionIfHeaderMissing(false)
