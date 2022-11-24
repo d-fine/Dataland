@@ -46,24 +46,12 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
 }
 
-val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-
 openApi {
-    outputFileName.set("$backendOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
     }
-}
-
-val openApiSpec by configurations.creating {
-    isCanBeConsumed = true
-    isCanBeResolved = false
-}
-artifacts {
-    add("openApiSpec", project.file("$buildDir/$backendOpenApiJson")) {
-        builtBy("generateOpenApiDocs")
-    }
+    outputFileName.set("$projectDir/backendOpenApi.json")
 }
 
 tasks.test {

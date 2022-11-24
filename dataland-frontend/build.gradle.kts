@@ -17,38 +17,18 @@ node {
     version.set("18.12.1")
 }
 
-val backendOpenApiSpecConfig by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
-dependencies {
-    backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
-}
-
-val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val apiClientGenerationTaskName = "generateAPIClientFrontend"
-val clientOutputDir = "$buildDir/clients/backend"
-val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
-val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(apiClientGenerationTaskName)
+    dependsOn("generateAPIClientFrontend")
 }
 
 tasks.withType<NpmTask> {
-    dependsOn(apiClientGenerationTaskName)
+    dependsOn("generateAPIClientFrontend")
 }
 
-tasks.register<Copy>("getBackendOpenApiSpec") {
-    from(backendOpenApiSpecConfig)
-    into(clientOutputDir)
-    filter({ line -> line.replace("http://localhost:8080/api", "/api") })
-}
-
-tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(apiSpecLocation).path
-    outputDir.set(clientOutputDir)
+tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set("$buildDir/clients/backend")
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -64,12 +44,11 @@ tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.pl
             "withSeparateModelsAndApi" to "true"
         )
     )
-    dependsOn("getBackendOpenApiSpec")
 }
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$clientOutputDir/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/backend/src/main/kotlin")
 }
 
 ktlint {
