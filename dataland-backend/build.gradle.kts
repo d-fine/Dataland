@@ -47,9 +47,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:4.8.0")
-    //implementation(project(":dataland-keycloak-adapter"))
+    // implementation(project(":dataland-keycloak-adapter"))
 }
-
 
 openApi {
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")

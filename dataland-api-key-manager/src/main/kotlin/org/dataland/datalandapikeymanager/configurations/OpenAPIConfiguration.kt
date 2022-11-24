@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.servers.Server
 @SecurityScheme(
     name = "dataland-api-key",
     type = SecuritySchemeType.APIKEY,
-    `in` =  SecuritySchemeIn.HEADER
+    `in` = SecuritySchemeIn.HEADER
 )
 @SecurityScheme(
     name = "default-oauth",

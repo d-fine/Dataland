@@ -27,7 +27,7 @@ class UnprotectedSecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     @Override
     override fun configure(http: HttpSecurity) {
         http
-                .authorizeRequests().anyRequest().permitAll()
+            .authorizeRequests().anyRequest().permitAll()
         http.csrf().disable()
     }
 }

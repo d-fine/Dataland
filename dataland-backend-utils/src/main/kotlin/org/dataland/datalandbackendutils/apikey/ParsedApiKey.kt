@@ -7,6 +7,7 @@ package org.dataland.datalandbackendutils.apikey
  * @param parsedKeycloakUserIdBase64Encoded is the part of the API key which represents the Keycloak userId
  * @param parsedApiKeySecret is the part of the API key which is the actual secret of the API key
  * @param parsedCrc32Value is the part of the API key which is used for a cyclic redundancy check
+ * @param parsedApiKeyWithoutCrc32Value is all of the API key without the part used for a cyclic redundancy check
  */
 data class ParsedApiKey(
     val parsedKeycloakUserIdBase64Encoded: String,
