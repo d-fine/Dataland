@@ -16,7 +16,7 @@ Annotate the main spring application class with
 
 Adapt the application.properties. Adapt publiclinks to the needs of your service:
 ```
-spring.security.oauth2.resourceserver.jwt.issuer-uri=http://keycloak:8080/keycloak/auth/realms/datalandsecurity
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://keycloak:8080/keycloak/auth/realms/datalandsecurity/protocol/openid-connect/certs
+spring.security.oauth2.resourceserver.jwt.issuer-uri=http://keycloak:8080/keycloak/realms/datalandsecurity
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://keycloak:8080/keycloak/realms/datalandsecurity/protocol/openid-connect/certs
 org.dataland.authorization.publiclinks=/actuator/health,/actuator/health/ping,/actuator/info,/swagger-ui/**,/v3/api-docs/**,/companies/**,/data/**,/metadata,/metadata/**
 ```

@@ -18,17 +18,12 @@ plugins {
     id("org.springframework.boot")
     kotlin("kapt")
 
-    id("org.springdoc.openapi-gradle-plugin")
     id("com.gorylenko.gradle-git-properties")
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-val apiKeyManagerOpenApiSpecConfig: Configuration by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
 dependencies {
     implementation("org.springframework:spring-context")
     implementation("org.springframework.boot:spring-boot")
@@ -37,11 +32,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     // TODO: Reparieren
     // kapt("org.springframework.boot:spring-boot-configuration-processor")
-    apiKeyManagerOpenApiSpecConfig(
-        project(
-            mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")
-        )
-    )
     implementation(project(":dataland-backend-utils"))
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -62,16 +52,11 @@ tasks.bootJar {
     enabled = false
 }
 
-val openApiClientsOutputDir = "$buildDir/clients"
-val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
-val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
 
-tasks.register(
-    "generateApiKeyManagerClient",
-    org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class
-) {
-    input = project.file("$buildDir/$apiKeyManagerOpenApiJson").path
-    outputDir.set("$openApiClientsOutputDir/api-key-manager")
+tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/api-key-manager")
     packageName.set(apiKeyManagerClientDestinationPackage)
     modelPackage.set("$apiKeyManagerClientDestinationPackage.model")
     apiPackage.set("$apiKeyManagerClientDestinationPackage.api")
@@ -83,12 +68,6 @@ tasks.register(
             "useTags" to "true"
         )
     )
-    dependsOn("getApiKeyManagerOpenApiSpec")
-}
-
-tasks.register<Copy>("getApiKeyManagerOpenApiSpec") {
-    from(apiKeyManagerOpenApiSpecConfig)
-    into("$buildDir")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -97,5 +76,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$openApiClientsOutputDir/api-key-manager/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
 }

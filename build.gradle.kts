@@ -67,10 +67,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa") version "1.7.21" apply false
 }
 
-extra["backendOpenApiJson"] = "backendOpenApi.json"
-extra["apiKeyManagerOpenApiJson"] = "apiKeyManagerOpenApi.json"
-extra["springBaseOpenApiJson"] = "springBaseOpenApiJson.json"
-
 sonarqube {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
