@@ -31,7 +31,7 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)") // TODO why?  (Emanuel asking)
+    @PreAuthorize("hasRole('ROLE_USER')") // TODO why?  (Emanuel asking) PPU: welche Rolle man hat ist eigentlich egal - aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
@@ -85,7 +85,8 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    // TODO: PreAuthorize überdenken
+    @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     fun revokeApiKey(): ResponseEntity<RevokeApiKeyResponse>

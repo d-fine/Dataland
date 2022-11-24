@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.controller.advice.KnownErrorControllerA
 import org.dataland.datalandbackendutils.controller.advice.UnknownErrorControllerAdvice
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Import
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Import
         RequestRejectedExceptionHandler::class
     ]
 )
+@ComponentScan(basePackages = ["org.dataland.datalandapikeymanager", "org.dataland.keycloakAdapter"])
 class DatalandApiKeyManager : OpenAPIConfiguration
 
 /**
