@@ -45,6 +45,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:4.8.0")
     implementation(project(":dataland-keycloak-adapter"))
+    implementation(libs.bcpkix.jdk15on)
+    implementation(libs.bcprov.jdk15on)
 }
 
 openApi {

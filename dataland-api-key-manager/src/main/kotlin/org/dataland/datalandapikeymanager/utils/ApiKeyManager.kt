@@ -8,14 +8,12 @@ import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
 import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.dataland.datalandbackendutils.utils.EncodingUtils
-import org.keycloak.KeycloakPrincipal
-import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import java.security.SecureRandom
 import java.time.LocalDate
 import java.util.HexFormat
-
 /**
  * A class for handling the generation, validation and revocation of an api key
  */
@@ -69,16 +67,16 @@ class ApiKeyManager {
         return HexFormat.of().formatHex(generateRandomByteArray(keyByteLength))
     }
 
-    private fun getKeycloakAuthenticationToken(): KeycloakAuthenticationToken {
-        return SecurityContextHolder.getContext().authentication as KeycloakAuthenticationToken
+    private fun getAuthentication(): Authentication? {
+        return SecurityContextHolder.getContext().authentication
     }
 
-    private fun getKeycloakUserId(keycloakAuthenticationToken: KeycloakAuthenticationToken): String {
+    private fun getKeycloakUserId(authentication: Authentication): String {
         var userIdByToken = ""
-        val principal = keycloakAuthenticationToken.principal
-        if (principal is KeycloakPrincipal<*>) {
+        val principal = authentication.principal
+/*        if (principal is KeycloakPrincipal<*>) {
             userIdByToken = principal.keycloakSecurityContext.token.subject
-        }
+        }*/
         return userIdByToken
     }
 
@@ -88,8 +86,9 @@ class ApiKeyManager {
      * @return the api key and its meta info
      */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
-        val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
-        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
+        val keycloakAuthenticationToken = getAuthentication()
+        //TODO: Fix usage of !! operator
+        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
@@ -148,8 +147,9 @@ class ApiKeyManager {
      * @return the result of the attempted revocation as a status flag and a message
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
-        val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
-        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
+        val authetication = getAuthentication()
+        //Todo: Fix the !! operator
+        val keycloakUserId = getKeycloakUserId(authetication!!)
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
 
