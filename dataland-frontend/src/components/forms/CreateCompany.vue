@@ -68,8 +68,7 @@ import { FormKit, FormKitSchema } from "@formkit/vue";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { SchemaGenerator } from "@/services/SchemaGenerator";
 import { ApiClientProvider } from "@/services/ApiClients";
-
-import backend from "@projectRoot/dataland-backend/backendOpenApi.json";
+import backend from "@backendOpenApiSpec";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
 import PrimeButton from "primevue/button";
