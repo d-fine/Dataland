@@ -11,8 +11,7 @@
     "preserveValueImports": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@clients/*": ["./build/clients/*"],
-      "@backendOpenApiSpec": ["../dataland-backend/backendOpenApi.json"],
-   }
+      "@clients/*": ["./build/clients/*"]
+    }
   }
 }
