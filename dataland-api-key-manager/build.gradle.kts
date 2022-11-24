@@ -58,7 +58,7 @@ openApi {
     }
 }
 
-val openApiSpec: Configuration by configurations.creating {
+val openApiSpec by configurations.creating {
     isCanBeConsumed = true
     isCanBeResolved = false
 }
