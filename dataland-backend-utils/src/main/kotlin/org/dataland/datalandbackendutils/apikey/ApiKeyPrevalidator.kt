@@ -64,10 +64,12 @@ class ApiKeyPrevalidator { // TODO not too happy with that name
         val parsedApiKeySecret = receivedApiKey.substringAfter("_").substringBefore("_")
         val parsedApiKeyWithoutCrc32Value = receivedApiKey.substringBeforeLast("_")
 
-        return ParsedApiKey(parsedKeycloakUserIdBase64Encoded,
+        return ParsedApiKey(
+            parsedKeycloakUserIdBase64Encoded,
             parsedApiKeySecret,
             parsedCrc32Value,
-            parsedApiKeyWithoutCrc32Value)
+            parsedApiKeyWithoutCrc32Value
+        )
     }
 
     private fun validateApiKeyFormat(parsedApiKey: ParsedApiKey) {
@@ -78,8 +80,8 @@ class ApiKeyPrevalidator { // TODO not too happy with that name
 
     private fun validateApiKeyChecksum(parsedApiKey: ParsedApiKey) {
         val expectedCrc32Value = EncodingUtils.calculateCrc32Value(
-            parsedApiKey.parsedApiKeyWithoutCrc32Value.toByteArray(charset))
-            .toString()
+            parsedApiKey.parsedApiKeyWithoutCrc32Value.toByteArray(charset)
+        ).toString()
 
         if (parsedApiKey.parsedCrc32Value != expectedCrc32Value) {
             throw ApiKeyFormatException(
