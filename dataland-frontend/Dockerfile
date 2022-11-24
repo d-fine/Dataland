@@ -3,15 +3,13 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 WORKDIR /app
 
-COPY ./dataland-backend/ ./dataland-backend
-COPY ./dataland-backend-utils/ ./dataland-backend-utils/
-COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
-COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-     ./gradlew  :dataland-keycloak-adapter:assemble :dataland-backend:assemble dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html

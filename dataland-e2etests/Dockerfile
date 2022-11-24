@@ -2,10 +2,8 @@ ARG DATALAND_E2ETESTS_CORE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_e2etests_core:${DATALAND_E2ETESTS_CORE_VERSION}
 
 WORKDIR /app
-COPY ./dataland-backend/ ./dataland-backend
-COPY ./dataland-backend-utils/ ./dataland-backend-utils/
-COPY ./dataland-api-key-manager/ ./dataland-api-key-manager
-COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend
 COPY ./dataland-e2etests/ ./dataland-e2etests
 COPY ./testing/ ./testing
