@@ -17,7 +17,7 @@ node {
     version.set("18.12.1")
 }
 
-val backendOpenApiFile="${project.rootDir}/dataland-backend/backendOpenApi.json"
+val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
 val clientOutputDir = "$buildDir/clients/backend"
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
