@@ -47,8 +47,10 @@ class ApiKeyAuthenticationManager(
         if (LocalDate.now().isAfter(apiKeyMetaInfo.expiryDate)) {
             throw CredentialsExpiredException("Token has expired")
         }
-        return PreAuthenticatedAuthenticationToken(apiKeyMetaInfo.keycloakUserId,
+        return PreAuthenticatedAuthenticationToken(
+            apiKeyMetaInfo.keycloakUserId,
             "N/A",
-            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList())
+            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList()
+        )
     }
 }
