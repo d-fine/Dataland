@@ -2773,6 +2773,9 @@
           "principal": {
             "type": "object"
           },
+          "authenticated": {
+            "type": "boolean"
+          },
           "authorities": {
             "type": "array",
             "items": {
@@ -2781,9 +2784,6 @@
           },
           "details": {
             "type": "object"
-          },
-          "authenticated": {
-            "type": "boolean"
           },
           "name": {
             "type": "string"
