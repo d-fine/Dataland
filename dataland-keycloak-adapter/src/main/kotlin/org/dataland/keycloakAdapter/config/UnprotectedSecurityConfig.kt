@@ -1,12 +1,12 @@
-package org.dataland.datalandbackend.configurations
+package org.dataland.keycloakAdapter.config
 
-import org.keycloak.adapters.springsecurity.KeycloakConfiguration
-import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.stereotype.Component
 
 /**
  * This class contains all security configurations for the backend to make all endpoints public.
@@ -14,19 +14,24 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
  * the need of any token-authorization.
  */
 @Profile("unprotected")
-@KeycloakConfiguration
-class UnprotectedSecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
-
+@Component
+class UnprotectedSecurityConfig {
+    /**
+     * Defines the Session Authentication Strategy
+     */
     @Bean
-    @Override
-    override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
+    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return NullAuthenticatedSessionStrategy()
     }
 
-    @Override
-    override fun configure(http: HttpSecurity) {
+    /**
+     * Defines the default Security Filter Chain
+     */
+    @Bean
+    fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
         http
             .authorizeRequests().anyRequest().permitAll()
         http.csrf().disable()
+        return http.build()
     }
 }
