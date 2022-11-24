@@ -2770,6 +2770,9 @@
           "details": {
             "type": "object"
           },
+          "principal": {
+            "type": "object"
+          },
           "authorities": {
             "type": "array",
             "items": {
@@ -2780,9 +2783,6 @@
             "type": "boolean"
           },
           "credentials": {
-            "type": "object"
-          },
-          "principal": {
             "type": "object"
           },
           "name": {
