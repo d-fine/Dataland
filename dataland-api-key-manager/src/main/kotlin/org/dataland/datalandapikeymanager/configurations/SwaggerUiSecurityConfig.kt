@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.DefaultSecurityFilterChain
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain
  */
 @Configuration
 @Order(SwaggerUiSecurityConfig.CONFIG_ORDER)
-class SwaggerUiSecurityConfig  {
+class SwaggerUiSecurityConfig {
     companion object {
         const val CONFIG_ORDER = 99
     }
