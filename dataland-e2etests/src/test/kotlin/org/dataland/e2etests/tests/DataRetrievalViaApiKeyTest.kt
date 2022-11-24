@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuT
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.ApiKeyHandler
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -24,7 +23,7 @@ class DataRetrievalViaApiKeyTest {
         /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
-        val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -47,7 +46,7 @@ class DataRetrievalViaApiKeyTest {
         /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
-        val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)

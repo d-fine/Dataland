@@ -16,7 +16,7 @@ class ApiKeyHandler {
     }
 
     fun obtainApiKeyForUserType(user: UserType, daysValid: Int) {
-        val apiKeyData = requestApiKey(user, daysValid)
+        // val apiKeyData = requestApiKey(user, daysValid)
         // TODO put ApiKey value into the respective companion object =>
         // ApiClient.apiKey = apiKeyData.apiKey
     }

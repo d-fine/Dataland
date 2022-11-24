@@ -36,7 +36,8 @@ class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
 
     /**
      * The Role Container is a component which maps actual roles from the Dataland keycloak service to the role
-     * definitions which are used in the Dataland api key manager code to decouple the role namings in the keycloak service
+     * definitions which are used in the Dataland api key manager code
+     * to decouple the role namings in the keycloak service
      * from the ones in api key manager.
      */
     @Component("RoleContainer")

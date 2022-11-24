@@ -39,7 +39,8 @@ dependencies {
     implementation(libs.log4j.to.slf4j)
     implementation("org.springframework.boot:spring-boot-starter-web")
     backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
-    apiKeyManagerOpenApiSpecConfig(project(mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")))
+    apiKeyManagerOpenApiSpecConfig(
+        project(mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -93,7 +94,8 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     dependsOn("getBackendOpenApiSpec")
 }
 
-tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+tasks.register("generateApiKeyManagerClient",
+    org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file("$buildDir/$apiKeyManagerOpenApiJson").path
     outputDir.set("$openApiClientsOutputDir/api-key-manager")
     packageName.set(apiKeyManagerClientDestinationPackage)

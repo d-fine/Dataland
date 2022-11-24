@@ -37,7 +37,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     // TODO: Reparieren
     // kapt("org.springframework.boot:spring-boot-configuration-processor")
-    apiKeyManagerOpenApiSpecConfig(project(mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")))
+    apiKeyManagerOpenApiSpecConfig(project(
+        mapOf("path" to ":dataland-api-key-manager", "configuration" to "openApiSpec")))
     implementation(project(":dataland-backend-utils"))
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -62,7 +63,8 @@ val openApiClientsOutputDir = "$buildDir/clients"
 val apiKeyManagerOpenApiJson = rootProject.extra["apiKeyManagerOpenApiJson"]
 val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
 
-tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+tasks.register("generateApiKeyManagerClient",
+    org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     input = project.file("$buildDir/$apiKeyManagerOpenApiJson").path
     outputDir.set("$openApiClientsOutputDir/api-key-manager")
     packageName.set(apiKeyManagerClientDestinationPackage)

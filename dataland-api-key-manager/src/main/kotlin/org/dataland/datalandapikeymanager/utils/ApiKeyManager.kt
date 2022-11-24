@@ -6,7 +6,7 @@ import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
-import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.keycloak.KeycloakPrincipal
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
@@ -16,19 +16,24 @@ import java.security.SecureRandom
 import java.time.LocalDate
 import java.util.HexFormat
 
+/**
+ * A class for handling the generation, validation and revocation of an api key
+ */
 class ApiKeyManager {
+    private companion object {
+        private const val keyByteLength = 40
+        private const val saltByteLength = 16
+        private const val hashByteLength = 32
+    }
 
-    private val apiKeyPreValidator = ApiKeyPreValidator()
+    private val apiKeyPreValidator = ApiKeyPrevalidator()
 
     // TODO temporary
-    private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys = mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
+    private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
+        mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
     // TODO temporary
 
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    private val keyByteLength = 40
-    private val saltByteLength = 16
-    private val hashByteLength = 32
 
     private val utf8Charset = Charsets.UTF_8
 
@@ -73,12 +78,19 @@ class ApiKeyManager {
         return userIdByToken
     }
 
+    /**
+     * A method that generates an api key which is valid for the specified number of days
+     * @param daysValid the number of days the api key should be valid from time of generation
+     * @return the api key and its meta info
+     */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
-        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0) null else LocalDate.now().plusDays(daysValid.toLong())
+        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
+            null else
+            LocalDate.now().plusDays(daysValid.toLong())
         val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
 
         val newSalt = generateSalt()
@@ -88,7 +100,9 @@ class ApiKeyManager {
         val newHashedApiKey = hashString(newApiKey, newSalt)
         val newHashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(newHashedApiKey)
 
-        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded, apiKeyMetaInfo, EncodingUtils.encodeToBase64(newSalt))
+        val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(newHashedApiKeyBase64Encoded,
+            apiKeyMetaInfo,
+            EncodingUtils.encodeToBase64(newSalt))
 
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
@@ -98,14 +112,22 @@ class ApiKeyManager {
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
 
+    /**
+     * Validates a specified api key
+     * @param apiKey the api key to be validated
+     * @return the found api keys meta info
+     */
     fun validateApiKey(apiKey: String): ApiKeyMetaInfo {
-        val parsedApiKey = apiKeyPreValidator.preValidateApiKey(apiKey)
+        val parsedApiKey = apiKeyPreValidator.prevalidateApiKey(apiKey)
 
-        val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded).toString(utf8Charset)
+        val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded)
+            .toString(utf8Charset)
 
         // TODO Validation process => needs to be in postgres. map is just temporary
         val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!
         // TODO
+
+        // TODO what if the keycloak user id has no entry in the map?
 
         val salt = EncodingUtils.decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
         val hashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(apiKey, salt))
@@ -115,6 +137,10 @@ class ApiKeyManager {
         return storedHashedApiKey.apiKeyMetaInfo
     }
 
+    /**
+     * Revokes the api key of the authenticating user
+     * @return the result of the attempted revocation as a status flag and a message
+     */
     fun revokeApiKey(): RevokeApiKeyResponse {
         val keycloakAuthenticationToken = getKeycloakAuthenticationToken()
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken)

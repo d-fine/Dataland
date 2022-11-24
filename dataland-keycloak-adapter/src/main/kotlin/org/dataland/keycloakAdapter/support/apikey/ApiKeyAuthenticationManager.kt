@@ -2,6 +2,7 @@ package org.dataland.keycloakAdapter.support.apikey
 
 import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
+import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
@@ -13,6 +14,9 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
+/**
+ * A class to validate an authentication and the corresponding token
+ */
 @Component
 class ApiKeyAuthenticationManager(
     @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String
@@ -23,19 +27,28 @@ class ApiKeyAuthenticationManager(
         try {
             customToken = authentication!!.principal as String
         } catch (ex: Exception) {
-            throw AuthenticationCredentialsNotFoundException("No Credentials found", ex)
+            throw when (ex) {
+                is NullPointerException,
+                is TypeCastException -> AuthenticationCredentialsNotFoundException("No Credentials found", ex)
+                else -> ex
+            }
         }
+
+        // TODO: catch ApiKeyFormatException and process to whatever exceptions fits best
+        ApiKeyPrevalidator().prevalidateApiKey(customToken)
 
         val apiKeyMetaInfo: ApiKeyMetaInfo
         try {
             // TODO: Was passiert wenn es den API-Key nicht gibt?
             apiKeyMetaInfo = controller.validateApiKey(customToken)
-        } catch (ex: Exception) {
+        } catch (ex: NullPointerException) {
             throw InternalAuthenticationServiceException("API-KEY Validation Service could not be queried", ex)
         }
         if (LocalDate.now().isAfter(apiKeyMetaInfo.expiryDate)) {
             throw CredentialsExpiredException("Token has expired")
         }
-        return PreAuthenticatedAuthenticationToken(apiKeyMetaInfo.keycloakUserId, "N/A", apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList())
+        return PreAuthenticatedAuthenticationToken(apiKeyMetaInfo.keycloakUserId,
+            "N/A",
+            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList())
     }
 }

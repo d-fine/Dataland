@@ -4,7 +4,7 @@ import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
- * An InvalidInputApiException should be thrown if the provided input is somehow invalid
+ * An ApiKeyFormatException should be thrown if the provided api key is of an infeasible format
  */
 class ApiKeyFormatException(
     override val message: String,
