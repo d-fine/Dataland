@@ -6,7 +6,7 @@ import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
-import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
 import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
@@ -28,7 +28,7 @@ class ApiKeyManager {
         private const val argon2Parallelisms = 1
     }
 
-    private val apiKeyPreValidator = ApiKeyPrevalidator()
+    private val apiKeyPreValidator = ApiKeyPreValidator()
 
     // TODO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
@@ -74,7 +74,7 @@ class ApiKeyManager {
     private fun getKeycloakUserId(authentication: Authentication): String {
         var userIdByToken = ""
         val principal = authentication.principal
-/*        if (principal is KeycloakPrincipal<*>) {
+/*        if (principal is KeycloakPrincipal<*>) {  TODO Why commented out ?
             userIdByToken = principal.keycloakSecurityContext.token.subject
         }*/
         return userIdByToken
@@ -119,11 +119,11 @@ class ApiKeyManager {
 
     /**
      * Validates a specified api key
-     * @param apiKey the api key to be validated
+     * @param receivedApiKey the received api key to be validated
      * @return the found api keys meta info
      */
-    fun validateApiKey(apiKey: String): ApiKeyMetaInfo {
-        val parsedApiKey = apiKeyPreValidator.prevalidateApiKey(apiKey)
+    fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
+        val parsedApiKey = apiKeyPreValidator.preValidateApiKey(receivedApiKey)
 
         val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
@@ -135,7 +135,7 @@ class ApiKeyManager {
         // TODO what if the keycloak user id has no entry in the map?
 
         val salt = EncodingUtils.decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
-        val hashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(apiKey, salt))
+        val hashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(receivedApiKey, salt))
         if (hashedApiKeyBase64Encoded == storedHashedApiKey.hashedApiKeyBase64Encoded) {
             logger.info("Validated Api Key with salt $salt and calculated hash value $hashedApiKeyBase64Encoded.")
         }
