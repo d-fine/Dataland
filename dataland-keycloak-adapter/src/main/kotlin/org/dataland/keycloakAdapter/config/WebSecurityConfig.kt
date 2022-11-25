@@ -63,7 +63,7 @@ class WebSecurityConfig(
         return http.build()
     }
 
-    // TODO rename these methods to something more expressive
+    // TDO rename these methods to something more expressive
     private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
         http
             .authorizeRequests()

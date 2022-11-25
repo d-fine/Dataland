@@ -64,7 +64,7 @@ class ApiKeyAuthenticationManager(
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         try {
-            // TODO: Was passiert wenn es den API-Key nicht gibt?
+            // TDO: Was passiert wenn es den API-Key nicht gibt?
             return controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
             throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
