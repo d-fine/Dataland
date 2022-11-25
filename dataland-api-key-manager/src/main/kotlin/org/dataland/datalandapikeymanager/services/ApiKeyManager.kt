@@ -71,26 +71,17 @@ class ApiKeyManager {
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun getKeycloakUserId(authentication: Authentication): String {
-        var userIdByToken = ""
-        val principal = authentication.principal
-        if (principal is KeycloakPrincipal<*>) {   // TODO we need this object which was included before
-            userIdByToken = principal.keycloakSecurityContext.token.subject
-        }
-        return userIdByToken
-    }
-
     /**
      * A method that generates an api key which is valid for the specified number of days
      * @param daysValid the number of days the api key should be valid from time of generation
      * @return the api key and its meta info
      */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
-        val keycloakAuthenticationToken = getAuthentication()
+        val authentication = getAuthentication()
         // TODO: Fix usage of !! operator
-        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
+        val keycloakUserId = authentication!!.name!!
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
-        val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
+        val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
             null else
             LocalDate.now().plusDays(daysValid.toLong())
@@ -163,7 +154,7 @@ class ApiKeyManager {
     fun revokeApiKey(): RevokeApiKeyResponse {
         val authetication = getAuthentication()
         // Todo: Fix the !! operator
-        val keycloakUserId = getKeycloakUserId(authetication!!)
+        val keycloakUserId = authetication!!.name
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
 

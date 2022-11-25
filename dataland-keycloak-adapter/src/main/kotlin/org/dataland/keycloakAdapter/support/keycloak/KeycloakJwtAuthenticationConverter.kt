@@ -20,13 +20,7 @@ class KeycloakJwtAuthenticationConverter(
      */
     override fun convert(jwt: Jwt): JwtAuthenticationToken {
         val authorities: Collection<GrantedAuthority> = grantedAuthoritiesConverter.convert(jwt)
-        val username = getUsernameFrom(jwt)
+        val username = jwt.subject
         return JwtAuthenticationToken(jwt, authorities, username)
-    }
-
-    private fun getUsernameFrom(jwt: Jwt): String {
-        return if (jwt.hasClaim("preferred_username")) {
-            jwt.getClaimAsString("preferred_username")
-        } else jwt.getSubject()
     }
 }
