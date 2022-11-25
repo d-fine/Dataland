@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.backend.wasm.lower.excludeDeclarationsFromCodegen
-
 // dataland-api-key-manager
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
