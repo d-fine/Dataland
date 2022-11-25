@@ -4,7 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
-import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
@@ -31,7 +31,7 @@ class ApiKeyAuthenticationManager(
         val customToken = extractApiKey(authentication)
 
         // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
-        ApiKeyPreValidator().prevalidateApiKey(customToken)
+        ApiKeyPrevalidator().prevalidateApiKey(customToken)
 
         return validateApiKey(customToken)
     }
@@ -62,9 +62,10 @@ class ApiKeyAuthenticationManager(
 
     private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
+        var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
             // TDO: Was passiert wenn es den API-Key nicht gibt?
-            return controller.validateApiKey(customToken)
+            apiKeyMetaInfo = controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
             handleAuthenticationException(ex)
         } catch (ex: IOException) {
@@ -76,8 +77,7 @@ class ApiKeyAuthenticationManager(
         } catch (ex: ServerException) {
             handleAuthenticationException(ex)
         }
-        // TDO this is not reachable but something must be returned / thrown
-        return ApiKeyMetaInfo("", listOf(""), LocalDate.now())
+        return apiKeyMetaInfo
     }
 
     private fun handleAuthenticationException(ex: Exception) {

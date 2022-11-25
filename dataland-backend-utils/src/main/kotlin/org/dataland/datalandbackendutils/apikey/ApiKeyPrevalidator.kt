@@ -7,9 +7,7 @@ import org.dataland.datalandbackendutils.utils.EncodingUtils
  * This class should be used to validate that a given api key has the reuired format and the correct checksum
  * before a request is sent to /api-keys/validateApiKey to prevent unneccessary traffic
  */
-class ApiKeyPreValidator { // TDO not too happy with that name
-
-    // private val logger = LoggerFactory.getLogger(javaClass) // TDO log some stuff while validating maybe?
+class ApiKeyPrevalidator {
 
     companion object {
         const val minPossibleCrc32Value = 0

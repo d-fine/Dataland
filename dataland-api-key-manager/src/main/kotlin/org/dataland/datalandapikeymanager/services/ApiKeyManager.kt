@@ -6,7 +6,7 @@ import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
-import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
@@ -29,7 +29,7 @@ class ApiKeyManager {
         private const val argon2Parallelisms = 1
     }
 
-    private val apiKeyPreValidator = ApiKeyPreValidator()
+    private val apiKeyPrevalidator = ApiKeyPrevalidator()
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
@@ -154,7 +154,7 @@ class ApiKeyManager {
      * @return the found api keys meta info
      */
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
-        val receivedAndParserdApiKey = apiKeyPreValidator.parseApiKey(receivedApiKey)
+        val receivedAndParserdApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
         val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParserdApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
         // TODO Retrieval process => needs to be in postgres. map is just temporary
