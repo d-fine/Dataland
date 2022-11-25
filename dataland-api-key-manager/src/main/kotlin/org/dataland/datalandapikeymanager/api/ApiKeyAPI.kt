@@ -87,7 +87,7 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    // TODO: PreAuthorize überdenken
+    // TDO: PreAuthorize überdenken
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")

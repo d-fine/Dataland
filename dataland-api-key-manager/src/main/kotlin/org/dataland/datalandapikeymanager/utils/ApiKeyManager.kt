@@ -72,7 +72,7 @@ class ApiKeyManager {
     }
 
     private fun getKeycloakUserId(authentication: Authentication): String {
-        val userIdByToken = ""
+        val userIdByToken = authentication.toString()
 /*        val principal = authentication.principal
         if (principal is KeycloakPrincipal<*>) {
             userIdByToken = principal.keycloakSecurityContext.token.subject
@@ -87,7 +87,7 @@ class ApiKeyManager {
      */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val keycloakAuthenticationToken = getAuthentication()
-        // TODO: Fix usage of !! operator
+        // TDO: Fix usage of !! operator
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
@@ -148,7 +148,7 @@ class ApiKeyManager {
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
         val authetication = getAuthentication()
-        // Todo: Fix the !! operator
+        // Tdo: Fix the !! operator
         val keycloakUserId = getKeycloakUserId(authetication!!)
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String

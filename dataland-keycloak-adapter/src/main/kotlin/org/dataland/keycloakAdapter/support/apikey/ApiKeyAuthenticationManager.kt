@@ -40,13 +40,13 @@ class ApiKeyAuthenticationManager(
             throw AuthenticationCredentialsNotFoundException(noCredentialsFoundText, ex)
         }
 
-        // TODO: catch ApiKeyFormatException and process to whatever exceptions fits best
+        // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
         ApiKeyPrevalidator().prevalidateApiKey(customToken)
 
         val apiKeyMetaInfo: ApiKeyMetaInfo
         val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         try {
-            // TODO: Was passiert wenn es den API-Key nicht gibt?
+            // TDO: Was passiert wenn es den API-Key nicht gibt?
             apiKeyMetaInfo = controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
             throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
