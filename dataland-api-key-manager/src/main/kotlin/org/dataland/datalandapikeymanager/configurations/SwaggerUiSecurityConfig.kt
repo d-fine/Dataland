@@ -17,9 +17,7 @@ class SwaggerUiSecurityConfig {
     }
 
     /**
-     * Swagger UI security filter chain
-     * @param http
-     * @return http.build()
+     * The SecurityFilterChain that configures security for the swagger-ui.
      */
     @Bean
     fun swaggerUiSecurityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
