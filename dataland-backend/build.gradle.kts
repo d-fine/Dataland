@@ -5,7 +5,9 @@ val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
     sourceSets.asMap.values.flatMap { sourceSet ->
         sourceSet.output.classesDirs.flatMap {
-            fileTree(it).files
+            fileTree(it) {
+                exclude("**/openApiClient/**")
+            }.files
         }
     }
 )
