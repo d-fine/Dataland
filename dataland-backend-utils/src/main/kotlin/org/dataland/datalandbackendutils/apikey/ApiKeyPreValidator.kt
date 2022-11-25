@@ -76,11 +76,12 @@ class ApiKeyPreValidator { // TODO not too happy with that name
     fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
-        // TODO mit split und dann aus dem array nehmen
-        val parsedKeycloakUserIdBase64Encoded = receivedApiKey.substringBefore("_")
-        val parsedCrc32Value = receivedApiKey.substringAfterLast("_")
-        val parsedApiKeySecret = receivedApiKey.substringAfter("_").substringBefore("_")
-        val parsedApiKeyWithoutCrc32Value = receivedApiKey.substringBeforeLast("_")
+        val receivedApiKeySections = receivedApiKey.split("_")
+
+        val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
+        val parsedApiKeySecret = receivedApiKeySections[1]
+        val parsedApiKeyWithoutCrc32Value = parsedKeycloakUserIdBase64Encoded+"_"+parsedApiKeySecret
+        val parsedCrc32Value = receivedApiKeySections[2]
 
         return ParsedApiKey(
             parsedKeycloakUserIdBase64Encoded,
