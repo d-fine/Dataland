@@ -74,9 +74,9 @@ class ApiKeyManager {
     private fun getKeycloakUserId(authentication: Authentication): String {
         var userIdByToken = ""
         val principal = authentication.principal
-/*        if (principal is KeycloakPrincipal<*>) {  TODO Why commented out ?
+        if (principal is KeycloakPrincipal<*>) {   // TODO we need this object which was included before
             userIdByToken = principal.keycloakSecurityContext.token.subject
-        }*/
+        }
         return userIdByToken
     }
 
@@ -94,7 +94,7 @@ class ApiKeyManager {
         val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
             null else
             LocalDate.now().plusDays(daysValid.toLong())
-        val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate, true)
+        val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
 
         val newSalt = generateSalt()
         val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
@@ -129,34 +129,31 @@ class ApiKeyManager {
             .toString(utf8Charset)
 
         // TODO Validation process => needs to be in postgres. map is just temporary
-        var storedHashedApiKeyOfUser: StoredHashedAndBase64EncodedApiKey
-        try {
-            storedHashedApiKeyOfUser= mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!}
-        catch (e: NullPointerException) {
-            logger.info("Dataland user with the Keycloak user Id ${keycloakUserId} has no api key registered.")
-            // return: There is no api key registered for you Dataland account. Please generate one.
-            return ApiKeyMetaInfo(active = false) // TODO message reinpacken
+        val storedHashedApiKeyOfUser = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]
+        if (storedHashedApiKeyOfUser == null){
+            logger.info("Dataland user with the Keycloak user Id ${keycloakUserId} has no API key registered.")
+            return ApiKeyMetaInfo(active = false, validationMessage = "Your Dataland account has no API key registered. "
+            + "Please generate one.")
         }
-        // TODO => besser: keine Exception, sondern etwas sinnvolles machen wenn nicht gefunden wird, z.B. Elvis
 
         val salt = EncodingUtils.decodeFromBase64(storedHashedApiKeyOfUser.saltBase64Encoded)
         val receivedApiKeyHashedAndBase64Encoded = EncodingUtils.encodeToBase64(hashString(receivedApiKey, salt))
 
-        var apiKeyMetaInfoToReturn: ApiKeyMetaInfo
+        val apiKeyMetaInfoToReturn: ApiKeyMetaInfo
 
         if (receivedApiKeyHashedAndBase64Encoded != storedHashedApiKeyOfUser.hashedApiKeyBase64Encoded) {
-            apiKeyMetaInfoToReturn = ApiKeyMetaInfo(active = false) // false Wert berechnen anstatt storen
+            apiKeyMetaInfoToReturn = ApiKeyMetaInfo(active = false, validationMessage = "The API key you provided for "
+            + "your Dataland account is not correct.")
             logger.info("The provided Api Key for the user $keycloakUserId is not correct.")
         }
 
         else {
-            logger.info("Validated Api Key with salt $salt and calculated hash value $receivedApiKeyHashedAndBase64Encoded." +
-                    "// With status active ja/nein.")
-            apiKeyMetaInfoToReturn = storedHashedApiKeyOfUser.apiKeyMetaInfo
+            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
+            // TODO which time zone to use?
+            logger.info("Validated Api Key with salt $salt and calculated hash value $receivedApiKeyHashedAndBase64Encoded. " +
+                    "The activity status of the API key is $activityStatus.")
+            apiKeyMetaInfoToReturn = storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus)
         }
-
-        // TODO expiryDate check fehlt noch
-
         return apiKeyMetaInfoToReturn
     }
 

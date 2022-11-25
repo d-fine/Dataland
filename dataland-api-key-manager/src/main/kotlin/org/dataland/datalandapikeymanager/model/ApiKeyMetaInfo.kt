@@ -9,7 +9,8 @@ import java.time.LocalDate
  * @param keycloakUserId of the owning Keycloak user
  * @param keycloakRoles defines the roles of the owning Keycloak user
  * @param expiryDate specifies until which date the API key can be used
- * @param active specifies if the associated api key
+ * @param active specifies if the associated API key is active
+ * @param validationMessage returns a message associated to a validation of the associated API key
  */
 data class ApiKeyMetaInfo(
     @field:JsonProperty(required = false)
@@ -22,6 +23,10 @@ data class ApiKeyMetaInfo(
     val expiryDate: LocalDate? = null,
 
     // TODO This should not be stored in DB, because it is calculated on runtime via expiryDate
-    @field:JsonProperty(required = true)
-    val active: Boolean,
+    @field:JsonProperty(required = false)
+    val active: Boolean? = null,
+
+    // TODO This should not be stored in DB, because it is calculated on runtime via expiryDate
+    @field:JsonProperty(required = false)
+    val validationMessage: String? = null
 )
