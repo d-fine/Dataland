@@ -101,11 +101,8 @@ class ApiKeyManager {
         // TODO: Fix usage of !! operator
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
-        val apiKeyMetaInfo = ApiKeyMetaInfo(
-            keycloakUserId,
-            keycloakAuthenticationToken.authorities.map { it.authority!! }.toList(),
-            calculateExpiryDate(daysValid)
-        )
+        val keycloakUserRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
+        val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakUserRoles ,calculateExpiryDate(daysValid))
         val newSalt = generateSalt()
         val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
         val newCrc32Value = EncodingUtils.calculateCrc32Value(newApiKeyWithoutCrc32Value.toByteArray(utf8Charset))
