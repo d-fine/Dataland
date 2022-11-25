@@ -35,6 +35,7 @@
               CreditInstitution: humanizeString('CreditInstitution'),
               InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
               AssetManagement: humanizeString('AssetManagement'),
+              InvestmentFirm: humanizeString('InvestmentFirm')
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
@@ -71,13 +72,14 @@
           />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
             <template
-              v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement']"
+              v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"
               :key="fsType"
             >
               <div :name="fsType">
                 <FormKit type="group" :name="fsType">
                   <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
                   <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                  <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />
                   <DataPointFormElement name="derivatives" label="Derivatives" />
                   <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
                   <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
@@ -94,11 +96,18 @@
               label="Trading Portfolio and Interbank Loans (combined)"
             />
           </FormKit>
-          <FormKit type="group" name="insuranceKpis" label)="Insurance KPIs">
+          <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">
             <h4>Insurance KPIs</h4>
             <DataPointFormElement
               name="taxonomyEligibleNonLifeInsuranceActivities"
               label="Taxonomy Eligible non Life Insurance Activities"
+            />
+          </FormKit>
+          <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">
+            <h4>Investment Firm KPIs</h4>
+            <DataPointFormElement
+              name="greenAssetRatio"
+              label="Green asset ratio"
             />
           </FormKit>
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />

@@ -34,6 +34,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
   fillEligibilityKpis("CreditInstitution", data.eligibilityKpis?.CreditInstitution);
   fillEligibilityKpis("InsuranceOrReinsurance", data.eligibilityKpis?.InsuranceOrReinsurance);
   fillEligibilityKpis("AssetManagement", data.eligibilityKpis?.AssetManagement);
+  fillEligibilityKpis("InvestmentFirm", data.eligibilityKpis?.InvestmentFirm);
   fillField(
     "",
     "taxonomyEligibleNonLifeInsuranceActivities",

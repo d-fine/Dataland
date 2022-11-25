@@ -56,6 +56,13 @@
             :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrd?.value"
           />
         </div>
+        <div class="col-6">
+          <TaxoCard
+            :name="`taxonomyNonEligibleActivity${fsType}`"
+            title="Taxonomy-non-eligible economic activity"
+            :percent="dataSet.eligibilityKpis[fsType].taxonomyNonEligibleActivity?.value"
+          />
+        </div>
         <template v-if="fsType === 'CreditInstitution'">
           <div class="col-12 text-left pb-3">
             <span class="font-medium text-xl">Credit Institution KPIs</span>
@@ -112,6 +119,19 @@
               name="taxonomyEligibleNonLifeInsuranceActivities"
               title="Taxonomy-eligible non-life insurance economic activities"
               :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities?.value"
+            />
+          </div>
+        </template>
+        <template v-if="fsType === 'InvestmentFirm'">
+          <div class="col-12 text-left pb-0">
+            <span class="font-medium text-xl">Investment Firm KPIs</span>
+            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          </div>
+          <div class="col-6">
+            <TaxoCard
+              name="greenAssetRatio"
+              title="Green asset ratio"
+              :percent="dataSet.investmentFirmKpis.greenAssetRatio?.value"
             />
           </div>
         </template>
@@ -181,6 +201,7 @@ export default defineComponent({
         CreditInstitution: "Credit Institution",
         AssetManagement: "Asset Management",
         InsuranceOrReinsurance: "Insurance and Reinsurance",
+        InvestmentFirm: "Investment Firm"
       };
       return mapping[type];
     },

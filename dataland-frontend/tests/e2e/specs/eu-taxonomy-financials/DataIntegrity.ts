@@ -86,6 +86,9 @@ describeIf(
       cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
         .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivity));
+      cy.get(`div[name="taxonomyNonEligibleActivity${financialCompanyType}"]`)
+        .should("contain", "Taxonomy-non-eligible economic activity")
+        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivity));
       cy.get(`div[name="derivatives${financialCompanyType}"]`)
         .should("contain", "Derivatives")
         .should("contain", formatPercentNumber(eligibilityKpis.derivatives));
