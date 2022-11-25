@@ -18,6 +18,7 @@ import java.util.HexFormat
  * A class for handling the generation, validation and revocation of an api key
  */
 class ApiKeyManager {
+
     private companion object {
         private const val keyByteLength = 40
         private const val saltByteLength = 16
@@ -30,10 +31,14 @@ class ApiKeyManager {
 
     private val apiKeyPreValidator = ApiKeyPreValidator()
 
-    // TODO temporary
+    private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
+            "Please generate one."
+    private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
+    private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired"
+
+    // TODO temporary use of map, but in the end we need a DB to store stuff
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
         mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
-    // TODO temporary
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -74,7 +79,7 @@ class ApiKeyManager {
     private fun getKeycloakUserId(authentication: Authentication): String {
         var userIdByToken = ""
         val principal = authentication.principal
-        if (principal is KeycloakPrincipal<*>) {   // TODO we need this object which was included before
+        if (principal is KeycloakPrincipal<*>) { // TODO we need this object which was included before keycloakAdapter
             userIdByToken = principal.keycloakSecurityContext.token.subject
         }
         return userIdByToken
@@ -111,10 +116,27 @@ class ApiKeyManager {
 
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
-        // TODO
 
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
+    }
+
+    private fun checkIfApiKeyForUserIsCorrectAndReturnApiKeyMetaInfoWithActivityStatus(
+        receivedApiKeyHashedAndBase64Encoded: String,
+        storedHashedApiKeyOfUser: StoredHashedAndBase64EncodedApiKey,
+        keycloakUserId: String
+    ): ApiKeyMetaInfo {
+        return if (receivedApiKeyHashedAndBase64Encoded != storedHashedApiKeyOfUser.hashedApiKeyBase64Encoded) {
+            logger.info("The provided Api Key for the user $keycloakUserId is not correct.")
+            ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
+        }
+        else {
+            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
+            logger.info("Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
+                    "value $receivedApiKeyHashedAndBase64Encoded. " +
+                    "The activity status of the API key is $activityStatus.")
+            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus, validationMessage = validationMessageExpiredApiKey)
+        }
     }
 
     /**
@@ -123,37 +145,20 @@ class ApiKeyManager {
      * @return the found api keys meta info
      */
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
-        val parsedApiKey = apiKeyPreValidator.parseApiKey(receivedApiKey)
-
-        val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded)
+        val receivedAndParserdApiKey = apiKeyPreValidator.parseApiKey(receivedApiKey)
+        val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParserdApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
-
-        // TODO Validation process => needs to be in postgres. map is just temporary
+        // TODO Retrieval process => needs to be in postgres. map is just temporary
         val storedHashedApiKeyOfUser = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]
         if (storedHashedApiKeyOfUser == null){
-            logger.info("Dataland user with the Keycloak user Id ${keycloakUserId} has no API key registered.")
-            return ApiKeyMetaInfo(active = false, validationMessage = "Your Dataland account has no API key registered. "
-            + "Please generate one.")
+            logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")
+            return ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
         }
-
         val salt = EncodingUtils.decodeFromBase64(storedHashedApiKeyOfUser.saltBase64Encoded)
         val receivedApiKeyHashedAndBase64Encoded = EncodingUtils.encodeToBase64(hashString(receivedApiKey, salt))
 
-        val apiKeyMetaInfoToReturn: ApiKeyMetaInfo
-
-        if (receivedApiKeyHashedAndBase64Encoded != storedHashedApiKeyOfUser.hashedApiKeyBase64Encoded) {
-            apiKeyMetaInfoToReturn = ApiKeyMetaInfo(active = false, validationMessage = "The API key you provided for "
-            + "your Dataland account is not correct.")
-            logger.info("The provided Api Key for the user $keycloakUserId is not correct.")
-        }
-
-        else {
-            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
-            logger.info("Validated Api Key with salt $salt and calculated hash value $receivedApiKeyHashedAndBase64Encoded. " +
-                    "The activity status of the API key is $activityStatus.")
-            apiKeyMetaInfoToReturn = storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus)
-        }
-        return apiKeyMetaInfoToReturn
+        return checkIfApiKeyForUserIsCorrectAndReturnApiKeyMetaInfoWithActivityStatus(
+            receivedApiKeyHashedAndBase64Encoded, storedHashedApiKeyOfUser, keycloakUserId)
     }
 
     /**
@@ -162,31 +167,23 @@ class ApiKeyManager {
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
         val authetication = getAuthentication()
-        // Todo: Fix the !! operator
+        // TODO: Fix the !! operator
         val keycloakUserId = getKeycloakUserId(authetication!!)
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
-
-        if (
-
-            // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
-            !mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.containsKey(keycloakUserId)
-            // TODO
-
-        ) {
+        // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
+        if (!mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.containsKey(keycloakUserId)) {
             revokementProcessSuccessful = false
             revokementProcessMessage = "No revokement took place since there is no Api key registered for the " +
                 "Keycloak user Id $keycloakUserId."
-        } else {
-
-            // TODO Deleting process => needs to be in postgres. map is just temporary
+        }
+        // TODO Deleting process => needs to be in postgres. map is just temporary
+        else {
             mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
-            // TODO
             revokementProcessSuccessful = true
             revokementProcessMessage = "The Api key for the Keycloak user Id $keycloakUserId was successfully " +
                 "removed from storage."
         }
-
         return RevokeApiKeyResponse(revokementProcessSuccessful, revokementProcessMessage)
     }
 }
