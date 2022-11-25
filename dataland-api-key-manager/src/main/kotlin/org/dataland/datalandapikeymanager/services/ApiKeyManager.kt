@@ -76,15 +76,6 @@ class ApiKeyManager {
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun getKeycloakUserId(authentication: Authentication): String {
-//        var userIdByToken = ""
-        val principal = authentication.principal
-//        if (principal is KeycloakPrincipal<*>) { // TDO we need this object which was included before keycloakAdapter
-//            userIdByToken = principal.keycloakSecurityContext.token.subject
-//        }
-        return principal.toString()
-    }
-
     private fun calculateExpiryDate(daysValid: Int?): LocalDate? {
         return if (daysValid == null || daysValid <= 0)
             null else
@@ -94,7 +85,7 @@ class ApiKeyManager {
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
         val keycloakAuthenticationToken = getAuthentication()
         // TDO: Fix usage of !! operator
-        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
+        val keycloakUserId = keycloakAuthenticationToken!!.name
         val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
     }
@@ -176,9 +167,8 @@ class ApiKeyManager {
      * @return the result of the attempted revocation as a status flag and a message
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
-        val authetication = getAuthentication()
         // TDO: Fix the !! operator
-        val keycloakUserId = getKeycloakUserId(authetication!!)
+        val keycloakUserId = getAuthentication()!!.name
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
         // TDO Checking if Api key exists => needs to be in postgres. map is just temporary
