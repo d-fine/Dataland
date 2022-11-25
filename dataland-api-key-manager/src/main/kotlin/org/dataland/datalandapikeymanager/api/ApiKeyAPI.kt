@@ -31,9 +31,9 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_USER')") // TODO why?  (Emanuel asking)
-    // TODO  PPU: welche Rolle man hat ist eigentlich egal
-    // TODO - aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
+    @PreAuthorize("hasRole('ROLE_USER')") // TDO why?  (Emanuel asking)
+    // TDO  PPU: welche Rolle man hat ist eigentlich egal
+    // TDO - aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
@@ -62,7 +62,7 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    /* TODO / idea for later: Give more detailed info like "Api Key valid",
+    /* TDO / idea for later: Give more detailed info like "Api Key valid",
     "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
      */
     fun validateApiKey(

@@ -30,10 +30,10 @@ class ApiKeyManager {
 
     private val apiKeyPrevalidator = ApiKeyPrevalidator()
 
-    // TODO temporary
+    // TDO temporary
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
         mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
-    // TODO temporary
+    // TDO temporary
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -109,9 +109,9 @@ class ApiKeyManager {
             EncodingUtils.encodeToBase64(newSalt)
         )
 
-        // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
+        // TDO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
-        // TODO
+        // TDO
 
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
@@ -128,11 +128,11 @@ class ApiKeyManager {
         val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
 
-        // TODO Validation process => needs to be in postgres. map is just temporary
+        // TDO Validation process => needs to be in postgres. map is just temporary
         val storedHashedApiKey = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]!!
-        // TODO
+        // TDO
 
-        // TODO what if the keycloak user id has no entry in the map?
+        // TDO what if the keycloak user id has no entry in the map?
 
         val salt = EncodingUtils.decodeFromBase64(storedHashedApiKey.saltBase64Encoded)
         val hashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(apiKey, salt))
@@ -155,9 +155,9 @@ class ApiKeyManager {
 
         if (
 
-            // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
+            // TDO Checking if Api key exists => needs to be in postgres. map is just temporary
             !mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.containsKey(keycloakUserId)
-            // TODO
+            // TDO
 
         ) {
             revokementProcessSuccessful = false
@@ -165,9 +165,9 @@ class ApiKeyManager {
                 "Keycloak user Id $keycloakUserId."
         } else {
 
-            // TODO Deleting process => needs to be in postgres. map is just temporary
+            // TDO Deleting process => needs to be in postgres. map is just temporary
             mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
-            // TODO
+            // TDO
             revokementProcessSuccessful = true
             revokementProcessMessage = "The Api key for the Keycloak user Id $keycloakUserId was successfully " +
                 "removed from storage."

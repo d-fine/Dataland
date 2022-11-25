@@ -12,6 +12,6 @@ data class ApiKeyAndMetaInfo(
     @field:JsonProperty(required = true)
     val apiKey: String,
 
-    // TODO do we have to set required to true here as well? I am not sure
+    // TDO do we have to set required to true here as well? I am not sure
     val apiKeyMetaInfo: ApiKeyMetaInfo,
 )
