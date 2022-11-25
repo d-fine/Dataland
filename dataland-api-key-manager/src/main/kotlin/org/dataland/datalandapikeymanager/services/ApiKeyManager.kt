@@ -123,7 +123,7 @@ class ApiKeyManager {
      * @return the found api keys meta info
      */
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
-        val parsedApiKey = apiKeyPreValidator.prevalidateApiKey(receivedApiKey) // TODO Take this out cause backend does this
+        val parsedApiKey = apiKeyPreValidator.parseApiKey(receivedApiKey)
 
         val keycloakUserId = EncodingUtils.decodeFromBase64(parsedApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)

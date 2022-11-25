@@ -73,7 +73,7 @@ class ApiKeyPreValidator { // TODO not too happy with that name
         }
     }
 
-    private fun parseApiKey(receivedApiKey: String): ParsedApiKey {
+    fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
         // TODO mit split und dann aus dem array nehmen
