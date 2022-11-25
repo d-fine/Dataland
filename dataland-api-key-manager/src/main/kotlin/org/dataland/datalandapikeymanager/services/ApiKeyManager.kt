@@ -85,6 +85,12 @@ class ApiKeyManager {
         return userIdByToken
     }
 
+    private fun calculateExpiryDate(daysValid: Int?): LocalDate? {
+        return if (daysValid == null || daysValid <= 0)
+            null else
+            LocalDate.now().plusDays(daysValid.toLong())
+    }
+
     /**
      * A method that generates an api key which is valid for the specified number of days
      * @param daysValid the number of days the api key should be valid from time of generation
@@ -95,28 +101,23 @@ class ApiKeyManager {
         // TODO: Fix usage of !! operator
         val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
         val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
-        val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
-        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
-            null else
-            LocalDate.now().plusDays(daysValid.toLong())
-        val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
-
+        val apiKeyMetaInfo = ApiKeyMetaInfo(
+            keycloakUserId,
+            keycloakAuthenticationToken.authorities.map { it.authority!! }.toList(),
+            calculateExpiryDate(daysValid)
+        )
         val newSalt = generateSalt()
         val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
         val newCrc32Value = EncodingUtils.calculateCrc32Value(newApiKeyWithoutCrc32Value.toByteArray(utf8Charset))
         val newApiKey = newApiKeyWithoutCrc32Value + "_" + newCrc32Value
-        val newHashedApiKey = hashString(newApiKey, newSalt)
-        val newHashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(newHashedApiKey)
-
+        val newHashedApiKeyBase64Encoded = EncodingUtils.encodeToBase64(hashString(newApiKey, newSalt))
         val storedHashedAndBase64EncodedApiKey = StoredHashedAndBase64EncodedApiKey(
             newHashedApiKeyBase64Encoded,
             apiKeyMetaInfo,
             EncodingUtils.encodeToBase64(newSalt)
         )
-
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
         mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
-
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
