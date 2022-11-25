@@ -155,9 +155,8 @@ class ApiKeyManager {
      * @return the result of the attempted revocation as a status flag and a message
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
-        val authetication = getAuthentication()
         // TODO: Fix the !! operator
-        val keycloakUserId = authetication!!.name
+        val keycloakUserId = getAuthentication()!!.name
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
         // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
