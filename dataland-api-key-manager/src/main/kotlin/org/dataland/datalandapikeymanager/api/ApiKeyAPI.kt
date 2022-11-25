@@ -31,10 +31,9 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    // TODO why?  (Emanuel asking) //
-    //  PPU: welche Rolle man hat ist eigentlich egal - aber alle Rollen die man hat
-    //  müssen dann auch mit dem API-Key assoziiert werden
+    @PreAuthorize("hasRole('ROLE_USER')") // TODO why?  (Emanuel asking)
+    // TODO  PPU: welche Rolle man hat ist eigentlich egal
+    // TODO - aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
