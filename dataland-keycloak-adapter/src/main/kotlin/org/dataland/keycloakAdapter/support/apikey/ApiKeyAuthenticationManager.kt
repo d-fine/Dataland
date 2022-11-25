@@ -76,7 +76,7 @@ class ApiKeyAuthenticationManager(
         } catch (ex: ServerException) {
             handleAuthenticationException(ex)
         }
-        // TODO this is not reachable but something must be returned / thrown
+        // TDO this is not reachable but something must be returned / thrown
         return ApiKeyMetaInfo("", listOf(""), LocalDate.now())
     }
 
