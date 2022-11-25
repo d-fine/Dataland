@@ -41,7 +41,6 @@ class WebSecurityConfig(
     /**
      * Defines the default Security Filter Chain
      */
-    @Suppress("SpreadOperator")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
@@ -64,6 +63,7 @@ class WebSecurityConfig(
     }
 
     // TDO rename these methods to something more expressive
+    @Suppress("SpreadOperator")
     private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
         http
             .authorizeRequests()

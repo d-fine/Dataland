@@ -62,20 +62,26 @@ class ApiKeyAuthenticationManager(
 
     private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
-        val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         try {
             // TDO: Was passiert wenn es den API-Key nicht gibt?
             return controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
-            throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
+            handleAuthenticationException(ex)
         } catch (ex: IOException) {
-            throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
+            handleAuthenticationException(ex)
         } catch (ex: UnsupportedOperationException) {
-            throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
+            handleAuthenticationException(ex)
         } catch (ex: ClientException) {
-            throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
+            handleAuthenticationException(ex)
         } catch (ex: ServerException) {
-            throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
+            handleAuthenticationException(ex)
         }
+        // TODO this is not reachable but something must be returned / thrown
+        return ApiKeyMetaInfo("", listOf(""), LocalDate.now())
+    }
+
+    private fun handleAuthenticationException(ex: Exception) {
+        val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
+        throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
     }
 }
