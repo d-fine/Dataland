@@ -195,8 +195,6 @@ describeIf(
           testData.t
       );
       checkInvestmentFirmValues(testData.t);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
     });
 
     it("Create an Asset Manager", () => {
