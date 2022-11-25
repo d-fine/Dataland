@@ -31,9 +31,11 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_USER')") // TDO why?  (Emanuel asking)
-    // TDO  PPU: welche Rolle man hat ist eigentlich egal
-    // TDO - aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
+    @PreAuthorize("hasRole('ROLE_USER')") /* TDO why?  (Emanuel asking)
+    TDO PPU: welche Rolle man hat ist eigentlich egal
+    TDO aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
+    TDO Emanuel: Aber warum Oauth zusätzlich? Ist das wegen der swagger UI Authorize Geschichte?
+    */
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
@@ -62,9 +64,6 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    /* TDO / idea for later: Give more detailed info like "Api Key valid",
-    "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
-     */
     fun validateApiKey(
         @RequestParam apiKey: String,
     ): ResponseEntity<ApiKeyMetaInfo>
@@ -88,6 +87,8 @@ interface ApiKeyAPI {
      */
 
     // TDO: PreAuthorize überdenken
+    // TDO Antwort von Emanuel:  Wieso sollten wir es überdenken? Wir brauchen die userId des
+    // TDO revokenden Users, und es soll ja auch nur jeder User für sich revoken können.
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")

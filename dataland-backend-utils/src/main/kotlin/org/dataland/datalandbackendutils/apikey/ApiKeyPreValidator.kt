@@ -7,9 +7,9 @@ import org.dataland.datalandbackendutils.utils.EncodingUtils
  * This class should be used to validate that a given api key has the reuired format and the correct checksum
  * before a request is sent to /api-keys/validateApiKey to prevent unneccessary traffic
  */
-class ApiKeyPrevalidator { // TDO not too happy with that name
+class ApiKeyPreValidator { // TODO not too happy with that name
 
-    // private val logger = LoggerFactory.getLogger(javaClass) // TDO log some stuff while validating maybe?
+    // private val logger = LoggerFactory.getLogger(javaClass) // TODO log some stuff while validating maybe?
 
     companion object {
         const val minPossibleCrc32Value = 0
@@ -73,13 +73,15 @@ class ApiKeyPrevalidator { // TDO not too happy with that name
         }
     }
 
-    private fun parseApiKey(receivedApiKey: String): ParsedApiKey {
+    fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
-        val parsedKeycloakUserIdBase64Encoded = receivedApiKey.substringBefore("_")
-        val parsedCrc32Value = receivedApiKey.substringAfterLast("_")
-        val parsedApiKeySecret = receivedApiKey.substringAfter("_").substringBefore("_")
-        val parsedApiKeyWithoutCrc32Value = receivedApiKey.substringBeforeLast("_")
+        val receivedApiKeySections = receivedApiKey.split("_")
+
+        val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
+        val parsedApiKeySecret = receivedApiKeySections[1]
+        val parsedApiKeyWithoutCrc32Value = parsedKeycloakUserIdBase64Encoded+"_"+parsedApiKeySecret
+        val parsedCrc32Value = receivedApiKeySections[2]
 
         return ParsedApiKey(
             parsedKeycloakUserIdBase64Encoded,

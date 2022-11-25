@@ -4,7 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
-import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyPreValidator
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
@@ -31,7 +31,7 @@ class ApiKeyAuthenticationManager(
         val customToken = extractApiKey(authentication)
 
         // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
-        ApiKeyPrevalidator().prevalidateApiKey(customToken)
+        ApiKeyPreValidator().prevalidateApiKey(customToken)
 
         return validateApiKey(customToken)
     }

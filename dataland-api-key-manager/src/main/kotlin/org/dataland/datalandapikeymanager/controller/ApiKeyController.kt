@@ -4,7 +4,7 @@ import org.dataland.datalandapikeymanager.api.ApiKeyAPI
 import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
-import org.dataland.datalandapikeymanager.utils.ApiKeyManager
+import org.dataland.datalandapikeymanager.services.ApiKeyManager
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
