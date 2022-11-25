@@ -47,6 +47,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
 
 function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined): void {
   fillField(divName, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
+  fillField(divName, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivity);
   fillField(divName, "derivatives", data?.derivatives);
   fillField(divName, "banksAndIssuers", data?.banksAndIssuers);
   fillField(divName, "investmentNonNfrd", data?.investmentNonNfrd);

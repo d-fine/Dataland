@@ -107,6 +107,13 @@ describeIf(
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
+    function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
+      checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
+      cy.get('div[name="greenAssetRatio"]')
+        .should("contain", "Green asset ratio")
+        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatio));
+    }
+
     function checkCreditInstitutionValues(
       testData: EuTaxonomyDataForFinancials,
       individualFieldSubmission: boolean,
@@ -177,6 +184,17 @@ describeIf(
         testData.t
       );
       checkInsuranceValues(testData.t);
+      cy.get("body").should("not.contain", "Trading portfolio");
+      cy.get("body").should("not.contain", "demand interbank loans");
+    });
+
+    it("Create an Investment Firm", () => {
+      const testData = getPreparedFixture("company-for-all-types");
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+          testData.companyInformation,
+          testData.t
+      );
+      checkInvestmentFirmValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
     });
