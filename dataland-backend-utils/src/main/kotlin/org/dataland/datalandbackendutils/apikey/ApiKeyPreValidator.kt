@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.utils.EncodingUtils
  * This class should be used to validate that a given api key has the reuired format and the correct checksum
  * before a request is sent to /api-keys/validateApiKey to prevent unneccessary traffic
  */
-class ApiKeyPrevalidator { // TODO not too happy with that name
+class ApiKeyPreValidator { // TODO not too happy with that name
 
     // private val logger = LoggerFactory.getLogger(javaClass) // TODO log some stuff while validating maybe?
 
@@ -76,6 +76,7 @@ class ApiKeyPrevalidator { // TODO not too happy with that name
     private fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
+        // TODO mit split und dann aus dem array nehmen
         val parsedKeycloakUserIdBase64Encoded = receivedApiKey.substringBefore("_")
         val parsedCrc32Value = receivedApiKey.substringAfterLast("_")
         val parsedApiKeySecret = receivedApiKey.substringAfter("_").substringBefore("_")
