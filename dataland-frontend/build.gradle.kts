@@ -17,37 +17,26 @@ node {
     version.set("18.12.1")
 }
 
-val backendOpenApiSpecConfig by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
-dependencies {
-    backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
-}
-
-val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val apiClientGenerationTaskName = "generateAPIClientFrontend"
+val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
 val clientOutputDir = "$buildDir/clients/backend"
-val apiSpecLocation = "$clientOutputDir/$backendOpenApiJson"
-val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(apiClientGenerationTaskName)
-}
-
-tasks.withType<NpmTask> {
-    dependsOn(apiClientGenerationTaskName)
-}
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
-    from(backendOpenApiSpecConfig)
+    from(backendOpenApiFile)
     into(clientOutputDir)
     filter({ line -> line.replace("http://localhost:8080/api", "/api") })
 }
 
-tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(apiSpecLocation).path
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateAPIClientFrontend")
+}
+
+tasks.withType<NpmTask> {
+    dependsOn("generateAPIClientFrontend")
+}
+
+tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
+    input = project.file(backendOpenApiFile).path
     outputDir.set(clientOutputDir)
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
@@ -69,7 +58,7 @@ tasks.register(apiClientGenerationTaskName, org.openapitools.generator.gradle.pl
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$clientOutputDir/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/backend/src/main/kotlin")
 }
 
 ktlint {

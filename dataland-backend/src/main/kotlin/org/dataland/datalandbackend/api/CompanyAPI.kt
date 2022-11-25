@@ -39,7 +39,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_UPLOADER)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information
@@ -61,7 +61,7 @@ interface CompanyAPI {
     @GetMapping(
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method to retrieve specific companies identified by different filters
      * If the filters are not set, all companies in the data store are returned.
@@ -96,7 +96,7 @@ interface CompanyAPI {
         value = ["/meta-information"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector
      * to be used by the search UI
@@ -117,7 +117,7 @@ interface CompanyAPI {
         produces = ["application/json"]
     )
 
-    @PreAuthorize("hasRole(@RoleContainer.DATA_READER) or @CompanyManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland

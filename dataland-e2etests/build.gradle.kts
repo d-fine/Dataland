@@ -19,11 +19,6 @@ plugins {
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-val backendOpenApiSpecConfig by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
 dependencies {
     implementation(libs.junit.jupiter)
     implementation(libs.moshi.kotlin)
@@ -33,7 +28,6 @@ dependencies {
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation("org.springframework.boot:spring-boot-starter-web")
-    backendOpenApiSpecConfig(project(mapOf("path" to ":dataland-backend", "configuration" to "openApiSpec")))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -45,23 +39,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-val taskName = "generateBackendClient"
-val clientOutputDir = "$buildDir/Clients/backend"
-val apiSpecLocation = "$buildDir/$backendOpenApiJson"
-val destinationPackage = "org.dataland.datalandbackend.openApiClient"
-
-tasks.register<Copy>("getBackendOpenApiSpec") {
-    from(backendOpenApiSpecConfig)
-    into("$buildDir")
-}
-
-tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    input = project.file(apiSpecLocation).path
-    outputDir.set(clientOutputDir)
-    modelPackage.set("$destinationPackage.model")
-    apiPackage.set("$destinationPackage.api")
-    packageName.set(destinationPackage)
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set("$buildDir/clients/backend")
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
     generatorName.set("kotlin")
 
     additionalProperties.set(
@@ -75,12 +59,11 @@ tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.Generate
             "useTags" to "true"
         )
     )
-    dependsOn("getBackendOpenApiSpec")
 }
 
 sourceSets {
     val main by getting
-    main.java.srcDir("$clientOutputDir/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
 }
 
 ktlint {

@@ -34,7 +34,6 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
-    implementation(libs.keycloak.spring.boot.starter)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -44,26 +43,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:4.8.0")
+    implementation(project(":dataland-keycloak-adapter"))
 }
 
-val backendOpenApiJson = rootProject.extra["backendOpenApiJson"]
-
 openApi {
-    outputFileName.set("$backendOpenApiJson")
     apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
     }
-}
-
-val openApiSpec by configurations.creating {
-    isCanBeConsumed = true
-    isCanBeResolved = false
-}
-artifacts {
-    add("openApiSpec", project.file("$buildDir/$backendOpenApiJson")) {
-        builtBy("generateOpenApiDocs")
-    }
+    outputFileName.set("$projectDir/backendOpenApi.json")
 }
 
 tasks.test {
