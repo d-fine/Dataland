@@ -64,9 +64,6 @@ interface ApiKeyAPI {
      * @return "true" if API key is valid, else "false"
      */
 
-    /* TODO / idea for later: Give more detailed info like "Api Key valid",
-    "Api Key invalid. Reason: Not found", "Api Key invalid. Reason: Expired"
-     */
     fun validateApiKey(
         @RequestParam apiKey: String,
     ): ResponseEntity<ApiKeyMetaInfo>
@@ -90,6 +87,8 @@ interface ApiKeyAPI {
      */
 
     // TODO: PreAuthorize überdenken
+    // TODO Antwort von Emanuel:  Wieso sollten wir es überdenken? Wir brauchen die userId des
+    // TODO revokenden Users, und es soll ja auch nur jeder User für sich revoken können.
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
