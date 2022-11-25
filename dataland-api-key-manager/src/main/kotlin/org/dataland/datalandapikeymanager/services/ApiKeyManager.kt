@@ -134,8 +134,8 @@ class ApiKeyManager {
      * @return the found api keys meta info
      */
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
-        val receivedAndParserdApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
-        val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParserdApiKey.parsedKeycloakUserIdBase64Encoded)
+        val receivedAndParsedApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
+        val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParsedApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
         // TODO Retrieval process => needs to be in postgres. map is just temporary
         val storedHashedApiKeyOfUser = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]
