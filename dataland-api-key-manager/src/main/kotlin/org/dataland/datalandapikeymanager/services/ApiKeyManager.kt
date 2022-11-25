@@ -83,10 +83,10 @@ class ApiKeyManager {
     }
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
-        val keycloakAuthenticationToken = getAuthentication()
+        val authentication = getAuthentication()
         // TDO: Fix usage of !! operator
-        val keycloakUserId = keycloakAuthenticationToken!!.name
-        val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
+        val keycloakUserId = authentication!!.name
+        val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
     }
 
