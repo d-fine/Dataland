@@ -56,7 +56,7 @@ class ApiKeyAuthenticationManager(
         return PreAuthenticatedAuthenticationToken(
             apiKeyMetaInfo.keycloakUserId,
             "N/A",
-            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList()
+            apiKeyMetaInfo.keycloakRoles!!.map { GrantedAuthority { it } }.toList()
         )
     }
 
