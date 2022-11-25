@@ -28,26 +28,44 @@ class ApiKeyAuthenticationManager(
     @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String
 ) : AuthenticationManager {
     override fun authenticate(authentication: Authentication?): Authentication {
-        val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
-        val customToken: String
+        val customToken = extractApiKey(authentication)
+
+        // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
+        ApiKeyPrevalidator().prevalidateApiKey(customToken)
+
+        return validateApiKey(customToken)
+    }
+
+    private fun extractApiKey(authentication: Authentication?): String {
         val noCredentialsFoundText = "No Credentials found"
         try {
             if (authentication == null) {
                 throw AuthenticationCredentialsNotFoundException(noCredentialsFoundText)
             }
-            customToken = authentication.principal as String
+            return authentication.principal as String
         } catch (ex: TypeCastException) {
             throw AuthenticationCredentialsNotFoundException(noCredentialsFoundText, ex)
         }
+    }
 
-        // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
-        ApiKeyPrevalidator().prevalidateApiKey(customToken)
+    private fun validateApiKey(customToken: String): Authentication {
+        val apiKeyMetaInfo: ApiKeyMetaInfo = validateApiKeyViaEndpoint(customToken)
+        if (LocalDate.now().isAfter(apiKeyMetaInfo.expiryDate)) {
+            throw CredentialsExpiredException("Token has expired")
+        }
+        return PreAuthenticatedAuthenticationToken(
+            apiKeyMetaInfo.keycloakUserId,
+            "N/A",
+            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList()
+        )
+    }
 
-        val apiKeyMetaInfo: ApiKeyMetaInfo
+    private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
+        val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         try {
-            // TDO: Was passiert wenn es den API-Key nicht gibt?
-            apiKeyMetaInfo = controller.validateApiKey(customToken)
+            // TODO: Was passiert wenn es den API-Key nicht gibt?
+            return controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
             throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
         } catch (ex: IOException) {
@@ -59,13 +77,5 @@ class ApiKeyAuthenticationManager(
         } catch (ex: ServerException) {
             throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
         }
-        if (LocalDate.now().isAfter(apiKeyMetaInfo.expiryDate)) {
-            throw CredentialsExpiredException("Token has expired")
-        }
-        return PreAuthenticatedAuthenticationToken(
-            apiKeyMetaInfo.keycloakUserId,
-            "N/A",
-            apiKeyMetaInfo.keycloakRoles.map { GrantedAuthority { it } }.toList()
-        )
     }
 }

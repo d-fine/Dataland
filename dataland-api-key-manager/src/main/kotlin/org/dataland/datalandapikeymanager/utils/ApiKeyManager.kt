@@ -80,21 +80,26 @@ class ApiKeyManager {
         return userIdByToken
     }
 
+    private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
+        val keycloakAuthenticationToken = getAuthentication()
+        // TDO: Fix usage of !! operator
+        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
+        val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
+        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
+            null else
+            LocalDate.now().plusDays(daysValid.toLong())
+        return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
+    }
+
     /**
      * A method that generates an api key which is valid for the specified number of days
      * @param daysValid the number of days the api key should be valid from time of generation
      * @return the api key and its meta info
      */
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
-        val keycloakAuthenticationToken = getAuthentication()
-        // TDO: Fix usage of !! operator
-        val keycloakUserId = getKeycloakUserId(keycloakAuthenticationToken!!)
-        val keycloakUserIdBase64Encoded = EncodingUtils.encodeToBase64(keycloakUserId.toByteArray(utf8Charset))
-        val keycloakRoles = keycloakAuthenticationToken.authorities.map { it.authority!! }.toList()
-        val expiryDate: LocalDate? = if (daysValid == null || daysValid <= 0)
-            null else
-            LocalDate.now().plusDays(daysValid.toLong())
-        val apiKeyMetaInfo = ApiKeyMetaInfo(keycloakUserId, keycloakRoles, expiryDate)
+        val apiKeyMetaInfo = generateApiKeyMetaInfo(daysValid)
+        val keycloakUserIdBase64Encoded =
+            EncodingUtils.encodeToBase64(apiKeyMetaInfo.keycloakUserId.toByteArray(utf8Charset))
 
         val newSalt = generateSalt()
         val newApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + generateApiKeySecretAndEncodeToHex()
@@ -110,7 +115,8 @@ class ApiKeyManager {
         )
 
         // TDO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
-        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
+        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[apiKeyMetaInfo.keycloakUserId] =
+            storedHashedAndBase64EncodedApiKey
         // TDO
 
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
