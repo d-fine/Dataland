@@ -24,7 +24,6 @@ input_sha1=$( \
   grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log\|/local/\|/.nyc_output/\|/cypress/' | \
   sort -u | \
   xargs sha1sum | \
-  awk '{print $1}' | \
   sha1sum | \
   awk '{print $1}'
 )
