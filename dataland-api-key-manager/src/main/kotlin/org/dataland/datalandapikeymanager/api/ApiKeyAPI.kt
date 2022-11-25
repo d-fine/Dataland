@@ -35,6 +35,7 @@ interface ApiKeyAPI {
     TDO PPU: welche Rolle man hat ist eigentlich egal
     TDO aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
     TDO Emanuel: Aber warum Oauth zusätzlich? Ist das wegen der swagger UI Authorize Geschichte?
+    TDO Florian: Scheint nicht notwendig zu sein. Das kam in der CompanyAPI vor, inwiefern wird das benutzt?
     */
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
