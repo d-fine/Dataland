@@ -77,3 +77,9 @@ sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
 }
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}
