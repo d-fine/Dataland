@@ -148,7 +148,7 @@ class ApiKeyManager {
         val receivedAndParserdApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
         val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParserdApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
-        // TODO Retrieval process => needs to be in postgres. map is just temporary
+        // TDO Retrieval process => needs to be in postgres. map is just temporary
         val storedHashedApiKeyOfUser = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]
         if (storedHashedApiKeyOfUser == null) {
             logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")
