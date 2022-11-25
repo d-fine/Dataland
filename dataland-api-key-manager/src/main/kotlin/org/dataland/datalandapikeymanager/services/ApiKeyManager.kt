@@ -149,7 +149,6 @@ class ApiKeyManager {
 
         else {
             val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
-            // TODO which time zone to use?
             logger.info("Validated Api Key with salt $salt and calculated hash value $receivedApiKeyHashedAndBase64Encoded. " +
                     "The activity status of the API key is $activityStatus.")
             apiKeyMetaInfoToReturn = storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus)
