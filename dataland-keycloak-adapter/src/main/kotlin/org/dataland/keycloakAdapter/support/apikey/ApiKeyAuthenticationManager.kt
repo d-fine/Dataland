@@ -5,6 +5,7 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientExc
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
@@ -30,7 +31,6 @@ class ApiKeyAuthenticationManager(
     override fun authenticate(authentication: Authentication?): Authentication {
         val customToken = extractApiKey(authentication)
 
-        // TODO: catch ApiKeyFormatException and process to whatever exceptions fits best
         ApiKeyPrevalidator().prevalidateApiKey(customToken)
 
         return validateApiKey(customToken)
@@ -64,8 +64,13 @@ class ApiKeyAuthenticationManager(
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
-            // TODO: Was passiert wenn es den API-Key nicht gibt?
             apiKeyMetaInfo = controller.validateApiKey(customToken)
+            if (!(apiKeyMetaInfo.active!!)) {
+                throw InvalidInputApiException(
+                    "The provided api key is not valid.",
+                    "The provided api key $customToken is either expired or did never exist."
+                )
+            }
         } catch (ex: IllegalStateException) {
             handleAuthenticationException(ex)
         } catch (ex: IOException) {
