@@ -57,7 +57,7 @@ build_directories () {
   echo "Copying keycloak files."
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
 
-  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
+  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils,docker_utils}.sh "$target_dir"/dataland-keycloak
 }
 
 are_docker_containers_healthy_remote () {
