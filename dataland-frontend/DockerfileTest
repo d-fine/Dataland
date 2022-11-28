@@ -3,7 +3,7 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 WORKDIR /app
 
-COPY ./dataland-backend/ ./dataland-backend
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
