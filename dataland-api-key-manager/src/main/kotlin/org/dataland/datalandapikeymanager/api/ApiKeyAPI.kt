@@ -81,10 +81,6 @@ interface ApiKeyAPI {
      * A method to revoke the API key of the requesting user.
      * @return "true" if API key is valid, else "false"
      */
-
-    // TODO: PreAuthorize überdenken
-    // TODO Antwort von Emanuel:  Wieso sollten wir es überdenken? Wir brauchen die userId des
-    // TODO revokenden Users, und es soll ja auch nur jeder User für sich revoken können.
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")

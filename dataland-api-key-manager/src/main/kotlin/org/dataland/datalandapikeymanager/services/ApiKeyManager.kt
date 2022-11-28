@@ -130,13 +130,17 @@ class ApiKeyManager {
             val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
             logger.info(
                 "Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
-                    "value $receivedApiKeyHashedAndBase64Encoded. The activity status of the API key is $activityStatus."
+                    "value $receivedApiKeyHashedAndBase64Encoded. " +
+                    "The activity status of the API key is $activityStatus."
             )
             var validationMessageToReturn = validationMessageSuccess
             if (!activityStatus) {
                 validationMessageToReturn = validationMessageExpiredApiKey
             }
-            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus, validationMessage = validationMessageToReturn)
+            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(
+                active = activityStatus,
+                validationMessage = validationMessageToReturn
+            )
         }
     }
 
@@ -169,7 +173,7 @@ class ApiKeyManager {
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
         // TODO: Fix the !! operator
-        val keycloakUserId = getAuthentication()!!.name
+        val keycloakUserId = getAuthentication()!!.name!!
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
         // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
