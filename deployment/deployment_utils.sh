@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")"/docker_utils.sh
 
 setup_ssh () {
   mkdir -p ~/.ssh/
@@ -55,5 +56,12 @@ build_directories () {
   echo "Copying keycloak files."
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
 
-  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils}.sh "$target_dir"/dataland-keycloak
+  cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils,docker_utils}.sh "$target_dir"/dataland-keycloak
+}
+
+wait_for_docker_containers_healthy_remote () {
+  target_server_url="$1"
+  location="$2"
+  docker_compose_profile="$3"
+  ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 240 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }

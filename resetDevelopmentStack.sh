@@ -23,7 +23,7 @@ set -o allexport
 source ./*github_env.log
 set +o allexport
 
-find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
+find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
 
 set -o allexport
 source ./*github_env.log
