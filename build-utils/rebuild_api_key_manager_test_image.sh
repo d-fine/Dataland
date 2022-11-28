@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euxo pipefail
+
+# TODO: re-check all build files
+./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_base ./dataland-api-key-manager/DatalandApiKeyManagerBaseDockerfile \
+         ./dataland-api-key-manager/ ./dataland-backend-utils/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
+
+set -o allexport
+source ./*github_env.log
+set +o allexport
+
+./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_test ./dataland-api-key-manager/DockerfileTest ./dataland-api-key-manager/ \
+          ./dataland-backend-utils/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
