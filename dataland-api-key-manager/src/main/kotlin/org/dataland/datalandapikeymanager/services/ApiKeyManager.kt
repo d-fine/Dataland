@@ -36,7 +36,7 @@ class ApiKeyManager {
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
     private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired"
 
-    // TDO temporary use of map, but in the end we need a DB to store stuff
+    // TODO temporary use of map, but in the end we need a DB to store stuff
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
         mutableMapOf<String, StoredHashedAndBase64EncodedApiKey>()
 
@@ -84,8 +84,8 @@ class ApiKeyManager {
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
         val authentication = getAuthentication()
-        // TDO: Fix usage of !! operator
-        val keycloakUserId = authentication!!.name
+        // TODO: Fix usage of !! operator
+        val keycloakUserId = authentication!!.name!!
         val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
     }
@@ -110,9 +110,8 @@ class ApiKeyManager {
             apiKeyMetaInfo,
             EncodingUtils.encodeToBase64(newSalt)
         )
-        // TDO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
-        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[apiKeyMetaInfo.keycloakUserId] =
-            storedHashedAndBase64EncodedApiKey
+        // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
+        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }
@@ -145,10 +144,10 @@ class ApiKeyManager {
      * @return the found api keys meta info
      */
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
-        val receivedAndParserdApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
-        val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParserdApiKey.parsedKeycloakUserIdBase64Encoded)
+        val receivedAndParsedApiKey = apiKeyPrevalidator.parseApiKey(receivedApiKey)
+        val keycloakUserId = EncodingUtils.decodeFromBase64(receivedAndParsedApiKey.parsedKeycloakUserIdBase64Encoded)
             .toString(utf8Charset)
-        // TDO Retrieval process => needs to be in postgres. map is just temporary
+        // TODO Retrieval process => needs to be in postgres. map is just temporary
         val storedHashedApiKeyOfUser = mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId]
         if (storedHashedApiKeyOfUser == null) {
             logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")
@@ -167,17 +166,17 @@ class ApiKeyManager {
      * @return the result of the attempted revocation as a status flag and a message
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
-        // TDO: Fix the !! operator
+        // TODO: Fix the !! operator
         val keycloakUserId = getAuthentication()!!.name
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
-        // TDO Checking if Api key exists => needs to be in postgres. map is just temporary
+        // TODO Checking if Api key exists => needs to be in postgres. map is just temporary
         if (!mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.containsKey(keycloakUserId)) {
             revokementProcessSuccessful = false
             revokementProcessMessage = "No revokement took place since there is no Api key registered for the " +
                 "Keycloak user Id $keycloakUserId."
         }
-        // TDO Deleting process => needs to be in postgres. map is just temporary
+        // TODO Deleting process => needs to be in postgres. map is just temporary
         else {
             mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys.remove(keycloakUserId)
             revokementProcessSuccessful = true
