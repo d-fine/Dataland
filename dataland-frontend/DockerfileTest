@@ -8,8 +8,7 @@ COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-man
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-     VITE_COVERAGE=true \
+RUN  VITE_COVERAGE=true \
      BUILD_INSTRUMENTED=true \
      ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 

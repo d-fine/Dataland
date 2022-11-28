@@ -1,4 +1,4 @@
 ARG DATALAND_API_KEY_MANAGER_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_api_key_manager_base:${DATALAND_API_KEY_MANAGER_BASE_VERSION}
 
-CMD ./gradlew :dataland-api-key-manager:bootRun --args='--spring.profiles.active=ci' --no-daemon --s\tacktrace
+CMD ./gradlew :dataland-api-key-manager:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace

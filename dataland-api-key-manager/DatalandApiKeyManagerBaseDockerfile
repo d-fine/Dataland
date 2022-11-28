@@ -1,11 +1,9 @@
 ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
-ARG GITHUB_USER
-ARG GITHUB_TOKEN
 
 WORKDIR /app
 COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
-RUN GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN ./gradlew dataland-api-key-manager:bootJar --no-daemon --stacktrace
+RUN ./gradlew dataland-api-key-manager:bootJar --no-daemon --stacktrace

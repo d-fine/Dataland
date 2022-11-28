@@ -29,7 +29,6 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
-    // implementation(libs.dataland.edc.client)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -44,8 +43,6 @@ dependencies {
     // runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core:4.8.0")
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
@@ -56,14 +53,6 @@ openApi {
     apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
-    }
-}
-
-tasks.test {
-    useJUnitPlatform()
-
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
     }
 }
 

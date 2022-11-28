@@ -8,8 +8,7 @@ COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-man
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
-RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+RUN ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
