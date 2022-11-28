@@ -81,8 +81,8 @@ interface ApiKeyAPI {
         ]
     )
     @PostMapping(
-        produces = ["application/json"],
-        consumes = ["application/json"]
+        value = ["/revokeApiKey"],
+        produces = ["application/json"]
     )
     /**
      * A method to revoke the API key of the requesting user.
