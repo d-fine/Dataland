@@ -86,6 +86,9 @@ describeIf(
       cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
         .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivity));
+      cy.get(`div[name="taxonomyNonEligibleActivity${financialCompanyType}"]`)
+        .should("contain", "Taxonomy-non-eligible economic activity")
+        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivity));
       cy.get(`div[name="derivatives${financialCompanyType}"]`)
         .should("contain", "Derivatives")
         .should("contain", formatPercentNumber(eligibilityKpis.derivatives));
@@ -102,6 +105,13 @@ describeIf(
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
+    }
+
+    function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
+      checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
+      cy.get('div[name="greenAssetRatio"]')
+        .should("contain", "Green asset ratio")
+        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatio));
     }
 
     function checkCreditInstitutionValues(
@@ -176,6 +186,15 @@ describeIf(
       checkInsuranceValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
+    });
+
+    it("Create an Investment Firm", () => {
+      const testData = getPreparedFixture("company-for-all-types");
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t
+      );
+      checkInvestmentFirmValues(testData.t);
     });
 
     it("Create an Asset Manager", () => {

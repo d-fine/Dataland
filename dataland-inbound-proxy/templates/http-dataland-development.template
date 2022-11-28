@@ -62,6 +62,10 @@ server {
        root /var/www/html;
     }
 
+    location /health/proxy {
+       return 200 'UP';
+    }
+
     # additional config
     include utils/keycloak.conf;
     include utils/general.conf;
