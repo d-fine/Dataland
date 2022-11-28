@@ -71,6 +71,11 @@ class ApiKeyPrevalidator {
         }
     }
 
+    /**
+     * Parses an api key and splits it into its component
+     * @param receivedApiKey the api key to be parsed
+     * @return the parsed api key
+     */
     fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
@@ -78,7 +83,7 @@ class ApiKeyPrevalidator {
 
         val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
         val parsedApiKeySecret = receivedApiKeySections[1]
-        val parsedApiKeyWithoutCrc32Value = parsedKeycloakUserIdBase64Encoded+"_"+parsedApiKeySecret
+        val parsedApiKeyWithoutCrc32Value = parsedKeycloakUserIdBase64Encoded + "_" + parsedApiKeySecret
         val parsedCrc32Value = receivedApiKeySections[2]
 
         return ParsedApiKey(

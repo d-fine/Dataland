@@ -41,7 +41,6 @@ class WebSecurityConfig(
     /**
      * Defines the default Security Filter Chain
      */
-    @Suppress("SpreadOperator")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
@@ -57,6 +56,15 @@ class WebSecurityConfig(
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
         }
 
+        authorize(http, publicLinksArray)
+        updatePolicies(http)
+
+        return http.build()
+    }
+
+    // TODO rename these methods to something more expressive
+    @Suppress("SpreadOperator")
+    private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
         http
             .authorizeRequests()
             .antMatchers(*publicLinksArray).permitAll()
@@ -64,10 +72,11 @@ class WebSecurityConfig(
             .fullyAuthenticated().and()
             .csrf().disable()
             .oauth2ResourceServer().jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
+    }
+
+    private fun updatePolicies(http: HttpSecurity) {
         http
             .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
             .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
-
-        return http.build()
     }
 }

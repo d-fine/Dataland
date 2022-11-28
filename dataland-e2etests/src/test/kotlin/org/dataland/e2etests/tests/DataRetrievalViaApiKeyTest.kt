@@ -13,7 +13,7 @@ class DataRetrievalViaApiKeyTest {
     // private val apiKeyHandler = ApiKeyHandler()
 
     @Test
-    fun `Create a non-teaser company, generate an API key and get the non-teaser company with it`() {
+    fun `create a non teaser company and generate an API key and get the non teaser company with it`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
 
@@ -33,7 +33,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `Create a non-teaser company, upload data, generate an API key and get the data with it`() {
+    fun `create a non teaser company and upload data and generate an API key and get the data with it`() {
         val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1).first()
         val testCompanyInformationNonTeaser = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
