@@ -130,8 +130,7 @@ class ApiKeyManager {
             val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
             logger.info(
                 "Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
-                    "value $receivedApiKeyHashedAndBase64Encoded. " +
-                    "The activity status of the API key is $activityStatus."
+                "value $receivedApiKeyHashedAndBase64Encoded. The activity status of the API key is $activityStatus."
             )
             var validationMessageToReturn = validationMessageSuccess
             if (!activityStatus) {
