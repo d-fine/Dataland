@@ -1,28 +1,35 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.e2etests.accessmanagement.ApiKeyHandler
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 
 class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
 
-    // private val apiKeyHandler = ApiKeyHandler()
+    private val apiKeyHandler = ApiKeyHandler()
 
     @Test
     fun `create a non teaser company and generate an API key and get the non teaser company with it`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
-
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
         /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
-        // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        ApiClient.Companion.accessToken = null
+        ApiClientBackend.Companion.accessToken = null
+        println(ApiClientBackend.Companion.apiKey)
+        println(ApiClientBackend.Companion.apiKeyPrefix)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -45,7 +52,9 @@ class DataRetrievalViaApiKeyTest {
         /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
-        // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        ApiClient.Companion.accessToken =""
+        ApiClientBackend.Companion.accessToken = ""
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)

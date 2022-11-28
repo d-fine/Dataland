@@ -43,8 +43,8 @@ class TokenHandler {
         return node.get("access_token").toString().trim('"')
     }
 
-    fun obtainTokenForUserType(user: UserType) {
-        val token = when (user) {
+    fun obtainTokenForUserType(userType: UserType) {
+        val token = when (userType) {
             UserType.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
             UserType.Uploader -> requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
         }

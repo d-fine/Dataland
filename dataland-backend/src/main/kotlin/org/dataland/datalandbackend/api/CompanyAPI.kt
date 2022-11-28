@@ -23,6 +23,7 @@ import javax.validation.Valid
  */
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
 interface CompanyAPI {
 

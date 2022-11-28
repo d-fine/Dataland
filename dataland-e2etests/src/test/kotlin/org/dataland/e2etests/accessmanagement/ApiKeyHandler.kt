@@ -1,19 +1,24 @@
 package org.dataland.e2etests.accessmanagement
 
+import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
+import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyAndMetaInfo
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
+import org.dataland.e2etests.BASE_PATH_TO_API_KEY_MANAGER
+import org.dataland.e2etests.utils.UserType
+
 class ApiKeyHandler {
 
-//    private val tokenHandler = TokenHandler()
-//    private val apiKeyManagerClient = ApiKeyControllerApi()
+    private val tokenHandler = TokenHandler()
+    private val apiKeyManagerClient = ApiKeyControllerApi(BASE_PATH_TO_API_KEY_MANAGER)
 
-//    private fun requestApiKey(asUserType: UserType, daysValid: Int): ApiKeyAndMetaInfo {
-//
-//        tokenHandler.obtainTokenForUserType(asUserType)
-//        return apiKeyManagerClient.generateApiKey(daysValid)
-//    }
+    private fun requestApiKey(userType: UserType, daysValid: Int): ApiKeyAndMetaInfo {
 
-//    fun obtainApiKeyForUserType(user: UserType, daysValid: Int) {
-//        // val apiKeyData = requestApiKey(user, daysValid)
-//        // TODO put ApiKey value into the respective companion object =>
-//        // ApiClient.apiKey = apiKeyData.apiKey
-//    }
+        tokenHandler.obtainTokenForUserType(userType)
+        return apiKeyManagerClient.generateApiKey(daysValid)
+    }
+
+    fun obtainApiKeyForUserType(userType: UserType, daysValid: Int) {
+        val apiKeyData = requestApiKey(userType, daysValid)
+        ApiClient.Companion.apiKey.put("dataland-api-key", apiKeyData.apiKey)
+    }
 }
