@@ -32,8 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    // TODO: Reparieren
-    // kapt("org.springframework.boot:spring-boot-configuration-processor")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation(project(":dataland-backend-utils"))
     implementation(libs.log4j)
     implementation(libs.log4j.api)
