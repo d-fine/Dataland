@@ -23,7 +23,7 @@ function get_services_that_are_not_healthy_but_should_be_in_compose_profile () {
 export -f get_services_that_are_not_healthy_but_should_be_in_compose_profile
 
 function get_services_in_docker_compose_profile_that_require_healthcheck () {
-  docker compose --profile $1 config --services 2>/dev/null | grep -vx "edc-dummyserver\|dataland-edc\|e2etests\|frontend-dev"
+  sudo docker compose --profile $1 config --services 2>/dev/null | grep -vx "edc-dummyserver\|dataland-edc\|e2etests"
 }
 export -f get_services_in_docker_compose_profile_that_require_healthcheck
 
