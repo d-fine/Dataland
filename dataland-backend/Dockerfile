@@ -5,7 +5,4 @@ FROM eclipse-temurin:17.0.5_8-jre-alpine
 COPY --from=builder /app/dataland-backend/build/libs/dataland-backend-0.0.1-SNAPSHOT.jar /jar/dataland-backend.jar
 CMD ["java","-jar","/jar/dataland-backend.jar"]
 
-# Install JQ (Json parsing) for Health Check
-RUN apk add --no-cache jq
-
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api/actuator/health | tee /dev/stderr | jq ".status" | grep -q 'UP' || false
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
