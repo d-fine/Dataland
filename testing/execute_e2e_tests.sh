@@ -27,7 +27,7 @@ docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes"
 # Testing admin-tunnel database connections
 pg_isready -d backend -h "localhost" -p 5433
 pg_isready -d keycloak -h "localhost" -p 5434
-# TDO Also check if the database of api-key-manager is ready, if it is only reachable via admin-tunnel (which I suggest)
+# TODO Also check if the database of api-key-manager is ready, if it is only reachable via admin-tunnel (which I suggest)
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

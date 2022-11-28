@@ -62,7 +62,7 @@ class WebSecurityConfig(
         return http.build()
     }
 
-    // TDO rename these methods to something more expressive
+    // TODO rename these methods to something more expressive
     @Suppress("SpreadOperator")
     private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
         http

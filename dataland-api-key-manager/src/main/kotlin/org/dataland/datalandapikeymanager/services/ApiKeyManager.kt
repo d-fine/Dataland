@@ -111,7 +111,8 @@ class ApiKeyManager {
             EncodingUtils.encodeToBase64(newSalt)
         )
         // TODO Storage/Replacement(!) process => needs to be in postgres. map is just temporary
-        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[keycloakUserId] = storedHashedAndBase64EncodedApiKey
+        mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys[apiKeyMetaInfo.keycloakUserId] =
+            storedHashedAndBase64EncodedApiKey
         logger.info("Generated Api Key with hashed value $newHashedApiKeyBase64Encoded and meta info $apiKeyMetaInfo.")
         return ApiKeyAndMetaInfo(newApiKey, apiKeyMetaInfo)
     }

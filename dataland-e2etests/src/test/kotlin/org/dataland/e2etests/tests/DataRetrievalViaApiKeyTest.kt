@@ -19,7 +19,7 @@ class DataRetrievalViaApiKeyTest {
 
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
-        /* TDO
+        /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
         // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
@@ -42,7 +42,7 @@ class DataRetrievalViaApiKeyTest {
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials
         )
-        /* TDO
+        /* TODO
         * Explicitly use ONLY ApiKey in the following data retrieval!
         * */
         // val apiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
@@ -57,6 +57,6 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    /* TDO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
+    /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
     Api key exists)*/
 }

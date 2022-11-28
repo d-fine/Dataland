@@ -30,7 +30,7 @@ class ApiKeyAuthenticationManager(
     override fun authenticate(authentication: Authentication?): Authentication {
         val customToken = extractApiKey(authentication)
 
-        // TDO: catch ApiKeyFormatException and process to whatever exceptions fits best
+        // TODO: catch ApiKeyFormatException and process to whatever exceptions fits best
         ApiKeyPrevalidator().prevalidateApiKey(customToken)
 
         return validateApiKey(customToken)
@@ -64,7 +64,7 @@ class ApiKeyAuthenticationManager(
         val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
-            // TDO: Was passiert wenn es den API-Key nicht gibt?
+            // TODO: Was passiert wenn es den API-Key nicht gibt?
             apiKeyMetaInfo = controller.validateApiKey(customToken)
         } catch (ex: IllegalStateException) {
             handleAuthenticationException(ex)

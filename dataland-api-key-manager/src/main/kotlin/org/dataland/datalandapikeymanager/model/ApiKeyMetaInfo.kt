@@ -22,11 +22,11 @@ data class ApiKeyMetaInfo(
     @field:JsonProperty(required = false)
     val expiryDate: LocalDate? = null,
 
-    // TDO This should not be stored in DB, because it is calculated on runtime via expiryDate
+    // TODO This should not be stored in DB, because it is calculated on runtime via expiryDate
     @field:JsonProperty(required = false)
     val active: Boolean? = null,
 
-    // TDO This should not be stored in DB, because it is calculated on runtime via expiryDate
+    // TODO This should not be stored in DB, because it is calculated on runtime via expiryDate
     @field:JsonProperty(required = false)
     val validationMessage: String? = null
 )

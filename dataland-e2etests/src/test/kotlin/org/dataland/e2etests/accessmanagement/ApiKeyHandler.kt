@@ -13,7 +13,7 @@ class ApiKeyHandler {
 
 //    fun obtainApiKeyForUserType(user: UserType, daysValid: Int) {
 //        // val apiKeyData = requestApiKey(user, daysValid)
-//        // TDO put ApiKey value into the respective companion object =>
+//        // TODO put ApiKey value into the respective companion object =>
 //        // ApiClient.apiKey = apiKeyData.apiKey
 //    }
 }
