@@ -31,14 +31,7 @@ interface ApiKeyAPI {
         value = ["/generateApiKey"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_USER')") /* TODO why?  (Emanuel asking)
-    TODO PPU: welche Rolle man hat ist eigentlich egal
-    TODO aber alle Rollen die man hat müssen dann auch mit dem API-Key assoziiert werden.
-    TODO Emanuel: Aber warum Oauth zusätzlich? Ist das wegen der swagger UI Authorize Geschichte?
-    TODO Florian: Scheint nicht notwendig zu sein. Das kam in der CompanyAPI vor, inwiefern wird das benutzt?
-    TODO Emanuel: Ich denke es ist notwendig, damit man in der Swagger-UI mit username password authorizen kann.
-    TODO            Hilft also dadurch beim entwickeln, ist aber an sich kein feature.
-    */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     /**
