@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-
-source "$(dirname "$0")"/docker_utils.sh
+source "$(dirname "${BASH_SOURCE[0]}")"/../deployment/docker_utils.sh
 
 setup_ssh () {
   mkdir -p ~/.ssh/
