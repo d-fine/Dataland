@@ -60,23 +60,9 @@ build_directories () {
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils,docker_utils}.sh "$target_dir"/dataland-keycloak
 }
 
-are_docker_containers_healthy_remote () {
-  target_server_url=$1
-  docker_healthcheck=$(ssh ubuntu@"$target_server_url" "docker inspect --format='\"{{index .Config.Labels \"com.docker.compose.service\"}}\";{{ if .State.Health}}{{.State.Health.Status}}{{else}}unknown{{end}}' \$(docker ps -aq)")
-  service_list=$(get_services_in_docker_compose_profile_that_require_healthcheck $2)
-  for service in ${service_list[@]}; do
-    if [[ $docker_healthcheck != *"\"$service\";healthy"* ]]; then
-      echo "Service $service not yet healthy... Waiting.."
-      return 1
-    fi
-  done
-}
-
-export -f are_docker_containers_healthy_remote
-
 wait_for_docker_containers_healthy_remote () {
   target_server_url="$1"
   location="$2"
   docker_compose_profile="$3"
-  ssh ubuntu@"$target_server_url" "source \"$location\"/dataland-keycloak/deployment_utils.sh;  timeout 240 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
+  ssh ubuntu@"$target_server_url" "source \"$location\"/dataland-keycloak/deployment_utils.sh; timeout 240 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }
