@@ -201,7 +201,7 @@ export default defineComponent({
         CreditInstitution: "Credit Institution",
         AssetManagement: "Asset Management",
         InsuranceOrReinsurance: "Insurance and Reinsurance",
-        InvestmentFirm: "Investment Firm"
+        InvestmentFirm: "Investment Firm",
       };
       return mapping[type];
     },

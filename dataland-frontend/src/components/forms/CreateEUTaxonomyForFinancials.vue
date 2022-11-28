@@ -35,7 +35,7 @@
               CreditInstitution: humanizeString('CreditInstitution'),
               InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
               AssetManagement: humanizeString('AssetManagement'),
-              InvestmentFirm: humanizeString('InvestmentFirm')
+              InvestmentFirm: humanizeString('InvestmentFirm'),
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
@@ -105,10 +105,7 @@
           </FormKit>
           <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">
             <h4>Investment Firm KPIs</h4>
-            <DataPointFormElement
-              name="greenAssetRatio"
-              label="Green asset ratio"
-            />
+            <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
           </FormKit>
           <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
         </FormKit>

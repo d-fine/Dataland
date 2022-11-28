@@ -191,8 +191,8 @@ describeIf(
     it("Create an Investment Firm", () => {
       const testData = getPreparedFixture("company-for-all-types");
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-          testData.companyInformation,
-          testData.t
+        testData.companyInformation,
+        testData.t
       );
       checkInvestmentFirmValues(testData.t);
     });
