@@ -133,11 +133,6 @@ class ApiKeyManager {
                     "value $receivedApiKeyHashedAndBase64Encoded. " +
                     "The activity status of the API key is $activityStatus."
             )
-            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(
-                active = activityStatus,
-                validationMessage = validationMessageExpiredApiKey
-            )
-                    "The activity status of the API key is $activityStatus.")
             var validationMessageToReturn = validationMessageSuccess
             if (!activityStatus) {
                 validationMessageToReturn = validationMessageExpiredApiKey
