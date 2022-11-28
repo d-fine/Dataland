@@ -22,14 +22,9 @@ class DataRetrievalViaApiKeyTest {
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
-        /* TODO
-        * Explicitly use ONLY ApiKey in the following data retrieval!
-        * */
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         ApiClient.Companion.accessToken = null
         ApiClientBackend.Companion.accessToken = null
-        println(ApiClientBackend.Companion.apiKey)
-        println(ApiClientBackend.Companion.apiKeyPrefix)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -49,11 +44,8 @@ class DataRetrievalViaApiKeyTest {
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials
         )
-        /* TODO
-        * Explicitly use ONLY ApiKey in the following data retrieval!
-        * */
-        ApiClient.Companion.accessToken =""
-        ApiClientBackend.Companion.accessToken = ""
+        ApiClient.Companion.accessToken = null
+        ApiClientBackend.Companion.accessToken = null
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
