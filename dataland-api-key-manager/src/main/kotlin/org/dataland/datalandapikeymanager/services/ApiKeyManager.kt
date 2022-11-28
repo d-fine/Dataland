@@ -127,7 +127,7 @@ class ApiKeyManager {
             logger.info("The provided Api Key for the user $keycloakUserId is not correct.")
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         } else {
-            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
+            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDate.now()) ?: true
             logger.info(
                 "Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
                     "value $receivedApiKeyHashedAndBase64Encoded. " +
