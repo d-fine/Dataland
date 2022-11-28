@@ -34,7 +34,8 @@ class ApiKeyManager {
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
             "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
-    private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired"
+    private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired."
+    private val validationMessageSuccess = "The API key you provided was successfully validated."
 
     // TODO temporary use of map, but in the end we need a DB to store stuff
     private val mapOfKeycloakUserIdsAndStoredHashedAndBase64EncodedApiKeys =
@@ -120,11 +121,15 @@ class ApiKeyManager {
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         }
         else {
-            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate!!.isAfter(LocalDate.now())
+            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDate.now()) ?: true
             logger.info("Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
                     "value $receivedApiKeyHashedAndBase64Encoded. " +
                     "The activity status of the API key is $activityStatus.")
-            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus, validationMessage = validationMessageExpiredApiKey)
+            var validationMessageToReturn = validationMessageSuccess
+            if (!activityStatus) {
+                validationMessageToReturn = validationMessageExpiredApiKey
+            }
+            storedHashedApiKeyOfUser.apiKeyMetaInfo.copy(active = activityStatus, validationMessage = validationMessageToReturn)
         }
     }
 
