@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+source ./testing/docker_utils.sh
+
 setup_ssh () {
   mkdir -p ~/.ssh/
   echo "$TARGETSERVER_HOST_KEYS" >  ~/.ssh/known_hosts
@@ -61,7 +63,7 @@ build_directories () {
 are_docker_containers_healthy_remote () {
   target_server_url=$1
   docker_healthcheck=$(ssh ubuntu@"$target_server_url" "docker inspect --format='\"{{index .Config.Labels \"com.docker.compose.service\"}}\";{{ if .State.Health}}{{.State.Health.Status}}{{else}}unknown{{end}}' \$(docker ps -aq)")
-  service_list=("proxy" "admin-proxy" "backend" "backend-db" "frontend" "keycloak-db" "keycloak" "pgadmin")
+  service_list=$(get_services_in_docker_compose_profile_that_require_healthcheck $2)
   for service in ${service_list[@]}; do
     if [[ $docker_healthcheck != *"\"$service\";healthy"* ]]; then
       echo "Service $service not yet healthy... Waiting.."
@@ -73,5 +75,5 @@ are_docker_containers_healthy_remote () {
 export -f are_docker_containers_healthy_remote
 
 wait_for_docker_containers_healthy_remote () {
-  timeout 240 bash -c "while ! are_docker_containers_healthy_remote "$1"; do echo 'Containers not all healthy yet - retrying in 1s'; sleep 1; done; echo 'All containers healthy!'"
+  timeout 240 bash -c "while ! are_docker_containers_healthy_remote "$1" "$2"; do echo 'Containers not all healthy yet - retrying in 1s'; sleep 1; done; echo 'All containers healthy!'"
 }

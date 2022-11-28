@@ -67,7 +67,7 @@ services:
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
   e2etests:
@@ -162,7 +162,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
   keycloak:
