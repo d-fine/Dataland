@@ -22,7 +22,7 @@ class ApiKeyController : ApiKeyAPI {
         if (daysValid != null && daysValid <= 0) {
             throw InvalidInputApiException(
                 "If set, the value of daysValid must be a positive integer.",
-                "If set, the value of daysValid must be positive a positive but it was $daysValid"
+                "If set, the value of daysValid must be a positive integer but it was $daysValid"
             )
         }
         return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
