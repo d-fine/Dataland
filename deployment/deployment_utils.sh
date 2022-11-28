@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-source ./testing/docker_utils.sh
+source "$(dirname "$0")"/docker_utils.sh
 
 setup_ssh () {
   mkdir -p ~/.ssh/
@@ -75,5 +75,8 @@ are_docker_containers_healthy_remote () {
 export -f are_docker_containers_healthy_remote
 
 wait_for_docker_containers_healthy_remote () {
-  timeout 240 bash -c "while ! are_docker_containers_healthy_remote "$1" "$2"; do echo 'Containers not all healthy yet - retrying in 1s'; sleep 1; done; echo 'All containers healthy!'"
+  target_server_url="$1"
+  location="$2"
+  docker_compose_profile="$3"
+  ssh ubuntu@"$target_server_url" "source \"$location\"/dataland-keycloak/deployment_utils.sh;  timeout 240 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }
