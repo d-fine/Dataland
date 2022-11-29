@@ -426,7 +426,7 @@
       "ApiKeyMetaInfo": {
         "type": "object",
         "properties": {
-          "keycloakUserId": {
+          "keycloakUserIdBase64Encoded": {
             "type": "string"
           },
           "keycloakRoles": {
@@ -449,7 +449,8 @@
       },
       "ApiKeyAndMetaInfo": {
         "required": [
-          "apiKey"
+          "apiKey",
+          "apiKeyMetaInfo"
         ],
         "type": "object",
         "properties": {
