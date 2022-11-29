@@ -34,11 +34,16 @@ dependencies {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateBackendClient", "generateApiKeyManagerClient", "getTestData")
+    dependsOn("generateClients", "getTestData")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+    dependsOn("generateApiKeyManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {

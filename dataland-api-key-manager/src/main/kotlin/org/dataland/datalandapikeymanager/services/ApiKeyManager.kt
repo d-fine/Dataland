@@ -16,7 +16,8 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.HexFormat
 /**
  * A class for handling the generation, validation and revocation of an api key
@@ -85,13 +86,13 @@ class ApiKeyManager
     }
 
     private fun getKeycloakUserIdBase64Encoded(authentication: Authentication): String{
-      return EncodingUtils.encodeToBase64(authentication.name.toByteArray(utf8Charset))
-        }
+        return EncodingUtils.encodeToBase64(authentication.name.toByteArray(utf8Charset))
+    }
 
-    private fun calculateExpiryDate(daysValid: Int?): LocalDate? {
+    private fun calculateExpiryDate(daysValid: Int?): LocalDateTime? {
         return if (daysValid == null || daysValid <= 0)
             null else
-            LocalDate.now().plusDays(daysValid.toLong())
+            LocalDateTime.now(ZoneOffset.UTC).plusDays(daysValid.toLong())
     }
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
@@ -137,7 +138,9 @@ class ApiKeyManager
             logger.info("The provided Api Key for the encoded Keycloak user Id $keycloakUserIdBase64Encoded is not correct.")
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         } else {
-            val activityStatus = storedHashedAndBase64EncodedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDate.now()) ?: true
+            val activityStatus =
+                storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDateTime.now(ZoneOffset.UTC))
+                    ?: true
             logger.info(
                 "Validated Api Key with encoded salt ${storedHashedAndBase64EncodedApiKeyOfUser.saltBase64Encoded} and " +
                         "calculated hashed and encoded value $receivedApiKeyHashedAndBase64Encoded. " +

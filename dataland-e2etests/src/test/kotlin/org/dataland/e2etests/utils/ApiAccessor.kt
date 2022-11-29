@@ -22,7 +22,10 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.accessmanagement.*
+import org.dataland.e2etests.accessmanagement.TokenHandler
+import org.dataland.e2etests.accessmanagement.UnauthorizedCompanyDataControllerApi
+import org.dataland.e2etests.accessmanagement.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
+import org.dataland.e2etests.accessmanagement.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
 

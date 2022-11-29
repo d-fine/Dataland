@@ -10,7 +10,7 @@ COPY ./.git/ ./.git
 
 RUN  VITE_COVERAGE=true \
      BUILD_INSTRUMENTED=true \
-     ./gradlew dataland-frontend:generateAPIClientFrontend dataland-frontend:npm_run_build --no-daemon --stacktrace
+     ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
 FROM nginx:1.23.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
