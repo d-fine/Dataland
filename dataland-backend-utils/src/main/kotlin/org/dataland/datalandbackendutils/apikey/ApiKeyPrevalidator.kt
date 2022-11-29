@@ -45,7 +45,9 @@ class ApiKeyPrevalidator {
     }
 
     private fun validateKeycloakUserId(potentialKeycloakUserIdBase64Encoded: String) {
-        if (!regexForBase64.matches(potentialKeycloakUserIdBase64Encoded)) {
+        if (!regexForBase64.matches(potentialKeycloakUserIdBase64Encoded) ||
+                potentialKeycloakUserIdBase64Encoded.isEmpty()
+        ) {
             throw ApiKeyFormatException(
                 validateKeycloakUserIdExceptionMessage
             )
@@ -106,7 +108,7 @@ class ApiKeyPrevalidator {
         ).toString()
 
         if (parsedApiKey.parsedCrc32Value != expectedCrc32Value) {
-            throw IllegalArgumentException(validateApiKeyChecksumWrongValueExceptionMessage)
+            throw ApiKeyFormatException(validateApiKeyChecksumWrongValueExceptionMessage)
         }
     }
 
