@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
-source ./testing/get_keycloak_token.sh
+source "$(dirname "$0")/authorisation_tools.sh"
 api_key=$(getApiKeyWithUsernamePassword data_reader "$KEYCLOAK_READER_PASSWORD" "https://local-dev.dataland.com")
 curl -X 'GET' \
   'https://local-dev.dataland.com/api/companies' \
