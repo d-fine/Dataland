@@ -18,7 +18,8 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component
 import java.io.IOException
 import java.lang.IllegalStateException
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * A class to validate an authentication and the corresponding token
@@ -50,7 +51,7 @@ class ApiKeyAuthenticationManager(
 
     private fun validateApiKey(customToken: String): Authentication {
         val apiKeyMetaInfo: ApiKeyMetaInfo = validateApiKeyViaEndpoint(customToken)
-        if (LocalDate.now().isAfter(apiKeyMetaInfo.expiryDate)) {
+        if (LocalDateTime.now(ZoneOffset.UTC).isAfter(apiKeyMetaInfo.expiryDate?.toLocalDateTime())) {
             throw CredentialsExpiredException("Token has expired")
         }
         return PreAuthenticatedAuthenticationToken(

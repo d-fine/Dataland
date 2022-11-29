@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import java.security.SecureRandom
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.HexFormat
 /**
  * A class for handling the generation, validation and revocation of an api key
@@ -77,10 +78,10 @@ class ApiKeyManager {
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun calculateExpiryDate(daysValid: Int?): LocalDate? {
+    private fun calculateExpiryDate(daysValid: Int?): LocalDateTime? {
         return if (daysValid == null || daysValid <= 0)
             null else
-            LocalDate.now().plusDays(daysValid.toLong())
+            LocalDateTime.now(ZoneOffset.UTC).plusDays(daysValid.toLong())
     }
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
@@ -127,7 +128,9 @@ class ApiKeyManager {
             logger.info("The provided Api Key for the user $keycloakUserId is not correct.")
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         } else {
-            val activityStatus = storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDate.now()) ?: true
+            val activityStatus =
+                storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDateTime.now(ZoneOffset.UTC))
+                    ?: true
             logger.info(
                 "Validated Api Key with salt ${storedHashedApiKeyOfUser.saltBase64Encoded} and calculated hash " +
                     "value $receivedApiKeyHashedAndBase64Encoded. " +

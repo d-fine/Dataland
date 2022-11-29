@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/": {
+    "/revokeApiKey": {
       "post": {
         "tags": [
           "api-key-controller"
@@ -437,7 +437,7 @@
           },
           "expiryDate": {
             "type": "string",
-            "format": "date"
+            "format": "date-time"
           },
           "active": {
             "type": "boolean"
