@@ -37,7 +37,7 @@ server {
     }
 
     location /api-keys {
-      proxy_pass http://host.docker.internal:8081/api-keys;
+      proxy_pass http://api-key-manager:8080/api-keys;
       include utils/proxy.conf;
       include utils/apiKeysErrors.conf;
     }
