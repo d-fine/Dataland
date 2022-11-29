@@ -7,7 +7,6 @@ function getJwt() {
   local password=$2
   local base_url=$3
   local keycloak_openid_token_endpoint
-  curl https://local-dev.dataland.com/keycloak/realms/datalandsecurity/protocol/openid-connect/certs
   keycloak_openid_token_endpoint="$base_url"/keycloak/realms/datalandsecurity/protocol/openid-connect/token
   echo "Getting token for user $user from keycloak."
   local get_user_token_response
