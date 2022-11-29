@@ -53,6 +53,10 @@ tasks.bootJar {
     enabled = false
 }
 
+tasks.register("generateClients") {
+    dependsOn("generateApiKeyManagerClient")
+}
+
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
@@ -71,7 +75,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateApiKeyManagerClient")
+    dependsOn("generateClients")
 }
 
 sourceSets {

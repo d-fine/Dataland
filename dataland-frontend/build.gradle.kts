@@ -27,14 +27,18 @@ tasks.register<Copy>("getBackendOpenApiSpec") {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateAPIClientFrontend")
+    dependsOn("generateClients")
 }
 
 tasks.withType<NpmTask> {
-    dependsOn("generateAPIClientFrontend")
+    dependsOn("generateClients")
 }
 
-tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
     input = project.file(backendOpenApiFile).path
     outputDir.set(clientOutputDir)
