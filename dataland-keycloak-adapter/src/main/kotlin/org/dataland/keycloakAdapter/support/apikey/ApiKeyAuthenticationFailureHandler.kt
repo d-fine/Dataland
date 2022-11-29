@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * Handles authorization exceptions for internal use
+ */
 @Component
 class ApiKeyAuthenticationFailureHandler(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")

@@ -8,15 +8,16 @@ import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
 import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.security.authentication.*
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Component
 import java.io.IOException
 import java.lang.IllegalStateException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 /**
  * A class to validate an authentication and the corresponding token
@@ -65,12 +66,7 @@ class ApiKeyAuthenticationManager(
         try {
             apiKeyMetaInfo = controller.validateApiKey(customToken)
             if (apiKeyMetaInfo.active == null || apiKeyMetaInfo.active == false) {
-                // if apiKeyMetaInfo != true it should hold that expiryDate != null
-                if (LocalDateTime.now(ZoneOffset.UTC).isAfter(apiKeyMetaInfo.expiryDate!!.toLocalDateTime())) {
-                    throw CredentialsExpiredException("The provided api key $customToken has expired")
-                } else {
-                    throw BadCredentialsException("The provided api key $customToken never existed.")
-                }
+                throw BadCredentialsException(apiKeyMetaInfo.validationMessage)
             }
         } catch (ex: IllegalStateException) {
             handleAuthenticationException(ex)

@@ -17,8 +17,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.Instant
 import java.util.HexFormat
 /**
  * A class for handling the generation, validation and revocation of an api key
@@ -89,10 +88,10 @@ class ApiKeyManager
         return encodeToBase64(authentication.name.toByteArray(utf8Charset))
     }
 
-    private fun calculateExpiryDate(daysValid: Int?): LocalDateTime? {
+    private fun calculateExpiryDate(daysValid: Int?): Long? {
         return if (daysValid == null)
             null else
-            LocalDateTime.now(ZoneOffset.UTC).plusDays(daysValid.toLong())
+            Instant.now().epochSecond
     }
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
@@ -147,8 +146,9 @@ class ApiKeyManager
             return ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         } else {
             val expiryDateOfApiKey = storedHashedAndBase64EncodedApiKeyOfUser.apiKeyMetaInfo.expiryDate
+            val currentTime = Instant.now().epochSecond
             val activityStatus =
-                expiryDateOfApiKey?.isAfter(LocalDateTime.now(ZoneOffset.UTC)) ?: true
+                (expiryDateOfApiKey ?: currentTime) >= currentTime
             logger.info(
                 "Validated Api Key with encoded salt ${storedHashedAndBase64EncodedApiKeyOfUser.saltBase64Encoded} " +
                     "and calculated hashed and encoded value $receivedApiKeyHashedAndBase64Encoded. " +

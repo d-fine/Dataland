@@ -3,7 +3,6 @@ package org.dataland.datalandapikeymanager.entities
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
 import org.dataland.datalandbackendutils.utils.EncodingUtils.decodeFromBase64
-import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.ElementCollection
 import javax.persistence.Entity
@@ -29,7 +28,7 @@ data class StoredHashedAndBase64EncodedApiKeyEntity(
     var keycloakRoles: List<String>,
 
     @Column(name = "expiry_date")
-    var expiryDate: LocalDateTime?,
+    var expiryDate: Long?,
 
     @Column(name = "salt_encoded")
     var saltBase64Encoded: String,
