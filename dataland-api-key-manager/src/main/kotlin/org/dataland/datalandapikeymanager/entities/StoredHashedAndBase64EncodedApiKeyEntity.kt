@@ -1,7 +1,5 @@
 package org.dataland.datalandapikeymanager.entities
 
-import com.fasterxml.jackson.annotation.JsonValue
-import org.dataland.datalandapikeymanager.interfaces.ApiModelConversion
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
 import java.time.LocalDateTime
@@ -34,9 +32,8 @@ data class StoredHashedAndBase64EncodedApiKeyEntity(
 
     @Column(name = "salt_encoded")
     var saltBase64Encoded: String,
-) : ApiModelConversion<StoredHashedAndBase64EncodedApiKey> {
-    @JsonValue
-    override fun toApiModel(): StoredHashedAndBase64EncodedApiKey {
+)  {
+    fun toApiModel(): StoredHashedAndBase64EncodedApiKey {
         return StoredHashedAndBase64EncodedApiKey(
             apiKeyHashedAndBase64Encoded = apiKeyHashedAndBase64Encoded,
             apiKeyMetaInfo = ApiKeyMetaInfo(
