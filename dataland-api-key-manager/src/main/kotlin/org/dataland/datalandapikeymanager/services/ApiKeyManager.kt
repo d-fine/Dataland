@@ -139,7 +139,7 @@ class ApiKeyManager
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
         } else {
             val activityStatus =
-                storedHashedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDateTime.now(ZoneOffset.UTC))
+                storedHashedAndBase64EncodedApiKeyOfUser.apiKeyMetaInfo.expiryDate?.isAfter(LocalDateTime.now(ZoneOffset.UTC))
                     ?: true
             logger.info(
                 "Validated Api Key with encoded salt ${storedHashedAndBase64EncodedApiKeyOfUser.saltBase64Encoded} and " +
