@@ -90,7 +90,7 @@ class ApiKeyManager
     }
 
     private fun calculateExpiryDate(daysValid: Int?): LocalDateTime? {
-        return if (daysValid == null || daysValid <= 0)
+        return if (daysValid == null)
             null else
             LocalDateTime.now(ZoneOffset.UTC).plusDays(daysValid.toLong())
     }

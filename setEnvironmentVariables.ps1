@@ -5,6 +5,7 @@
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
@@ -37,7 +38,3 @@
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_SECRET", "#", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_PRIMARY_URL", "local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_LETSENCRYPT_PATH", "/etc/letsencrypt/local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
-
-# TODO add credentials for api key manager
-# TODO
-# TODO

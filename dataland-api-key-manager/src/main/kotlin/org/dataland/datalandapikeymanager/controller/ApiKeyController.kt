@@ -20,7 +20,7 @@ class ApiKeyController(
 ) : ApiKeyAPI {
 
     override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
-        if (daysValid != null && daysValid <= 0) {   // TODO Comment by Emanuel:  Enforce not null in arguments?
+        if (daysValid != null && daysValid <= 0) {
             throw InvalidInputApiException(
                 "If set, the value of daysValid must be a positive integer.",
                 "If set, the value of daysValid must be a positive integer but it was $daysValid"
