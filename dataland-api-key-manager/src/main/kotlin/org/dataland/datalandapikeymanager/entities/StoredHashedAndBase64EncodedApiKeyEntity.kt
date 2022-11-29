@@ -2,6 +2,7 @@ package org.dataland.datalandapikeymanager.entities
 
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.StoredHashedAndBase64EncodedApiKey
+import org.dataland.datalandbackendutils.utils.EncodingUtils.decodeFromBase64
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -32,12 +33,16 @@ data class StoredHashedAndBase64EncodedApiKeyEntity(
 
     @Column(name = "salt_encoded")
     var saltBase64Encoded: String,
-)  {
+) {
+
+    /**
+     * Converts the Database-Model to the Model used in the API
+     */
     fun toApiModel(): StoredHashedAndBase64EncodedApiKey {
         return StoredHashedAndBase64EncodedApiKey(
             apiKeyHashedAndBase64Encoded = apiKeyHashedAndBase64Encoded,
             apiKeyMetaInfo = ApiKeyMetaInfo(
-                keycloakUserIdBase64Encoded = keycloakUserIdBase64Encoded,
+                keycloakUserId = decodeFromBase64(keycloakUserIdBase64Encoded).toString(),
                 keycloakRoles = keycloakRoles,
                 expiryDate = expiryDate
             ),
