@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 source "$(dirname "$0")/authorisation_tools.sh"
-api_key=$(getApiKeyWithUsernamePassword data_reader "$KEYCLOAK_READER_PASSWORD" "https://local-dev.dataland.com")
 CYPRESS_TEST_GROUP=101 ./testing/execute_e2e_tests.sh
+api_key=$(getApiKeyWithUsernamePassword data_reader "$KEYCLOAK_READER_PASSWORD" "https://local-dev.dataland.com")
 curl -X 'GET' \
   'https://local-dev.dataland.com/api/companies' \
   -H 'accept: application/json' \
