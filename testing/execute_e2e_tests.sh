@@ -24,6 +24,7 @@ docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/. ./repo
 
 mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
 docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
+# TODO do dumps for the api key manager db too?
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f spring

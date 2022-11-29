@@ -47,7 +47,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./dataland-csvconverter/Dockerfile`
-- [ ] Update the image versions of backend-db, frontend-dev and keycloak-db
+- [ ] Update the image versions of backend-db, api-key-manager-db, frontend-dev and keycloak-db
 - [ ] Update the image versions of edcdummyserver and dataland-edc
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 

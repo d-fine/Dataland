@@ -37,19 +37,36 @@ services:
       - internal
       - backend-db
       - keycloak-db
+      - api-key-manager-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5434:5433-5434"
+      - "127.0.0.1:5433-5435:5433-5435"
   api-key-manager:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - internal
+      - api-key-manager-db
     image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
     expose:
       - "8080"
+    depends_on:
+      - api-key-manager-db
     environment:
+      API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+  api-key-manager-db:
+    restart: always
+    profiles: [ "production", "productionInMemory", "testing", "development" ]
+    networks:
+      - api-key-manager-db
+    image: postgres:15.1
+    volumes:
+      - api_key_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: api_key_manager
+      POSTGRES_USER: api_key_manager
+      POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
   backend:
     restart: always
     profiles: ["production", "productionInMemory", "testing"]
@@ -228,6 +245,7 @@ services:
     networks:
       - keycloak-db
       - backend-db
+      - api-key-manager-db
       - internal
     profiles: ["production", "productionInMemory", "testing", "development"]
     volumes:
@@ -237,6 +255,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
 networks:
@@ -244,10 +263,13 @@ networks:
   external:
   keycloak-db:
   backend-db:
+  api-key-manager-db:
 volumes:
   keycloak_data:
     driver: local
   backend_data:
+    driver: local
+  api_key_manager_data:
     driver: local
   letsencrypt:
     driver: local
