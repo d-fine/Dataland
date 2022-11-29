@@ -5,12 +5,12 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientExc
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -18,8 +18,6 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component
 import java.io.IOException
 import java.lang.IllegalStateException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 /**
  * A class to validate an authentication and the corresponding token
@@ -32,7 +30,11 @@ class ApiKeyAuthenticationManager(
     override fun authenticate(authentication: Authentication?): Authentication {
         val customToken = extractApiKey(authentication)
 
-        ApiKeyPrevalidator().prevalidateApiKey(customToken)
+        try {
+            ApiKeyPrevalidator().prevalidateApiKey(customToken)
+        } catch (ex: ApiKeyFormatException) {
+            throw BadCredentialsException(ex.message, ex)
+        }
 
         return validateApiKey(customToken)
     }
@@ -51,9 +53,6 @@ class ApiKeyAuthenticationManager(
 
     private fun validateApiKey(customToken: String): Authentication {
         val apiKeyMetaInfo: ApiKeyMetaInfo = validateApiKeyViaEndpoint(customToken)
-        if (LocalDateTime.now(ZoneOffset.UTC).isAfter(apiKeyMetaInfo.expiryDate?.toLocalDateTime())) {
-            throw CredentialsExpiredException("Token has expired")
-        }
         return PreAuthenticatedAuthenticationToken(
             apiKeyMetaInfo.keycloakUserId,
             "N/A",
@@ -66,11 +65,8 @@ class ApiKeyAuthenticationManager(
         var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
             apiKeyMetaInfo = controller.validateApiKey(customToken)
-            if (!(apiKeyMetaInfo.active!!)) {
-                throw InvalidInputApiException(
-                    "The provided api key is not valid.",
-                    "The provided api key $customToken is either expired or did never exist."
-                )
+            if (apiKeyMetaInfo.active == null || apiKeyMetaInfo.active == false) {
+                throw BadCredentialsException(apiKeyMetaInfo.validationMessage)
             }
         } catch (ex: IllegalStateException) {
             handleAuthenticationException(ex)

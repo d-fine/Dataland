@@ -43,20 +43,21 @@ class WebSecurityConfig(
      */
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        val publicLinksArray = publicLinks.split(",").toTypedArray()
-        http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         if (context.containsBean("apiKeyAuthenticationManager")) {
             val apiKeyAuthenticationManager =
                 context.getBean("apiKeyAuthenticationManager") as ApiKeyAuthenticationManager
             val apiKeyFilter = RequestHeaderAuthenticationFilter()
             apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
             apiKeyFilter.setExceptionIfHeaderMissing(false)
+            apiKeyFilter.setAuthenticationFailureHandler(
+                context.getBean(ApiKeyAuthenticationFailureHandler::class.java)
+            )
             apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
         }
 
-        authorize(http, publicLinksArray)
+        authorize(http)
         updatePolicies(http)
 
         return http.build()
@@ -64,7 +65,8 @@ class WebSecurityConfig(
 
     // TODO rename these methods to something more expressive
     @Suppress("SpreadOperator")
-    private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
+    private fun authorize(http: HttpSecurity) {
+        val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .authorizeRequests()
             .antMatchers(*publicLinksArray).permitAll()
