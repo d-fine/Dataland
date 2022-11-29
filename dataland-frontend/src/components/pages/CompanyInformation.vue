@@ -1,4 +1,5 @@
 <template>
+  <TheContent>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Loading company information...</p>
     <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
@@ -17,6 +18,7 @@
       <span class="font-semibold">{{ companyInformation.sector }}</span>
     </div>
   </div>
+  </TheContent>
 </template>
 
 <script lang="ts">
@@ -26,9 +28,11 @@ import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import TheContent from "@/components/generics/TheContent.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
+  components: {TheContent},
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),

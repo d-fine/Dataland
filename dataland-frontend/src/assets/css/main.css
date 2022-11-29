@@ -4,4 +4,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+.text-color { color: var(--text-color); }
+.text-color-secondary { color: var(--text-color-secondary); }
+.text-color-third { color: var(--text-color-third); }
+.primary-color { color: var(--primary-color); }
+.primary-color-text { color: var(--primary-color-text); }

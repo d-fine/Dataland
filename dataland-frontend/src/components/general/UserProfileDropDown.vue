@@ -67,6 +67,12 @@ export default defineComponent({
           clickAction: this.gotoUserSettings,
         },
         {
+          label: "API",
+          icon: "key",
+          id: "profile-api-generate-key-button",
+          clickAction: this.gotoApiKeysPage,
+        },
+        {
           label: "LOG OUT",
           icon: "logout",
           id: "profile-picture-dropdown-toggle",
@@ -97,6 +103,9 @@ export default defineComponent({
           }
         })
         .catch((error) => console.log(error));
+    },
+    gotoApiKeysPage() {
+      this.$router.push('/keys')
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
