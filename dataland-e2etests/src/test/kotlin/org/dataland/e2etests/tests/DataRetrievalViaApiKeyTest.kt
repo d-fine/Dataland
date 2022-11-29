@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.ApiKeyHandler
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.UserType
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
@@ -23,7 +23,6 @@ class DataRetrievalViaApiKeyTest {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
-
 
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         ApiClient.Companion.accessToken = null
@@ -79,7 +78,7 @@ class DataRetrievalViaApiKeyTest {
             "The received company $expectedStoredCompany does not equal the expected company $expectedStoredCompany"
         )
         apiKeyHandler.revokeApiKeyForUser()
-        //print(apiKeyHandler.revokeApiKeyForUser().revokementProcessMessage)
+        // print(apiKeyHandler.revokeApiKeyForUser().revokementProcessMessage)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId)
@@ -91,6 +90,5 @@ class DataRetrievalViaApiKeyTest {
         )
         val authorizedRequest2 = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         println(authorizedRequest2)
-
     }
 }
