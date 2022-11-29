@@ -449,7 +449,8 @@
       },
       "ApiKeyAndMetaInfo": {
         "required": [
-          "apiKey"
+          "apiKey",
+          "apiKeyMetaInfo"
         ],
         "type": "object",
         "properties": {
