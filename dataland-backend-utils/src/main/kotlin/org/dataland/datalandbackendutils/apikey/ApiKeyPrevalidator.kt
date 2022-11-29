@@ -46,7 +46,7 @@ class ApiKeyPrevalidator {
 
     private fun validateKeycloakUserId(potentialKeycloakUserIdBase64Encoded: String) {
         if (!regexForBase64.matches(potentialKeycloakUserIdBase64Encoded) ||
-                potentialKeycloakUserIdBase64Encoded.isEmpty()
+            potentialKeycloakUserIdBase64Encoded.isEmpty()
         ) {
             throw ApiKeyFormatException(
                 validateKeycloakUserIdExceptionMessage
