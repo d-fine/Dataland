@@ -32,7 +32,7 @@ class ApiKeyManager
         private const val argon2Iterations = 3
         private const val argon2MemoryPowOfTwo = 4
         private const val argon2Parallelisms = 1
-        private const val secondsInADay=86400
+        private const val secondsInADay = 86400
     }
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
