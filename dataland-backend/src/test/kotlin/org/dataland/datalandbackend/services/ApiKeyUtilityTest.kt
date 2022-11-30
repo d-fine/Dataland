@@ -39,7 +39,7 @@ class ApiKeyUtilityTest {
     }
 
     @Test
-    fun `check if prevalidation passes for a correct api key`() {
+    fun `check if correct api key can be parsed`() {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
         val parsedApiKey = apiKeyUtility.parseApiKey(apiKey)
         val expectedParsedApiKey = ParsedApiKey(
