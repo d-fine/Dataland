@@ -28,7 +28,7 @@ docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f spring
-docker exec dala-e2e-test-api-api_key_manager-1 pkill -f spring
+docker exec dala-e2e-test-api-key-manager-1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test-backend-1 --follow" > /dev/null
 docker cp dala-e2e-test-backend-1:/app/dataland-backend/build/jacoco/bootRun.exec ./backend-bootRun-${CYPRESS_TEST_GROUP}.exec
 
