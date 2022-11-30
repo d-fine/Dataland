@@ -47,6 +47,9 @@ dependencyResolutionManagement {
 
             library("database-h2", "com.h2database:h2:2.1.214")
             library("database-postgres", "org.postgresql:postgresql:42.5.0")
+
+            library("bcpkix-jdk15on", "org.bouncycastle:bcpkix-jdk15on:1.70")
+            library("bcprov-jdk15on", "org.bouncycastle:bcprov-jdk15on:1.70")
         }
     }
 }
