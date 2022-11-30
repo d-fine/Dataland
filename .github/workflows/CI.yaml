@@ -245,10 +245,9 @@ jobs:
             ./**/build/
             .gradle
             !dataland-csvconverter/build/distributions
-            !dataland-csvconverter/build/libs
-            !dataland-backend/build/libs
+            !**/build/libs
+            !**/build/tmp/kapt3/incApCache/main
             !dataland-e2etests/build/resources
-            !dataland-backend/build/tmp/kapt3/incApCache/main
   sonar:
     runs-on: ubuntu-latest
     needs:
