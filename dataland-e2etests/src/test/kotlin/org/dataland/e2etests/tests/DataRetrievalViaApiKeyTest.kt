@@ -137,7 +137,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             "The API key for your Dataland account was successfully revoked.",
             responseMessage,
-                REVOCATION_ERROR_MESSAGE
+            REVOCATION_ERROR_MESSAGE
         )
     }
 
