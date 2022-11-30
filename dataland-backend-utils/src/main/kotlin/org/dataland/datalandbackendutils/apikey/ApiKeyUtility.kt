@@ -4,6 +4,9 @@ import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
 import org.dataland.datalandbackendutils.utils.EncodingUtils.calculateCrc32Value
 import org.dataland.datalandbackendutils.utils.EncodingUtils.decodeFromBase64
 import org.dataland.datalandbackendutils.utils.EncodingUtils.encodeToBase64
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
+import java.security.SecureRandom
+import java.util.HexFormat
 
 /**
  * This class should be used to validate that a given api key has the reuired format and the correct checksum
@@ -11,9 +14,13 @@ import org.dataland.datalandbackendutils.utils.EncodingUtils.encodeToBase64
  */
 class ApiKeyUtility {
 
+    companion object {
+        private const val keyByteLength = 40
+    }
+
     private val numberOfUnderscoreDelimitersExpectedInApiKey = 2
 
-    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{80}\$") // length fixed
+    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength * 2}}\$") // length fixed
 
     private val charset = Charsets.UTF_8
 
@@ -82,6 +89,29 @@ class ApiKeyUtility {
         return calculateCrc32Value(
             apiKeyWithoutCrc32Value.toByteArray(charset)
         ).toString()
+    }
+
+    /**
+     * generates a random secret (in hex format)
+     */
+    fun generateApiKeySecret(): String {
+        val bytes = ByteArray(keyByteLength)
+        SecureRandom().nextBytes(bytes)
+        return HexFormat.of().formatHex(bytes)
+    }
+
+    /**
+     * verifies whether an encoded secret and a secret match
+     */
+    fun matchesSecretAndEncodedSecret(secret: String, encodedSecret: String): Boolean {
+        return Argon2PasswordEncoder().matches(secret, encodedSecret)
+    }
+
+    /**
+     * Encodes a secret to a storable format
+     */
+    fun encodeSecret(secret: String): String {
+        return Argon2PasswordEncoder().encode(secret)
     }
 
     /**
