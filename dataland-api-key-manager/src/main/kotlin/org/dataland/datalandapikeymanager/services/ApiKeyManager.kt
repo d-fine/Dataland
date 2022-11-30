@@ -101,26 +101,15 @@ class ApiKeyManager
     }
 
     private fun getApiKeyMetaInfo(secret: String, apiKeyEntity: ApiKeyEntity): ApiKeyMetaInfo {
-        return if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
+        val apiKeyMetaInfo = if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
+        } else if ((apiKeyEntity.expiryDate ?: Instant.now().epochSecond) >= Instant.now().epochSecond) {
+            ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
         } else {
-            val currentTime = Instant.now().epochSecond
-            val active = (apiKeyEntity.expiryDate ?: currentTime) >= currentTime
-            logger.info("Validated Api Key for user ${apiKeyEntity.keycloakUserId} as active=$active.")
-
-            val validationMessage = if (active) {
-                validationMessageSuccess
-            } else {
-                validationMessageExpiredApiKey
-            }
-            ApiKeyMetaInfo(
-                apiKeyEntity.keycloakUserId,
-                apiKeyEntity.keycloakRoles,
-                apiKeyEntity.expiryDate,
-                active,
-                validationMessage
-            )
+            ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)
         }
+        logger.info("Validated Api Key for user ${apiKeyEntity.keycloakUserId} as active=${apiKeyMetaInfo.active}")
+        return apiKeyMetaInfo
     }
 
     /**

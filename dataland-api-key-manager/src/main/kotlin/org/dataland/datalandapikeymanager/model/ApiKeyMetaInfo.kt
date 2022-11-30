@@ -1,6 +1,7 @@
 package org.dataland.datalandapikeymanager.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandapikeymanager.entities.ApiKeyEntity
 
 /**
  * --- API model ---
@@ -26,4 +27,13 @@ data class ApiKeyMetaInfo(
 
     @field:JsonProperty(required = false)
     val validationMessage: String? = null
-)
+) {
+    constructor(apiKeyEntity: ApiKeyEntity, active: Boolean?, validationMessage: String?) :
+        this(
+            apiKeyEntity.keycloakUserId,
+            apiKeyEntity.keycloakRoles,
+            apiKeyEntity.expiryDate,
+            active,
+            validationMessage
+        )
+}
