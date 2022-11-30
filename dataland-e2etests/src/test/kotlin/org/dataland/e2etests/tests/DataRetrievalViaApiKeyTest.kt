@@ -107,7 +107,7 @@ class DataRetrievalViaApiKeyTest {
     fun `create a test, which tries to validate a incorrect api key`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_0a45a328a2a4c9b051b9a58edbf76ae7" +
-                "aab926737779c688110d3209b05ac3da4ef8110e0f6dbf7_3623928119"
+            "aab926737779c688110d3209b05ac3da4ef8110e0f6dbf7_3623928119"
         val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(incorrectApiKey)
         println(responseMessage)
         assertEquals(
