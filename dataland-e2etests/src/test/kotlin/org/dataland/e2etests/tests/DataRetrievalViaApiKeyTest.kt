@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
+private const val REVOCATION_ERROR_MESSAGE = "The received api key could not be revoked."
+
 class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
@@ -125,7 +127,7 @@ class DataRetrievalViaApiKeyTest {
             assertEquals(
                 "The API key you provided for your Dataland account is expired.",
                 responseMessage,
-                "The received api key could not be revoked."
+                REVOCATION_ERROR_MESSAGE
             )
         }*/
     @Test
@@ -135,7 +137,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             "The API key for your Dataland account was successfully revoked.",
             responseMessage,
-            "The received api key could not be revoked."
+                REVOCATION_ERROR_MESSAGE
         )
     }
 
