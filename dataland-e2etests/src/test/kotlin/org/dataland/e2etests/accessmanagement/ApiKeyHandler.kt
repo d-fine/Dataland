@@ -18,22 +18,29 @@ class ApiKeyHandler {
         return apiKeyManagerClient.generateApiKey(daysValid)
     }
 
-    fun obtainApiKeyForUserType(userType: UserType, daysValid: Int) {
+    fun obtainApiKeyForUserType(userType: UserType, daysValid: Int): String {
         val apiKeyAndMetaInfo = requestApiKeyAndMetaData(userType, daysValid)
         ApiClient.Companion.apiKey["dataland-api-key"] = apiKeyAndMetaInfo.apiKey
         setBearerTokenToNull()
+        return apiKeyAndMetaInfo.apiKey
     }
 
     private fun revokeApiKey(userType: UserType): RevokeApiKeyResponse {
         tokenHandler.obtainTokenForUserType(userType)
+
         return apiKeyManagerClient.revokeApiKey()
     }
-    fun revokeApiKeyForUser(userType: UserType) {
-        revokeApiKey(userType)
+    fun revokeApiKeyForUser(userType: UserType): String {
+        val revokeApiKeyResponse = revokeApiKey(userType)
         setBearerTokenToNull()
+        return revokeApiKeyResponse.revokementProcessMessage
     }
     private fun setBearerTokenToNull() {
         ApiClientBackend.Companion.accessToken = null
         ApiClient.Companion.accessToken = null
+    }
+
+    fun validateApiKeyValidationMessage(receivedApiKey: String): String {
+        return apiKeyManagerClient.validateApiKey(receivedApiKey).validationMessage.toString()
     }
 }

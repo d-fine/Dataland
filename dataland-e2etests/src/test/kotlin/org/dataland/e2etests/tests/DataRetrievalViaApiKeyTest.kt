@@ -81,4 +81,74 @@ class DataRetrievalViaApiKeyTest {
             "The exception message does not say that a 401 client error was the cause."
         )
     }
+
+    @Test
+    fun `create a test in which a api key is successfully validated`() {
+        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(apiKeyToValidate)
+        assertEquals(
+            "The API key you provided was successfully validated.",
+            responseMessage,
+            "The received validation message does not match the expected one."
+        )
+    }
+    @Test
+    fun `create a test, which tries to validate a non existing api key`() {
+        val nonExistingApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(nonExistingApiKey)
+        assertEquals(
+            "Your Dataland account has no API key registered. Please generate one.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }
+    @Test
+    fun `create a test, which tries to validate a incorrect api key`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_0a45a328a2a4c9b051b9a58edbf76ae7" +
+                "aab926737779c688110d3209b05ac3da4ef8110e0f6dbf7_3623928119"
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(incorrectApiKey)
+        println(responseMessage)
+        assertEquals(
+            "The API key you provided for your Dataland account is not correct.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }
+    // ToDo
+    // not yet working
+   /* @Test
+    fun `create a test, which tries to validate an expired api key`() {
+        val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, -1)
+        // println(expiredApiKey.apiKeyMetaInfo.expiryDate)
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(expiredApiKey)
+        println(responseMessage)
+        assertEquals(
+            "The API key you provided for your Dataland account is expired.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }*/
+    @Test
+    fun `create a test in which an existing api key is revoked`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val responseMessage = apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        assertEquals(
+            "The API key for your Dataland account was successfully revoked.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }
+    @Test
+    fun `create a test in which a non existing api key is revoked`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        val responseMessage = apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        assertEquals(
+            "Your Dataland account has no API key registered. Therefore no revokement took place.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }
 }
