@@ -22,7 +22,7 @@ interface ApiKeyAPI {
     @Operation(
         summary = "Generate a new API key.",
         description = "Generates and persists a new API key for the requesting user with an expiry date based on " +
-                "the number of valid days in the request param."
+            "the number of valid days in the request param."
     )
     @ApiResponses(
         value = [
@@ -72,7 +72,7 @@ interface ApiKeyAPI {
     @Operation(
         summary = "Revoke an existing API key.",
         description = "Checks if API key exists in storage for the requesting user and revokes it. If there is no " +
-                "API key registered for the user, this is reported in the response."
+            "API key registered for the user, this is reported in the response."
     )
     @ApiResponses(
         value = [
