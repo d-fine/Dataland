@@ -107,7 +107,6 @@ class DataRetrievalViaApiKeyTest {
         val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
             "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
         val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(incorrectApiKey)
-        println(responseMessage)
         assertEquals(
             "The API key you provided for your Dataland account is not correct.",
             responseMessage,
