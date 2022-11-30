@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
-import javax.validation.constraints.Positive
 
 /**
  * Defines the api-key-manager API.
@@ -43,7 +42,7 @@ interface ApiKeyAPI {
      * @return new API key for the user together with meta info associated with that API key
      */
     fun generateApiKey(
-        @RequestParam(required = false) @Positive daysValid: Int? = null
+        @RequestParam(required = false) daysValid: Int? = null
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(

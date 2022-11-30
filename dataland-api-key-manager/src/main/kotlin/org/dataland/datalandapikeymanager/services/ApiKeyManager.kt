@@ -7,6 +7,7 @@ import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.repositories.ApiKeyRepository
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.apikey.ParsedApiKey
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
@@ -44,10 +45,15 @@ class ApiKeyManager
     }
 
     private fun calculateExpiryDate(daysValid: Int?): Long? {
-        return if (daysValid == null) {
-            null
-        } else {
-            (daysValid * secondsInADay) + Instant.now().epochSecond
+        if (daysValid != null && daysValid <= 0) {
+            throw InvalidInputApiException(
+                "If set, the value of daysValid must be a positive integer.",
+                "If set, the value of daysValid must be a positive integer but it was $daysValid"
+            )
+        }
+        return when (daysValid) {
+            null -> null
+            else -> (daysValid * secondsInADay) + Instant.now().epochSecond
         }
     }
 
