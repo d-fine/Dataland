@@ -17,7 +17,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
-import java.time.Instant
+import java.time.*
 import java.util.HexFormat
 /**
  * A class for handling the generation, validation and revocation of an api key
@@ -89,9 +89,9 @@ class ApiKeyManager
     }
 
     private fun calculateExpiryDate(daysValid: Int?): Long? {
-        return if (daysValid == null)
-            null else
-            Instant.now().epochSecond
+        return if (daysValid == null){
+            null } else {
+            (daysValid * 86400) + Instant.now().epochSecond}
     }
 
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
