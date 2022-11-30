@@ -23,7 +23,6 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_SALT", "6ZN+5rRT/wQcQqvNhXIsfA==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_VALUE", "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 # If needed set REALDATA to an appropriate value. Beware: If set, not all tests might be visible if E2E tests are started locally [Environment]::SetEnvironmentVariable("REALDATA", "false", [System.EnvironmentVariableTarget]::User)
 # If needed, set to your sonar token [Environment]::SetEnvironmentVariable("SONAR_TOKEN", "${{ secrets.SONAR_TOKEN }}", [System.EnvironmentVariableTarget]::User)
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("SSH_PRIVATE_KEY", "${{ secrets.SSH_PRIVATE_KEY }}", [System.EnvironmentVariableTarget]::User)
