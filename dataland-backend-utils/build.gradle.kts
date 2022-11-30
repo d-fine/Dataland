@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(libs.bcpkix.jdk15on)
+    implementation(libs.bcprov.jdk15on)
 }
 
 tasks.bootJar {
