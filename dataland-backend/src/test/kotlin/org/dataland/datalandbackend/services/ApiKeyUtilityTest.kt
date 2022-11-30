@@ -25,23 +25,13 @@ class ApiKeyUtilityTest {
         ).toString()
     }
 
-    private fun prevalidateBrokenApiKeysAndAssertThrownMessages(
-        mapOfBrokenApiKeysAndExpectedMessages:
-            Map<String, String>
-    ) {
-        mapOfBrokenApiKeysAndExpectedMessages.forEach { (brokenApiKey, expectedMessage) ->
-            val thrown = assertThrows<ApiKeyFormatException> {
-                apiKeyUtility.parseApiKey(brokenApiKey)
-            }
-            assertEquals(
-                expectedMessage,
-                thrown.message
-            )
-        }
+    private fun parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey: String, expectedMessage: String) {
+        val thrown = assertThrows<ApiKeyFormatException> { apiKeyUtility.parseApiKey(brokenApiKey) }
+        assertEquals(expectedMessage, thrown.message)
     }
 
     @Test
-    fun `check if prevalidation passes for a correct api key`() {
+    fun `check if correct api key can be parsed`() {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
         val parsedApiKey = apiKeyUtility.parseApiKey(apiKey)
         val expectedParsedApiKey = ParsedApiKey(
@@ -52,18 +42,14 @@ class ApiKeyUtilityTest {
 
     @Test
     fun `check if exception thrown if the provided api key does not have the exact number of delimiters`() {
-        val apiKeyWithOneTooManyDelimiter =
-            testApiKeyBase64EncodedKeycloakUserId + "_" +
-                testApiKeySecret + "_" +
-                testApiKeyCrc32Value + "_"
-        val totallyRandomString = "aksjflakjsglkajsglkjas"
+        val apiKeyWithOneDelimiterTooMany =
+            testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value + "_"
+        val apiKeyWithOneDelimiterTooFew =
+            testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "+" + testApiKeyCrc32Value
         val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
-        prevalidateBrokenApiKeysAndAssertThrownMessages(
-            mapOf(
-                apiKeyWithOneTooManyDelimiter to expectedApiKeyFormatExceptionMessage,
-                totallyRandomString to expectedApiKeyFormatExceptionMessage
-            )
-        )
+        listOf(apiKeyWithOneDelimiterTooMany, apiKeyWithOneDelimiterTooFew).forEach { brokenApiKey ->
+            parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedApiKeyFormatExceptionMessage)
+        }
     }
 
     @Test
@@ -71,8 +57,9 @@ class ApiKeyUtilityTest {
         val badUserId = ")$testApiKeyBase64EncodedKeycloakUserId"
         val apiKeyWithInvalidBase64CharacterInUserId =
             badUserId + "_" + testApiKeySecret + "_" + getCrc(badUserId, testApiKeySecret)
-        prevalidateBrokenApiKeysAndAssertThrownMessages(
-            mapOf(apiKeyWithInvalidBase64CharacterInUserId to apiKeyUtility.validateKeycloakUserIdExceptionMessage)
+        parseBrokenApiKeyAndAssertThrownMessage(
+            apiKeyWithInvalidBase64CharacterInUserId,
+            apiKeyUtility.validateKeycloakUserIdExceptionMessage
         )
     }
 
@@ -83,10 +70,9 @@ class ApiKeyUtilityTest {
                 testApiKeySecret + "d" + "_" +
                 getCrc(testApiKeyBase64EncodedKeycloakUserId, testApiKeySecret + "d")
 
-        prevalidateBrokenApiKeysAndAssertThrownMessages(
-            mapOf(
-                apiKeyWithOneTooManyCharacterInApiKeySecret to apiKeyUtility.validateApiKeySecretExceptionMessage
-            )
+        parseBrokenApiKeyAndAssertThrownMessage(
+            apiKeyWithOneTooManyCharacterInApiKeySecret,
+            apiKeyUtility.validateApiKeySecretExceptionMessage
         )
     }
 
@@ -95,10 +81,8 @@ class ApiKeyUtilityTest {
         val apiKeyWithWrongCrc32Value =
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + (testApiKeyCrc32Value + 1L)
 
-        prevalidateBrokenApiKeysAndAssertThrownMessages(
-            mapOf(
-                apiKeyWithWrongCrc32Value to apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage
-            )
+        parseBrokenApiKeyAndAssertThrownMessage(
+            apiKeyWithWrongCrc32Value, apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage
         )
     }
 
