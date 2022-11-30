@@ -6,6 +6,7 @@ import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyRespon
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.BASE_PATH_TO_API_KEY_MANAGER
 import org.dataland.e2etests.utils.UserType
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 
 class ApiKeyHandler {
 
@@ -20,10 +21,19 @@ class ApiKeyHandler {
     fun obtainApiKeyForUserType(userType: UserType, daysValid: Int) {
         val apiKeyAndMetaInfo = requestApiKeyAndMetaData(userType, daysValid)
         ApiClient.Companion.apiKey.put("dataland-api-key", apiKeyAndMetaInfo.apiKey)
+        setBearerTokenToNull()
     }
 
-    fun revokeApiKeyForUser(userType: UserType): RevokeApiKeyResponse {
+    private fun revokeApiKey(userType: UserType): RevokeApiKeyResponse {
         tokenHandler.obtainTokenForUserType(userType)
         return apiKeyManagerClient.revokeApiKey()
+    }
+    fun revokeApiKeyForUser(userType: UserType) {
+        revokeApiKey(userType)
+        setBearerTokenToNull()
+    }
+    private fun setBearerTokenToNull() {
+        ApiClientBackend.Companion.accessToken = null
+        ApiClient.Companion.accessToken = null
     }
 }

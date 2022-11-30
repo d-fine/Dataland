@@ -5,7 +5,6 @@ import org.dataland.datalandapikeymanager.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.model.RevokeApiKeyResponse
 import org.dataland.datalandapikeymanager.services.ApiKeyManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -20,12 +19,6 @@ class ApiKeyController(
 ) : ApiKeyAPI {
 
     override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
-        if (daysValid != null && daysValid <= 0) {
-            throw InvalidInputApiException(
-                "If set, the value of daysValid must be a positive integer.",
-                "If set, the value of daysValid must be a positive integer but it was $daysValid"
-            )
-        }
         return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
     }
 
