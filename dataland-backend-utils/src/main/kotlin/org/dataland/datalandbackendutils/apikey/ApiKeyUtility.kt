@@ -20,7 +20,7 @@ class ApiKeyUtility {
 
     private val numberOfUnderscoreDelimitersExpectedInApiKey = 2
 
-    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength * 2}}\$") // length fixed
+    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength * 2}}\$")
 
     private val charset = Charsets.UTF_8
 
