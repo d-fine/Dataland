@@ -9,8 +9,8 @@ import java.security.SecureRandom
 import java.util.HexFormat
 
 /**
- * This class should be used to validate that a given api key has the reuired format and the correct checksum
- * before a request is sent to /api-keys/validateApiKey to prevent unneccessary traffic
+ * This class should be used to validate that a given api key has the required format and the correct checksum
+ * before a request is sent to /api-keys/validateApiKey to prevent unnecessary traffic
  */
 class ApiKeyUtility {
 
