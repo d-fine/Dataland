@@ -57,7 +57,7 @@ class DataRetrievalViaApiKeyTest {
     /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
     Api key exists)*/
     @Test
-    fun `create api key to retrieve company by id, then revoke api key and try to retrieve the same company again`() {
+    fun `create api key to retrieve company by id then revoke api key and try to retrieve the same company again`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
@@ -93,7 +93,7 @@ class DataRetrievalViaApiKeyTest {
         )
     }
     @Test
-    fun `create a test, which tries to validate a non existing api key`() {
+    fun `create a test which tries to validate a non existing api key`() {
         val nonExistingApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
         val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(nonExistingApiKey)
@@ -104,7 +104,7 @@ class DataRetrievalViaApiKeyTest {
         )
     }
     @Test
-    fun `create a test, which tries to validate a incorrect api key`() {
+    fun `create a test which tries to validate a incorrect api key`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
             "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
