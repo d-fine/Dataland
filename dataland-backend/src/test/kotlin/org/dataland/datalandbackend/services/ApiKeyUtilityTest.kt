@@ -40,6 +40,8 @@ class ApiKeyUtilityTest {
         }
     }
 
+
+
     @Test
     fun `check if prevalidation passes for a correct api key`() {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
@@ -83,10 +85,9 @@ class ApiKeyUtilityTest {
                 testApiKeySecret + "d" + "_" +
                 getCrc(testApiKeyBase64EncodedKeycloakUserId, testApiKeySecret + "d")
 
-        val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeySecretExceptionMessage
         prevalidateBrokenApiKeysAndAssertThrownMessages(
             mapOf(
-                apiKeyWithOneTooManyCharacterInApiKeySecret to expectedApiKeyFormatExceptionMessage
+                apiKeyWithOneTooManyCharacterInApiKeySecret to apiKeyUtility.validateApiKeySecretExceptionMessage
             )
         )
     }
@@ -96,12 +97,10 @@ class ApiKeyUtilityTest {
         val apiKeyWithWrongCrc32Value =
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + (testApiKeyCrc32Value + 1L)
 
-        val thrown = assertThrows<ApiKeyFormatException> {
-            apiKeyUtility.parseApiKey(apiKeyWithWrongCrc32Value)
-        }
-        assertEquals(
-            apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage,
-            thrown.message
+        prevalidateBrokenApiKeysAndAssertThrownMessages(
+            mapOf(
+                apiKeyWithWrongCrc32Value to apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage
+            )
         )
     }
 }
