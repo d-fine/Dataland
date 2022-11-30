@@ -11,11 +11,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.stereotype.Component
-import java.security.SecureRandom
 import java.time.Instant
-import java.util.HexFormat
 
 /**
  * A class for handling the generation, validation and revocation of an api key
@@ -25,13 +22,6 @@ class ApiKeyManager
 (@Autowired private val apiKeyRepository: ApiKeyRepository) {
 
     companion object {
-        private const val keyByteLength = 40
-        private const val saltByteLength = 16
-        private const val hashByteLength = 32
-
-        private const val argon2Iterations = 3
-        private const val argon2MemoryPowOfTwo = 4
-        private const val argon2Parallelisms = 1
         private const val secondsInADay = 86400
     }
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
@@ -47,16 +37,6 @@ class ApiKeyManager
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val apiKeyUtility = ApiKeyUtility()
-
-    private fun generateRandomByteArray(): ByteArray {
-        val bytes = ByteArray(keyByteLength)
-        SecureRandom().nextBytes(bytes)
-        return bytes
-    }
-
-    private fun generateApiKeySecretAndEncodeToHex(): String {
-        return HexFormat.of().formatHex(generateRandomByteArray())
-    }
 
     private fun getAuthentication(): Authentication {
         return SecurityContextHolder.getContext().authentication
@@ -85,15 +65,9 @@ class ApiKeyManager
     fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val apiKeyMetaInfo = generateApiKeyMetaInfo(daysValid)
 
-        val secret = generateApiKeySecretAndEncodeToHex()
+        val secret = apiKeyUtility.generateApiKeySecret()
         val parsedApiKey = ParsedApiKey(apiKeyMetaInfo.keycloakUserId!!, secret)
-        val encodedSecret = Argon2PasswordEncoder(
-            saltByteLength,
-            hashByteLength,
-            argon2Parallelisms,
-            argon2MemoryPowOfTwo,
-            argon2Iterations
-        ).encode(secret)
+        val encodedSecret = apiKeyUtility.encodeSecret(secret)
         val apiKeyEntity = ApiKeyEntity(encodedSecret, apiKeyMetaInfo)
         apiKeyRepository.save(apiKeyEntity)
         logger.info(
@@ -121,7 +95,7 @@ class ApiKeyManager
                     "${receivedAndParsedApiKey.keycloakUserId} has no API key registered."
             )
             result = ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
-        } else if (!Argon2PasswordEncoder().matches(
+        } else if (!apiKeyUtility.matchesSecretAndEncodedSecret(
                 receivedAndParsedApiKey.apiKeySecret,
                 apiKeyEntityOptional.get().encodedSecret
             )
