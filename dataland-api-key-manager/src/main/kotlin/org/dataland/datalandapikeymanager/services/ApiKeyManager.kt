@@ -24,14 +24,15 @@ import java.util.HexFormat
 class ApiKeyManager
 (@Autowired private val apiKeyRepository: ApiKeyRepository) {
 
-    private val keyByteLength = 40
-    private val saltByteLength = 16
-    private val hashByteLength = 32
+    companion object {
+        private const val keyByteLength = 40
+        private const val saltByteLength = 16
+        private const val hashByteLength = 32
 
-    private val argon2Iterations = 3
-    private val argon2MemoryPowOfTwo = 4
-    private val argon2Parallelisms = 1
-
+        private const val argon2Iterations = 3
+        private const val argon2MemoryPowOfTwo = 4
+        private const val argon2Parallelisms = 1
+    }
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
@@ -46,14 +47,14 @@ class ApiKeyManager
 
     private val apiKeyUtility = ApiKeyUtility()
 
-    private fun generateRandomByteArray(length: Int): ByteArray {
-        val bytes = ByteArray(length)
+    private fun generateRandomByteArray(): ByteArray {
+        val bytes = ByteArray(keyByteLength)
         SecureRandom().nextBytes(bytes)
         return bytes
     }
 
     private fun generateApiKeySecretAndEncodeToHex(): String {
-        return HexFormat.of().formatHex(generateRandomByteArray(keyByteLength))
+        return HexFormat.of().formatHex(generateRandomByteArray())
     }
 
     private fun getAuthentication(): Authentication {
@@ -136,7 +137,13 @@ class ApiKeyManager
         if (!active) {
             validationMessage = validationMessageExpiredApiKey
         }
-        return ApiKeyMetaInfo(apiKeyEntity.keycloakUserId, apiKeyEntity.keycloakRoles, apiKeyEntity.expiryDate, active, validationMessage)
+        return ApiKeyMetaInfo(
+            apiKeyEntity.keycloakUserId,
+            apiKeyEntity.keycloakRoles,
+            apiKeyEntity.expiryDate,
+            active,
+            validationMessage
+        )
     }
 
     /**

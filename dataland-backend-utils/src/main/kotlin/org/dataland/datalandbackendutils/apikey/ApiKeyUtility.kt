@@ -67,7 +67,7 @@ class ApiKeyUtility {
         try {
             keycloakUserId = String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
         } catch (e: IllegalArgumentException) {
-            throw ApiKeyFormatException(validateKeycloakUserIdExceptionMessage)
+            throw ApiKeyFormatException(validateKeycloakUserIdExceptionMessage, e)
         }
         validateApiKeySecret(parsedApiKeySecret)
         return ParsedApiKey(
@@ -84,6 +84,9 @@ class ApiKeyUtility {
         ).toString()
     }
 
+    /**
+     * converts a ParsedApiKey Object (with secret and userId) to an API-Key in the correct parseable format.
+     */
     fun convertToApiKey(parsedApiKey: ParsedApiKey): String {
         val keycloakUserIdBase64Encoded = encodeToBase64(parsedApiKey.keycloakUserId.toByteArray())
         return parsedApiKey.apiKeySecret + "_" +
