@@ -25,17 +25,9 @@ class ApiKeyUtilityTest {
         ).toString()
     }
 
-    private fun parseBrokenApiKeyAndAssertThrownMessage(
-        brokenApiKey: String,
-        expectedMessage: String
-    ) {
-        val thrown = assertThrows<ApiKeyFormatException> {
-            apiKeyUtility.parseApiKey(brokenApiKey)
-        }
-        assertEquals(
-            expectedMessage,
-            thrown.message
-        )
+    private fun parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey: String, expectedMessage: String) {
+        val thrown = assertThrows<ApiKeyFormatException> { apiKeyUtility.parseApiKey(brokenApiKey) }
+        assertEquals(expectedMessage, thrown.message)
     }
 
     @Test
