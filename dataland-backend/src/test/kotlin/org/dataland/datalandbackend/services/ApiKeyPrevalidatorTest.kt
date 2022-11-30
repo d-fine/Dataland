@@ -133,7 +133,7 @@ class ApiKeyPrevalidatorTest {
         val apiKeyWithWrongCrc32Value =
             buildTestApiKeyAndOptionallyReplaceWithCustomInputs(crc32Value = apiKeyWrongCrc32Value)
 
-        val thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<ApiKeyFormatException> {
             apiKeyPrevalidator.prevalidateApiKey(apiKeyWithWrongCrc32Value)
         }
         assertEquals(
