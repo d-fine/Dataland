@@ -43,7 +43,6 @@ getApiKeyWithToken() {
                                    --header "Host: $host" \
                                    --insecure)
 
-
   local base64characters="[A-Za-z0-9+/]"
   local token_regex="\"apiKey\": *\"($base64characters+_$base64characters+_[0-9]+)\","
   if [[ $get_api_key_response =~ $token_regex ]]; then
