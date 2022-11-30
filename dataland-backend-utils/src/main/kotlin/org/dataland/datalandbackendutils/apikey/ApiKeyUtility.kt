@@ -77,10 +77,10 @@ class ApiKeyUtility {
     }
 
     private fun getCrc(keycloakUserIdBase64Encoded: String, apiKeySecret: String): String {
-        val parsedApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
+        val apiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
         return calculateCrc32Value(
-            parsedApiKeyWithoutCrc32Value.toByteArray(charset)
+            apiKeyWithoutCrc32Value.toByteArray(charset)
         ).toString()
     }
 
@@ -89,8 +89,8 @@ class ApiKeyUtility {
      */
     fun convertToApiKey(parsedApiKey: ParsedApiKey): String {
         val keycloakUserIdBase64Encoded = encodeToBase64(parsedApiKey.keycloakUserId.toByteArray())
-        return parsedApiKey.apiKeySecret + "_" +
-            keycloakUserIdBase64Encoded + "_" +
-            getCrc(keycloakUserIdBase64Encoded, parsedApiKey.apiKeySecret)
+        return keycloakUserIdBase64Encoded + "_" +
+                parsedApiKey.apiKeySecret + "_" +
+            getCrc(keycloakUserIdBase64Encoded= keycloakUserIdBase64Encoded, apiKeySecret=parsedApiKey.apiKeySecret)
     }
 }

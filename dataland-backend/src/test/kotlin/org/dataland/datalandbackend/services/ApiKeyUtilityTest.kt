@@ -104,4 +104,12 @@ class ApiKeyUtilityTest {
             thrown.message
         )
     }
+
+    @Test
+    fun `check that generated api keys can be parsed`() {
+        val initialParsedApiKey = ParsedApiKey(testKeycloakUserId, testApiKeySecret)
+        val apiKey = apiKeyUtility.convertToApiKey(initialParsedApiKey)
+        val reParsedApiKey = apiKeyUtility.parseApiKey(apiKey)
+        assertEquals(initialParsedApiKey, reParsedApiKey, "expecting that initial and re-parsed api key match")
+    }
 }
