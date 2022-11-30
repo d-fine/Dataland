@@ -52,10 +52,10 @@ class ApiKeyUtility {
     fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
-            val receivedApiKeySections = receivedApiKey.split("_")
-            val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
-            val parsedApiKeySecret = receivedApiKeySections[1]
-            val parsedCrc32Value = receivedApiKeySections[2]
+        val receivedApiKeySections = receivedApiKey.split("_")
+        val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
+        val parsedApiKeySecret = receivedApiKeySections[1]
+        val parsedCrc32Value = receivedApiKeySections[2]
 
         val expectedCrc32Value = getCrc(parsedKeycloakUserIdBase64Encoded, parsedApiKeySecret)
 
@@ -80,14 +80,14 @@ class ApiKeyUtility {
         val parsedApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
         return calculateCrc32Value(
-                parsedApiKeyWithoutCrc32Value.toByteArray(charset)
+            parsedApiKeyWithoutCrc32Value.toByteArray(charset)
         ).toString()
     }
 
     fun convertToApiKey(parsedApiKey: ParsedApiKey): String {
         val keycloakUserIdBase64Encoded = encodeToBase64(parsedApiKey.keycloakUserId.toByteArray())
         return parsedApiKey.apiKeySecret + "_" +
-                keycloakUserIdBase64Encoded + "_" +
-                getCrc(keycloakUserIdBase64Encoded, parsedApiKey.apiKeySecret)
+            keycloakUserIdBase64Encoded + "_" +
+            getCrc(keycloakUserIdBase64Encoded, parsedApiKey.apiKeySecret)
     }
 }

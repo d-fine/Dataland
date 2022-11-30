@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
-import java.time.*
+import java.time.Instant
 import java.util.HexFormat
 
 /**
@@ -33,13 +33,13 @@ class ApiKeyManager
     private val argon2Parallelisms = 1
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
-            "Please generate one."
+        "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
     private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired."
     private val validationMessageSuccess = "The API key you provided was successfully validated."
 
     private val revokementMessageNonExistingApiKey = "Your Dataland account has no API key registered. Therefore no " +
-            "revokement took place."
+        "revokement took place."
     private val revokementMessageSuccess = "The API key for your Dataland account was successfully revoked."
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -86,16 +86,16 @@ class ApiKeyManager
         val secret = generateApiKeySecretAndEncodeToHex()
         val parsedApiKey = ParsedApiKey(apiKeyMetaInfo.keycloakUserId!!, secret)
         val encodedSecret = Argon2PasswordEncoder(
-                saltByteLength,
-                hashByteLength,
-                argon2Parallelisms,
-                argon2MemoryPowOfTwo,
-                argon2Iterations
+            saltByteLength,
+            hashByteLength,
+            argon2Parallelisms,
+            argon2MemoryPowOfTwo,
+            argon2Iterations
         ).encode(secret)
         val apiKeyEntity = ApiKeyEntity(encodedSecret, apiKeyMetaInfo)
         apiKeyRepository.save(apiKeyEntity)
         logger.info(
-                "Generated Api Key with encoded secret value $encodedSecret and meta info $apiKeyMetaInfo."
+            "Generated Api Key with encoded secret value $encodedSecret and meta info $apiKeyMetaInfo."
         )
         return ApiKeyAndMetaInfo(apiKeyUtility.convertToApiKey(parsedApiKey), apiKeyMetaInfo)
     }
@@ -109,13 +109,13 @@ class ApiKeyManager
         val receivedAndParsedApiKey = apiKeyUtility.parseApiKey(receivedApiKey)
 
         val apiKeyEntityOptional = apiKeyRepository.findById(
-                receivedAndParsedApiKey.keycloakUserId
+            receivedAndParsedApiKey.keycloakUserId
         )
 
         if (apiKeyEntityOptional.isEmpty) {
             logger.info(
-                    "Dataland user with the encoded Keycloak user Id " +
-                            "${receivedAndParsedApiKey.keycloakUserId} has no API key registered."
+                "Dataland user with the encoded Keycloak user Id " +
+                    "${receivedAndParsedApiKey.keycloakUserId} has no API key registered."
             )
             return ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
         }
@@ -126,10 +126,10 @@ class ApiKeyManager
         val expiryDateOfApiKey = apiKeyEntity.expiryDate
         val currentTime = Instant.now().epochSecond
         val active =
-                (expiryDateOfApiKey ?: currentTime) >= currentTime
+            (expiryDateOfApiKey ?: currentTime) >= currentTime
         logger.info(
-                "Validated Api Key ${receivedApiKey} " +
-                        "The activity status of the API key is $active."
+            "Validated Api Key $receivedApiKey " +
+                "The activity status of the API key is $active."
         )
 
         var validationMessage = validationMessageSuccess
@@ -155,14 +155,14 @@ class ApiKeyManager
             revokementProcessSuccessful = false
             revokementProcessMessage = revokementMessageNonExistingApiKey
             logger.info(
-                    "Revokement failed, no API key registered for the Keycloak user Id $keycloakUserId"
+                "Revokement failed, no API key registered for the Keycloak user Id $keycloakUserId"
             )
         } else {
             apiKeyRepository.delete(apiKeyEntityOptional.get())
             revokementProcessSuccessful = true
             revokementProcessMessage = revokementMessageSuccess
             logger.info(
-                    "The API key for the  Keycloak user Id $keycloakUserId was successfully removed from storage."
+                "The API key for the  Keycloak user Id $keycloakUserId was successfully removed from storage."
             )
         }
         return RevokeApiKeyResponse(revokementProcessSuccessful, revokementProcessMessage)
