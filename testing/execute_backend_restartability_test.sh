@@ -3,9 +3,9 @@ set -euxo pipefail
 source "$(dirname "$0")/authorisation_tools.sh"
 CYPRESS_TEST_GROUP=101 ./testing/execute_e2e_tests.sh
 api_key=$(getApiKeyWithUsernamePassword data_reader "$KEYCLOAK_READER_PASSWORD" "https://localhost" "local-dev.dataland.com")
-if [[ ! "$api_key" =~ "^Unable to extract token" ]]; then
-  $jwt
-  exit 1
+if [[ "$api_key" =~ "^Unable to extract token" ]]; then
+  echo $api_key
+  return 1
 fi
 curl -X 'GET' \
   'https://localhost/api/companies' \
