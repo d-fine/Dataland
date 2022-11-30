@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -10,7 +9,6 @@ import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 
 class DataRetrievalViaApiKeyTest {
 
@@ -25,8 +23,6 @@ class DataRetrievalViaApiKeyTest {
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -46,8 +42,6 @@ class DataRetrievalViaApiKeyTest {
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials
         )
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -69,8 +63,6 @@ class DataRetrievalViaApiKeyTest {
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
 
         val authorizedRequest = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(
@@ -79,11 +71,8 @@ class DataRetrievalViaApiKeyTest {
             "The received company $expectedStoredCompany does not equal the expected company $expectedStoredCompany"
         )
         apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
         val exception =
             assertThrows<ClientException> {
-                //apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId)
                     .companyId
             }
