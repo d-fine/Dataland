@@ -44,13 +44,17 @@ class ApiKeyManager
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun calculateExpiryDate(daysValid: Int?): Long? {
+    private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
         if (daysValid != null && daysValid <= 0) {
             throw InvalidInputApiException(
                 "If set, the value of daysValid must be a positive integer.",
                 "If set, the value of daysValid must be a positive integer but it was $daysValid"
             )
         }
+    }
+
+    private fun calculateExpiryDate(daysValid: Int?): Long? {
+        checkIfDaysValidValueIsValid(daysValid)
         return when (daysValid) {
             null -> null
             else -> (daysValid * secondsInADay) + Instant.now().epochSecond
