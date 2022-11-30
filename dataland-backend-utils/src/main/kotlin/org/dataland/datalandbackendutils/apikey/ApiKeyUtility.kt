@@ -9,8 +9,8 @@ import java.security.SecureRandom
 import java.util.HexFormat
 
 /**
- * This class should be used to validate that a given api key has the reuired format and the correct checksum
- * before a request is sent to /api-keys/validateApiKey to prevent unneccessary traffic
+ * This class should be used to validate that a given api key has the required format and the correct checksum
+ * before a request is sent to /api-keys/validateApiKey to prevent unnecessary traffic
  */
 class ApiKeyUtility {
 
@@ -59,10 +59,7 @@ class ApiKeyUtility {
     fun parseApiKey(receivedApiKey: String): ParsedApiKey {
         validateApiKeyDelimiters(receivedApiKey)
 
-        val receivedApiKeySections = receivedApiKey.split("_")
-        val parsedKeycloakUserIdBase64Encoded = receivedApiKeySections[0]
-        val parsedApiKeySecret = receivedApiKeySections[1]
-        val parsedCrc32Value = receivedApiKeySections[2]
+        val (parsedKeycloakUserIdBase64Encoded, parsedApiKeySecret, parsedCrc32Value) = receivedApiKey.split("_")
 
         val expectedCrc32Value = getCrc(parsedKeycloakUserIdBase64Encoded, parsedApiKeySecret)
 
