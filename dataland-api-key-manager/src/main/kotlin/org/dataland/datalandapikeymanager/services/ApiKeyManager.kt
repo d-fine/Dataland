@@ -128,26 +128,21 @@ class ApiKeyManager
      * @return the result of the attempted revocation as a status flag and a message
      */
     fun revokeApiKey(): RevokeApiKeyResponse {
-        val authentication = getAuthentication()
         val revokementProcessSuccessful: Boolean
         val revokementProcessMessage: String
 
-        val keycloakUserId = authentication.name!!
+        val keycloakUserId = getAuthentication().name!!
         val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
         if (apiKeyEntityOptional.isEmpty
         ) {
             revokementProcessSuccessful = false
             revokementProcessMessage = revokementMessageNonExistingApiKey
-            logger.info(
-                "Revokement failed, no API key registered for the Keycloak user Id $keycloakUserId"
-            )
+            logger.info("Revokement failed, no API key registered for the Keycloak user Id $keycloakUserId")
         } else {
             apiKeyRepository.delete(apiKeyEntityOptional.get())
             revokementProcessSuccessful = true
             revokementProcessMessage = revokementMessageSuccess
-            logger.info(
-                "The API key for the  Keycloak user Id $keycloakUserId was successfully removed from storage."
-            )
+            logger.info("The API key for the  Keycloak user Id $keycloakUserId was successfully removed from storage.")
         }
         return RevokeApiKeyResponse(revokementProcessSuccessful, revokementProcessMessage)
     }
