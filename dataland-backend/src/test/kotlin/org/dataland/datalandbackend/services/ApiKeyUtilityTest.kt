@@ -25,7 +25,7 @@ class ApiKeyUtilityTest {
         ).toString()
     }
 
-    private fun prevalidateBrokenApiKeyAndAssertThrownMessage(
+    private fun parseBrokenApiKeyAndAssertThrownMessage(
         brokenApiKey: String,
         expectedMessage: String
     ) {
@@ -57,7 +57,7 @@ class ApiKeyUtilityTest {
         val totallyRandomString = "aksjflakjsglkajsglkjas"
         val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
         listOf(apiKeyWithOneTooManyDelimiter, totallyRandomString).forEach { brokenApiKey ->
-            prevalidateBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedApiKeyFormatExceptionMessage)
+            parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedApiKeyFormatExceptionMessage)
         }
     }
 
@@ -66,7 +66,7 @@ class ApiKeyUtilityTest {
         val badUserId = ")$testApiKeyBase64EncodedKeycloakUserId"
         val apiKeyWithInvalidBase64CharacterInUserId =
             badUserId + "_" + testApiKeySecret + "_" + getCrc(badUserId, testApiKeySecret)
-        prevalidateBrokenApiKeyAndAssertThrownMessage(
+        parseBrokenApiKeyAndAssertThrownMessage(
             apiKeyWithInvalidBase64CharacterInUserId,
             apiKeyUtility.validateKeycloakUserIdExceptionMessage
         )
@@ -79,7 +79,7 @@ class ApiKeyUtilityTest {
                 testApiKeySecret + "d" + "_" +
                 getCrc(testApiKeyBase64EncodedKeycloakUserId, testApiKeySecret + "d")
 
-        prevalidateBrokenApiKeyAndAssertThrownMessage(
+        parseBrokenApiKeyAndAssertThrownMessage(
             apiKeyWithOneTooManyCharacterInApiKeySecret,
             apiKeyUtility.validateApiKeySecretExceptionMessage
         )
@@ -90,7 +90,7 @@ class ApiKeyUtilityTest {
         val apiKeyWithWrongCrc32Value =
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + (testApiKeyCrc32Value + 1L)
 
-        prevalidateBrokenApiKeyAndAssertThrownMessage(
+        parseBrokenApiKeyAndAssertThrownMessage(
             apiKeyWithWrongCrc32Value, apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage
         )
     }
