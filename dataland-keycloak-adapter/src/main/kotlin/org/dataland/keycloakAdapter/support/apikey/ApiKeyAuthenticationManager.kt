@@ -25,7 +25,7 @@ import java.lang.IllegalStateException
 @ConditionalOnProperty("org.dataland.authorization.apikey.enable", havingValue = "true")
 @Component
 class ApiKeyAuthenticationManager(
-    @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String
+    @Value("\${dataland.apikeymanager.base-url}") var apikeymanagerBaseUrl: String
 ) : AuthenticationManager {
     override fun authenticate(authentication: Authentication?): Authentication {
         val customToken = extractApiKey(authentication)
