@@ -44,13 +44,14 @@ getApiKeyWithToken() {
                                    --insecure)
 
 
-  local token_regex="\"apiKey\": \"([A-Za-z0-9+/]*_[A-Za-z0-9+/]*_\d*)\","
+  local base64characters="[A-Za-z0-9+\/]"
+  local token_regex="\"apiKey\": ?\"($base64characters*_$base64characters*_\d*)\","
   if [[ $get_api_key_response =~ $token_regex ]]; then
     echo "${BASH_REMATCH[1]}"
     exit 0
   else
     echo "Unable to extract token. Response was:"
-    echo "$get_user_token_response"
+    echo "$get_api_key_response"
     exit 1
   fi
 }
