@@ -269,15 +269,19 @@ jobs:
           java-version: 17
           cache: gradle
       - uses: actions/download-artifact@v3
+        name: gradleBuildFolders
         with:
           name: gradleBuildFolders
       - uses: actions/download-artifact@v3
+        name: JaCoCoResultsUnitTests
         with:
           name: JaCoCoResultsUnitTests
       - uses: actions/download-artifact@v3
+        name: JaCoCoResultsE2ETest
         with:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v3
+        name: lcovResults
         with:
           name: lcovResults
           path: fe-coverage
