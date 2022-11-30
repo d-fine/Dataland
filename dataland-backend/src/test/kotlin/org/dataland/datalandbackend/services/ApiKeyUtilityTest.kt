@@ -42,13 +42,12 @@ class ApiKeyUtilityTest {
 
     @Test
     fun `check if exception thrown if the provided api key does not have the exact number of delimiters`() {
-        val apiKeyWithOneTooManyDelimiter =
-            testApiKeyBase64EncodedKeycloakUserId + "_" +
-                testApiKeySecret + "_" +
-                testApiKeyCrc32Value + "_"
-        val totallyRandomString = "aksjflakjsglkajsglkjas"
+        val apiKeyWithOneDelimiterTooMany =
+            testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value + "_"
+        val apiKeyWithOneDelimiterTooFew =
+            testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "+" + testApiKeyCrc32Value
         val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
-        listOf(apiKeyWithOneTooManyDelimiter, totallyRandomString).forEach { brokenApiKey ->
+        listOf(apiKeyWithOneDelimiterTooMany, apiKeyWithOneDelimiterTooFew).forEach { brokenApiKey ->
             parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedApiKeyFormatExceptionMessage)
         }
     }
