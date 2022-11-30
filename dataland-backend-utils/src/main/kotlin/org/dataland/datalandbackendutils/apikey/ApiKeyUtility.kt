@@ -70,17 +70,13 @@ class ApiKeyUtility {
             throw ApiKeyFormatException(validateApiKeyChecksumWrongValueExceptionMessage)
         }
 
-        val keycloakUserId: String
-        try {
-            keycloakUserId = String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
+        val keycloakUserId = try {
+            String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
         } catch (e: IllegalArgumentException) {
             throw ApiKeyFormatException(validateKeycloakUserIdExceptionMessage, e)
         }
         validateApiKeySecret(parsedApiKeySecret)
-        return ParsedApiKey(
-            keycloakUserId,
-            parsedApiKeySecret,
-        )
+        return ParsedApiKey(keycloakUserId, parsedApiKeySecret)
     }
 
     private fun getCrc(keycloakUserIdBase64Encoded: String, apiKeySecret: String): String {
