@@ -61,10 +61,9 @@ class ApiKeyAuthenticationManager(
     }
 
     private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
-        val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
-            apiKeyMetaInfo = controller.validateApiKey(customToken)
+            apiKeyMetaInfo = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl).validateApiKey(customToken)
             if (apiKeyMetaInfo.active == null || apiKeyMetaInfo.active == false) {
                 throw BadCredentialsException(apiKeyMetaInfo.validationMessage)
             }

@@ -57,15 +57,14 @@ class WebSecurityConfig(
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
         }
 
-        authorize(http)
+        authorizePublicLinksAndAddJwtConverter(http)
         updatePolicies(http)
 
         return http.build()
     }
 
-    // TODO rename these methods to something more expressive
     @Suppress("SpreadOperator")
-    private fun authorize(http: HttpSecurity) {
+    private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .authorizeRequests()
