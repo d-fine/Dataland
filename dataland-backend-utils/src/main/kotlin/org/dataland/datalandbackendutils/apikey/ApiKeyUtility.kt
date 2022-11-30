@@ -90,7 +90,7 @@ class ApiKeyUtility {
     fun convertToApiKey(parsedApiKey: ParsedApiKey): String {
         val keycloakUserIdBase64Encoded = encodeToBase64(parsedApiKey.keycloakUserId.toByteArray())
         return keycloakUserIdBase64Encoded + "_" +
-                parsedApiKey.apiKeySecret + "_" +
-            getCrc(keycloakUserIdBase64Encoded= keycloakUserIdBase64Encoded, apiKeySecret=parsedApiKey.apiKeySecret)
+            parsedApiKey.apiKeySecret + "_" +
+            getCrc(keycloakUserIdBase64Encoded = keycloakUserIdBase64Encoded, apiKeySecret = parsedApiKey.apiKeySecret)
     }
 }
