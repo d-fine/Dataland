@@ -23,11 +23,11 @@ function getJwt() {
   local token_regex="access_token\":\"([a-zA-Z0-9._-]+)\""
   if [[ $get_user_token_response =~ $token_regex ]]; then
     echo "${BASH_REMATCH[1]}"
-    exit 0
+    return 0
   else
     echo "Unable to extract token. Response was:"
     echo "$get_user_token_response"
-    exit 1
+    return 1
   fi
 }
 
@@ -48,11 +48,11 @@ getApiKeyWithToken() {
   local token_regex="\"apiKey\": ?\"($base64characters*_$base64characters*_\d*)\","
   if [[ $get_api_key_response =~ $token_regex ]]; then
     echo "${BASH_REMATCH[1]}"
-    exit 0
+    return 0
   else
     echo "Unable to extract token. Response was:"
     echo "$get_api_key_response"
-    exit 1
+    return 1
   fi
 }
 
@@ -65,7 +65,7 @@ getApiKeyWithUsernamePassword() {
     jwt=$(getJwt "$user" "$password" "$base_url" "$host")
     if [[ "$jwt" =~ "^Unable to extract token" ]]; then
       echo $jwt
-      exit 1
+      return 1
     fi
     getApiKeyWithToken "$jwt" "$base_url" "$host"
 }
