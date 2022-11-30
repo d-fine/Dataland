@@ -100,7 +100,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             "Your Dataland account has no API key registered. Please generate one.",
             responseMessage,
-            "The received api key could not be revoked."
+            "The tested api key was unexpectedly validated."
         )
     }
     @Test
@@ -117,11 +117,12 @@ class DataRetrievalViaApiKeyTest {
         )
     }
     // ToDo
-    // not yet working
-   /* @Test
+/*
+    @Test
     fun `create a test, which tries to validate an expired api key`() {
-        val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, -1)
+        val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 0)
         // println(expiredApiKey.apiKeyMetaInfo.expiryDate)
+
         val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(expiredApiKey)
         println(responseMessage)
         assertEquals(
@@ -148,7 +149,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             "Your Dataland account has no API key registered. Therefore no revokement took place.",
             responseMessage,
-            "The received api key could not be revoked."
+            "The tested api key was unexpectedly revoked."
         )
     }
 }
