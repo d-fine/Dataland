@@ -57,7 +57,7 @@ class DataRetrievalViaApiKeyTest {
     /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
     Api key exists)*/
     @Test
-    fun `create api key to retrieve company by id then revoke api key and try to retrieve the same company again`() {
+    fun `create api key to retrieve company by id revoke api key and try to retrieve the same company again`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
@@ -65,20 +65,14 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
 
         val authorizedRequest = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-        assertEquals(
-            authorizedRequest,
-            expectedStoredCompany,
-            "The received company $expectedStoredCompany does not equal the expected company $expectedStoredCompany"
-        )
+        assertEquals(authorizedRequest, expectedStoredCompany)
         apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
         val exception =
             assertThrows<ClientException> {
-                apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-                    .companyId
+                apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
             "Client error : 401 ", exception.message,
-            "The exception message does not say that a 401 client error was the cause."
         )
     }
 
@@ -92,6 +86,7 @@ class DataRetrievalViaApiKeyTest {
             "The received validation message does not match the expected one."
         )
     }
+
     @Test
     fun `create a test which tries to validate a non existing api key`() {
         val nonExistingApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
@@ -103,6 +98,7 @@ class DataRetrievalViaApiKeyTest {
             "The tested api key was unexpectedly validated."
         )
     }
+
     @Test
     fun `create a test which tries to validate a incorrect api key`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
@@ -116,21 +112,22 @@ class DataRetrievalViaApiKeyTest {
             "Message for an invalid api-key was not as expected"
         )
     }
-    // ToDo
-/*
-    @Test
-    fun `create a test, which tries to validate an expired api key`() {
-        val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 0)
-        // println(expiredApiKey.apiKeyMetaInfo.expiryDate)
 
-        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(expiredApiKey)
-        println(responseMessage)
-        assertEquals(
-            "The API key you provided for your Dataland account is expired.",
-            responseMessage,
-            "The received api key could not be revoked."
-        )
-    }*/
+    // ToDo
+    /*
+        @Test
+        fun `create a test which tries to validate an expired api key`() {
+            val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 0)
+            // println(expiredApiKey.apiKeyMetaInfo.expiryDate)
+
+            val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(expiredApiKey)
+            println(responseMessage)
+            assertEquals(
+                "The API key you provided for your Dataland account is expired.",
+                responseMessage,
+                "The received api key could not be revoked."
+            )
+        }*/
     @Test
     fun `create a test in which an existing api key is revoked`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
@@ -141,6 +138,7 @@ class DataRetrievalViaApiKeyTest {
             "The received api key could not be revoked."
         )
     }
+
     @Test
     fun `create a test in which a non existing api key is revoked`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
