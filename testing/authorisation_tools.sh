@@ -6,10 +6,10 @@ function getJwt() {
   local user=$1
   local password=$2
   local base_url=$3
+  local host=$4
   local keycloak_openid_token_endpoint
   keycloak_openid_token_endpoint="$base_url"/keycloak/realms/datalandsecurity/protocol/openid-connect/token
   echo "Getting token for user $user from keycloak."
-  local get_user_token_response
   local client_id="dataland-public"
   local get_user_token_response
   get_user_token_response=$(curl --request POST "${keycloak_openid_token_endpoint}" \
@@ -17,7 +17,8 @@ function getJwt() {
                                  --data-urlencode "username=${user}" \
                                  --data-urlencode "password=${password}" \
                                  --data-urlencode 'grant_type=password' \
-                                 --data-urlencode "client_id=${client_id}")
+                                 --data-urlencode "client_id=${client_id}" \
+                                 --header "Host: $host")
 
   local token_regex="access_token\":\"([a-zA-Z0-9._-]+)\""
   if [[ $get_user_token_response =~ $token_regex ]]; then
@@ -33,11 +34,15 @@ function getJwt() {
 getApiKeyWithToken() {
   local token=$1
   local base_url=$2
+  local host=$3
   local get_api_key_base_url="$base_url"/api-keys/generateApiKey
   local get_api_key_response
   get_api_key_response=$(curl --location "${get_api_key_base_url}?daysValid=1" \
                                    --header "accept: application/json" \
-                                   --header "authorization: Bearer $token")
+                                   --header "authorization: Bearer $token" \
+                                   --header "Host: $host" \
+                                   --insecure)
+
 
   local token_regex="\"apiKey\": \"([A-Za-z0-9+/]*_[A-Za-z0-9+/]*_\d*)\","
   if [[ $get_api_key_response =~ $token_regex ]]; then
@@ -54,7 +59,8 @@ getApiKeyWithUsernamePassword() {
     local user=$1
     local password=$2
     local base_url=$3
+    local host=$4
     local jwt
-    jwt=$(getJwt "$user" "$password" "$base_url")
-    getApiKeyWithToken "$jwt" "$base_url"
+    jwt=$(getJwt "$user" "$password" "$base_url" "$host")
+    getApiKeyWithToken "$jwt" "$base_url" "$host"
 }
