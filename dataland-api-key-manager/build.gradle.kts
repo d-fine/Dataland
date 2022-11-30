@@ -44,13 +44,11 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
 }
 
 openApi {
     outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
-    apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8081/api-keys/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
     }
