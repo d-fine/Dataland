@@ -114,37 +114,43 @@ class ApiKeyManager
             receivedAndParsedApiKey.keycloakUserId
         )
 
+        val result: ApiKeyMetaInfo
         if (apiKeyEntityOptional.isEmpty) {
             logger.info(
                 "Dataland user with the encoded Keycloak user Id " +
                     "${receivedAndParsedApiKey.keycloakUserId} has no API key registered."
             )
-            return ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
-        }
-        val apiKeyEntity = apiKeyEntityOptional.get()
-        if (!Argon2PasswordEncoder().matches(receivedAndParsedApiKey.apiKeySecret, apiKeyEntity.encodedSecret)) {
-            return ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-        }
-        val expiryDateOfApiKey = apiKeyEntity.expiryDate
-        val currentTime = Instant.now().epochSecond
-        val active =
-            (expiryDateOfApiKey ?: currentTime) >= currentTime
-        logger.info(
-            "Validated Api Key $receivedApiKey " +
-                "The activity status of the API key is $active."
-        )
+            result = ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
+        } else if (!Argon2PasswordEncoder().matches(
+                receivedAndParsedApiKey.apiKeySecret,
+                apiKeyEntityOptional.get().encodedSecret
+            )
+        ) {
+            result = ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
+        } else {
+            val apiKeyEntity = apiKeyEntityOptional.get()
+            val expiryDateOfApiKey = apiKeyEntity.expiryDate
+            val currentTime = Instant.now().epochSecond
+            val active =
+                (expiryDateOfApiKey ?: currentTime) >= currentTime
+            logger.info(
+                "Validated Api Key $receivedApiKey " +
+                    "The activity status of the API key is $active."
+            )
 
-        var validationMessage = validationMessageSuccess
-        if (!active) {
-            validationMessage = validationMessageExpiredApiKey
+            var validationMessage = validationMessageSuccess
+            if (!active) {
+                validationMessage = validationMessageExpiredApiKey
+            }
+            result = ApiKeyMetaInfo(
+                apiKeyEntity.keycloakUserId,
+                apiKeyEntity.keycloakRoles,
+                apiKeyEntity.expiryDate,
+                active,
+                validationMessage
+            )
         }
-        return ApiKeyMetaInfo(
-            apiKeyEntity.keycloakUserId,
-            apiKeyEntity.keycloakRoles,
-            apiKeyEntity.expiryDate,
-            active,
-            validationMessage
-        )
+        return result
     }
 
     /**
