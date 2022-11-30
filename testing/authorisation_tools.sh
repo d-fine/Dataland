@@ -9,7 +9,6 @@ function getJwt() {
   local host=$4
   local keycloak_openid_token_endpoint
   keycloak_openid_token_endpoint="$base_url"/keycloak/realms/datalandsecurity/protocol/openid-connect/token
-  echo "Getting token for user $user from keycloak."
   local client_id="dataland-public"
   local get_user_token_response
   get_user_token_response=$(curl --request POST "${keycloak_openid_token_endpoint}" \
@@ -63,8 +62,8 @@ getApiKeyWithUsernamePassword() {
     local host=$4
     local jwt
     jwt=$(getJwt "$user" "$password" "$base_url" "$host")
-    if [[ ! "$jwt" =~ "^Unable to extract token" ]]; then
-      $jwt
+    if [[ "$jwt" =~ "^Unable to extract token" ]]; then
+      echo $jwt
       exit 1
     fi
     getApiKeyWithToken "$jwt" "$base_url" "$host"
