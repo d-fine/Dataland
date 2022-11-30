@@ -42,7 +42,8 @@ class ApiKeyUtilityTest {
 
     @Test
     fun `check if prevalidation passes for a correct api key`() {
-        val parsedApiKey = apiKeyUtility.parseApiKey(testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value)
+        val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
+        val parsedApiKey = apiKeyUtility.parseApiKey(apiKey)
         val expectedParsedApiKey = ParsedApiKey(
             testKeycloakUserId, testApiKeySecret
         )
@@ -51,7 +52,10 @@ class ApiKeyUtilityTest {
 
     @Test
     fun `check if exception thrown if the provided api key does not have the exact number of delimiters`() {
-        val apiKeyWithOneTooManyDelimiter = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value + "_"
+        val apiKeyWithOneTooManyDelimiter =
+            testApiKeyBase64EncodedKeycloakUserId + "_" +
+                testApiKeySecret + "_" +
+                testApiKeyCrc32Value + "_"
         val totallyRandomString = "aksjflakjsglkajsglkjas"
         val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
         prevalidateBrokenApiKeysAndAssertThrownMessages(
@@ -74,7 +78,10 @@ class ApiKeyUtilityTest {
 
     @Test
     fun `check if exception thrown if the included api key secret is not in the right format`() {
-        val apiKeyWithOneTooManyCharacterInApiKeySecret = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "d" + "_" + getCrc(testApiKeyBase64EncodedKeycloakUserId, testApiKeySecret + "d")
+        val apiKeyWithOneTooManyCharacterInApiKeySecret =
+            testApiKeyBase64EncodedKeycloakUserId + "_" +
+                testApiKeySecret + "d" + "_" +
+                getCrc(testApiKeyBase64EncodedKeycloakUserId, testApiKeySecret + "d")
 
         val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeySecretExceptionMessage
         prevalidateBrokenApiKeysAndAssertThrownMessages(
