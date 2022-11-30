@@ -105,15 +105,15 @@ class DataRetrievalViaApiKeyTest {
     }
     @Test
     fun `create a test, which tries to validate a incorrect api key`() {
-        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
-        val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_0a45a328a2a4c9b051b9a58edbf76ae7" +
-            "aab926737779c688110d3209b05ac3da4ef8110e0f6dbf7_3623928119"
+       apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
+                "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
         val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(incorrectApiKey)
         println(responseMessage)
         assertEquals(
             "The API key you provided for your Dataland account is not correct.",
             responseMessage,
-            "The received api key could not be revoked."
+            "Message for an invalid api-key was not as expected"
         )
     }
     // ToDo
