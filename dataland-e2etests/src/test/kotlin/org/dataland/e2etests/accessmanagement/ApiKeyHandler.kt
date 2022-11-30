@@ -22,9 +22,8 @@ class ApiKeyHandler {
         ApiClient.Companion.apiKey.put("dataland-api-key", apiKeyAndMetaInfo.apiKey)
     }
 
-    fun revokeApiKeyForUser(): RevokeApiKeyResponse {
-        val revokeMessage = apiKeyManagerClient.revokeApiKey().revokementProcessMessage
-        println(revokeMessage)
+    fun revokeApiKeyForUser(userType: UserType): RevokeApiKeyResponse {
+        tokenHandler.obtainTokenForUserType(userType)
         return apiKeyManagerClient.revokeApiKey()
     }
 }
