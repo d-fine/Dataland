@@ -20,7 +20,7 @@ class ApiKeyHandler {
 
     fun obtainApiKeyForUserType(userType: UserType, daysValid: Int) {
         val apiKeyAndMetaInfo = requestApiKeyAndMetaData(userType, daysValid)
-        ApiClient.Companion.apiKey.put("dataland-api-key", apiKeyAndMetaInfo.apiKey)
+        ApiClient.Companion.apiKey["dataland-api-key"] = apiKeyAndMetaInfo.apiKey
         setBearerTokenToNull()
     }
 
