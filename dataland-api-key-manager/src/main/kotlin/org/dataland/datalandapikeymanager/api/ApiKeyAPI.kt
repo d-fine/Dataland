@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import javax.validation.constraints.Positive
 
 /**
- * Defines the restful api-key-manager API.
+ * Defines the api-key-manager API.
  */
 interface ApiKeyAPI {
 
     @Operation(
-        summary = "Request a new API key with expiration date and associated.",
-        description = "Requests a new API key with expiration date associated for the logged in user."
+        summary = "Generate a new API key.",
+        description = "Generates and persists a new API key for the requesting user with an expiry date based on " +
+                "the number of valid days in the request param."
     )
     @ApiResponses(
         value = [
@@ -37,8 +38,9 @@ interface ApiKeyAPI {
     @SecurityRequirement(name = "default-oauth")
     /**
      * A method to generate a new API key
-     * @param daysValid int determining how many days the generated API key can be used
-     * @return new API key for the user
+     * @param daysValid defines how many days the generated API key can be used, a null value results in an
+     * infinite validity
+     * @return new API key for the user together with meta info associated with that API key
      */
     fun generateApiKey(
         @RequestParam(required = false) @Positive daysValid: Int? = null
@@ -46,7 +48,7 @@ interface ApiKeyAPI {
 
     @Operation(
         summary = "Validate an API key.",
-        description = "Check if an API key is valid."
+        description = "Checks if an API key is valid and returns the validation results together with its meta info."
     )
     @ApiResponses(
         value = [
@@ -59,8 +61,8 @@ interface ApiKeyAPI {
     )
     /**
      * A method to validate an API key
-     * @param apiKey holds the apiKey which needs to be validated
-     * @return "true" if API key is valid, else "false"
+     * @param apiKey holds the API key which needs to be validated as string
+     * @return API key meta info which also includes the result of the validation process
      */
 
     fun validateApiKey(
@@ -69,7 +71,8 @@ interface ApiKeyAPI {
 
     @Operation(
         summary = "Revoke an existing API key.",
-        description = "Check if API key exists in storage for the requesting user and then revoke it."
+        description = "Checks if API key exists in storage for the requesting user and revokes it. If there is no " +
+                "API key registered for the user, this is reported in the response."
     )
     @ApiResponses(
         value = [
@@ -82,7 +85,7 @@ interface ApiKeyAPI {
     )
     /**
      * A method to revoke the API key of the requesting user.
-     * @return "true" if API key is valid, else "false"
+     * @return a response model which informs about the success of the revokement process together with a message.
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
