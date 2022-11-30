@@ -40,8 +40,6 @@ class ApiKeyUtilityTest {
         }
     }
 
-
-
     @Test
     fun `check if prevalidation passes for a correct api key`() {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
