@@ -18,7 +18,8 @@ function getJwt() {
                                  --data-urlencode "password=${password}" \
                                  --data-urlencode 'grant_type=password' \
                                  --data-urlencode "client_id=${client_id}" \
-                                 --header "Host: $host")
+                                 --header "Host: $host" \
+                                 --insecure)
 
   local token_regex="access_token\":\"([a-zA-Z0-9._-]+)\""
   if [[ $get_user_token_response =~ $token_regex ]]; then
@@ -62,5 +63,9 @@ getApiKeyWithUsernamePassword() {
     local host=$4
     local jwt
     jwt=$(getJwt "$user" "$password" "$base_url" "$host")
+    if [[ ! "$jwt" =~ "^Unable to extract token" ]]; then
+      $jwt
+      exit 1
+    fi
     getApiKeyWithToken "$jwt" "$base_url" "$host"
 }
