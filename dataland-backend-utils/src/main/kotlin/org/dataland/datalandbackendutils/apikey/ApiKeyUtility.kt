@@ -20,7 +20,7 @@ class ApiKeyUtility {
 
     private val numberOfUnderscoreDelimitersExpectedInApiKey = 2
 
-    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength*2}}\$") // length fixed
+    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength * 2}}\$") // length fixed
 
     private val charset = Charsets.UTF_8
 
@@ -91,16 +91,25 @@ class ApiKeyUtility {
         ).toString()
     }
 
+    /**
+     * generates a random secret (in hex format)
+     */
     fun generateApiKeySecret(): String {
         val bytes = ByteArray(keyByteLength)
         SecureRandom().nextBytes(bytes)
         return HexFormat.of().formatHex(bytes)
     }
 
+    /**
+     * verifies whether an encoded secret and a secret match
+     */
     fun matchesSecretAndEncodedSecret(secret: String, encodedSecret: String): Boolean {
-        return Argon2PasswordEncoder().matches(              secret,                encodedSecret        )
+        return Argon2PasswordEncoder().matches(secret, encodedSecret)
     }
 
+    /**
+     * Encodes a secret to a storable format
+     */
     fun encodeSecret(secret: String): String {
         return Argon2PasswordEncoder().encode(secret)
     }
@@ -111,7 +120,7 @@ class ApiKeyUtility {
     fun convertToApiKey(parsedApiKey: ParsedApiKey): String {
         val keycloakUserIdBase64Encoded = encodeToBase64(parsedApiKey.keycloakUserId.toByteArray())
         return keycloakUserIdBase64Encoded + "_" +
-                parsedApiKey.apiKeySecret + "_" +
-            getCrc(keycloakUserIdBase64Encoded= keycloakUserIdBase64Encoded, apiKeySecret=parsedApiKey.apiKeySecret)
+            parsedApiKey.apiKeySecret + "_" +
+            getCrc(keycloakUserIdBase64Encoded = keycloakUserIdBase64Encoded, apiKeySecret = parsedApiKey.apiKeySecret)
     }
 }
