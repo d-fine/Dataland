@@ -1,7 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient
-import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.ApiKeyHandler
@@ -71,16 +71,19 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         ApiClient.Companion.accessToken = null
         ApiClientBackend.Companion.accessToken = null
+
         val authorizedRequest = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(
             authorizedRequest,
             expectedStoredCompany,
             "The received company $expectedStoredCompany does not equal the expected company $expectedStoredCompany"
         )
-        apiKeyHandler.revokeApiKeyForUser()
-        // print(apiKeyHandler.revokeApiKeyForUser().revokementProcessMessage)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        ApiClient.Companion.accessToken = null
+        ApiClientBackend.Companion.accessToken = null
         val exception =
             assertThrows<ClientException> {
+                //apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId)
                     .companyId
             }
@@ -88,7 +91,5 @@ class DataRetrievalViaApiKeyTest {
             "Client error : 401 ", exception.message,
             "The exception message does not say that a 401 client error was the cause."
         )
-        val authorizedRequest2 = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-        println(authorizedRequest2)
     }
 }
