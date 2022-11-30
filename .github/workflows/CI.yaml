@@ -66,18 +66,12 @@ jobs:
         with:
           name: TestReport
           path: ./**/build/reports
-      - name: Upload JaCoCo Exec Results for backend
+      - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: JaCoCoResultsBackendUnitTests
-          path: ./dataland-backend/build/jacoco/*.exec
-      - name: Upload JaCoCo Exec Results for csv converter
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: JaCoCoResultsCsvConverterUnitTests
-          path: ./dataland-csvconverter/build/jacoco/*.exec
+          name: JaCoCoResultsUnitTests
+          path: ./**/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -279,10 +273,7 @@ jobs:
           name: gradleBuildFolders
       - uses: actions/download-artifact@v3
         with:
-          name: JaCoCoResultsBackendUnitTests
-      - uses: actions/download-artifact@v3
-        with:
-          name: JaCoCoResultsCsvConverterUnitTests
+          name: JaCoCoResultsUnitTests
       - uses: actions/download-artifact@v3
         with:
           name: JaCoCoResultsE2ETest
