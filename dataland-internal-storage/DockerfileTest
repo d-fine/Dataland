@@ -1,0 +1,7 @@
+ARG DATALAND_INTERNAL_STORAGE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_internal_storage_base:${DATALAND_INTERNAL_STORAGE_BASE_VERSION}
+
+CMD ./gradlew :dataland-internal-storage:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace
+
+# TODO fix healthcheck. Can we just use the internal address?
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api-keys/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

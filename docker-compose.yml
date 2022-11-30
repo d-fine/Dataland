@@ -147,22 +147,6 @@ services:
       - "80"
     networks:
       - internal
-  edc-dummyserver:
-    restart: always
-    profiles: ["productionInMemory", "testing", "development"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
-    environment:
-      SERVER_PORT: 9191
-      SERVER_SERVLET_CONTEXT-PATH: /api
-    networks:
-      internal:
-        aliases:
-          - dataland-edc
-      external:
-        aliases:
-          - dataland-edc
-    ports:
-      - "9191:9191"
   dataland-edc:
     restart: always
     profiles: ["production"]
@@ -180,6 +164,33 @@ services:
       EDC_OAUTH_TOKEN_URL: ${EDC_OAUTH_TOKEN_URL}
       IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
+  edc-dummyserver:
+    restart: always
+    profiles: ["productionInMemory", "testing", "development"]
+    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
+    environment:
+      SERVER_PORT: 9191
+      SERVER_SERVLET_CONTEXT-PATH: /api
+    networks:
+      internal:
+        aliases:
+          - dataland-edc
+      external:
+        aliases:
+          - dataland-edc
+    ports:
+      - "9191:9191"
+  internal-storage:
+    restart: always
+    profiles: [ "production", "productionInMemory", "testing", "development" ]
+    image: ${INTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_internal_storage_test:${DATALAND_INTERNAL_STORAGE_TEST_VERSION}}
+    networks:
+      - internal
+      - internal-storage-db
+    expose:
+      - "8080"
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   keycloak-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]
@@ -268,6 +279,7 @@ networks:
   keycloak-db:
   backend-db:
   api-key-manager-db:
+  internal-storage-db:
 volumes:
   keycloak_data:
     driver: local
