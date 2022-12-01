@@ -241,6 +241,7 @@ jobs:
             !dataland-csvconverter/build/distributions
             !**/build/libs
             !**/build/tmp/kapt3/incApCache/main
+            !**/caches-jvm
             !dataland-e2etests/build/resources
   sonar:
     runs-on: ubuntu-latest
