@@ -1,12 +1,6 @@
 # Manual Maintenance Sprint [NR]
 Note: To create a PR using this template add the query parameter `template=manual_maintenance.md` to the merge request creation URL (or simply copy this md file into the description)
 # Maintenance tasks (to be completed by the assignee)
-## EDC
-- [ ] Complete manual maintenance in the EDC Repo
-- [ ] Release a new version `0.2.10`and replace the version number in the text here with the next version number to come.
-- [ ] Upgrade to the new version of the edc-client in the `settings.gradle.kts`
-- [ ] Upgrade to the new version of the edc-dummyserver in the `docker-compose.yml` file.
-- [ ] Upgrade to the new version of the edc-server in the `docker-compose.yml` file.
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
