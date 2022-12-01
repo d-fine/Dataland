@@ -56,8 +56,6 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
-    Api key exists)*/
     @Test
     fun `create api key to retrieve company by id revoke api key and try to retrieve the same company again`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
@@ -114,21 +112,6 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    // ToDo
-    /*
-        @Test
-        fun `create a test which tries to validate an expired api key`() {
-            val expiredApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 0)
-            // println(expiredApiKey.apiKeyMetaInfo.expiryDate)
-
-            val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(expiredApiKey)
-            println(responseMessage)
-            assertEquals(
-                "The API key you provided for your Dataland account is expired.",
-                responseMessage,
-                REVOCATION_ERROR_MESSAGE
-            )
-        }*/
     @Test
     fun `create a test in which an existing api key is revoked`() {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
