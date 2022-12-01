@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DatalandBackendBaseDockerfile \
+./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase \
          ./dataland-backend/ ./dataland-keycloak-adapter/ ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
 
 set -o allexport
