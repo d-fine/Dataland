@@ -205,7 +205,7 @@ services:
     volumes:
       - internal_storage_data:/data/db
     healthcheck: # TODO only checked without escape characters
-      test: [ "CMD-SHELL", "if [ \"$(ps -ax | grep -c mongo)\" -gt 1 ]; then true; else false; fi" ]
+      test: [ "CMD-SHELL", "if [ \"$$(ps -ax | grep -c mongo)\" -gt 1 ]; then true; else false; fi" ]
       interval: 30s
       timeout: 3s
     environment:
