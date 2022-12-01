@@ -11,7 +11,7 @@ Add to `build.gradle.kts` of the service:
 
 Annotate the main spring application class with
 ```
-@ComponentScan(basePackages = ["<service-base-package-here>", "org.dataland.keycloakAdapter"])
+@ComponentScan(basePackages = ["org.dataland"])
 ```
 
 Adapt the application.properties. Adapt publiclinks to the needs of your service:
