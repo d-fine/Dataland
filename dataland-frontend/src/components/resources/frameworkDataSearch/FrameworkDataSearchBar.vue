@@ -80,18 +80,11 @@ import {
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
-import { DataTypeEnum } from "@clients/backend";
+import { FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
-
-export interface FrameworkDataSearchFilterInterface {
-  companyNameFilter: string;
-  frameworkFilter: Array<DataTypeEnum>;
-  countryCodeFilter: Array<string>;
-  sectorFilter: Array<string>;
-}
 
 export default defineComponent({
   setup() {

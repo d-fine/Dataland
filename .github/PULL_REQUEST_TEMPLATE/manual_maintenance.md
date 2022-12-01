@@ -36,10 +36,10 @@ The following known issues need to be reviewed in case a compatible version is a
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
-- [ ] `./dataland-backend/DatalandBackendBaseDockerfile`
+- [ ] `./dataland-backend/DockerfileBase`
+  [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-e2etests/e2etestsCoreDockerfile`
+- [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
@@ -47,6 +47,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the image versions of backend-db, frontend-dev and keycloak-db
 - [ ] Update the image versions of edcdummyserver and dataland-edc
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)

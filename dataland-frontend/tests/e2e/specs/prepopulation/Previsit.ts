@@ -13,8 +13,6 @@ describe(
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getCompanyAndDataIds(token, dataType)).then((myDataset: StoredCompany[]) =>
           doThingsInChunks(myDataset, chunkSize, (element) =>
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             new MetaDataControllerApi(new Configuration({ accessToken: token }))
               .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)
               .then((dataGetResponse) => {

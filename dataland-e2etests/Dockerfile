@@ -1,5 +1,5 @@
-ARG DATALAND_E2ETESTS_CORE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_e2etests_core:${DATALAND_E2ETESTS_CORE_VERSION}
+ARG DATALAND_E2ETESTS_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_e2etests_base:${DATALAND_E2ETESTS_BASE_VERSION}
 
 WORKDIR /app
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
