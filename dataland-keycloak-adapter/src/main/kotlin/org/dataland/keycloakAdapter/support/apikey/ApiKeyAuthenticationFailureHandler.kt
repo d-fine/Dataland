@@ -37,13 +37,7 @@ class ApiKeyAuthenticationFailureHandler(
         )
         response!!.contentType = "application/json"
         response.status = HttpServletResponse.SC_UNAUTHORIZED
-        response.outputStream.println(
-            ObjectMapper().writeValueAsString(
-                ErrorResponse(
-                    errors = listOf(error)
-                )
-            )
-        )
+        response.outputStream.println(ObjectMapper().writeValueAsString(ErrorResponse(errors = listOf(error))))
         response.outputStream.close()
     }
 }

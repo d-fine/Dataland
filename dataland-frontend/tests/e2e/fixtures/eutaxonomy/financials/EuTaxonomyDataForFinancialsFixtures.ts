@@ -15,8 +15,7 @@ import { getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
 import { FixtureData, DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
-const { parse } = require("json2csv");
+import { parse } from "json2csv";
 
 export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
   const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();
@@ -189,6 +188,5 @@ export function generateCSVDataForFinancials(
     ],
     delimiter: ";",
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
   return parse(companyInformationWithEuTaxonomyDataForFinancials, options);
 }

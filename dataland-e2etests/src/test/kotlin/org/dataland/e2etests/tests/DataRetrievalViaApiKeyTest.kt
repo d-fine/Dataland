@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient
-import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.ApiKeyHandler
@@ -10,7 +9,6 @@ import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 
 class DataRetrievalViaApiKeyTest {
 
@@ -25,8 +23,6 @@ class DataRetrievalViaApiKeyTest {
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -46,8 +42,6 @@ class DataRetrievalViaApiKeyTest {
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials
         )
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -60,35 +54,82 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    /* TODO   include tests for revoking api key in tests.  Also consider different cases! (Api key doesnt even exist,
-    Api key exists)*/
     @Test
-    fun `create api key to retrieve company by id, then revoke api key and try to retrieve the same company again`() {
+    fun `create api key to retrieve company by id revoke api key and try to retrieve the same company again`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
-        ApiClient.Companion.accessToken = null
-        ApiClientBackend.Companion.accessToken = null
+
         val authorizedRequest = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-        assertEquals(
-            authorizedRequest,
-            expectedStoredCompany,
-            "The received company $expectedStoredCompany does not equal the expected company $expectedStoredCompany"
-        )
-        apiKeyHandler.revokeApiKeyForUser()
-        // print(apiKeyHandler.revokeApiKeyForUser().revokementProcessMessage)
+        assertEquals(authorizedRequest, expectedStoredCompany)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
         val exception =
             assertThrows<ClientException> {
-                apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-                    .companyId
+                apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
             "Client error : 401 ", exception.message,
-            "The exception message does not say that a 401 client error was the cause."
         )
-        val authorizedRequest2 = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-        println(authorizedRequest2)
+    }
+
+    @Test
+    fun `create a test in which a api key is successfully validated`() {
+        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(apiKeyToValidate)
+        assertEquals(
+            "The API key you provided was successfully validated.",
+            responseMessage,
+            "The received validation message does not match the expected one."
+        )
+    }
+
+    @Test
+    fun `create a test which tries to validate a non existing api key`() {
+        val nonExistingApiKey = apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(nonExistingApiKey)
+        assertEquals(
+            "Your Dataland account has no API key registered. Please generate one.",
+            responseMessage,
+            "The tested api key was unexpectedly validated."
+        )
+    }
+
+    @Test
+    fun `create a test which tries to validate a incorrect api key`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val incorrectApiKey = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
+            "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
+        val responseMessage = apiKeyHandler.validateApiKeyValidationMessage(incorrectApiKey)
+        assertEquals(
+            "The API key you provided for your Dataland account is not correct.",
+            responseMessage,
+            "Message for an invalid api-key was not as expected"
+        )
+    }
+
+    @Test
+    fun `create a test in which an existing api key is revoked`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        val responseMessage = apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        assertEquals(
+            "The API key for your Dataland account was successfully revoked.",
+            responseMessage,
+            "The received api key could not be revoked."
+        )
+    }
+
+    @Test
+    fun `create a test in which a non existing api key is revoked`() {
+        apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
+        apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        val responseMessage = apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
+        assertEquals(
+            "Your Dataland account has no API key registered. Therefore no revokement took place.",
+            responseMessage,
+            "The tested api key was unexpectedly revoked."
+        )
     }
 }

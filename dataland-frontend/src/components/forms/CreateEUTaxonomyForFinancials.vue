@@ -89,12 +89,15 @@
           </FormKit>
           <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
             <h4>Credit Institution KPIs</h4>
-            <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
-            <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
-            <DataPointFormElement
-              name="tradingPortfolioAndInterbankLoans"
-              label="Trading Portfolio and Interbank Loans (combined)"
-            />
+            <div name="creditInstitutionKpis">
+              <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
+              <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
+              <DataPointFormElement
+                name="tradingPortfolioAndInterbankLoans"
+                label="Trading Portfolio and Interbank Loans (combined)"
+              />
+              <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
+            </div>
           </FormKit>
           <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">
             <h4>Insurance KPIs</h4>

@@ -115,11 +115,11 @@ class CompanyManager(
      */
     @Transactional
     fun searchCompanies(
-        searchString: String,
-        onlyCompanyNames: Boolean,
-        dataTypeFilter: Set<DataType>,
-        countryCodeFilter: Set<String>,
-        sectorFilter: Set<String>,
+        searchString: String = "",
+        onlyCompanyNames: Boolean = false,
+        dataTypeFilter: Set<DataType> = setOf(),
+        countryCodeFilter: Set<String> = setOf(),
+        sectorFilter: Set<String> = setOf(),
     ): List<StoredCompany> {
         val searchFilter = StoredCompanySearchFilter(
             searchString = searchString,

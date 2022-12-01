@@ -40,9 +40,14 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     "taxonomyEligibleNonLifeInsuranceActivities",
     data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities
   );
-  fillField("", "tradingPortfolioAndInterbankLoans", data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans);
-  fillField("", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioAndInterbankLoans",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
+  );
+  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
+  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
+  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
 }
 
 function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined): void {
