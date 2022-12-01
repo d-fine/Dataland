@@ -27,17 +27,23 @@ function get_services_in_docker_compose_profile_that_require_healthcheck () {
 }
 export -f get_services_in_docker_compose_profile_that_require_healthcheck
 
-function wait_for_services_healthy_in_compose_profile () {
+function wait_for_service_name_list_to_be_healthy () {
   while true; do
-    health_check_results=$(get_services_that_are_not_healthy_but_should_be_in_compose_profile $1)
-    if [ -z "$health_check_results" ]; then
+    unhealthy_services=$(get_services_that_are_not_healthy_from_list "$@")
+    if [ -z "$unhealthy_services" ]; then
       echo "All relevant containers are healthy!"
       break
     else
       echo "Some containers are NOT HEALTHY. Retrying in 1 second."
-      echo "$health_check_results"
+      echo "$unhealthy_services"
     fi
     sleep 1
   done
+}
+export -f wait_for_service_name_list_to_be_healthy
+
+function wait_for_services_healthy_in_compose_profile () {
+  service_list=$(get_services_in_docker_compose_profile_that_require_healthcheck $1)
+  wait_for_service_name_list_to_be_healthy $service
 }
 export -f wait_for_services_healthy_in_compose_profile
