@@ -36,9 +36,12 @@ The following known issues need to be reviewed in case a compatible version is a
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
+- [ ] `./dataland-api-key-manager/Dockerfile`
+- [ ] `./dataland-api-key-manager/DockerfileTest`
 - [ ] `./dataland-backend/DatalandBackendBaseDockerfile`
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] `./dataland-e2etests/e2etestsCoreDockerfile`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
@@ -46,9 +49,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
-- [ ] `./dataland-csvconverter/Dockerfile`
-- [ ] Update the image versions of backend-db, api-key-manager-db, frontend-dev and keycloak-db
-- [ ] Update the image versions of edcdummyserver and dataland-edc
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Server updates
@@ -87,5 +88,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
 
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh`, execute npm run cypress and run Cypress Tests locally
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` in dataland-frontend
+- [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
