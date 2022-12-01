@@ -16,6 +16,13 @@ export interface DataSearchStoredCompany {
   dataRegisteredByDataland: Array<DataMetaInformation>;
 }
 
+export interface FrameworkDataSearchFilterInterface {
+  companyNameFilter: string;
+  frameworkFilter: Array<DataTypeEnum>;
+  countryCodeFilter: Array<string>;
+  sectorFilter: Array<string>;
+}
+
 /**
  * retrieve the value of the Perm Id of a company
  *

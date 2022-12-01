@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import
         RequestRejectedExceptionHandler::class
     ]
 )
-@ComponentScan(basePackages = ["org.dataland.datalandapikeymanager", "org.dataland.keycloakAdapter"])
+@ComponentScan(basePackages = ["org.dataland"])
 class DatalandApiKeyManager : OpenAPIConfiguration
 
 /**

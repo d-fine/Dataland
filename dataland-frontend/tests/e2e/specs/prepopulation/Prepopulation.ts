@@ -28,16 +28,13 @@ describe(
   },
 
   () => {
-    function prepopulate(
-      companiesWithFrameworkData: Array<
-        FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials | LksgData | SfdrData | SmeData>
-      >,
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      uploadOneFrameworkDataset: Function
+    type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<void>;
+
+    function prepopulate<T>(
+      companiesWithFrameworkData: Array<FixtureData<T>>,
+      uploadOneFrameworkDataset: UploadFunction<T>
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         doThingsInChunks(companiesWithFrameworkData, chunkSize, async (it) => {
           const storedCompany = await uploadCompanyViaApi(token, it.companyInformation);
           await uploadOneFrameworkDataset(token, storedCompany.companyId, it.t);

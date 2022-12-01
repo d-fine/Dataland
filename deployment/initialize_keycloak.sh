@@ -21,9 +21,9 @@ timeout 300 bash -c "while ! docker logs $container_name 2>/dev/null | grep -q \
 
 if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   echo "Testing if the number of current users matches the number of exported users"
-  current_users=$(docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -c '\"username\" :')
-  all_users=$(docker exec "$container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  test_users=$(docker exec "$container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  current_users=$(sudo docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -c '\"username\" :')
+  all_users=$(sudo docker exec "$container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  test_users=$(sudo docker exec "$container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
   expected_users=$((all_users-test_users))
   if [[ ! $expected_users -eq $current_users ]]; then
     echo "Found $current_users but $expected_users were expected."
@@ -33,6 +33,6 @@ if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
 fi
 
 echo "Shutting down all running containers."
-docker kill $(docker ps -q); docker system prune --force; docker info
+sudo docker kill $(docker ps -q); docker system prune --force; docker info
 
 echo "Successfully initialized new instance of Keycloak."

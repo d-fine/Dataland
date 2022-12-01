@@ -168,7 +168,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         cy.ensureLoggedIn(uploader_name, uploader_pw);
       });
 

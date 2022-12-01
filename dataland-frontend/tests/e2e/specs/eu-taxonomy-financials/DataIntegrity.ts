@@ -109,7 +109,7 @@ describeIf(
 
     function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
-      cy.get('div[name="greenAssetRatio"]')
+      cy.get('div[name="greenAssetRatioInvestmentFirm"]')
         .should("contain", "Green asset ratio")
         .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatio));
     }
@@ -140,6 +140,9 @@ describeIf(
           cy.get("body").should("not.contain", "On demand interbank loans");
         }
       }
+      cy.get('div[name="greenAssetRatioCreditInstitution"]')
+        .should("contain", "Green asset ratio")
+        .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatio));
     }
 
     it(

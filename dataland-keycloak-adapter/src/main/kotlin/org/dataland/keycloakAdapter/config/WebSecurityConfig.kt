@@ -27,7 +27,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
-    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String,
+    @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
     private val context: ApplicationContext
 ) {
     /**
@@ -57,15 +57,14 @@ class WebSecurityConfig(
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
         }
 
-        authorize(http)
+        authorizePublicLinksAndAddJwtConverter(http)
         updatePolicies(http)
 
         return http.build()
     }
 
-    // TODO rename these methods to something more expressive
     @Suppress("SpreadOperator")
-    private fun authorize(http: HttpSecurity) {
+    private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .authorizeRequests()

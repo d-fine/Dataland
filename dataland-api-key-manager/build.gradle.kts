@@ -39,13 +39,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("junit:junit:4.13.1")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 openApi {
@@ -55,7 +55,13 @@ openApi {
         args.set(listOf("--spring.profiles.active=nodb"))
     }
 }
+tasks.test {
+    useJUnitPlatform()
 
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+    }
+}
 jacoco {
     toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())

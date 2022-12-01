@@ -4,7 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
-import org.dataland.datalandbackendutils.apikey.ApiKeyPrevalidator
+import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -25,13 +25,13 @@ import java.lang.IllegalStateException
 @ConditionalOnProperty("org.dataland.authorization.apikey.enable", havingValue = "true")
 @Component
 class ApiKeyAuthenticationManager(
-    @Value("\${dataland.apikeymananger.base-url}") var apikeymanagerBaseUrl: String
+    @Value("\${dataland.apikeymanager.base-url}") var apikeymanagerBaseUrl: String
 ) : AuthenticationManager {
     override fun authenticate(authentication: Authentication?): Authentication {
         val customToken = extractApiKey(authentication)
 
         try {
-            ApiKeyPrevalidator().prevalidateApiKey(customToken)
+            ApiKeyUtility().parseApiKey(customToken)
         } catch (ex: ApiKeyFormatException) {
             throw BadCredentialsException(ex.message, ex)
         }
@@ -61,10 +61,9 @@ class ApiKeyAuthenticationManager(
     }
 
     private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
-        val controller = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl)
         var apiKeyMetaInfo = ApiKeyMetaInfo()
         try {
-            apiKeyMetaInfo = controller.validateApiKey(customToken)
+            apiKeyMetaInfo = ApiKeyControllerApi(basePath = apikeymanagerBaseUrl).validateApiKey(customToken)
             if (apiKeyMetaInfo.active == null || apiKeyMetaInfo.active == false) {
                 throw BadCredentialsException(apiKeyMetaInfo.validationMessage)
             }
