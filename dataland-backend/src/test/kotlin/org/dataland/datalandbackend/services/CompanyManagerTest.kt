@@ -46,7 +46,7 @@ class CompanyManagerTest(
 
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompanies("", true, setOf(), setOf(), setOf())
+        val allCompaniesInStore = testCompanyManager.searchCompanies()
         assertTrue(
             allCompaniesInStore.all {
                 testCompanyList.any { testCompany -> testCompany.companyName == it.companyInformation.companyName }
@@ -59,11 +59,8 @@ class CompanyManagerTest(
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
             val searchResponse = testCompanyManager.searchCompanies(
-                company.companyName,
-                true,
-                setOf(),
-                setOf(),
-                setOf()
+                searchString = company.companyName,
+                onlyCompanyNames = true,
             )
             assertTrue(
                 searchResponse.any { it.companyInformation.companyName == company.companyName },
@@ -74,9 +71,8 @@ class CompanyManagerTest(
 
     private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
         val searchResponse = testCompanyManager.searchCompanies(
-            identifier.identifierValue,
-            false,
-            setOf(), setOf(), setOf()
+            searchString = identifier.identifierValue,
+            onlyCompanyNames = false,
         )
             .toMutableList()
         // The response list is filtered to exclude results that match in account of another identifier having
@@ -118,7 +114,7 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, false, setOf(), setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString = searchString)
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -134,7 +130,7 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString = searchString, onlyCompanyNames = true)
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
@@ -144,7 +140,7 @@ class CompanyManagerTest(
     @Test
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompanies(searchString, true, setOf(), setOf(), setOf())
+        val searchResponse = testCompanyManager.searchCompanies(searchString = searchString, onlyCompanyNames = true)
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
         val otherResponses = searchResponse.dropWhile { it.companyInformation.companyName.startsWith(searchString) }
