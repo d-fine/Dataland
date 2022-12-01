@@ -197,38 +197,19 @@ services:
   internal-storage-db:
     restart: always
     profiles: [ "production", "productionInMemory", "testing", "development" ]
-    image: mongo:6.0.3
     networks:
       - internal-storage-db
-    ports:
-      - "27017:27017"
+    image: postgres:15.1
     volumes:
-      - internal_storage_data:/data/db
-    healthcheck: # TODO only checked without escape characters
-      test: [ "CMD-SHELL", "if [ \"$$(ps -ax | grep -c mongo)\" -gt 1 ]; then true; else false; fi" ]
+      - internal_storage_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: internal_storage
+      POSTGRES_USER: internal_storage
+      POSTGRES_PASSWORD: TOBESECRETED
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
-    environment:
-      MONGO_INITDB_DATABASE: internal_storage
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: TOBESECRETED
-      MONGO_DB_USERNAME: user
-      MONGO_DB_PASSWORD: TOBESECRETED
-  mongo-express:
-    restart: always
-    profiles: [ "production", "productionInMemory", "testing", "development" ]
-    image: mongo-express:1.0.0-alpha.4
-    networks:
-      - internal
-      - internal-storage-db
-    ports:
-      - "8081:8081"
-    depends_on:
-      - internal-storage-db
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: TOBESECRETED
-      ME_CONFIG_MONGODB_URL: mongodb://root:TOBESECRETED@internal-storage-db:27017/
   keycloak-db:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development", "init"]

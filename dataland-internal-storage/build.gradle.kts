@@ -25,7 +25,6 @@ plugins {
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
     id("org.openapi.generator")
-    //kotlin("org.mongodb:mongodb-driver-sync") version "4.0.5" // TODO check if this version is up to date
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -41,20 +40,14 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    //runtimeOnly(libs.database.postgres)
-    //runtimeOnly(libs.database.h2)
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    compileOnly("org.mongodb:mongodb-driver-sync:4.0.5") // TODO extract version to parent for uniformity
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly(libs.database.postgres)
+    runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-
-    // implementation(libs.springdoc.openapi.ui)
-    // implementation(libs.junit.jupiter)
-    // compileOnly(libs.jakarta.annotation.api)
 }
 
 val openApiSpecConfig by configurations.creating {

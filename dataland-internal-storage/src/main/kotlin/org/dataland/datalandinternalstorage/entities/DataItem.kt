@@ -1,12 +1,18 @@
 package org.dataland.datalandinternalstorage.entities
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import javax.persistence.Id
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
-@Document("data")
-class DataItem(
-    @field:Id
+@Entity
+@Table(name = "data_items")
+data class DataItem(
+    @Id
+    @Column(name = "data_id")
     val id: String,
+    @Column(name = "correlation_id")
     val correlationId: String,
-    val data: org.bson.Document
+    @Column(name = "data")
+    val data: String
 )
