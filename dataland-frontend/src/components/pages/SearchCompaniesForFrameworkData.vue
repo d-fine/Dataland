@@ -80,9 +80,8 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import FrameworkDataSearchBar, {
-  FrameworkDataSearchFilterInterface,
-} from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import { FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
@@ -109,8 +108,7 @@ export default defineComponent({
   },
 
   created() {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", this.windowScrollHandler);
     this.scanQueryParams(this.route);
   },
   data() {
@@ -124,19 +122,21 @@ export default defineComponent({
       currentFilteredFrameworks: ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      currentCombinedFilter: {
+      currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
         companyNameFilter: "",
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
-      } as FrameworkDataSearchFilterInterface,
+      },
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarName: "search_bar_top",
       indexOfFirstShownRow: 0,
       rowsPerPage: 100,
       waitingForSearchResults: true,
+      windowScrollHandler: (): void => {
+        this.handleScroll();
+      },
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -145,8 +145,8 @@ export default defineComponent({
   setup() {
     return {
       searchBarAndFiltersContainer: ref(),
-      frameworkDataSearchBar: ref(),
-      frameworkDataSearchFilters: ref(),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
+      frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
       searchResults: ref(),
     };
   },
@@ -262,13 +262,9 @@ export default defineComponent({
     },
     updateCombinedFilterIfRequired() {
       if (
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
         this.waitingForSearchResults = true;
@@ -344,8 +340,7 @@ export default defineComponent({
       this.searchBarName = "search_bar_scrolled";
     },
     unmounted() {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      window.removeEventListener("scroll", this.handleScroll);
+      window.removeEventListener("scroll", this.windowScrollHandler);
     },
   },
 });

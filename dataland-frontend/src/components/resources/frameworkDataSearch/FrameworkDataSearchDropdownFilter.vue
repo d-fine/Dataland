@@ -34,11 +34,7 @@
 <script lang="ts">
 import MultiSelect from "primevue/multiselect";
 import { defineComponent, ref } from "vue";
-
-export interface SelectableItem {
-  displayName: string;
-  disabled: boolean;
-}
+import { SelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 
 export default defineComponent({
   setup() {
