@@ -14,6 +14,8 @@ val jacocoClasses by extra(
 val jacocoVersion: String by project
 
 plugins {
+    application
+    java
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
@@ -23,6 +25,7 @@ plugins {
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
     id("org.openapi.generator")
+    //kotlin("org.mongodb:mongodb-driver-sync") version "4.0.5" // TODO check if this version is up to date
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -41,10 +44,13 @@ dependencies {
     //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     //runtimeOnly(libs.database.postgres)
     //runtimeOnly(libs.database.h2)
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compileOnly("org.mongodb:mongodb-driver-sync:4.0.5") // TODO extract version to parent for uniformity
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 
     // implementation(libs.springdoc.openapi.ui)
     // implementation(libs.junit.jupiter)
