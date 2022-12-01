@@ -3,7 +3,7 @@ package org.dataland.datalandinternalstorage.service
 import org.dataland.datalandinternalstorage.interfaces.DataStoreInterface
 import org.springframework.stereotype.Component
 import java.util.UUID
-import org.bson.types.ObjectId
+import org.bson.Document
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,11 +19,11 @@ class DatabaseDataStore(
 ) : DataStoreInterface {
     override fun insertDataSet(data: String): String {
         val dataID = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
-        dataItemRepository.save(DataItem(dataID, "TODO", data))
+        dataItemRepository.save(DataItem(dataID, "TODO", Document.parse(data)))
         return dataID
     }
 
     override fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findItemById(dataId).data
+        return dataItemRepository.findById(dataId).orElse(DataItem("", "", Document())).data.toJson()
     }
 }

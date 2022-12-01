@@ -8,5 +8,5 @@ class DataItem(
     @field:Id
     val id: String,
     val correlationId: String,
-    val data: String
+    val data: org.bson.Document
 )

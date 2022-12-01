@@ -22,7 +22,8 @@ interface StorageAPI {
         ]
     )
     @GetMapping(
-        value = ["/get"]
+        value = ["/get"],
+        produces = ["application/json"]
     )
     fun selectDataById(dataId: String, correlationId: String?): ResponseEntity<String>
 
