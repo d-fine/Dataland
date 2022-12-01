@@ -192,6 +192,7 @@ services:
       - "8080"
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
     depends_on:
       - internal-storage-db
   internal-storage-db:
@@ -205,7 +206,7 @@ services:
     environment:
       POSTGRES_DB: internal_storage
       POSTGRES_USER: internal_storage
-      POSTGRES_PASSWORD: TOBESECRETED
+      POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
@@ -290,6 +291,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
 networks:
