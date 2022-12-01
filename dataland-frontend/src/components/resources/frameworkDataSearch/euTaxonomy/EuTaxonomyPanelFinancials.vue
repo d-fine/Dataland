@@ -108,6 +108,13 @@
               :percent="dataSet.creditInstitutionKpis.interbankLoans?.value"
             />
           </div>
+          <div class="col-6">
+            <TaxoCard
+              name="greenAssetRatioCreditInstitution"
+              title="Green asset ratio"
+              :percent="dataSet.creditInstitutionKpis.greenAssetRatio?.value"
+            />
+          </div>
         </template>
         <template v-if="fsType === 'InsuranceOrReinsurance'">
           <div class="col-12 text-left pb-0">
@@ -129,7 +136,7 @@
           </div>
           <div class="col-6">
             <TaxoCard
-              name="greenAssetRatio"
+              name="greenAssetRatioInvestmentFirm"
               title="Green asset ratio"
               :percent="dataSet.investmentFirmKpis.greenAssetRatio?.value"
             />
