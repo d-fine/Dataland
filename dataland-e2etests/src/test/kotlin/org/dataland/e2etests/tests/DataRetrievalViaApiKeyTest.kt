@@ -115,9 +115,9 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHandler.obtainApiKeyForUserType(UserType.Reader, 1)
         val responseMessage = apiKeyHandler.revokeApiKeyForUser(UserType.Reader)
         assertEquals(
-                "The API key for your Dataland account was successfully revoked.",
-                responseMessage,
-                "The received api key could not be revoked."
+            "The API key for your Dataland account was successfully revoked.",
+            responseMessage,
+            "The received api key could not be revoked."
         )
     }
 
