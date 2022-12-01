@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 source "$(dirname "$0")/authorisation_tools.sh"
-source "$(dirname "$0")/docker_utils.sh"
+source "$(dirname "$0")/../deployment/docker_utils.sh"
 CYPRESS_TEST_GROUP=101 ./testing/execute_e2e_tests.sh
 timeout 240 bash -c "wait_for_service_name_list_to_be_healthy api-key-manager backend-db"
 api_key=$(getApiKeyWithUsernamePassword data_reader "$KEYCLOAK_READER_PASSWORD" "https://localhost" "local-dev.dataland.com")
