@@ -19,6 +19,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "3": {
+      "Name": "ApiKeyManagerDb",
+      "Group": "ApiKeyManagerDb",
+      "Port": 5432,
+      "Username": "api_key_manager",
+      "Host": "api-key-manager-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**

@@ -1,7 +1,9 @@
 package org.dataland.keycloakAdapter.config
 
+import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationManager
 import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -9,6 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
+import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
@@ -23,7 +27,8 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
-    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String
+    @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
+    private val context: ApplicationContext
 ) {
     /**
      * Defines the Session Authentication Strategy
@@ -36,22 +41,43 @@ class WebSecurityConfig(
     /**
      * Defines the default Security Filter Chain
      */
-    @Suppress("SpreadOperator")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        if (context.containsBean("apiKeyAuthenticationManager")) {
+            val apiKeyAuthenticationManager =
+                context.getBean("apiKeyAuthenticationManager") as ApiKeyAuthenticationManager
+            val apiKeyFilter = RequestHeaderAuthenticationFilter()
+            apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
+            apiKeyFilter.setExceptionIfHeaderMissing(false)
+            apiKeyFilter.setAuthenticationFailureHandler(
+                context.getBean(ApiKeyAuthenticationFailureHandler::class.java)
+            )
+            apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
+            http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
+        }
+
+        authorizePublicLinksAndAddJwtConverter(http)
+        updatePolicies(http)
+
+        return http.build()
+    }
+
+    @Suppress("SpreadOperator")
+    private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
         val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
             .antMatchers(*publicLinksArray).permitAll()
             .anyRequest()
             .fullyAuthenticated().and()
             .csrf().disable()
             .oauth2ResourceServer().jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
+    }
+
+    private fun updatePolicies(http: HttpSecurity) {
         http
             .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
             .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
-
-        return http.build()
     }
 }

@@ -5,6 +5,7 @@
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)

@@ -22,8 +22,8 @@ declare -A commands
 
 #Commands for the setup block
 commands[clean]=clean
-commands[client_frontend]=dataland-frontend:generateAPIClientFrontend
-commands[client_e2e]=dataland-e2etests:generateBackendClient
+commands[client_frontend]=dataland-frontend:generateClients
+commands[client_e2e]=dataland-e2etests:generateClients
 
 #Commands for the test block
 commands[ktlint]="./gradlew ktlintFormat"

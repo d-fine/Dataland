@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

@@ -18,26 +18,31 @@ node {
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
-val clientOutputDir = "$buildDir/clients/backend"
+val backendClientOutputDir = "$buildDir/clients/backend"
 
 tasks.register<Copy>("getBackendOpenApiSpec") {
     from(backendOpenApiFile)
-    into(clientOutputDir)
+    into(backendClientOutputDir)
     filter({ line -> line.replace("http://localhost:8080/api", "/api") })
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateAPIClientFrontend")
+    dependsOn("generateClients")
 }
 
 tasks.withType<NpmTask> {
-    dependsOn("generateAPIClientFrontend")
+    dependsOn("generateClients")
 }
 
-tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    val destinationPackage = "org.dataland.datalandfrontend.openApiClient"
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+    dependsOn("generateApiKeyManagerClient")
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.backend"
     input = project.file(backendOpenApiFile).path
-    outputDir.set(clientOutputDir)
+    outputDir.set(backendClientOutputDir)
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -54,6 +59,27 @@ tasks.register("generateAPIClientFrontend", org.openapitools.generator.gradle.pl
         )
     )
     dependsOn("getBackendOpenApiSpec")
+}
+
+tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.apikeymanager"
+    input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/apikeymanager")
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
+    )
 }
 
 sourceSets {

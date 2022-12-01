@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
 import org.dataland.e2etests.READER_USER_NAME
 import org.dataland.e2etests.READER_USER_PASSWORD
@@ -13,6 +12,9 @@ import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
+import org.dataland.e2etests.utils.UserType
+import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient as ApiClientApiKeyManager
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 
 class TokenHandler {
 
@@ -41,15 +43,12 @@ class TokenHandler {
         return node.get("access_token").toString().trim('"')
     }
 
-    fun obtainTokenForUserType(user: UserType) {
-        ApiClient.Companion.accessToken = when (user) {
+    fun obtainTokenForUserType(userType: UserType) {
+        val token = when (userType) {
             UserType.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
             UserType.Uploader -> requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
         }
-    }
-
-    enum class UserType {
-        Uploader,
-        Reader
+        ApiClientBackend.Companion.accessToken = token
+        ApiClientApiKeyManager.Companion.accessToken = token
     }
 }

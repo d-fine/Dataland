@@ -66,18 +66,12 @@ jobs:
         with:
           name: TestReport
           path: ./**/build/reports
-      - name: Upload JaCoCo Exec Results for backend
+      - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: JaCoCoResultsBackendUnitTests
-          path: ./dataland-backend/build/jacoco/*.exec
-      - name: Upload JaCoCo Exec Results for csv converter
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: JaCoCoResultsCsvConverterUnitTests
-          path: ./dataland-csvconverter/build/jacoco/*.exec
+          name: JaCoCoResultsUnitTests
+          path: ./**/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -105,7 +99,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Execute Frontend Component Tests
-        run: ./gradlew :dataland-frontend:generateAPIClientFrontend :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
       - name: Upload FE lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -159,6 +153,7 @@ jobs:
           KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
+          API_KEY_MANAGER_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
@@ -244,10 +239,10 @@ jobs:
             ./**/build/
             .gradle
             !dataland-csvconverter/build/distributions
-            !dataland-csvconverter/build/libs
-            !dataland-backend/build/libs
+            !**/build/libs
+            !**/build/tmp/kapt3/incApCache/main
+            !**/caches-jvm
             !dataland-e2etests/build/resources
-            !dataland-backend/build/tmp/kapt3/incApCache/main
   sonar:
     runs-on: ubuntu-latest
     needs:
@@ -275,18 +270,19 @@ jobs:
           java-version: 17
           cache: gradle
       - uses: actions/download-artifact@v3
+        name: gradleBuildFolders
         with:
           name: gradleBuildFolders
       - uses: actions/download-artifact@v3
+        name: JaCoCoResultsUnitTests
         with:
-          name: JaCoCoResultsBackendUnitTests
+          name: JaCoCoResultsUnitTests
       - uses: actions/download-artifact@v3
-        with:
-          name: JaCoCoResultsCsvConverterUnitTests
-      - uses: actions/download-artifact@v3
+        name: JaCoCoResultsE2ETest
         with:
           name: JaCoCoResultsE2ETest
       - uses: actions/download-artifact@v3
+        name: lcovResults
         with:
           name: lcovResults
           path: fe-coverage

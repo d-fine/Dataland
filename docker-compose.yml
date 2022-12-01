@@ -11,7 +11,7 @@ services:
   proxy:
     image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
     restart: always
-    profiles: ["production", "testing", "productionInMemory", "development"]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - external
       - internal
@@ -31,18 +31,49 @@ services:
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
-    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     networks:
       - external
       - internal
       - backend-db
       - keycloak-db
+      - api-key-manager-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5434:5433-5434"
+      - "127.0.0.1:5433-5435:5433-5435"
+  api-key-manager:
+    restart: always
+    profiles: ["production", "productionInMemory", "testing", "development"]
+    networks:
+      - internal
+      - api-key-manager-db
+    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
+    expose:
+      - "8080"
+    depends_on:
+      - api-key-manager-db
+    environment:
+      API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+  api-key-manager-db:
+    restart: always
+    profiles: [ "production", "productionInMemory", "testing", "development" ]
+    networks:
+      - api-key-manager-db
+    image: postgres:15.1
+    volumes:
+      - api_key_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: api_key_manager
+      POSTGRES_USER: api_key_manager
+      POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
   backend:
     restart: always
-    profiles: ["production", "testing", "productionInMemory"]
+    profiles: ["production", "productionInMemory", "testing"]
     networks:
       - internal
       - backend-db
@@ -110,7 +141,7 @@ services:
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
-    profiles: ["production", "testing", "productionInMemory"]
+    profiles: ["production", "productionInMemory", "testing"]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     expose:
       - "80"
@@ -118,7 +149,7 @@ services:
       - internal
   edc-dummyserver:
     restart: always
-    profiles: ["testing", "development", "productionInMemory"]
+    profiles: ["productionInMemory", "testing", "development"]
     image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
     environment:
       SERVER_PORT: 9191
@@ -181,7 +212,7 @@ services:
     depends_on:
       - keycloak-db
   keycloak-initializer:
-    profiles: [ "init", "testing" ]
+    profiles: ["testing", "init"]
     networks:
       internal:
         aliases:
@@ -218,8 +249,9 @@ services:
     networks:
       - keycloak-db
       - backend-db
+      - api-key-manager-db
       - internal
-    profiles: [ "production", "testing", "productionInMemory", "development" ]
+    profiles: ["production", "productionInMemory", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
     environment:
@@ -227,6 +259,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
 networks:
@@ -234,10 +267,13 @@ networks:
   external:
   keycloak-db:
   backend-db:
+  api-key-manager-db:
 volumes:
   keycloak_data:
     driver: local
   backend_data:
+    driver: local
+  api_key_manager_data:
     driver: local
   letsencrypt:
     driver: local

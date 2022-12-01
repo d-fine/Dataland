@@ -33,7 +33,7 @@ keycloak_user_dir=$location/dataland-keycloak/users
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose down --remove-orphans) || true"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" "docker kill $(docker ps -q -a); docker rm $(docker ps -q -a); docker system prune --force; docker info"
+ssh ubuntu@"$target_server_url" "sudo docker kill $(docker ps -q -a); docker rm $(docker ps -q -a); docker system prune --force; docker info"
 # delete pgadmin_config volume
 delete_docker_volume_if_existent_remotely "pgadmin_config" "$target_server_url" "$location"
 

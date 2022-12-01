@@ -1,0 +1,6 @@
+ARG DATALAND_API_KEY_MANAGER_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_api_key_manager_base:${DATALAND_API_KEY_MANAGER_BASE_VERSION}
+
+CMD ./gradlew :dataland-api-key-manager:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace
+
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api-keys/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

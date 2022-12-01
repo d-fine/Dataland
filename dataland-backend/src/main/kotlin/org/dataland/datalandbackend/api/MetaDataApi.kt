@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @RequestMapping("/metadata")
 @SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
 

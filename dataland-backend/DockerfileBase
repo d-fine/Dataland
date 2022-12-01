@@ -3,6 +3,8 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 
 WORKDIR /app
 COPY ./dataland-backend/ ./dataland-backend/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \

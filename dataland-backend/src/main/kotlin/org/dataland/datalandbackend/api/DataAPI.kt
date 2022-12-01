@@ -19,6 +19,7 @@ import javax.validation.Valid
  */
 
 @SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
 interface DataAPI<T> {
     @Operation(

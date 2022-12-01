@@ -5,7 +5,9 @@ val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
     sourceSets.asMap.values.flatMap { sourceSet ->
         sourceSet.output.classesDirs.flatMap {
-            fileTree(it).files
+            fileTree(it) {
+                exclude("**/openApiClient/**")
+            }.files
         }
     }
 )
@@ -25,6 +27,7 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.dataland.edc.client)
     implementation(libs.okhttp)
