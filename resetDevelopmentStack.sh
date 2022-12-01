@@ -11,7 +11,6 @@ fi
 echo "Clearing Docker..."
 docker compose down --remove-orphans
 docker volume prune --force
-docker image prune -a -f
 
 echo "Clearing frontend clients..."
 ./gradlew clean
@@ -24,7 +23,6 @@ source ./*github_env.log
 set +o allexport
 
 ./build-utils/rebuild_keycloak_image.sh
-
 set -o allexport
 source ./*github_env.log
 set +o allexport
@@ -32,7 +30,8 @@ set +o allexport
 echo "Initializing Keycloak..."
 docker compose --profile init up --build &
 
-keycloak_initializer_container=dataland-keycloak-initializer-1
+project_name=$(basename "$(pwd)")
+keycloak_initializer_container="$project_name"-keycloak-initializer-1
 while ! docker logs $keycloak_initializer_container 2>/dev/null | grep -q "Added user 'admin' to realm 'master'"; do
  echo "Waiting for Keycloak to finish initializing..."
  sleep 5
