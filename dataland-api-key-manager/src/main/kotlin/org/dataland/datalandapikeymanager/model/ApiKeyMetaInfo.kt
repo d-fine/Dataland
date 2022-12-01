@@ -6,7 +6,7 @@ import org.dataland.datalandapikeymanager.entities.ApiKeyEntity
 /**
  * --- API model ---
  * Class for defining the meta info associated to an API key
- * @param keycloakUserId is the user Id of the owning Keycloak user
+ * @param keycloakUserId is the user ID of the owning Keycloak user
  * @param keycloakRoles defines the roles of the owning Keycloak user
  * @param expiryDate specifies until which date the API key can be used
  * @param active specifies if the associated API key is active
