@@ -26,7 +26,7 @@ class ApiKeyManagerTest(
 ) {
     @Test
     fun `create a test which checks that an expired api key is flagged as expired`() {
-        val keycloakUserId="18b67ecc-1176-4506-8414-1e81661017ca"
+        val keycloakUserId = "18b67ecc-1176-4506-8414-1e81661017ca"
         val secret = testApiKeyUtility.generateApiKeySecret()
         val parsedApiKey = ParsedApiKey(keycloakUserId, secret)
         val encodedSecret = testApiKeyUtility.encodeSecret(secret)
