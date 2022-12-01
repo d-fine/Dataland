@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.utils.EncodingUtils.calculateCrc32Value
 import org.dataland.datalandbackendutils.utils.EncodingUtils.decodeFromBase64
 import org.dataland.datalandbackendutils.utils.EncodingUtils.encodeToBase64
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
+import org.springframework.stereotype.Component
 import java.security.SecureRandom
 import java.util.HexFormat
 
@@ -12,6 +13,7 @@ import java.util.HexFormat
  * This class should be used to validate that a given api key has the required format and the correct checksum
  * before a request is sent to /api-keys/validateApiKey to prevent unnecessary traffic
  */
+@Component("ApiKeyUtility")
 class ApiKeyUtility {
 
     companion object {
