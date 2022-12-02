@@ -2,7 +2,6 @@ package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
 import org.dataland.datalandinternalstorage.service.DatabaseDataStore
-import org.dataland.datalandinternalstorage.service.InMemoryDataStore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController

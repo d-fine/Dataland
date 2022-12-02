@@ -65,7 +65,7 @@ val serverOutputDir = "$buildDir/Server/edc"
 val apiSpecLocation = "$buildDir/OpenApiSpec.json"
 val destinationPackage = "org.dataland.edcDummyServer.openApiServer"
 
-//tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+// tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
 //    input = apiSpecLocation
 //    outputDir.set(serverOutputDir)
 //    modelPackage.set("$destinationPackage.model")
@@ -80,11 +80,11 @@ val destinationPackage = "org.dataland.edcDummyServer.openApiServer"
 //            "useTags" to "true"
 //        )
 //    )
-//}
+// }
 
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+// tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 //    dependsOn(taskName)
-//}
+// }
 
 sourceSets {
     val main by getting

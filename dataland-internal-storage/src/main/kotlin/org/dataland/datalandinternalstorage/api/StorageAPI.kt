@@ -25,6 +25,12 @@ interface StorageAPI {
         value = ["/get"],
         produces = ["application/json"]
     )
+            /**
+             * A method to retrieve data from the internal storage using the dataID
+    * @param dataId the ID of the data stored in the internal storage which should be retrieved
+             * @param correlationId the correlation ID of the data get request
+    * @return ResponseEntity containing the selected data
+    */
     fun selectDataById(dataId: String, correlationId: String?): ResponseEntity<String>
 
     @Operation(
@@ -37,6 +43,11 @@ interface StorageAPI {
     @PostMapping(
         value = ["/post"]
     )
+            /**
+             * A method to store data in the internal storage
+             * @param correlationId the correlation ID of the data post request
+             * @param body the data stored body to be stored
+             */
     fun insertData(correlationId: String?, body: String?): ResponseEntity<String>
 
 //    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {

@@ -1,11 +1,11 @@
 package org.dataland.datalandinternalstorage.service
 
-import org.dataland.datalandinternalstorage.interfaces.DataStoreInterface
-import org.springframework.stereotype.Component
-import java.util.UUID
 import org.dataland.datalandinternalstorage.entities.DataItem
+import org.dataland.datalandinternalstorage.interfaces.DataStoreInterface
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+import java.util.UUID
 
 /**
  * Simple implementation of a data store using a mongo database

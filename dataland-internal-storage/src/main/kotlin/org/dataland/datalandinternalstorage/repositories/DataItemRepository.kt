@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 /**
  * A JPA repository for accessing the data items
  */
-interface DataItemRepository : JpaRepository<DataItem, String> {
-}
+interface DataItemRepository : JpaRepository<DataItem, String>
