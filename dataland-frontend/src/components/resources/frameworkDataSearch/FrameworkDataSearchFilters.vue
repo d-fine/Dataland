@@ -60,22 +60,17 @@ import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
-import FrameworkDataSearchDropdownFilter, {
-  SelectableItem,
-} from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
+import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
-
-interface CountryCodeSelectableItem extends SelectableItem {
-  countryCode: string;
-}
-
-interface FrameworkSelectableItem extends SelectableItem {
-  frameworkDataType: DataTypeEnum;
-}
+import {
+  CountryCodeSelectableItem,
+  FrameworkSelectableItem,
+  SelectableItem,
+} from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
@@ -140,13 +135,11 @@ export default defineComponent({
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         return this.availableSectors.filter((it) => this.selectedSectors.includes(it.displayName));
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
           "update:selectedSectors",
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
           newValue.map((it) => it.displayName)
         );
       },
@@ -170,21 +163,16 @@ export default defineComponent({
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getCompanyDataControllerApi();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
-      this.availableCountries = [...availableSearchFilters.data.countryCodes!].map((it) => {
+      this.availableCountries = [...(availableSearchFilters.data.countryCodes || [])].map((it) => {
         return {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           countryCode: it,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           displayName: getCountryNameFromCountryCode(it),
           disabled: false,
         };
       });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion
-      this.availableSectors = [...availableSearchFilters.data.sectors!].map((it) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      this.availableSectors = [...(availableSearchFilters.data.sectors || [])].map((it) => {
         return { displayName: it, disabled: false };
       });
     },

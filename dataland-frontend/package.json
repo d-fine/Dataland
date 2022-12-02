@@ -38,6 +38,7 @@
     "@faker-js/faker": "^7.6.0",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/big.js": "^6.1.6",
+    "@types/json2csv": "^5.0.3",
     "@types/node": "^18.11.9",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/eslint-config-prettier": "^7.0.0",

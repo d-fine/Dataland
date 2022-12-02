@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Handles RequestRejectedException errors. Because these errors are handeled on the servlet level,
+ * Handles RequestRejectedException errors. Because these errors are handled on the servlet level,
  * they do not pass through the default error-handling chain. These occur when someone
  * e.g. uses a non-allowed HTTP methods or tries some other funny stuff (These are Spring Security errors)
  */

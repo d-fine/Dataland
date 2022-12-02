@@ -26,7 +26,7 @@
           "api-key-controller"
         ],
         "summary": "Revoke an existing API key.",
-        "description": "Check if API key exists in storage for the requesting user and then revoke it.",
+        "description": "Checks if API key exists in storage for the requesting user and revokes it. If there is no API key registered for the user, this is reported in the response.",
         "operationId": "revokeApiKey",
         "responses": {
           "200": {
@@ -76,7 +76,7 @@
           "api-key-controller"
         ],
         "summary": "Validate an API key.",
-        "description": "Check if an API key is valid.",
+        "description": "Checks if an API key is valid and returns the validation results together with its meta info.",
         "operationId": "validateApiKey",
         "parameters": [
           {
@@ -127,8 +127,8 @@
         "tags": [
           "api-key-controller"
         ],
-        "summary": "Request a new API key with expiration date and associated.",
-        "description": "Requests a new API key with expiration date associated for the logged in user.",
+        "summary": "Generate a new API key.",
+        "description": "Generates and persists a new API key for the requesting user with an expiry date based on the number of valid days in the request param.",
         "operationId": "generateApiKey",
         "parameters": [
           {
@@ -436,8 +436,8 @@
             }
           },
           "expiryDate": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64"
           },
           "active": {
             "type": "boolean"
@@ -449,7 +449,8 @@
       },
       "ApiKeyAndMetaInfo": {
         "required": [
-          "apiKey"
+          "apiKey",
+          "apiKeyMetaInfo"
         ],
         "type": "object",
         "properties": {

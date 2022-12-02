@@ -27,7 +27,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
-    @Value("\${org.dataland.authorization.publiclinks:}") private val publicLinks: String,
+    @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
     private val context: ApplicationContext
 ) {
     /**
@@ -43,28 +43,29 @@ class WebSecurityConfig(
      */
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        val publicLinksArray = publicLinks.split(",").toTypedArray()
-        http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         if (context.containsBean("apiKeyAuthenticationManager")) {
             val apiKeyAuthenticationManager =
                 context.getBean("apiKeyAuthenticationManager") as ApiKeyAuthenticationManager
             val apiKeyFilter = RequestHeaderAuthenticationFilter()
             apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
             apiKeyFilter.setExceptionIfHeaderMissing(false)
+            apiKeyFilter.setAuthenticationFailureHandler(
+                context.getBean(ApiKeyAuthenticationFailureHandler::class.java)
+            )
             apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
         }
 
-        authorize(http, publicLinksArray)
+        authorizePublicLinksAndAddJwtConverter(http)
         updatePolicies(http)
 
         return http.build()
     }
 
-    // TODO rename these methods to something more expressive
     @Suppress("SpreadOperator")
-    private fun authorize(http: HttpSecurity, publicLinksArray: Array<String>) {
+    private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
+        val publicLinksArray = publicLinks.split(",").toTypedArray()
         http
             .authorizeRequests()
             .antMatchers(*publicLinksArray).permitAll()

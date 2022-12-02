@@ -9,16 +9,16 @@ export const uploader_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
 export function doThingsInChunks<T>(
   dataArray: Array<T>,
   chunkSize: number,
-  processor: (element: T) => Promise<never>
-): Chainable<void | Awaited<T>[]> {
-  let promise: Promise<void | Awaited<T>[]> = Promise.resolve();
+  processor: (element: T) => Promise<void>
+): Chainable<void> {
+  let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
     promise = promise.then(
-      (): Promise<Awaited<T>[]> => Promise.all(chunk.map((element): Promise<never> => processor(element)))
+      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
     );
   }
-  return cy.then((): Bluebird<void | Awaited<T>[]> => {
+  return cy.then((): Bluebird<void> => {
     return wrapPromiseToCypressPromise(promise);
   });
 }

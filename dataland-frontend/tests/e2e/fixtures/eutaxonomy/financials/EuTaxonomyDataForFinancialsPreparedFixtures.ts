@@ -37,6 +37,7 @@ function createCreditInstitutionDualFieldSubmission(
   input.t.creditInstitutionKpis = {
     interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
     tradingPortfolio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   return input;
 }
@@ -48,6 +49,7 @@ function createCreditInstitutionSingleFieldSubmission(
   input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     tradingPortfolioAndInterbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
   return input;
 }

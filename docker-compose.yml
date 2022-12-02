@@ -67,6 +67,10 @@ services:
       POSTGRES_DB: api_key_manager
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
   backend:
     restart: always
     profiles: ["production", "productionInMemory", "testing"]

@@ -70,15 +70,15 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     packageName.set(destinationPackage)
     generatorName.set("typescript-axios")
     additionalProperties.set(
-            mapOf(
-                    "removeEnumValuePrefix" to false
-            )
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
     )
     configOptions.set(
-            mapOf(
-                    "withInterfaces" to "true",
-                    "withSeparateModelsAndApi" to "true"
-            )
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
     )
 }
 
