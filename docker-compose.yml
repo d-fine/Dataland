@@ -282,6 +282,7 @@ services:
       - backend-db
       - api-key-manager-db
       - internal
+      - internal-storage-db
     profiles: ["production", "productionInMemory", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin

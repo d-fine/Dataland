@@ -29,6 +29,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "4": {
+      "Name": "InternalStorageDb",
+      "Group": "InternalStorageDb",
+      "Port": 5432,
+      "Username": "internal_storage",
+      "Host": "internal-storage-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }
