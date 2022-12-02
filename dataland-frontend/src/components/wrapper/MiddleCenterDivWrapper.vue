@@ -1,7 +1,7 @@
 <template>
-    <div class="midlle-center-div">
-      <slot></slot>
-    </div>
+  <div class="midlle-center-div">
+    <slot></slot>
+  </div>
 </template>
 
 <script lang="ts">

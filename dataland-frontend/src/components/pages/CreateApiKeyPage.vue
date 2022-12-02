@@ -1,11 +1,10 @@
 <template>
   <TheHeader />
   <TheContent class="surface-800">
-      <div class="col-12 text-left pb-0">
-        <BackButton />
-        <h1>Create new API Key</h1>
-      </div>
-
+    <div class="col-12 text-left pb-0">
+      <BackButton />
+      <h1>Create new API Key</h1>
+    </div>
 
     <div class="col-12 md:col-8 lg:col-6">
       <CreateApiKeyCard />
@@ -14,7 +13,6 @@
     <div class="col-12 md:col-8 lg:col-6 text-right">
       <Button label="GENERATE API KEY"></Button>
     </div>
-
   </TheContent>
 </template>
 
@@ -23,9 +21,7 @@ import { defineComponent } from "vue";
 import Button from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";
 import CreateApiKeyCard from "@/components/general/CreateApiKeyCard.vue";
 

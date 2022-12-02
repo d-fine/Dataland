@@ -10,7 +10,7 @@ import {
   MetaDataControllerApiInterface,
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
-import {ApiKeyControllerApi, ApiKeyControllerApiInterface} from "@clients/apikeymanager";
+import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -43,7 +43,7 @@ export class ApiClientProvider {
   }
 
   async getConstructedApiKeyManager<T>(
-      constructor: new (configuration: Configuration | undefined, basePath: string) => T
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, "/api-keys");
@@ -70,5 +70,4 @@ export class ApiClientProvider {
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
   }
-
 }

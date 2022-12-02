@@ -10,7 +10,13 @@
           <slot name="action-button"></slot>
         </div>
 
-        <button v-if="closable && severity != 'block'" v-ripple class="p-message-close p-link" @click="close($event)" type="button">
+        <button
+          v-if="closable && severity != 'block'"
+          v-ripple
+          class="p-message-close p-link"
+          @click="close($event)"
+          type="button"
+        >
           <i :class="['p-message-close-icon', closeIcon]" />
         </button>
       </div>
@@ -19,42 +25,42 @@
 </template>
 
 <script>
-import Ripple from 'primevue/ripple';
+import Ripple from "primevue/ripple";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "MessageComponent",
-  emits: ['close'],
+  emits: ["close"],
   props: {
     severity: {
       type: String,
-      default: null
+      default: null,
     },
     closable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     sticky: {
       type: Boolean,
-      default: true
+      default: true,
     },
     life: {
       type: Number,
-      default: 3000
+      default: 3000,
     },
     icon: {
       type: String,
-      default: null
+      default: null,
     },
     closeIcon: {
       type: String,
-      default: 'pi pi-times'
-    }
+      default: "pi pi-times",
+    },
   },
   timeout: null,
   data() {
     return {
-      visible: true
+      visible: true,
     };
   },
   mounted() {
@@ -67,30 +73,30 @@ export default defineComponent({
   methods: {
     close(event) {
       this.visible = false;
-      this.$emit('close', event);
-    }
+      this.$emit("close", event);
+    },
   },
   computed: {
     containerClass() {
-      return ' p-message-' + this.severity;
+      return " p-message-" + this.severity;
     },
     iconClass() {
       return [
-        'p-message-icon pi',
+        "p-message-icon pi",
         this.icon
-            ? this.icon
-            : {
-              'pi-info-circle': this.severity === 'info',
-              'pi-check': this.severity === 'success',
-              'pi-exclamation-triangle': this.severity === 'warn',
-              'pi-times-circle': this.severity === 'error'
-            }
+          ? this.icon
+          : {
+              "pi-info-circle": this.severity === "info",
+              "pi-check": this.severity === "success",
+              "pi-exclamation-triangle": this.severity === "warn",
+              "pi-times-circle": this.severity === "error",
+            },
       ];
-    }
+    },
   },
   directives: {
-    ripple: Ripple
-  }
+    ripple: Ripple,
+  },
 });
 </script>
 
