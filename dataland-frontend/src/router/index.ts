@@ -13,6 +13,7 @@ import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
+import CreateApiKeyPage from "@/components/pages/CreateApiKeyPage.vue";
 
 const routes = [
   {
@@ -84,6 +85,11 @@ const routes = [
     path: "/keys",
     name: "ApiKeysPage",
     component: ApiKeysPage,
+  },
+  {
+    path: "/create-api-key",
+    name: "CreateApiKeyPage",
+    component: CreateApiKeyPage,
   },
   {
     path: "/nocontent",

@@ -12,7 +12,10 @@
     --text-color-secondary: #6c757d;
     --text-color-third: #5a4f36;
     --primary-color: #E67F3F;
+    --primary-color-100: #FDEFE6;
     --primary-color-text: #ffffff;
+    --color-blue: #013D48;
+    --form-inputs-bg: #f6f5ef;
     --font-family: "IBMPlexSans", "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --surface-0: #ffffff;
     --surface-50: #FAFAFA;
@@ -1965,7 +1968,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: .5rem 1rem;
     font-size: 1rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0;
+    font-weight: 600;
+    line-height: 20px;
 }
 
 .p-button:enabled:hover {
@@ -4774,7 +4779,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-dialog .p-dialog-header {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 0px solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
     padding: 1.5rem;
@@ -4817,11 +4822,11 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-dialog .p-dialog-content {
     background: #fff;
     color: #1b1b1b;
-    padding: 0 1.5rem
+    padding: 1.5rem
 }
 
 .p-dialog .p-dialog-footer {
-    border-top: 1px solid #dee2e6;
+    border-top: 0px solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
     padding: 1.5rem;
@@ -6149,6 +6154,21 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-message.p-message-info .p-message-close {
     color: #fff
+}
+
+.p-message.p-message-block {
+    background: var(--primary-color-100);
+    border: solid var(--primary-color);
+    border-width: 0 0 0 4px;
+    color: var(--text-color)
+}
+
+.p-message.p-message-block .p-message-icon {
+    color: var(--text-color)
+}
+
+.p-message.p-message-block .p-message-close {
+    color: var(--text-color)
 }
 
 .p-message.p-message-success {

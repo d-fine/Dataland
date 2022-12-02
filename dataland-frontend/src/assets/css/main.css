@@ -12,5 +12,6 @@
 .text-color { color: var(--text-color); }
 .text-color-secondary { color: var(--text-color-secondary); }
 .text-color-third { color: var(--text-color-third); }
-.primary-color { color: var(--primary-color); }
-.primary-color-text { color: var(--primary-color-text); }
+.primary-color { color: var(--primary-color) !important; }
+.color-blue { color: var(--color-blue); }
+.form-inputs-bg { background-color: var(--form-inputs-bg); }
