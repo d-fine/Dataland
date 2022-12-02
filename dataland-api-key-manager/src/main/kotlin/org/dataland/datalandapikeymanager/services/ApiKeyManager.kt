@@ -68,6 +68,10 @@ class ApiKeyManager
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
     }
 
+    private fun checkIfApiKeyExpired(expiryDateOfApiKey: Long?): Boolean{
+        return (expiryDateOfApiKey ?: Instant.now().epochSecond) < Instant.now().epochSecond
+    }
+
     /**
      * A method that generates an API key which is valid for the specified number of days
      * @param daysValid the number of days the API key should be valid from time of generation
@@ -85,6 +89,42 @@ class ApiKeyManager
             "Generated Api Key with encoded secret value $encodedSecret and meta info $apiKeyMetaInfo."
         )
         return ApiKeyAndMetaInfo(apiKeyUtility.convertToApiKey(parsedApiKey), apiKeyMetaInfo)
+    }
+
+    /**
+     * Gets meta info on the API key of a keycloak user ID, which can be passed to this method by the Frontend.
+     * @param keycloakUserId is the keycloak user ID for which meta info should be returned
+     * @return is an ApiKeyMetaInfo object with all available information on the API key, which can be used by
+     * the Frontend to inform the user about the current status (valid key/expired key/no key at all/error)
+     */
+
+    fun getApiKeyMetaInfoForFrontendUser(keycloakUserId: String?): ApiKeyMetaInfo {
+        if (keycloakUserId == null) {
+            return ApiKeyMetaInfo(validationMessage = "The backend has received a NULL value as Keycloak user ID" +
+                    "for the logged in user and therefore could not derive the current Api-Key-Status.")
+        }
+
+        val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
+
+        return if (apiKeyEntityOptional.isEmpty) {
+            logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")
+            ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
+        } else {
+            val apiKeyEntityOfKeycloakUser = apiKeyEntityOptional.get()
+
+            if( !checkIfApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate) ) {
+                ApiKeyMetaInfo(
+                    active = true,
+                    keycloakUserId = keycloakUserId,
+                    expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
+                    keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles
+                    )
+            } else {
+                ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
+            }
+        }
+
+        // TODO cleanup
     }
 
     /**
@@ -113,7 +153,7 @@ class ApiKeyManager
     private fun getApiKeyMetaInfo(secret: String, apiKeyEntity: ApiKeyEntity): ApiKeyMetaInfo {
         val apiKeyMetaInfo = if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-        } else if ((apiKeyEntity.expiryDate ?: Instant.now().epochSecond) >= Instant.now().epochSecond) {
+        } else if ( !checkIfApiKeyExpired(apiKeyEntity.expiryDate) ) {
             ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
         } else {
             ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)

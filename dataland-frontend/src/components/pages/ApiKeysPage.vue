@@ -114,14 +114,35 @@ export default defineComponent({
   },
   props: {},
   mounted() {
-    void this.getApiKeyManager();
+    void this.getApiKeyMetaInfoForUser()
   },
   watch: {},
   directives: {
     tooltip: Tooltip,
   },
   methods: {
-    async getApiKeyManager() {
+
+    async getApiKeyMetaInfoForUser() {
+      try {
+
+        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise)
+        const resolvedKeycloakPromise = await keycloakPromiseGetter() as Keycloak
+        const apiKeyManagerController = await new ApiClientProvider(
+            keycloakPromiseGetter()
+        ).getApiKeyManagerController();
+        const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser(
+            resolvedKeycloakPromise.subject!!
+        )
+
+        console.log( apiKeyMetaInfoForUser ) // TODO debug statement to show what you get
+        this.thereIsApiKey = apiKeyMetaInfoForUser.data.active!!
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async generateApiKey() {
       try {
         this.waitingForData = true;
 
@@ -134,7 +155,6 @@ export default defineComponent({
         this.thereIsApiKey = true;
       } catch (error) {
         console.error(error);
-        this.newKey = "aaaaaaaaaaaa";
       }
     },
 

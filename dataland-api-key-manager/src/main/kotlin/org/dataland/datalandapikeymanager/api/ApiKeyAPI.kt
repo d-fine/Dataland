@@ -46,6 +46,28 @@ interface ApiKeyAPI {
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(
+        summary = "TODO.",
+        description = "TODO"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "TODO")
+        ]
+    )
+    @GetMapping(
+        value = ["/getApiKeyMetaInfoForUser"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @SecurityRequirement(name = "default-bearer-auth")
+    @SecurityRequirement(name = "default-oauth")
+            /**
+             * param TODO
+             * @return TODO
+             */
+    fun getApiKeyMetaInfoForUser(keycloakUserId: String): ResponseEntity<ApiKeyMetaInfo>
+
+    @Operation(
         summary = "Validate an API key.",
         description = "Checks if an API key is valid and returns the validation results together with its meta info."
     )

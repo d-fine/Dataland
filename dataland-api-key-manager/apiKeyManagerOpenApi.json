@@ -122,6 +122,66 @@
         }
       }
     },
+    "/getApiKeyMetaInfoForUser": {
+      "get": {
+        "tags": [
+          "api-key-controller"
+        ],
+        "summary": "TODO.",
+        "description": "TODO",
+        "operationId": "getApiKeyMetaInfoForUser",
+        "parameters": [
+          {
+            "name": "keycloakUserId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyMetaInfo"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/generateApiKey": {
       "get": {
         "tags": [
