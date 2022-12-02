@@ -6,7 +6,6 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerExc
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
->>>>>>> origin/main
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
