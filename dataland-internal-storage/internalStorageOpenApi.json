@@ -52,7 +52,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/InsertDataResponse"
+                  "type": "string"
                 }
               }
             }
@@ -245,17 +245,6 @@
   },
   "components": {
     "schemas": {
-      "InsertDataResponse": {
-        "required": [
-          "dataId"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
-          }
-        }
-      },
       "Link": {
         "type": "object",
         "properties": {

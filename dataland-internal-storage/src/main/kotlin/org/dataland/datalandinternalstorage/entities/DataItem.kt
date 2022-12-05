@@ -17,7 +17,7 @@ data class DataItem(
     val id: String,
     @Column(name = "correlation_id")
     val correlationId: String,
-    @Column(name = "data", columnDefinition = "CLOB NOT NULL")
     @Lob
+    @Column(name = "data", columnDefinition = "CLOB NOT NULL")
     val data: String
 )

@@ -21,8 +21,8 @@ class StorageController(
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
 
-    override fun insertData(correlationId: String?, body: String?): InsertDataResponse {
-        return InsertDataResponse(dataStore.insertDataSet(body ?: ""))
+    override fun insertData(correlationId: String?, body: String?): ResponseEntity<String> {
+        return ResponseEntity.ok(dataStore.insertDataSet(body ?: ""))
     }
 
 //    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {
