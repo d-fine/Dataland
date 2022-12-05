@@ -15,6 +15,7 @@ export default defineConfig({
   },
 
   fixturesFolder: "../testing/data",
+  downloadsFolder: "./cypress_downloads",
 
   e2e: {
     baseUrl: "https://local-dev.dataland.com",

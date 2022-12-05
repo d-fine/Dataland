@@ -12,6 +12,7 @@ import UploadCompany from "@/components/pages/UploadCompany.vue";
 import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
+import RequestData from "@/components/pages/RequestData.vue";
 
 const routes = [
   {
@@ -68,6 +69,11 @@ const routes = [
     path: "/companies-only-search",
     name: "Search Companies",
     component: SearchCompanies,
+  },
+  {
+    path: "/requests",
+    name: "Request Data",
+    component: RequestData,
   },
   {
     path: "/dataprivacy",

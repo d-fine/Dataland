@@ -23,10 +23,6 @@ server {
       include utils/proxy.conf;
     }
 
-    location /images/ {
-      root /var/www;
-    }
-
     location /api-keys {
       proxy_pass http://api-key-manager:8080/api-keys;
       include utils/proxy.conf;
@@ -48,8 +44,16 @@ server {
       include utils/proxy.conf;
     }
 
+    location /excel-files/ {
+      root /var/www;
+    }
+
+    location /images/ {
+      root /var/www;
+    }
+
     location = /gitinfo {
-       root /var/www/html;
+      root /var/www/html;
     }
 
     location /health/proxy {
