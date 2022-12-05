@@ -1,4 +1,4 @@
 keycloak-db:5432:*:keycloak:${KEYCLOAK_DB_PASSWORD}
 backend-db:5432:*:backend:${BACKEND_DB_PASSWORD}
 api-key-manager-db:5432:*:api_key_manager:${API_KEY_MANAGER_DB_PASSWORD}
-internal-storage-db:5432:*:internal-storage:${INTERNAL_STORAGE_DB_PASSWORD}
+internal-storage-db:5432:*:internal_storage:${INTERNAL_STORAGE_DB_PASSWORD}
