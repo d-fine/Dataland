@@ -1,9 +1,10 @@
-package org.dataland.datalandinternalstorage.config
+package org.dataland.datalandinternalstorage.configurations
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.SecurityFilterChain
 
 /**
@@ -20,7 +21,7 @@ class SwaggerUiSecurityConfig {
      * The SecurityFilterChain Bean that defines the security for the swagger-ui
      */
     @Bean
-    fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun swaggerUiSecurityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
         http
             .antMatcher("/swagger-ui/**")
             // The provided hash is for the OAuth2 Redirect of the Swagger UI Login

@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandinternalstorage.models.InsertDataResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,7 +38,7 @@ interface StorageAPI {
     @PostMapping(
         value = ["/post"]
     )
-    fun insertData(correlationId: String?, body: String?): ResponseEntity<String>
+    fun insertData(correlationId: String?, body: String?): InsertDataResponse
 
 //    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {
 //        return ResponseEntity.ok(CheckHealthResponse("I am alive!"))

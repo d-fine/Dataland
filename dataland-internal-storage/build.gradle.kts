@@ -25,6 +25,7 @@ plugins {
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
     id("org.openapi.generator")
+    id("io.swagger.core.v3.swagger-gradle-plugin")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -50,54 +51,24 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
-val openApiSpecConfig by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
-tasks.register<Copy>("getOpenApiSpec") {
-    from(openApiSpecConfig)
-    into("$buildDir")
-}
-
-val taskName = "generateEdcServer"
-val serverOutputDir = "$buildDir/Server/edc"
-val apiSpecLocation = "$buildDir/OpenApiSpec.json"
-val destinationPackage = "org.dataland.edcDummyServer.openApiServer"
-
-//tasks.register(taskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-//    input = apiSpecLocation
-//    outputDir.set(serverOutputDir)
-//    modelPackage.set("$destinationPackage.model")
-//    apiPackage.set("$destinationPackage.api")
-//    packageName.set(destinationPackage)
-//    generatorName.set("kotlin-spring")
-//    dependsOn("getOpenApiSpec")
-//    configOptions.set(
-//        mapOf(
-//            "dateLibrary" to "java17",
-//            "interfaceOnly" to "true",
-//            "useTags" to "true"
-//        )
-//    )
-//}
-
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-//    dependsOn(taskName)
-//}
-
-sourceSets {
-    val main by getting
-    main.java.srcDir("$serverOutputDir/src/main/kotlin")
-}
-
 openApi {
-    outputFileName.set("$projectDir/internalStorageOpenApi.json")
+    outputFileName.set("$projectDir/${rootProject.extra["internalStorageOpenApi"]}")
     apiDocsUrl.set("http://localhost:8080/internal-storage/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))
     }
 }
+
+//val openApiSpec by configurations.creating {
+//    isCanBeConsumed = true
+//    isCanBeResolved = false
+//}
+//
+//artifacts {
+//    add("openApiSpec", project.file(rootProject.extra["internalStorageOpenApi"]!!)) {
+//        builtBy("generateApiClients")
+//    }
+//}
 
 jacoco {
     toolVersion = jacocoVersion

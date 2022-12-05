@@ -1,6 +1,6 @@
 package org.dataland.datalandinternalstorage
 
-import org.dataland.datalandinternalstorage.config.OpenAPIConfiguration
+import org.dataland.datalandinternalstorage.configurations.OpenAPIConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 

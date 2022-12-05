@@ -1,16 +1,19 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
+import org.dataland.datalandinternalstorage.models.InsertDataResponse
 import org.dataland.datalandinternalstorage.services.DatabaseDataStore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of API
  */
 @RestController
-class DummyController(
+@Component("StorageController")
+class StorageController(
     @Autowired val dataStore: DatabaseDataStore
 ) : StorageAPI {
 
@@ -18,8 +21,8 @@ class DummyController(
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
 
-    override fun insertData(correlationId: String?, body: String?): ResponseEntity<String> {
-        return ResponseEntity.ok(dataStore.insertDataSet(body ?: ""))
+    override fun insertData(correlationId: String?, body: String?): InsertDataResponse {
+        return InsertDataResponse(dataStore.insertDataSet(body ?: ""))
     }
 
 //    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {

@@ -5,6 +5,8 @@ val ktlintVersion: String by project
 val githubUser: String by project
 val githubToken: String by project
 
+extra["internalStorageOpenApi"] = "internalStorageOpenApi.json"
+
 allprojects {
     repositories {
         mavenCentral()
@@ -38,6 +40,24 @@ subprojects {
     ktlint {
         version.set(ktlintVersion)
     }
+
+//    configure<PublishingExtension> {
+//        repositories {
+//            maven {
+//                name = "GitHubPackages"
+//                url = uri("https://maven.pkg.github.com/d-fine/dataland")
+//                credentials {
+//                    username = System.getenv("GITHUB_ACTOR")
+//                    password = System.getenv("GITHUB_TOKEN")
+//                }
+//            }
+//        }
+//        publications {
+//            register<MavenPublication>("gpr") {
+//                from(components["java"])
+//            }
+//        }
+//    }
 }
 
 tasks.dependencyUpdates.configure {
@@ -65,6 +85,7 @@ plugins {
     id("org.openapi.generator") version "6.2.1" apply false
     id("com.github.ben-manes.versions") version "0.43.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.7.21" apply false
+    id("io.swagger.core.v3.swagger-gradle-plugin") version "2.2.6" apply false
 }
 
 sonarqube {

@@ -1,4 +1,4 @@
-package org.dataland.datalandinternalstorage.config
+package org.dataland.datalandinternalstorage.configurations
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info

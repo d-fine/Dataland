@@ -1,9 +1,6 @@
 package org.dataland.datalandinternalstorage.entities
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "data_items")
@@ -13,6 +10,7 @@ data class DataItem(
     val id: String,
     @Column(name = "correlation_id")
     val correlationId: String,
-    @Column(name = "data")
+    @Column(name = "data", columnDefinition = "CLOB NOT NULL")
+    @Lob
     val data: String
 )

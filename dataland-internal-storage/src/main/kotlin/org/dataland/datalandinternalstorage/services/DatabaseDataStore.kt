@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Simple implementation of a data store using a mongo database
+ * Simple implementation of a data store using a postgres database
  */
 @Component
 class DatabaseDataStore(

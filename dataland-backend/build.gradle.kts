@@ -84,3 +84,40 @@ tasks.getByName("processTestResources") {
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
+
+
+tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
+    input = project.file("${project.rootDir}/dataland-internal-storage/${rootProject.extra["internalStorageOpenApi"]}").path
+    outputDir.set("$buildDir/clients/internal-storage")
+    packageName.set(internalStorageClientDestinationPackage)
+    modelPackage.set("$internalStorageClientDestinationPackage.model")
+    apiPackage.set("$internalStorageClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
+    )
+}
+
+tasks.register("generateClients") {
+    dependsOn("generateInternalStorageClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
+}
+
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+}
