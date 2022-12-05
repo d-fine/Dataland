@@ -12,7 +12,7 @@
     <template #header>
       <h2 class="m-0">Regenerate API Key</h2>
     </template>
-    Are you sure you want to Regenerate the your API Key?
+    Are you sure you want to Regenerate your API Key?
     <b>If you confirm, your previous token will be invalidated and your applications will stop working.</b>
     <template #footer>
       <Button label="CANCEL" @click="regenerateConfirmToggle" class="p-button-outlined text-sm" />
@@ -57,7 +57,7 @@
           </template>
         </MessageComponent>
         <MessageComponent severity="block" class="border-2">
-          <template #text-info> If you don't have acess to your API Key you can generate a new one. </template>
+          <template #text-info> If you don't have access to your API Key you can generate a new one. </template>
           <template #action-button>
             <Button @click="regenerateConfirmToggle" label="REGENERATE API KEY"></Button>
           </template>
