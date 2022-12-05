@@ -1,56 +1,63 @@
 <template>
-  <h2 class="pl-4 text-left">Request companies data for EU Taxonomy, SFDR or LkSG.</h2>
+  <TheHeader/>
+  <TheContent class="pl-0 pt-0 min-h-screen surface-800 relative">
+      <h2 class="mt-0 pt-4 pl-4 text-left">Request companies data for EU Taxonomy, SFDR or LkSG.</h2>
 
-  <div class="pl-4 col-6 text-left">
-    <h3>Download</h3>
-    <InfoCard class="mb-3 font-medium">
-      Download and fill the EXCEL template with your request and upload it below.
-      <div class="mt-3">
-        <a :href="'excel-files/' + fileNameOfExcelTemplate" id="download-data-request-excel-template">
-          DOWNLOAD - EXCEL TEMPLATE .XLS
-        </a>
+      <div class="pl-4 col-6 text-left">
+        <h3>Download</h3>
+        <InfoCard class="mb-3 font-medium">
+          Download and fill the EXCEL template with your request and upload it below.
+          <div class="mt-3">
+            <a class="text-primary" :href="'excel-files/' + fileNameOfExcelTemplate"
+               id="download-data-request-excel-template">
+              DOWNLOAD - EXCEL TEMPLATE .XLS
+            </a>
+          </div>
+        </InfoCard>
       </div>
-    </InfoCard>
-  </div>
 
-  <div class="pl-4 col-6 text-left">
-    <h3>Upload</h3>
+      <div class="pl-4 col-6 text-left">
+        <h3>Upload</h3>
 
-    <FileUpload
-      name="blub"
-      url="./upload"
-      :custom-upload="true"
-      :max-file-size="5000000"
-      :file-limit="10"
-      accept=".xlsx"
-      :multiple="true"
-      @uploader="uploadDataRequest"
-    >
-      + Drag and drop your file or BROWSE
-    </FileUpload>
-  </div>
+        <FileUpload
+            name="data-request-excel-uploader"
+            mode="basic"
+            url="./upload"
+            :custom-upload="true"
+            :max-file-size="5000000"
+            :file-limit="10"
+            accept=".xlsx"
+            :multiple="true"
+            @uploader="uploadDataRequest"
+        >
+          + Drag and drop your file or BROWSE
+        </FileUpload>
+      </div>
 
-  <div class="pl-4 col-6 text-left">
-    <h3>Your Files</h3>
-    No file uploaded
-  </div>
+      <div class="pl-4 col-6 text-left">
+        <h3>Your Files</h3>
+        No file uploaded
+      </div>
 
-  <div class="pl-4 col-6 text-left">
-    <h3>Additional Settings</h3>
-    <Checkbox v-model="hideName" :binary="true" aria-label="Salami" />
-  </div>
+      <div class="pl-4 col-6 text-left">
+        <h3>Additional Settings</h3>
+        <Checkbox v-model="hideName" :binary="true" aria-label="Salami"/>
+      </div>
+    </TheContent>
 </template>
 
 <script lang="ts">
 import InfoCard from "@/components/general/InfoCard.vue";
 import FileUpload from "primevue/fileupload";
 import Checkbox from "primevue/checkbox";
-import { defineComponent, inject } from "vue";
+import {defineComponent, inject} from "vue";
 import Keycloak from "keycloak-js";
+import TheContent from "@/components/generics/TheContent.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
 
 export default defineComponent({
   name: "RequestData",
-  components: { InfoCard, FileUpload, Checkbox },
+  components: {TheHeader, TheContent, InfoCard, FileUpload, Checkbox},
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -63,9 +70,11 @@ export default defineComponent({
       hideName: false,
     };
   },
-  mounted() {},
+  mounted() {
+  },
   watch: {
-    somethingToWatch() {},
+    somethingToWatch() {
+    },
   },
   methods: {
     uploadDataRequest() {
