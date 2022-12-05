@@ -1,7 +1,14 @@
 package org.dataland.datalandinternalstorage.entities
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Lob
+import javax.persistence.Table
 
+/**
+ * The database entity for storing company data
+ */
 @Entity
 @Table(name = "data_items")
 data class DataItem(
