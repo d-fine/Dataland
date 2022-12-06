@@ -32,13 +32,13 @@ server {
       proxy_read_timeout 86400;
     }
 
-    location /api-keys {
+    location /api-keys/ {
       proxy_pass http://api-key-manager:8080/api-keys;
       include utils/proxy.conf;
       include utils/apiKeysErrors.conf;
     }
 
-    location /api {
+    location /api/ {
       proxy_pass http://host.docker.internal:8080/api;
       include utils/proxy.conf;
       include utils/apiErrors.conf;
@@ -62,7 +62,7 @@ server {
       root /var/www;
     }
 
-    location = /gitinfo {
+    location /gitinfo {
       root /var/www/html;
     }
 
