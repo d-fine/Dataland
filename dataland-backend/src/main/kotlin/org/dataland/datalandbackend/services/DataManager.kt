@@ -75,7 +75,7 @@ class DataManager(
     ): String {
         val dataId: String
         try {
-            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet))
+            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val message = "Error sending insertData Request to Eurodat." +
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
