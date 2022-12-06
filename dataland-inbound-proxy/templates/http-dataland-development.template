@@ -58,7 +58,7 @@ server {
       include utils/proxy.conf;
     }
 
-    location = /gitinfo {
+    location /gitinfo {
        root /var/www/html;
     }
 
