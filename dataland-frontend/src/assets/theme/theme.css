@@ -537,6 +537,18 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border-top: 1px solid #dee2e6
 }
 
+.p-button:disabled.p-button-text {
+    color: var(--text-color-secondary)
+    cursor: not-allowed;
+}
+
+.p-button:disabled {
+    background-color: transparent;
+    border: 0px solid var(--text-color-secondary);
+    color: var(--text-color-secondary);
+    cursor: not-allowed !important;
+}
+
 .p-datepicker .p-datepicker-buttonbar .p-button {
     width: auto
 }

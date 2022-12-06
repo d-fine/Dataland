@@ -3,10 +3,10 @@
     <div class="surface-card shadow-1 p-3 border-round-sm border-round">
       <div class="flex justify-content-between mb-3">
         <div>
-          <div class="text-900 font-medium text-xl text-left">API Key info</div>
+          <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
 
-        <div>
+        <div class="pr-1">
           <div class="text-left text-xs ml-1 text-600">Scope</div>
           <div class="flex align-items-center justify-content-center">
             <div class="bg-yellow-100 border-round px-2 border-round-sm m-1">
@@ -18,67 +18,123 @@
           </div>
         </div>
       </div>
-      <div class="col-12 flex justify-content-between align-items-center">
-        <div class="text-left">
-          <FormKit
-            type="select"
-            label="Expiration"
-            name="planet"
-            v-model="expireTime"
-            placeholder="Select expiry"
-            outer-class="date-form"
-            :options="[
-              { label: '7 days', value: '7' },
-              { label: '30 days', value: '30' },
-              { label: '60 days', value: '60' },
-              { label: '90 days', value: '90' },
-              { label: 'Custom...', value: 'custom' },
-              { label: 'No expiry', value: 'noExpiry' },
-            ]"
+      <div
+        :class="{ invalidExpireTime: !isexpireTimeCorrect }"
+        class="col-12 flex justify-content-between align-items-end"
+      >
+        <div class="text-left col-5">
+          <label
+            for="expireTime"
+            :class="{ invalidExpireTimeText: !isexpireTimeCorrect, 'text-900': isexpireTimeCorrect }"
+            class="block font-medium mb-2"
           >
-          </FormKit>
+            {{ !isexpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
+          </label>
+          <Dropdown
+            id="expireTime"
+            v-model="expireTimeDropdown"
+            :options="days"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select expiry"
+            class="w-full custom-dropdown"
+            @change="setExpireTimeDays($event)"
+          />
         </div>
 
-        <div v-if="expireTime === 'custom'">
-          <Calendar inputId="icon" v-model="date3" :showIcon="true" dateFormat="D, M dd, yy" />
+        <div v-if="expireTimeDropdown === 'custom'" class="col-7 text-right">
+          <Calendar inputId="icon" v-model="customDate" :showIcon="true" dateFormat="D, M dd, yy" />
         </div>
 
-        <span v-if="expireTime != 'custom'" class="block text-600 mb-1 mt-6"
-          >The API Key will expire on {{ expiryDateCalculation }}</span
-        >
+        <span v-if="expireTimeDropdown && expireTimeDropdown !== 'custom'" class="block text-600 col-7">
+          {{
+            expireTimeDropdown === "noExpiry"
+              ? `The API Key has no defined expire date`
+              : `The API Key will expire on ${expiryDateFormat(expireTimeDropdown)}`
+          }}
+        </span>
       </div>
+    </div>
+    <div class="mt-3 text-right">
+      <PrimeButton label="CANCEL" @click="$emit('cancelCreate')" class="p-button-outlined text-sm ml-3" />
+      <PrimeButton @click="checkDateAndEmitGenerateApiKey" label="GENERATE API KEY" class="ml-3"></PrimeButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { FormKit } from "@formkit/vue";
+import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
+import { expiryDateFormat, howManyDaysFromToday } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
+  setup() {
+    return { expiryDateFormat, howManyDaysFromToday };
+  },
   name: "CreateApiKeyCard",
-  components: { Button, FormKit, Calendar },
+  components: { PrimeButton, Dropdown, Calendar },
   props: {},
   data: () => ({
-    expireTime: 0,
-    date3: null,
+    expireTimeDays: Number,
+    expireTimeDropdown: "",
+    isexpireTimeCorrect: true,
+    customDate: null,
+    days: [
+      { label: "7 days", value: 7 },
+      { label: "30 days", value: 30 },
+      { label: "60 days", value: 60 },
+      { label: "90 days", value: 90 },
+      { label: "Custom...", value: "custom" },
+      { label: "No expiry", value: "noExpiry" },
+    ],
   }),
-  computed: {
-    expiryDateCalculation() {
-      // One day is 24h60min60s*1000ms = 86400000 ms
-      const options = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
-      return new Date(Date.now() + this.expireTime * 86400000).toLocaleDateString(undefined, options);
+  computed: {},
+  methods: {
+    // TODO invent a better logic
+    setExpireTimeDays(event) {
+      if (event.value === "noExpiry") {
+        this.expireTimeDays = 0;
+      } else if (event.value === "custom" && howManyDaysFromToday(this.customDate) > 0) {
+        this.expireTimeDays = howManyDaysFromToday(this.customDate);
+      } else {
+        this.expireTimeDays = event.value;
+      }
+      this.isexpireTimeCorrect = true;
+    },
+    checkDateAndEmitGenerateApiKey() {
+      if (this.expireTimeDays && this.expireTimeDays > 0) {
+        this.$emit("generateApiKey", this.expireTimeDays);
+        return;
+      } else if (this.expireTimeDropdown === "noExpiry" && this.expireTimeDays === 0) {
+        this.$emit("generateApiKey");
+        return;
+      } else if (this.expireTimeDropdown === "custom" && this.expireTimeDays > 0) {
+        this.$emit("generateApiKey", this.expireTimeDays);
+        return;
+      } else {
+        this.isexpireTimeCorrect = false;
+      }
+    },
+  },
+  watch: {
+    customDate: function () {
+      this.expireTimeDays = howManyDaysFromToday(this.customDate);
+      this.isexpireTimeCorrect = true;
     },
   },
 });
 </script>
 
 <style scoped>
-.date-form select.formkit-input {
-  border-color: #000;
+.custom-dropdown {
+  border: none !important;
 }
-/*719ECE*/
+.invalidExpireTime {
+  border: 1px solid var(--red-600);
+}
+.invalidExpireTimeText {
+  color: var(--red-600);
+}
 </style>

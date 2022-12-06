@@ -66,7 +66,6 @@ export class ApiClientProvider {
   }
 
   //api key
-
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
   }
