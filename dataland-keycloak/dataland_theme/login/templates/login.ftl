@@ -86,7 +86,7 @@
                                     class="p-button cursor-pointer w-full p-button-linkedin uppercase flex justify-content-center align-items-center"
                                     onclick="location.href='${p.loginUrl}'"
                             >
-                                <img src="${url.resourcesPath}/img/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
+                                <img src="${url.resourcesPath}/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
                                 LOG IN WITH LINKEDIN
                             </button>
                         </div>

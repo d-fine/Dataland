@@ -15,7 +15,7 @@
                         id="kc-totp-supported-apps">
                         <#list totp.supportedApplications as app>
                             <li class="flex align-items-center">
-                                <img src="${url.resourcesPath}/img/check.svg">
+                                <img src="${url.resourcesPath}/check.svg">
                                 &emsp;${msg(app)}
                             </li>
                         </#list>

@@ -45,6 +45,7 @@
                         ${kcSanitize(messagesPerField.get('password'))?no_esc}
                     </span>
                 </#if>
+                <span id="password-security-hint"></span>
             </div>
 
             <div class="input-group mt-5 mb-5 text-left">
@@ -88,7 +89,7 @@
                                     class="p-button cursor-pointer w-full p-button-linkedin uppercase flex justify-content-center align-items-center"
                                     onclick="location.href='${p.loginUrl}'"
                             >
-                                <img src="${url.resourcesPath}/img/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
+                                <img src="${url.resourcesPath}/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
                                 TEST DATALAND WITH LINKEDIN
                             </button>
                         </div>
@@ -120,5 +121,6 @@
                 </Button>
             </span>
         </div>
+        <script type="module" crossorigin src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
 </@layout.registrationLayout>
