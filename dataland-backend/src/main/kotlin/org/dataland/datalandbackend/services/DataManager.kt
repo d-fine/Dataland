@@ -7,12 +7,12 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.springframework.context.annotation.ComponentScan
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -29,7 +29,9 @@ class DataManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val storageClient: StorageControllerApi = StorageControllerApi("https://local-dev.dataland.com/internal-storage")
+    private val storageClient: StorageControllerApi = StorageControllerApi(
+        "https://local-dev.dataland.com/internal-storage"
+    )
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,

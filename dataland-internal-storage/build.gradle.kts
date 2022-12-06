@@ -59,16 +59,16 @@ openApi {
     }
 }
 
-//val openApiSpec by configurations.creating {
+// val openApiSpec by configurations.creating {
 //    isCanBeConsumed = true
 //    isCanBeResolved = false
-//}
+// }
 //
-//artifacts {
+// artifacts {
 //    add("openApiSpec", project.file(rootProject.extra["internalStorageOpenApi"]!!)) {
 //        builtBy("generateApiClients")
 //    }
-//}
+// }
 
 jacoco {
     toolVersion = jacocoVersion

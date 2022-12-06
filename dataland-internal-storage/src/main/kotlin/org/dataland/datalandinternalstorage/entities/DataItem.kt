@@ -3,7 +3,6 @@ package org.dataland.datalandinternalstorage.entities
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.Lob
 import javax.persistence.Table
 
 /**
