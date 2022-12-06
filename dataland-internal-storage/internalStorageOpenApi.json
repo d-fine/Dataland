@@ -36,23 +36,24 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "body",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successfully retrieved data.",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/InsertDataResponse"
                 }
               }
             }
@@ -245,6 +246,17 @@
   },
   "components": {
     "schemas": {
+      "InsertDataResponse": {
+        "required": [
+          "dataId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          }
+        }
+      },
       "Link": {
         "type": "object",
         "properties": {
