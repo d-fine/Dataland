@@ -7,7 +7,7 @@ const hour = minute * 60;
 const day = hour * 24;
 const year = day * 365;
 
-export function howManyDaysFromToday(date) {
+export function howManyDaysFromToday(date: Date) {
   const today = new Date().getTime();
   const d = new Date(date).getTime();
   return Math.ceil((d - today) / day);
