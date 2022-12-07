@@ -13,14 +13,25 @@ import java.util.UUID
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository
 ) {
+
+    /**
+     * Insterts data into a database
+     * @param correlationId id of the action inserting this data
+     * @param data a json object
+     * @return id associated with the stored data
+     */
     fun insertDataSet(correlationId: String?, data: String): String {
         val dataID = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataItemRepository.save(DataItem(dataID, correlationId ?: "", data))
         return dataID
     }
 
+    /**
+     * Reads data from a database
+     * @param dataId the id of the data to be retrieved
+     * @return the data as json string with id dataId
+     */
     fun selectDataSet(dataId: String): String {
-        // TODO should not-found-data be "" or "{}" or something else
         return dataItemRepository.findById(dataId).orElse(DataItem("", "", "")).data
     }
 }
