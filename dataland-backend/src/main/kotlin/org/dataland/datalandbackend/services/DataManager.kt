@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -76,9 +75,9 @@ class DataManager(
         val dataId: String
         try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
-        } catch (e: ServerException) {
-            val message = "Error sending insertData Request to Eurodat." +
-                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
+        } catch (e: Exception) {
+            val message = "Error storing data." +
+                " Received Exception with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(message)
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
@@ -101,7 +100,7 @@ class DataManager(
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
-        val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
+        val dataAsString: String = getDataFromStorage(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
@@ -120,14 +119,14 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromEdcClient(dataId: String, correlationId: String): String {
+    private fun getDataFromStorage(dataId: String, correlationId: String): String {
         val dataAsString: String
-        logger.info("Retrieve data from edc client. Correlation ID: $correlationId")
+        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
-        } catch (e: ServerException) {
+        } catch (e: Exception) {
             logger.error(
-                "Error sending selectDataById request to Eurodat. Received ServerException with Message:" +
+                "Error requesting data. Received Exception with Message:" +
                     " ${e.message}. Correlation ID: $correlationId"
             )
             throw e

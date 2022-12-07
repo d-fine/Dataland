@@ -22,10 +22,7 @@ class StorageController(
     }
 
     override fun insertData(correlationId: String?, body: String?): ResponseEntity<InsertDataResponse> {
-        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(body ?: "")))
+        // TODO is "" an ok default body?
+        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId, body ?: "")))
     }
-
-//    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {
-//        return ResponseEntity.ok(CheckHealthResponse("I am alive!"))
-//    }
 }

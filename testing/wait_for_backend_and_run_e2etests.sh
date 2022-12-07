@@ -7,7 +7,7 @@ set -euxo pipefail
 is_infrastructure_up () {
   declare -A services
   services["backend"]=https://local-dev.dataland.com/api/actuator/health/ping
-  services["edc-dummyserver"]=http://dataland-edc:9191/api/dataland/health
+  services["internal-storage"]=http://internal-storage:8080/internal-storage/actuator/health/ping
   services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
   services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
 

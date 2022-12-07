@@ -48,6 +48,11 @@ server {
       include utils/apiErrors.conf;
     }
 
+    location /internal-storage {
+      proxy_pass http://internal-storage:8080/internal-storage;
+      include utils/proxy.conf;
+    }
+
     location = /gitinfo {
        root /var/www/html;
     }

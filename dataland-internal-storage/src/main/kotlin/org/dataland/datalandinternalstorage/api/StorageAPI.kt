@@ -24,7 +24,7 @@ interface StorageAPI {
         ]
     )
     @GetMapping(
-        value = ["/get"],
+        value = ["/data"],
         produces = ["application/json"]
     )
     /**
@@ -36,14 +36,14 @@ interface StorageAPI {
     fun selectDataById(dataId: String, correlationId: String?): ResponseEntity<String>
 
     @Operation(
-        summary = "Upload data with id.",
-        description = "Upload data with id."
+        summary = "Upload data.",
+        description = "Upload data and get data id."
     )
     @ApiResponses(
         value = [ApiResponse(responseCode = "200", description = "Successfully retrieved data.")]
     )
     @PostMapping(
-        value = ["/post"]
+        value = ["/data"]
     )
     /**
      * A method to store data in the internal storage
