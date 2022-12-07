@@ -1,22 +1,27 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
+import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.accessmanagement.ApiKeyHandler
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DatesHandler
 import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.*
 
 class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
 
     private val apiKeyHandler = ApiKeyHandler()
+
+    private val datesHandler = DatesHandler()
 
     @Test
     fun `create a non teaser company, generate an API key and get the non teaser company with it`() {
@@ -76,11 +81,37 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    //TODO extend
+    // TODO extend
     @Test
-    fun `generate an API key and then validate it`() {
-        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
+    fun `generate an API key which is valid for a certain amount of days and then validate it`() {
+        val daysValid = 1
+        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, daysValid)
         val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToValidate)
+
+        val expiryDateFormatted = Date(apiKeyMetaInfo.expiryDate!! * 1000)
+        val expiryDateSimpleFormatted = datesHandler.formatDateAsSimpleDateString(expiryDateFormatted)
+
+        val expectedExpiryDateFormatted = datesHandler.addDaysToDate(Date(), daysValid)
+        val expectedExpiryDateSimpleFormatted = datesHandler.formatDateAsSimpleDateString(expectedExpiryDateFormatted)
+
+        // TODO assert roles and user Id
+        assertEquals(expectedExpiryDateSimpleFormatted, expiryDateSimpleFormatted)
+        assertTrue(apiKeyMetaInfo.active!!)
+        assertEquals(
+            "The API key you provided was successfully validated.",
+            apiKeyMetaInfo.validationMessage,
+            "The received validation message does not match the expected one."
+        )
+    }
+
+    @Test
+    fun `generate an API key which is valid forever then validate it`() {
+        val daysValid = null
+        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, daysValid)
+        val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToValidate)
+
+        // TODO assert roles and userID
+        assertEquals(null, apiKeyMetaInfo.expiryDate)
         assertTrue(apiKeyMetaInfo.active!!)
         assertEquals(
             "The API key you provided was successfully validated.",
@@ -94,9 +125,13 @@ class DataRetrievalViaApiKeyTest {
         val apiKeyToRevokeAndValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
         apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader)
         val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToRevokeAndValidate)
+        val expectedValidationMessage = "Your Dataland account has no API key registered. Please generate one."
+        val expectedApiKeyMetaInfo = ApiKeyMetaInfo(
+            null, null, null, false, expectedValidationMessage
+        )
         assertEquals(
-            "Your Dataland account has no API key registered. Please generate one.",
-            apiKeyMetaInfo.validationMessage,
+            expectedApiKeyMetaInfo,
+            apiKeyMetaInfo,
             "The tested api key was unexpectedly validated."
         )
     }
@@ -107,9 +142,13 @@ class DataRetrievalViaApiKeyTest {
         val apiKeyWithWrongSecret = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
             "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
         val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyWithWrongSecret)
+        val expectedValidationMessage = "The API key you provided for your Dataland account is not correct."
+        val expectedApiKeyMetaInfo = ApiKeyMetaInfo(
+            null, null, null, false, expectedValidationMessage
+        )
         assertEquals(
-            "The API key you provided for your Dataland account is not correct.",
-            apiKeyMetaInfo.validationMessage,
+            expectedApiKeyMetaInfo,
+            apiKeyMetaInfo,
             "Message for an invalid api-key was not as expected"
         )
     }
@@ -118,10 +157,11 @@ class DataRetrievalViaApiKeyTest {
     fun `generate an API key and then revoke it`() {
         apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
         val actualRevokeResponse = apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader)
-        assertTrue(actualRevokeResponse.revokementProcessSuccessful)
+        val expectedRevokeMessage = "The API key for your Dataland account was successfully revoked."
+        val expectedRevokeResponse = RevokeApiKeyResponse(true, expectedRevokeMessage)
         assertEquals(
-            "The API key for your Dataland account was successfully revoked.",
-            actualRevokeResponse.revokementProcessMessage,
+            expectedRevokeResponse,
+            actualRevokeResponse,
             "The received api key could not be revoked."
         )
     }
@@ -131,10 +171,11 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
         apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader)
         val actualRevokeResponse = apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader)
-        assertFalse(actualRevokeResponse.revokementProcessSuccessful)
+        val expectedRevokeMessage = "Your Dataland account has no API key registered. Therefore no revokement took place."
+        val expectedRevokeResponse = RevokeApiKeyResponse(false, expectedRevokeMessage)
         assertEquals(
-            "Your Dataland account has no API key registered. Therefore no revokement took place.",
-            actualRevokeResponse.revokementProcessMessage,
+            expectedRevokeResponse,
+            actualRevokeResponse,
             "The tested api key was unexpectedly revoked."
         )
     }
