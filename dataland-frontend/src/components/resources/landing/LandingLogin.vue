@@ -49,6 +49,23 @@
           </div>
         </div>
       </div>
+      <div class="grid text-left m-0">
+        <div class="col-10 col-offset-1 pb-0">
+          <p class="uppercase mb-0">Supported by</p>
+        </div>
+        <div class="col-1 col-offset-1 pt-0">
+          <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
+        </div>
+      </div>
+      <div class="grid text-left m-0">
+        <div class="col-offset-1 col-10">
+          <div class="grid align-items-baseline">
+            <div class="col-1">
+              <img src="@/assets/images/logos/t_systems_logo.svg" alt="T-Systems" class="pr-5" height="25" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="grid m-0">
         <div class="col-4 col-offset-4">
           <Card class="d-card">

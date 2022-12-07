@@ -15,10 +15,6 @@ on:
         description: "Choose environment"
         required: true
         type: environment
-      useInMemoryStorage:
-        description: 'Mock Trustee'
-        required: false
-        type: boolean
       trusteeEnvironmentName:
         description: 'Trustee Environment Name'
         required: false
@@ -107,7 +103,6 @@ jobs:
           TRUSTEE_BASE_URL: ${{ secrets.TRUSTEE_BASE_URL }}
           TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
@@ -171,7 +166,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.14
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.15
           fi
       - name: Download frontend API client
         uses: actions/download-artifact@v3
@@ -195,8 +190,8 @@ jobs:
         run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
-          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
+          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ 900 }}
+          CYPRESS_PREVISIT_TIMEOUT_S: ${{ 1200 }}
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
