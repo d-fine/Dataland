@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param companyManager service for managing company data
  * @param metaDataManager service for managing metadata
- */
+ * @param storageClient service for managing data
+*/
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
 class DataManager(
@@ -28,12 +29,8 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
 
-    ) {
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-  /*  private val storageClient: StorageControllerApi = StorageControllerApi(
-        "http://localhost:8082/internal-storage"
-    )*/
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -79,7 +76,7 @@ class DataManager(
     ): String {
         val dataId: String
         try {
-            dataId =  storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
+            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val message = "Error storing data." +
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
@@ -128,7 +125,7 @@ class DataManager(
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
-            dataAsString =  storageClient.selectDataById(dataId, correlationId)
+            dataAsString = storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +

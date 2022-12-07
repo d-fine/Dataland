@@ -48,7 +48,9 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during insertion`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenThrow(ServerException::class.java)
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenThrow(
+            ServerException::class.java
+        )
         assertThrows<InternalServerErrorApiException> {
             dataManager.addDataSet(storableDataSet, correlationId)
         }
