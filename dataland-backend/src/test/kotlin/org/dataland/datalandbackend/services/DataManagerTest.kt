@@ -2,15 +2,15 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.edcClient.api.DefaultApi
-import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
-import org.dataland.datalandbackend.edcClient.model.InsertDataResponse
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
+import org.dataland.datalandinternalstorage.openApiClient.model.InsertDataResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -31,10 +31,9 @@ class DataManagerTest(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
 ) {
-
+    val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val edcClientMock: DefaultApi = mock(DefaultApi::class.java)
-    val dataManager = DataManager(edcClientMock, objectMapper, companyManager, dataMetaInformationManager)
+    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient)
     val correlationId = UUID.randomUUID().toString()
     val dataUUId = "JustSomeUUID"
 
@@ -49,7 +48,7 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during insertion`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenThrow(ServerException::class.java)
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenThrow(ServerException::class.java)
         assertThrows<InternalServerErrorApiException> {
             dataManager.addDataSet(storableDataSet, correlationId)
         }
@@ -59,11 +58,11 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during selection`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
             InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
+        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
             dataManager.getDataSet(dataId, DataType(storableDataSet.dataType.name), correlationId)
         }
@@ -73,7 +72,7 @@ class DataManagerTest(
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
             InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
@@ -91,11 +90,11 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
             InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
-        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn("")
+        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
@@ -106,7 +105,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
-        `when`(edcClientMock.insertData(correlationId, storableDataSetAsString)).thenReturn(
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
             InsertDataResponse(dataUUId)
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
@@ -126,7 +125,7 @@ class DataManagerTest(
         unexpectedDataTypeName: String
     ): String {
         val expectedDataTypeName = storableDataSet.dataType.name
-        `when`(edcClientMock.selectDataById(dataId, correlationId)).thenReturn(
+        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
             objectMapper.writeValueAsString(
                 StorableDataSet(
                     storableDataSet.companyId,

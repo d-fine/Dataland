@@ -10,6 +10,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,17 +20,20 @@ import org.springframework.transaction.annotation.Transactional
  * @param companyManager service for managing company data
  * @param metaDataManager service for managing metadata
  */
+@ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
 class DataManager(
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,
-    @Autowired var metaDataManager: DataMetaInformationManager
-) {
+    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var storageClient: StorageControllerApi,
+
+    ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val storageClient: StorageControllerApi = StorageControllerApi(
+  /*  private val storageClient: StorageControllerApi = StorageControllerApi(
         "http://localhost:8082/internal-storage"
-    )
+    )*/
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -75,7 +79,7 @@ class DataManager(
     ): String {
         val dataId: String
         try {
-            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
+            dataId =  storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val message = "Error storing data." +
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
@@ -124,7 +128,7 @@ class DataManager(
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
-            dataAsString = storageClient.selectDataById(dataId, correlationId)
+            dataAsString =  storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
