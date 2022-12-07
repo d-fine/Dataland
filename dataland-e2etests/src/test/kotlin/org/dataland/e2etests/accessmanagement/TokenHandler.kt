@@ -52,7 +52,7 @@ class TokenHandler {
         ApiClientApiKeyManager.Companion.accessToken = token
     }
 
-    fun revokeTokenFromAllClients() {
+    fun revokeTokensFromAllClients() {
         ApiClientBackend.Companion.accessToken = null
         ApiClientApiKeyManager.Companion.accessToken = null
     }
