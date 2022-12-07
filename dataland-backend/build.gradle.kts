@@ -85,10 +85,10 @@ gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
 
-
 tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-internal-storage/${rootProject.extra["internalStorageOpenApi"]}").path
+    input = project.file("${project.rootDir}/dataland-internal-storage/${rootProject.extra["internalStorageOpenApi"]}")
+        .path
     outputDir.set("$buildDir/clients/internal-storage")
     packageName.set(internalStorageClientDestinationPackage)
     modelPackage.set("$internalStorageClientDestinationPackage.model")
@@ -115,7 +115,6 @@ tasks.register("generateClients") {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
-
 
 sourceSets {
     val main by getting

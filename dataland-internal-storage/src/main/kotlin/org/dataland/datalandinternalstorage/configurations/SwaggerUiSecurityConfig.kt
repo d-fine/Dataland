@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.DefaultSecurityFilterChain
-import org.springframework.security.web.SecurityFilterChain
 
 /**
  * This class is used to configure the CSP for the Swagger-UI as the default content does not allow loading anything

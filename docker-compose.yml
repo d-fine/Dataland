@@ -165,22 +165,6 @@ services:
       EDC_OAUTH_TOKEN_URL: ${EDC_OAUTH_TOKEN_URL}
       IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
-  edc-dummyserver:
-    restart: always
-    profiles: ["productionInMemory", "testing", "development"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
-    environment:
-      SERVER_PORT: 9191
-      SERVER_SERVLET_CONTEXT-PATH: /api
-    networks:
-      internal:
-        aliases:
-          - dataland-edc
-      external:
-        aliases:
-          - dataland-edc
-    ports:
-      - "9191:9191"
   internal-storage:
     restart: always
     profiles: [ "production", "productionInMemory", "testing", "development" ]

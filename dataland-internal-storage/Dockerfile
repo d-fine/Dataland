@@ -6,4 +6,4 @@ COPY --from=builder /app/dataland-internal-storage/build/libs/dataland-internal-
 CMD ["java","-jar","/jar/dataland-internal-storage.jar"]
 
 # TODO fix health check. Can we just use the internal address?
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api-keys/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/internal-storage/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
