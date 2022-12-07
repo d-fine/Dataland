@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -27,7 +28,7 @@ class DataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val storageClient: StorageControllerApi = StorageControllerApi(
-        "https://local-dev.dataland.com/internal-storage"
+        "http://localhost:8082/internal-storage"
     )
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
@@ -75,9 +76,9 @@ class DataManager(
         val dataId: String
         try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
-        } catch (e: Exception) {
+        } catch (e: ServerException) {
             val message = "Error storing data." +
-                " Received Exception with Message: ${e.message}. Correlation ID: $correlationId"
+                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(message)
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
@@ -124,9 +125,9 @@ class DataManager(
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
-        } catch (e: Exception) {
+        } catch (e: ServerException) {
             logger.error(
-                "Error requesting data. Received Exception with Message:" +
+                "Error requesting data. Received ServerException with Message:" +
                     " ${e.message}. Correlation ID: $correlationId"
             )
             throw e
