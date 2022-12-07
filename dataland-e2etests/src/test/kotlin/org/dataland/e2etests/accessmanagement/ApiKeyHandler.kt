@@ -12,7 +12,7 @@ class ApiKeyHandler {
     private val tokenHandler = TokenHandler()
     private val apiKeyManagerClient = ApiKeyControllerApi(BASE_PATH_TO_API_KEY_MANAGER)
 
-    fun obtainApiKeyForUserTypeAndRevokeBearerTokens(userType: UserType, daysValid: Int): String {
+    fun obtainApiKeyForUserTypeAndRevokeBearerTokens(userType: UserType, daysValid: Int?): String {
         tokenHandler.obtainTokenForUserType(userType)
         val apiKeyAndMetaInfo = apiKeyManagerClient.generateApiKey(daysValid)
         ApiClientBackend.Companion.apiKey["dataland-api-key"] = apiKeyAndMetaInfo.apiKey
