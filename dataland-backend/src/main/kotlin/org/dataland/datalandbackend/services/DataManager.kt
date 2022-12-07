@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.springframework.context.annotation.ComponentScan
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -21,7 +20,6 @@ import org.springframework.context.annotation.ComponentScan
  * @param metaDataManager service for managing metadata
  */
 @Component("DataManager")
-@ComponentScan(basePackages = ["org.dataland"])
 class DataManager(
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,

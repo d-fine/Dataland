@@ -26,6 +26,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
     id("org.openapi.generator")
     id("io.swagger.core.v3.swagger-gradle-plugin")
+    id("maven-publish")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -59,16 +60,38 @@ openApi {
     }
 }
 
-//val openApiSpec by configurations.creating {
-//    isCanBeConsumed = true
-//    isCanBeResolved = false
-//}
-//
-//artifacts {
-//    add("openApiSpec", project.file(rootProject.extra["internalStorageOpenApi"]!!)) {
-//        builtBy("generateApiClients")
-//    }
-//}
+val openApiSpec by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+}
+
+artifacts {
+    add("openApiSpec", project.file("$projectDir/${rootProject.extra["internalStorageOpenApi"]}")) {
+        builtBy("generateOpenApiDocs")
+    }
+}
+
+configure<PublishingExtension> {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/d-fine/dataland")
+            credentials {
+                username = System.getenv("GITHUB_USER")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = "org.dataland"
+            artifactId = "StorageAPI"
+            version = "0.1-TEST"
+            //from(components["java"])
+            artifact(rootProject.extra["internalStorageOpenApi"])
+        }
+    }
+}
 
 jacoco {
     toolVersion = jacocoVersion
