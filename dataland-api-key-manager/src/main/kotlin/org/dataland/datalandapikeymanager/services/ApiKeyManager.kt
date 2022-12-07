@@ -68,7 +68,7 @@ class ApiKeyManager
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
     }
 
-    private fun checkIfApiKeyExpired(expiryDateOfApiKey: Long?): Boolean{
+    private fun checkIfApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
         return (expiryDateOfApiKey ?: Instant.now().epochSecond) < Instant.now().epochSecond
     }
 
@@ -100,8 +100,10 @@ class ApiKeyManager
 
     fun getApiKeyMetaInfoForFrontendUser(keycloakUserId: String?): ApiKeyMetaInfo {
         if (keycloakUserId == null) {
-            return ApiKeyMetaInfo(validationMessage = "The backend has received a NULL value as Keycloak user ID" +
-                    "for the logged in user and therefore could not derive the current Api-Key-Status.")
+            return ApiKeyMetaInfo(
+                validationMessage = "The backend has received a NULL value as Keycloak user ID" +
+                    "for the logged in user and therefore could not derive the current Api-Key-Status."
+            )
         }
 
         val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
@@ -112,13 +114,13 @@ class ApiKeyManager
         } else {
             val apiKeyEntityOfKeycloakUser = apiKeyEntityOptional.get()
 
-            if( !checkIfApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate) ) {
+            if (!checkIfApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate)) {
                 ApiKeyMetaInfo(
                     active = true,
                     keycloakUserId = keycloakUserId,
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
                     keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles
-                    )
+                )
             } else {
                 ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
             }
@@ -153,7 +155,7 @@ class ApiKeyManager
     private fun getApiKeyMetaInfo(secret: String, apiKeyEntity: ApiKeyEntity): ApiKeyMetaInfo {
         val apiKeyMetaInfo = if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-        } else if ( !checkIfApiKeyExpired(apiKeyEntity.expiryDate) ) {
+        } else if (!checkIfApiKeyExpired(apiKeyEntity.expiryDate)) {
             ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
         } else {
             ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)

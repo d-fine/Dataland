@@ -136,13 +136,11 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key for a user and get the meta info on that API key for that user`() {
-       // TODO
+        // TODO
         /*assertEquals(
             "Your Dataland account has no API key registered. Therefore no revokement took place.",
             actualRevokeMessage,
             "The tested api key was unexpectedly revoked."
         )*/
     }
-
-
 }
