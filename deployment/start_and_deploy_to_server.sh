@@ -4,17 +4,7 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
-if [[ $IN_MEMORY == true ]]; then
-  profile=productionInMemory
-else
-  profile=production
-  echo "Checking if EuroDaT is available before deploying to target server."
-  if ! curl -f -X 'GET' "${TRUSTEE_BASE_URL}/${TRUSTEE_ENVIRONMENT_NAME}/api/check/health" -H 'accept: application/json' >/dev/null 2>&1; then
-    echo "EuroDaT is not available."
-    exit 1
-  fi
-  echo "EuroDat is available."
-fi
+profile=productionInMemory
 
 echo "Starting $environment server"
 curl "$TARGETSERVER_STARTUP_URL" > /dev/null
