@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ConfigurationStorageControlloerApi {
     /**
-     * The bean to configure the EDCConnectorInterface
+     * The bean to configure the internal client StorageControllerApi
      */
     @Bean
     fun getApiInternalClient(): StorageControllerApi {
