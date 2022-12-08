@@ -23,7 +23,7 @@ class StorageController(
     }
 
     override fun insertData(correlationId: String?, body: String?): ResponseEntity<InsertDataResponse> {
-        // TODO is "" an ok default body?
+        // TODO Question for the review process: is "" an ok default body?
         return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId, body ?: "")))
     }
 }
