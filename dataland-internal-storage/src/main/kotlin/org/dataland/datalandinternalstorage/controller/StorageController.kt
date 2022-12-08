@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Implementation of API
+ * Implementation of Storage Controller
+ * @param dataStore implementation of a simple data storec
  */
 @RestController
 @Component("StorageController")
@@ -22,7 +23,7 @@ class StorageController(
     }
 
     override fun insertData(correlationId: String?, body: String?): ResponseEntity<InsertDataResponse> {
-        // TODO is "" an ok default body?
+        // TODO Question for the review process: is "" an ok default body?
         return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId, body ?: "")))
     }
 }

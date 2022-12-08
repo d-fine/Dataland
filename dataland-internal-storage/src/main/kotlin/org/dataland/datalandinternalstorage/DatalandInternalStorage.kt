@@ -11,7 +11,7 @@ import org.springframework.boot.runApplication
 class DatalandInternalStorage : OpenAPIConfiguration
 
 /**
- * Main function to be executed for running the spring boot dataland API key manager process
+ * Main function to be executed for running the spring boot dataland internal storage API process
  */
 fun main(args: Array<String>) {
     runApplication<DatalandInternalStorage>(args = args)
