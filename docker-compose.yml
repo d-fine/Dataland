@@ -41,7 +41,7 @@ services:
       - internal-storage-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5435:5433-5435"
+      - "127.0.0.1:5433-5436:5433-5436"
   api-key-manager:
     restart: always
     profiles: ["production", "productionInMemory", "testing", "development"]
