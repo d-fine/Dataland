@@ -25,6 +25,9 @@ class ConfigurationStorageControlloerApi {
         )
     }
 
+    /**
+     * The function determines if it is run in a dockercontainer or not
+     */
     fun isBackendInsideDockerContainer(): Boolean {
         val file = File("/.dockerenv")
         return file.exists()
