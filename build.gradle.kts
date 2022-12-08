@@ -95,8 +95,7 @@ jacoco {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
-    dependsOn(tasks.getByPath(":dataland-backend:compileKotlin"))
-    dependsOn(tasks.getByPath(":dataland-csvconverter:compileKotlin"))
+    dependsOn(tasks.getByPath("compileKotlin"))
     sourceDirectories.setFrom(
         subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
@@ -107,7 +106,7 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    executionData.setFrom(fileTree(projectDir).include("*.exec"))
+    executionData.setFrom(fileTree(projectDir).include("**.exec"))
 }
 
 detekt {
