@@ -1,11 +1,10 @@
 # USAGE: set github token and user and simply run this script in an ELEVATED! powershell window
 # The Script can take quite some time (something like a minute) to complete
-[Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "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", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("GITHUB_USER", "MarcinStanczyk7", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_ID", "c1f7106daeba3bf94ea50f9c19240621", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_SECRET", "4b69fb4c5c756168a3e4b65d27d6a7a9", [System.EnvironmentVariableTarget]::User)
+# SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "", [System.EnvironmentVariableTarget]::User)
+# SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
+# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
+# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
