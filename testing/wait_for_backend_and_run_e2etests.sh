@@ -7,7 +7,7 @@ set -euxo pipefail
 is_infrastructure_up () {
   declare -A services
   services["backend"]=https://local-dev.dataland.com/api/actuator/health/ping
-  services["internal-storage"]=http://local-dev.dataland.com/internal-storage/actuator/health/ping
+  #services["internal-storage"]=http://local-dev.dataland.com/internal-storage/actuator/health/ping
   services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
   services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
 
@@ -23,7 +23,7 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 
-timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
+timeout 340 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
 
 if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
   ./gradlew :dataland-e2etests:test --no-daemon --stacktrace
