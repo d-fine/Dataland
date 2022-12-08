@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of Storage Controller
- * @param dataStore implementation of a simple data storec
+ * @param dataStore a database data store
  */
 @RestController
 @Component("StorageController")
