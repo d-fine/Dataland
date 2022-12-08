@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import {rmdir} from "fs";
 let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
@@ -44,6 +45,19 @@ export default defineConfig({
           return returnTotpKey;
         },
       });
+      on('task', {
+        deleteFolder(folderName) {
+          return new Promise((resolve, reject) => {
+            rmdir(folderName, { recursive: true }, (err) => {
+              if (err) {
+                console.error(err)
+                return reject(err)
+              }
+              resolve(null)
+            })
+          })
+        },
+      })
       return require("./tests/e2e/plugins/index.js")(on, config);
     },
     experimentalSessionAndOrigin: true,

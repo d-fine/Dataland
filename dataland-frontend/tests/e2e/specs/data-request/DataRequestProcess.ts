@@ -8,22 +8,27 @@ describe("As a user I expect a data request page where I can download an excel t
             document.location.reload();
           }, 5000);
         });
-        cy.get("a[id=download-data-request-excel-template]").click();
       });
   }
+
+  afterEach(cy.deleteDownloadsFolder);
 
   it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
     cy.visitAndCheckAppMount("/requests");
     setReloadOnClicksToAvoidPageLoadBug();
 
-    const downloadedFilename = Cypress.config("downloadsFolder") + "/Dataland_Request_Template.xlsx";
+    const expectedPathToDownloadedExcelTemplate = Cypress.config("downloadsFolder") + "/Dataland_Request_Template.xlsx";
 
-    cy.readFile("./src/assets/excel-files/Dataland_Request_Template.xlsx", "base64", { timeout: 15000 }).then(
-      (expectedBase64EncodedExcelTemplate) => {
-        cy.readFile(downloadedFilename, "base64", { timeout: 15000 }).should("eq", expectedBase64EncodedExcelTemplate);
+    cy.readFile(expectedPathToDownloadedExcelTemplate).should("not.exist");
+    cy.get("a[id=download-data-request-excel-template]").click();
+    cy.readFile("./src/assets/excel-files/Dataland_Request_Template.xlsx", "binary", { timeout: 15000 }).then(
+      (expectedExcelTemplateBinary) => {
+        cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", { timeout: 15000 }).should(
+          "eq",
+          expectedExcelTemplateBinary
+        );
       }
     );
   });
-
   // TODO More test cases:   Upload an excel file,  ... (?)
 });
