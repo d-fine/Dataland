@@ -92,6 +92,7 @@ sonarqube {
 tasks.sonarqube {
     dependsOn(tasks.getByPath("npminstall"))
     dependsOn(tasks.getByPath("jacocoTestReport"))
+    dependsOn(tasks.getByPath("npmBuild"))
 }
 
 jacoco {
