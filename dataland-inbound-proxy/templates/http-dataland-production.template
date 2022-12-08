@@ -30,6 +30,7 @@ server {
     location /api-keys {
       proxy_pass http://api-key-manager:8080/api-keys;
       include utils/proxy.conf;
+      include utils/apiKeysErrors.conf;
     }
 
     location /api {
@@ -37,6 +38,11 @@ server {
       include utils/proxy.conf;
       include utils/apiErrors.conf;
     }
+
+    location /internal-storage/actuator/health {
+          proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
+          include utils/proxy.conf;
+        }
 
     location = /gitinfo {
        root /var/www/html;
