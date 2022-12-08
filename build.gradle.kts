@@ -89,13 +89,20 @@ sonarqube {
     }
 }
 
+tasks.getByName("sonarqube") {
+    dependsOn(subprojects.flatMap { subproject -> subproject.tasks.filter { task -> task.name == "npmInstall" } })
+    dependsOn(subprojects.flatMap { subproject -> subproject.tasks.filter { task -> task.name == "npmBuild" } })
+    dependsOn("jacocoTestReport")
+    // dependsOn("npmBuild")
+}
+
 jacoco {
     toolVersion = jacocoVersion
 }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
-    dependsOn(tasks.getByPath("compileKotlin"))
+    dependsOn(subprojects.flatMap { it.tasks.filter { it.name == "compileKotlin" } })
     sourceDirectories.setFrom(
         subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
