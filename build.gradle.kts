@@ -89,10 +89,10 @@ sonarqube {
     }
 }
 
-tasks.sonarqube {
-    dependsOn(tasks.getByPath("npminstall"))
-    dependsOn(tasks.getByPath("jacocoTestReport"))
-    dependsOn(tasks.getByPath("npmBuild"))
+tasks.getByName("sonarqube") {
+    dependsOn("npmInstall")
+    dependsOn("jacocoTestReport")
+    dependsOn("npmBuild")
 }
 
 jacoco {
@@ -101,7 +101,7 @@ jacoco {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
-    dependsOn(tasks.getByPath("compileKotlin"))
+    dependsOn("compileKotlin")
     sourceDirectories.setFrom(
         subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
