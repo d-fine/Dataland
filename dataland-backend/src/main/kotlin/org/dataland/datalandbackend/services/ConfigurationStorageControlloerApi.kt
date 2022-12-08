@@ -16,7 +16,7 @@ class ConfigurationStorageControlloerApi {
     @Bean
     fun getApiInternalClient(): StorageControllerApi {
         return StorageControllerApi(
-           // basePath = "http://internal-storage"
+            basePath = "http://internal-storage:8080/internal-storage"
         )
     }
 }
