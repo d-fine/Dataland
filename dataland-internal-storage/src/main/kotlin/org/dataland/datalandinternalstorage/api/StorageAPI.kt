@@ -52,5 +52,4 @@ interface StorageAPI {
      */
     fun insertData(correlationId: String?, @RequestBody(required = true) body: String?):
         ResponseEntity<InsertDataResponse>
-
 }
