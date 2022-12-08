@@ -59,7 +59,7 @@
             </template>
           </MessageComponent>
 
-          <ApiKeyCard :ExpiryDate="expiryDate * 1000" @revokeKey="revokeApiKey" />
+          <ApiKeyCard :expiryDate="expiryDate * 1000" @revokeKey="revokeApiKey" />
         </div>
       </div>
     </TheContent>

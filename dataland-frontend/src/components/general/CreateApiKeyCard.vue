@@ -54,7 +54,7 @@
           {{
             expireTimeDropdown === "noExpiry"
               ? `The API Key has no defined expire date`
-              : `The API Key will expire on ${expiryDateFormat(expireTimeDropdown)}`
+              : `The API Key will expire on ${formatExpiryDate(expireTimeDropdown)}`
           }}
         </span>
       </div>
@@ -76,11 +76,11 @@ import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import { expiryDateFormat, howManyDaysFromToday } from "@/utils/DateFormatUtils";
+import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   setup() {
-    return { expiryDateFormat, howManyDaysFromToday };
+    return { formatExpiryDate, calculateDaysFromNow };
   },
   name: "CreateApiKeyCard",
   components: { PrimeButton, Dropdown, Calendar },
@@ -105,8 +105,8 @@ export default defineComponent({
     setExpireTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expireTimeDays = 0;
-      } else if (event.value === "custom" && howManyDaysFromToday(this.customDate) > 0) {
-        this.expireTimeDays = howManyDaysFromToday(this.customDate);
+      } else if (event.value === "custom" && calculateDaysFromNow(this.customDate) > 0) {
+        this.expireTimeDays = calculateDaysFromNow(this.customDate);
       } else {
         this.expireTimeDays = event.value as unknown as number;
       }
@@ -129,7 +129,7 @@ export default defineComponent({
   },
   watch: {
     customDate: function () {
-      this.expireTimeDays = howManyDaysFromToday(this.customDate);
+      this.expireTimeDays = calculateDaysFromNow(this.customDate);
       this.isExpireTimeCorrect = true;
     },
   },

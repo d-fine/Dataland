@@ -11,7 +11,7 @@
     <template #header>
       <h2 class="m-0">Delete API Key</h2>
     </template>
-    Are you sure you want to delete the your API key?
+    Are you sure you want to delete this API key?
     <b>If you confirm, your previous token will be invalidated and your applications will stop working.</b>
     <template #footer>
       <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined text-sm" />
@@ -25,7 +25,7 @@
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
           <span class="block text-600 mb-3 mt-6"
-            >The API Key will expire on {{ expiryDateFormat(ExpiryDateInDays) }}</span
+            >The API Key will expire on {{ formatExpiryDate(expiryDateInDays) }}</span
           >
         </div>
 
@@ -57,17 +57,17 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { expiryDateFormat, howManyDaysFromToday } from "@/utils/DateFormatUtils";
+import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
-    return { expiryDateFormat, howManyDaysFromToday };
+    return { formatExpiryDate, calculateDaysFromNow };
   },
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog },
   props: {
-    ExpiryDate: {
+    expiryDate: {
       type: Number,
       default: null,
     },
@@ -76,8 +76,8 @@ export default defineComponent({
     viewDeleteConfirmation: false,
   }),
   computed: {
-    ExpiryDateInDays() {
-      return howManyDaysFromToday(this.ExpiryDate);
+    expiryDateInDays() {
+      return calculateDaysFromNow(this.expiryDate);
     },
   },
   methods: {
