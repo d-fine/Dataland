@@ -39,8 +39,8 @@ server {
       include utils/apiErrors.conf;
     }
 
-    location /internal-storage/actuator/health {
-          proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
+    location /internal-storage {
+          proxy_pass http://internal-storage:8080/internal-storage;
           include utils/proxy.conf;
         }
 
