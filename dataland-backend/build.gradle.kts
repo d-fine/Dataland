@@ -120,3 +120,9 @@ sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
 }
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}
