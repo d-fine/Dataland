@@ -45,7 +45,7 @@ docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes"
 pg_isready -d backend -h "localhost" -p 5433
 pg_isready -d keycloak -h "localhost" -p 5434
 pg_isready -d api_key_manager -h "localhost" -p 5435
-pg_isready -d internal_storage -h "localhost" -p 5435
+pg_isready -d internal_storage -h "localhost" -p 5436
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

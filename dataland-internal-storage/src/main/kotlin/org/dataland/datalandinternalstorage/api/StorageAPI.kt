@@ -53,7 +53,4 @@ interface StorageAPI {
     fun insertData(correlationId: String?, @RequestBody(required = true) body: String?):
         ResponseEntity<InsertDataResponse>
 
-//    override fun checkHealth(): ResponseEntity<CheckHealthResponse> {
-//        return ResponseEntity.ok(CheckHealthResponse("I am alive!"))
-//    }
 }
