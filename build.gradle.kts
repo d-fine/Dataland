@@ -40,24 +40,6 @@ subprojects {
     ktlint {
         version.set(ktlintVersion)
     }
-
-//    configure<PublishingExtension> {
-//        repositories {
-//            maven {
-//                name = "GitHubPackages"
-//                url = uri("https://maven.pkg.github.com/d-fine/dataland")
-//                credentials {
-//                    username = System.getenv("GITHUB_ACTOR")
-//                    password = System.getenv("GITHUB_TOKEN")
-//                }
-//            }
-//        }
-//        publications {
-//            register<MavenPublication>("gpr") {
-//                from(components["java"])
-//            }
-//        }
-//    }
 }
 
 tasks.dependencyUpdates.configure {
