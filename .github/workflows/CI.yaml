@@ -288,7 +288,7 @@ jobs:
           path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew jacocoTestReport sonarqube --no-daemon --stacktrace
+        run: ./gradlew sonarqube --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

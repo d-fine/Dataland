@@ -89,6 +89,11 @@ sonarqube {
     }
 }
 
+tasks.sonarqube {
+    dependsOn(tasks.getByPath("npminstall"))
+    dependsOn(tasks.getByPath("jacocoTestReport"))
+}
+
 jacoco {
     toolVersion = jacocoVersion
 }
