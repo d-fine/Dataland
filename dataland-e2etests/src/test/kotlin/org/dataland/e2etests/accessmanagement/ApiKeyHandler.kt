@@ -1,6 +1,7 @@
 package org.dataland.e2etests.accessmanagement
 
 import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
+import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
 import org.dataland.e2etests.BASE_PATH_TO_API_KEY_MANAGER
@@ -12,22 +13,38 @@ class ApiKeyHandler {
     private val tokenHandler = TokenHandler()
     private val apiKeyManagerClient = ApiKeyControllerApi(BASE_PATH_TO_API_KEY_MANAGER)
 
-    fun obtainApiKeyForUserTypeAndRevokeBearerTokens(userType: UserType, daysValid: Int?): String {
+    fun obtainApiKeyForUserType(userType: UserType, daysValid: Int? = null): ApiKeyAndMetaInfo {
         tokenHandler.obtainTokenForUserType(userType)
         val apiKeyAndMetaInfo = apiKeyManagerClient.generateApiKey(daysValid)
         ApiClientBackend.Companion.apiKey["dataland-api-key"] = apiKeyAndMetaInfo.apiKey
-        tokenHandler.revokeTokensFromAllClients()
-        return apiKeyAndMetaInfo.apiKey
+        return apiKeyAndMetaInfo
+    }
+
+    fun obtainApiKeyForUserTypeAndRevokeBearerTokens(userType: UserType, daysValid: Int? = null): ApiKeyAndMetaInfo {
+        val apiKeyAndMetaInfo = obtainApiKeyForUserType(userType, daysValid)
+        tokenHandler.setTokensToNullForAllClients()
+        return apiKeyAndMetaInfo
     }
 
     fun revokeApiKeyForUserTypeAndRevokeBearerTokens(userType: UserType): RevokeApiKeyResponse {
         tokenHandler.obtainTokenForUserType(userType)
         val revokeApiKeyResponse = apiKeyManagerClient.revokeApiKey()
-        tokenHandler.revokeTokensFromAllClients()
+        tokenHandler.setTokensToNullForAllClients()
         return revokeApiKeyResponse
     }
 
     fun validateApiKeyAndReturnMetaInfo(receivedApiKey: String): ApiKeyMetaInfo {
         return apiKeyManagerClient.validateApiKey(receivedApiKey)
+    }
+
+    fun getApiKeyMetaInfoForUserType(userType: UserType): ApiKeyMetaInfo {
+        tokenHandler.obtainTokenForUserType(userType)
+        val currentToken = tokenHandler.getCurrentToken()
+        val keycloakUserId = tokenHandler.getUserIdFromToken(currentToken!!)
+        return apiKeyManagerClient.getApiKeyMetaInfoForUser(keycloakUserId)
+    }
+
+    fun deleteApiKeyFromBackendClient() {
+        ApiClientBackend.Companion.apiKey.remove("dataland-api-key")
     }
 }

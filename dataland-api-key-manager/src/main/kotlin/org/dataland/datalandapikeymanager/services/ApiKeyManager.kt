@@ -26,6 +26,8 @@ class ApiKeyManager
         private const val secondsInADay = 86400
     }
 
+    private val getMetaInfoMessageKeycloakIdIsNull = "The API-Key-Manager service has received a NULL value as " +
+        "Keycloak user ID for the logged in user and therefore could not derive the current API key status."
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
@@ -65,7 +67,7 @@ class ApiKeyManager
         val authentication = getAuthentication()
         val keycloakUserId = authentication.name
         val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
-        return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid))
+        return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid), active = true)
     }
 
     private fun checkIfApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
@@ -92,28 +94,20 @@ class ApiKeyManager
     }
 
     /**
-     * Gets meta info on the API key of a keycloak user ID, which can be passed to this method by the Frontend.
+     * Gets meta info about the API key of a keycloak user ID, which can be passed to this method e.g. by the Frontend.
      * @param keycloakUserId is the keycloak user ID for which meta info should be returned
-     * @return is an ApiKeyMetaInfo object with all available information on the API key, which can be used by
+     * @return is an ApiKeyMetaInfo object with all available information about the API key, which can be used by
      * the Frontend to inform the user about the current status (valid key/expired key/no key at all/error)
      */
 
     fun getApiKeyMetaInfoForFrontendUser(keycloakUserId: String?): ApiKeyMetaInfo {
-        if (keycloakUserId == null) {
-            return ApiKeyMetaInfo(
-                validationMessage = "The backend has received a NULL value as Keycloak user ID" +
-                    "for the logged in user and therefore could not derive the current Api-Key-Status."
-            )
-        }
-
+        if (keycloakUserId == null) { return ApiKeyMetaInfo(validationMessage = getMetaInfoMessageKeycloakIdIsNull) }
         val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
-
         return if (apiKeyEntityOptional.isEmpty) {
             logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
         } else {
             val apiKeyEntityOfKeycloakUser = apiKeyEntityOptional.get()
-
             if (!checkIfApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate)) {
                 ApiKeyMetaInfo(
                     active = true,
@@ -121,12 +115,8 @@ class ApiKeyManager
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
                     keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles
                 )
-            } else {
-                ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
-            }
+            } else { ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey) }
         }
-
-        // TODO cleanup
     }
 
     /**
