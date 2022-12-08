@@ -15,12 +15,12 @@
     <b>If you confirm, your previous token will be invalidated and your applications will stop working.</b>
     <template #footer>
       <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined text-sm" />
-      <PrimeButton label="CONFIRM" @click="$emit('revokeKey')" class="text-sm" />
+      <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" class="text-sm" />
     </template>
   </PrimeDialog>
 
   <div>
-    <div class="surface-card shadow-1 p-3 border-round-sm border-round">
+    <div id="existingApiKeyCard" class="surface-card shadow-1 p-3 border-round-sm border-round">
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>

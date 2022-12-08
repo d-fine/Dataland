@@ -24,7 +24,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 import Ripple from "primevue/ripple";
 import { defineComponent } from "vue";
 

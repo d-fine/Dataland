@@ -19,16 +19,16 @@
         </div>
       </div>
       <div
-        :class="{ invalidExpireTime: !isexpireTimeCorrect }"
+        :class="{ invalidExpireTime: !isExpireTimeCorrect }"
         class="col-12 flex justify-content-between align-items-end"
       >
         <div class="text-left col-5">
           <label
             for="expireTime"
-            :class="{ invalidExpireTimeText: !isexpireTimeCorrect, 'text-900': isexpireTimeCorrect }"
+            :class="{ invalidExpireTimeText: !isExpireTimeCorrect, 'text-900': isExpireTimeCorrect }"
             class="block font-medium mb-2"
           >
-            {{ !isexpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
+            {{ !isExpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
           </label>
           <Dropdown
             id="expireTime"
@@ -46,7 +46,11 @@
           <Calendar inputId="icon" v-model="customDate" :showIcon="true" dateFormat="D, M dd, yy" />
         </div>
 
-        <span v-if="expireTimeDropdown && expireTimeDropdown !== 'custom'" class="block text-600 col-7">
+        <span
+          id="expireTimeWrapper"
+          v-if="expireTimeDropdown && expireTimeDropdown !== 'custom'"
+          class="block text-600 col-7"
+        >
           {{
             expireTimeDropdown === "noExpiry"
               ? `The API Key has no defined expire date`
@@ -57,7 +61,12 @@
     </div>
     <div class="mt-3 text-right">
       <PrimeButton label="CANCEL" @click="$emit('cancelCreate')" class="p-button-outlined text-sm ml-3" />
-      <PrimeButton @click="checkDateAndEmitGenerateApiKey" label="GENERATE API KEY" class="ml-3"></PrimeButton>
+      <PrimeButton
+        id="generateApiKey"
+        @click="checkDateAndEmitGenerateApiKey"
+        label="GENERATE API KEY"
+        class="ml-3"
+      ></PrimeButton>
     </div>
   </div>
 </template>
@@ -77,10 +86,10 @@ export default defineComponent({
   components: { PrimeButton, Dropdown, Calendar },
   props: {},
   data: () => ({
-    expireTimeDays: Number,
+    expireTimeDays: 0,
     expireTimeDropdown: "",
-    isexpireTimeCorrect: true,
-    customDate: null,
+    isExpireTimeCorrect: true,
+    customDate: 0,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -93,15 +102,15 @@ export default defineComponent({
   computed: {},
   methods: {
     // TODO invent a better logic
-    setExpireTimeDays(event) {
+    setExpireTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expireTimeDays = 0;
       } else if (event.value === "custom" && howManyDaysFromToday(this.customDate) > 0) {
         this.expireTimeDays = howManyDaysFromToday(this.customDate);
       } else {
-        this.expireTimeDays = event.value;
+        this.expireTimeDays = event.value as unknown as number;
       }
-      this.isexpireTimeCorrect = true;
+      this.isExpireTimeCorrect = true;
     },
     checkDateAndEmitGenerateApiKey() {
       if (this.expireTimeDays && this.expireTimeDays > 0) {
@@ -114,14 +123,14 @@ export default defineComponent({
         this.$emit("generateApiKey", this.expireTimeDays);
         return;
       } else {
-        this.isexpireTimeCorrect = false;
+        this.isExpireTimeCorrect = false;
       }
     },
   },
   watch: {
     customDate: function () {
       this.expireTimeDays = howManyDaysFromToday(this.customDate);
-      this.isexpireTimeCorrect = true;
+      this.isExpireTimeCorrect = true;
     },
   },
 });

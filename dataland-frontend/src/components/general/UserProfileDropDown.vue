@@ -105,7 +105,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     gotoApiKeysPage() {
-      this.$router.push("/api-key");
+      void this.$router.push("/api-key");
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
