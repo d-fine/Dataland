@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Implementation of API
+ * Implementation of Storage Controller
+ * @param dataStore implementation of a simple data storec
  */
 @RestController
 @Component("StorageController")

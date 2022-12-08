@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 /**
- * Defines the restful api-key-manager API.
+ * Defines the restful internal storage API.
  */
 interface StorageAPI {
 
