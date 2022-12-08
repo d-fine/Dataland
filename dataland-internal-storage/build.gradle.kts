@@ -43,8 +43,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")

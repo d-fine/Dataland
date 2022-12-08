@@ -16,17 +16,17 @@ class ConfigurationStorageControlloerApi {
      */
     @Bean
     fun getApiInternalClient(): StorageControllerApi {
-        val fileName = "/.dockerenv"
-        val file = File(fileName)
-        val fileExists = file.exists()
-        return if (fileExists) {
-            StorageControllerApi(
-                basePath = "http://internal-storage:8080/internal-storage"
-            )
-        } else {
-            StorageControllerApi(
-                basePath = "http://localhost:8082/internal-storage"
-            )
-        }
+        return StorageControllerApi(
+            basePath = if (isBackendInsideDockerContainer()) {
+                "http://internal-storage:8080/internal-storage"
+            } else {
+                "http://localhost:8082/internal-storage"
+            }
+        )
+    }
+
+    fun isBackendInsideDockerContainer(): Boolean {
+        val file = File("/.dockerenv")
+        return file.exists()
     }
 }
