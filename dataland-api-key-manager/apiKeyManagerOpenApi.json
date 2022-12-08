@@ -127,8 +127,8 @@
         "tags": [
           "api-key-controller"
         ],
-        "summary": "TODO.",
-        "description": "TODO",
+        "summary": "Get API key meta info of a specific user.",
+        "description": "Gets meta info about the API key status of a user based on the Keycloak user ID.",
         "operationId": "getApiKeyMetaInfoForUser",
         "parameters": [
           {
@@ -142,7 +142,7 @@
         ],
         "responses": {
           "200": {
-            "description": "TODO",
+            "description": "Successfully retrieved API key status for the user ID.",
             "content": {
               "application/json": {
                 "schema": {
