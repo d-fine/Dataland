@@ -40,7 +40,7 @@
     --gray-900: #212121;
     --content-padding: 1rem;
     --inline-spacing: 0.5rem;
-    --border-radius: none;
+    --border-radius: 0;
     --surface-ground: #f6f5ef;
     --surface-section: #ffffff;
     --surface-card: #ffffff;
@@ -170,7 +170,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-link {
     font-size: 1rem;
     font-family: "IBMPlexSans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    border-radius: none
+    border-radius: 0
 }
 
 .p-link:focus {
@@ -374,7 +374,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #f6f5ef;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
 }
 
@@ -418,8 +418,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: .5rem;
     background: #fff;
     color: #1b1b1b;
-    border: 0px solid #ced4da;
-    border-radius: none
+    border: 0 solid #ced4da;
+    border-radius: 0
 }
 
 .p-datepicker:not(.p-datepicker-inline) {
@@ -439,8 +439,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     font-weight: 600;
     margin: 0;
     border-bottom: 1px solid #dee2e6;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-datepicker .p-datepicker-header .p-datepicker-prev, .p-datepicker .p-datepicker-header .p-datepicker-next {
@@ -538,13 +538,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-button:disabled.p-button-text {
-    color: var(--text-color-secondary)
+    color: var(--text-color-secondary);
     cursor: not-allowed;
 }
 
 .p-button:disabled {
     background-color: transparent;
-    border: 0px solid var(--text-color-secondary);
+    border: 0 solid var(--text-color-secondary);
     color: var(--text-color-secondary);
     cursor: not-allowed !important;
 }
@@ -603,7 +603,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-datepicker .p-monthpicker .p-monthpicker-month {
     padding: .5rem;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-datepicker .p-monthpicker .p-monthpicker-month.p-highlight {
@@ -618,7 +618,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-datepicker .p-yearpicker .p-yearpicker-year {
     padding: .5rem;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
@@ -681,9 +681,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-cascadeselect {
     background: #f6f5ef;
-    border: 0px solid #ced4da;
+    border: 0 solid #ced4da;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-cascadeselect:not(.p-disabled):hover {
@@ -716,8 +716,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: transparent;
     color: #1b1b1b;
     width: 2.357rem;
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-cascadeselect.p-invalid.p-component {
@@ -728,7 +728,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
 }
 
@@ -792,7 +792,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     width: 20px;
     height: 20px;
     color: #1b1b1b;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s
 }
 
@@ -911,9 +911,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-dropdown {
     background: #f6f5ef;
-    border: 0px solid #ced4da;
+    border: 0 solid #ced4da;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-dropdown:not(.p-disabled):hover {
@@ -949,8 +949,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: transparent;
     color: #1b1b1b;
     width: 2.357rem;
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-dropdown .p-dropdown-clear-icon {
@@ -966,7 +966,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
 }
 
@@ -976,8 +976,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     margin: 0;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
@@ -1046,8 +1046,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-editor-container .p-editor-toolbar {
     background: #f8f9fa;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow {
@@ -1095,7 +1095,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     border: 0 none;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
-    border-radius: none;
+    border-radius: 0;
     padding: .5rem 0
 }
 
@@ -1113,8 +1113,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-editor-container .p-editor-content {
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-editor-container .p-editor-content.ql-snow {
@@ -1124,8 +1124,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-editor-container .p-editor-content .ql-editor {
     background: #f6f5ef;
     color: #1b1b1b;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-editor-container .ql-snow.ql-toolbar button:hover, .p-editor-container .ql-snow.ql-toolbar button:focus {
@@ -1159,15 +1159,15 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-inputgroup-addon {
     background: #e9ecef;
     color: #6c757d;
-    border-top: 0px solid #ced4da;
-    border-left: 0px solid #ced4da;
-    border-bottom: 0px solid #ced4da;
+    border-top: 0 solid #ced4da;
+    border-left: 0 solid #ced4da;
+    border-bottom: 0 solid #ced4da;
     padding: .5rem .5rem;
     min-width: 2.357rem
 }
 
 .p-inputgroup-addon:last-child {
-    border-right: 0px solid #ced4da
+    border-right: 0 solid #ced4da
 }
 
 .p-inputgroup > .p-component, .p-inputgroup > .p-inputwrapper > .p-inputtext, .p-inputgroup > .p-float-label > .p-component {
@@ -1188,23 +1188,23 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-inputgroup-addon:first-child, .p-inputgroup button:first-child, .p-inputgroup input:first-child, .p-inputgroup > .p-inputwrapper:first-child, .p-inputgroup > .p-inputwrapper:first-child > .p-inputtext {
-    border-top-left-radius: none;
-    border-bottom-left-radius: none
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-inputgroup .p-float-label:first-child input {
-    border-top-left-radius: none;
-    border-bottom-left-radius: none
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-inputgroup-addon:last-child, .p-inputgroup button:last-child, .p-inputgroup input:last-child, .p-inputgroup > .p-inputwrapper:last-child, .p-inputgroup > .p-inputwrapper:last-child > .p-inputtext {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-inputgroup .p-float-label:last-child input {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-fluid .p-inputgroup .p-button {
@@ -1276,10 +1276,10 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f6f5ef;
     padding: .5rem .5rem;
-    border: 0px solid #ced4da;
+    border: 0 solid #ced4da;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
     appearance: none;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-inputtext:enabled:hover {
@@ -1376,8 +1376,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-listbox {
     background: #fff;
     color: #1b1b1b;
-    border: 0px solid #ced4da;
-    border-radius: none
+    border: 0 solid #ced4da;
+    border-radius: 0
 }
 
 .p-listbox .p-listbox-header {
@@ -1386,8 +1386,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     margin: 0;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-listbox .p-listbox-header .p-listbox-filter {
@@ -1448,9 +1448,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-multiselect {
     background: #f6f5ef;
-    border: 0px solid #ced4da;
+    border: 0 solid #ced4da;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-multiselect:not(.p-disabled):hover {
@@ -1489,8 +1489,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: transparent;
     color: #1b1b1b;
     width: 2.357rem;
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-multiselect.p-invalid.p-component {
@@ -1505,7 +1505,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
 }
 
@@ -1515,8 +1515,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     margin: 0;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
@@ -1625,7 +1625,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     border: 0 none;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
-    border-radius: none
+    border-radius: 0
 }
 
 .p-password-panel .p-password-meter {
@@ -1802,7 +1802,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-slider {
     background: #dee2e6;
     border: 0 none;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-slider.p-slider-horizontal {
@@ -1849,9 +1849,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-treeselect {
     background: #f6f5ef;
-    border: 0px solid #ced4da;
+    border: 0 solid #ced4da;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-treeselect:not(.p-disabled):hover {
@@ -1886,8 +1886,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: transparent;
     color: #1b1b1b;
     width: 2.357rem;
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-treeselect.p-invalid.p-component {
@@ -1902,7 +1902,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
 }
 
@@ -2094,7 +2094,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-button.p-button-raised {
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, .2), 0px 2px 2px 0px rgba(0, 0, 0, .14), 0px 1px 5px 0px rgba(0, 0, 0, .12)
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12)
 }
 
 .p-button.p-button-rounded {
@@ -2599,7 +2599,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-splitbutton {
-    border-radius: none
+    border-radius: 0
 }
 
 .p-splitbutton.p-button-outlined > .p-button {
@@ -2666,7 +2666,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-splitbutton.p-button-raised {
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, .2), 0px 2px 2px 0px rgba(0, 0, 0, .14), 0px 1px 5px 0px rgba(0, 0, 0, .12)
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12)
 }
 
 .p-splitbutton.p-button-rounded {
@@ -3265,8 +3265,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border-width: 0 0 1px 0;
     padding: 1rem 1rem;
     font-weight: 600;
-    border-bottom-left-radius: none;
-    border-bottom-right-radius: none
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-column-filter-row .p-column-filter-menu-button, .p-column-filter-row .p-column-filter-clear-button {
@@ -3331,7 +3331,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
     min-width: 12.5rem
 }
@@ -3377,8 +3377,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     margin: 0;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-column-filter-overlay-menu .p-column-filter-constraint {
@@ -3446,7 +3446,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 1px solid #e67f3f;
     font-size: 1rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none;
+    border-radius: 0;
     display: flex;
     align-items: center
 }
@@ -3532,13 +3532,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-unthemed .fc-toolbar .fc-button-group .fc-button:first-child {
-    border-top-left-radius: none;
-    border-bottom-left-radius: none
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .fc.fc-unthemed .fc-toolbar .fc-button-group .fc-button:last-child {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .fc.fc-theme-standard .fc-view-harness .fc-scrollgrid {
@@ -3643,7 +3643,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 1px solid #e67f3f;
     font-size: 1rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button:enabled:hover {
@@ -3734,13 +3734,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button-group .fc-button:first-child {
-    border-top-left-radius: none;
-    border-bottom-left-radius: none
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button-group .fc-button:last-child {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .fc.fc-theme-standard .fc-highlight {
@@ -3763,8 +3763,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: 1rem;
     font-weight: 600;
     border-bottom: 0 none;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-orderlist .p-orderlist-list {
@@ -3772,8 +3772,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     padding: .5rem 0;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-orderlist .p-orderlist-list .p-orderlist-item {
@@ -3862,7 +3862,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: solid #e9ecef;
     border-width: 0;
     padding: .5rem 1rem;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-paginator .p-paginator-first, .p-paginator .p-paginator-prev, .p-paginator .p-paginator-next, .p-paginator .p-paginator-last {
@@ -3873,7 +3873,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     height: 2.357rem;
     margin: .143rem;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-paginator .p-paginator-first:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-prev:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-next:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-last:not(.p-disabled):not(.p-highlight):hover {
@@ -3883,13 +3883,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-paginator .p-paginator-first {
-    border-top-left-radius: none;
-    border-bottom-left-radius: none
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-paginator .p-paginator-last {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .p-paginator .p-dropdown {
@@ -3929,7 +3929,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     height: 2.357rem;
     margin: .143rem;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
@@ -3959,8 +3959,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: 1rem;
     font-weight: 600;
     border-bottom: 0 none;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-picklist .p-picklist-list {
@@ -3968,8 +3968,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     padding: .5rem 0;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-picklist .p-picklist-list .p-picklist-item {
@@ -4038,7 +4038,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     padding: 1rem;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-tree .p-tree-container .p-treenode {
@@ -4046,7 +4046,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-tree .p-tree-container .p-treenode .p-treenode-content {
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     padding: .5rem
 }
@@ -4376,7 +4376,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     font-weight: 600;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s
 }
 
@@ -4392,7 +4392,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
     background: #e9ecef;
-    border-color: 1px solid #dee2e6;
+    border: 1px solid #dee2e6;
     color: #1b1b1b
 }
 
@@ -4418,8 +4418,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-accordion .p-accordion-tab {
@@ -4444,25 +4444,25 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-accordion .p-accordion-tab:first-child .p-accordion-header .p-accordion-header-link {
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-accordion .p-accordion-tab:last-child .p-accordion-header:not(.p-highlight) .p-accordion-header-link {
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-accordion .p-accordion-tab:last-child .p-accordion-content {
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-card {
     background: #fff;
     color: #1b1b1b;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, .2), 0px 1px 1px 0px rgba(0, 0, 0, .14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
-    border-radius: none
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+    border-radius: 0
 }
 
 .p-card .p-card-body {
@@ -4494,7 +4494,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 1px solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-fieldset .p-fieldset-legend {
@@ -4503,7 +4503,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     font-weight: 600;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-fieldset.p-fieldset-toggleable .p-fieldset-legend {
@@ -4514,7 +4514,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
     padding: 1rem;
     color: #1b1b1b;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s
 }
 
@@ -4577,8 +4577,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: 1rem;
     background: #f8f9fa;
     color: #1b1b1b;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-panel .p-panel-header .p-panel-title {
@@ -4616,8 +4616,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 1px solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     border-top: 0 none
 }
 
@@ -4637,7 +4637,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-splitter {
     border: 1px solid #dee2e6;
     background: #fff;
-    border-radius: none;
+    border-radius: 0;
     color: #1b1b1b
 }
 
@@ -4672,8 +4672,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #6c757d;
     padding: 1rem;
     font-weight: 600;
-    border-top-right-radius: none;
-    border-top-left-radius: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     margin: 0 0 -2px 0
 }
@@ -4700,7 +4700,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #e67f3f;
     width: 2.357rem;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, .2), 0px 2px 2px 0px rgba(0, 0, 0, .14), 0px 1px 5px 0px rgba(0, 0, 0, .12);
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     border-radius: 0
 }
 
@@ -4715,15 +4715,15 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: 1rem;
     border: 0 none;
     color: #1b1b1b;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-toolbar {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
     padding: 1rem;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-toolbar .p-toolbar-separator {
@@ -4734,7 +4734,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1)
 }
 
@@ -4785,18 +4785,18 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-dialog {
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1);
     border: 0 none
 }
 
 .p-dialog .p-dialog-header {
-    border-bottom: 0px solid #dee2e6;
+    border-bottom: 0 solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
     padding: 1.5rem;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-dialog .p-dialog-header .p-dialog-title {
@@ -4838,13 +4838,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-dialog .p-dialog-footer {
-    border-top: 0px solid #dee2e6;
+    border-top: 0 solid #dee2e6;
     background: #fff;
     color: #1b1b1b;
     padding: 1.5rem;
     text-align: right;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-dialog .p-dialog-footer button {
@@ -4864,7 +4864,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 0 none;
-    border-radius: none;
+    border-radius: 0;
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1)
 }
 
@@ -4955,7 +4955,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #fff;
     padding: .5rem .5rem;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
-    border-radius: none;
+    border-radius: 0;
     border: #a1c5d3 solid 1px
 }
 
@@ -4981,8 +4981,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 1px solid #dee2e6;
     color: #1b1b1b;
     border-bottom: 0 none;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-fileupload .p-fileupload-buttonbar .p-button {
@@ -5000,8 +5000,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     padding: 2rem 1rem;
     border: 1px solid #dee2e6;
     color: #1b1b1b;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-fileupload .p-progressbar {
@@ -5031,13 +5031,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-breadcrumb {
     background: #fff;
     border: 1px solid #dee2e6;
-    border-radius: none;
+    border-radius: 0;
     padding: 1rem
 }
 
 .p-breadcrumb ul li .p-menuitem-link {
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-breadcrumb ul li .p-menuitem-link:focus {
@@ -5073,7 +5073,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     border: 0 none;
     box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1);
-    border-radius: none;
+    border-radius: 0;
     width: 12.5rem
 }
 
@@ -5125,7 +5125,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     border: 0 none;
     box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1);
-    border-radius: none
+    border-radius: 0
 }
 
 .p-contextmenu .p-menuitem.p-menuitem-active > .p-menuitem-link {
@@ -5219,13 +5219,13 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #f8f9fa;
     color: #1b1b1b;
     border: 1px solid #dee2e6;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-megamenu .p-megamenu-root-list > .p-menuitem > .p-menuitem-link {
     padding: .75rem 1rem;
     color: #1b1b1b;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     user-select: none
 }
@@ -5338,8 +5338,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #fff;
     font-weight: 600;
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-megamenu .p-megamenu-submenu {
@@ -5374,7 +5374,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 1px solid #dee2e6;
-    border-radius: none;
+    border-radius: 0;
     width: 12.5rem
 }
 
@@ -5447,7 +5447,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #f8f9fa;
     color: #1b1b1b;
     border: 1px solid #dee2e6;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-menubar .p-menuitem-link {
@@ -5496,7 +5496,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link {
     padding: .75rem 1rem;
     color: #1b1b1b;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     user-select: none
 }
@@ -5739,7 +5739,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #1b1b1b;
     background: #f8f9fa;
     font-weight: 600;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s
 }
 
@@ -5759,7 +5759,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled) > a:hover {
     background: #e9ecef;
-    border-color: 1px solid #dee2e6;
+    border: 1px solid #dee2e6;
     color: #1b1b1b
 }
 
@@ -5790,8 +5790,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
@@ -5866,24 +5866,24 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-panelmenu .p-panelmenu-panel:first-child .p-panelmenu-header > a {
-    border-top-right-radius: none;
-    border-top-left-radius: none
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
 }
 
 .p-panelmenu .p-panelmenu-panel:last-child .p-panelmenu-header:not(.p-highlight) > a {
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-panelmenu .p-panelmenu-panel:last-child .p-panelmenu-content {
-    border-bottom-right-radius: none;
-    border-bottom-left-radius: none
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 .p-steps .p-steps-item .p-menuitem-link {
     background: transparent;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
-    border-radius: none;
+    border-radius: 0;
     background: #fff
 }
 
@@ -5949,8 +5949,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     color: #6c757d;
     padding: 1rem;
     font-weight: 600;
-    border-top-right-radius: none;
-    border-top-left-radius: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     margin: 0 0 -2px 0
 }
@@ -5982,7 +5982,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #fff;
     color: #1b1b1b;
     border: 1px solid #dee2e6;
-    border-radius: none;
+    border-radius: 0;
     width: 12.5rem
 }
 
@@ -6066,7 +6066,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-inline-message {
     padding: .5rem .5rem;
     margin: 0;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-inline-message.p-inline-message-info {
@@ -6128,7 +6128,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-message {
     margin: 1rem 0;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-message .p-message-wrapper {
@@ -6245,7 +6245,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-toast .p-toast-message {
     margin: 0 0 1rem 0;
     box-shadow: 0 3px 14px 0 rgba(0, 0, 0, .3);
-    border-radius: none
+    border-radius: 0
 }
 
 .p-toast .p-toast-message .p-toast-message-content {
@@ -6356,7 +6356,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     width: 4rem;
     height: 4rem;
     transition: background-color .2s, color .2s, box-shadow .2s;
-    border-radius: none;
+    border-radius: 0;
     margin: .5rem 0
 }
 
@@ -6494,7 +6494,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-avatar {
     background-color: #dee2e6;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-avatar.p-avatar-lg {
@@ -6596,7 +6596,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-chip .p-chip-remove-icon {
     margin-left: .5rem;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, color .2s, box-shadow .2s
 }
 
@@ -6608,7 +6608,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-inplace .p-inplace-display {
     padding: .5rem .5rem;
-    border-radius: none;
+    border-radius: 0;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s
 }
 
@@ -6627,7 +6627,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     border: 0 none;
     height: 1.5rem;
     background: #dee2e6;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-progressbar .p-progressbar-value {
@@ -6664,7 +6664,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-skeleton {
     background-color: #e9ecef;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-skeleton:after {
@@ -6677,7 +6677,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     font-size: .75rem;
     font-weight: 700;
     padding: .25rem .4rem;
-    border-radius: none
+    border-radius: 0
 }
 
 .p-tag.p-tag-success {
