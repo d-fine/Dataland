@@ -15,13 +15,13 @@ import org.springframework.web.multipart.MultipartFile
  */
 
 @RestController
-class FileApiController(
+class FileController(
     @Autowired var fileManager: FileManager
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun uploadExcelFiles(excelFiles: List<MultipartFile>): ResponseEntity<ExcelFilesUploadResponse> {
         logger.info("Received a request to store ${excelFiles.size} Excel files.")
-        return ResponseEntity.ok(fileManager.storeExcelFile(excelFiles))
+        return ResponseEntity.ok(fileManager.storeExcelFiles(excelFiles))
     }
 }

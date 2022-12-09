@@ -20,32 +20,42 @@
     }
   ],
   "paths": {
-    "/file/excel": {
+    "/invite": {
       "post": {
         "tags": [
-          "file-api-controller"
+          "file-controller"
         ],
-        "summary": "Upload an Excel file.",
-        "description": "An Excel file is uploaded to Dataland and is stored.",
-        "operationId": "uploadExcelFile",
-        "parameters": [
-          {
-            "name": "excelFile",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "binary"
+        "summary": "Upload Excel files.",
+        "description": "Excel files are uploaded to Dataland and are stored.",
+        "operationId": "uploadExcelFiles",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "files"
+                ],
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Successfully stored Excel file.",
+            "description": "Successfully stored Excel files.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExcelFileUploadResponse"
+                  "$ref": "#/components/schemas/ExcelFilesUploadResponse"
                 }
               }
             }
@@ -1399,13 +1409,17 @@
   },
   "components": {
     "schemas": {
-      "ExcelFileUploadResponse": {
+      "ExcelFilesUploadResponse": {
         "required": [
+          "uploadId",
           "uploadMessage",
           "uploadSuccessful"
         ],
         "type": "object",
         "properties": {
+          "uploadId": {
+            "type": "string"
+          },
           "uploadSuccessful": {
             "type": "boolean"
           },

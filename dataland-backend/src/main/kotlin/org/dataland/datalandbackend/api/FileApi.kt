@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
@@ -31,9 +30,9 @@ interface FileApi {
     @PostMapping(
         value = ["/invite"], // TODO name => think about it again
         produces = ["application/json"],
-        consumes = ["application/vnd.ms-excel"] // TODO https://www.baeldung.com/sprint-boot-multipart-requests
+        consumes = ["multipart/form-data"] // TODO https://www.baeldung.com/sprint-boot-multipart-requests
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    // @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method to store Excel files in Dataland
      * @param excelFiles are the Excel files which need to be stored

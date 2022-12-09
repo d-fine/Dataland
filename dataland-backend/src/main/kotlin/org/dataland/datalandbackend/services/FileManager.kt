@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -13,23 +14,53 @@ import java.util.UUID
 @Component("FileManager")
 class FileManager {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
+    private val uploadHistory = mutableMapOf<String, List<String>>()
+
+    private fun generateUploadId(): String {
+        val timestamp = Instant.now().epochSecond.toString()
+        val uniqueId = UUID.randomUUID().toString()
+        return timestamp + "_" + uniqueId
+    }
+
+    private fun generateFileId(): String {
+        return UUID.randomUUID().toString()
+    }
+
+    private fun securityChecks(filesToCheck: List<MultipartFile>) {
+        val numberOfFiles = filesToCheck.size
+        logger.info("Scanning $numberOfFiles files for potential risks.")
+        filesToCheck.forEachIndexed() { index, file ->
+            // TODO we DEFINITELY need some security checks to avoid any attack vectors
+            // e.g. filename, filetype, actual contents etc.
+            logger.info("Scanned ${index + 1} of $numberOfFiles files.")
+        }
+    }
 
     /**
      * Method to store an Excel file in a map with an associated filed ID as key.
      * @param excelFiles is the Excel file to store
      * @return a response model object with info about the upload process
      */
-    fun storeExcelFile(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+    fun storeExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+        securityChecks(excelFiles)
+
         val numberOfFiles = excelFiles.size
-        logger.info("Starting upload process for $numberOfFiles Excel files.")
+        val uploadId = generateUploadId()
+        logger.info("Storing $numberOfFiles Excel files for upload with ID $uploadId.")
+
+        val listOfNewFileIds = mutableListOf<String>()
         excelFiles.forEachIndexed { index, singleExcelFile ->
-            val fileId = UUID.randomUUID().toString()
+            val fileId = generateFileId()
             logger.info("Storing Excel file with file ID $fileId. (File ${index + 1} of $numberOfFiles files.)")
             temporaryFileStore[fileId] = singleExcelFile
+            listOfNewFileIds.add(fileId)
             logger.info("Excel file with file ID $fileId was stored in-memory.")
         }
-        return ExcelFilesUploadResponse(true, "Successfully stored $numberOfFiles Excel files.")
+        uploadHistory[uploadId] = listOfNewFileIds
+
+        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
     }
 
     /**
