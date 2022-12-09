@@ -57,6 +57,7 @@
       </div>
     </div>
   </TheContent>
+  <TheBottom/>
 </template>
 
 <script lang="ts">
@@ -70,10 +71,11 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
+import TheBottom from "@/components/generics/TheBottom.vue";
 
 export default defineComponent({
   name: "RequestData",
-  components: { TheHeader, TheContent, InfoCard, FileUpload, Checkbox, ProgressBar, Badge, Button },
+  components: { TheHeader, TheContent, TheBottom, InfoCard, FileUpload, Checkbox, ProgressBar, Badge, Button },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
