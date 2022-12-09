@@ -15,7 +15,6 @@ COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf
 COPY ./dataland-inbound-proxy/config/utils/security.conf /etc/nginx/utils/security.conf
-COPY ./dataland-frontend/src/assets/excel-files /etc/nginx/utils/excel-files
 
 CMD ["nginx", "-g", "daemon off;"]
 
