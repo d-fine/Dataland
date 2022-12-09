@@ -15,5 +15,5 @@ data class ExcelFileUploadResponse(
     @field:JsonProperty(required = true)
     val uploadMessage: String
 
-    //TODO extendable by things like filesize or upload-timestamp etc.
+    // TODO extendable by things like filesize or upload-timestamp etc.
 )

@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-
 import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
@@ -24,16 +23,17 @@ class FileManager {
     fun uploadExcelFile(excelFile: MultipartFile): ExcelFileUploadResponse {
         val excelFileId = UUID.randomUUID().toString()
         logger.info("Storing Excel file with file ID $excelFileId.")
-        temporaryFileStore[excelFileId]=excelFile
+        temporaryFileStore[excelFileId] = excelFile
         logger.info("Excel file with file ID $excelFileId was stored in-memory.")
-        return ExcelFileUploadResponse(true,  "Successfully stored an Excel file under the filed ID $excelFileId.") }
+        return ExcelFileUploadResponse(true, "Successfully stored an Excel file under the filed ID $excelFileId.")
+    }
 
     /**
      * Method to find a specific Excel file in a map by looking for its file ID, and then returning the Excel file.
      * @param excelFileId is the identifier which is needed to identify the required Excel file
      * @return the actual Excel file
      */
-    fun getExcelFile(excelFileId: String): MultipartFile{
+    fun getExcelFile(excelFileId: String): MultipartFile {
         logger.info("Searching for Excel file with file ID $excelFileId in in-memory storage.")
         if (temporaryFileStore.containsKey(excelFileId)) {
             return temporaryFileStore[excelFileId]!!

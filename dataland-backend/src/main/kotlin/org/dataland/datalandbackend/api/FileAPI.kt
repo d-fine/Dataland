@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile
 
 @RequestMapping("/file") // TODO Philip: Change name to smth more specific (like /invite   or similar)
 @SecurityRequirement(name = "default-bearer-auth")
-@SecurityRequirement(name = "dataland-api-key") //TODO I think no need
-@SecurityRequirement(name = "default-oauth") //TODO I think no need
+@SecurityRequirement(name = "dataland-api-key") // TODO I think no need
+@SecurityRequirement(name = "default-oauth") // TODO I think no need
 interface FileAPI {
     @Operation(
         summary = "Upload an Excel file.",
@@ -30,9 +30,9 @@ interface FileAPI {
         ]
     )
     @PostMapping(
-        value = ["/excel"],  // TODO name (see TODO comment above)
+        value = ["/excel"], // TODO name (see TODO comment above)
         produces = ["application/json"],
-        consumes = ["application/vnd.ms-excel"]  // TODO https://www.baeldung.com/sprint-boot-multipart-requests
+        consumes = ["application/vnd.ms-excel"] // TODO https://www.baeldung.com/sprint-boot-multipart-requests
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     /**
