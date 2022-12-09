@@ -44,10 +44,6 @@ server {
       include utils/proxy.conf;
     }
 
-    location /excel-files/ {
-      root /var/www;
-    }
-
     location /images/ {
       root /var/www;
     }

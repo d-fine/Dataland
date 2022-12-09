@@ -11,9 +11,9 @@
           <div class="mt-3">
             <a
               class="text-primary"
-              :href="'excel-files/' + fileNameOfExcelTemplate"
+              :href="'/' + fileNameOfExcelTemplate"
               id="download-data-request-excel-template"
-            >
+              download>
               DOWNLOAD - EXCEL TEMPLATE .XLS
             </a>
           </div>
