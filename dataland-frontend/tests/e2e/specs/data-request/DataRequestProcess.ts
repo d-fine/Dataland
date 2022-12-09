@@ -31,4 +31,9 @@ describe("As a user I expect a data request page where I can download an excel t
     );
   });
   // TODO More test cases:   Upload an excel file,  ... (?)
+  /* Emanuel: Suggestion for the upload_test:
+  - Upload a dummy xlsx file via the uploader, and intercept the http request that is made to the backend
+  - Assert that the request contains the file
+  - Assert that response code is 200 and that in the body of the response it says "uploadSuccessful: true"
+   */
 });
