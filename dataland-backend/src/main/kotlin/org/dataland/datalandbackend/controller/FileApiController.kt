@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.FileApi
-import org.dataland.datalandbackend.model.ExcelFileUploadResponse
+import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
 import org.dataland.datalandbackend.services.FileManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,8 +20,8 @@ class FileApiController(
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun uploadExcelFile(excelFile: MultipartFile): ResponseEntity<ExcelFileUploadResponse> {
-        logger.info("Received a request to store an Excel file.")
-        return ResponseEntity.ok(fileManager.uploadExcelFile(excelFile))
+    override fun uploadExcelFiles(excelFiles: List<MultipartFile>): ResponseEntity<ExcelFilesUploadResponse> {
+        logger.info("Received a request to store ${excelFiles.size} Excel files.")
+        return ResponseEntity.ok(fileManager.uploadExcelFiles(excelFiles))
     }
 }
