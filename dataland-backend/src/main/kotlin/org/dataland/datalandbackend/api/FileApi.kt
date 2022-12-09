@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key") // TODO I think no need
 @SecurityRequirement(name = "default-oauth") // TODO I think no need
-interface FileAPI {
+interface FileApi {
     @Operation(
         summary = "Upload an Excel file.",
         description = "An Excel file is uploaded to Dataland and is stored."

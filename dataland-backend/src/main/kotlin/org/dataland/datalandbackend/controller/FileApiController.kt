@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.FileAPI
+import org.dataland.datalandbackend.api.FileApi
 import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackend.services.FileManager
 import org.slf4j.LoggerFactory
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 class FileApiController(
     @Autowired var fileManager: FileManager
-) : FileAPI {
+) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun uploadExcelFile(excelFile: MultipartFile): ResponseEntity<ExcelFileUploadResponse> {
