@@ -1,4 +1,4 @@
-import { expiryDateFormat } from "@/utils/DateFormatUtils";
+import { formatExpiryDate } from "@/utils/DateFormatUtils";
 
 describe("As a user I expect my api key will be generate correctly", () => {
   it("successfully generate api key", () => {
@@ -11,9 +11,9 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get("h1").should("contain.text", "Create new API Key");
     cy.get("div.custom-dropdown").click();
     cy.get("ul.p-dropdown-items").find('[aria-label="7 days"]').click();
-    cy.get("span#expireTimeWrapper").should("contain.text", `${expiryDateFormat(7)}`);
+    cy.get("span#expireTimeWrapper").should("contain.text", `${formatExpiryDate(7)}: string`);
     cy.get("ul.p-dropdown-items").find('[aria-label="90 days"]').click();
-    cy.get("span#expireTimeWrapper").should("contain.text", `${expiryDateFormat(90)}`);
+    cy.get("span#expireTimeWrapper").should("contain.text", `${formatExpiryDate(90)}: string`);
     cy.get("button#generateApiKey").click();
     cy.get("textarea#newKeyHolder").should("exist");
     cy.reload();
