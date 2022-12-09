@@ -12,7 +12,7 @@
       <h2 class="m-0">Delete API Key</h2>
     </template>
     Are you sure you want to delete this API key?
-    <b>If you confirm, your previous token will be invalidated and your applications will stop working.</b>
+    <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
     <template #footer>
       <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined text-sm" />
       <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" class="text-sm" />

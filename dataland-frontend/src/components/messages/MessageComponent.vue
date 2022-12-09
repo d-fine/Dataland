@@ -17,7 +17,7 @@
           @click="close($event)"
           type="button"
         >
-          <i :class="['p-message-close-icon', closeIcon]" />
+          <em :class="['p-message-close-icon', closeIcon]" />
         </button>
       </div>
     </div>

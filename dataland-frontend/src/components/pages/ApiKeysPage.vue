@@ -46,7 +46,7 @@
                     placeholder="Key goes here"
                     class="p-inputText p-component col-10"
                   />
-                  <i @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button" />
+                  <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button" />
                 </div>
               </div>
             </template>
@@ -77,7 +77,7 @@
         <h2 class="m-0">Regenerate API Key</h2>
       </template>
       Are you sure you want to Regenerate your API Key?
-      <b>If you confirm, your previous token will be invalidated and your applications will stop working.</b>
+      <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
       <template #footer>
         <PrimeButton label="CANCEL" @click="regenerateConfirmToggle" class="p-button-outlined text-sm" />
         <PrimeButton

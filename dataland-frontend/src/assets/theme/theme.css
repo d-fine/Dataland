@@ -1313,7 +1313,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     transition-duration: .2s
 }
 
-.p-input-icon-left > i:first-of-type {
+.p-input-icon-left > i:first-of-type, .p-input-icon-left > em:first-of-type {
     left: .5rem;
     color: #1b1b1b
 }
@@ -1326,9 +1326,15 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     left: 2rem
 }
 
-.p-input-icon-right i:last-of-type {
+.p-input-icon-right i:last-of-type, .p-input-icon-right em:last-of-type {
     right: .5rem;
     color: #1b1b1b
+}
+
+.p-input-icon-left>em, .p-input-icon-right>em {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5rem;
 }
 
 .p-input-icon-right > .p-inputtext {
