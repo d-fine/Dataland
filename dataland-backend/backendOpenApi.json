@@ -20,6 +20,70 @@
     }
   ],
   "paths": {
+    "/file/excel": {
+      "post": {
+        "tags": [
+          "file-api-controller"
+        ],
+        "summary": "Upload an Excel file.",
+        "description": "An Excel file is uploaded to Dataland and is stored.",
+        "operationId": "uploadExcelFile",
+        "parameters": [
+          {
+            "name": "excelFile",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully stored Excel file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExcelFileUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
     "/data/sme": {
       "post": {
         "tags": [
@@ -1335,6 +1399,21 @@
   },
   "components": {
     "schemas": {
+      "ExcelFileUploadResponse": {
+        "required": [
+          "uploadMessage",
+          "uploadSuccessful"
+        ],
+        "type": "object",
+        "properties": {
+          "uploadSuccessful": {
+            "type": "boolean"
+          },
+          "uploadMessage": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyAgeBracket": {
         "type": "string",
         "enum": [
