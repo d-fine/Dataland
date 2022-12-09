@@ -60,7 +60,7 @@
 }
 
 .p-paginator-icon.pi {
-    font-family: "Material Icons";
+    font-family: "Material Icons", sans-serif;
     font-size: 2rem
 }
 
@@ -2962,7 +2962,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     background: #f8f9fa;
     color: #1b1b1b;
     border: 1px solid #e9ecef;
-    border-width: 0 0 1px 0;
     padding: 1rem 1rem;
     font-weight: 600
 }
@@ -2970,8 +2969,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-datatable .p-datatable-footer {
     background: #f8f9fa;
     color: #1b1b1b;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     padding: 1rem 1rem;
     font-weight: 600
 }
@@ -2979,8 +2979,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #958d7c;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #958d7c;
     font-weight: 600;
     color: #1b1b1b;
     background: #f8f9fa;
@@ -2990,8 +2991,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-datatable .p-datatable-tfoot > tr > td {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     font-weight: 600;
     color: #1b1b1b;
     background: #f8f9fa
@@ -3052,8 +3054,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-datatable .p-datatable-tbody > tr > td {
     text-align: left;
-    border: 1px solid rgba(0, 0, 0, .08);
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: rgba(0, 0, 0, .08);
     padding: 1rem 1rem
 }
 
@@ -3240,8 +3243,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-dataview .p-dataview-header {
     background: #f8f9fa;
     color: #1b1b1b;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     padding: 1rem 1rem;
     font-weight: 600
 }
@@ -3261,8 +3265,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-dataview .p-dataview-footer {
     background: #f8f9fa;
     color: #1b1b1b;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     padding: 1rem 1rem;
     font-weight: 600;
     border-bottom-left-radius: 0;
@@ -3470,7 +3475,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-left {
-    font-family: "PrimeIcons" !important;
+    font-family: "PrimeIcons", sans-serif !important;
     text-indent: 0;
     font-size: 1rem
 }
@@ -3480,7 +3485,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-right {
-    font-family: "PrimeIcons" !important;
+    font-family: "PrimeIcons", sans-serif !important;
     text-indent: 0;
     font-size: 1rem
 }
@@ -3578,7 +3583,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    font-family: "PrimeIcons" !important;
+    font-family: "PrimeIcons", sans-serif !important;
     font-size: 1rem;
     width: 2rem;
     height: 2rem;
@@ -3672,7 +3677,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-left {
-    font-family: "PrimeIcons" !important;
+    font-family: "PrimeIcons", sans-serif !important;
     text-indent: 0;
     font-size: 1rem
 }
@@ -3682,7 +3687,7 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-right {
-    font-family: "PrimeIcons" !important;
+    font-family: "PrimeIcons", sans-serif !important;
     text-indent: 0;
     font-size: 1rem
 }
@@ -3829,12 +3834,10 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-organizationchart .p-organizationchart-line-left {
     border-right: 1px solid #dee2e6;
-    border-color: #dee2e6
 }
 
 .p-organizationchart .p-organizationchart-line-top {
     border-top: 1px solid #dee2e6;
-    border-color: #dee2e6
 }
 
 .p-organizationchart .p-organizationchart-node-content {
@@ -4146,8 +4149,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-treetable .p-treetable-header {
     background: #f8f9fa;
     color: #1b1b1b;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     padding: 1rem 1rem;
     font-weight: 600
 }
@@ -4155,8 +4159,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-treetable .p-treetable-footer {
     background: #f8f9fa;
     color: #1b1b1b;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     padding: 1rem 1rem;
     font-weight: 600
 }
@@ -4164,8 +4169,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-treetable .p-treetable-thead > tr > th {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #958d7c;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #958d7c;
     font-weight: 600;
     color: #1b1b1b;
     background: #f8f9fa;
@@ -4175,8 +4181,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 .p-treetable .p-treetable-tfoot > tr > td {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #e9ecef;
+    border-style: solid;
     border-width: 0 0 1px 0;
+    border-color: #e9ecef;
     font-weight: 600;
     color: #1b1b1b;
     background: #f8f9fa
@@ -4227,8 +4234,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-treetable .p-treetable-tbody > tr > td {
     text-align: left;
-    border: 1px solid rgba(0, 0, 0, .08);
     border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, .08);
     padding: 1rem 1rem
 }
 
@@ -4656,8 +4664,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-tabview .p-tabview-nav {
     background: #fff;
-    border: 1px solid #dee2e6;
-    border-width: 0 0 2px 0
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #dee2e6;
 }
 
 .p-tabview .p-tabview-nav li {
@@ -4665,9 +4674,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    border: solid #dee2e6;
+    border-style: solid;
     border-width: 0 0 2px 0;
-    border-color: transparent transparent #dee2e6 transparent;
+    border-color: #dee2e6;
     background: #fff;
     color: #6c757d;
     padding: 1rem;
@@ -4757,15 +4766,15 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-confirm-popup:after {
-    border: solid transparent;
-    border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #fff
+    border-style: solid;
+    border-color: var(--surface-0);
+    border-width: 0;
 }
 
 .p-confirm-popup:before {
-    border: solid transparent;
-    border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #fff
+    border-style: solid;
+    border-color: var(--surface-0);
+    border-width: 0;
 }
 
 .p-confirm-popup.p-confirm-popup-flipped:after {
@@ -4890,15 +4899,15 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-overlaypanel:after {
-    border: solid transparent;
-    border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #fff
+    border-style: solid;
+    border-color: var(--surface-0);
+    border-width: 0;
 }
 
 .p-overlaypanel:before {
-    border: solid transparent;
-    border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #fff
+    border-style: solid;
+    border-color: var(--surface-0);
+    border-width: 0;
 }
 
 .p-overlaypanel.p-overlaypanel-flipped:after {
@@ -5881,7 +5890,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-steps .p-steps-item .p-menuitem-link {
-    background: transparent;
     transition: background-color .2s, border-color .2s, box-shadow .2s;
     border-radius: 0;
     background: #fff
@@ -5933,7 +5941,8 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-tabmenu .p-tabmenu-nav {
     background: #fff;
-    border: 1px solid #dee2e6;
+    border-style: solid;
+    border-color: #dee2e6;
     border-width: 0 0 2px 0
 }
 
@@ -5942,9 +5951,9 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-    border: solid #dee2e6;
+    border-style: solid;
     border-width: 0 0 2px 0;
-    border-color: transparent transparent #dee2e6 transparent;
+    border-color: #dee2e6;
     background: #fff;
     color: #6c757d;
     padding: 1rem;
@@ -6082,7 +6091,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-inline-message.p-inline-message-success {
     background: #43a047;
-    border: 0 none;
     border-width: 1px;
     color: #fff
 }
@@ -6093,7 +6101,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-inline-message.p-inline-message-warn {
     background: #ffb300;
-    border: 0 none;
     border-width: 1px;
     color: #1b1b1b
 }
@@ -6104,7 +6111,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-inline-message.p-inline-message-error {
     background: #e53935;
-    border: 0 none;
     border-width: 1px;
     color: #fff
 }
@@ -6185,7 +6191,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-message.p-message-success {
     background: #43a047;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #fff
 }
@@ -6200,7 +6205,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-message.p-message-warn {
     background: #ffb300;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #1b1b1b
 }
@@ -6215,7 +6219,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-message.p-message-error {
     background: #e53935;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #fff
 }
@@ -6300,7 +6303,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-toast .p-toast-message.p-toast-message-success {
     background: #43a047;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #fff
 }
@@ -6311,7 +6313,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-toast .p-toast-message.p-toast-message-warn {
     background: #ffb300;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #1b1b1b
 }
@@ -6322,7 +6323,6 @@ input[type=text]:not(.browser-default).formkit-input:focus {
 
 .p-toast .p-toast-message.p-toast-message-error {
     background: #e53935;
-    border: 0 none;
     border-width: 0 0 0 4px;
     color: #fff
 }
