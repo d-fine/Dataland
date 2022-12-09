@@ -31,7 +31,7 @@
           @uploader="uploadFile"
           accept=".xlsx"
           :multiple=true
-          :max-file-size=5000000
+          :max-file-size=10000000
           :fileLimit=10
         >
           <template #empty>
@@ -64,18 +64,17 @@
 import InfoCard from "@/components/general/InfoCard.vue";
 import FileUpload from "primevue/fileupload";
 import Checkbox from "primevue/checkbox";
-import ProgressBar from "primevue/checkbox";
-import Badge from "primevue/checkbox";
-import Button from "primevue/checkbox";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheBottom from "@/components/generics/TheBottom.vue";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "RequestData",
-  components: { TheHeader, TheContent, TheBottom, InfoCard, FileUpload, Checkbox, ProgressBar, Badge, Button },
+  components: { TheHeader, TheBottom, TheContent, InfoCard, FileUpload, Checkbox },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -98,19 +97,24 @@ export default defineComponent({
     },
   },
   methods: {
-    uploadFile(event) {
-      const file = event.files
-      console.log("Upload should take place");
+    async uploadFile(event): Promise<void> {
+      console.log("Upload should take place"); // TODO debugging statement
+      this.uploadFinished = false
+      this.uploadInProgress = true
+      try {
+          const fileControllerApi = await new ApiClientProvider(
+              assertDefined(this.getKeycloakPromise)()
+          ).getFileControllerApi();
+          const response = await fileControllerApi.uploadExcelFiles(event.files);
+          console.log(response)
+        } catch (error) {
+          console.error(error);
+        }
+        finally {
+          this.uploadInProgress = false
+          this.uploadFinished = true
+        }
     },
-    chooseCallback() {
-      console.log("Choosecallback")
-    },
-    uploadCallback() {
-      console.log("Uploadcallback")
-    },
-    clearCallback() {
-      console.log("Clearcallback")
-    }
   },
 });
 
