@@ -1,0 +1,7 @@
+{
+  "keycloakUserId":"18b67ecc-1176-4506-8414-1e81661017ca",
+  "keycloakRoles":["default-roles-datalandsecurity","ROLE_USER","offline_access","uma_authorization"],
+  "expiryDate":1678371576,
+  "active":true,
+  "validationMessage":null
+}

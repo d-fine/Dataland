@@ -15,6 +15,7 @@
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
   <PrimeMenu
+    data-test="profileMenu"
     ref="menu"
     :model="dropdownMenuItems"
     :popup="true"
