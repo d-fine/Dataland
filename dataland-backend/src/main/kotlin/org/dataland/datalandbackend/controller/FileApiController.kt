@@ -22,6 +22,6 @@ class FileApiController(
 
     override fun uploadExcelFiles(excelFiles: List<MultipartFile>): ResponseEntity<ExcelFilesUploadResponse> {
         logger.info("Received a request to store ${excelFiles.size} Excel files.")
-        return ResponseEntity.ok(fileManager.uploadExcelFiles(excelFiles))
+        return ResponseEntity.ok(fileManager.storeExcelFile(excelFiles))
     }
 }

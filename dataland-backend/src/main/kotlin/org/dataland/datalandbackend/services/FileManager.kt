@@ -20,7 +20,7 @@ class FileManager {
      * @param excelFiles is the Excel file to store
      * @return a response model object with info about the upload process
      */
-    fun uploadExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+    fun storeExcelFile(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
         val numberOfFiles = excelFiles.size
         logger.info("Starting upload process for $numberOfFiles Excel files.")
         excelFiles.forEachIndexed { index, singleExcelFile ->
@@ -37,7 +37,7 @@ class FileManager {
      * @param excelFileId is the identifier which is needed to identify the required Excel file
      * @return the actual Excel file
      */
-    fun getExcelFile(excelFileId: String): MultipartFile {
+    fun provideExcelFile(excelFileId: String): MultipartFile {
         logger.info("Searching for Excel file with file ID $excelFileId in in-memory storage.")
         if (temporaryFileStore.containsKey(excelFileId)) {
             return temporaryFileStore[excelFileId]!!
