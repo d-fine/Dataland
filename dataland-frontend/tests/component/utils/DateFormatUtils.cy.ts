@@ -17,7 +17,7 @@ describe("Unit test for Date Formatting", () => {
     // startDate: 1639263600000 - 12 Dec 2021
     expect(formatExpiryDate(365, 1639263600000)).to.eql("Mon, Dec 12, 2022");
     // startDate: 1670777487587 - 11 Dec 2022
-    expect(formatExpiryDate(0, 1670777487587)).to.eql("Sun, Dec 11, 2022");
+    expect(formatExpiryDate(3, 1670777487587)).to.eql("Wed, Dec 14, 2022");
     // startDate: 1670281200000 - 6 Dec 2022
     expect(formatExpiryDate(6, 1670281200000)).to.eql("Mon, Dec 12, 2022");
   });
