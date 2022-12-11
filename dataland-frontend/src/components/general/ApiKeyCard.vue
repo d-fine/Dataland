@@ -24,9 +24,13 @@
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
-          <span class="block text-600 mb-3 mt-6"
-            >The API Key will expire on {{ formatExpiryDate(expiryDateInDays) }}</span
-          >
+          <span :class="{ 'text-red-700': !isKeyExpired }" class="block text-600 mb-3 mt-6">
+            {{
+              isKeyExpired
+                ? `The API Key will expire on ${formatExpiryDate(expiryDateInDays)}`
+                : `The API Key expired ${formatExpiryDate(expiryDateInDays)}`
+            }}
+          </span>
         </div>
 
         <div>
@@ -78,6 +82,10 @@ export default defineComponent({
   computed: {
     expiryDateInDays() {
       return calculateDaysFromNow(this.expiryDate);
+    },
+
+    isKeyExpired() {
+      return this.expiryDate >= Date.now();
     },
   },
   methods: {
