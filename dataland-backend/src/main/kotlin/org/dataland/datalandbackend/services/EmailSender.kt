@@ -7,6 +7,7 @@ import com.mailjet.client.resource.Emailv31
 import org.dataland.datalandbackend.model.email.Email
 import org.json.JSONArray
 import org.slf4j.LoggerFactory
+import javax.management.ServiceNotFoundException
 
 /**
  * A class that manages sending emails
@@ -37,7 +38,7 @@ class EmailSender(
             )
         val response = client.post(request)
         if (response.status != 200) {
-            throw Exception("There are problems with the email server.") // TODO refine this
+            throw ServiceNotFoundException("There are problems with the email server.") // TODO refine this
         }
     }
 }

@@ -21,16 +21,10 @@ data class Email(
         return JSONObject()
             .put(
                 Emailv31.Message.FROM,
-                JSONObject()
-                    .put("Email", sender.email)
-                    .put("Name", sender.name)
+                sender.toJson()
             ).put(
                 Emailv31.Message.TO,
-                JSONArray().put(
-                    JSONObject()
-                        .put("Email", receiver.email)
-                        .put("Name", receiver.name)
-                )
+                JSONArray().put(receiver.toJson())
             ).put(Emailv31.Message.SUBJECT, content.subject)
             .put(Emailv31.Message.TEXTPART, content.textContent)
             .put(Emailv31.Message.HTMLPART, content.htmlContent)

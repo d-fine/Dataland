@@ -1,6 +1,10 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.email.Email
+import org.dataland.datalandbackend.model.email.EmailAttachment
+import org.dataland.datalandbackend.model.email.EmailContent
+import org.dataland.datalandbackend.model.email.EmailUser
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -18,15 +22,20 @@ class FileManager {
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
     private val uploadHistory = mutableMapOf<String, List<String>>()
 
+    private val emailSender = EmailSender()
+    private val defaultSender = EmailUser("info@dataland.com", "Dataland")
+    private val defaultReceiver = EmailUser("florian.soffel@d-fine.de", "Florian Soffel") // TODO this must be changed before going main
+
+    private fun generateUUID(): String {
+        return UUID.randomUUID().toString()
+    }
+
     private fun generateUploadId(): String {
         val timestamp = Instant.now().epochSecond.toString()
-        val uniqueId = UUID.randomUUID().toString()
+        val uniqueId = generateUUID()
         return timestamp + "_" + uniqueId
     }
 
-    private fun generateFileId(): String {
-        return UUID.randomUUID().toString()
-    }
 
     private fun securityChecks(filesToCheck: List<MultipartFile>) {
         val numberOfFiles = filesToCheck.size
@@ -36,6 +45,22 @@ class FileManager {
             // e.g. filename, filetype, actual contents etc.
             logger.info("Scanned ${index + 1} of $numberOfFiles files.")
         }
+    }
+
+    private fun sendEmailWithFiles(files: List<MultipartFile>) {
+        val content = EmailContent(
+            "Dataland Excel Upload",
+            "Someone uploaded files to Dataland.\nPlease review.",
+            "Someone uploaded files to Dataland.<br>Please review.",
+            files.stream().map { EmailAttachment("${generateUUID()}.xlsx", it.bytes) }.toList()
+        )
+        val email = Email(defaultSender, defaultReceiver, content)
+        emailSender.sendEmail(email)
+
+    }
+
+    private fun removeFilesFromStorage(fileIds: List<String>) {
+        fileIds.forEach { temporaryFileStore.remove(it) }
     }
 
     /**
@@ -52,17 +77,16 @@ class FileManager {
 
         val listOfNewFileIds = mutableListOf<String>()
         excelFiles.forEachIndexed { index, singleExcelFile ->
-            val fileId = generateFileId()
+            val fileId = generateUUID()
             logger.info("Storing Excel file with file ID $fileId. (File ${index + 1} of $numberOfFiles files.)")
             temporaryFileStore[fileId] = singleExcelFile
             listOfNewFileIds.add(fileId)
             logger.info("Excel file with file ID $fileId was stored in-memory.")
         }
         uploadHistory[uploadId] = listOfNewFileIds
-        // val fileName = fileNameGenerator()
-        //sendMail()
+        sendEmailWithFiles(excelFiles)
 
-        // if sendMail successful => temporaryFileStore.remove(alle files die versendet wurden) => uploadHistory nutzen
+        removeFilesFromStorage(listOfNewFileIds)
 
         return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
     }
