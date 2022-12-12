@@ -39,9 +39,7 @@ class ApiKeyHandler {
 
     fun getApiKeyMetaInfoForUserType(userType: UserType): ApiKeyMetaInfo {
         tokenHandler.obtainTokenForUserType(userType)
-        val currentToken = tokenHandler.getCurrentToken()
-        val keycloakUserId = tokenHandler.getUserIdFromToken(currentToken!!)
-        return apiKeyManagerClient.getApiKeyMetaInfoForUser(keycloakUserId)
+        return apiKeyManagerClient.getApiKeyMetaInfoForUser()
     }
 
     fun deleteApiKeyFromBackendClient() {
