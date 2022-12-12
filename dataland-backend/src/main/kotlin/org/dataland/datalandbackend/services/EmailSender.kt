@@ -4,7 +4,7 @@ import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetRequest
 import com.mailjet.client.resource.Emailv31
-import org.dataland.datalandbackend.email.Email
+import org.dataland.datalandbackend.model.email.Email
 import org.json.JSONArray
 import org.slf4j.LoggerFactory
 
@@ -25,8 +25,8 @@ class EmailSender(
         val client = MailjetClient(
             ClientOptions.builder()
                 .baseUrl(mailServerUrl)
-                .apiKey(System.getenv("KEYCLOAK_MAILJET_API_ID"))
-                .apiSecretKey(System.getenv("KEYCLOAK_MAILJET_API_SECRET"))
+                .apiKey(System.getenv("MAILJET_API_ID"))
+                .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
                 .build()
         )
 

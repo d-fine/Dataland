@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.email
+package org.dataland.datalandbackend.model.email
 
 /**
  * defines the email address and name of a email sender or receiver

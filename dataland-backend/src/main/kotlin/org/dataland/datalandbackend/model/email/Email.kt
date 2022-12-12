@@ -1,10 +1,11 @@
-package org.dataland.datalandbackend.email
+package org.dataland.datalandbackend.model.email
 
 import com.mailjet.client.resource.Emailv31
 import org.json.JSONArray
 import org.json.JSONObject
 
 /**
+ * --- Non-API model ---
  * A class that stores the sender, receiver and content of an email
  */
 data class Email(

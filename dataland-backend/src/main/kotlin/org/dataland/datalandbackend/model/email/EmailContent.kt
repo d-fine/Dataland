@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.email
+package org.dataland.datalandbackend.model.email
 
 import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.json.JSONArray
