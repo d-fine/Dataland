@@ -43,7 +43,7 @@ class ApiKeyHandler {
         tokenHandler.obtainTokenForUserType(userType)
         val currentToken = tokenHandler.getCurrentToken()
         val currentTokenPayloadDecoded = bearerTokenParser.decodeAndReturnBearerTokenPayload(currentToken!!)
-        val keycloakUserId = bearerTokenParser.getKeycloakUserIdFromDecodedBearerToken(currentTokenPayloadDecoded)
+        val keycloakUserId = bearerTokenParser.getKeycloakUserIdFromDecodedBearerToken(currentTokenPayloadDecoded)!!
         return apiKeyManagerClient.getApiKeyMetaInfoForUser(keycloakUserId)
     }
 
