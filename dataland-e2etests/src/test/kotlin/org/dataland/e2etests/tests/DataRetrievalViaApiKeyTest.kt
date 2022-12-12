@@ -81,12 +81,12 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @AfterEach
-    fun`delete the API key from Backend-client to esnure clean state`() {
+    fun`delete the API key from Backend client to esnure clean state`() {
         apiKeyHandler.deleteApiKeyFromBackendClient()
     }
 
     @Test
-    fun `create a non teaser company, generate an API key and get the non teaser company with it`() {
+    fun `create a non teaser company generate an API key and get the non teaser company with it`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
@@ -102,7 +102,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `create a non teaser company, upload framework data for it, generate an API key and get the data with it`() {
+    fun `create a non teaser company upload framework data for it generate an API key and get the data with it`() {
         val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1).first()
         val testCompanyInformationNonTeaser = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
@@ -124,7 +124,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `create a non teaser company, get it with a valid API key, revoke the API key and try to get the company`() {
+    fun `create a non teaser company get it with a valid API key revoke the API key and try to get the company`() {
         val userType = UserType.Reader
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
@@ -179,7 +179,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `validate an API key which has the right format, but a wrong secret `() {
+    fun `validate an API key which has the right format but a wrong secret `() {
         apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
         val apiKeyWithWrongSecret = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
             "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
@@ -208,7 +208,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `generate an API key, revoke it once so that it is gone, then revoke it a second time`() {
+    fun `generate an API key revoke it once so that it is gone then revoke it a second time`() {
         val userType = UserType.Reader
         apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, 1)
         apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)

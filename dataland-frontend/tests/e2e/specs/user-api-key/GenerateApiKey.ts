@@ -13,9 +13,6 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "apiKeyInfo"
     );
-    cy.wait("@apiKeyInfo").then((apiKeyInfoFixture) => {
-      console.log("ApiKeyInfoMock", apiKeyInfoFixture);
-    });
     cy.get("div.midlle-center-div").should("contain.text", "You have no API Key!");
     cy.get("div.midlle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("h1").should("contain.text", "Create new API Key");

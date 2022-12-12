@@ -65,7 +65,6 @@ export class ApiClientProvider {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
-  //api key
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
   }

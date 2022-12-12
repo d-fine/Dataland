@@ -15,7 +15,7 @@
         </div>
       </MiddleCenterDiv>
 
-      <MiddleCenterDiv v-if="!thereIsApiKey && !waitingForData && this.pageState !== 'create'" class="col-12">
+      <MiddleCenterDiv v-if="!existsApiKey && !waitingForData && this.pageState !== 'create'" class="col-12">
         <div>
           <img alt="light bulb" src="@/assets/images/elements/bulb_icon.svg" />
           <p class="font-medium text-xl text-color-third">You have no API Key!</p>
@@ -27,7 +27,7 @@
         <CreateApiKeyCard @cancelCreate="setActivePageState('view')" @generateApiKey="generateApiKey" />
       </div>
 
-      <div v-if="thereIsApiKey && !waitingForData && pageState === 'view'">
+      <div v-if="existsApiKey && !waitingForData && pageState === 'view'">
         <div class="col-12 md:col-8 lg:col-6">
           <MessageComponent v-if="newKey.length" severity="success" :closable="false" class="border-2">
             <template #text-info>
@@ -136,7 +136,7 @@ export default defineComponent({
   data() {
     return {
       pageState: "view",
-      thereIsApiKey: false,
+      existsApiKey: false,
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
@@ -170,9 +170,8 @@ export default defineComponent({
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser(
           resolvedKeycloakPromise.subject as unknown as string
         );
-        console.log("apiKeyMetaInfoForUser", apiKeyMetaInfoForUser); // TODO debug statement to show what you get
         this.waitingForData = false;
-        this.thereIsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
+        this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
       } catch (error) {
         console.error(error);
@@ -186,7 +185,7 @@ export default defineComponent({
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
         await apiKeyManagerController.revokeApiKey();
-        this.thereIsApiKey = false;
+        this.existsApiKey = false;
       } catch (error) {
         console.error(error);
       }
@@ -202,13 +201,13 @@ export default defineComponent({
         ).getApiKeyManagerController();
         const response = await apiKeyManagerController.generateApiKey(expirationTime);
         this.waitingForData = false;
-        this.thereIsApiKey = true;
+        this.existsApiKey = true;
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : 0;
         this.newKey = response.data.apiKey;
         this.setActivePageState("view");
       } catch (error) {
         console.error(error);
-        this.thereIsApiKey = false;
+        this.existsApiKey = false;
       }
     },
 

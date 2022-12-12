@@ -5,9 +5,6 @@ describe("As a user I expect my api key will be revoke correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
       "apiKeyInfo"
     );
-    cy.wait("@apiKeyInfo").then((apiKeyInfoFixture) => {
-      console.log("ApiKeyInfoMock", apiKeyInfoFixture);
-    });
     cy.get("div#existingApiKeyCard").should("exist");
     cy.get("button.p-button-danger").should("contain.text", "DELETE").click();
     cy.get("div#revokeModal").should("be.visible");
