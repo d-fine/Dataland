@@ -46,7 +46,6 @@
         </div>
       </div>
       <div class="col-12 text-right">
-        <PrimeButton label="MODIFY" disabled icon="pi pi-pencil" class="p-button-text ml-3 px-4 text-sm font-bold" />
         <PrimeButton
           label="DELETE"
           icon="pi pi-trash"
