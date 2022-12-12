@@ -38,6 +38,6 @@ interface FileApi {
      * @param excelFiles are the Excel files which need to be stored
      * @return a response object with info about the result and the success of the upload process
      */
-    fun uploadExcelFiles(@RequestParam("files") excelFiles: List<MultipartFile>):
+    fun uploadExcelFiles(@RequestParam("files") excelFiles: List<MultipartFile>?):
         ResponseEntity<ExcelFilesUploadResponse>
 }

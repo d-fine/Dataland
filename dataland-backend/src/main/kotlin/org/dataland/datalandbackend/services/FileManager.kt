@@ -17,10 +17,10 @@ import java.util.UUID
  * Implementation of a file manager for Dataland
  */
 @Component("FileManager")
-class FileManager (
+class FileManager(
     @Autowired
     private val emailSender: EmailSender
-        ) {
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
@@ -61,7 +61,7 @@ class FileManager (
         }
     }
 
-    private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue:Int, totalQueueLength:Int): String{
+    private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue: Int, totalQueueLength: Int): String {
         val fileId = generateUUID()
         logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
         temporaryFileStore[fileId] = singleExcelFile
@@ -103,7 +103,7 @@ class FileManager (
 
         val listOfNewFileIds = mutableListOf<String>()
         excelFiles.forEachIndexed { index, singleExcelFile ->
-            val returnedFileId = storeOneExcelFileAndReturnFileId(singleExcelFile, index+1, numberOfFiles)
+            val returnedFileId = storeOneExcelFileAndReturnFileId(singleExcelFile, index + 1, numberOfFiles)
             listOfNewFileIds.add(returnedFileId)
         }
         uploadHistory[uploadId] = listOfNewFileIds

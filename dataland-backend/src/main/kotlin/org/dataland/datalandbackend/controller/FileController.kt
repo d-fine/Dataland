@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.FileApi
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
 import org.dataland.datalandbackend.services.FileManager
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -20,7 +21,13 @@ class FileController(
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun uploadExcelFiles(excelFiles: List<MultipartFile>): ResponseEntity<ExcelFilesUploadResponse> {
+    override fun uploadExcelFiles(excelFiles: List<MultipartFile>?): ResponseEntity<ExcelFilesUploadResponse> {
+        if (excelFiles.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                "Some input files must be specified.",
+                "This endpoint requires files to contain at least one file."
+            )
+        }
         logger.info("Received a request to store ${excelFiles.size} Excel files.")
         return ResponseEntity.ok(fileManager.storeExcelFiles(excelFiles))
     }
