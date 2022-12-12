@@ -59,6 +59,10 @@ class FileManager {
             logger.info("Excel file with file ID $fileId was stored in-memory.")
         }
         uploadHistory[uploadId] = listOfNewFileIds
+        // val fileName = fileNameGenerator()
+        //sendMail()
+
+        // if sendMail successful => temporaryFileStore.remove(alle files die versendet wurden) => uploadHistory nutzen
 
         return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
     }
