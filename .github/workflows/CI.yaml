@@ -228,19 +228,6 @@ jobs:
           cache: gradle
       - name: assemble project
         run: ./gradlew assemble ktlintCheck detekt --no-daemon --stacktrace
-      - name: Upload build folders
-        if:
-        uses: actions/upload-artifact@v3
-        with:
-          name: gradleBuildFolders
-          path: |
-            ./**/build/
-            .gradle
-            !dataland-csvconverter/build/distributions
-            !**/build/libs
-            !**/build/tmp/kapt3/incApCache/main
-            !**/caches-jvm
-            !dataland-e2etests/build/resources
   sonar:
     runs-on: ubuntu-latest
     needs:
