@@ -36,13 +36,6 @@
               :fileLimit=10
           >
 
-            <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
-              <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-                <ProgressBar :value="totalSizePercent" :showValue="false"
-                             :class="['md:w-20rem h-1rem w-full md:ml-auto', {'exceeded-progress-bar': (totalSizePercent > 100)}]">
-                  <span class="white-space-nowrap">{{ totalSize }}B / 1Mb</span></ProgressBar>
-              </div>
-            </template>
 
             <template #empty>
               <div class="flex align-items-center justify-content-center flex-column">
