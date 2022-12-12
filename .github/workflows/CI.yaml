@@ -268,10 +268,6 @@ jobs:
           java-version: 17
           cache: gradle
       - uses: actions/download-artifact@v3
-        name: gradleBuildFolders
-        with:
-          name: gradleBuildFolders
-      - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
         with:
           name: JaCoCoResultsUnitTests
@@ -286,7 +282,7 @@ jobs:
           path: fe-coverage
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: ./gradlew sonarqube --no-daemon --stacktrace
+        run: ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build  sonarqube --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
