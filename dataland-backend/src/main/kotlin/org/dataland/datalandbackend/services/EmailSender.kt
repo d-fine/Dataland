@@ -4,9 +4,9 @@ import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetRequest
 import com.mailjet.client.resource.Emailv31
-import org.dataland.datalandbackend.email.Email
+import org.dataland.datalandbackend.model.email.Email
 import org.json.JSONArray
-import org.slf4j.LoggerFactory
+import javax.management.ServiceNotFoundException
 
 /**
  * A class that manages sending emails
@@ -14,21 +14,17 @@ import org.slf4j.LoggerFactory
 class EmailSender(
     private val mailServerUrl: String = "https://api.eu.mailjet.com"
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val clientOptions = ClientOptions.builder()
+        .baseUrl(mailServerUrl)
+        .apiKey(System.getenv("MAILJET_API_ID"))
+        .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
+        .build()
 
     /** This methods sends an email
      * @param email the email to send
      */
     fun sendEmail(email: Email) {
-        logger.info("Sending email: $email")
-
-        val client = MailjetClient(
-            ClientOptions.builder()
-                .baseUrl(mailServerUrl)
-                .apiKey(System.getenv("KEYCLOAK_MAILJET_API_ID"))
-                .apiSecretKey(System.getenv("KEYCLOAK_MAILJET_API_SECRET"))
-                .build()
-        )
+        val client = MailjetClient(clientOptions)
 
         val request = MailjetRequest(Emailv31.resource)
             .property(
@@ -37,7 +33,7 @@ class EmailSender(
             )
         val response = client.post(request)
         if (response.status != 200) {
-            throw Exception("There are problems with the email server.") // TODO refine this
+            throw ServiceNotFoundException("There are problems with the email server. ${response.data}") // TODO refine this
         }
     }
 }

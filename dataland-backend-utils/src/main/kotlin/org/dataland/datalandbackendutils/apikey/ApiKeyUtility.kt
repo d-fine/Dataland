@@ -1,6 +1,6 @@
 package org.dataland.datalandbackendutils.apikey
 
-import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.EncodingUtils.calculateCrc32Value
 import org.dataland.datalandbackendutils.utils.EncodingUtils.decodeFromBase64
 import org.dataland.datalandbackendutils.utils.EncodingUtils.encodeToBase64
@@ -26,6 +26,7 @@ class ApiKeyUtility {
 
     private val charset = Charsets.UTF_8
 
+    val apiKeyInvalidFormatSummary = "Api key is of invalid format"
     val validateApiKeyDelimitersExceptionMessage =
         "The received Api key does not contain exactly two underscore characters as it is expected."
     val validateKeycloakUserIdExceptionMessage =
@@ -39,7 +40,8 @@ class ApiKeyUtility {
 
     private fun validateApiKeyDelimiters(receivedApiKey: String) {
         if (receivedApiKey.count { it.toString() == "_" } != numberOfUnderscoreDelimitersExpectedInApiKey) {
-            throw ApiKeyFormatException(
+            throw InvalidInputApiException(
+                apiKeyInvalidFormatSummary,
                 validateApiKeyDelimitersExceptionMessage
             )
         }
@@ -47,7 +49,8 @@ class ApiKeyUtility {
 
     private fun validateApiKeySecret(potentialApiKeySecret: String) {
         if (!regexFor80HexCharacters.matches(potentialApiKeySecret)) {
-            throw ApiKeyFormatException(
+            throw InvalidInputApiException(
+                apiKeyInvalidFormatSummary,
                 validateApiKeySecretExceptionMessage
             )
         }
@@ -66,13 +69,20 @@ class ApiKeyUtility {
         val expectedCrc32Value = getCrc(parsedKeycloakUserIdBase64Encoded, parsedApiKeySecret)
 
         if (parsedCrc32Value != expectedCrc32Value) {
-            throw ApiKeyFormatException(validateApiKeyChecksumWrongValueExceptionMessage)
+            throw InvalidInputApiException(
+                apiKeyInvalidFormatSummary,
+                validateApiKeyChecksumWrongValueExceptionMessage
+            )
         }
 
         val keycloakUserId = try {
             String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
         } catch (e: IllegalArgumentException) {
-            throw ApiKeyFormatException(validateKeycloakUserIdExceptionMessage, e)
+            throw InvalidInputApiException(
+                apiKeyInvalidFormatSummary,
+                validateKeycloakUserIdExceptionMessage,
+                e
+            )
         }
         validateApiKeySecret(parsedApiKeySecret)
         return ParsedApiKey(keycloakUserId, parsedApiKeySecret)

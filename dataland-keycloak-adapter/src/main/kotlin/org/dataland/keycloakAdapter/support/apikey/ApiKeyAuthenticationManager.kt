@@ -5,7 +5,7 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientExc
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ServerException
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
-import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
@@ -32,7 +32,7 @@ class ApiKeyAuthenticationManager(
 
         try {
             ApiKeyUtility().parseApiKey(customToken)
-        } catch (ex: ApiKeyFormatException) {
+        } catch (ex: InvalidInputApiException) {
             throw BadCredentialsException(ex.message, ex)
         }
 
