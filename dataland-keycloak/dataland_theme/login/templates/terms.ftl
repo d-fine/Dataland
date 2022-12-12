@@ -1,12 +1,12 @@
 <#import "dataland_template.ftl" as layout>
 <@layout.registrationLayout displayMessage=false; section>
     <#if section = "header">
-        Terms, Conditions, and Privacy
+        Almost there
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
-        <div class="text-left mt-4">
-            <p>To continue using Dataland you need to agree to our Terms, Conditions, and Privacy Policy</p>
+        <div class="mt-4">
+            <p class="font-semibold">Please review and accept the Terms and Conditions and Privacy Policy before joining Dataland.</p>
         </div>
 
         <div class="text-left mt-4 flex align-items-center">
@@ -38,7 +38,7 @@
 
         <Button
                 label="Accept"
-                class="w-full p-button p-component uppercase cursor-pointer mt-5 font-semibold"
+                class="w-full p-button uppercase cursor-pointer mt-5 font-semibold"
                 name="accept_button"
                 onClick="checkAndContinue();"
         >
@@ -47,7 +47,7 @@
 
         <Button
             label="CANCEL"
-            class="w-full p-button p-component uppercase cursor-pointer mt-5 font-semibold bg-white-alpha-10 text-primary"
+            class="w-full p-button uppercase cursor-pointer mt-5 font-semibold bg-white-alpha-10 text-primary"
             name="cancel"
             onclick="cancel();"
             >

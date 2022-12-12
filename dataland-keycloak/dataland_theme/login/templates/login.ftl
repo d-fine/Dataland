@@ -1,5 +1,6 @@
 <#import "dataland_template.ftl" as layout>
 <#import "components/input_field.ftl" as inputField>
+<#import "components/social_login.ftl" as socialLogin>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
         Login
@@ -21,6 +22,7 @@
                 fieldName="password"
                 fieldErrorHandlers=["username", "password"]
                 fieldHeading="Password"
+                tabindex="2"
                 autofocus=false
                 type="password"
                 autocomplete="off"
@@ -45,49 +47,13 @@
             </div>
         </form>
 
-        <#if social.providers??>
-        <div id="kc-social-providers">
-            <div class="d-separator">
-                <div class="d-line"></div>
-                <h4>OR</h4>
-                <div class="d-line"></div>
-            </div>
-
-            <div>
-
-                <#list social.providers as p>
-                    <#if p.alias="linkedin">
-                        <div id="social-linkedin">
-                            <button
-                                    class="p-button cursor-pointer font-semibold w-full p-button-linkedin uppercase flex justify-content-center align-items-center p-login-button"
-                                    onclick="location.href='${p.loginUrl}'"
-                            >
-                                <img src="${url.resourcesPath}/in-white-21.png" alt="LinkedIn Logo" class="mr-2 mt-1 mb-1"/>
-                                LOG IN WITH LINKEDIN
-                            </button>
-                        </div>
-                    <#else>
-                        <div id="social-${p.alias}">
-                            <button
-                                    class="p-button cursor-pointer font-semibold w-full bg-white text-primary uppercase mt-3 p-login-button"
-                                    onclick="location.href='${p.loginUrl}'"
-                            >
-                                LOG IN WITH ${p.displayName!}
-                            </button>
-                        </div>
-                    </#if>
-                </#list>
-            </div>
-        </div>
-        </#if>
-
-
+        <@socialLogin.dala prefix="LOGIN WITH"/>
 
         <div id="kc-registration-container" class="mt-5">
             <div id="kc-registration" class="flex-box">
                     <span>Don't have an account?</span>
                     <Button
-                            class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1"
+                            class="p-button uppercase text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1"
                             name="join_dataland_button"
                             onclick="location.href='${url.registrationUrl}'">
                             CREATE A PREVIEW ACCOUNT

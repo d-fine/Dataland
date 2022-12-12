@@ -1,13 +1,12 @@
 <#import "dataland_template.ftl" as layout>
+<#import "components/input_field.ftl" as inputField>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('totp'); section>
     <#if section="header">
         Two-factor authentication
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section="form">
-        <form id="kc-otp-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}"
-              method="post">
-
+        <form id="kc-otp-login-form" action="${url.loginAction}" method="post">
             <#if otpLogin.userOtpCredentials?size gt 1>
                 <div class="mb-5">
                     <div class="${properties.kcLabelWrapperClass!} text-left mb-2">
@@ -41,37 +40,18 @@
                 </div>
             </#if>
 
-            <div class="${properties.kcFormGroupClass!}">
-                <div class="${properties.kcLabelWrapperClass!} text-left">
-                    <label for="otp" class="${properties.kcLabelClass!} font-medium mb-2">${msg("loginOtpOneTime")}
-                    </label>
-                </div>
+            <span class="font-medium mb-2">${msg("loginOtpOneTime")}</span>
+            <@inputField.dala
+            fieldName="otp"
+            fieldErrorHandlers=["totp"]
+            fieldHeading="One time code"
+            tabindex="1"
+            autofocus=true
+            type="text"
+            />
 
-                <div class="${properties.kcInputWrapperClass!} mt-4">
-                    <input id="otp" name="otp" autocomplete="off" type="text" placeholder="One time code"
-                           class="${properties.kcInputClass!} p-input-grey-bottom-border" autofocus
-                           aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"/>
-
-                    <#if messagesPerField.existsError('totp')>
-                        <span id="input-error-otp-code" class="${properties.kcInputErrorMessageClass!} input-error"
-                              aria-live="polite">
-                        ${kcSanitize(messagesPerField.get('totp'))?no_esc}
-                    </span>
-                    </#if>
-                </div>
-            </div>
-
-            <div class="${properties.kcFormGroupClass!}">
-                <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
-                    <div class="${properties.kcFormOptionsWrapperClass!}">
-                    </div>
-                </div>
-
-                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!} mt-4">
-                    <input
-                            class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} p-button font-semibold cursor-pointer w-full"
-                            name="login" id="kc-login" type="submit" value="SUBMIT"/>
-                </div>
+            <div id="kc-form-buttons">
+                <input tabindex="2" class="p-button w-full cursor-pointer font-semibold p-login-button" name="login" id="kc-login" type="submit" value="SUBMITT"/>
             </div>
         </form>
     </#if>

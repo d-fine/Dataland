@@ -28,7 +28,7 @@
             <span style="font-size:16px;">
                 Remember the password?
                 <Button
-                        class="p-button p-component uppercase text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"
+                        class="p-button uppercase font-semibold text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"
                         name="login_button"
                         onclick="location.href='${url.loginUrl}'">
                         LOG IN
