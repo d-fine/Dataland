@@ -24,7 +24,7 @@ class FileManager {
 
     private val emailSender = EmailSender()
     private val defaultSender = EmailUser("info@dataland.com", "Dataland")
-    private val defaultReceiver = EmailUser("florian.soffel@d-fine.de", "Florian Soffel") // TODO this must be changed before going main
+    private val defaultReceiver = EmailUser("TODO@d-fine.de", "TODO") // TODO this must be changed before going main
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
