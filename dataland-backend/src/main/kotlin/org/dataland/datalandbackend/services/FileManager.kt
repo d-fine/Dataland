@@ -38,6 +38,14 @@ class FileManager {
         }
     }
 
+    private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue:Int, totalQueueLength:Int): String{
+        val fileId = generateFileId()
+        logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
+        temporaryFileStore[fileId] = singleExcelFile
+        logger.info("Excel file with file ID $fileId was stored in-memory.")
+        return fileId
+    }
+
     /**
      * Method to store an Excel file in a map with an associated filed ID as key.
      * @param excelFiles is the Excel file to store
@@ -52,11 +60,8 @@ class FileManager {
 
         val listOfNewFileIds = mutableListOf<String>()
         excelFiles.forEachIndexed { index, singleExcelFile ->
-            val fileId = generateFileId()
-            logger.info("Storing Excel file with file ID $fileId. (File ${index + 1} of $numberOfFiles files.)")
-            temporaryFileStore[fileId] = singleExcelFile
-            listOfNewFileIds.add(fileId)
-            logger.info("Excel file with file ID $fileId was stored in-memory.")
+            val returnedFileId = storeOneExcelFileAndReturnFileId(singleExcelFile, index+1, numberOfFiles)
+            listOfNewFileIds.add(returnedFileId)
         }
         uploadHistory[uploadId] = listOfNewFileIds
         // val fileName = fileNameGenerator()
