@@ -20,7 +20,7 @@
             </span>
         </div>
 
-        <div class="text-left mt-4 flex align-items-center" style="display: none;">
+        <div class="text-left mt-4 flex align-items-center">
             <input id="accept_privacy" name="accept_privacy" type="checkbox" required>
             <label for="accept_privacy" class="tex-sm ml-2">I accept the <a class="text-primary" href="">Privacy Policy</a></label>
         </div>
@@ -37,47 +37,21 @@
         </form>
 
         <Button
-                label="Accept"
-                class="w-full p-button uppercase cursor-pointer mt-5 font-semibold"
+                class="w-full p-button uppercase cursor-pointer mt-5 font-semibold p-login-button"
+                id="accept_button"
                 name="accept_button"
-                onClick="checkAndContinue();"
         >
             ACCEPT & CONTINUE
         </Button>
 
         <Button
-            label="CANCEL"
-            class="w-full p-button uppercase cursor-pointer mt-5 font-semibold bg-white-alpha-10 text-primary"
-            name="cancel"
-            onclick="cancel();"
+            class="w-full p-button uppercase cursor-pointer mt-5 font-semibold bg-white-alpha-10 text-primary p-login-button"
+            id="cancel_button"
+            name="cancel_button"
             >
             CANCEL
         </Button>
 
-        <script type="text/javascript">
-            function requireChecked(checkBoxId) {
-                if (document.getElementById(checkBoxId).checked) {
-                    document.getElementById(checkBoxId + "_error").style.display = "none";
-                    return true;
-                } else {
-                    document.getElementById(checkBoxId + "_error").style.display = "flex";
-                    return false;
-                }
-            }
-
-            function checkAndContinue() {
-                var termsOkay = requireChecked("accept_terms");
-                var privacyOkay = requireChecked("accept_privacy");
-                if (termsOkay && privacyOkay) {
-                    document.getElementById("response").name = "accept";
-                    document.getElementById("toc-form").submit();
-                }
-            }
-
-            function cancel() {
-                document.getElementById("response").name = "cancel";
-                document.getElementById("toc-form").submit();
-            }
-        </script>
+        <script type="text/javascript" src="${url.resourcesPath}/terms.js"></script>
     </#if>
 </@layout.registrationLayout>

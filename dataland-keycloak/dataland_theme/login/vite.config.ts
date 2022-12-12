@@ -7,6 +7,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: fileURLToPath(new URL('src/index.ts', import.meta.url)),
+                terms: fileURLToPath(new URL('src/terms.ts', import.meta.url)),
             },
             output: {
                 assetFileNames: '[name][extname]',
