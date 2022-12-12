@@ -79,8 +79,6 @@ jobs:
   component-tests-frontend:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
-    needs:
-      - rebuild-docker-images
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/logObjects
