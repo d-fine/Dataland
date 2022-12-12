@@ -130,16 +130,6 @@
         "summary": "Get API key meta info of a specific user.",
         "description": "Gets meta info about the API key status of a user based on the Keycloak user ID.",
         "operationId": "getApiKeyMetaInfoForUser",
-        "parameters": [
-          {
-            "name": "keycloakUserId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successfully retrieved API key status for the user ID.",

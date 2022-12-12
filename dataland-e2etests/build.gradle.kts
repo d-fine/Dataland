@@ -30,7 +30,6 @@ dependencies {
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation(project(":dataland-backend-utils"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
