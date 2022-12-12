@@ -127,15 +127,16 @@ export default defineComponent({
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
     void this.queryCompany();
     if (!this.route.query.input) {
+          this.autocomplete.$refs.input.focus()
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+
     }
   },
 
   watch: {
     searchBarName() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+      this.autocomplete.$refs.input.focus();
     },
     filter: {
       handler() {
