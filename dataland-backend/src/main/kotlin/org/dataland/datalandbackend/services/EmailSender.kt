@@ -2,38 +2,38 @@ package org.dataland.datalandbackend.services
 
 import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient
-import com.mailjet.client.MailjetRequest
-import com.mailjet.client.resource.Emailv31
+import com.mailjet.client.transactional.SendContact
+import com.mailjet.client.transactional.SendEmailsRequest
+import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandbackend.model.email.Email
-import org.json.JSONArray
-import javax.management.ServiceNotFoundException
+import org.dataland.datalandbackend.model.email.EmailContent
+import org.dataland.datalandbackend.model.email.email
 
 /**
  * A class that manages sending emails
  */
-class EmailSender(
+class EmailSender {
     private val mailServerUrl: String = "https://api.eu.mailjet.com"
-) {
     private val clientOptions = ClientOptions.builder()
         .baseUrl(mailServerUrl)
         .apiKey(System.getenv("MAILJET_API_ID"))
         .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
         .build()
+    private val client = MailjetClient(clientOptions)
+
+    private val infoSender = SendContact("info@dataland.com", "Dataland")
 
     /** This methods sends an email
      * @param email the email to send
      */
     fun sendEmail(email: Email) {
-        val client = MailjetClient(clientOptions)
+        val mailjetEmail = TransactionalEmail.builder().email(email).build()
+        val request = SendEmailsRequest.builder().message(mailjetEmail).build()
+        request.sendWith(client)
+    }
 
-        val request = MailjetRequest(Emailv31.resource)
-            .property(
-                Emailv31.MESSAGES,
-                JSONArray().put(email.toJson())
-            )
-        val response = client.post(request)
-        if (response.status != 200) {
-            throw ServiceNotFoundException("There are problems with the email server. ${response.data}") // TODO refine this
-        }
+    fun sendInfoEmail(receiver: SendContact, content: EmailContent) {
+        val email = Email(infoSender, receiver, content)
+        sendEmail(email)
     }
 }

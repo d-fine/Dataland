@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.email
 
-import org.json.JSONArray
+import com.mailjet.client.transactional.TransactionalEmail
 
 /**
  * A class to represent the subject, content and attachments of an email
@@ -9,14 +9,16 @@ data class EmailContent(
     val subject: String,
     val textContent: String,
     val htmlContent: String,
-    val attachmentsFilenames: List<EmailAttachment>
-) {
-    /**
-     * A method that converts the attachmentsFilenames ot a json array comaptible with the mailjet api send request
-     */
-    fun attachmentsToJsonArray(): JSONArray {
-        val jsonArray = JSONArray()
-        attachmentsFilenames.forEach { jsonArray.put(it.toJson()) }
-        return jsonArray
-    }
+    val attachments: List<EmailAttachment>
+)
+
+/**
+ * Uses a Content object for the build of a TransactionalEmail
+ */
+fun TransactionalEmail.TransactionalEmailBuilder.content(content: EmailContent):
+    TransactionalEmail.TransactionalEmailBuilder {
+    return this.subject(content.subject)
+        .textPart(content.textContent)
+        .htmlPart(content.htmlContent)
+        .attachments(content.attachments)
 }

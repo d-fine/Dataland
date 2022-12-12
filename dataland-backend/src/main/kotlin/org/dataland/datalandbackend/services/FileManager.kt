@@ -1,10 +1,9 @@
 package org.dataland.datalandbackend.services
 
+import com.mailjet.client.transactional.SendContact
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
-import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
-import org.dataland.datalandbackend.model.email.EmailUser
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
@@ -24,8 +23,7 @@ class FileManager {
     private val uploadHistory = mutableMapOf<String, List<String>>()
 
     private val emailSender = EmailSender()
-    private val defaultSender = EmailUser("info@dataland.com", "Dataland")
-    private val defaultReceiver = EmailUser("TODO@d-fine.de", "TODO") // TODO this must be changed before going main
+    private val defaultReceiver = SendContact("TODO@dataland.com", "TODO") // TODO this must be changed
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
@@ -65,10 +63,15 @@ class FileManager {
             "Dataland Excel Upload",
             "Someone uploaded files to Dataland.\nPlease review.",
             "Someone uploaded files to Dataland.<br>Please review.",
-            files.stream().map { EmailAttachment("${generateUUID()}.xlsx", it.bytes) }.toList()
+            files.stream().map {
+                EmailAttachment(
+                    "${generateUUID()}.xlsx",
+                    it.bytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+            }.toList()
         )
-        val email = Email(defaultSender, defaultReceiver, content)
-        emailSender.sendEmail(email)
+        emailSender.sendInfoEmail(defaultReceiver, content)
     }
 
     private fun removeFilesFromStorage(fileIds: List<String>) {
