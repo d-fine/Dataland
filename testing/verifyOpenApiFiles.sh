@@ -11,7 +11,7 @@ function getOpenApiSha1Sum() {
 }
 
 sha1SumBeforeRegenerate=$(getOpenApiSha1Sum)
-./gradlew generateOpenApiDocs
+./gradlew generateOpenApiDocs --no-daemon --stacktrace
 sha1SumAfterRegenerate=$(getOpenApiSha1Sum)
 echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"
 echo "sha1sum after regenerate: $sha1SumAfterRegenerate"
