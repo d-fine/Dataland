@@ -1,4 +1,5 @@
 <template>
+  <AuthenticationWrapper>
   <TheHeader />
   <TheContent class="pl-0 min-h-screen surface-800">
     <div class="pl-4 col-5 text-left">
@@ -44,8 +45,15 @@
       </div>
 
       <div id="files-section" class="mb-6">
-        <h2>Your Files</h2>
-        <p class="text-gray-800">No file uploaded</p>
+        <h2>Your Uploads</h2>
+        <ul v-if="this.uploadedFiles.length > 0" id="list-of-uploaded-files">
+          <li v-for="file in uploadedFiles" :key="file.name">
+            <InfoCard class="font-medium text-left">
+              {{ file.name }}
+            </InfoCard>
+          </li>
+        </ul>
+        <p v-else class="text-gray-800">No file uploaded</p>
       </div>
 
       <div id="settings-section">
@@ -57,6 +65,7 @@
       </div>
     </div>
   </TheContent>
+</AuthenticationWrapper>
   <TheBottom/>
 </template>
 
@@ -99,14 +108,15 @@ export default defineComponent({
   methods: {
     async uploadFile(event): Promise<void> {
       console.log("Upload should take place"); // TODO debugging statement
+      const filesToUpload: Array<File> = event.files
       this.uploadFinished = false
       this.uploadInProgress = true
       try {
           const fileControllerApi = await new ApiClientProvider(
               assertDefined(this.getKeycloakPromise)()
           ).getFileControllerApi();
-          const response = await fileControllerApi.uploadExcelFiles(event.files);
-          console.log(response)
+          const response = await fileControllerApi.uploadExcelFiles(filesToUpload);
+          this.uploadedFiles.push(...filesToUpload);
         } catch (error) {
           console.error(error);
         }
