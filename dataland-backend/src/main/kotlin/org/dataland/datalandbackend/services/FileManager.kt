@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.model.email.EmailUser
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -36,12 +37,24 @@ class FileManager {
         return timestamp + "_" + uniqueId
     }
 
-
-    private fun securityChecks(filesToCheck: List<MultipartFile>) {
+    private fun securityChecks(filesToCheck: List<MultipartFile>, maxFiles: Int, maxBytesPerFile: Int) {
         val numberOfFiles = filesToCheck.size
+        if (numberOfFiles > maxFiles) {
+            throw InvalidInputApiException(
+                "Too many files uploaded",
+                "$numberOfFiles files were uploaded, but only $maxFiles are allowed."
+            )
+        }
+        if (filesToCheck.any { it.bytes.size > maxBytesPerFile }) {
+            throw InvalidInputApiException(
+                "Upload file too large.",
+                "An uploaded file is larger than the maximum of $maxBytesPerFile."
+            )
+        }
         logger.info("Scanning $numberOfFiles files for potential risks.")
         filesToCheck.forEachIndexed() { index, file ->
             // TODO we DEFINITELY need some security checks to avoid any attack vectors
+            // TODO alternatively, copy individual entries to a fresh template and process that
             // e.g. filename, filetype, actual contents etc.
             logger.info("Scanned ${index + 1} of $numberOfFiles files.")
         }
@@ -56,7 +69,6 @@ class FileManager {
         )
         val email = Email(defaultSender, defaultReceiver, content)
         emailSender.sendEmail(email)
-
     }
 
     private fun removeFilesFromStorage(fileIds: List<String>) {
@@ -69,7 +81,7 @@ class FileManager {
      * @return a response model object with info about the upload process
      */
     fun storeExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
-        securityChecks(excelFiles)
+        securityChecks(excelFiles, 20, 5000000)
 
         val numberOfFiles = excelFiles.size
         val uploadId = generateUploadId()

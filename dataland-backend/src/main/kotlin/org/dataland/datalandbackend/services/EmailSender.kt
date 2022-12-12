@@ -6,7 +6,6 @@ import com.mailjet.client.MailjetRequest
 import com.mailjet.client.resource.Emailv31
 import org.dataland.datalandbackend.model.email.Email
 import org.json.JSONArray
-import org.slf4j.LoggerFactory
 import javax.management.ServiceNotFoundException
 
 /**
@@ -15,8 +14,6 @@ import javax.management.ServiceNotFoundException
 class EmailSender(
     private val mailServerUrl: String = "https://api.eu.mailjet.com"
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     private val clientOptions = ClientOptions.builder()
         .baseUrl(mailServerUrl)
         .apiKey(System.getenv("MAILJET_API_ID"))
@@ -36,7 +33,7 @@ class EmailSender(
             )
         val response = client.post(request)
         if (response.status != 200) {
-            throw ServiceNotFoundException("There are problems with the email server. ${response.data.toString()}") // TODO refine this
+            throw ServiceNotFoundException("There are problems with the email server. ${response.data}") // TODO refine this
         }
     }
 }

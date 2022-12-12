@@ -10,9 +10,9 @@ data class EmailUser(
     val name: String
 ) {
     /**
-    * Converts the email user to a json object compatible with the mailjet api send request
-    * @return the constructed json object
-    */
+     * Converts the email user to a json object compatible with the mailjet api send request
+     * @return the constructed json object
+     */
     fun toJson(): JSONObject {
         return JSONObject()
             .put("Email", email)
