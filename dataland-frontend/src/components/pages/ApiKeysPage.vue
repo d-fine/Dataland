@@ -162,14 +162,10 @@ export default defineComponent({
 
     async getApiKeyMetaInfoForUser() {
       try {
-        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
-        const resolvedKeycloakPromise = await keycloakPromiseGetter();
         const apiKeyManagerController = await new ApiClientProvider(
-          keycloakPromiseGetter()
+            assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
-        const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser(
-          resolvedKeycloakPromise.subject as unknown as string
-        );
+        const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
