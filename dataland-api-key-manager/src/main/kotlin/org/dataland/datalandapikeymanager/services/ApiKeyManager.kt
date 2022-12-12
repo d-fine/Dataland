@@ -21,7 +21,7 @@ import java.time.Instant
 @Component("ApiKeyManager")
 class ApiKeyManager(
     @Autowired private val apiKeyRepository: ApiKeyRepository,
-    ) {
+) {
 
     companion object {
         private const val secondsInADay = 86400
@@ -62,7 +62,7 @@ class ApiKeyManager(
         }
     }
 
-    private fun getKeycloakUserId(): String{
+    private fun getKeycloakUserId(): String {
         val authentication = getAuthentication()
         return authentication.name
     }
