@@ -19,15 +19,14 @@ import java.time.Instant
  * A class for handling the generation, validation and revocation of an api key
  */
 @Component("ApiKeyManager")
-class ApiKeyManager
-(@Autowired private val apiKeyRepository: ApiKeyRepository) {
+class ApiKeyManager(
+    @Autowired private val apiKeyRepository: ApiKeyRepository,
+    ) {
 
     companion object {
         private const val secondsInADay = 86400
     }
 
-    private val getMetaInfoMessageKeycloakIdIsNull = "The API-Key-Manager service has received a NULL value as " +
-        "Keycloak user ID for the logged in user and therefore could not derive the current API key status."
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
@@ -63,9 +62,14 @@ class ApiKeyManager
         }
     }
 
+    private fun getKeycloakUserId(): String{
+        val authentication = getAuthentication()
+        return authentication.name
+    }
+
     private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
         val authentication = getAuthentication()
-        val keycloakUserId = authentication.name
+        val keycloakUserId = getKeycloakUserId()
         val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid), active = true)
     }
@@ -94,14 +98,15 @@ class ApiKeyManager
     }
 
     /**
-     * Gets meta info about the API key of a keycloak user ID, which can be passed to this method e.g. by the Frontend.
-     * @param keycloakUserId is the keycloak user ID for which meta info should be returned
+     * Gets meta info about the API key of a keycloak user ID, which is derived from the Bearer token that is used
+     * for authorization.
+     * The Frontend needs this meta info to display the current API key status to the user.
      * @return is an ApiKeyMetaInfo object with all available information about the API key, which can be used by
      * the Frontend to inform the user about the current status (valid key/expired key/no key at all/error)
      */
 
-    fun getApiKeyMetaInfoForFrontendUser(keycloakUserId: String?): ApiKeyMetaInfo {
-        if (keycloakUserId == null) { return ApiKeyMetaInfo(validationMessage = getMetaInfoMessageKeycloakIdIsNull) }
+    fun getApiKeyMetaInfoForFrontendUser(): ApiKeyMetaInfo {
+        val keycloakUserId = getKeycloakUserId()
         val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
         return if (apiKeyEntityOptional.isEmpty) {
             logger.info("Dataland user with the Keycloak user Id $keycloakUserId has no API key registered.")

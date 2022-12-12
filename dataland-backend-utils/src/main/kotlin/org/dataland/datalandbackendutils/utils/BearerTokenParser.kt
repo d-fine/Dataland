@@ -9,10 +9,6 @@ import java.util.*
 class BearerTokenParser {
     private val objectMapper = ObjectMapper()
 
-    fun extractBearerTokenFromRequest():String{
-        return "thebearertoken" // TODO
-    }
-
     fun decodeAndReturnBearerTokenPayload(bearerToken: String):String{
         val bearerTokenPayload = bearerToken.split(".")[1]
         val decoder = Base64.getUrlDecoder()
