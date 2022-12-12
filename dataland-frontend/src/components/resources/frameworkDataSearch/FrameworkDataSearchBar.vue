@@ -85,7 +85,6 @@ import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
-import Vue from "vue";
 
 export default defineComponent({
   setup() {
@@ -128,9 +127,7 @@ export default defineComponent({
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
     void this.queryCompany();
     if (!this.route.query.input) {
-      Vue.nextTick(() =>
           this.autocomplete.$refs.input.focus()
-      )
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
 
     }

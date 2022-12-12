@@ -61,7 +61,11 @@ class FileManager(
         }
     }
 
-    private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue: Int, totalQueueLength: Int): String {
+    private fun storeOneExcelFileAndReturnFileId(
+        singleExcelFile: MultipartFile,
+        positionInQueue: Int,
+        totalQueueLength: Int
+    ): String {
         val fileId = generateUUID()
         logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
         temporaryFileStore[fileId] = singleExcelFile

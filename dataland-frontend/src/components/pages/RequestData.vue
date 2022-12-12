@@ -35,6 +35,7 @@
               :max-file-size=10000000
               :fileLimit=10
           >
+
             <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
               <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                 <ProgressBar :value="totalSizePercent" :showValue="false"
@@ -57,9 +58,14 @@
           <h2>Your Uploads</h2>
           <ul v-if="this.uploadedFiles.length > 0" id="list-of-uploaded-files">
             <li v-for="file in uploadedFiles" :key="file.name">
-              <InfoCard class="font-medium text-left">
-                {{ file.name }}
-              </InfoCard>
+              <Card class="bg-white d-infocard d-card mr-2">
+                <template #title></template>
+                <template #content>
+                  <div class="text-left">
+                    {{ file.name }}
+                  </div>
+                </template>
+              </Card>
             </li>
           </ul>
           <p v-else class="text-gray-800">No file uploaded</p>
