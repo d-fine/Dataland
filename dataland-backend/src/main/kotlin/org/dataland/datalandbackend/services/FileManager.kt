@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.model.email.EmailUser
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -62,7 +61,7 @@ class FileManager {
     }
 
     private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue:Int, totalQueueLength:Int): String{
-        val fileId = generateFileId()
+        val fileId = generateUUID()
         logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
         temporaryFileStore[fileId] = singleExcelFile
         logger.info("Excel file with file ID $fileId was stored in-memory.")
