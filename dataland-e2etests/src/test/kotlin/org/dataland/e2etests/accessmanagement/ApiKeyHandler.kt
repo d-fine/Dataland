@@ -4,6 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyAndMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
+import org.dataland.datalandbackendutils.utils.BearerTokenParser
 import org.dataland.e2etests.BASE_PATH_TO_API_KEY_MANAGER
 import org.dataland.e2etests.utils.UserType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
@@ -12,6 +13,7 @@ class ApiKeyHandler {
 
     private val tokenHandler = TokenHandler()
     private val apiKeyManagerClient = ApiKeyControllerApi(BASE_PATH_TO_API_KEY_MANAGER)
+    private val bearerTokenParser = BearerTokenParser()
 
     fun obtainApiKeyForUserType(userType: UserType, daysValid: Int? = null): ApiKeyAndMetaInfo {
         tokenHandler.obtainTokenForUserType(userType)
@@ -40,7 +42,8 @@ class ApiKeyHandler {
     fun getApiKeyMetaInfoForUserType(userType: UserType): ApiKeyMetaInfo {
         tokenHandler.obtainTokenForUserType(userType)
         val currentToken = tokenHandler.getCurrentToken()
-        val keycloakUserId = tokenHandler.getUserIdFromToken(currentToken!!)
+        val currentTokenPayloadDecoded = bearerTokenParser.decodeAndReturnBearerTokenPayload(currentToken!!)
+        val keycloakUserId = bearerTokenParser.getKeycloakUserIdFromDecodedBearerToken(currentTokenPayloadDecoded)
         return apiKeyManagerClient.getApiKeyMetaInfoForUser(keycloakUserId)
     }
 
