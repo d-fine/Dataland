@@ -36,15 +36,15 @@
 
             <#if isAppInitiatedAction??>
                 <div class="text-left flex align-items-center">
-                    <input id="logout-sessions" name="accept_terms" type="checkbox">
+                    <input tabindex="3" id="logout-sessions" name="accept_terms" type="checkbox">
                     <label for="logout-sessions" class="tex-sm ml-2">${msg("logoutOtherSessions")}</label>
                 </div>
             </#if>
 
             <div id="kc-form-buttons">
-                <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" type="submit" value="Reset password" />
+                <input tabindex="4" class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" type="submit" value="Reset password" />
                 <#if isAppInitiatedAction??>
-                    <button formnovalidate class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1 p-login-button" type="submit" name="cancel-aia" value="true" />Cancel</button>
+                    <button tabindex="5" formnovalidate class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1 p-login-button" type="submit" name="cancel-aia" value="true" />Cancel</button>
                 </#if>
             </div>
 

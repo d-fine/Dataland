@@ -165,7 +165,7 @@
                                     />
                                     <button type="submit"
                                             class="p-button font-semibold cursor-pointer bg-white text-primary uppercase"
-                                            id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
+                                            id="cancelTOTPBtn" name="cancel-aia" value="true">${msg("doCancel")}
                                     </button>
                                 <#else>
                                     <input type="submit"
