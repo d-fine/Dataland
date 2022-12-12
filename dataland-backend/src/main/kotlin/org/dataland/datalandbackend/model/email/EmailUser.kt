@@ -13,10 +13,9 @@ data class EmailUser(
     * Converts the email user to a json object compatible with the mailjet api send request
     * @return the constructed json object
     */
-    fun toJson() {
-        JSONObject()
+    fun toJson(): JSONObject {
+        return JSONObject()
             .put("Email", email)
             .put("Name", name)
-
     }
 }

@@ -17,19 +17,17 @@ class EmailSender(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private val clientOptions = ClientOptions.builder()
+        .baseUrl(mailServerUrl)
+        .apiKey(System.getenv("MAILJET_API_ID"))
+        .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
+        .build()
+
     /** This methods sends an email
      * @param email the email to send
      */
     fun sendEmail(email: Email) {
-        logger.info("Sending email: $email")
-
-        val client = MailjetClient(
-            ClientOptions.builder()
-                .baseUrl(mailServerUrl)
-                .apiKey(System.getenv("MAILJET_API_ID"))
-                .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
-                .build()
-        )
+        val client = MailjetClient(clientOptions)
 
         val request = MailjetRequest(Emailv31.resource)
             .property(
@@ -38,7 +36,7 @@ class EmailSender(
             )
         val response = client.post(request)
         if (response.status != 200) {
-            throw ServiceNotFoundException("There are problems with the email server.") // TODO refine this
+            throw ServiceNotFoundException("There are problems with the email server. ${response.data.toString()}") // TODO refine this
         }
     }
 }

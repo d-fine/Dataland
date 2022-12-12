@@ -85,7 +85,6 @@ class FileManager {
         }
         uploadHistory[uploadId] = listOfNewFileIds
         sendEmailWithFiles(excelFiles)
-
         removeFilesFromStorage(listOfNewFileIds)
 
         return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
