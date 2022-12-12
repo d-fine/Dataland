@@ -163,7 +163,7 @@ export default defineComponent({
     async getApiKeyMetaInfoForUser() {
       try {
         const apiKeyManagerController = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;

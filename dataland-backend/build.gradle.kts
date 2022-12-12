@@ -30,8 +30,6 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.dataland.edc.client)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
