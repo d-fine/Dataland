@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
@@ -16,14 +17,16 @@ import java.util.UUID
  * Implementation of a file manager for Dataland
  */
 @Component("FileManager")
-class FileManager {
+class FileManager (
+    @Autowired
+    private val emailSender: EmailSender
+        ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
     private val uploadHistory = mutableMapOf<String, List<String>>()
 
-    private val emailSender = EmailSender()
-    private val defaultReceiver = SendContact("TODO@dataland.com", "TODO") // TODO this must be changed
+    private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()

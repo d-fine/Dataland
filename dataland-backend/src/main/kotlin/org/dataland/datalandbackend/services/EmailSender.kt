@@ -8,10 +8,12 @@ import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.model.email.email
+import org.springframework.stereotype.Component
 
 /**
  * A class that manages sending emails
  */
+@Component
 class EmailSender {
     private val mailServerUrl: String = "https://api.eu.mailjet.com"
     private val clientOptions = ClientOptions.builder()
