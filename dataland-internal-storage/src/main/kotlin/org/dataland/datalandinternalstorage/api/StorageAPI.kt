@@ -33,7 +33,7 @@ interface StorageAPI {
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */
-    fun selectDataById(dataId: String, correlationId: String?): ResponseEntity<String>
+    fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String>
 
     @Operation(
         summary = "Upload data.",
@@ -50,6 +50,6 @@ interface StorageAPI {
      * @param correlationId the correlation ID of the data post request
      * @param body the data stored body to be stored
      */
-    fun insertData(correlationId: String?, @RequestBody(required = true) body: String?):
+    fun insertData(correlationId: String, @RequestBody(required = true) body: String):
         ResponseEntity<InsertDataResponse>
 }

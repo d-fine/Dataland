@@ -19,9 +19,6 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
-
-    id("com.gorylenko.gradle-git-properties")
-    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17

@@ -30,8 +30,8 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
-    implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
@@ -43,13 +43,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
 openApi {
-    outputFileName.set("$projectDir/${rootProject.extra["internalStorageOpenApi"]}")
+    outputFileName.set("$projectDir/internalStorageOpenApi.json")
     apiDocsUrl.set("http://localhost:8080/internal-storage/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb"))

@@ -1,5 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,13 +17,12 @@ class DatabaseDataStore(
 
     /**
      * Insterts data into a database
-     * @param correlationId id of the action inserting this data
      * @param data a json object
      * @return id associated with the stored data
      */
-    fun insertDataSet(correlationId: String?, data: String): String {
+    fun insertDataSet(data: String): String {
         val dataID = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
-        dataItemRepository.save(DataItem(dataID, correlationId ?: "", data))
+        dataItemRepository.save(DataItem(dataID, data))
         return dataID
     }
 
@@ -32,6 +32,11 @@ class DatabaseDataStore(
      * @return the data as json string with id dataId
      */
     fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElse(DataItem("", "", "")).data
+        return dataItemRepository.findById(dataId).orElseThrow {
+            InvalidInputApiException(
+                "You provided an invalid data id.",
+                "There is no data with id $dataId stored."
+            )
+        }.data
     }
 }

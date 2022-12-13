@@ -87,7 +87,7 @@ gitProperties {
 
 tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-internal-storage/${rootProject.extra["internalStorageOpenApi"]}")
+    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
         .path
     outputDir.set("$buildDir/clients/internal-storage")
     packageName.set(internalStorageClientDestinationPackage)

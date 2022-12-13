@@ -44,6 +44,6 @@ export -f wait_for_service_name_list_to_be_healthy
 
 function wait_for_services_healthy_in_compose_profile () {
   service_list=$(get_services_in_docker_compose_profile_that_require_healthcheck $1)
-  wait_for_service_name_list_to_be_healthy $service
+  wait_for_service_name_list_to_be_healthy $service_list
 }
 export -f wait_for_services_healthy_in_compose_profile
