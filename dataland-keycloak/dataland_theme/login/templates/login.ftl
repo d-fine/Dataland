@@ -43,7 +43,7 @@
 
             <div id="kc-form-buttons">
                 <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                <input tabindex="4" class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" name="login" id="kc-login" type="submit" value="LOG IN TO PREVIEW ACCOUNT"/>
+                <input tabindex="4" class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" name="login" id="kc-login" type="submit" value="LOGIN TO PREVIEW ACCOUNT"/>
             </div>
         </form>
 
