@@ -74,7 +74,7 @@ class ApiKeyManager(
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid), active = true)
     }
 
-    private fun checkIfApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
+    private fun isApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
         return (expiryDateOfApiKey ?: Instant.now().epochSecond) < Instant.now().epochSecond
     }
 
@@ -113,7 +113,7 @@ class ApiKeyManager(
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
         } else {
             val apiKeyEntityOfKeycloakUser = apiKeyEntityOptional.get()
-            if (!checkIfApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate)) {
+            if (!isApiKeyExpired(apiKeyEntityOfKeycloakUser.expiryDate)) {
                 ApiKeyMetaInfo(
                     active = true,
                     keycloakUserId = keycloakUserId,
@@ -150,7 +150,7 @@ class ApiKeyManager(
     private fun getApiKeyMetaInfo(secret: String, apiKeyEntity: ApiKeyEntity): ApiKeyMetaInfo {
         val apiKeyMetaInfo = if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
             ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-        } else if (!checkIfApiKeyExpired(apiKeyEntity.expiryDate)) {
+        } else if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
             ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
         } else {
             ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)
