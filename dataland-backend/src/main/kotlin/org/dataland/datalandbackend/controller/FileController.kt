@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.FileApi
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.services.FileManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 class FileController(
-    @Autowired var fileManager: FileManager
+    @Autowired var fileManager: FileManager,
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -31,4 +32,8 @@ class FileController(
         logger.info("Received a request to store ${excelFiles.size} Excel files.")
         return ResponseEntity.ok(fileManager.storeExcelFiles(excelFiles))
     }
+
+        override fun postRequestMetaData(): ResponseEntity<RequestMetaData> {
+            return ResponseEntity.ok(fileManager.submitInvitation())
+        }
 }

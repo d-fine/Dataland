@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.RequestMetaData
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -40,4 +41,20 @@ interface FileApi {
      */
     fun uploadExcelFiles(@RequestParam("files") excelFiles: List<MultipartFile>?):
         ResponseEntity<ExcelFilesUploadResponse>
+
+    @Operation(
+        summary = "Post invitation meta data",
+        description = "Uploads the meta data of an invitation request."
+    )
+    @ApiResponses(
+        value = [ApiResponse(responseCode = "200", description = "Successfully stored invitation request meta data.")]
+    )
+    @PostMapping(
+
+    )
+            /**
+             * A method to store invitation request meta data
+             */
+    fun postRequestMetaData():
+            ResponseEntity<RequestMetaData>
 }
