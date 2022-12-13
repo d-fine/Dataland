@@ -33,7 +33,7 @@ class FileController(
         return ResponseEntity.ok(fileManager.submitInvitation(excelFiles))
     }
 
-    override fun resetInvitationInMemoryStorage(): ResponseEntity<RequestMetaData> {
+    override fun resetInvitation(): ResponseEntity<RequestMetaData> {
         return ResponseEntity.ok(fileManager.resetInvitation())
     }
 }

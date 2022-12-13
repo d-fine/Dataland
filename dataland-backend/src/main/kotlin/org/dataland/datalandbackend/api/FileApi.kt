@@ -54,6 +54,6 @@ interface FileApi {
     /**
      * A method to reset the invitation request in memory storage
      */
-    fun resetInvitationInMemoryStorage():
+    fun resetInvitation():
         ResponseEntity<RequestMetaData>
 }
