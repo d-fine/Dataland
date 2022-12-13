@@ -154,7 +154,7 @@ export default defineComponent({
     pageScrolled(pageScrolledNew) {
       if (pageScrolledNew) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        this.frameworkDataSearchBar?.$refs.autocomplete.hideOverlay();
+        this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       }
       if (!pageScrolledNew) {
         this.searchBarToggled = false;
