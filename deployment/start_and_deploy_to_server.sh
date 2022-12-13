@@ -4,7 +4,7 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
-profile=productionInMemory
+profile=production
 
 echo "Starting $environment server"
 curl "$TARGETSERVER_STARTUP_URL" > /dev/null
