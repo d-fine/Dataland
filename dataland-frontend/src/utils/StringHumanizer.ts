@@ -19,7 +19,7 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
  *
  * @param  {string} rawText      is the string to be converted to a human-readable string
  */
-function humaniseViaMapping(rawText: string): string {
+function humanizeViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
     isin: "ISIN",
     permid: "PermID",
@@ -54,8 +54,18 @@ export function humanizeString(rawText: string | null | undefined): string {
   if (!rawText) {
     return "";
   }
-  const resultOfCustomMappingHumanisation = humaniseViaMapping(rawText);
+  const resultOfCustomMappingHumanisation = humanizeViaMapping(rawText);
   return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawText)
     : resultOfCustomMappingHumanisation;
+}
+
+export function humanizeBytes(bytes: number, decimals: number): string {
+  if (!+bytes) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }

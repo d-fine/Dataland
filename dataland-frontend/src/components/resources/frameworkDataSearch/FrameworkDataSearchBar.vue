@@ -127,7 +127,7 @@ export default defineComponent({
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
     void this.queryCompany();
     if (!this.route.query.input) {
-          this.focusOnSearchBar()
+      this.focusOnSearchBar();
     }
   },
 
@@ -164,7 +164,7 @@ export default defineComponent({
     handleKeyupEnter() {
       this.$emit("search-confirmed", this.searchBarInput);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      // this.autocomplete.hideOverlay(); TODO
+      this.autocomplete.hide();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.$refs.input.blur();
       void this.queryCompany();
