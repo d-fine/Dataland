@@ -21,7 +21,10 @@ class FileController(
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun submitInvitation(excelFiles: List<MultipartFile>, isRequesterNameHidden: Boolean): ResponseEntity<ExcelFilesUploadResponse> {
+    override fun submitInvitation(
+        excelFiles: List<MultipartFile>,
+        isRequesterNameHidden: Boolean
+    ): ResponseEntity<ExcelFilesUploadResponse> {
         logger.info(
             "Received a request to store ${excelFiles.size} Excel files. " +
                 "Hiding the requester is set to $isRequesterNameHidden."

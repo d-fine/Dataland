@@ -35,7 +35,8 @@ class FileManager(
     private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
     private val maxFiles = 20
-    private val maxBytesPerFile = 5000000
+    private val maxBytesPerFile = 5000000 // TODO nginx has also a max file size limit! configure it!
+    // TODO These "magic number" could go into our applicaton properties
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
