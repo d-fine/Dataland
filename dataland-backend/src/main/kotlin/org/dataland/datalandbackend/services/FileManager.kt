@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -35,6 +34,9 @@ class FileManager(
 
     private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
+    private val maxFiles = 20
+    private val maxBytesPerFile = 5000000
+
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
     }
@@ -49,7 +51,7 @@ class FileManager(
         return timestamp + "_" + uniqueId
     }
 
-    private fun securityChecks(filesToCheck: List<MultipartFile>, maxFiles: Int, maxBytesPerFile: Int) {
+    private fun securityChecks(filesToCheck: List<MultipartFile>) {
         val numberOfFiles = filesToCheck.size
         if (numberOfFiles > maxFiles) {
             throw InvalidInputApiException(
@@ -84,7 +86,7 @@ class FileManager(
         return fileId
     }
 
-    private fun sendEmailWithFiles(files: List<MultipartFile>) {
+    private fun sendEmailWithFiles(files: List<MultipartFile>, isRequesterNameHidden: Boolean) {
         val content = EmailContent(
             "Dataland Excel Upload",
             "Someone uploaded files to Dataland.\nPlease review.",
@@ -97,6 +99,16 @@ class FileManager(
                 )
             }.toList()
         )
+
+        /* TODO: Send requester info along with excel files, if the "hidden" flag is set to "false"
+
+            if (!isRequesterNameHidden) {
+                addToMail(keycloakUserId, keycloakUserName, keycloakUserMailAddress)
+            }
+            else { *sendMailAsBefore* }
+
+        * */
+
         emailSender.sendInfoEmail(defaultReceiver, content)
     }
 
@@ -109,7 +121,7 @@ class FileManager(
      * @param excelFiles is the Excel file to store
      */
     fun storeExcelFiles(excelFiles: List<MultipartFile>, numberOfFiles: Int, uploadId: String) {
-        securityChecks(excelFiles, 20, 5000000)
+        securityChecks(excelFiles)
 
         logger.info("Storing $numberOfFiles Excel files for upload with ID $uploadId.")
 
@@ -122,34 +134,22 @@ class FileManager(
     }
 
     /**
-     * Method to find a specific Excel file in a map by looking for its file ID, and then returning the Excel file.
-     * @param excelFileId is the identifier which is needed to identify the required Excel file
-     * @return the actual Excel file
-     */
-    fun provideExcelFile(excelFileId: String): MultipartFile {
-        logger.info("Searching for Excel file with file ID $excelFileId in in-memory storage.")
-        if (temporaryFileStore.containsKey(excelFileId)) {
-            return temporaryFileStore[excelFileId]!!
-        }
-        throw ResourceNotFoundApiException("File not found", "Dataland does not know the file ID $excelFileId")
-    }
-    /**
      * Method to submit an invitation request
      *  @param excelFiles is the Excel file to store
      * @return a response model object with info about the upload process
      */
-    fun submitInvitation(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+    fun submitInvitation(excelFiles: List<MultipartFile>, isRequesterNameHidden: Boolean): ExcelFilesUploadResponse {
         val userId = getUserId()
         val numberOfFiles = excelFiles.size
         val uploadId = generateUploadId()
         userIdToUploadId[userId] = uploadId
         storeExcelFiles(excelFiles, numberOfFiles, uploadId)
         val listOfFileIds = uploadHistory[uploadId]!!
-        addRequestMetaData(userId, userIdToUploadId)
+        addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
 
-        sendEmailWithFiles(excelFiles) // hier weg und triggern durch invitation request meta data
-        removeFilesFromStorage(listOfFileIds) // hier weg und triggern durch invitation request meta data
-        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
+        // sendEmailWithFiles(excelFiles, isRequesterNameHidden)
+        removeFilesFromStorage(listOfFileIds)
+        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel file/s.")
     }
     /**
      * Method to add the metadata of an invitation request
