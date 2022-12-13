@@ -225,6 +225,60 @@ jobs:
         with:
           name: lcovResults
           path: fe-coverage
+      - name: compileKotlin
+        if: always()
+        run: ./gradlew compileKotlin --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: compileJava
+        if: always()
+        run: ./gradlew compileJava --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: compileTestKotlin
+        if: always()
+        run: ./gradlew  compileTestKotlin  --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: compileTestJava
+        if: always()
+        run: ./gradlew compileTestJava --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: npmSetup
+        if: always()
+        run: ./gradlew npmSetup  --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: npmInstall
+        if: always()
+        run: ./gradlew  npmInstall  --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: generateClients
+        if: always()
+        run: ./gradlew  generateClients --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: npm_run_build
+        if: always()
+        run: ./gradlew  npm_run_build   --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: sonarqube
+        if: always()
+        run: ./gradlew sonarqube --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Generate jacocoTestReport and run Sonar
         if: always()
         run: ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build  sonarqube --no-daemon --stacktrace
