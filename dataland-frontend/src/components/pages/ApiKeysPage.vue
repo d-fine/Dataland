@@ -24,7 +24,11 @@
       </MiddleCenterDiv>
 
       <div v-if="this.pageState === 'create' && !waitingForData" class="col-12 md:col-8 lg:col-6">
-        <CreateApiKeyCard @cancelCreate="setActivePageState('view')" @generateApiKey="generateApiKey" />
+        <CreateApiKeyCard
+          :userRoles="userRoles"
+          @cancelCreate="setActivePageState('view')"
+          @generateApiKey="generateApiKey"
+        />
       </div>
 
       <div v-if="existsApiKey && !waitingForData && pageState === 'view'">
@@ -59,7 +63,7 @@
             </template>
           </MessageComponent>
 
-          <ApiKeyCard :expiryDate="expiryDate * 1000" @revokeKey="revokeApiKey" />
+          <ApiKeyCard :userRoles="userRoles" :expiryDate="expiryDate * 1000" @revokeKey="revokeApiKey" />
         </div>
       </div>
     </TheContent>
@@ -97,7 +101,7 @@
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { defineComponent, inject, ref } from "vue";
+import { ComponentPublicInstance, defineComponent, inject, ref } from "vue";
 import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
@@ -130,7 +134,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      newKeyHolderRef: ref(),
+      newKeyHolderRef: ref<ComponentPublicInstance<typeof PrimeTextarea> | null>(null),
     };
   },
   data() {
@@ -141,6 +145,7 @@ export default defineComponent({
       regenerateConfirmationVisible: false,
       newKey: "",
       expiryDate: 0,
+      userRoles: [] as Array<string>,
     };
   },
   computed: {
@@ -169,6 +174,7 @@ export default defineComponent({
         this.waitingForData = false;
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
+        this.userRoles = apiKeyMetaInfoForUser.data.keycloakRoles ? apiKeyMetaInfoForUser.data.keycloakRoles : [];
       } catch (error) {
         console.error(error);
       }
@@ -212,8 +218,9 @@ export default defineComponent({
     },
 
     copyToClipboard() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      (this.newKeyHolderRef.$el as HTMLTextAreaElement).focus();
+      if (this.newKeyHolderRef) {
+        (this.newKeyHolderRef.$el as HTMLTextAreaElement).focus();
+      }
       void navigator.clipboard.writeText(this.newKey);
     },
   },
