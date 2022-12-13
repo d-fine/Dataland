@@ -1,13 +1,13 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.entities.RequestMetaDataEntity
 import com.mailjet.client.transactional.SendContact
+import org.dataland.datalandbackend.entities.RequestMetaDataEntity
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +39,7 @@ class FileManager(
         return UUID.randomUUID().toString()
     }
 
-    private fun getUserId(): String{
+    private fun getUserId(): String {
         return SecurityContextHolder.getContext().authentication.name
     }
 
@@ -107,13 +107,10 @@ class FileManager(
     /**
      * Method to store an Excel file in a map with an associated filed ID as key.
      * @param excelFiles is the Excel file to store
-     * @return a response model object with info about the upload process
      */
-    fun storeExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+    fun storeExcelFiles(excelFiles: List<MultipartFile>, numberOfFiles: Int, uploadId: String) {
         securityChecks(excelFiles, 20, 5000000)
-        val userId = getUserId()
-        val numberOfFiles = excelFiles.size
-        val uploadId = generateUploadId()
+
         logger.info("Storing $numberOfFiles Excel files for upload with ID $uploadId.")
 
         val listOfNewFileIds = mutableListOf<String>()
@@ -122,10 +119,6 @@ class FileManager(
             listOfNewFileIds.add(returnedFileId)
         }
         uploadHistory[uploadId] = listOfNewFileIds
-        userIdToUploadId[userId] = uploadId
-
-
-        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
     }
 
     /**
@@ -142,8 +135,58 @@ class FileManager(
     }
     /**
      * Method to submit an invitation request
+     *  @param excelFiles is the Excel file to store
+     * @return a response model object with info about the upload process
      */
-    fun submitInvitation(): RequestMetaData {
+    fun submitInvitation(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+        val userId = getUserId()
+        val numberOfFiles = excelFiles.size
+        val uploadId = generateUploadId()
+        userIdToUploadId[userId] = uploadId
+        storeExcelFiles(excelFiles, numberOfFiles, uploadId)
+        val listOfFileIds = uploadHistory[uploadId]!!
+        addRequestMetaData(userId, userIdToUploadId)
+
+        sendEmailWithFiles(excelFiles) // hier weg und triggern durch invitation request meta data
+        removeFilesFromStorage(listOfFileIds) // hier weg und triggern durch invitation request meta data
+        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
+    }
+    /**
+     * Method to add the metadata of an invitation request
+     * @param userId denotes information about user
+     * @param userIdToUploadId denotes information about userId-uploadId relationship
+     * @return information of the newly created entry in request metadata database
+     * including the generated company ID
+     */
+    @Transactional
+    fun addRequestMetaData(userId: String, userIdToUploadId: MutableMap<String, String>): RequestMetaData {
+        val requestTimestamp = Instant.now().epochSecond.toString()
+        val uploadId = userIdToUploadId[userId]!!
+        val requestMetaData = RequestMetaData(
+            userId,
+            uploadId,
+            requestTimestamp,
+        )
+        logger.info("Creating Request MetaData entry with ID $uploadId!!")
+        createStoredRequestMetaData(requestMetaData)
+        return requestMetaData
+    }
+    private fun createStoredRequestMetaData(
+        requestMetaData: RequestMetaData
+    ): RequestMetaDataEntity {
+
+        val newRequestMetaDataEntity = RequestMetaDataEntity(
+            uploadId = requestMetaData.uploadId,
+            userId = requestMetaData.userId,
+            timeStamp = requestMetaData.requestTimestamp,
+        )
+        return requestMetaDataRepository.save(newRequestMetaDataEntity)
+    }
+
+    /**
+     * Method to submit an invitation request
+     */
+    fun resetInvitation(): RequestMetaData {
         val userId = getUserId()
         val uploadId = userIdToUploadId[userId]
         val listOfFileIds: List<String> = uploadHistory[uploadId]!!
@@ -153,41 +196,6 @@ class FileManager(
             excelFiles.add(singleExcelFile)
         }
 
-        sendEmailWithFiles(excelFiles) //hier weg und triggern durch invitation request meta data
-        removeFilesFromStorage(listOfFileIds) //hier weg und triggern durch invitation request meta data
         return addRequestMetaData(userId, userIdToUploadId)
-    }
-    /**
-     * Method to add the metadata of an invitation request
-     * @param requestMetaData denotes information about the meta data of the invitation request
-     * @return information of the newly created entry in request metadata database
-     * including the generated company ID
-     */
-    @Transactional
-    fun addRequestMetaData(userId: String, userIdToUploadId:  MutableMap<String, String>): RequestMetaData {
-        val requestId = generateUUID()
-        val requestTimestamp = Instant.now().epochSecond.toString()
-        val uploadId = userIdToUploadId[userId]
-        val requestMetaData = RequestMetaData(
-        requestId,
-        userId,
-        uploadId,
-        requestTimestamp,
-        )
-        logger.info("Creating Request MetaData entry with ID $requestId")
-        createStoredRequestMetaData(requestMetaData)
-        return requestMetaData
-    }
-    private fun createStoredRequestMetaData(
-        requestMetaData: RequestMetaData
-    ): RequestMetaDataEntity {
-
-        val newRequestMetaDataEntity = RequestMetaDataEntity(
-            requestId = requestMetaData.requestId,
-            userId = requestMetaData.userId,
-            uploadId = requestMetaData.uploadId,
-            timeStamp = requestMetaData.requestTimestamp,
-        )
-        return requestMetaDataRepository.save(newRequestMetaDataEntity)
     }
 }

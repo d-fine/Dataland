@@ -39,7 +39,7 @@ interface FileApi {
      * @param excelFiles are the Excel files which need to be stored
      * @return a response object with info about the result and the success of the upload process
      */
-    fun uploadExcelFiles(@RequestParam("files") excelFiles: List<MultipartFile>?):
+    fun submitInvitation(@RequestParam("files") excelFiles: List<MultipartFile>?):
         ResponseEntity<ExcelFilesUploadResponse>
 
     @Operation(
@@ -49,12 +49,11 @@ interface FileApi {
     @ApiResponses(
         value = [ApiResponse(responseCode = "200", description = "Successfully stored invitation request meta data.")]
     )
-    @PostMapping(
+    @PostMapping()
 
-    )
-            /**
-             * A method to store invitation request meta data
-             */
-    fun postRequestMetaData():
-            ResponseEntity<RequestMetaData>
+    /**
+     * A method to reset the invitation request in memory storage
+     */
+    fun resetInvitationInMemoryStorage():
+        ResponseEntity<RequestMetaData>
 }

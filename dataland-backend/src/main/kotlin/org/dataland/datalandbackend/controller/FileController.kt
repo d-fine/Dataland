@@ -22,7 +22,7 @@ class FileController(
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun uploadExcelFiles(excelFiles: List<MultipartFile>?): ResponseEntity<ExcelFilesUploadResponse> {
+    override fun submitInvitation(excelFiles: List<MultipartFile>?): ResponseEntity<ExcelFilesUploadResponse> {
         if (excelFiles.isNullOrEmpty()) {
             throw InvalidInputApiException(
                 "Some input files must be specified.",
@@ -30,10 +30,10 @@ class FileController(
             )
         }
         logger.info("Received a request to store ${excelFiles.size} Excel files.")
-        return ResponseEntity.ok(fileManager.storeExcelFiles(excelFiles))
+        return ResponseEntity.ok(fileManager.submitInvitation(excelFiles))
     }
 
-        override fun postRequestMetaData(): ResponseEntity<RequestMetaData> {
-            return ResponseEntity.ok(fileManager.submitInvitation())
-        }
+    override fun resetInvitationInMemoryStorage(): ResponseEntity<RequestMetaData> {
+        return ResponseEntity.ok(fileManager.resetInvitation())
+    }
 }

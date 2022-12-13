@@ -12,14 +12,11 @@ import javax.persistence.Table
 @Table(name = "stored_invitation_request_meta_data")
 data class RequestMetaDataEntity(
     @Id
-    @Column(name = "request_id")
-    val requestId: String,
+    @Column(name = "upload_id")
+    val uploadId: String,
 
     @Column(name = "user_id")
     var userId: String,
-
-    @Column(name = "user_id")
-    var uploadId: String?,
 
     @Column(name = "timestamp")
     var timeStamp: String,
