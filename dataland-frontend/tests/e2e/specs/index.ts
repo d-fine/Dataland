@@ -34,6 +34,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./swagger-ui");
   require("./company-metadata/SearchCompaniesForFrameworkDataDropdownFilter");
   require("./company-metadata/CompaniesOnlySearch");
+  require("./user-api-key");
 }
 
 if (cypressTestGroup === 102) {
@@ -43,11 +44,11 @@ if (cypressTestGroup === 102) {
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./eu-taxonomy-non-financials");
   require("./eu-taxonomy-financials");
+  require("./admin-tools");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
   require("./user-authentication");
-  require("./admin-tools");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
