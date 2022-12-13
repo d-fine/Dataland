@@ -149,7 +149,7 @@ services:
       - internal
   dataland-edc:
     restart: always
-    profiles: []
+    profiles: ["unused"]
     image: ghcr.io/d-fine/datalandedc/edcserver:0.2.9
     networks:
       - internal

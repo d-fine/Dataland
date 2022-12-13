@@ -78,12 +78,12 @@ class DataManager(
         try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
-            val message = "Error storing data." +
+            val internalMessage = "Error storing data." +
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
-            logger.error(message)
+            logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                message,
+                internalMessage,
                 e
             )
         }
@@ -127,11 +127,14 @@ class DataManager(
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
-            logger.error(
-                "Error requesting data. Received ServerException with Message:" +
+            val internalMessage = "Error requesting data. Received ServerException with Message:" +
                     " ${e.message}. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Download from storage failed", "The download of the dataset from the storage failed",
+                internalMessage,
+                e
             )
-            throw e
         }
         return dataAsString
     }

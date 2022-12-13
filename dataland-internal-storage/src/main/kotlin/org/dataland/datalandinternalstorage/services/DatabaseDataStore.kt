@@ -35,7 +35,7 @@ class DatabaseDataStore(
         return dataItemRepository.findById(dataId).orElseThrow {
             InvalidInputApiException(
                 "You provided an invalid data id.",
-                "There is no data with id $dataId stored."
+                "test"
             )
         }.data
     }

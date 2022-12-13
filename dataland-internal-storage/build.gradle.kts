@@ -14,8 +14,6 @@ val jacocoClasses by extra(
 val jacocoVersion: String by project
 
 plugins {
-    application
-    java
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
@@ -24,7 +22,6 @@ plugins {
     id("org.springframework.boot")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
-    id("org.openapi.generator")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
