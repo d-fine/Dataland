@@ -25,6 +25,7 @@ class FileManager(
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
     private val uploadHistory = mutableMapOf<String, List<String>>()
+    fun UploadHistory(): Map<String, List<String>> = uploadHistory
 
     private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
@@ -95,6 +96,8 @@ class FileManager(
      * @return a response model object with info about the upload process
      */
     fun storeExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
+        excelFiles.forEach { logger.error("${it.name} ${it.originalFilename}") }
+
         securityChecks(excelFiles, 20, 5000000)
 
         val numberOfFiles = excelFiles.size
