@@ -2,55 +2,28 @@
     #Variables
 =============================================*/
 
-/**
- * TABLE OF CONTENTS
- *
- * COLORS
- * Brand colors...................These are the main brand colors.
- * Neutral colors.................White and black, gray scale, secondary colors.
- * Utility colors.................Other colors to represent states: info, warning, success
- *
- * TYPOGRAPHY
- * Font families..................The fonts used in DATALAND.
- * Font weights...................Font weights
- * Sizes..........................Font sizing for body text, paragraphs, inputs
- * Heading sizes..................Font sizing for page headings
- *
- * BREAKPOINTS
- * Breakpoints....................Global responsive breakpoints definitions.
- *
- * SPACING
- * Spacing........................Global fixed set of spacing variables
- */
+/*=====  Colors  ======*/
 
-/*=============================================
-=                  Colors                     =
-=============================================*/
-
-/* Brand Colors */
-$prime-color: #E67F3F;
-$green-light: #9ee2b0;
-
-$dark: #1d1f22;
-$dark-light: #737680;
-
-/* Neutral Colors */
-
-$gray: #a3a5ad;
-$gray-light: #bebfc4;
-
-$white: #fff;
-$white-dark: #f1f2f3;
-
-/* Utility colors */
-
-$red: #d12727;
-$red-light: #f8dedf;
-
-$blue: #0468db;
-$blue-light: #b4d2f4;
+$orange-prime: #E67F3F;
+$blue-light: #A1C5D3;
+$blue-lighter: #DBF0F4;
+$aquamarine-dark: #013D48;
+$full-dark: #0B191F;
+$brown-dark: #1B1B1B;
+$brown: #292219;
+$brown-light: #5A4F36;
+$brown-lighter: #958D7C;
+$gray: #C4C4C4;
+$gray-light: #E0DFDE;
+$gray-lighter: #F5F5F5;
+$paper-white: #F7F9FA;
+$white: #FFFFFF;
+$red: #EE1A1A;
+$green: #4BB917;
 
 /*=====  End of Colors  ======*/
+
+/*=====  Typography  ======*/
 
 /*=============================================
 =                Typography                   =
