@@ -25,7 +25,7 @@
 
       <div v-if="this.pageState === 'create' && !waitingForData" class="col-12 md:col-8 lg:col-6">
         <CreateApiKeyCard
-          :userRoles="userRoles"
+          :userRoles="userRolesAccordingToKeycloak"
           @cancelCreate="setActivePageState('view')"
           @generateApiKey="generateApiKey"
         />
@@ -63,7 +63,11 @@
             </template>
           </MessageComponent>
 
-          <ApiKeyCard :userRoles="userRoles" :expiryDate="expiryDate * 1000" @revokeKey="revokeApiKey" />
+          <ApiKeyCard
+            :userRoles="userRolesAccordingToApiKey"
+            :expiryDate="expiryDate * 1000"
+            @revokeKey="revokeApiKey"
+          />
         </div>
       </div>
     </TheContent>
@@ -145,7 +149,8 @@ export default defineComponent({
       regenerateConfirmationVisible: false,
       newKey: "",
       expiryDate: 0,
-      userRoles: [] as Array<string>,
+      userRolesAccordingToApiKey: [] as Array<string>,
+      userRolesAccordingToKeycloak: [] as Array<string>,
     };
   },
   computed: {
@@ -167,14 +172,23 @@ export default defineComponent({
 
     async getApiKeyMetaInfoForUser() {
       try {
+        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
+        const resolvedKeycloakPromise = await keycloakPromiseGetter();
         const apiKeyManagerController = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
+        console.log("resolvedKeycloakPromise", resolvedKeycloakPromise);
+        console.log("apiKeyMetaInfoForUser", apiKeyMetaInfoForUser);
         this.waitingForData = false;
+        this.userRolesAccordingToApiKey = apiKeyMetaInfoForUser.data.keycloakRoles
+          ? apiKeyMetaInfoForUser.data.keycloakRoles
+          : [];
+        this.userRolesAccordingToKeycloak = resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
+          ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
+          : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
-        this.userRoles = apiKeyMetaInfoForUser.data.keycloakRoles ? apiKeyMetaInfoForUser.data.keycloakRoles : [];
       } catch (error) {
         console.error(error);
       }
@@ -206,6 +220,9 @@ export default defineComponent({
         this.existsApiKey = true;
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : 0;
         this.newKey = response.data.apiKey;
+        this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
+          ? response.data.apiKeyMetaInfo.keycloakRoles
+          : [];
         this.setActivePageState("view");
       } catch (error) {
         console.error(error);
