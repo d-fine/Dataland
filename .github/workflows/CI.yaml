@@ -44,12 +44,11 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
-      - name: Login to Github Packages
-        uses: docker/login-action@v2
+      - uses: actions/setup-java@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          distribution: temurin
+          java-version: 17
+          cache: gradle
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
       - name: Execute linting and detekt
