@@ -20,24 +20,84 @@
     }
   ],
   "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "file-controller"
+        ],
+        "summary": "Post invitation meta data",
+        "description": "Uploads the meta data of an invitation request.",
+        "operationId": "resetInvitation",
+        "responses": {
+          "200": {
+            "description": "Successfully stored invitation request meta data.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestMetaData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/invite": {
       "post": {
         "tags": [
           "file-controller"
         ],
-        "summary": "Upload Excel files.",
-        "description": "Excel files are uploaded to Dataland and are stored.",
-        "operationId": "uploadExcelFiles",
+        "summary": "Create a Dataland invite.",
+        "description": "Excel files with invite info are processed.",
+        "operationId": "submitInvitation",
+        "parameters": [
+          {
+            "name": "isRequesterNameHidden",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "files"
+                  "excelFiles"
                 ],
                 "type": "object",
                 "properties": {
-                  "files": {
+                  "excelFiles": {
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -51,7 +111,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully stored Excel files.",
+            "description": "Successfully created an invite.",
             "content": {
               "application/json": {
                 "schema": {
@@ -87,9 +147,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
@@ -1409,6 +1466,24 @@
   },
   "components": {
     "schemas": {
+      "RequestMetaData": {
+        "required": [
+          "requestTimestamp",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "requestTimestamp": {
+            "type": "string"
+          }
+        }
+      },
       "ExcelFilesUploadResponse": {
         "required": [
           "uploadId",
