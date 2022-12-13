@@ -21,8 +21,40 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import {CompanyInformation} from "@clients/backend";
+import {inject} from "vue";
+import Keycloak from "keycloak-js";
+
 export default {
   name: "TheBottom",
   components: { PrimeButton },
-};
+};/*
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
+  data: () => ({
+    postInvitation: false,
+  }),
+  methods: {
+    async submitInvitation(event) {
+      const filesToUpload: Array<File> = event.files
+      try {
+        const fileControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getFileControllerApi();
+        const response = await fileControllerApi.submitInvitation(filesToUpload);
+        this.uploadedFiles.push(...filesToUpload);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.uploadInProgress = false
+        this.uploadFinished = true
+      }
+    },
+  },
+}*/
 </script>

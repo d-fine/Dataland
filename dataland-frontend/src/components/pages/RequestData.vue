@@ -96,7 +96,24 @@
       </div>
     </TheContent>
     <PrimeButton label="TESTUPLOAD" @click="uploadAllSelectedFiles" />
-    <TheBottom />
+    <div class="d-header m-0 fixed bottom-0 surface-900 h-4rem w-full grid align-items-center">
+      <div class="col-1 col-offset-10">
+        <Button label="Reset"
+                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem"
+                     name="reset_request_button"
+                     @click="clearUpload">
+          Reset
+        </Button>
+      </div>
+      <div class="col-1">
+        <Button label="Submit"
+                     class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-9"
+                     name="submit_request_button"
+                     @click="uploadAllSelectedFiles">
+          Submit
+        </Button>
+      </div>
+    </div>
   </AuthenticationWrapper>
 </template>
 
@@ -108,7 +125,6 @@ import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import TheBottom from "@/components/generics/TheBottom.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -124,7 +140,6 @@ import {
 export default defineComponent({
   name: "RequestData",
   components: {
-    TheBottom,
     AuthenticationWrapper,
     PrimeButton,
     TheHeader,
@@ -174,8 +189,22 @@ export default defineComponent({
         // router push to new page with progressbar
       }
     },
+    async clearUpload(): Promise<void>  {
+      try {
+        const fileControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getFileControllerApi();
+        await fileControllerApi.resetInvitation();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.$refs.fileUpload.clear()
+      }
+    },
   },
-});
+
+})
+
 
 // TODO delete the TESTUPLOAD button at the end of dev
 </script>
