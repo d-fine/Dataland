@@ -43,7 +43,13 @@
         </div>
 
         <div v-if="expireTimeDropdown === 'custom'" class="col-7 text-right">
-          <Calendar inputId="icon" v-model="customDate" :showIcon="true" dateFormat="D, M dd, yy" />
+          <Calendar
+            data-test="expireDataPicker"
+            inputId="icon"
+            v-model="customDate"
+            :showIcon="true"
+            dateFormat="D, M dd, yy"
+          />
         </div>
 
         <span
@@ -60,7 +66,12 @@
       </div>
     </div>
     <div class="mt-3 text-right">
-      <PrimeButton label="CANCEL" @click="$emit('cancelCreate')" class="p-button-outlined text-sm ml-3" />
+      <PrimeButton
+        data-test="cancelGenerateApiKey"
+        label="CANCEL"
+        @click="$emit('cancelCreate')"
+        class="p-button-outlined text-sm ml-3"
+      />
       <PrimeButton
         id="generateApiKey"
         @click="checkDateAndEmitGenerateApiKey"
@@ -105,7 +116,6 @@ export default defineComponent({
   }),
   computed: {},
   methods: {
-    // TODO invent a better logic
     setExpireTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expireTimeDays = 0;
@@ -117,15 +127,13 @@ export default defineComponent({
       this.isExpireTimeCorrect = true;
     },
     checkDateAndEmitGenerateApiKey() {
-      if (this.expireTimeDays && this.expireTimeDays > 0) {
+      if (
+        (this.expireTimeDays && this.expireTimeDays > 0) ||
+        (this.expireTimeDropdown === "custom" && this.expireTimeDays > 0)
+      ) {
         this.$emit("generateApiKey", this.expireTimeDays);
-        return;
       } else if (this.expireTimeDropdown === "noExpiry" && this.expireTimeDays === 0) {
         this.$emit("generateApiKey");
-        return;
-      } else if (this.expireTimeDropdown === "custom" && this.expireTimeDays > 0) {
-        this.$emit("generateApiKey", this.expireTimeDays);
-        return;
       } else {
         this.isExpireTimeCorrect = false;
       }

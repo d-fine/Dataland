@@ -6,7 +6,6 @@
     footer="Footer"
     v-model:visible="viewDeleteConfirmation"
     :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-    :style="{ width: '50vw' }"
   >
     <template #header>
       <h2 class="m-0">Delete API Key</h2>

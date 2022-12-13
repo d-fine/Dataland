@@ -25,6 +25,7 @@
 
       <div v-if="this.pageState === 'create' && !waitingForData" class="col-12 md:col-8 lg:col-6">
         <CreateApiKeyCard
+          data-test="CreateApiKeyCard"
           :userRoles="userRolesAccordingToKeycloak"
           @cancelCreate="setActivePageState('view')"
           @generateApiKey="generateApiKey"
@@ -79,7 +80,6 @@
       footer="Footer"
       v-model:visible="regenerateConfirmationVisible"
       :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-      :style="{ width: '50vw' }"
     >
       <template #header>
         <h2 class="m-0">Regenerate API Key</h2>
