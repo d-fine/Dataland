@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.email
 
-import com.mailjet.client.transactional.SendContact
 import com.mailjet.client.transactional.TransactionalEmail
 
 /**
@@ -8,9 +7,9 @@ import com.mailjet.client.transactional.TransactionalEmail
  * A class that stores the sender, receiver and content of an email
  */
 data class Email(
-    val sender: SendContact,
-    val receivers: List<SendContact>,
-    val cc: List<SendContact>,
+    val sender: EmailContact,
+    val receivers: List<EmailContact>,
+    val cc: List<EmailContact>,
     val content: EmailContent
 )
 

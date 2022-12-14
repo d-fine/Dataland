@@ -60,6 +60,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Check that the reset password e-mail is sent and displayed correctly
 - [ ] Check that the password can be reset
 
+## Check e-mails sent by backend
+- [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
+
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
