@@ -15,7 +15,11 @@
         </div>
       </MiddleCenterDiv>
 
-      <MiddleCenterDiv v-if="!existsApiKey && !waitingForData && this.pageState !== 'create'" class="col-12">
+      <MiddleCenterDiv
+        data-test="noApiKeyWelcomeComponent"
+        v-if="!existsApiKey && !waitingForData && this.pageState !== 'create'"
+        class="col-12"
+      >
         <div>
           <img alt="light bulb" src="@/assets/images/elements/bulb_icon.svg" />
           <p class="font-medium text-xl text-color-third">You have no API Key!</p>
@@ -23,18 +27,27 @@
         </div>
       </MiddleCenterDiv>
 
-      <div v-if="this.pageState === 'create' && !waitingForData" class="col-12 md:col-8 lg:col-6">
+      <div
+        data-test="CreateApiKeyCard"
+        v-if="this.pageState === 'create' && !waitingForData"
+        class="col-12 md:col-8 lg:col-6"
+      >
         <CreateApiKeyCard
-          data-test="CreateApiKeyCard"
           :userRoles="userRolesAccordingToKeycloak"
           @cancelCreate="setActivePageState('view')"
           @generateApiKey="generateApiKey"
         />
       </div>
 
-      <div v-if="existsApiKey && !waitingForData && pageState === 'view'">
+      <div data-test="apiKeyInfo" v-if="existsApiKey && !waitingForData && pageState === 'view'">
         <div class="col-12 md:col-8 lg:col-6">
-          <MessageComponent v-if="newKey.length" severity="success" :closable="false" class="border-2">
+          <MessageComponent
+            data-test="newKeyHolder"
+            v-if="newKey.length"
+            severity="success"
+            :closable="false"
+            class="border-2"
+          >
             <template #text-info>
               <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
               <div class="my-2">
@@ -57,7 +70,7 @@
             </template>
           </MessageComponent>
 
-          <MessageComponent v-if="!newKey" severity="block" class="border-2">
+          <MessageComponent data-test="regenerateApiKeyMessage" v-if="!newKey" severity="block" class="border-2">
             <template #text-info> If you don't have access to your API Key you can generate a new one. </template>
             <template #action-button>
               <PrimeButton @click="regenerateConfirmToggle" label="REGENERATE API KEY" />
@@ -86,8 +99,14 @@
       Are you sure you want to Regenerate your API Key?
       <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
       <template #footer>
-        <PrimeButton label="CANCEL" @click="regenerateConfirmToggle" class="p-button-outlined text-sm" />
         <PrimeButton
+          data-test="regenerateApiKeyCancelButton"
+          label="CANCEL"
+          @click="regenerateConfirmToggle"
+          class="p-button-outlined text-sm"
+        />
+        <PrimeButton
+          data-test="regenerateApiKeyConfirmButton"
           label="CONFIRM"
           @click="
             () => {
@@ -118,6 +137,8 @@ import PrimeTextarea from "primevue/textarea";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
+import { ApiKeyControllerApiInterface, ApiKeyMetaInfo } from "@clients/apikeymanager";
+import { AxiosResponse } from "axios";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -173,12 +194,12 @@ export default defineComponent({
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
-        const apiKeyManagerController = await new ApiClientProvider(
+        const apiKeyManagerController: ApiKeyControllerApiInterface = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
-        const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
-        console.log("resolvedKeycloakPromise", resolvedKeycloakPromise);
-        console.log("apiKeyMetaInfoForUser", apiKeyMetaInfoForUser);
+        const apiKeyMetaInfoForUser =
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          (await apiKeyManagerController.getApiKeyMetaInfoForUser()) as AxiosResponse<ApiKeyMetaInfo>;
         this.waitingForData = false;
         this.userRolesAccordingToApiKey = apiKeyMetaInfoForUser.data.keycloakRoles
           ? apiKeyMetaInfoForUser.data.keycloakRoles

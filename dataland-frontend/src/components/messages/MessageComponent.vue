@@ -2,10 +2,10 @@
   <transition name="p-message" appear>
     <div v-show="visible" :class="containerClass" class="p-message p-component border-round-sm">
       <div class="p-message-wrapper">
-        <div class="text-left">
+        <div data-test="text-info" class="text-left">
           <slot name="text-info"></slot>
         </div>
-        <div class="text-right action-button ml-auto">
+        <div data-test="action-button" class="text-right action-button ml-auto">
           <slot name="action-button"></slot>
         </div>
       </div>

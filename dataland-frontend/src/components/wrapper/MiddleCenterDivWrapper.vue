@@ -1,5 +1,5 @@
 <template>
-  <div class="midlle-center-div">
+  <div class="middle-center-div">
     <slot></slot>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.midlle-center-div {
+.middle-center-div {
   flex: 1;
   align-items: center;
   /* align-content: center; */
