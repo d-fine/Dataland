@@ -31,8 +31,4 @@ class FileController(
         )
         return ResponseEntity.ok(fileManager.submitInvitation(excelFiles, isRequesterNameHidden))
     }
-
-    override fun resetInvitation(): ResponseEntity<RequestMetaData> {
-        return ResponseEntity.ok(fileManager.resetInvitation())
-    }
 }

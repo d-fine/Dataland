@@ -173,20 +173,4 @@ class FileManager(
         )
         return requestMetaDataRepository.save(newRequestMetaDataEntity)
     }
-
-    /**
-     * Method to submit an invitation request
-     */
-    fun resetInvitation(): RequestMetaData {
-        val userId = getUserId()
-        val uploadId = userIdToUploadId[userId]
-        val listOfFileIds: List<String> = uploadHistory[uploadId]!!
-        val excelFiles = mutableListOf<MultipartFile>()
-        listOfFileIds.forEach { FileId ->
-            val singleExcelFile = temporaryFileStore[FileId]!!
-            excelFiles.add(singleExcelFile)
-        }
-
-        return addRequestMetaData(userId, userIdToUploadId)
-    }
 }
