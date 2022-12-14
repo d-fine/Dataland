@@ -12,12 +12,12 @@ class InvitationEmailGenerator {
         private val cc = getEmails("INVITATION_REQUEST_CC")
 
         private fun getEmails(envName: String): List<EmailContact> {
-            return System.getenv(envName)?.split(";")?.filter { it.isNotEmpty() }?.map { EmailContact(it) }
+            return (System.getenv(envName)?.split(";")?.filter { it.isNotBlank() }?.map { EmailContact(it) })
                 ?: listOf()
         }
 
         fun generate(attachments: List<EmailAttachment>, requesterName: String?): Email {
-            val message = "User " + (requesterName ?: "anonymous") + " requested an invitation.\nPlease review."
+            val message = (requesterName ?: "An anonymous user") + " requested an invitation.\nPlease review."
             val content = EmailContent(
                 "Dataland Invitation Request",
                 message,

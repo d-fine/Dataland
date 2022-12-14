@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID
+import org.springframework.security.oauth2.jwt.Jwt
 
 /**
  * Implementation of a file manager for Dataland
@@ -41,6 +42,11 @@ class FileManager(
 
     private fun getUserId(): String {
         return SecurityContextHolder.getContext().authentication.name
+    }
+
+    private fun getUsername(): String {
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        return jwt.getClaimAsString("preferred_username")
     }
 
     private fun generateUploadId(): String {
@@ -96,7 +102,7 @@ class FileManager(
         val requesterName = if(isRequesterNameHidden) {
             null
         } else {
-            getUserId()
+            "User ${getUsername()} (Keycloak id: ${getUserId()})"
         }
         val email = InvitationEmailGenerator.generate(attachments, requesterName)
         emailSender.sendEmail(email)
