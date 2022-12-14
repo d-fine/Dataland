@@ -27,7 +27,6 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.log4j)
     implementation(libs.log4j.api)

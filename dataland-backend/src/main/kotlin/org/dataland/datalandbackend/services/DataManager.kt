@@ -89,7 +89,7 @@ class DataManager(
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from EuroDaT. Correlation ID: $correlationId"
+                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
         )
         return dataId
     }
@@ -128,7 +128,7 @@ class DataManager(
             dataAsString = storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             val internalMessage = "Error requesting data. Received ServerException with Message:" +
-                    " ${e.message}. Correlation ID: $correlationId"
+                " ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Download from storage failed", "The download of the dataset from the storage failed",

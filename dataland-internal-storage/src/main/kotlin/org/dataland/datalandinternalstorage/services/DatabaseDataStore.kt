@@ -1,6 +1,5 @@
 package org.dataland.datalandinternalstorage.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,11 +31,6 @@ class DatabaseDataStore(
      * @return the data as json string with id dataId
      */
     fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElseThrow {
-            InvalidInputApiException(
-                "You provided an invalid data id.",
-                "test"
-            )
-        }.data
+        return dataItemRepository.findById(dataId).orElse(DataItem("", "")).data
     }
 }
