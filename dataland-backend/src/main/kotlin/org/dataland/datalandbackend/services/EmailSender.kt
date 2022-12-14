@@ -6,6 +6,7 @@ import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.email
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 /**
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     private val mailServerUrl: String = "https://api.eu.mailjet.com"
     private val clientOptions = ClientOptions.builder()
         .baseUrl(mailServerUrl)
@@ -25,6 +28,8 @@ class EmailSender {
      * @param email the email to send
      */
     fun sendEmail(email: Email) {
+        email.receivers.forEach { logger.info("Sending an email to $it.") }
+        email.cc.forEach { logger.info("Sending an email with $it in cc.") }
         val mailjetEmail = TransactionalEmail.builder().email(email).build()
         val request = SendEmailsRequest.builder().message(mailjetEmail).build()
         request.sendWith(client)
