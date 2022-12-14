@@ -127,14 +127,11 @@ class DataManager(
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
-            val internalMessage = "Error requesting data. Received ServerException with Message:" +
-                " ${e.message}. Correlation ID: $correlationId"
-            logger.error(internalMessage)
-            throw InternalServerErrorApiException(
-                "Download from storage failed", "The download of the dataset from the storage failed",
-                internalMessage,
-                e
+            logger.error(
+                "Error requesting data. Received ServerException with Message:" +
+                    " ${e.message}. Correlation ID: $correlationId"
             )
+            throw e
         }
         return dataAsString
     }
