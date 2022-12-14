@@ -31,6 +31,9 @@
             :multiple="true"
             :max-file-size=maxFileSize
             :fileLimit=fileLimit
+            @select="handleSelectFile"
+            @clear="handleClearFiles"
+            @remove="handleRemoveFile"
           >
             <template #header="{ files, clearCallback }">
               <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
@@ -97,18 +100,19 @@
     </TheContent>
     <div class="d-header m-0 fixed bottom-0 surface-900 h-4rem w-full grid align-items-center">
       <div class="col-2 col-offset-10">
-        <Button label="Reset"
+        <PrimeButton label="Reset"
                      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-1 ml-1"
                      name="reset_request_button"
                      @click="clearUpload">
           Reset
-        </Button>
-        <Button label="Submit"
+        </PrimeButton>
+        <PrimeButton label="Submit"
                 class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem ml-1"
                 name="submit_request_button"
-                @click="uploadAllSelectedFiles">
+                @click="uploadAllSelectedFiles"
+                :disabled="isSubmitDisabled">
           Submit
-        </Button>
+        </PrimeButton>
     </div>
     </div>
   </AuthenticationWrapper>
@@ -153,6 +157,7 @@ export default defineComponent({
   },
   data() {
     return {
+      isSubmitDisabled: true,
       fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE,
       fileLimit: UPLOAD_FILES_LIMIT,
@@ -160,6 +165,24 @@ export default defineComponent({
     };
   },
   methods: {
+    handleRemoveFile(event){
+      if(event.files.length === 0){
+        this.isSubmitDisabled = true
+      }
+    },
+
+    handleClearFiles(){
+      this.isSubmitDisabled = true
+    },
+
+    handleSelectFile(event){
+      console.log("ich passiere")
+      console.log(event.files)
+      if(event.files.length > 0){
+        this.isSubmitDisabled = false
+      }
+    },
+
     formatBytes(bytes: number): string {
       return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DECIMALS);
     },
