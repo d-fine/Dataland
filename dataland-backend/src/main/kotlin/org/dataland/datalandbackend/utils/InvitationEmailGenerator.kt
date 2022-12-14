@@ -12,7 +12,7 @@ class InvitationEmailGenerator {
         private val cc = getEmails("INVITATION_REQUEST_CC")
 
         private fun getEmails(envName: String): List<EmailContact> {
-            return System.getenv(envName)?.split(";")?.map { EmailContact(it) }
+            return System.getenv(envName)?.split(";")?.filter { it.isNotEmpty() }?.map { EmailContact(it) }
                 ?: listOf()
         }
 

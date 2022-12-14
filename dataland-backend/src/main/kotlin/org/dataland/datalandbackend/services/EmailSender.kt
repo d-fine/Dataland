@@ -32,6 +32,7 @@ class EmailSender {
         email.cc.forEach { logger.info("Sending an email with $it in cc.") }
         val mailjetEmail = TransactionalEmail.builder().email(email).build()
         val request = SendEmailsRequest.builder().message(mailjetEmail).build()
-        request.sendWith(client)
+        val response = request.sendWith(client)
+        response.messages.forEach { logger.info(it.toString()) }
     }
 }
