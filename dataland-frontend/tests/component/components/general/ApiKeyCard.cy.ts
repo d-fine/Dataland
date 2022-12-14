@@ -1,9 +1,9 @@
-import CreateApiKeyCard from "@/components/general/CreateApiKeyCard.vue";
+import ApiKeyCard from "@/components/general/ApiKeyCard.vue";
 import { mount } from "cypress/vue";
 
-describe("Component test for CreateApiKeyCard", () => {
+describe("Component test for ApiKeyCard.vue", () => {
   it("Should display proper user role", () => {
-    mount(CreateApiKeyCard, {
+    mount(ApiKeyCard, {
       props: {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
       },
@@ -14,7 +14,7 @@ describe("Component test for CreateApiKeyCard", () => {
   });
 
   it("Should display only user role", () => {
-    mount(CreateApiKeyCard, {
+    mount(ApiKeyCard, {
       props: {
         userRoles: ["ROLE_USER"],
       },
@@ -25,7 +25,7 @@ describe("Component test for CreateApiKeyCard", () => {
   });
 
   it("Should display only admin role", () => {
-    mount(CreateApiKeyCard, {
+    mount(ApiKeyCard, {
       props: {
         userRoles: ["ROLE_ADMIN"],
       },
