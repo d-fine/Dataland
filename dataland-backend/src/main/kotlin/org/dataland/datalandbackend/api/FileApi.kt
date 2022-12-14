@@ -48,18 +48,4 @@ interface FileApi {
     ):
         ResponseEntity<ExcelFilesUploadResponse>
 
-    @Operation(
-        summary = "Post invitation meta data",
-        description = "Uploads the meta data of an invitation request."
-    )
-    @ApiResponses(
-        value = [ApiResponse(responseCode = "200", description = "Successfully stored invitation request meta data.")]
-    )
-    @PostMapping()
-
-    /**
-     * A method to reset the invitation request in memory storage
-     */
-    fun resetInvitation():
-        ResponseEntity<RequestMetaData>
 }
