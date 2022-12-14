@@ -6,13 +6,21 @@
           <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
 
-        <div v-if="userRoles.length" class="pr-1">
+        <div data-test="userRoles" v-if="userRoles.length" class="pr-1">
           <div class="text-left text-xs ml-1 text-600">Scope</div>
           <div class="flex align-items-center justify-content-center">
-            <div v-if="userRoles.includes('ROLE_USER')" class="bg-yellow-100 border-round px-2 border-round-sm m-1">
+            <div
+              data-test="userRoleUser"
+              v-if="userRoles.includes('ROLE_USER')"
+              class="bg-yellow-100 border-round px-2 border-round-sm m-1"
+            >
               <span class="text-yellow-700 text-sm font-semibold">READ</span>
             </div>
-            <div v-if="userRoles.includes('ROLE_ADMIN')" class="bg-green-100 border-round px-2 border-round-sm m-1">
+            <div
+              data-test="userRoleAdmin"
+              v-if="userRoles.includes('ROLE_ADMIN')"
+              class="bg-green-100 border-round px-2 border-round-sm m-1"
+            >
               <span class="text-green-700 text-sm font-semibold">WRITE</span>
             </div>
           </div>
