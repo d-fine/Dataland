@@ -95,24 +95,21 @@
         </div>
       </div>
     </TheContent>
-    <PrimeButton label="TESTUPLOAD" @click="uploadAllSelectedFiles" />
     <div class="d-header m-0 fixed bottom-0 surface-900 h-4rem w-full grid align-items-center">
-      <div class="col-1 col-offset-10">
+      <div class="col-2 col-offset-10">
         <Button label="Reset"
-                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem"
+                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-1 ml-1"
                      name="reset_request_button"
                      @click="clearUpload">
           Reset
         </Button>
-      </div>
-      <div class="col-1">
         <Button label="Submit"
-                     class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-9"
-                     name="submit_request_button"
-                     @click="uploadAllSelectedFiles">
+                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem ml-1"
+                name="submit_request_button"
+                @click="uploadAllSelectedFiles">
           Submit
         </Button>
-      </div>
+    </div>
     </div>
   </AuthenticationWrapper>
 </template>
