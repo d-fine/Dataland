@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.FileApi
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.services.FileManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -17,18 +17,22 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 class FileController(
-    @Autowired var fileManager: FileManager
+    @Autowired var fileManager: FileManager,
 ) : FileApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun uploadExcelFiles(excelFiles: List<MultipartFile>?): ResponseEntity<ExcelFilesUploadResponse> {
-        if (excelFiles.isNullOrEmpty()) {
-            throw InvalidInputApiException(
-                "Some input files must be specified.",
-                "This endpoint requires files to contain at least one file."
-            )
-        }
-        logger.info("Received a request to store ${excelFiles.size} Excel files.")
-        return ResponseEntity.ok(fileManager.storeExcelFiles(excelFiles))
+    override fun submitInvitation(
+        excelFiles: List<MultipartFile>,
+        isRequesterNameHidden: Boolean
+    ): ResponseEntity<ExcelFilesUploadResponse> {
+        logger.info(
+            "Received a request to store ${excelFiles.size} Excel files. " +
+                "Hiding the requester is set to $isRequesterNameHidden."
+        )
+        return ResponseEntity.ok(fileManager.submitInvitation(excelFiles, isRequesterNameHidden))
+    }
+
+    override fun resetInvitation(): ResponseEntity<RequestMetaData> {
+        return ResponseEntity.ok(fileManager.resetInvitation())
     }
 }

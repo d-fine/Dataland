@@ -33,7 +33,10 @@ class EmailSender {
         val request = SendEmailsRequest.builder().message(mailjetEmail).build()
         request.sendWith(client)
     }
-
+    /** This methods sends an info email
+     * @param receiver is the receiver of the info email
+     * @param content is the content of the info email
+     */
     fun sendInfoEmail(receiver: SendContact, content: EmailContent) {
         val email = Email(infoSender, receiver, content)
         sendEmail(email)

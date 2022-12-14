@@ -1,14 +1,18 @@
 package org.dataland.datalandbackend.services
 
 import com.mailjet.client.transactional.SendContact
+import org.dataland.datalandbackend.entities.RequestMetaDataEntity
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContent
+import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID
@@ -19,18 +23,27 @@ import java.util.UUID
 @Component("FileManager")
 class FileManager(
     @Autowired
-    private val emailSender: EmailSender
+    private val emailSender: EmailSender,
+    @Autowired private val requestMetaDataRepository: RequestMetaDataRepository
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
     private val uploadHistory = mutableMapOf<String, List<String>>()
-    fun UploadHistory(): Map<String, List<String>> = uploadHistory
+    private val userIdToUploadId = mutableMapOf<String, String>()
 
     private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
+    private val maxFiles = 20
+    private val maxBytesPerFile = 5000000 // TODO nginx has also a max file size limit! configure it!
+    // TODO These "magic number" could go into our applicaton properties
+
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
+    }
+
+    private fun getUserId(): String {
+        return SecurityContextHolder.getContext().authentication.name
     }
 
     private fun generateUploadId(): String {
@@ -39,7 +52,7 @@ class FileManager(
         return timestamp + "_" + uniqueId
     }
 
-    private fun securityChecks(filesToCheck: List<MultipartFile>, maxFiles: Int, maxBytesPerFile: Int) {
+    private fun securityChecks(filesToCheck: List<MultipartFile>) {
         val numberOfFiles = filesToCheck.size
         if (numberOfFiles > maxFiles) {
             throw InvalidInputApiException(
@@ -62,7 +75,11 @@ class FileManager(
         }
     }
 
-    private fun storeOneExcelFileAndReturnFileId(singleExcelFile: MultipartFile, positionInQueue: Int, totalQueueLength: Int): String {
+    private fun storeOneExcelFileAndReturnFileId(
+        singleExcelFile: MultipartFile,
+        positionInQueue: Int,
+        totalQueueLength: Int
+    ): String {
         val fileId = generateUUID()
         logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
         temporaryFileStore[fileId] = singleExcelFile
@@ -70,7 +87,7 @@ class FileManager(
         return fileId
     }
 
-    private fun sendEmailWithFiles(files: List<MultipartFile>) {
+    private fun sendEmailWithFiles(files: List<MultipartFile>, isRequesterNameHidden: Boolean) {
         val content = EmailContent(
             "Dataland Excel Upload",
             "Someone uploaded files to Dataland.\nPlease review.",
@@ -83,6 +100,16 @@ class FileManager(
                 )
             }.toList()
         )
+
+        /* TODO: Send requester info along with excel files, if the "hidden" flag is set to "false"
+
+            if (!isRequesterNameHidden) {
+                addToMail(keycloakUserId, keycloakUserName, keycloakUserMailAddress)
+            }
+            else { *sendMailAsBefore* }
+
+        * */
+
         emailSender.sendInfoEmail(defaultReceiver, content)
     }
 
@@ -93,15 +120,10 @@ class FileManager(
     /**
      * Method to store an Excel file in a map with an associated filed ID as key.
      * @param excelFiles is the Excel file to store
-     * @return a response model object with info about the upload process
      */
-    fun storeExcelFiles(excelFiles: List<MultipartFile>): ExcelFilesUploadResponse {
-        excelFiles.forEach { logger.error("${it.name} ${it.originalFilename}") }
+    fun storeExcelFiles(excelFiles: List<MultipartFile>, numberOfFiles: Int, uploadId: String) {
+        securityChecks(excelFiles)
 
-        securityChecks(excelFiles, 20, 5000000)
-
-        val numberOfFiles = excelFiles.size
-        val uploadId = generateUploadId()
         logger.info("Storing $numberOfFiles Excel files for upload with ID $uploadId.")
 
         val listOfNewFileIds = mutableListOf<String>()
@@ -110,22 +132,71 @@ class FileManager(
             listOfNewFileIds.add(returnedFileId)
         }
         uploadHistory[uploadId] = listOfNewFileIds
-        sendEmailWithFiles(excelFiles)
-        removeFilesFromStorage(listOfNewFileIds)
-
-        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel files.")
     }
 
     /**
-     * Method to find a specific Excel file in a map by looking for its file ID, and then returning the Excel file.
-     * @param excelFileId is the identifier which is needed to identify the required Excel file
-     * @return the actual Excel file
+     * Method to submit an invitation request
+     *  @param excelFiles is the Excel file to store
+     * @return a response model object with info about the upload process
      */
-    fun provideExcelFile(excelFileId: String): MultipartFile {
-        logger.info("Searching for Excel file with file ID $excelFileId in in-memory storage.")
-        if (temporaryFileStore.containsKey(excelFileId)) {
-            return temporaryFileStore[excelFileId]!!
+    fun submitInvitation(excelFiles: List<MultipartFile>, isRequesterNameHidden: Boolean): ExcelFilesUploadResponse {
+        val userId = getUserId()
+        val numberOfFiles = excelFiles.size
+        val uploadId = generateUploadId()
+        userIdToUploadId[userId] = uploadId
+        storeExcelFiles(excelFiles, numberOfFiles, uploadId)
+        val listOfFileIds = uploadHistory[uploadId]!!
+        addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
+
+        // sendEmailWithFiles(excelFiles, isRequesterNameHidden)
+        removeFilesFromStorage(listOfFileIds)
+        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel file/s.")
+    }
+    /**
+     * Method to add the metadata of an invitation request
+     * @param userId denotes information about user
+     * @param userIdToUploadId denotes information about userId-uploadId relationship
+     * @return information of the newly created entry in request metadata database
+     * including the generated company ID
+     */
+    @Transactional
+    fun addRequestMetaData(userId: String, userIdToUploadId: MutableMap<String, String>): RequestMetaData {
+        val requestTimestamp = Instant.now().epochSecond.toString()
+        val uploadId = userIdToUploadId[userId]!!
+        val requestMetaData = RequestMetaData(
+            userId,
+            uploadId,
+            requestTimestamp,
+        )
+        logger.info("Creating Request MetaData entry with ID $uploadId!!")
+        createStoredRequestMetaData(requestMetaData)
+        return requestMetaData
+    }
+    private fun createStoredRequestMetaData(
+        requestMetaData: RequestMetaData
+    ): RequestMetaDataEntity {
+
+        val newRequestMetaDataEntity = RequestMetaDataEntity(
+            uploadId = requestMetaData.uploadId,
+            userId = requestMetaData.userId,
+            timeStamp = requestMetaData.requestTimestamp,
+        )
+        return requestMetaDataRepository.save(newRequestMetaDataEntity)
+    }
+
+    /**
+     * Method to submit an invitation request
+     */
+    fun resetInvitation(): RequestMetaData {
+        val userId = getUserId()
+        val uploadId = userIdToUploadId[userId]
+        val listOfFileIds: List<String> = uploadHistory[uploadId]!!
+        val excelFiles = mutableListOf<MultipartFile>()
+        listOfFileIds.forEach { FileId ->
+            val singleExcelFile = temporaryFileStore[FileId]!!
+            excelFiles.add(singleExcelFile)
         }
-        throw ResourceNotFoundApiException("File not found", "Dataland does not know the file ID $excelFileId")
+
+        return addRequestMetaData(userId, userIdToUploadId)
     }
 }
