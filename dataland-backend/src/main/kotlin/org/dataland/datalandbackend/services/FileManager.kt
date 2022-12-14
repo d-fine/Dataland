@@ -1,12 +1,11 @@
 package org.dataland.datalandbackend.services
 
-import com.mailjet.client.transactional.SendContact
 import org.dataland.datalandbackend.entities.RequestMetaDataEntity
 import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
 import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
-import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
+import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,8 +30,6 @@ class FileManager(
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
     private val uploadHistory = mutableMapOf<String, List<String>>()
     private val userIdToUploadId = mutableMapOf<String, String>()
-
-    private val defaultReceiver = SendContact("TODO@d-fine.de", "TODO") // TODO this must be changed
 
     private val maxFiles = 20
     private val maxBytesPerFile = 5000000 // TODO nginx has also a max file size limit! configure it!
@@ -88,29 +85,21 @@ class FileManager(
     }
 
     private fun sendEmailWithFiles(files: List<MultipartFile>, isRequesterNameHidden: Boolean) {
-        val content = EmailContent(
-            "Dataland Excel Upload",
-            "Someone uploaded files to Dataland.\nPlease review.",
-            "Someone uploaded files to Dataland.<br>Please review.",
-            files.stream().map {
-                EmailAttachment(
-                    "${generateUUID()}.xlsx",
-                    it.bytes,
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-            }.toList()
-        )
+        val attachments = files.stream().map {
+            EmailAttachment(
+                "${generateUUID()}.xlsx",
+                it.bytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+        }.toList()
 
-        /* TODO: Send requester info along with excel files, if the "hidden" flag is set to "false"
-
-            if (!isRequesterNameHidden) {
-                addToMail(keycloakUserId, keycloakUserName, keycloakUserMailAddress)
-            }
-            else { *sendMailAsBefore* }
-
-        * */
-
-        emailSender.sendInfoEmail(defaultReceiver, content)
+        val requesterName = if(isRequesterNameHidden) {
+            null
+        } else {
+            getUserId()
+        }
+        val email = InvitationEmailGenerator.generate(attachments, requesterName)
+        emailSender.sendEmail(email)
     }
 
     private fun removeFilesFromStorage(fileIds: List<String>) {
@@ -148,7 +137,7 @@ class FileManager(
         val listOfFileIds = uploadHistory[uploadId]!!
         addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
 
-        // sendEmailWithFiles(excelFiles, isRequesterNameHidden)
+        sendEmailWithFiles(excelFiles, isRequesterNameHidden)
         removeFilesFromStorage(listOfFileIds)
         return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel file/s.")
     }
@@ -172,6 +161,7 @@ class FileManager(
         createStoredRequestMetaData(requestMetaData)
         return requestMetaData
     }
+
     private fun createStoredRequestMetaData(
         requestMetaData: RequestMetaData
     ): RequestMetaDataEntity {
