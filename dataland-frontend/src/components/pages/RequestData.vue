@@ -10,10 +10,12 @@
           <InfoCard class="mb-3 font-medium">
             Download and fill the EXCEL template with your request and upload it below.
             <div class="mt-3">
-              <a class="text-primary"
+              <a
+                class="text-primary"
                 :href="'/' + fileNameOfExcelTemplate"
                 id="download-data-request-excel-template"
-                download>
+                download
+              >
                 DOWNLOAD - EXCEL TEMPLATE .XLS
               </a>
             </div>
@@ -29,8 +31,8 @@
             :auto="false"
             accept=".xlsx"
             :multiple="true"
-            :max-file-size=maxFileSize
-            :fileLimit=fileLimit
+            :max-file-size="maxFileSize"
+            :fileLimit="fileLimit"
             @select="handleSelectFile"
             @clear="handleClearFiles"
             @remove="handleRemoveFile"
@@ -100,20 +102,24 @@
     </TheContent>
     <div class="d-header m-0 fixed bottom-0 surface-900 h-4rem w-full grid align-items-center">
       <div class="col-2 col-offset-10">
-        <PrimeButton label="Reset"
-                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-1 ml-1"
-                     name="reset_request_button"
-                     @click="clearUpload">
+        <PrimeButton
+          label="Reset"
+          class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-1 ml-1"
+          name="reset_request_button"
+          @click="clearUpload"
+        >
           Reset
         </PrimeButton>
-        <PrimeButton label="Submit"
-                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem ml-1"
-                name="submit_request_button"
-                @click="uploadAllSelectedFiles"
-                :disabled="isSubmitDisabled">
+        <PrimeButton
+          label="Submit"
+          class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem ml-1"
+          name="submit_request_button"
+          @click="uploadAllSelectedFiles"
+          :disabled="isSubmitDisabled"
+        >
           Submit
         </PrimeButton>
-    </div>
+      </div>
     </div>
   </AuthenticationWrapper>
 </template>
@@ -135,7 +141,7 @@ import {
   UPLOAD_FILE_SIZE_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
   UPLOAD_MAX_FILE_SIZE,
-  UPLOAD_FILES_LIMIT
+  UPLOAD_FILES_LIMIT,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -165,21 +171,21 @@ export default defineComponent({
     };
   },
   methods: {
-    handleRemoveFile(event){
-      if(event.files.length === 0){
-        this.isSubmitDisabled = true
+    handleRemoveFile(event) {
+      if (event.files.length === 0) {
+        this.isSubmitDisabled = true;
       }
     },
 
-    handleClearFiles(){
-      this.isSubmitDisabled = true
+    handleClearFiles() {
+      this.isSubmitDisabled = true;
     },
 
-    handleSelectFile(event){
-      console.log("ich passiere")
-      console.log(event.files)
-      if(event.files.length > 0){
-        this.isSubmitDisabled = false
+    handleSelectFile(event) {
+      console.log("ich passiere");
+      console.log(event.files);
+      if (event.files.length > 0) {
+        this.isSubmitDisabled = false;
       }
     },
 
@@ -209,22 +215,20 @@ export default defineComponent({
         // router push to new page with progressbar
       }
     },
-    async clearUpload(): Promise<void>  {
+    async clearUpload(): Promise<void> {
       try {
         const fileControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getFileControllerApi();
         await fileControllerApi.resetInvitation();
       } catch (error) {
         console.error(error);
       } finally {
-        this.$refs.fileUpload.clear()
+        this.$refs.fileUpload.clear();
       }
     },
   },
-
-})
-
+});
 
 // TODO delete the TESTUPLOAD button at the end of dev
 </script>

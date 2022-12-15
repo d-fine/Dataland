@@ -10,12 +10,16 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
-import java.util.UUID
-import org.springframework.security.oauth2.jwt.Jwt
+import java.util.*
+import javax.servlet.http.HttpServletRequest
+
 
 /**
  * Implementation of a file manager for Dataland
@@ -90,7 +94,21 @@ class FileManager(
         return fileId
     }
 
+    private fun getRequest(): HttpServletRequest {
+        val attribs = RequestContextHolder.getRequestAttributes()
+        if (attribs != null) {
+            return (attribs as ServletRequestAttributes).request
+        }
+        throw IllegalArgumentException("Request must not be null!")
+    }
+
     private fun sendEmailWithFiles(files: List<MultipartFile>, isRequesterNameHidden: Boolean) {
+        val noEmail = getRequest().getHeader("DATALAND-NO-EMAIL")
+        if (noEmail == "true") {
+            logger.info("No emails will be sent by this invitation request.")
+            return
+        }
+
         val attachments = files.stream().map {
             EmailAttachment(
                 "${generateUUID()}.xlsx",

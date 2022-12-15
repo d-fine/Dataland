@@ -12,6 +12,6 @@ export const EXCEL_TEMPLATE_FILE_NAME = "Dataland_Request_Template.xlsx";
 
 export const UPLOAD_FILE_SIZE_DECIMALS = 2;
 
-export const UPLOAD_MAX_FILE_SIZE = 10000000
+export const UPLOAD_MAX_FILE_SIZE = 5000000;
 
-export const UPLOAD_FILES_LIMIT = 10
+export const UPLOAD_FILES_LIMIT = 10;
