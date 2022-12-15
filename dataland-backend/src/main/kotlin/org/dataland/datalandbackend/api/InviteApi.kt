@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.model.ExcelFileUploadResponse
+import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface FileApi {
+interface InviteApi {
     @Operation(
         summary = "Create a Dataland invite.",
         description = "Create a Dataland invite by uploading an Excel file containing the invite info."
@@ -36,15 +36,15 @@ interface FileApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method to create an invite in Dataland by sending an Excel file which includes the invite info
-     * @param excelFile is the Excel files which contains the invite info
+     * @param excelFile is the Excel file which contains the invite info
      * @param isRequesterNameHidden is a flag that decides if info about the requesters Dataland account shall be
      * included in the invite
      * @return a response object with info about the result and the success of the invite process
      */
-    fun submitInvitation(
+    fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
         @RequestParam isRequesterNameHidden: Boolean
     ):
-        ResponseEntity<ExcelFileUploadResponse>
+        ResponseEntity<InviteMetaInfoEntity>
 
 }

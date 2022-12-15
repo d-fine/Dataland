@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.FileApi
-import org.dataland.datalandbackend.model.ExcelFileUploadResponse
-import org.dataland.datalandbackend.services.FileManager
+import org.dataland.datalandbackend.api.InviteApi
+import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
+import org.dataland.datalandbackend.services.InviteManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -11,23 +11,23 @@ import org.springframework.web.multipart.MultipartFile
 
 /**
  * Controller for the file endpoints
- * @param fileManager the file manager service to handle files
+ * @param inviteManager the file manager service to handle files
  */
 
 @RestController
-class FileController(
-    @Autowired var fileManager: FileManager,
-) : FileApi {
+class InviteController(
+    @Autowired var inviteManager: InviteManager,
+) : InviteApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun submitInvitation(
+    override fun submitInvite(
         excelFile: MultipartFile,
         isRequesterNameHidden: Boolean
-    ): ResponseEntity<ExcelFileUploadResponse> {
+    ): ResponseEntity<InviteMetaInfoEntity> {
         logger.info(
-            "Received a request to store an Excel file. " +
+            "Received a request to submit an invite. " +
                 "Hiding the requester is set to $isRequesterNameHidden."
         )
-        return ResponseEntity.ok(fileManager.submitInvitation(excelFile, isRequesterNameHidden))
+        return ResponseEntity.ok(inviteManager.submitInvitation(excelFile, isRequesterNameHidden))
     }
 }
