@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.RequestMetaDataEntity
+import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
@@ -120,7 +121,7 @@ class FileManager(
         userIdToUploadId[userId] = uploadId
         executeUploadProcess(excelFile, uploadId)
         val fileId = uploadHistory[uploadId]!!
-        addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
+        addRequestMetaData(userId, uploadId)
 
         sendEmailWithFile(excelFile, isRequesterNameHidden)
         removeFileFromStorage(fileId)
@@ -129,7 +130,7 @@ class FileManager(
     /**
      * Method to add the metadata of an invitation request
      * @param userId denotes information about user
-     * @param userIdToUploadId denotes information about userId-uploadId relationship
+     * @param uploadId denotes information about the upload process
      * @return information of the newly created entry in request metadata database
      * including the generated company ID
      */
