@@ -100,7 +100,7 @@
       <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center grid">
       <div class="col-3 col-offset-9 justify-content-end">
         <PrimeButton label="Reset"
-                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-2"
+                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
                      name="reset_request_button"
                      @click="openModal">
           Reset
@@ -117,17 +117,19 @@
 
 
     </div>
-      <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '30vw'}" :modal="true" :showHeader="true" closeIcon="pi pi-times-circle">
+      <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
         <div class="grid">
-        <PrimeButton @click="closeModal" class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span class="p-dialog-header-close-icon pi pi-times-circle"></span></PrimeButton>
-        </div> <h2>Reset Request Data</h2>
+        <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon"></span></Button>
+        </div> <h2 class="mt-0 mb-5">Reset Request Data</h2>
 
         <p class="m-0">Are you sure you want to reset the requested data?</p>
           <p class="font-bold">This will remove all the uploaded files.</p>
-        <template #footer class="border-bottom-0">
-          <PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white" @click="closeModal">Cancel</PrimeButton>
-          <PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary" @click="clearUpload">Confirm</PrimeButton>
-        </template>
+        <div class="grid">
+        <div class="col-5 col-offset-7 justify-content-end">
+          <PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white m-2 w-6rem" @click="closeModal">Cancel</PrimeButton>
+          <PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary m-2 w-6rem" @click="clearUpload">Confirm</PrimeButton>
+        </div>
+        </div>
       </Dialog>
     </TheContent>
 
@@ -252,6 +254,8 @@ a:hover {
 
   border:none;
   color:#1b1b1b;
-  transition: background-color .2s,color .2s,box-shadow .2s;
+}
+.hovericon {
+  cursor: pointer;
 }
 </style>
