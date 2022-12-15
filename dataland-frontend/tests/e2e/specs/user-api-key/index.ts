@@ -4,4 +4,5 @@
 describe("User api key tests", () => {
   require("./GenerateApiKey");
   require("./RevokeApiKey");
+  require("./DropDownMenuApiKeyElement");
 });

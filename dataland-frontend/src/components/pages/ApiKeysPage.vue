@@ -56,7 +56,6 @@
                     ref="newKeyHolderRef"
                     v-on:focus="$event.target.select()"
                     :autoResize="true"
-                    rows="2"
                     cols="5"
                     v-model="newKey"
                     id="newKeyHolder"
