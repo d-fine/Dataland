@@ -104,7 +104,8 @@
         <PrimeButton label="Reset"
                      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
                      name="reset_request_button"
-                     @click="openModal">
+                     @click="openModal"
+                     :disabled="isSubmitDisabled">
           Reset
         </PrimeButton>
 
@@ -195,7 +196,7 @@ export default defineComponent({
     },
 
     handleSelectFile(event){
-      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE){ //TODO not enforced?
+      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE_IN_BYTES){ //TODO not enforced?
         this.isSubmitDisabled = false
       }
     },
