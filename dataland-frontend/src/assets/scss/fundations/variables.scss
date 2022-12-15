@@ -21,27 +21,9 @@ $white: #FFFFFF;
 $red: #EE1A1A;
 $green: #4BB917;
 
-/*=====  End of Colors  ======*/
-
 /*=====  Typography  ======*/
 
-/*=============================================
-=                Typography                   =
-=============================================*/
-
-/**
- *
- * 1) The playfair font. We'll use this for headings mostly.
- *     https://fonts.google.com/specimen/Playfair+Display
- *
- * 2) The raleway font. We'll use this for the body text.
- *     https://fonts.google.com/specimen/Raleway
- */
-
-/* Font families */
-
-$playfair: "Playfair Display", serif; /* 1 */
-$raleway: "Raleway", "HelveticaNeue", "Helvetica", sans-serif; /* 2 */
+$ibm-plex-sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
 
 /* Font sizes */
 $fs-xs: 0.75rem; // 12px
@@ -49,14 +31,6 @@ $fs-sm: 0.875rem; // 14px
 $fs-base: 1rem; // 16px
 $fs-lg: 1.125rem; // 18px
 $fs-xl: 1.5rem; // 24px
-
-$fs: (
-        xs: 0.75rem,
-        sm: 0.875rem,
-        base: 1rem,
-        lg: 1.125rem,
-        xl: 1.5rem,
-);
 
 /* Heading font sizes */
 $h-1: 1.375rem; // 22px
@@ -67,7 +41,6 @@ $h-5: 0.75rem; // 12px
 $h-6: 0.75rem; // 12px
 
 /* Font weights */
-
 $fw-light: 300;
 $fw-normal: 400;
 $fw-medium: 500;
@@ -75,6 +48,20 @@ $fw-semibold: 600;
 $fw-bold: 700;
 $fw-extrabold: 800;
 $fw-black: 900;
+
+/*===== End Typography  ======*/
+
+$fs: (
+        xs: 0.75rem,
+        sm: 0.875rem,
+        base: 1rem,
+        lg: 1.125rem,
+        xl: 1.5rem,
+);
+
+
+
+
 
 /*=====  End of Typography  ======*/
 
