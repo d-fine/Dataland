@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.FileApi
-import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
-import org.dataland.datalandbackend.model.RequestMetaData
+import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackend.services.FileManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,13 +21,13 @@ class FileController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun submitInvitation(
-        excelFiles: List<MultipartFile>,
+        excelFile: MultipartFile,
         isRequesterNameHidden: Boolean
-    ): ResponseEntity<ExcelFilesUploadResponse> {
+    ): ResponseEntity<ExcelFileUploadResponse> {
         logger.info(
-            "Received a request to store ${excelFiles.size} Excel files. " +
+            "Received a request to store an Excel file. " +
                 "Hiding the requester is set to $isRequesterNameHidden."
         )
-        return ResponseEntity.ok(fileManager.submitInvitation(excelFiles, isRequesterNameHidden))
+        return ResponseEntity.ok(fileManager.submitInvitation(excelFile, isRequesterNameHidden))
     }
 }

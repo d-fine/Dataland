@@ -3,13 +3,13 @@ package org.dataland.datalandbackend.model.email
 import com.mailjet.client.transactional.TransactionalEmail
 
 /**
- * A class to represent the subject, content and attachments of an email
+ * A class to represent the subject, content and attachment of an email
  */
 data class EmailContent(
     val subject: String,
     val textContent: String,
     val htmlContent: String,
-    val attachments: List<EmailAttachment>
+    val attachment: EmailAttachment
 )
 
 /**
@@ -20,5 +20,5 @@ fun TransactionalEmail.TransactionalEmailBuilder.content(content: EmailContent):
     return this.subject(content.subject)
         .textPart(content.textContent)
         .htmlPart(content.htmlContent)
-        .attachments(content.attachments)
+        .attachments(listOf(content.attachment)) //TODO is this right Florian?
 }

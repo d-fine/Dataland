@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param uploadSuccessful tells the uploader/user if the upload process was successful
  * @param uploadMessage gives the uploader/user some information about the result of the upload process
  */
-data class ExcelFilesUploadResponse(
+data class ExcelFileUploadResponse(
     @field:JsonProperty(required = true)
     val uploadId: String,
 

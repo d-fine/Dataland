@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.RequestMetaDataEntity
-import org.dataland.datalandbackend.model.ExcelFilesUploadResponse
+import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
@@ -29,15 +29,20 @@ class FileManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
-    private val uploadHistory = mutableMapOf<String, List<String>>()
+    private val uploadHistory = mutableMapOf<String, String>()
     private val userIdToUploadId = mutableMapOf<String, String>()
 
-    private val maxFiles = 20
     private val maxBytesPerFile = 5000000 // TODO nginx has also a max file size limit! configure it!
     // TODO These "magic number" could go into our applicaton properties
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
+    }
+
+    private fun generateUploadId(): String {
+        val timestamp = Instant.now().epochSecond.toString()
+        val uniqueId = generateUUID()
+        return timestamp + "_" + uniqueId
     }
 
     private fun getUserId(): String {
@@ -49,103 +54,78 @@ class FileManager(
         return jwt.getClaimAsString("preferred_username")
     }
 
-    private fun generateUploadId(): String {
-        val timestamp = Instant.now().epochSecond.toString()
-        val uniqueId = generateUUID()
-        return timestamp + "_" + uniqueId
-    }
-
-    private fun securityChecks(filesToCheck: List<MultipartFile>) {
-        val numberOfFiles = filesToCheck.size
-        if (numberOfFiles > maxFiles) {
+    private fun securityChecks(fileToCheck: MultipartFile) {
+        if (fileToCheck.bytes.size > maxBytesPerFile) {
             throw InvalidInputApiException(
-                "Too many files uploaded",
-                "$numberOfFiles files were uploaded, but only $maxFiles are allowed."
+                "Provided file is too large.",
+                "The provided file is larger than the maximum of $maxBytesPerFile."
             )
         }
-        if (filesToCheck.any { it.bytes.size > maxBytesPerFile }) {
-            throw InvalidInputApiException(
-                "Upload file too large.",
-                "An uploaded file is larger than the maximum of $maxBytesPerFile."
-            )
-        }
-        logger.info("Scanning $numberOfFiles files for potential risks.")
-        filesToCheck.forEachIndexed() { index, file ->
+        logger.info("Scanning file for potential risks.")
+            // checkFileForRisks(fileToCheck)
             // TODO we DEFINITELY need some security checks to avoid any attack vectors
             // TODO alternatively, copy individual entries to a fresh template and process that
             // e.g. filename, filetype, actual contents etc.
-            logger.info("Scanned ${index + 1} of $numberOfFiles files.")
+            logger.info("Scanned file.")
         }
-    }
+
 
     private fun storeOneExcelFileAndReturnFileId(
         singleExcelFile: MultipartFile,
-        positionInQueue: Int,
-        totalQueueLength: Int
     ): String {
         val fileId = generateUUID()
-        logger.info("Storing Excel file with file ID $fileId. (File $positionInQueue of $totalQueueLength files.)")
+        logger.info("Storing Excel file with file ID $fileId.")
         temporaryFileStore[fileId] = singleExcelFile
         logger.info("Excel file with file ID $fileId was stored in-memory.")
         return fileId
     }
 
-    private fun sendEmailWithFiles(files: List<MultipartFile>, isRequesterNameHidden: Boolean) {
-        val attachments = files.stream().map {
-            EmailAttachment(
+    private fun removeFileFromStorage(fileId: String) {
+        temporaryFileStore.remove(fileId)
+    }
+
+    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean) {
+        val attachment = EmailAttachment(
                 "${generateUUID()}.xlsx",
-                it.bytes,
+                file.bytes,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
-        }.toList()
-
         val requesterName = if(isRequesterNameHidden) {
             null
         } else {
             "User ${getUsername()} (Keycloak id: ${getUserId()})"
         }
-        val email = InvitationEmailGenerator.generate(attachments, requesterName)
+        val email = InvitationEmailGenerator.generate(attachment, requesterName)
         emailSender.sendEmail(email)
     }
 
-    private fun removeFilesFromStorage(fileIds: List<String>) {
-        fileIds.forEach { temporaryFileStore.remove(it) }
-    }
-
     /**
-     * Method to store an Excel file in a map with an associated filed ID as key.
-     * @param excelFiles is the Excel file to store
+     * Method to run a security check on an Excel file, then store it and document the upload in the upload history
+     * @param excelFile is the Excel file to store
      */
-    fun storeExcelFiles(excelFiles: List<MultipartFile>, numberOfFiles: Int, uploadId: String) {
-        securityChecks(excelFiles)
-
-        logger.info("Storing $numberOfFiles Excel files for upload with ID $uploadId.")
-
-        val listOfNewFileIds = mutableListOf<String>()
-        excelFiles.forEachIndexed { index, singleExcelFile ->
-            val returnedFileId = storeOneExcelFileAndReturnFileId(singleExcelFile, index + 1, numberOfFiles)
-            listOfNewFileIds.add(returnedFileId)
+    fun executeUploadProcess(excelFile: MultipartFile, uploadId: String) {
+        securityChecks(excelFile)
+        logger.info("Storing Excel file for upload with ID $uploadId.")
+        val returnedFileId = storeOneExcelFileAndReturnFileId(excelFile)
+        uploadHistory[uploadId] = returnedFileId
         }
-        uploadHistory[uploadId] = listOfNewFileIds
-    }
 
     /**
      * Method to submit an invitation request
-     *  @param excelFiles is the Excel file to store
+     *  @param excelFile is the Excel file to submit
      * @return a response model object with info about the upload process
      */
-    fun submitInvitation(excelFiles: List<MultipartFile>, isRequesterNameHidden: Boolean): ExcelFilesUploadResponse {
+    fun submitInvitation(excelFile: MultipartFile, isRequesterNameHidden: Boolean): ExcelFileUploadResponse {
         val userId = getUserId()
-        val numberOfFiles = excelFiles.size
         val uploadId = generateUploadId()
         userIdToUploadId[userId] = uploadId
-        storeExcelFiles(excelFiles, numberOfFiles, uploadId)
-        val listOfFileIds = uploadHistory[uploadId]!!
+        executeUploadProcess(excelFile, uploadId)
+        val fileId = uploadHistory[uploadId]!!
         addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
 
-        sendEmailWithFiles(excelFiles, isRequesterNameHidden)
-        removeFilesFromStorage(listOfFileIds)
-        return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel file/s.")
+        sendEmailWithFile(excelFile, isRequesterNameHidden)
+        removeFileFromStorage(fileId)
+        return ExcelFileUploadResponse(uploadId, true, "Successfully stored Excel file.")
     }
     /**
      * Method to add the metadata of an invitation request
