@@ -24,9 +24,9 @@ data class InviteMetaInfoEntity(
     @Column(name = "timestamp")
     var timeStamp: String,
 
-    @Column(name = "invite_successful")
-    var inviteSuccessful: Boolean,
+    @Column(name = "is_invite_successful")
+    var isInviteSuccessful: Boolean,
 
-    @Column(name = "invite_message")
-    var inviteMessage: String
+    @Column(name = "invite_result_message")
+    var inviteResultMessage: String
 )

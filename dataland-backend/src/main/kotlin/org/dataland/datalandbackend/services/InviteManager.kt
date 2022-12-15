@@ -99,7 +99,7 @@ class InviteManager(
      */
     fun submitInvitation(excelFile: MultipartFile, isRequesterNameHidden: Boolean): InviteMetaInfoEntity {
         var isInviteSuccessful:Boolean
-        var inviteMessage:String
+        var inviteResultMessage:String
         val inviteId = generateUUID()
         securityChecks(excelFile, inviteId) // if this fails, then set inviteSuccessful to "false" TODO
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
@@ -107,8 +107,8 @@ class InviteManager(
         sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)  // if this fails, then set inviteSuccessful to "false" TODO
         removeFileFromStorage(fileId, inviteId)
         isInviteSuccessful = true
-        inviteMessage = "Invite was successfully processed."
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, isInviteSuccessful, inviteMessage)
+        inviteResultMessage = "Invite was successfully processed."
+        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, isInviteSuccessful, inviteResultMessage)
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
