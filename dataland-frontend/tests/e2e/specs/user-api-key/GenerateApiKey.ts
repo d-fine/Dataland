@@ -30,7 +30,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
-    cy.get('textarea#newKeyHolder[rows=2][placeholder="Key goes here"][readonly]').should("exist");
+    cy.get("textarea#newKeyHolder").should("exist");
 
     cy.get('[data-test="apiKeyInfo"]').find("em").should("exist");
     cy.reload(true);
