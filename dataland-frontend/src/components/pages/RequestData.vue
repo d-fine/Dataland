@@ -10,10 +10,12 @@
           <InfoCard class="mb-3 font-medium">
             Download and fill the EXCEL template with your request and upload it below.
             <div class="mt-3">
-              <a class="text-primary"
+              <a
+                class="text-primary"
                 :href="'/' + fileNameOfExcelTemplate"
                 id="download-data-request-excel-template"
-                download>
+                download
+              >
                 DOWNLOAD - EXCEL TEMPLATE .XLS
               </a>
             </div>
@@ -29,10 +31,10 @@
             :auto="false"
             accept=".xlsx"
             :multiple="true"
-            :max-file-size=maxFileSize
-            :fileLimit=fileLimit
+            :max-file-size="maxFileSize"
+            :fileLimit="fileLimit"
             @select="handleSelectFile"
-            @clear="handleClearFiles"
+            @clear="disableSubmitButton"
             @remove="handleRemoveFile"
           >
             <template #header="{ files, clearCallback }">
@@ -114,8 +116,6 @@
           Submit
         </PrimeButton>
         </div>
-
-
     </div>
       <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
         <div class="grid">
@@ -151,10 +151,9 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import PrimeButton from "primevue/button";
 import { humanizeBytes } from "@/utils/StringHumanizer";
 import {
-  UPLOAD_FILE_SIZE_DECIMALS,
+  UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
-  UPLOAD_MAX_FILE_SIZE,
-  UPLOAD_FILES_LIMIT
+  UPLOAD_MAX_FILE_SIZE_IN_BYTES,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -179,27 +178,24 @@ export default defineComponent({
     return {
       isSubmitDisabled: true,
       fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
-      maxFileSize: UPLOAD_MAX_FILE_SIZE,
-      fileLimit: UPLOAD_FILES_LIMIT,
+      maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       hideName: false,
       displayModal: false,
     };
   },
   methods: {
-    handleRemoveFile(event){
-      if(event.files.length === 0){
-        this.isSubmitDisabled = true
+    disableSubmitButton() {
+      this.isSubmitDisabled = true;
+    },
+
+    handleRemoveFile(event) {
+      if (event.files.length === 0) {
+        this.disableSubmitButton();
       }
     },
 
-    handleClearFiles(){
-      this.isSubmitDisabled = true
-    },
-
     handleSelectFile(event){
-      console.log("ich passiere")
-      console.log(event.files)
-      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE){
+      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE){ //TODO not enforced?
         this.isSubmitDisabled = false
       }
     },
@@ -211,7 +207,7 @@ export default defineComponent({
       this.displayModal = false;
     },
     formatBytes(bytes: number): string {
-      return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DECIMALS);
+      return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
     },
 
     chooseFiles() {

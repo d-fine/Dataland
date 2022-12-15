@@ -11,6 +11,9 @@ describe("As a user I expect a data request page where I can download an excel t
       });
   }
 
+  beforeEach(() => {
+      cy.ensureLoggedIn();
+    });
   afterEach(cy.deleteDownloadsFolder);
 
   it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
