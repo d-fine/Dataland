@@ -28,5 +28,6 @@ data class InviteMetaInfoEntity(
     var isInviteSuccessful: Boolean,
 
     @Column(name = "invite_result_message")
-    var inviteResultMessage: String
+    val inviteResultMessage: String
 )
+

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
+import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
@@ -45,7 +46,7 @@ class InviteManager(
     private fun securityChecks(fileToCheck: MultipartFile, associatedInviteId: String) {
         logger.info("Scanning file provided via invite ID $associatedInviteId for any violations or potential risks.")
         if (fileToCheck.bytes.size > maxBytesPerFile) {
-            throw InvalidInputApiException(
+            throw InvalidInputApiException(         // TODO discuss=> throw exceptions or return 200 and a message?
                 "Provided file is too large.",
                 "The provided file is larger than the maximum of $maxBytesPerFile."
             )
@@ -98,24 +99,21 @@ class InviteManager(
      * @return a response model object with info about the invite process
      */
     fun submitInvitation(excelFile: MultipartFile, isRequesterNameHidden: Boolean): InviteMetaInfoEntity {
-        var isInviteSuccessful:Boolean
-        var inviteResultMessage:String
         val inviteId = generateUUID()
-        securityChecks(excelFile, inviteId) // if this fails, then set inviteSuccessful to "false" TODO
+        securityChecks(excelFile, inviteId) // if this fails, then set inviteSuccessful to "false", give a message and break TODO
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         val userId = getUserIdFromSecurityContext()
-        sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)  // if this fails, then set inviteSuccessful to "false" TODO
+        sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)  // if this fails, then set inviteSuccessful to "false, give a message and break" TODO
         removeFileFromStorage(fileId, inviteId)
-        isInviteSuccessful = true
-        inviteResultMessage = "Invite was successfully processed."
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, isInviteSuccessful, inviteResultMessage)
+        val successInviteResult = InviteResult(true, "The invite was successfully processed.")
+        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, successInviteResult)
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
-        userId:String, inviteId:String, fileId: String, inviteSuccessful: Boolean, inviteMessage:String
+        userId:String, inviteId:String, fileId: String, inviteResult: InviteResult
     ): InviteMetaInfoEntity {
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
-        val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds, inviteSuccessful, inviteMessage)
+        val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds, inviteResult.isInviteSuccessful, inviteResult.inviteResultMessage)
         return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
     }
 }
