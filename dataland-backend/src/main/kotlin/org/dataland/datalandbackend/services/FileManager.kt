@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.RequestMetaDataEntity
-import org.dataland.datalandbackend.model.ExcelFileUploadResponse
 import org.dataland.datalandbackend.model.RequestMetaData
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.RequestMetaDataRepository
@@ -135,9 +134,8 @@ class FileManager(
      * including the generated company ID
      */
     @Transactional
-    fun addRequestMetaData(userId: String, userIdToUploadId: MutableMap<String, String>): RequestMetaData {
+    fun addRequestMetaData(userId: String, uploadId: String): RequestMetaData {
         val requestTimestamp = Instant.now().epochSecond.toString()
-        val uploadId = userIdToUploadId[userId]!!
         val requestMetaData = RequestMetaData(
             userId,
             uploadId,
