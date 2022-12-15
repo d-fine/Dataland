@@ -138,11 +138,10 @@ class FileManager(
         val userId = getUserId()
         val numberOfFiles = excelFiles.size
         val uploadId = generateUploadId()
-        userIdToUploadId[userId] = uploadId
         storeExcelFiles(excelFiles, numberOfFiles, uploadId)
         val listOfFileIds = uploadHistory[uploadId]!!
-        addRequestMetaData(userId, userIdToUploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
-
+        addRequestMetaData(userId, uploadId) // Emanuel: I'd like to reconsider this. Does not make sense to me.
+                                            // Stephan: Does it make more sense now?
         sendEmailWithFiles(excelFiles, isRequesterNameHidden)
         removeFilesFromStorage(listOfFileIds)
         return ExcelFilesUploadResponse(uploadId, true, "Successfully stored $numberOfFiles Excel file/s.")
@@ -155,9 +154,8 @@ class FileManager(
      * including the generated company ID
      */
     @Transactional
-    fun addRequestMetaData(userId: String, userIdToUploadId: MutableMap<String, String>): RequestMetaData {
+    fun addRequestMetaData(userId: String, uploadId: String): RequestMetaData {
         val requestTimestamp = Instant.now().epochSecond.toString()
-        val uploadId = userIdToUploadId[userId]!!
         val requestMetaData = RequestMetaData(
             userId,
             uploadId,
