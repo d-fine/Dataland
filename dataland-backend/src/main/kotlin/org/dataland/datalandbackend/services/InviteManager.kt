@@ -128,7 +128,11 @@ class InviteManager(
         inviteResult: InviteResult
     ): InviteMetaInfoEntity {
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
-        val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds, inviteResult.isInviteSuccessful, inviteResult.inviteResultMessage)
+        val newInviteMetaInfoEntity = InviteMetaInfoEntity(
+            inviteId, userId, fileId, timestampInEpochSeconds,
+            inviteResult.isInviteSuccessful,
+            inviteResult.inviteResultMessage
+        )
         return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
     }
 }
