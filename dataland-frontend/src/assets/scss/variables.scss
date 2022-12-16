@@ -1,0 +1,75 @@
+/*=============================================
+    #Variables
+=============================================*/
+
+/*=====  Colors  ======*/
+
+$orange-prime: #E67F3F;
+$blue-light: #A1C5D3;
+$blue-lighter: #DBF0F4;
+$aquamarine-dark: #013D48;
+$full-dark: #0B191F;
+$brown-dark: #1B1B1B;
+$brown: #292219;
+$brown-light: #5A4F36;
+$brown-lighter: #958D7C;
+$gray: #C4C4C4;
+$gray-light: #E0DFDE;
+$gray-lighter: #F5F5F5;
+$paper-white: #F7F9FA;
+$white: #FFFFFF;
+$red: #EE1A1A;
+$green: #4BB917;
+
+/*=====  Typography  ======*/
+
+$ibm-plex-sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+
+/* Font sizes */
+$fs-xs: 0.75rem; // 12px
+$fs-sm: 0.875rem; // 14px
+$fs-base: 1rem; // 16px
+$fs-lg: 1.125rem; // 18px
+$fs-xl: 1.5rem; // 24px
+
+/* Heading font sizes */
+$h-1: 1.375rem; // 22px
+$h-2: 1.375rem; // 22px
+$h-3: 1rem; // 16px
+$h-4: 1.125rem; // 18px
+$h-5: 0.75rem; // 12px
+$h-6: 0.75rem; // 12px
+
+/* line-height */
+$line-height-1: 1rem;
+$line-height-2: 1.25rem;
+$line-height-3: 1.5rem;
+$line-height-4: 2rem;
+
+/* Font weights */
+$fw-light: 300;
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+$fw-extrabold: 800;
+$fw-black: 900;
+
+
+/*=====  Spacing  ======*/
+
+$spacing-none: 0rem;
+$spacing-xxxs: 0.25rem; // 4px
+$spacing-xxs: 0.5rem;   // 8px
+$spacing-xs: 0.75rem;   // 12px
+$spacing-sm: 1rem;      // 16px
+$spacing-md: 1.5rem;  // 24px
+$spacing-lg: 2rem;  // 32px
+$spacing-xl: 3rem;  // 48px
+$spacing-xxl: 4.5rem;  // 72px
+$spacing-xxxl: 6rem;  // 96px
+
+
+
+
+$shadows-base: 0px 4px 11px rgba(157, 157, 157, 0.20);

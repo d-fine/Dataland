@@ -13,6 +13,8 @@ import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 
+import StyleGuidePage from "@/components/pages/StyleGuidePage.vue";
+
 const routes = [
   {
     path: "/",
@@ -83,6 +85,11 @@ const routes = [
     path: "/nocontent",
     name: "NoContentFound",
     component: NoContentFound,
+  },
+  {
+    path: "/styleGuidePage",
+    name: "StyleGuidePage",
+    component: StyleGuidePage,
   },
   {
     path: "/:notFound(.*)",
