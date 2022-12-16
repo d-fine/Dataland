@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID
 import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Implementation of a file manager for Dataland
@@ -76,14 +79,27 @@ class InviteManager(
         logger.info("Removed Excel file from in-memory-storage.")
     }
 
+    private fun getRequest(): HttpServletRequest {
+        val attribs = RequestContextHolder.getRequestAttributes()
+        if (attribs != null) {
+            return (attribs as ServletRequestAttributes).request
+        }
+        throw IllegalArgumentException("Request must not be null!")
+    }
+
     private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String, associatedInviteId: String) {
+        val noEmail = getRequest().getHeader("DATALAND-NO-EMAIL")
+        if (noEmail == "true") {
+            logger.info("No emails will be sent by this invitation request.")
+            return
+        }
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val attachment = EmailAttachment(
-                "${generateUUID()}.xlsx",
-                file.bytes,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
-        val requesterName = when (isRequesterNameHidden){
+            "${generateUUID()}.xlsx",
+            file.bytes,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        val requesterName = when (isRequesterNameHidden) {
             true -> null
             else -> "User ${getUsernameFromSecurityContext()} (Keycloak id: ${getUserIdFromSecurityContext()})"
         }
