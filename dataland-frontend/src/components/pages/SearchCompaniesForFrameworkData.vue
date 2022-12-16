@@ -13,7 +13,7 @@
             v-model="currentSearchBarInput"
             ref="frameworkDataSearchBar"
             :filter="currentCombinedFilter"
-            :search-bar-name="searchBarName"
+            :searchBarId="searchBarId"
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"
@@ -130,7 +130,7 @@ export default defineComponent({
       },
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
-      searchBarName: "search_bar_top",
+      searchBarId: "search_bar_top",
       indexOfFirstShownRow: 0,
       rowsPerPage: 100,
       waitingForSearchResults: true,
@@ -151,15 +151,6 @@ export default defineComponent({
     };
   },
   watch: {
-    pageScrolled(pageScrolledNew) {
-      if (pageScrolledNew) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        this.frameworkDataSearchBar?.$refs.autocomplete.hide();
-      }
-      if (!pageScrolledNew) {
-        this.searchBarToggled = false;
-      }
-    },
     currentFilteredFrameworks: {
       handler() {
         this.updateCombinedFilterIfRequired();
@@ -204,13 +195,15 @@ export default defineComponent({
       this.indexOfFirstShownRow = value;
     },
     handleScroll() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToggleSearchBar) {
         this.scrollEmittedByToggleSearchBar = false;
       } else {
         if (this.searchBarToggled) {
           this.searchBarToggled = false;
-          this.searchBarName = "search_bar_top";
+          this.searchBarId = "search_bar_top";
           window.scrollBy(0, this.hiddenSearchBarHeight);
         }
         if (this.latestScrollPosition > windowScrollY) {
@@ -337,7 +330,7 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.searchBarName = "search_bar_scrolled";
+      this.searchBarId = "search_bar_scrolled";
     },
     unmounted() {
       window.removeEventListener("scroll", this.windowScrollHandler);

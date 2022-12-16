@@ -11,29 +11,32 @@
           <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           <i v-else aria-hidden="true" />
           <AutoComplete
-            :suggestions="autocompleteArrayDisplayed"
-            :name="searchBarName"
-            v-model="searchBarInput"
+            :inputId="searchBarId"
             ref="autocomplete"
-            inputClass="h-3rem d-framework-searchbar-input"
-            field="companyName"
-            style="z-index: 10"
+            v-model="searchBarInput"
+            :suggestions="autocompleteArrayDisplayed"
+            optionLabel="companyName"
+            :autoOptionFocus="false"
             placeholder="Search company by name or PermID"
-            @complete="searchCompanyName"
-            @item-select="handleItemSelect"
-            @keyup.enter="handleKeyupEnter"
+            inputClass="h-3rem d-framework-searchbar-input"
             panelClass="d-framework-searchbar-panel"
+            style="z-index: 10"
+            @change="activateKeyupEnterSearch"
+            @complete="searchCompanyName"
+            @item-select="pushToViewDataPageForItem"
+            @keyup.enter="executeSearch"
           >
-            <template #item="slotProps">
+            <template #option="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="searchBarInput" />
+              <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
             </template>
+
             <template #footer>
               <ul
                 class="p-autocomplete-items pt-0"
-                v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
+                v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
               >
-                <li class="p-autocomplete-item" @click="handleKeyupEnter">
+                <li class="p-autocomplete-item" @click="executeSearch">
                   <span class="text-primary font-medium underline pl-3"> View all results </span>
                 </li>
               </ul>
@@ -44,32 +47,6 @@
     </div>
   </div>
 </template>
-
-<style>
-.d-framework-searchbar-input-icon {
-  padding-left: 0.75rem !important;
-}
-
-.d-framework-searchbar-input {
-  padding-left: 3rem !important;
-}
-
-.d-framework-searchbar-panel {
-  max-height: 500px !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-items {
-  padding: 0 !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-item {
-  height: 3.5rem !important;
-  padding: 0 !important;
-  display: flex;
-  align-content: center;
-  align-items: center;
-}
-</style>
 
 <script lang="ts">
 import AutoComplete from "primevue/autocomplete";
@@ -99,7 +76,7 @@ export default defineComponent({
   emits: ["companies-received", "search-confirmed"],
 
   props: {
-    searchBarName: {
+    searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
     },
@@ -114,7 +91,7 @@ export default defineComponent({
         };
       },
     },
-    maxNumAutoCompleteEntries: {
+    maxNumOfDisplayedAutocompleteEntries: {
       type: Number,
       default: 3,
     },
@@ -132,8 +109,11 @@ export default defineComponent({
   },
 
   watch: {
-    searchBarName() {
+    searchBarId() {
       this.focusOnSearchBar();
+    },
+    searchBarInput(newValue) {
+      this.saveCurrentSearchStringIfValid(newValue);
     },
     filter: {
       handler() {
@@ -146,7 +126,9 @@ export default defineComponent({
 
   data: function () {
     return {
+      isKeyupEnterSearchMethodDeactivated: true,
       searchBarInput: "",
+      latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       loading: false,
@@ -154,20 +136,33 @@ export default defineComponent({
     };
   },
   methods: {
+    saveCurrentSearchStringIfValid(currentSearchString: string | object) {
+      if (currentSearchString && typeof currentSearchString === "string") {
+        this.latestValidSearchString = currentSearchString;
+      }
+    },
+
     focusOnSearchBar() {
       this.autocomplete.$refs.focusInput.focus();
     },
 
-    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+    activateKeyupEnterSearch() {
+      this.isKeyupEnterSearchMethodDeactivated = false;
+    },
+
+    pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
       void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
-    handleKeyupEnter() {
-      this.$emit("search-confirmed", this.searchBarInput);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.hide();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.$refs.input.blur();
-      void this.queryCompany();
+
+    executeSearch() {
+      if (!this.isKeyupEnterSearchMethodDeactivated && this.autocomplete.focusedOptionIndex === -1) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        this.autocomplete.hide();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        this.autocomplete.$refs.focusInput.blur();
+        this.$emit("search-confirmed", this.searchBarInput);
+        void this.queryCompany();
+      }
     },
     async queryCompany() {
       if (this.emitSearchResultsArray) {
@@ -194,9 +189,40 @@ export default defineComponent({
         new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)()
       );
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
       this.loading = false;
     },
   },
 });
 </script>
+
+<style>
+.d-framework-searchbar-input-icon {
+  padding-left: 0.75rem !important;
+}
+
+.d-framework-searchbar-input {
+  padding-left: 3rem !important;
+}
+
+.d-framework-searchbar-panel {
+  max-height: 500px !important;
+}
+
+.d-framework-searchbar-panel .p-autocomplete-items {
+  padding: 0 !important;
+}
+
+.d-framework-searchbar-panel .p-autocomplete-item {
+  height: 3.5rem !important;
+  padding: 0 !important;
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+.p-focus {
+  color: #fff !important;
+  background: #e67f3f !important;
+}
+</style>
