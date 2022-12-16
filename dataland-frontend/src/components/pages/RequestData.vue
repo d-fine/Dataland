@@ -37,7 +37,7 @@
             @remove="handleRemoveFile"
           >
             <template #header>
-              <div> TODO: Some styling and not showing any header </div>
+              <div></div>
             </template>
 
             <template #content="{ files, removeFileCallback }">
@@ -197,17 +197,18 @@ export default defineComponent({
       this.$refs.fileUpload.choose();
     },
 
-    getAllSelectedFiles() {
-      return this.$refs.fileUpload.files;
+    getSelectedFile(): File {
+      return this.$refs.fileUpload.files[0];
     },
 
     async uploadAllSelectedFiles(): Promise<void> {
-      const allSelectedFiles = this.getAllSelectedFiles();
+      const selectedFile = this.getSelectedFile();
+      console.log(selectedFile)
       try {
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        await inviteControllerApi.submitInvitation(this.hideName, allSelectedFiles);
+        await inviteControllerApi.submitInvite(this.hideName, selectedFile);
       } catch (error) {
         console.error(error);
       } finally {

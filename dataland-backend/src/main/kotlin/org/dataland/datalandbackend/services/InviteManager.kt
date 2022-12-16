@@ -34,7 +34,7 @@ class InviteManager(
         "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +
             "sending an email to a Dataland administrator. Please try again or contact us."
     private val inviteResultSuccess = "The invite was successfully processed. " +
-        "Dataland administrator will look into your uploaded Excel file and take action."
+        "Dataland administrators will look into your uploaded Excel file and take action."
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
