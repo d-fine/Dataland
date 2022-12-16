@@ -20,67 +20,17 @@
     }
   ],
   "paths": {
-    "/": {
-      "post": {
-        "tags": [
-          "file-controller"
-        ],
-        "summary": "Post invitation meta data",
-        "description": "Uploads the meta data of an invitation request.",
-        "operationId": "resetInvitation",
-        "responses": {
-          "200": {
-            "description": "Successfully stored invitation request meta data.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RequestMetaData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/invite": {
       "post": {
         "tags": [
-          "file-controller"
+          "invite-controller"
         ],
         "summary": "Create a Dataland invite.",
-        "description": "Excel files with invite info are processed.",
-        "operationId": "submitInvitation",
+        "description": "Create a Dataland invite by uploading an Excel file containing the invite info.",
+        "operationId": "submitInvite",
         "parameters": [
           {
-            "name": "isRequesterNameHidden",
+            "name": "isSubmitterNameHidden",
             "in": "query",
             "required": true,
             "schema": {
@@ -93,16 +43,13 @@
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "excelFiles"
+                  "excelFile"
                 ],
                 "type": "object",
                 "properties": {
-                  "excelFiles": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
+                  "excelFile": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -115,7 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExcelFilesUploadResponse"
+                  "$ref": "#/components/schemas/InviteMetaInfoEntity"
                 }
               }
             }
@@ -1466,40 +1413,26 @@
   },
   "components": {
     "schemas": {
-      "RequestMetaData": {
-        "required": [
-          "requestTimestamp",
-          "userId"
-        ],
+      "InviteMetaInfoEntity": {
         "type": "object",
         "properties": {
-          "uploadId": {
+          "inviteId": {
             "type": "string"
           },
           "userId": {
             "type": "string"
           },
-          "requestTimestamp": {
-            "type": "string"
-          }
-        }
-      },
-      "ExcelFilesUploadResponse": {
-        "required": [
-          "uploadId",
-          "uploadMessage",
-          "uploadSuccessful"
-        ],
-        "type": "object",
-        "properties": {
-          "uploadId": {
+          "fileId": {
             "type": "string"
           },
-          "uploadSuccessful": {
+          "timeStamp": {
+            "type": "string"
+          },
+          "inviteResultMessage": {
+            "type": "string"
+          },
+          "inviteSuccessful": {
             "type": "boolean"
-          },
-          "uploadMessage": {
-            "type": "string"
           }
         }
       },
