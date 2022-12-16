@@ -96,8 +96,7 @@
         <PrimeButton label="Reset"
                      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
                      name="reset_request_button"
-                     @click="openModal"
-                     :disabled="isSubmitDisabled">
+                     @click="openModal">
           Reset
         </PrimeButton>
         </div>
@@ -119,9 +118,9 @@
 
         <p >Are you sure you want to reset your request?</p>
           <p class="font-bold">This will remove all the selected files.</p>
-          <div class="flex justify-content-end flex-wrap">
+          <div class="flex justify-content-end flex-wrap mb-2">
             <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white w-6rem" @click="closeModal">Cancel</PrimeButton></div>
-            <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem" @click="clearUpload">Confirm</PrimeButton></div>
+            <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem" @click="resetPage">Confirm</PrimeButton></div>
           </div>
       </Dialog>
     </TheContent>
@@ -187,8 +186,8 @@ export default defineComponent({
       }
     },
 
-    handleSelectFile(event){
-      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE_IN_BYTES){ //TODO not enforced?
+    handleSelectFile(event) {
+      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE_IN_BYTES) { //TODO not enforced?
         this.isSubmitDisabled = false
       }
     },
@@ -226,12 +225,12 @@ export default defineComponent({
         // router push to new page with progressbar
       }
     },
-    async clearUpload(): Promise<void>  {
-        this.$refs.fileUpload.clear()
-        this.displayModal = false;
-      }
+    async resetPage(): Promise<void> {
+      this.$refs.fileUpload.clear()
+      this.displayModal = false;
+      this.hideName = false;
     },
-
+  }
 })
 
 </script>
