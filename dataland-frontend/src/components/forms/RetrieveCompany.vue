@@ -43,7 +43,7 @@ import PrimeButton from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
+import Keycloak from "keycloak-js";
 import { CompanyInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
