@@ -1,5 +1,5 @@
 import { exportFixturesEuTaxonomyFinancial } from "../../fixtures/eutaxonomy/financials";
-import { UPLOAD_MAX_FILE_SIZE } from "../../../../src/utils/Constants";
+import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "../../../../src/utils/Constants";
 import { Interception } from "cypress/types/net-stubbing";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
@@ -62,19 +62,22 @@ describe("As a user I expect a data request page where I can download an excel t
     expect(filenames[0]).to.equal(filename);
   }
 
-  function validateErrorMessageContaining(messages: string[]) {
+  function validateThatErrorMessageContains(messages: string[]) {
     messages.forEach((it) => {
       cy.get("div[class=p-message-text]").should("contain.text", it);
     });
   }
 
-  function validateSubmitButtonDisabled() {
+  function validateThatSubmitButtonIsDisabled() {
     cy.get("button[name=submit_request_button]").should("be.disabled");
   }
 
-  /*it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
-    cy.ensureLoggedIn()
+  beforeEach(() => {
+    cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/requests");
+  });
+
+  /*it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
     setReloadOnClicksToAvoidPageLoadBug();
 
     const expectedPathToDownloadedExcelTemplate = Cypress.config("downloadsFolder") + "/Dataland_Request_Template.xlsx";
@@ -93,8 +96,6 @@ describe("As a user I expect a data request page where I can download an excel t
   });*/
 
   // it(`Test submitting two files and if the upload request contains the inserted files`, () => {
-  //   cy.ensureLoggedIn();
-  //   cy.visitAndCheckAppMount("/requests");
   //   //setReloadOnClicksToAvoidPageLoadBug() // TODO what is this bug?
   //
   //   const removeFilename = "remove_file.xlsx";
@@ -114,40 +115,35 @@ describe("As a user I expect a data request page where I can download an excel t
   // });
 
   // it(`Test that the upload box is empty after a successful submission`, () => {
-  //   cy.ensureLoggedIn();
-  //   cy.visitAndCheckAppMount("/requests");
   //   uploadDummyExcelFile("accept_test.xlsx", Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE)));
   //   submitAndValidateSuccess();
   //   expect(getUploadBoxFiles().length).to.equal(0);
   // });
 
   it(`Test that a too large file gets rejected`, () => {
-    cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/requests");
     const rejectFilename = "reject_test.xlsx";
-
-    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE + 1)));
+    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
+        new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
+    ));
     expect(getUploadBoxFiles().length).to.equal(0);
-    validateErrorMessageContaining([rejectFilename, "Invalid file size"]);
-    validateSubmitButtonDisabled();
+    validateThatErrorMessageContains([rejectFilename, "Invalid file size"]);
+    validateThatSubmitButtonIsDisabled();
   });
 
   it(`Test that a wrong file type gets rejected`, () => {
-    cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/requests");
     const rejectFilename = "reject_test.png";
 
-    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE + 1)));
+    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
+        new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
+    ));
     expect(getUploadBoxFiles().length).to.equal(0);
-    validateErrorMessageContaining([rejectFilename, "Invalid file type"]);
-    validateSubmitButtonDisabled();
+    validateThatErrorMessageContains([rejectFilename, "Invalid file type"]);
+    validateThatSubmitButtonIsDisabled();
   });
 
   // TODO merge this test into a different test
   it(`Test that the submit button is disabled when there is no file to be submitted`, () => {
-    cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/requests");
-    validateSubmitButtonDisabled();
+    validateThatSubmitButtonIsDisabled();
   });
 
   // TODO test reset button, checkbox (how?)
