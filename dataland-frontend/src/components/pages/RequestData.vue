@@ -36,8 +36,17 @@
             @clear="disableSubmitButton"
             @remove="handleRemoveFile"
           >
-            <template #header>
-              <div> TODO: Some styling and not showing any header </div>
+            <template #header="{ files, clearCallback }">
+              <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+                <div class="flex gap-2">
+                  <PrimeButton
+                    @click="clearCallback()"
+                    label="Clear all"
+                    class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary mr-9"
+                    :disabled="!files || files.length === 0"
+                  />
+                </div>
+              </div>
             </template>
 
             <template #content="{ files, removeFileCallback }">
@@ -198,17 +207,18 @@ export default defineComponent({
       this.$refs.fileUpload.choose();
     },
 
-    getAllSelectedFiles() {
-      return this.$refs.fileUpload.files;
+    getSelectedFile(): File {
+      return this.$refs.fileUpload.files[0];
     },
 
     async uploadAllSelectedFiles(): Promise<void> {
-      const allSelectedFiles = this.getAllSelectedFiles();
+      const selectedFile = this.getSelectedFile();
+      console.log(selectedFile)
       try {
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        await inviteControllerApi.submitInvitation(this.hideName, allSelectedFiles);
+        await inviteControllerApi.submitInvite(this.hideName, selectedFile);
       } catch (error) {
         console.error(error);
       } finally {
