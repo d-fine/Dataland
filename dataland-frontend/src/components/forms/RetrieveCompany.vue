@@ -43,14 +43,14 @@ import PrimeButton from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { CompanyInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "RetrieveCompany",
   components: { Card, PrimeButton, DataTable, Column, FormKit },
-  setup() {
+  setup: function () {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };

@@ -136,8 +136,7 @@ import PrimeTextarea from "primevue/textarea";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import { ApiKeyControllerApiInterface, ApiKeyMetaInfo } from "@clients/apikeymanager";
-import { AxiosResponse } from "axios";
+import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -196,9 +195,7 @@ export default defineComponent({
         const apiKeyManagerController: ApiKeyControllerApiInterface = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
-        const apiKeyMetaInfoForUser =
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          (await apiKeyManagerController.getApiKeyMetaInfoForUser()) as AxiosResponse<ApiKeyMetaInfo>;
+        const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
         this.userRolesAccordingToApiKey = apiKeyMetaInfoForUser.data.keycloakRoles
           ? apiKeyMetaInfoForUser.data.keycloakRoles
