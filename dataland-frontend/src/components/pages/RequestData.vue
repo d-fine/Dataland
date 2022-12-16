@@ -81,8 +81,9 @@
           </div>
         </div>
       </div>
-      <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center grid">
-      <div class="col-3 col-offset-9 justify-content-end">
+      <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center ">
+        <div class="flex justify-content-end flex-wrap">
+      <div class="flex align-items-center justify-content-center m-2">
         <PrimeButton label="Reset"
                      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
                      name="reset_request_button"
@@ -90,29 +91,29 @@
                      :disabled="isSubmitDisabled">
           Reset
         </PrimeButton>
-
+        </div>
+        <div class="flex align-items-center justify-content-center m-2">
         <PrimeButton label="Submit"
-                     class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem"
+                     class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
                      name="submit_request_button"
                      @click="uploadAllSelectedFiles"
                      :disabled="isSubmitDisabled">
           Submit
         </PrimeButton>
         </div>
+          </div>
     </div>
-      <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
+      <Dialog header="Reset Request Data" v-model:visible="displayModal" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
         <div class="grid">
         <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 buttonstyle" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon iconstyle"></span></Button>
         </div> <h2 class="mt-0 mb-5">Reset Request Data</h2>
 
-        <p class="m-0">Are you sure you want to reset your request?</p>
+        <p >Are you sure you want to reset your request?</p>
           <p class="font-bold">This will remove all the selected files.</p>
-        <div class="grid">
-        <div class="col-5 col-offset-7 justify-content-end">
-          <PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white m-2 w-6rem" @click="closeModal">Cancel</PrimeButton>
-          <PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary m-2 w-6rem" @click="clearUpload">Confirm</PrimeButton>
-        </div>
-        </div>
+          <div class="flex justify-content-end flex-wrap">
+            <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white w-6rem" @click="closeModal">Cancel</PrimeButton></div>
+            <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem" @click="clearUpload">Confirm</PrimeButton></div>
+          </div>
       </Dialog>
     </TheContent>
 
