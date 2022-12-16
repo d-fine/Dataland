@@ -34,7 +34,7 @@
             :max-file-size="maxFileSize"
             :fileLimit="fileLimit"
             @select="handleSelectFile"
-            @clear="handleClearFiles"
+            @clear="disableSubmitButton"
             @remove="handleRemoveFile"
           >
             <template #header="{ files, clearCallback }">
@@ -99,34 +99,48 @@
           </div>
         </div>
       </div>
-    </TheContent>
-    <div class="d-header m-0 fixed bottom-0 surface-900 h-4rem w-full grid align-items-center">
-      <div class="col-2 col-offset-10">
-        <PrimeButton
-          label="Reset"
-          class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-1 ml-1"
-          name="reset_request_button"
-          @click="clearUpload"
-        >
+      <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center grid">
+      <div class="col-3 col-offset-9 justify-content-end">
+        <PrimeButton label="Reset"
+                     class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
+                     name="reset_request_button"
+                     @click="openModal"
+                     :disabled="isSubmitDisabled">
           Reset
         </PrimeButton>
-        <PrimeButton
-          label="Submit"
-          class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem ml-1"
-          name="submit_request_button"
-          @click="uploadAllSelectedFiles"
-          :disabled="isSubmitDisabled"
-        >
+
+        <PrimeButton label="Submit"
+                     class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem"
+                     name="submit_request_button"
+                     @click="uploadAllSelectedFiles"
+                     :disabled="isSubmitDisabled">
           Submit
         </PrimeButton>
-      </div>
+        </div>
     </div>
+      <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
+        <div class="grid">
+        <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon"></span></Button>
+        </div> <h2 class="mt-0 mb-5">Reset Request Data</h2>
+
+        <p class="m-0">Are you sure you want to reset the requested data?</p>
+          <p class="font-bold">This will remove all the uploaded files.</p>
+        <div class="grid">
+        <div class="col-5 col-offset-7 justify-content-end">
+          <PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white m-2 w-6rem" @click="closeModal">Cancel</PrimeButton>
+          <PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary m-2 w-6rem" @click="clearUpload">Confirm</PrimeButton>
+        </div>
+        </div>
+      </Dialog>
+    </TheContent>
+
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
 import InfoCard from "@/components/general/InfoCard.vue";
 import FileUpload from "primevue/fileupload";
+import Dialog from "primevue/dialog"
 import Checkbox from "primevue/checkbox";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
@@ -138,10 +152,9 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import PrimeButton from "primevue/button";
 import { humanizeBytes } from "@/utils/StringHumanizer";
 import {
-  UPLOAD_FILE_SIZE_DECIMALS,
+  UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
-  UPLOAD_MAX_FILE_SIZE,
-  UPLOAD_FILES_LIMIT,
+  UPLOAD_MAX_FILE_SIZE_IN_BYTES,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -154,6 +167,7 @@ export default defineComponent({
     InfoCard,
     FileUpload,
     Checkbox,
+    Dialog,
   },
   setup() {
     return {
@@ -165,32 +179,36 @@ export default defineComponent({
     return {
       isSubmitDisabled: true,
       fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
-      maxFileSize: UPLOAD_MAX_FILE_SIZE,
-      fileLimit: UPLOAD_FILES_LIMIT,
+      maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       hideName: false,
+      displayModal: false,
     };
   },
   methods: {
-    handleRemoveFile(event) {
-      if (event.files.length === 0) {
-        this.isSubmitDisabled = true;
-      }
-    },
-
-    handleClearFiles() {
+    disableSubmitButton() {
       this.isSubmitDisabled = true;
     },
 
-    handleSelectFile(event) {
-      console.log("ich passiere");
-      console.log(event.files);
-      if (event.files.length > 0) {
-        this.isSubmitDisabled = false;
+    handleRemoveFile(event) {
+      if (event.files.length === 0) {
+        this.disableSubmitButton();
       }
     },
 
+    handleSelectFile(event){
+      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE_IN_BYTES){ //TODO not enforced?
+        this.isSubmitDisabled = false
+      }
+    },
+
+    openModal() {
+      this.displayModal = true;
+    },
+    closeModal() {
+      this.displayModal = false;
+    },
     formatBytes(bytes: number): string {
-      return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DECIMALS);
+      return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
     },
 
     chooseFiles() {
@@ -215,26 +233,26 @@ export default defineComponent({
         // router push to new page with progressbar
       }
     },
-    async clearUpload(): Promise<void> {
-      try {
-        const fileControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getFileControllerApi();
-        await fileControllerApi.resetInvitation();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.$refs.fileUpload.clear();
+    async clearUpload(): Promise<void>  {
+        this.$refs.fileUpload.clear()
+        this.displayModal = false;
       }
     },
-  },
-});
 
-// TODO delete the TESTUPLOAD button at the end of dev
+})
+
 </script>
 
 <style scoped>
 a:hover {
+  cursor: pointer;
+}
+.closebutton {
+
+  border:none;
+  color:#1b1b1b;
+}
+.hovericon {
   cursor: pointer;
 }
 </style>

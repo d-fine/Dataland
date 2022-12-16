@@ -16,13 +16,13 @@ class InvitationEmailGenerator {
                 ?: listOf()
         }
 
-        fun generate(attachments: List<EmailAttachment>, requesterName: String?): Email {
+        fun generate(attachment: EmailAttachment, requesterName: String?): Email {
             val message = (requesterName ?: "An anonymous user") + " requested an invitation.\nPlease review."
             val content = EmailContent(
                 "Dataland Invitation Request",
                 message,
                 message,
-                attachments
+                attachment
             )
             return Email(sender, receivers, cc, content)
         }
