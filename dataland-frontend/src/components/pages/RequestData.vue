@@ -2,6 +2,15 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="pl-0 min-h-screen surface-800">
+      <div v-if="submissionFinished">
+        <p>Submission finished!</p>
+        <p>{{ "Invite successful?: " + isInviteSuccessful}}</p>
+        <p>{{ "Invite result message: " + inviteResultMessage }}</p>
+      </div>
+      <div v-else-if="submissionInProgress">
+        Submission is in progress. Please wait
+      </div>
+      <div v-else>
       <div class="pl-4 col-5 text-left">
         <h3 class="py-4">Request companies data for EU Taxonomy, SFDR or LkSG.</h3>
 
@@ -93,7 +102,7 @@
         <PrimeButton label="Submit"
                      class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
                      name="submit_request_button"
-                     @click="uploadAllSelectedFiles"
+                     @click="handleSubmission"
                      :disabled="!selectedFile">
           Submit
         </PrimeButton>
@@ -112,6 +121,7 @@
             <div class="flex align-items-center justify-content-center m-2"><PrimeButton label="Yes"  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem" @click="resetPage">Confirm</PrimeButton></div>
           </div>
       </Dialog>
+      </div>
     </TheContent>
 
   </AuthenticationWrapper>
@@ -157,6 +167,10 @@ export default defineComponent({
   },
   data() {
     return {
+      isInviteSuccessful: false,
+      inviteResultMessage: "",
+      submissionFinished: false,
+      submissionInProgress: false,
       fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null,
@@ -197,18 +211,25 @@ export default defineComponent({
       return this.$refs.fileUpload.files[0];
     },
 
+    handleSubmission(){
+      this.submissionInProgress = true
+      console.log("dinge passieren")
+      this.uploadAllSelectedFiles()
+      this.submissionFinished = true
+      this.submissionInProgress = false
+    },
+
     async uploadAllSelectedFiles(): Promise<void> {
       const selectedFile = this.getSelectedFile();
       try {
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        await inviteControllerApi.submitInvite(this.hideName, selectedFile);
+        const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile);
+        this.isInviteSuccessful = response.data.inviteSuccessful ?? false
+        this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server."
       } catch (error) {
         console.error(error);
-      } finally {
-        this.$refs.fileUpload.clear(); // can be omitted if router push active
-        // router push to new page with progressbar
       }
     },
     async resetPage(): Promise<void> {
