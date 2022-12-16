@@ -30,11 +30,11 @@
             mode="advanced"
             :auto="false"
             accept=".xlsx"
-            :max-file-size="maxFileSize"
+            :maxFileSize="maxFileSize"
             :fileLimit=1
             @select="handleSelectFile"
-            @clear="disableSubmitButton"
-            @remove="handleRemoveFile"
+            @clear="clearSelection"
+            @remove="clearSelection"
           >
             <template #header>
               <div></div>
@@ -44,13 +44,11 @@
               <div v-if="files.length > 0">
                 <p class="m-0">Your selected Excel file for the upload:</p>
                 <div
-                  v-for="file of files"
-                  :key="file.name + file.type + file.size"
                   class="flex align-items-center justify-content-between"
                 >
                   <div>
-                    <span class="font-semibold mr-2">{{ file.name }}</span>
-                    <span class="font-light mr-4">{{ "(" + formatBytes(file.size) + ")" }}</span>
+                    <span class="font-semibold mr-2">{{ files[0].name }}</span>
+                    <span class="font-light mr-4">{{ "(" + formatBytes(files[0].size) + ")" }}</span>
                   </div>
                   <PrimeButton
                     label="Clear"
@@ -96,7 +94,7 @@
                      class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
                      name="submit_request_button"
                      @click="uploadAllSelectedFiles"
-                     :disabled="isSubmitDisabled">
+                     :disabled="!selectedFile">
           Submit
         </PrimeButton>
         </div>
@@ -159,27 +157,25 @@ export default defineComponent({
   },
   data() {
     return {
-      isSubmitDisabled: true,
       fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      selectedFile: null,
       hideName: false,
       displayModal: false,
     };
   },
   methods: {
-    disableSubmitButton() {
-      this.isSubmitDisabled = true;
-    },
-
-    handleRemoveFile(event) {
-      if (event.files.length === 0) {
-        this.disableSubmitButton();
-      }
+    clearSelection(){
+      this.selectedFile = null
     },
 
     handleSelectFile(event) {
-      if(event.files.length > 0 || event.files.size > UPLOAD_MAX_FILE_SIZE_IN_BYTES) { //TODO not enforced?
-        this.isSubmitDisabled = false
+      if (event.files.length > 1) {
+        this.selectedFile = event.files[1]
+        this.$refs.fileUpload.files.shift()
+      }
+      else {
+        this.selectedFile = event.files[0]
       }
     },
 
@@ -203,7 +199,6 @@ export default defineComponent({
 
     async uploadAllSelectedFiles(): Promise<void> {
       const selectedFile = this.getSelectedFile();
-      console.log(selectedFile)
       try {
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
