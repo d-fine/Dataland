@@ -1,4 +1,4 @@
-import CreateApiKeyCard from "@/components/general/CreateApiKeyCard.vue";
+import CreateApiKeyCard from "@/components/general/apiKey/CreateApiKeyCard.vue";
 import { mount } from "cypress/vue";
 
 describe("Component test for CreateApiKeyCard", () => {
