@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -30,8 +29,16 @@ class InviteManager(
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
 
-    private val maxBytesPerFile = 5000000 // TODO nginx has also a max file size limit! configure it!
-    // TODO These "magic number" could go into our applicaton properties, or be handled as Env for all Microservices
+    private val regexForValidExcelFileName = Regex("^[A-Za-z0-9-_]+.xlsx\$")
+
+    private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
+            "Please use alphanumeric characters, hyphens and underscores only, " +
+            "and make sure that your Excel file has the .xlsx format."
+    private val inviteResultEmailError =
+        "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +
+                "sending an email to a Dataland administrator. Please try again or contact us."
+    private val inviteResultSuccess = "The invite was successfully processed. " +
+            "Dataland administrator will look into your uploaded Excel file and take action."
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
@@ -46,19 +53,8 @@ class InviteManager(
         return jwt.getClaimAsString("preferred_username")
     }
 
-    private fun securityChecks(fileToCheck: MultipartFile, associatedInviteId: String) {
-        logger.info("Scanning file provided via invite ID $associatedInviteId for any violations or potential risks.")
-        if (fileToCheck.bytes.size > maxBytesPerFile) {
-            throw InvalidInputApiException(         // TODO discuss=> throw exceptions or return 200 and a message?
-                "Provided file is too large.",
-                "The provided file is larger than the maximum of $maxBytesPerFile."
-            )
-        }
-            // checkFileForRisks(fileToCheck)
-            // TODO we DEFINITELY need some security checks to avoid any attack vectors
-            // TODO alternatively, copy individual entries to a fresh template and process that
-            // e.g. filename, filetype, actual contents etc.
-        logger.info("Finished scanning file.")
+    private fun checkFilename(fileToCheck: MultipartFile): Boolean {
+        return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
         }
 
 
@@ -87,11 +83,11 @@ class InviteManager(
         throw IllegalArgumentException("Request must not be null!")
     }
 
-    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String, associatedInviteId: String) {
+    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String, associatedInviteId: String) : Boolean {
         val noEmail = getRequest().getHeader("DATALAND-NO-EMAIL")
         if (noEmail == "true") {
             logger.info("No emails will be sent by this invitation request.")
-            return
+            return false
         }
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val attachment = EmailAttachment(
@@ -104,8 +100,14 @@ class InviteManager(
             else -> "User ${getUsernameFromSecurityContext()} (Keycloak id: ${getUserIdFromSecurityContext()})"
         }
         val email = InvitationEmailGenerator.generate(attachment, requesterName)
-        emailSender.sendEmail(email)
-        logger.info("Emails were sent.")
+        val isEmailSent = emailSender.sendEmail(email)
+        return if(isEmailSent) {
+            logger.info("Emails were sent.")
+            true
+        } else{
+            logger.info("Emails could not be sent.")
+            false
+        }
     }
 
     /**
@@ -116,13 +118,18 @@ class InviteManager(
      */
     fun submitInvitation(excelFile: MultipartFile, isRequesterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = generateUUID()
-        securityChecks(excelFile, inviteId) // if this fails, then set inviteSuccessful to "false", give a message and break TODO
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         val userId = getUserIdFromSecurityContext()
-        sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)  // if this fails, then set inviteSuccessful to "false, give a message and break" TODO
+        if (!checkFilename(excelFile)) {
+            removeFileFromStorage(fileId, inviteId)
+            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
+        }
+        if(!sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)) {
+            removeFileFromStorage(fileId, inviteId)
+            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultEmailError))
+        }
         removeFileFromStorage(fileId, inviteId)
-        val successInviteResult = InviteResult(true, "The invite was successfully processed.")
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, successInviteResult)
+        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(true, inviteResultSuccess))
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
