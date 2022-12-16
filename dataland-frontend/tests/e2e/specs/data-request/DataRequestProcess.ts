@@ -52,7 +52,14 @@ describe("As a user I expect a data request page where I can download an excel t
   function getUploadBoxFiles(): string[] {
     const filenames: string[] = [];
     // TODO implement
+    expect(filenames.length).to.be.at.most(1);
     return filenames;
+  }
+
+  function uploadBoxEntryShouldBe(filename: string) {
+    let filenames = getUploadBoxFiles();
+    expect(filenames.length).to.equal(1);
+    expect(filenames[0]).to.equal(filename);
   }
 
   function validateErrorMessageContaining(messages: string[]) {
@@ -92,11 +99,13 @@ describe("As a user I expect a data request page where I can download an excel t
   //
   //   const removeFilename = "remove_file.xlsx";
   //   uploadDummyExcelFile(removeFilename);
-  //   // TODO check that the file is listed
-  //   // TODO remove the inserted file and check if download box is empty
+  //   uploadBoxEntryShouldBe(removeFilename);
+  //   // TODO try and fail to add another file
+  //   // TODO remove the inserted file / click X
+  //   expect(getUploadBoxFiles().length).to.equal(0);
   //   const keepFilename = "keep_file.xlsx";
   //   uploadDummyExcelFile(keepFilename);
-  //   // TODO check that only the new file is listed
+  //   uploadBoxEntryShouldBe(keepFilename); // this is done to validate, that the removal worked
   //
   //   submitAndValidateSuccess((interception) => {
   //     expect(interception.request.body).to.contain(keepFilename);
@@ -141,5 +150,5 @@ describe("As a user I expect a data request page where I can download an excel t
     validateSubmitButtonDisabled();
   });
 
-  // TODO test reset button, clear button / X, checkbox (how?)
+  // TODO test reset button, checkbox (how?)
 });

@@ -34,5 +34,10 @@ class EmailSender {
         val request = SendEmailsRequest.builder().message(mailjetEmail).build()
         val response = request.sendWith(client)
         response.messages.forEach { logger.info(it.toString()) }
+        // TODO status is non 200 and no email is sent if either
+        // TODO 1. an attachment has no content
+        // TODO 2. the INVITE_REQUEST_RECEIVERS env is not set or empty
+        // TODO discuss: should we throw exceptions? I think the user needs to know if an uploaded file was empty.
+        // TODO an exception is already thrown if the mail server is not available
     }
 }
