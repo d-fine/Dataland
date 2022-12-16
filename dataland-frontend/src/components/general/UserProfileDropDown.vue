@@ -63,8 +63,14 @@ export default defineComponent({
         {
           label: "USER SETTINGS",
           icon: "settings",
-          id: "profile-pocture-dropdown-settings-button",
+          id: "profile-picture-dropdown-settings-button",
           clickAction: this.gotoUserSettings,
+        },
+        {
+          label: "DATA REQUEST",
+          icon: "mail",
+          id: "profile-picture-dropdown-data-request-button",
+          clickAction: this.gotoDataRequest,
         },
         {
           label: "LOG OUT",
@@ -97,6 +103,9 @@ export default defineComponent({
           }
         })
         .catch((error) => console.log(error));
+    },
+    gotoDataRequest() {
+      this.$router.push("requests")
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
