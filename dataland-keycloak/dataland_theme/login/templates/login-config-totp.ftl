@@ -15,7 +15,7 @@
                         id="kc-totp-supported-apps">
                         <#list totp.supportedApplications as app>
                             <li class="flex align-items-center">
-                                <img src="${url.resourcesPath}/img/check.svg">
+                                <img src="${url.resourcesPath}/check.svg">
                                 &emsp;${msg(app)}
                             </li>
                         </#list>
@@ -165,7 +165,7 @@
                                     />
                                     <button type="submit"
                                             class="p-button font-semibold cursor-pointer bg-white text-primary uppercase"
-                                            id="cancelTOTPBtn" name="cancel-aia" value="true"/>${msg("doCancel")}
+                                            id="cancelTOTPBtn" name="cancel-aia" value="true">${msg("doCancel")}
                                     </button>
                                 <#else>
                                     <input type="submit"

@@ -7,7 +7,7 @@
         <meta name="robots" content="noindex, nofollow">
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <link rel="stylesheet" href="${url.resourcesPath}/css/dist.css"/>
+        <link rel="stylesheet" href="${url.resourcesPath}/index.css"/>
     </head>
 
 
