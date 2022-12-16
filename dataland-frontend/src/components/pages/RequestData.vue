@@ -120,7 +120,7 @@
     </div>
       <Dialog header="Reset Request Data" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '34vw'}" :modal="true" :showHeader="false" closeIcon="pi pi-times-circle">
         <div class="grid">
-        <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon"></span></Button>
+        <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon" style="color:white; background-color: #958D7C; border-radius: 50%;"></span></Button>
         </div> <h2 class="mt-0 mb-5">Reset Request Data</h2>
 
         <p class="m-0">Are you sure you want to reset the requested data?</p>
