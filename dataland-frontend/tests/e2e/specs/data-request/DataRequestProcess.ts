@@ -17,7 +17,7 @@ describe("As a user I expect a data request page where I can download an excel t
       });
   }
 
-  function uploadDummyExcelFile(filename: string, content: Blob | null = null) {
+  function uploadDummyExcelFile(filename: string, content: Blob | null = null): void {
     cy.get("div[class=p-fileupload-content]").attachFile(
       {
         fileContent: content ? content : new Blob(["File content"]),
@@ -28,19 +28,19 @@ describe("As a user I expect a data request page where I can download an excel t
     );
   }
 
-  function submitAndValidateSuccess(moreValidation = (interception: Interception) => {}) {
+  function submitAndValidateSuccess(moreValidation = (interception: Interception) => {}): void {
     interceptInviteAndDisableEmail();
     cy.get("button[name=submit_request_button]").click();
     validateSuccessResponse(moreValidation);
   }
 
-  function interceptInviteAndDisableEmail() {
+  function interceptInviteAndDisableEmail(): void {
     cy.intercept("**/api/invite*", (req) => {
       req.headers["DATALAND-NO-EMAIL"] = "true";
     }).as(inviteInterceptionAlias);
   }
 
-  function validateSuccessResponse(moreValidation = (interception: Interception) => {}) {
+  function validateSuccessResponse(moreValidation = (interception: Interception) => {}): void {
     cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
       expect(interception.response!.statusCode).to.be.within(200, 299);
       expect(interception.response!.body.uploadSuccessful).to.equal(true);
@@ -56,19 +56,19 @@ describe("As a user I expect a data request page where I can download an excel t
     return filenames;
   }
 
-  function uploadBoxEntryShouldBe(filename: string) {
-    let filenames = getUploadBoxFiles();
+  function uploadBoxEntryShouldBe(filename: string): void {
+    const filenames = getUploadBoxFiles();
     expect(filenames.length).to.equal(1);
     expect(filenames[0]).to.equal(filename);
   }
 
-  function validateThatErrorMessageContains(messages: string[]) {
+  function validateThatErrorMessageContains(messages: string[]): void {
     messages.forEach((it) => {
       cy.get("div[class=p-message-text]").should("contain.text", it);
     });
   }
 
-  function validateThatSubmitButtonIsDisabled() {
+  function validateThatSubmitButtonIsDisabled(): void {
     cy.get("button[name=submit_request_button]").should("be.disabled");
   }
 
