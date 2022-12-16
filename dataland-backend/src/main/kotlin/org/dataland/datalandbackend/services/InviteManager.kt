@@ -13,7 +13,7 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * Implementation of a file manager for Dataland
+ * Implementation of a invite manager for Dataland
  */
 @Component("FileManager")
 class InviteManager(
@@ -29,6 +29,7 @@ class InviteManager(
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
         "Please use alphanumeric characters, hyphens and underscores only, " +
         "and make sure that your Excel file has the .xlsx format."
+    private val inviteResultFileIsEmpty = "Your Excel file is empty. Please make sure to upload a valid file."
     private val inviteResultEmailError =
         "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +
             "sending an email to a Dataland administrator. Please try again or contact us."
@@ -45,7 +46,6 @@ class InviteManager(
 
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
         return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
-        // TODO add TODO 1. an attachment has no content
     }
 
     private fun storeOneExcelFileAndReturnFileId(
@@ -78,6 +78,16 @@ class InviteManager(
         }
     }
 
+    private fun handleSubmission(fileId: String, inviteId: String, success: Boolean, message: String): InviteMetaInfoEntity {
+        val userId = getUserIdFromSecurityContext()
+        removeFileFromStorage(fileId, inviteId)
+        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(success, message))
+    }
+
+    private fun handleSubmissionError(fileId: String, inviteId: String, errorMessage: String): InviteMetaInfoEntity {
+        return handleSubmission(fileId, inviteId, false, errorMessage)
+    }
+
     /**
      * Method to submit an invite
      * @param excelFile is the Excel file to submit, which contains the invite info
@@ -87,17 +97,14 @@ class InviteManager(
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
-        val userId = getUserIdFromSecurityContext()
         if (!checkFilename(excelFile)) {
-            removeFileFromStorage(fileId, inviteId)
-            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
-        }
+            return handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)}
+        if (excelFile.isEmpty) {
+            return handleSubmissionError(fileId, inviteId, inviteResultFileIsEmpty)}
         if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
-            removeFileFromStorage(fileId, inviteId)
-            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultEmailError))
+            return handleSubmissionError(fileId, inviteId, inviteResultEmailError)
         }
-        removeFileFromStorage(fileId, inviteId)
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(true, inviteResultSuccess))
+        return handleSubmission(fileId, inviteId, true, inviteResultSuccess)
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
