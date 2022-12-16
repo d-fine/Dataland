@@ -205,10 +205,10 @@ export default defineComponent({
     async uploadAllSelectedFiles(): Promise<void> {
       const allSelectedFiles = this.getAllSelectedFiles();
       try {
-        const fileControllerApi = await new ApiClientProvider(
+        const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getFileControllerApi();
-        await fileControllerApi.submitInvitation(this.hideName, allSelectedFiles);
+        ).getInviteControllerApi();
+        await inviteControllerApi.submitInvitation(this.hideName, allSelectedFiles);
       } catch (error) {
         console.error(error);
       } finally {

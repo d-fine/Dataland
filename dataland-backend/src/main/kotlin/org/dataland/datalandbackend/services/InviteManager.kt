@@ -60,12 +60,19 @@ class InviteManager(
     }
 
     private fun removeFileFromStorage(fileId: String, associatedInviteId: String) {
-        logger.info("Removing Excel file with file ID $fileId, which was originally stored for invite ID $associatedInviteId")
+        logger.info(
+            "Removing Excel file with file ID $fileId, which was originally stored for invite ID $associatedInviteId"
+        )
         temporaryFileStore.remove(fileId)
         logger.info("Removed Excel file from in-memory-storage.")
     }
 
-    private fun sendEmailWithFile(file: MultipartFile, isSubmitterNameHidden: Boolean, fileId: String, associatedInviteId: String): Boolean {
+    private fun sendEmailWithFile(
+        file: MultipartFile,
+        isSubmitterNameHidden: Boolean,
+        fileId: String,
+        associatedInviteId: String
+    ): Boolean {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
@@ -78,7 +85,12 @@ class InviteManager(
         }
     }
 
-    private fun handleSubmission(fileId: String, inviteId: String, success: Boolean, message: String): InviteMetaInfoEntity {
+    private fun handleSubmission(
+        fileId: String,
+        inviteId: String,
+        success: Boolean,
+        message: String
+    ): InviteMetaInfoEntity {
         val userId = getUserIdFromSecurityContext()
         removeFileFromStorage(fileId, inviteId)
         return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(success, message))
