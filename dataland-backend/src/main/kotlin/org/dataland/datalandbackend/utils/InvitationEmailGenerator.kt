@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
 
+/**
+ * A class to generate invitation emails
+ */
 class InvitationEmailGenerator {
     companion object {
         private val sender = EmailContact("info@dataland.com", "Dataland")
@@ -15,7 +18,9 @@ class InvitationEmailGenerator {
             return (System.getenv(envName)?.split(";")?.filter { it.isNotBlank() }?.map { EmailContact(it) })
                 ?: listOf()
         }
-
+        /**
+         * Function that generates the email to be send
+         */
         fun generate(attachment: EmailAttachment, requesterName: String?): Email {
             val message = (requesterName ?: "An anonymous user") + " requested an invitation.\nPlease review."
             val content = EmailContent(

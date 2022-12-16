@@ -46,5 +46,4 @@ interface InviteApi {
         @RequestParam isRequesterNameHidden: Boolean
     ):
         ResponseEntity<InviteMetaInfoEntity>
-
 }

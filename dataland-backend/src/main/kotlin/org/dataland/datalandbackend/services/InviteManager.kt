@@ -8,13 +8,13 @@ import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID
-import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -32,13 +32,13 @@ class InviteManager(
     private val regexForValidExcelFileName = Regex("^[A-Za-z0-9-_]+.xlsx\$")
 
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
-            "Please use alphanumeric characters, hyphens and underscores only, " +
-            "and make sure that your Excel file has the .xlsx format."
+        "Please use alphanumeric characters, hyphens and underscores only, " +
+        "and make sure that your Excel file has the .xlsx format."
     private val inviteResultEmailError =
         "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +
-                "sending an email to a Dataland administrator. Please try again or contact us."
+            "sending an email to a Dataland administrator. Please try again or contact us."
     private val inviteResultSuccess = "The invite was successfully processed. " +
-            "Dataland administrator will look into your uploaded Excel file and take action."
+        "Dataland administrator will look into your uploaded Excel file and take action."
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
@@ -55,8 +55,7 @@ class InviteManager(
 
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
         return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
-        }
-
+    }
 
     private fun storeOneExcelFileAndReturnFileId(
         singleExcelFile: MultipartFile,
@@ -70,7 +69,8 @@ class InviteManager(
     }
 
     private fun removeFileFromStorage(fileId: String, associatedInviteId: String) {
-        logger.info("Removing Excel file with file ID $fileId, which was originally stored for invite ID $associatedInviteId")
+        logger.info("Removing Excel file with file ID $fileId, which was originally stored for invite ID " +
+                "$associatedInviteId")
         temporaryFileStore.remove(fileId)
         logger.info("Removed Excel file from in-memory-storage.")
     }
@@ -83,7 +83,8 @@ class InviteManager(
         throw IllegalArgumentException("Request must not be null!")
     }
 
-    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String, associatedInviteId: String) : Boolean {
+    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String,
+                                  associatedInviteId: String): Boolean {
         val noEmail = getRequest().getHeader("DATALAND-NO-EMAIL")
         if (noEmail == "true") {
             logger.info("No emails will be sent by this invitation request.")
@@ -101,10 +102,10 @@ class InviteManager(
         }
         val email = InvitationEmailGenerator.generate(attachment, requesterName)
         val isEmailSent = emailSender.sendEmail(email)
-        return if(isEmailSent) {
+        return if (isEmailSent) {
             logger.info("Emails were sent.")
             true
-        } else{
+        } else {
             logger.info("Emails could not be sent.")
             false
         }
@@ -122,21 +123,28 @@ class InviteManager(
         val userId = getUserIdFromSecurityContext()
         if (!checkFilename(excelFile)) {
             removeFileFromStorage(fileId, inviteId)
-            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
+            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false,
+                inviteResultInvalidFileName))
         }
-        if(!sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)) {
+        if (!sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)) {
             removeFileFromStorage(fileId, inviteId)
-            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultEmailError))
+            return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false,
+                inviteResultEmailError))
         }
         removeFileFromStorage(fileId, inviteId)
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(true, inviteResultSuccess))
+        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(true,
+            inviteResultSuccess)) //TODO to many return values
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
-        userId:String, inviteId:String, fileId: String, inviteResult: InviteResult
+        userId: String,
+        inviteId: String,
+        fileId: String,
+        inviteResult: InviteResult
     ): InviteMetaInfoEntity {
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
-        val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds, inviteResult.isInviteSuccessful, inviteResult.inviteResultMessage)
+        val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds,
+            inviteResult.isInviteSuccessful, inviteResult.inviteResultMessage)
         return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
     }
 }
