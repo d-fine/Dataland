@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.dataland.datalandbackend.model.InviteResult
-import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.slf4j.LoggerFactory
@@ -12,10 +11,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID
-import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
-import javax.servlet.http.HttpServletRequest
 
 /**
  * Implementation of a file manager for Dataland
@@ -44,17 +39,13 @@ class InviteManager(
         return UUID.randomUUID().toString()
     }
 
-    private fun getUserIdFromSecurityContext(): String {
+    private fun getUserIdFromSecurityContext(): String { // TODO duplicate method => centralize somewhere
         return SecurityContextHolder.getContext().authentication.name
-    }
-
-    private fun getUsernameFromSecurityContext(): String {
-        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
-        return jwt.getClaimAsString("preferred_username")
     }
 
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
         return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
+        // TODO add TODO 1. an attachment has no content
         }
 
 
@@ -75,31 +66,11 @@ class InviteManager(
         logger.info("Removed Excel file from in-memory-storage.")
     }
 
-    private fun getRequest(): HttpServletRequest {
-        val attribs = RequestContextHolder.getRequestAttributes()
-        if (attribs != null) {
-            return (attribs as ServletRequestAttributes).request
-        }
-        throw IllegalArgumentException("Request must not be null!")
-    }
 
-    private fun sendEmailWithFile(file: MultipartFile, isRequesterNameHidden: Boolean, fileId: String, associatedInviteId: String) : Boolean {
-        val noEmail = getRequest().getHeader("DATALAND-NO-EMAIL")
-        if (noEmail == "true") {
-            logger.info("No emails will be sent by this invitation request.")
-            return false
-        }
+
+    private fun sendEmailWithFile(file: MultipartFile, isSubmitterNameHidden: Boolean, fileId: String, associatedInviteId: String) : Boolean {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
-        val attachment = EmailAttachment(
-            "${generateUUID()}.xlsx",
-            file.bytes,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-        val requesterName = when (isRequesterNameHidden) {
-            true -> null
-            else -> "User ${getUsernameFromSecurityContext()} (Keycloak id: ${getUserIdFromSecurityContext()})"
-        }
-        val email = InvitationEmailGenerator.generate(attachment, requesterName)
+        val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
         return if(isEmailSent) {
             logger.info("Emails were sent.")
@@ -113,10 +84,10 @@ class InviteManager(
     /**
      * Method to submit an invite
      * @param excelFile is the Excel file to submit, which contains the invite info
-     * @param isRequesterNameHidden decides if info about the requester of the invite shall be included
+     * @param isSubmitterNameHidden decides if info about the submitter of the invite shall be included
      * @return a response model object with info about the invite process
      */
-    fun submitInvitation(excelFile: MultipartFile, isRequesterNameHidden: Boolean): InviteMetaInfoEntity {
+    fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         val userId = getUserIdFromSecurityContext()
@@ -124,7 +95,7 @@ class InviteManager(
             removeFileFromStorage(fileId, inviteId)
             return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
         }
-        if(!sendEmailWithFile(excelFile, isRequesterNameHidden, fileId, inviteId)) {
+        if(!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
             removeFileFromStorage(fileId, inviteId)
             return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultEmailError))
         }

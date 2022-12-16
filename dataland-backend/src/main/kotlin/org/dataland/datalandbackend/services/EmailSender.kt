@@ -29,12 +29,12 @@ class EmailSender {
      */
     fun sendEmail(email: Email): Boolean {
         try {
-        email.receivers.forEach { logger.info("Sending an email to $it.") }
-        email.cc.forEach { logger.info("Sending an email with $it in cc.") }
-        val mailjetEmail = TransactionalEmail.builder().email(email).build()
-        val request = SendEmailsRequest.builder().message(mailjetEmail).build()
-        val response = request.sendWith(client)
-        response.messages.forEach { logger.info(it.toString()) }}
+            email.receivers.forEach { logger.info("Sending an email to $it.") }
+            email.cc.forEach { logger.info("Sending an email with $it in cc.") }
+            val mailjetEmail = TransactionalEmail.builder().email(email).build()
+            val request = SendEmailsRequest.builder().message(mailjetEmail).build()
+            val response = request.sendWith(client)
+            response.messages.forEach { logger.info(it.toString()) }}
         catch (e:Exception) {
             return false
         }

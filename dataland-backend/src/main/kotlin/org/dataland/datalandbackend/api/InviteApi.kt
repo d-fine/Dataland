@@ -37,13 +37,13 @@ interface InviteApi {
     /**
      * A method to create an invite in Dataland by sending an Excel file which includes the invite info
      * @param excelFile is the Excel file which contains the invite info
-     * @param isRequesterNameHidden is a flag that decides if info about the requesters Dataland account shall be
+     * @param isSubmitterNameHidden is a flag that decides if info about the submitters Dataland account shall be
      * included in the invite
      * @return a response object with info about the result and the success of the invite process
      */
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
-        @RequestParam isRequesterNameHidden: Boolean
+        @RequestParam isSubmitterNameHidden: Boolean
     ):
         ResponseEntity<InviteMetaInfoEntity>
 
