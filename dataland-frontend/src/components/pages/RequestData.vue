@@ -30,29 +30,19 @@
             mode="advanced"
             :auto="false"
             accept=".xlsx"
-            :multiple="true"
             :max-file-size="maxFileSize"
-            :fileLimit="fileLimit"
+            :fileLimit=1
             @select="handleSelectFile"
             @clear="disableSubmitButton"
             @remove="handleRemoveFile"
           >
-            <template #header="{ files, clearCallback }">
-              <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-                <div class="flex gap-2">
-                  <PrimeButton
-                    @click="clearCallback()"
-                    label="Clear all"
-                    class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary mr-9"
-                    :disabled="!files || files.length === 0"
-                  />
-                </div>
-              </div>
+            <template #header>
+              <div> TODO: Some styling and not showing any header </div>
             </template>
 
             <template #content="{ files, removeFileCallback }">
               <div v-if="files.length > 0">
-                <p class="m-0">Selected files for upload:</p>
+                <p class="m-0">Your selected Excel file for the upload:</p>
                 <div
                   v-for="file of files"
                   :key="file.name + file.type + file.size"
@@ -67,14 +57,6 @@
                     @click="removeFileCallback()"
                     class="mt-2 p-button-outlined p-button-danger p-button-rounded"
                   />
-                </div>
-
-                <div class="mt-4 flex align-items-center justify-content-center flex-column">
-                  <i class="pi pi-cloud-upload p-3 text-6xl text-400" />
-                  <div class="flex align-items-center">
-                    <p>+ Add more files by drag and drop or</p>
-                    <a class="text-primary font-medium pl-1" @click="chooseFiles">BROWSE</a>
-                  </div>
                 </div>
               </div>
             </template>
@@ -123,8 +105,8 @@
         <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 closebutton" > <span @click="closeModal"  class="p-dialog-header-close-icon pi pi-times-circle hovericon" style="color:white; background-color: #958D7C; border-radius: 50%;"></span></Button>
         </div> <h2 class="mt-0 mb-5">Reset Request Data</h2>
 
-        <p class="m-0">Are you sure you want to reset the requested data?</p>
-          <p class="font-bold">This will remove all the uploaded files.</p>
+        <p class="m-0">Are you sure you want to reset your request?</p>
+          <p class="font-bold">This will remove all the selected files.</p>
         <div class="grid">
         <div class="col-5 col-offset-7 justify-content-end">
           <PrimeButton label="No"  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white m-2 w-6rem" @click="closeModal">Cancel</PrimeButton>

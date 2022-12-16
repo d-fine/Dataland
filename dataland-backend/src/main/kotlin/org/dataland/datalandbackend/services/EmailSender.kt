@@ -27,17 +27,17 @@ class EmailSender {
     /** This methods sends an email
      * @param email the email to send
      */
-    fun sendEmail(email: Email) {
+    fun sendEmail(email: Email): Boolean {
+        try {
         email.receivers.forEach { logger.info("Sending an email to $it.") }
         email.cc.forEach { logger.info("Sending an email with $it in cc.") }
         val mailjetEmail = TransactionalEmail.builder().email(email).build()
         val request = SendEmailsRequest.builder().message(mailjetEmail).build()
         val response = request.sendWith(client)
-        response.messages.forEach { logger.info(it.toString()) }
-        // TODO status is non 200 and no email is sent if either
-        // TODO 1. an attachment has no content
-        // TODO 2. the INVITE_REQUEST_RECEIVERS env is not set or empty
-        // TODO discuss: should we throw exceptions? I think the user needs to know if an uploaded file was empty.
-        // TODO an exception is already thrown if the mail server is not available
+        response.messages.forEach { logger.info(it.toString()) }}
+        catch (e:Exception) {
+            return false
+        }
+        return true
     }
 }
