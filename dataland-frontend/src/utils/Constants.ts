@@ -12,4 +12,4 @@ export const EXCEL_TEMPLATE_FILE_NAME = "Dataland_Request_Template.xlsx";
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
 
-export const UPLOAD_MAX_FILE_SIZE_IN_BYTES = 10000000;
+export const UPLOAD_MAX_FILE_SIZE_IN_BYTES = 2000000;
