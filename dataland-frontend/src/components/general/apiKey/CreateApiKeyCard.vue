@@ -6,24 +6,8 @@
           <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
 
-        <div data-test="userRoles" v-if="userRoles.length" class="pr-1">
-          <div class="text-left text-xs ml-1 text-600">Scope</div>
-          <div class="flex align-items-center justify-content-center">
-            <div
-              data-test="userRoleUser"
-              v-if="userRoles.includes('ROLE_USER')"
-              class="bg-yellow-100 border-round px-2 border-round-sm m-1"
-            >
-              <span class="text-yellow-700 text-sm font-semibold">READ</span>
-            </div>
-            <div
-              data-test="userRoleAdmin"
-              v-if="userRoles.includes('ROLE_ADMIN')"
-              class="bg-green-100 border-round px-2 border-round-sm m-1"
-            >
-              <span class="text-green-700 text-sm font-semibold">WRITE</span>
-            </div>
-          </div>
+        <div data-test="userRoles" class="pr-1">
+          <UserRolesBadges :userRoles="userRoles" />
         </div>
       </div>
       <div
@@ -96,13 +80,14 @@ import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
   setup() {
     return { formatExpiryDate, calculateDaysFromNow };
   },
   name: "CreateApiKeyCard",
-  components: { PrimeButton, Dropdown, Calendar },
+  components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
   props: {
     userRoles: {
       type: Array,

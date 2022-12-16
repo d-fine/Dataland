@@ -25,24 +25,8 @@
           </span>
         </div>
 
-        <div data-test="userRoles" v-if="userRoles.length">
-          <div class="text-left text-xs ml-1 text-600">Scope</div>
-          <div class="flex align-items-center justify-content-center">
-            <div
-              v-if="userRoles.includes('ROLE_USER')"
-              data-test="userRoleUser"
-              class="bg-yellow-100 border-round px-2 border-round-sm m-1"
-            >
-              <span class="text-yellow-700 text-sm font-semibold">READ</span>
-            </div>
-            <div
-              v-if="userRoles.includes('ROLE_ADMIN')"
-              data-test="userRoleAdmin"
-              class="bg-green-100 border-round px-2 border-round-sm m-1"
-            >
-              <span class="text-green-700 text-sm font-semibold">WRITE</span>
-            </div>
-          </div>
+        <div data-test="userRoles" class="pr-1">
+          <UserRolesBadges :userRoles="userRoles" />
         </div>
       </div>
       <div class="col-12 text-right">
@@ -62,13 +46,14 @@ import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
+import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
   setup() {
     return { formatExpiryDate, calculateDaysFromNow };
   },
   name: "ApiKeyCard",
-  components: { PrimeButton, PrimeDialog },
+  components: { PrimeButton, PrimeDialog, UserRolesBadges },
   props: {
     expiryDate: {
       type: Number,
