@@ -146,6 +146,8 @@ import {
   EXCEL_TEMPLATE_FILE_NAME,
   UPLOAD_MAX_FILE_SIZE_IN_BYTES,
 } from "@/utils/Constants";
+import {AxiosResponse} from "axios";
+import {InviteMetaInfoEntity} from "@clients/backend";
 
 export default defineComponent({
   name: "RequestData",
@@ -213,10 +215,14 @@ export default defineComponent({
 
     handleSubmission(){
       this.submissionInProgress = true
-      console.log("dinge passieren")
       this.uploadAllSelectedFiles()
       this.submissionFinished = true
       this.submissionInProgress = false
+    },
+
+    readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>){
+      this.isInviteSuccessful = response.data.inviteSuccessful ?? false
+      this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server."
     },
 
     async uploadAllSelectedFiles(): Promise<void> {
@@ -226,8 +232,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
         const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile);
-        this.isInviteSuccessful = response.data.inviteSuccessful ?? false
-        this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server."
+        this.readInviteStatusFromResponse(response)
       } catch (error) {
         console.error(error);
       }
