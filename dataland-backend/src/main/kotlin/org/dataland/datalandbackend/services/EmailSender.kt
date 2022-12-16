@@ -34,8 +34,8 @@ class EmailSender {
             val mailjetEmail = TransactionalEmail.builder().email(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(client)
-            response.messages.forEach { logger.info(it.toString()) }}
-        catch (e:Exception) {
+            response.messages.forEach { logger.info(it.toString()) }
+        } catch (e: Exception) {
             return false
         }
         return true

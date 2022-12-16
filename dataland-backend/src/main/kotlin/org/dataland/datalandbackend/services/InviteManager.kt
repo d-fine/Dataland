@@ -27,13 +27,13 @@ class InviteManager(
     private val regexForValidExcelFileName = Regex("^[A-Za-z0-9-_]+.xlsx\$")
 
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
-            "Please use alphanumeric characters, hyphens and underscores only, " +
-            "and make sure that your Excel file has the .xlsx format."
+        "Please use alphanumeric characters, hyphens and underscores only, " +
+        "and make sure that your Excel file has the .xlsx format."
     private val inviteResultEmailError =
         "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +
-                "sending an email to a Dataland administrator. Please try again or contact us."
+            "sending an email to a Dataland administrator. Please try again or contact us."
     private val inviteResultSuccess = "The invite was successfully processed. " +
-            "Dataland administrator will look into your uploaded Excel file and take action."
+        "Dataland administrator will look into your uploaded Excel file and take action."
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
@@ -46,7 +46,7 @@ class InviteManager(
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
         return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
         // TODO add TODO 1. an attachment has no content
-        }
+    }
 
     private fun storeOneExcelFileAndReturnFileId(
         singleExcelFile: MultipartFile,
@@ -65,16 +65,14 @@ class InviteManager(
         logger.info("Removed Excel file from in-memory-storage.")
     }
 
-
-
-    private fun sendEmailWithFile(file: MultipartFile, isSubmitterNameHidden: Boolean, fileId: String, associatedInviteId: String) : Boolean {
+    private fun sendEmailWithFile(file: MultipartFile, isSubmitterNameHidden: Boolean, fileId: String, associatedInviteId: String): Boolean {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
-        return if(isEmailSent) {
+        return if (isEmailSent) {
             logger.info("Emails were sent.")
             true
-        } else{
+        } else {
             logger.info("Emails could not be sent.")
             false
         }
@@ -94,7 +92,7 @@ class InviteManager(
             removeFileFromStorage(fileId, inviteId)
             return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
         }
-        if(!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
+        if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
             removeFileFromStorage(fileId, inviteId)
             return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(false, inviteResultEmailError))
         }
@@ -103,7 +101,10 @@ class InviteManager(
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
-        userId:String, inviteId:String, fileId: String, inviteResult: InviteResult
+        userId: String,
+        inviteId: String,
+        fileId: String,
+        inviteResult: InviteResult
     ): InviteMetaInfoEntity {
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
         val newInviteMetaInfoEntity = InviteMetaInfoEntity(inviteId, userId, fileId, timestampInEpochSeconds, inviteResult.isInviteSuccessful, inviteResult.inviteResultMessage)

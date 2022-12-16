@@ -19,24 +19,24 @@ class InvitationEmailGenerator {
         private val receivers = getEmailsFromEnv("INVITATION_REQUEST_RECEIVERS")
         private val cc = getEmailsFromEnv("INVITATION_REQUEST_CC")
 
-        private fun isEmailAddressFormatValid(emailAddress:String){
+        private fun isEmailAddressFormatValid(emailAddress: String) {
             val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
-            if(!regexForValidEmail.matches(emailAddress)) {
+            if (!regexForValidEmail.matches(emailAddress)) {
                 throw InternalServerErrorApiException(
                     "The email addresses provided by the environment have a wrong format."
                 )
             }
-
         }
 
         private fun getEmailsFromEnv(envName: String): List<EmailContact> {
             return System.getenv(envName)!!.split(";").map {
-                    emailAdress ->  isEmailAddressFormatValid(emailAdress)
+                    emailAdress ->
+                isEmailAddressFormatValid(emailAdress)
                 EmailContact(emailAdress)
             }
         }
 
-        private fun buildEmailAttachment(fileToAttach: MultipartFile): EmailAttachment{
+        private fun buildEmailAttachment(fileToAttach: MultipartFile): EmailAttachment {
             val fileName = UUID.randomUUID().toString()
             return EmailAttachment(
                 "$fileName.xlsx",
@@ -50,11 +50,11 @@ class InvitationEmailGenerator {
             return jwt.getClaimAsString("preferred_username")
         }
 
-        private fun getUserIdFromSecurityContext(): String {  // TODO duplicate method => centralize somewhere
+        private fun getUserIdFromSecurityContext(): String { // TODO duplicate method => centralize somewhere
             return SecurityContextHolder.getContext().authentication.name
         }
 
-        private fun buildUserInfo(isSubmitterNameHidden: Boolean): String{
+        private fun buildUserInfo(isSubmitterNameHidden: Boolean): String {
             val userName = getUsernameFromSecurityContext()
             val userId = getUserIdFromSecurityContext()
             return when (isSubmitterNameHidden) {
