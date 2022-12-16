@@ -20,5 +20,5 @@ fun TransactionalEmail.TransactionalEmailBuilder.content(content: EmailContent):
     return this.subject(content.subject)
         .textPart(content.textContent)
         .htmlPart(content.htmlContent)
-        .attachments(listOf(content.attachment)) //TODO is this right Florian?
+        .attachments(listOf(content.attachment)) // TODO is this right Florian?
 }

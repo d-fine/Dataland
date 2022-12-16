@@ -30,4 +30,3 @@ data class InviteMetaInfoEntity(
     @Column(name = "invite_result_message")
     val inviteResultMessage: String
 )
-

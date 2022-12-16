@@ -10,6 +10,9 @@ data class EmailContact(
     val email: String,
     val name: String? = null
 ) {
+    /**
+     * Defines whether to hide the requester's name in the email or to show it
+     */
     fun toSendContact(): SendContact {
         return if (name == null) SendContact(email) else SendContact(email, name)
     }
@@ -19,7 +22,7 @@ data class EmailContact(
  * Uses a list of EmailContact objects for the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder.from(sender: EmailContact):
-        TransactionalEmail.TransactionalEmailBuilder {
+    TransactionalEmail.TransactionalEmailBuilder {
     return this.from(sender.toSendContact())
 }
 
@@ -27,7 +30,7 @@ fun TransactionalEmail.TransactionalEmailBuilder.from(sender: EmailContact):
  * Uses a list of EmailContact objects for the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder.to(receivers: List<EmailContact>):
-        TransactionalEmail.TransactionalEmailBuilder {
+    TransactionalEmail.TransactionalEmailBuilder {
     return this.to(receivers.map { it.toSendContact() })
 }
 
@@ -35,6 +38,6 @@ fun TransactionalEmail.TransactionalEmailBuilder.to(receivers: List<EmailContact
  * Uses a list of EmailContact objects for the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder.cc(receivers: List<EmailContact>):
-        TransactionalEmail.TransactionalEmailBuilder {
+    TransactionalEmail.TransactionalEmailBuilder {
     return this.cc(receivers.map { it.toSendContact() })
 }

@@ -10,6 +10,9 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
+/**
+ * A class to generate invitation emails
+ */
 class InvitationEmailGenerator {
     companion object {
         private val sender = EmailContact("info@dataland.com", "Dataland")
@@ -60,7 +63,9 @@ class InvitationEmailGenerator {
             }
         }
 
-        // TODO write doc
+        /**
+         * Function that generates the email to be sent
+         */
         fun generate(fileToAttach: MultipartFile, isSubmitterNameHidden: Boolean): Email {
             val attachment = buildEmailAttachment(fileToAttach)
             val submitterName = buildUserInfo(isSubmitterNameHidden)

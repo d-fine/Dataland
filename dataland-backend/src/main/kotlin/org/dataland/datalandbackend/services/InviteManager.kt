@@ -48,7 +48,6 @@ class InviteManager(
         // TODO add TODO 1. an attachment has no content
         }
 
-
     private fun storeOneExcelFileAndReturnFileId(
         singleExcelFile: MultipartFile,
         associatedInviteId: String
