@@ -61,11 +61,7 @@
                     <span class="font-semibold mr-2">{{ files[0].name }}</span>
                     <span class="font-light mr-4">{{ "(" + formatBytes(files[0].size) + ")" }}</span>
                   </div>
-                  <PrimeButton
-                    label="Clear"
-                    @click="removeFileCallback()"
-                    class="mt-2 p-button-outlined p-button-danger p-button-rounded"
-                  />
+                  <img src="@/assets/images/elements/remove_button.svg" alt="remove-file-button" @click="removeFileCallback()"/>
                 </div>
               </div>
             </template>
@@ -252,7 +248,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-a:hover {
+a, img:hover {
   cursor: pointer;
 }
 .buttonstyle {
