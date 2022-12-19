@@ -1,0 +1,2944 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Dataland Backend API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/invite": {
+      "post": {
+        "tags": [
+          "invite-controller"
+        ],
+        "summary": "Create a Dataland invite.",
+        "description": "Create a Dataland invite by uploading an Excel file containing the invite info.",
+        "operationId": "submitInvite",
+        "parameters": [
+          {
+            "name": "isSubmitterNameHidden",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "excelFile"
+                ],
+                "type": "object",
+                "properties": {
+                  "excelFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created an invite.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteMetaInfoEntity"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/sme": {
+      "post": {
+        "tags": [
+          "sme-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedSmeData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr": {
+      "post": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedSfdrData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/lksg": {
+      "post": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedLksgData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials": {
+      "post": {
+        "tags": [
+          "eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "postCompanyAssociatedEuTaxonomyDataForNonFinancials",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-financials": {
+      "post": {
+        "tags": [
+          "eu-taxonomy-data-for-financials-controller"
+        ],
+        "operationId": "postCompanyAssociatedEuTaxonomyDataForFinancials",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForFinancials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/companies": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve specific companies by different filters or just all companies from the data store.",
+        "description": "Companies identified via the provided company name/identifier are retrieved and filtered bycountryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "operationId": "getCompanies",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            }
+          },
+          {
+            "name": "countryCodes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sectors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "onlyCompanyNames",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompany"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Add a new company.",
+        "description": "A new company is added using the provided information, the generated company ID is returned.",
+        "operationId": "postCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInformation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/metadata": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Search in Dataland for meta info about data.",
+        "description": "Meta info about data sets registered by Dataland can be retrieved.",
+        "operationId": "getListOfDataMetaInfo",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/metadata/{dataId}": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Look up meta info about a specific data set.",
+        "description": "Meta info about a specific data set registered by Dataland and identified by its data ID is retrieved.",
+        "operationId": "getDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved specific meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/sme/{dataId}": {
+      "get": {
+        "tags": [
+          "sme-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedSmeData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr/{dataId}": {
+      "get": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedSfdrData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/lksg/{dataId}": {
+      "get": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedLksgData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials/{dataId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "getCompanyAssociatedEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-financials/{dataId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-data-for-financials-controller"
+        ],
+        "operationId": "getCompanyAssociatedEuTaxonomyDataForFinancials",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForFinancials"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company Id is retrieved.",
+        "operationId": "getCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/companies/teaser": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Get the company IDs of the teaser companies.",
+        "description": "A list of all company IDs that are currently set as teaser companies (accessible without authentication).",
+        "operationId": "getTeaserCompanies",
+        "responses": {
+          "200": {
+            "description": "Successfully returned teaser companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/companies/meta-information": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve available distinct values for company search filters",
+        "description": "Distinct values for the parameter countryCode and sector are returned",
+        "operationId": "getAvailableCompanySearchFilters",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAvailableDistinctValues"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/actuator": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027info\u0027",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health\u0027",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health-path\u0027",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InviteMetaInfoEntity": {
+        "type": "object",
+        "properties": {
+          "inviteId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "fileId": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "string"
+          },
+          "wasInviteSuccessful": {
+            "type": "boolean"
+          },
+          "inviteResultMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyAgeBracket": {
+        "type": "string",
+        "enum": [
+          "LessThanOneYear",
+          "OneToFiveYears",
+          "FiveToTenYears",
+          "MoreThanTenYears"
+        ]
+      },
+      "CompanyAssociatedDataSmeData": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SmeData"
+          }
+        }
+      },
+      "EnergyEfficiencyBracket": {
+        "type": "string",
+        "enum": [
+          "LessThanOnePercent",
+          "OneToFivePercent",
+          "FiveToTenPercent",
+          "TenToFifteenPercent",
+          "FifteenToTwentyPercent",
+          "TwentyToTwentyfivePercent",
+          "MoreThanTwentyfivePercent"
+        ]
+      },
+      "EnergyProductionBracket": {
+        "type": "string",
+        "enum": [
+          "LessThanTwentyfivePercent",
+          "TwentyfiveToFiftyPercent",
+          "FiftyToSeventyfivePercent",
+          "MoreThanSeventyfivePercent"
+        ]
+      },
+      "HeatSource": {
+        "type": "string",
+        "enum": [
+          "Oil",
+          "Gas",
+          "Electricity",
+          "DistrictHeat"
+        ]
+      },
+      "Industry": {
+        "type": "string",
+        "enum": [
+          "ConstructionIndustry",
+          "ManufacturingIndustry",
+          "Trade"
+        ]
+      },
+      "SmeData": {
+        "type": "object",
+        "properties": {
+          "industry": {
+            "$ref": "#/components/schemas/Industry"
+          },
+          "financialYear": {
+            "type": "number"
+          },
+          "totalRevenue": {
+            "type": "number"
+          },
+          "researchAndDevelopmentExpenses": {
+            "type": "number"
+          },
+          "energyEfficiencyInvestments": {
+            "$ref": "#/components/schemas/EnergyEfficiencyBracket"
+          },
+          "operatingCosts": {
+            "type": "number"
+          },
+          "totalAssets": {
+            "type": "number"
+          },
+          "yearsSinceFounded": {
+            "$ref": "#/components/schemas/CompanyAgeBracket"
+          },
+          "productCategoryWithHighestSales": {
+            "type": "string"
+          },
+          "productCategoryWithHighestSalesShareOfSales": {
+            "type": "number"
+          },
+          "productCategoryWithSecondHighestSales": {
+            "type": "string"
+          },
+          "productCategoryWithSecondHighestSalesShareOfSales": {
+            "type": "number"
+          },
+          "totalAreaCompany": {
+            "type": "number"
+          },
+          "totalPowerConsumption": {
+            "type": "number"
+          },
+          "totalPowerCosts": {
+            "type": "number"
+          },
+          "useOfGreenElectricity": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "heatingEnergyConsumption": {
+            "type": "number"
+          },
+          "totalHeatingCosts": {
+            "type": "number"
+          },
+          "roomWaterHeating": {
+            "$ref": "#/components/schemas/HeatSource"
+          },
+          "shareOwnEnergyProduction": {
+            "$ref": "#/components/schemas/EnergyProductionBracket"
+          },
+          "waterSewageCosts": {
+            "type": "number"
+          },
+          "wasteDisposalCosts": {
+            "type": "number"
+          },
+          "wasteRecyclingRate": {
+            "type": "number"
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "numberOfTemporaryWorkers": {
+            "type": "number"
+          },
+          "shareOfFullTimeEmployees": {
+            "type": "number"
+          },
+          "shareOfEmployeesSubjectToSocialSecurityContributions": {
+            "type": "number"
+          },
+          "employeeFluctuation": {
+            "type": "number"
+          },
+          "shareOfFemaleEmployees": {
+            "type": "number"
+          },
+          "proportionOfFemaleEmployeesInManagement": {
+            "type": "number"
+          },
+          "oshMeasures": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "healthAndOldAgeOffers": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "numberVacationDays": {
+            "type": "number"
+          },
+          "nonProfitProjects": {
+            "$ref": "#/components/schemas/YesNoNa"
+          }
+        }
+      },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
+      "DataMetaInformation": {
+        "required": [
+          "companyId",
+          "dataId",
+          "dataType"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "companyId": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyAssociatedDataSfdrData": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "CompanyReport": {
+        "required": [
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string"
+          },
+          "isGroupLevel": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "reportDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyReportReference": {
+        "required": [
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "report": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tagName": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointYesNo": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
+      },
+      "QualityOptions": {
+        "type": "string",
+        "enum": [
+          "Audited",
+          "Reported",
+          "Estimated",
+          "Incomplete",
+          "NA"
+        ]
+      },
+      "SfdrData": {
+        "type": "object",
+        "properties": {
+          "fiscalYear": {
+            "$ref": "#/components/schemas/FiscalYearDeviation"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "annualReport": {
+            "type": "string"
+          },
+          "groupLevelAnnualReport": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "annualReportDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "annualReportCurrency": {
+            "type": "string"
+          },
+          "sustainabilityReport": {
+            "type": "string"
+          },
+          "groupLevelSustainabilityReport": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "sustainabilityReportDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sustainabilityReportCurrency": {
+            "type": "string"
+          },
+          "integratedReport": {
+            "type": "string"
+          },
+          "groupLevelIntegratedReport": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "integratedReportDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "integratedReportCurrency": {
+            "type": "string"
+          },
+          "esefReport": {
+            "type": "string"
+          },
+          "groupLevelEsefReport": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "esefReportDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "esefReportCurrency": {
+            "type": "string"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "scope1": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "scope2": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "scope3": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "enterpriseValue": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "totalRevenue": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "fossilFuelSectorExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "renewableEnergyProduction": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "renewableEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyProduction": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceA": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceB": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceC": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceD": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceE": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceF": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceG": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceH": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceL": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "totalHighImpactClimateSectorEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "protectedAreasExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "rareOrEndangeredEcosystemsExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "emissionsToWater": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "hazardousWaste": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "humanRightsPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "humanRightsLegalProceedings": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "iloCoreLabourStandards": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "environmentalPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "corruptionLegalProceedings": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "transparencyDisclosurePolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "humanRightsDueDiligencePolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "childForcedDiscriminationPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "iso14001": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "briberyCorruptionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "fairBusinessMarketingAdvertisingPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "technologiesExpertiseTransferPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "fairCompetitionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "violationOfTaxRulesAndRegulation": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "oecdGuidelinesForMultinationalEnterprisesPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "averageGrossHourlyEarningsMaleEmployees": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "averageGrossHourlyEarningsFemaleEmployees": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "femaleBoardMembers": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "maleBoardMembers": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "controversialWeaponsExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "inorganicPollutants": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "airPollutants": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "ozoneDepletionSubstances": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "carbonReductionInitiatives": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "nonRenewableEnergyConsumptionFossilFuels": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCrudeOil": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNaturalGas": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionLignite": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCoal": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNuclearEnergy": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionOther": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterConsumption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterReused": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterManagementPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "waterStressAreaExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "sustainableAgriculturePolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "wasteNonRecycled": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "threatenedSpeciesExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "biodiversityProtectionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "deforestationPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "securitiesNotCertifiedAsGreen": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "workplaceAccidentPreventionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "rateOfAccidents": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "workdaysLost": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "supplierCodeOfConduct": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "whistleblowerProtectionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "reportedIncidentsOfDiscrimination": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "sanctionsIncidentsOfDiscrimination": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "ceoToEmployeePayGap": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "traffickingInHumanBeingsPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "reportedChildLabourIncidents": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "reportedForcedOrCompulsoryLabourIncidents": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "reportedIncidentsOfHumanRights": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "reportedCasesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "reportedConvictionsOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "reportedFinesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "YesNo": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ]
+      },
+      "CompanyAssociatedDataLksgData": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgData"
+          }
+        }
+      },
+      "LksgData": {
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "lksgInScope": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "companyLegalForm": {
+            "type": "string"
+          },
+          "vatIdentificationNumber": {
+            "type": "string"
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "shareOfTemporaryWorkers": {
+            "type": "number"
+          },
+          "totalRevenue": {
+            "type": "number"
+          },
+          "totalRevenueCurrency": {
+            "type": "string"
+          },
+          "responsibilitiesForFairWorkingConditions": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibilitiesForTheEnvironment": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibilitiesForOccupationalSafety": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "riskManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceHandlingMechanismUsedForReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "codeOfConduct": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "codeOfConductRiskManagementTopics": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "codeOfConductTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalProceedings": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeUnder18": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeUnder18Under15": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeUnder18Apprentices": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePrevention": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionEmploymentContracts": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionJobDescription": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionIdentityDocuments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPrevention": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPreventionEmploymentContracts": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPreventionIdentityDocuments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPreventionFreeMovement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourAndSlaveryPreventionProvisionTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "documentedWorkingHoursAndWages": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "adequateLivingWage": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "regularWagesProcessFlow": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fixedHourlyWages": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshMonitoring": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyPersonalProtectiveEquipment": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyMachineSafety": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyDisasterBehaviouralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyAccidentsBehaviouralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkplaceErgonomics": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyFireProtection": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkingHours": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTrainingAddressed": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystemInternationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystemNationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "workplaceAccidentsUnder10": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "freedomOfAssociation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "discriminationForTradeUnionMembers": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "freedomOfOperationForTradeUnion": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "freedomOfAssociationTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "worksCouncil": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "diversityAndInclusionRole": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "preventionOfMistreatments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "equalOpportunitiesOfficer": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "riskOfHarmfulPollution": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "unlawfulEvictionAndTakingOfLand": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "useOfPrivatePublicSecurityForces": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryWasteHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryWasteHandlingPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "chemicalHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalManagementSystemInternationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalManagementSystemNationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalRestrictedWaste": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalRestrictedWasteProcesses": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAddedProductsHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAddedProductsHandlingRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAddedProductsHandlingRiskOfDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryCompoundsProductionAndUse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskOfDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseTransboundaryMovements": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskForImportingState": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteDisposalRiskOfImport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousAndOtherWasteImport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso26000": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "sa8000Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "smetaSocialAuditConcept": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "betterWorkProgramCertificate": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso45001Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso14000Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "emasCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso37001Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso37301Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "riskManagementSystemCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "amforiBsciAuditReport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "initiativeClauseSocialCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibleBusinessAssociationCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairLabourAssociationCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairWorkingConditionsPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairAndEthicalRecruitmentPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "equalOpportunitiesAndNondiscriminationPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "healthAndSafetyPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "complaintsAndGrievancesPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLabourPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "childLabourPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalImpactPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "supplierCodeOfConduct": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listOfProductionSites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductionSite"
+            }
+          }
+        }
+      },
+      "ProductionSite": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isInHouseProductionOrIsContractProcessing": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "address": {
+            "type": "string"
+          },
+          "listOfGoodsAndServices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AssuranceData": {
+        "required": [
+          "assurance"
+        ],
+        "type": "object",
+        "properties": {
+          "assurance": {
+            "type": "string",
+            "enum": [
+              "None",
+              "LimitedAssurance",
+              "ReasonableAssurance"
+            ]
+          },
+          "provider": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          }
+        }
+      },
+      "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+          }
+        }
+      },
+      "EuTaxonomyDataForNonFinancials": {
+        "type": "object",
+        "properties": {
+          "capex": {
+            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+          },
+          "opex": {
+            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+          },
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/FiscalYearDeviation"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "reportingObligation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "activityLevelReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/AssuranceData"
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "EuTaxonomyDetailsPerCashFlowType": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "alignedPercentage": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "eligiblePercentage": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        }
+      },
+      "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+          }
+        }
+      },
+      "CreditInstitutionKpis": {
+        "type": "object",
+        "properties": {
+          "tradingPortfolio": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "interbankLoans": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "tradingPortfolioAndInterbankLoans": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "greenAssetRatio": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        }
+      },
+      "EligibilityKpis": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleActivity": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "taxonomyNonEligibleActivity": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "derivatives": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "banksAndIssuers": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "investmentNonNfrd": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        },
+        "example": {
+          "CreditInstitution": {
+            "taxonomyEligibleActivity": {
+              "value": 0,
+              "quality": "Audited",
+              "dataSource": {
+                "report": "string",
+                "page": 0
+              },
+              "comment": "string"
+            }
+          },
+          "InsuranceOrReinsurance": {
+            "taxonomyEligibleActivity": {
+              "value": 0,
+              "quality": "Audited",
+              "dataSource": {
+                "report": "string",
+                "page": 0
+              },
+              "comment": "string"
+            }
+          },
+          "AssetManagement": {
+            "taxonomyEligibleActivity": {
+              "value": 0,
+              "quality": "Audited",
+              "dataSource": {
+                "report": "string",
+                "page": 0
+              },
+              "comment": "string"
+            }
+          },
+          "InvestmentFirm": {
+            "taxonomyEligibleActivity": {
+              "value": 0,
+              "quality": "Audited",
+              "dataSource": {
+                "report": "string",
+                "page": 0
+              },
+              "comment": "string"
+            }
+          }
+        }
+      },
+      "EuTaxonomyDataForFinancials": {
+        "type": "object",
+        "properties": {
+          "financialServicesTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CreditInstitution",
+                "InsuranceOrReinsurance",
+                "AssetManagement",
+                "InvestmentFirm"
+              ]
+            }
+          },
+          "eligibilityKpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EligibilityKpis"
+            },
+            "example": {
+              "CreditInstitution": {
+                "taxonomyEligibleActivity": {
+                  "value": 0,
+                  "quality": "Audited",
+                  "dataSource": {
+                    "report": "string",
+                    "page": 0
+                  },
+                  "comment": "string"
+                }
+              },
+              "InsuranceOrReinsurance": {
+                "taxonomyEligibleActivity": {
+                  "value": 0,
+                  "quality": "Audited",
+                  "dataSource": {
+                    "report": "string",
+                    "page": 0
+                  },
+                  "comment": "string"
+                }
+              },
+              "AssetManagement": {
+                "taxonomyEligibleActivity": {
+                  "value": 0,
+                  "quality": "Audited",
+                  "dataSource": {
+                    "report": "string",
+                    "page": 0
+                  },
+                  "comment": "string"
+                }
+              },
+              "InvestmentFirm": {
+                "taxonomyEligibleActivity": {
+                  "value": 0,
+                  "quality": "Audited",
+                  "dataSource": {
+                    "report": "string",
+                    "page": 0
+                  },
+                  "comment": "string"
+                }
+              }
+            }
+          },
+          "creditInstitutionKpis": {
+            "$ref": "#/components/schemas/CreditInstitutionKpis"
+          },
+          "investmentFirmKpis": {
+            "$ref": "#/components/schemas/InvestmentFirmKpis"
+          },
+          "insuranceKpis": {
+            "$ref": "#/components/schemas/InsuranceKpis"
+          },
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/FiscalYearDeviation"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "reportingObligation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "activityLevelReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/AssuranceData"
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "InsuranceKpis": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleNonLifeInsuranceActivities": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        }
+      },
+      "InvestmentFirmKpis": {
+        "type": "object",
+        "properties": {
+          "greenAssetRatio": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        }
+      },
+      "CompanyIdentifier": {
+        "required": [
+          "identifierType",
+          "identifierValue"
+        ],
+        "type": "object",
+        "properties": {
+          "identifierType": {
+            "type": "string",
+            "enum": [
+              "Lei",
+              "Isin",
+              "PermId",
+              "Ticker",
+              "Duns"
+            ]
+          },
+          "identifierValue": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyInformation": {
+        "required": [
+          "companyName",
+          "countryCode",
+          "headquarters",
+          "identifiers",
+          "sector"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyAlternativeNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyLegalForm": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "headquartersPostalCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyIdentifier"
+            }
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "isTeaserCompany": {
+            "type": "boolean"
+          }
+        }
+      },
+      "StoredCompany": {
+        "required": [
+          "companyId",
+          "companyInformation",
+          "dataRegisteredByDataland"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyInformation": {
+            "$ref": "#/components/schemas/CompanyInformation"
+          },
+          "dataRegisteredByDataland": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataMetaInformation"
+            }
+          }
+        }
+      },
+      "CompanyAvailableDistinctValues": {
+        "type": "object",
+        "properties": {
+          "countryCodes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sectors": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DataTypeEnum": {
+        "type": "string",
+        "enum": [
+          "eutaxonomy-financials",
+          "eutaxonomy-non-financials",
+          "lksg",
+          "sfdr",
+          "sme"
+        ]
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "number"
+          },
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "dataland-api-key": {
+        "type": "apiKey",
+        "name": "dataland-api-key",
+        "in": "header"
+      },
+      "default-bearer-auth": {
+        "type": "http",
+        "in": "header",
+        "scheme": "bearer"
+      },
+      "default-oauth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
+            "tokenUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}
