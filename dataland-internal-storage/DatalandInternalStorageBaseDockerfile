@@ -1,0 +1,7 @@
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+
+WORKDIR /app
+COPY ./dataland-internal-storage/ ./dataland-internal-storage/
+COPY ./.git/ ./.git
+RUN ./gradlew dataland-internal-storage:bootJar --no-daemon --stacktrace
