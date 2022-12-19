@@ -122,9 +122,10 @@ describe("As a user I expect a data request page where I can download an excel t
 
   it(`Test that a too large file gets rejected`, () => {
     const rejectFilename = "reject_test.xlsx";
-    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
-        new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
-    ));
+    uploadDummyExcelFile(
+      rejectFilename,
+      Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1))
+    );
     expect(getUploadBoxFiles().length).to.equal(0);
     validateThatErrorMessageContains([rejectFilename, "Invalid file size"]);
     validateThatSubmitButtonIsDisabled();
@@ -133,9 +134,10 @@ describe("As a user I expect a data request page where I can download an excel t
   it(`Test that a wrong file type gets rejected`, () => {
     const rejectFilename = "reject_test.png";
 
-    uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
-        new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
-    ));
+    uploadDummyExcelFile(
+      rejectFilename,
+      Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1))
+    );
     expect(getUploadBoxFiles().length).to.equal(0);
     validateThatErrorMessageContains([rejectFilename, "Invalid file type"]);
     validateThatSubmitButtonIsDisabled();

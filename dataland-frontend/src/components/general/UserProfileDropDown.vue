@@ -105,7 +105,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     gotoDataRequest() {
-      this.$router.push("requests")
+      this.$router.push("requests");
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
