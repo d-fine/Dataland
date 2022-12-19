@@ -25,8 +25,8 @@ data class InviteMetaInfoEntity(
     var timeStamp: String,
 
     @Column(name = "is_invite_successful")
-    var isInviteSuccessful: Boolean,        // TODO somehow the name of this field is not generated correctly in the
-                                            // TODO openApiSpec!    why??
+    var isInviteSuccessful: Boolean, // TODO somehow the name of this field is not generated correctly in the
+    // TODO openApiSpec!    why??
 
     @Column(name = "invite_result_message")
     val inviteResultMessage: String

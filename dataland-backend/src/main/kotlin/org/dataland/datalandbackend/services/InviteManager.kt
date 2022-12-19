@@ -24,11 +24,10 @@ class InviteManager(
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
 
-    private val regexForValidExcelFileName = Regex("^[A-Za-z0-9-_ ]+.xlsx\$")
+    private val regexForValidExcelFileName = Regex(".xlsx")
 
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
-        "Please use alphanumeric characters, hyphens, underscores and spaces only, " +
-        "and make sure that your Excel file has the .xlsx format."
+        "Please make sure that your Excel file has the .xlsx format."
     private val inviteResultFileIsEmpty = "Your Excel file is empty. Please make sure to upload a valid file."
     private val inviteResultEmailError =
         "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file by " +

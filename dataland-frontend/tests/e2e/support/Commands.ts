@@ -1,6 +1,7 @@
 import Chainable = Cypress.Chainable;
 import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
 import { browserThen } from "@e2e/utils/Cypress";
+import "cypress-file-upload";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
