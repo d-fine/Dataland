@@ -53,26 +53,31 @@ describe("As a user I expect a data request page where I can download an excel t
       });
     }
 
-    function getUploadBoxFiles(): string[] {
-      const filenames: string[] = [];
-      let uploadContainerTag = "div[class=p-fileupload-content]"
-      let fileTag = "span[class=font-semibold]";
-      cy.get(uploadContainerTag).then(currentSubject =>
-        cy.log(currentSubject.length.toString())
-      );
-      expect(filenames.length).to.be.at.most(1);
-      return filenames;
+    function getUploadBoxFile(): string {
+      let filename = "";
+      const uploadContainerTag = "div.p-fileupload-content";
+      const fileTag = "span.font-semibold.mr-2";
+      cy.get(uploadContainerTag).find(fileTag).then((doms) => {
+        doms.each((index, element) => { filename = element.innerText; });
+      });
+      //expect(filenames.length).to.equal(1);
+      //cy.log(filenames.length.toString());
+      return filename;
     }
 
     function uploadBoxEntryShouldBe(filename: string) {
-      let filenames = getUploadBoxFiles();
-      expect(filenames.length).to.equal(1);
-      expect(filenames[0]).to.equal(filename);
+      let uploadBoxFilename = getUploadBoxFile();
+      expect(uploadBoxFilename).to.equal(filename);
     }
 
-    function validateThatErrorMessageContains(messages: string[]) {
-      messages.forEach((it) => {
-        cy.get("div[class=p-message-text]").should("contain.text", it);
+    function uploadBoxShouldBeEmpty() {
+      const uploadContainerTag = "div.p-fileupload-content";
+      cy.get(uploadContainerTag).find("div.p-fileupload-empty");
+    }
+
+    function validateThatErrorMessageContains(substrings: string[]) {
+      substrings.forEach((it) => {
+        cy.get("div.p-message-text").should("contain.text", it);
       });
     }
 
@@ -93,8 +98,8 @@ describe("As a user I expect a data request page where I can download an excel t
     }
 
     function reset(areYouSure: boolean) {
+      cy.get("button[name=reset_request_button]").click();
       // TODO answer are you sure dialog
-      cy.get("button[name=reset_request_button]")
     }
 
     beforeEach(() => {
@@ -128,7 +133,7 @@ describe("As a user I expect a data request page where I can download an excel t
     //   uploadBoxEntryShouldBe(removeFilename);
     //   // TODO try and fail to add another file
     //   // TODO remove the inserted file / click X
-    //   expect(getUploadBoxFiles().length).to.equal(0);
+    //   expect(getUploadBoxFile().length).to.equal(0);
     //   const keepFilename = "keep_file.xlsx";
     //   uploadDummyExcelFile(keepFilename);
     //   uploadBoxEntryShouldBe(keepFilename); // this is done to validate, that the removal worked
@@ -142,7 +147,7 @@ describe("As a user I expect a data request page where I can download an excel t
     // it(`Test that the upload box is empty after a successful submission`, () => {
     //   uploadDummyExcelFile("accept_test.xlsx", Cypress.Blob.arrayBufferToBlob(new ArrayBuffer(UPLOAD_MAX_FILE_SIZE)));
     //   submitAndValidateSuccess();
-    //   expect(getUploadBoxFiles().length).to.equal(0);
+    //   expect(getUploadBoxFile().length).to.equal(0);
     // });
 
     // it(`Test that a too large file gets rejected`, () => {
@@ -150,7 +155,7 @@ describe("As a user I expect a data request page where I can download an excel t
     //   uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
     //       new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
     //   ));
-    //   expect(getUploadBoxFiles().length).to.equal(0);
+    //   expect(getUploadBoxFile().length).to.equal(0);
     //   validateThatErrorMessageContains([rejectFilename, "Invalid file size"]);
     //   validateThatSubmitButtonIsDisabled();
     // });
@@ -161,7 +166,7 @@ describe("As a user I expect a data request page where I can download an excel t
     //   uploadDummyExcelFile(rejectFilename, Cypress.Blob.arrayBufferToBlob(
     //       new ArrayBuffer(UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1)
     //   ));
-    //   expect(getUploadBoxFiles().length).to.equal(0);
+    //   expect(getUploadBoxFile().length).to.equal(0);
     //   validateThatErrorMessageContains([rejectFilename, "Invalid file type"]);
     //   validateThatSubmitButtonIsDisabled();
     // });
@@ -182,7 +187,7 @@ describe("As a user I expect a data request page where I can download an excel t
     //
     //   reset(true);
     //   validateHideUsernameCheckboxIs(false);
-    //   expect(getUploadBoxFiles().length).to.equal(0);
+    //   expect(getUploadBoxFile().length).to.equal(0);
     //
     //   reset(false);
     //   validateHideUsernameCheckboxIs(false);
@@ -196,11 +201,11 @@ describe("As a user I expect a data request page where I can download an excel t
       //
       // uploadDummyExcelFile("test.xlsx");
       // setHideUsernameCheckbox(true);
-      //cy.log(getUploadBoxFiles().length.toString());
+      //cy.log(getUploadBoxFile().length.toString());
+      uploadBoxShouldBeEmpty();
       uploadDummyExcelFile("test.xlsx");
-      cy.log(getUploadBoxFiles().length.toString());
-      uploadDummyExcelFile("test2.xlsx");
-      cy.log(getUploadBoxFiles().length.toString());
+      cy.log(getUploadBoxFile());
+      //uploadBoxEntryShouldBe("test.xlsx")
     });
   });
 });
