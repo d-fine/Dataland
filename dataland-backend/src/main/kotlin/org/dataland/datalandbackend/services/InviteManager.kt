@@ -24,7 +24,7 @@ class InviteManager(
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
 
-    private val regexForValidExcelFileName = Regex(".xlsx")
+    private val regexForValidExcelFileName = Regex("^.*\\.xlsx\$")
 
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
         "Please make sure that your Excel file has the .xlsx format."
