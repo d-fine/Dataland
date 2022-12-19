@@ -121,8 +121,6 @@ services:
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
       CYPRESS_REALDATA: ${REALDATA}
-      CYPRESS_PREPOPULATE_TIMEOUT_S: 180
-      CYPRESS_PREVISIT_TIMEOUT_S: 180
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin

@@ -190,8 +190,6 @@ jobs:
         run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ 180 }}
-          CYPRESS_PREVISIT_TIMEOUT_S: ${{ 180 }}
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}

@@ -8,8 +8,6 @@
 [Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INTERNAL_STORAGE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PGADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("CYPRESS_PREPOPULATE_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("CYPRESS_PREVISIT_TIMEOUT_S", "180", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("ELECTRON_EXTRA_LAUNCH_ARGS", "--ignore-connections-limit=local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("IN_MEMORY", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INITIALIZE_KEYCLOAK", "false", [System.EnvironmentVariableTarget]::User)
