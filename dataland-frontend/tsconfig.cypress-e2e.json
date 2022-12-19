@@ -7,7 +7,7 @@
     "baseUrl": ".",
     "target": "ES2019",
     "lib": ["ES2019", "dom"],
-    "types": ["cypress", "node", "cypress-file-upload"],
+    "types": ["cypress", "node"],
     // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
     // But are required as otherwise the openApi client won't compile properly
     "importsNotUsedAsValues": "remove",
