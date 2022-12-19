@@ -220,8 +220,8 @@ export default defineComponent({
       this.submissionInProgress = false
     },
 
-    readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>){
-      this.isInviteSuccessful = response.data.inviteSuccessful ?? false
+    readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
+      this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server."
     },
 
