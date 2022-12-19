@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.entities
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -24,9 +25,9 @@ data class InviteMetaInfoEntity(
     @Column(name = "timestamp")
     var timeStamp: String,
 
+    @field:JsonProperty()
     @Column(name = "is_invite_successful")
-    var isInviteSuccessful: Boolean, // TODO somehow the name of this field is not generated correctly in the
-    // TODO openApiSpec!    why??
+    var isInviteSuccessful: Boolean,
 
     @Column(name = "invite_result_message")
     val inviteResultMessage: String
