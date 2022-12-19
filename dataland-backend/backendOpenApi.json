@@ -1428,14 +1428,11 @@
           "timeStamp": {
             "type": "string"
           },
-          "isInviteSuccessful": {
+          "wasInviteSuccessful": {
             "type": "boolean"
           },
           "inviteResultMessage": {
             "type": "string"
-          },
-          "inviteSuccessful": {
-            "type": "boolean"
           }
         }
       },
