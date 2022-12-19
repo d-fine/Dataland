@@ -18,6 +18,8 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get("h1").should("contain.text", "API");
     cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
+    cy.get("button#generateApiKey").click();
+    cy.get('label[for="expireTime"]').should("contain.text", `Please select expiration date`);
     cy.get("div#expireTime").find('div[role="button"]').click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
