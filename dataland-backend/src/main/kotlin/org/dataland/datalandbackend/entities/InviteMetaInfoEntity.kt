@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.entities
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -25,9 +24,8 @@ data class InviteMetaInfoEntity(
     @Column(name = "timestamp")
     var timeStamp: String,
 
-    @field:JsonProperty()
-    @Column(name = "is_invite_successful")
-    var isInviteSuccessful: Boolean,
+    @Column(name = "was_invite_successful")
+    var wasInviteSuccessful: Boolean,
 
     @Column(name = "invite_result_message")
     val inviteResultMessage: String
