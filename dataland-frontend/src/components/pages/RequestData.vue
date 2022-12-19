@@ -112,7 +112,7 @@
             </div>
           </div>
         </div>
-        <Dialog
+        <PrimeDialog
           header="Reset Request Data"
           v-model:visible="displayModal"
           :style="{ width: '34vw' }"
@@ -147,7 +147,7 @@
               >
             </div>
           </div>
-        </Dialog>
+        </PrimeDialog>
       </div>
     </TheContent>
   </AuthenticationWrapper>
@@ -157,7 +157,7 @@
 import InfoCard from "@/components/general/InfoCard.vue";
 import FileUpload from "primevue/fileupload";
 import Message from "primevue/message";
-import Dialog from "primevue/dialog";
+import PrimeDialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
@@ -187,7 +187,7 @@ export default defineComponent({
     FileUpload,
     FileSelectMessage: Message,
     Checkbox,
-    Dialog,
+    PrimeDialog,
   },
   setup() {
     return {

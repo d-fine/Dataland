@@ -105,7 +105,11 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     gotoDataRequest() {
-      this.$router.push("requests");
+      assertDefined(this.getKeycloakPromise)()
+        .then(() => {
+          return this.$router.push("requests");
+        })
+        .catch((error) => console.log(error));
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
