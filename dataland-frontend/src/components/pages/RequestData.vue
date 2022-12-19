@@ -248,7 +248,7 @@ export default defineComponent({
     },
 
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
-      this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
+      this.isInviteSuccessful = response.data.isInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },
 
