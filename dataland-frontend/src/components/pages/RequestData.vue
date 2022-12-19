@@ -155,7 +155,7 @@
 
 <script lang="ts">
 import InfoCard from "@/components/general/InfoCard.vue";
-import FileUpload from "primevue/fileupload";
+import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
 import PrimeDialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
@@ -213,7 +213,7 @@ export default defineComponent({
       this.selectedFile = null;
     },
 
-    handleSelectFile(event) {
+    handleSelectFile(event: FileUploadSelectEvent) {
       if (event.files.length > 1) {
         this.selectedFile = event.files[1];
         this.$refs.fileUpload.files.shift();

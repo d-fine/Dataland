@@ -112,7 +112,7 @@ export default defineComponent({
     searchBarId() {
       this.focusOnSearchBar();
     },
-    searchBarInput(newValue) {
+    searchBarInput(newValue: string) {
       this.saveCurrentSearchStringIfValid(newValue);
     },
     filter: {
@@ -143,6 +143,7 @@ export default defineComponent({
     },
 
     focusOnSearchBar() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.$refs.focusInput.focus();
     },
 
@@ -155,6 +156,7 @@ export default defineComponent({
     },
 
     executeSearch() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       if (!this.isKeyupEnterSearchMethodDeactivated && this.autocomplete.focusedOptionIndex === -1) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         this.autocomplete.hide();
