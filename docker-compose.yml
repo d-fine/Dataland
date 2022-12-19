@@ -3,7 +3,6 @@ version: "3.8"
 # Things can be configured by using docker-compose profiles. Valid profiles:
 # production: The profile to be used if the stack is deployed in a production-like setup
 # testing: The profile to be used for testing in the CI (i.e.: starts a testing-container along with the rest of the stack)
-# productionInMemory: The profile to be used if the stack is deployed in a production-like setup but DatalandEDC should be replaced by an in-memory storage
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
 
@@ -11,7 +10,7 @@ services:
   proxy:
     image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
     restart: always
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - external
       - internal
@@ -31,19 +30,20 @@ services:
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - external
       - internal
       - backend-db
       - keycloak-db
       - api-key-manager-db
+      - internal-storage-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5435:5433-5435"
+      - "127.0.0.1:5433-5436:5433-5436"
   api-key-manager:
     restart: always
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - internal
       - api-key-manager-db
@@ -57,7 +57,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   api-key-manager-db:
     restart: always
-    profiles: [ "production", "productionInMemory", "testing", "development" ]
+    profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
     image: postgres:15.1
@@ -73,7 +73,7 @@ services:
       timeout: 3s
   backend:
     restart: always
-    profiles: ["production", "productionInMemory", "testing"]
+    profiles: ["production", "testing"]
     networks:
       - internal
       - backend-db
@@ -87,7 +87,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   backend-db:
     restart: always
-    profiles: ["production", "productionInMemory", "testing", "development"]
+    profiles: ["production", "testing", "development"]
     networks:
       - backend-db
     image: postgres:15.1
@@ -121,8 +121,6 @@ services:
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
       CYPRESS_REALDATA: ${REALDATA}
-      CYPRESS_PREPOPULATE_TIMEOUT_S: 180
-      CYPRESS_PREVISIT_TIMEOUT_S: 180
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
@@ -141,31 +139,15 @@ services:
     command: sh -c "cd /app && npm install && npm run dev"
   frontend:
     restart: always
-    profiles: ["production", "productionInMemory", "testing"]
+    profiles: ["production", "testing"]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     expose:
       - "80"
     networks:
       - internal
-  edc-dummyserver:
-    restart: always
-    profiles: ["productionInMemory", "testing", "development"]
-    image: ghcr.io/d-fine/datalandedc/edcdummyserver:0.2.9
-    environment:
-      SERVER_PORT: 9191
-      SERVER_SERVLET_CONTEXT-PATH: /api
-    networks:
-      internal:
-        aliases:
-          - dataland-edc
-      external:
-        aliases:
-          - dataland-edc
-    ports:
-      - "9191:9191"
   dataland-edc:
     restart: always
-    profiles: ["production"]
+    profiles: ["unused"]
     image: ghcr.io/d-fine/datalandedc/edcserver:0.2.9
     networks:
       - internal
@@ -180,9 +162,41 @@ services:
       EDC_OAUTH_TOKEN_URL: ${EDC_OAUTH_TOKEN_URL}
       IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
       SERVER_TOMCAT_THREADS_MIN-SPARE: 100
+  internal-storage:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${INTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_internal_storage_test:${DATALAND_INTERNAL_STORAGE_TEST_VERSION}}
+    networks:
+      - internal
+      - internal-storage-db
+    expose:
+      - "8080"
+    ports:
+      - "127.0.0.1:8082:8080"
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+    depends_on:
+      - internal-storage-db
+  internal-storage-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal-storage-db
+    image: postgres:15.1
+    volumes:
+      - internal_storage_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: internal_storage
+      POSTGRES_USER: internal_storage
+      POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
   keycloak-db:
     restart: always
-    profiles: ["production", "productionInMemory", "testing", "development", "init"]
+    profiles: ["production", "testing", "development", "init"]
     networks:
       - keycloak-db
     image: postgres:15.1
@@ -198,7 +212,7 @@ services:
       timeout: 3s
   keycloak:
     restart: always
-    profiles: ["production", "productionInMemory", "development"]
+    profiles: ["production", "development"]
     networks:
       - internal
       - keycloak-db
@@ -251,7 +265,8 @@ services:
       - backend-db
       - api-key-manager-db
       - internal
-    profiles: ["production", "productionInMemory", "testing", "development"]
+      - internal-storage-db
+    profiles: ["production", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
     environment:
@@ -260,6 +275,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
 networks:
@@ -268,12 +284,15 @@ networks:
   keycloak-db:
   backend-db:
   api-key-manager-db:
+  internal-storage-db:
 volumes:
   keycloak_data:
     driver: local
   backend_data:
     driver: local
   api_key_manager_data:
+    driver: local
+  internal_storage_data:
     driver: local
   letsencrypt:
     driver: local

@@ -134,6 +134,7 @@ jobs:
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
           API_KEY_MANAGER_DB_PASSWORD: "password"
+          INTERNAL_STORAGE_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
           KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
