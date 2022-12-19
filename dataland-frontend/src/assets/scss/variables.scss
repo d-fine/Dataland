@@ -13,7 +13,7 @@ $brown-dark: #1B1B1B;
 $brown: #292219;
 $brown-light: #5A4F36;
 $brown-lighter: #958D7C;
-$gray: #C4C4C4;
+$gray: #6c757d;
 $gray-light: #E0DFDE;
 $gray-lighter: #F5F5F5;
 $paper-white: #F7F9FA;
@@ -68,6 +68,17 @@ $spacing-lg: 2rem;  // 32px
 $spacing-xl: 3rem;  // 48px
 $spacing-xxl: 4.5rem;  // 72px
 $spacing-xxxl: 6rem;  // 96px
+
+/*=====  radius  ======*/
+
+$radius-none: 0rem;
+$radius-xxxs: 0.25rem; // 4px
+$radius-xxs: 0.5rem;   // 8px
+$radius-xs: 0.75rem;   // 12px
+$radius-sm: 1rem;      // 16px
+$radius-md: 1.5rem;  // 24px
+$radius-lg: 2rem;  // 32px
+$radius-xl: 3rem;  // 48px
 
 
 

@@ -1,0 +1,133 @@
+//buttons
+.p-button {
+  color: $btn-primary-color;
+  background: $btn-primary-bg;
+  border: 1px solid $btn-primary-bg;
+  padding: $spacing-xxs $spacing-sm;
+  font-size: $fs-base;
+  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+  border-radius: 0;
+  font-weight: $fw-semibold;
+  line-height: $line-height-2;
+  &:enabled:hover {
+    background: darken($btn-primary-bg, 20%);
+    border-color: darken($btn-primary-bg, 20%)
+  }
+  &:enabled:active {
+    background: darken($btn-primary-bg, 10%);
+    border-color: darken($btn-primary-bg, 10%)
+  }
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: $btn-disabled-color;
+    cursor: not-allowed
+  }
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 .2rem $btn-focus-border-color
+  }
+  &.p-button-rounded {
+    border-radius: $radius-lg
+  }
+  &.p-button-sm {
+    font-size: $fs-sm;
+    padding: $spacing-xxs $spacing-xs;
+  }
+  &.p-button-outlined {
+    background-color: transparent;
+    color: $btn-primary-bg;
+    border: 1px solid $btn-primary-bg;
+    &:enabled:hover {
+      background: lighten($btn-primary-bg, 40%);
+    }
+    &:enabled:active {
+      background: lighten($btn-primary-bg, 30%);
+      border-color: lighten($btn-primary-bg, 10%);
+    }
+  }
+  &.p-button-text {
+    background-color: transparent;
+    color: $btn-primary-bg;
+    border-color: transparent;
+    &:enabled:hover {
+      background: lighten($btn-primary-bg, 40%);
+      border-color: transparent
+    }
+    &:enabled:active {
+      background: lighten($btn-primary-bg, 30%);
+      border-color: transparent
+    }
+  }
+  .p-badge {
+    color: $btn-primary-color;
+    background: $btn-primary-bg;
+    margin-left: $spacing-xxs;
+    min-width: $spacing-sm;
+    height: $spacing-sm;
+    line-height: $line-height-1;
+  }
+}
+
+.d-content {
+  flex:1;
+  display: flex;
+  flex-direction: column
+}
+.d-header {
+  z-index: 100
+}
+
+.p-fluid{
+  .p-button, .p-inputtext {
+    width: 100%
+  }
+  .p-input-icon-left, .p-input-icon-right {
+    display: block;
+    width: 100%
+  }
+}
+
+input {
+  &[type="submit"] {
+    border-radius: $radius-none
+  }
+  &[type="reset"] {
+    border-radius: $radius-none
+  }
+}
+
+.p-inputtext {
+  font-family: $ibm-plex-sans;
+  font-size: $fs-base;
+  color: $input-text-color;
+  background: $input-text-bg;
+  padding: $spacing-xxs;
+  border: 0;
+  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+  appearance: none;
+  border-radius: $radius-none;
+  &:enabled:hover {
+    border-color: $input-text-border-hover
+  }
+  &:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 .2rem #bfd1f6;
+    border-color: $input-text-border-hover
+  }
+  &.p-invalid.p-component {
+    border-color: #ced4da #ced4da #ced4da #e4677e
+  }
+  &.p-inputtext-sm {
+    font-size: $fs-sm;
+    padding: $spacing-xxs
+  }
+  &.p-inputtext-lg {
+    font-size: $fs-lg;
+    padding: $spacing-xs
+  }
+}
+
+
