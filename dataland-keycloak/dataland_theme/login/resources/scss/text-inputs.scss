@@ -53,11 +53,13 @@ input[type="text"], input[type="password"] {
   }
 }
 
+div.input-error-wrapper {
+  padding-left: 16px;
+}
 
 span.input-error {
   font-size: 12px;
   color: #EE1A1A;
-  padding-left: 15px;
   font-weight: bolder;
 }
 
