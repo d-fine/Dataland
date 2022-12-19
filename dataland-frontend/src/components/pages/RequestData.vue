@@ -68,7 +68,7 @@
 
             <template #empty>
               <div class="flex align-items-center justify-content-center flex-column">
-                <i class="pi pi-cloud-upload p-3 text-6xl text-400" />
+                <em class="pi pi-cloud-upload p-3 text-6xl text-400" />
                 <div class="flex align-items-center">
                   <p>+ Drag and drop a file or</p>
                   <a class="text-primary font-medium pl-1" @click="chooseFiles">BROWSE</a>
