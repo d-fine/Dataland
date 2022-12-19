@@ -177,7 +177,7 @@ jobs:
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
         run:  |
-          if [[ ${{ matrix.testGroup }} == 3 ]]; then
+          if [[ ${{ matrix.testGroup }} == 2 ]]; then
             ./deployment/setup_admin_ssh_tunnel.sh
           else
             echo "There is no connection to admin ports established."
