@@ -19,7 +19,7 @@
             <Button
                     class="p-button w-full uppercase text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1 p-login-button"
                     name="login_button"
-                    onclick="location.href='${url.loginUrl}'">
+                    onclick="location.href='${url.loginRestartFlowUrl}'">
                 BACK TO LOGIN
             </Button>
         </div>
