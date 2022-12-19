@@ -29,7 +29,7 @@ interface InviteApi {
         ]
     )
     @PostMapping(
-        value = ["/invite"], // TODO name => think about it again
+        value = ["/invite"],
         produces = ["application/json"],
         consumes = ["multipart/form-data"]
     )

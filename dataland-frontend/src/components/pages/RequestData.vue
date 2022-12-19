@@ -49,7 +49,9 @@
               <div></div>
             </template>
 
-            <template #content="{ files, removeFileCallback }">
+            <template #content="{ files, removeFileCallback, messages }">
+              <FileSelectMessage v-for="msg of messages" :key="msg" severity="error" @close="onMessageClose">{{ msg }}
+              </FileSelectMessage>
               <div v-if="files.length > 0">
                 <p class="m-0">Your selected Excel file for the upload:</p>
                 <div
@@ -130,6 +132,7 @@
 <script lang="ts">
 import InfoCard from "@/components/general/InfoCard.vue";
 import FileUpload from "primevue/fileupload";
+import Message from "primevue/message";
 import Dialog from "primevue/dialog"
 import Checkbox from "primevue/checkbox";
 import { defineComponent, inject, ref } from "vue";
@@ -158,6 +161,7 @@ export default defineComponent({
     TheContent,
     InfoCard,
     FileUpload,
+    FileSelectMessage: Message,
     Checkbox,
     Dialog,
   },

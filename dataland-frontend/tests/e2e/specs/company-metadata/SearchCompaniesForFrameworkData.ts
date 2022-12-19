@@ -230,7 +230,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       dataEnvironments: ["fakeFixtures"],
     },
     () => {
-      // following test needs the DataIntegrity.ts test to be executed before TODO => Emanuel: why? it seems independent
       it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
         cy.ensureLoggedIn();
         const highlightedSubString = "this_is_highlighted";
