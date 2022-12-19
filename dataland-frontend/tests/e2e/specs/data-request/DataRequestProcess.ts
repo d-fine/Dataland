@@ -57,9 +57,11 @@ describe("As a user I expect a data request page where I can download an excel t
       let filename = "";
       const uploadContainerTag = "div.p-fileupload-content";
       const fileTag = "span.font-semibold.mr-2";
-      cy.get(uploadContainerTag).find(fileTag).then((doms) => {
-        doms.each((index, element) => { filename = element.innerText; });
-      });
+      cy.get(uploadContainerTag).find(fileTag).then((elements) => {
+        let other = elements.map((index, element) => { return element.innerText; });
+        cy.log(other.length.toString());
+        return other;
+      }).should("have.length", 1);
       //expect(filenames.length).to.equal(1);
       //cy.log(filenames.length.toString());
       return filename;
