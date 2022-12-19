@@ -30,9 +30,9 @@ class InvitationEmailGenerator {
 
         private fun getEmailsFromEnv(envName: String): List<EmailContact> {
             return System.getenv(envName)!!.split(";").map {
-                    emailAdress ->
-                isEmailAddressFormatValid(emailAdress)
-                EmailContact(emailAdress)
+                    emailAddress ->
+                isEmailAddressFormatValid(emailAddress)
+                EmailContact(emailAddress)
             }
         }
 
