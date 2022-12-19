@@ -5,7 +5,6 @@ Note: To create a PR using this template add the query parameter `template=manua
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
 - [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
-- [ ] primeicon 5.0.0 (higher version require higher version of primevue)
 - [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
 - [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
