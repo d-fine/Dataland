@@ -233,12 +233,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Generate jacocoTestReport and run Sonar
         if: always()
-        run: |
-          find . -name "*.info"
-          find . -name "*.exec"
-          ./gradlew sonarqube --no-daemon --stacktrace
-          find . -name "*.info"
-          find . -name "*.exec"
+        run: ./gradlew sonarqube --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
