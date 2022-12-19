@@ -1,13 +1,21 @@
-.d-success-modal {
+.d-modal-base {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 8px 12px;
   gap: 8px;
-
-  background: #4BB917;
-  color: white;
   border-radius: 4px;
   font-weight: 500;
   text-align: left;
+}
+
+.d-success-modal {
+  background: #4BB917;
+  color: white;
+}
+
+
+.d-error-modal {
+  background: #EE1A1A;
+  color: white;
 }

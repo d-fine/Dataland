@@ -33,8 +33,13 @@
                 <#-- during login. -->
                 <#if displayMessage && message?has_content>
                     <#if message.type="success">
-                        <div class="d-success-modal">
+                        <div class="d-success-modal d-modal-base">
                             <span class="material-icons">check_circle</span>
+                            <span>${kcSanitize(message.summary)?no_esc}</span>
+                        </div>
+                    <#elseif message.type="error">
+                        <div class="d-error-modal d-modal-base">
+                            <span class="material-icons">error_outline</span>
                             <span>${kcSanitize(message.summary)?no_esc}</span>
                         </div>
                     <#else>
@@ -46,6 +51,20 @@
                 </#if>
 
                 <#nested "form">
+
+                <#if auth?has_content && auth.showTryAnotherWayLink()>
+                    <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post">
+                        <div class="text-left">
+                            <input type="hidden" name="tryAnotherWay" value="on"/>
+                            <Button
+                                    class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-2 p-login-button"
+                                    name="join_dataland_button"
+                                    onclick="document.forms['kc-select-try-another-way-form'].submit();return false;">
+                                Authenticate in a different way
+                            </Button>
+                        </div>
+                    </form>
+                </#if>
             </div>
         </div>
     </body>

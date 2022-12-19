@@ -49,6 +49,7 @@
 
         <@socialLogin.dala prefix="LOGIN WITH"/>
 
+        <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
         <div id="kc-registration-container" class="mt-5">
             <div id="kc-registration" class="flex-box">
                     <span>Don't have an account?</span>
@@ -60,6 +61,7 @@
                     </Button>
             </div>
         </div>
+        </#if>
 
     </#if>
 
