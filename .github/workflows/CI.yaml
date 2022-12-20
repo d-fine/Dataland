@@ -236,6 +236,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: jacocoTestReport
         if: always()
+        # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
+        # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
         run: ./gradlew jacocoTestReport --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
