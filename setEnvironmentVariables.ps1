@@ -29,8 +29,6 @@
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("TARGETSERVER_HOST_KEYS", "${{ secrets.TARGETSERVER_HOST_KEYS }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TARGETSERVER_STARTUP_URL", "${{ secrets.TARGETSERVER_STARTUP_URL }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "${{ secrets.TARGETSERVER_URL }}", [System.EnvironmentVariableTarget]::User)
-# If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_BASE_URL", "${{ secrets.TRUSTEE_BASE_URL }}", [System.EnvironmentVariableTarget]::User)
-# If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TRUSTEE_ENVIRONMENT_NAME", "${{ github.event.inputs.trusteeEnvironmentName }}", [System.EnvironmentVariableTarget]::User)
 # If needed (to test EurDat Integration) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("TUNNEL_STARTUP_LINK", "...", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_ID", "#", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_SECRET", "#", [System.EnvironmentVariableTarget]::User)
