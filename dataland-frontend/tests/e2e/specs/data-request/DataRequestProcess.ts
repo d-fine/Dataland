@@ -44,7 +44,7 @@ describe("As a user I expect a data request page where I can download an excel t
         );
       }
 
-      function submitAndValidateSuccess(moreValidation = (interception: Interception): void => undefined): void {
+      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void): void {
         interceptInviteAndDisableEmail();
         cy.get(submitButtonSelector).click();
         validateSuccessResponse(moreValidation);
@@ -56,7 +56,7 @@ describe("As a user I expect a data request page where I can download an excel t
         }).as(inviteInterceptionAlias);
       }
 
-      function validateSuccessResponse(moreValidation = (interception: Interception): void => undefined): void {
+      function validateSuccessResponse(moreValidation: (interception: Interception) => void): void {
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
           expect(interception.response!.statusCode).to.be.within(200, 299);
           expect((interception.response!.body as InviteMetaInfoEntity).inviteSuccessful).to.equal(true);
@@ -166,6 +166,7 @@ describe("As a user I expect a data request page where I can download an excel t
 
         submitAndValidateSuccess((interception) => {
           expect(interception.request.body).to.contain(smallEnoughFilename);
+          expect(interception.request.body).to.not.contain(removeFilename);
           expect(interception.request.body).to.not.contain(overrideFile);
         });
       });
@@ -177,7 +178,7 @@ describe("As a user I expect a data request page where I can download an excel t
         validateThatErrorMessageContains([rejectFilename, "Invalid file size"]);
         validateThatSubmitButtonIsDisabled();
       });
-
+      // TODO merge these two tests? + forloop
       it(`Test that a wrong file type gets rejected`, () => {
         const rejectFilename = "reject_test.png";
 
@@ -204,10 +205,6 @@ describe("As a user I expect a data request page where I can download an excel t
         reset(true);
         validateHideUsernameCheckboxIs(false);
         uploadBoxShouldBeEmpty();
-
-        reset(false);
-        validateHideUsernameCheckboxIs(false);
-        uploadBoxShouldBeEmpty();
       });
 
       it(`Test that the unchecked checkbox state is transferred correctly to the request`, () => {
@@ -226,7 +223,11 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       // TODO check if the request view got reset when you revisit it after a submission
-      // TODO check if submitting empty file yields a fail response
+      // TODO check if submitting empty file yields a fail response via error message
+      // TODO intercept to get a non 200 request
+      // TODO test progressbar for correct color, depending on percentage.
+      // TODO check existence of return to home
+      // TODO BURGER MENU!
     }
   );
 });
