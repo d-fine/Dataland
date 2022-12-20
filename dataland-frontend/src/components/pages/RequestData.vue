@@ -214,10 +214,14 @@ export default defineComponent({
     },
 
     handleSelectFile(event: FileUploadSelectEvent) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (event.files.length > 1) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
         this.selectedFile = event.files[1];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         this.$refs.fileUpload.files.shift();
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
         this.selectedFile = event.files[0];
       }
     },
@@ -233,22 +237,25 @@ export default defineComponent({
     },
 
     chooseFiles() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.$refs.fileUpload.choose();
     },
 
     getSelectedFile(): File {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
       return this.$refs.fileUpload.files[0];
     },
 
     handleSubmission() {
       this.submissionInProgress = true;
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.uploadAllSelectedFiles();
       this.submissionFinished = true;
       this.submissionInProgress = false;
     },
 
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
-      this.isInviteSuccessful = response.data.isInviteSuccessful ?? false;
+      this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },
 
@@ -264,7 +271,8 @@ export default defineComponent({
         console.error(error);
       }
     },
-    async resetPage(): Promise<void> {
+    resetPage() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.$refs.fileUpload.clear();
       this.displayModal = false;
       this.hideName = false;

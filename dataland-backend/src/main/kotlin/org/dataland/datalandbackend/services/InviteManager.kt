@@ -109,7 +109,7 @@ class InviteManager(
         val inviteId = generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         return if (!checkFilename(excelFile)) {
-            return handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)
+            handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)
         } else if (excelFile.isEmpty) {
             handleSubmissionError(fileId, inviteId, inviteResultFileIsEmpty)
         } else if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
