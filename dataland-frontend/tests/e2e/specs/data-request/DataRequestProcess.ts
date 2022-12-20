@@ -59,7 +59,7 @@ describe("As a user I expect a data request page where I can download an excel t
       function validateSuccessResponse(moreValidation = (interception: Interception): void => undefined): void {
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
           expect(interception.response!.statusCode).to.be.within(200, 299);
-          expect((interception.response!.body as InviteMetaInfoEntity).inviteSuccessful).to.equal(true);
+          expect((interception.response!.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
           moreValidation(interception);
         });
       }
