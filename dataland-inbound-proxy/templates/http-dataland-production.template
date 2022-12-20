@@ -27,14 +27,14 @@ server {
       root /var/www;
     }
 
-    location /api-keys {
-      proxy_pass http://api-key-manager:8080/api-keys;
+    location /api-keys/ {
+      proxy_pass http://api-key-manager:8080/api-keys/;
       include utils/proxy.conf;
       include utils/apiKeysErrors.conf;
     }
 
-    location /api {
-      proxy_pass http://backend:8080/api;
+    location /api/ {
+      proxy_pass http://backend:8080/api/;
       include utils/proxy.conf;
       include utils/apiErrors.conf;
     }
@@ -49,7 +49,7 @@ server {
        default_type application/json;
     }
 
-    location /health/proxy {
+    location = /health/proxy {
        return 200 'UP';
     }
 
