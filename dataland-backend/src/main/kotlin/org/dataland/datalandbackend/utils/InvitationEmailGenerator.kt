@@ -11,10 +11,9 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 /**
- * A class to generate invitation emails
+ * A utility object which contains functions to generate invitation emails
  */
-class InvitationEmailGenerator {
-    companion object {
+object InvitationEmailGenerator{
         private val sender = EmailContact("info@dataland.com", "Dataland")
         private val receivers = getEmailsFromEnv("INVITATION_REQUEST_RECEIVERS")
         private val cc = getEmailsFromEnv("INVITATION_REQUEST_CC")
@@ -79,4 +78,4 @@ class InvitationEmailGenerator {
             return Email(sender, receivers, cc, content)
         }
     }
-}
+
