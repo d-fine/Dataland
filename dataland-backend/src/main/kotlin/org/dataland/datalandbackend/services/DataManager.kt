@@ -1,31 +1,34 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.edcClient.api.DefaultApi
-import org.dataland.datalandbackend.edcClient.infrastructure.ServerException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param edcClient API client to communicate with the data storage service
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param companyManager service for managing company data
  * @param metaDataManager service for managing metadata
- */
+ * @param storageClient service for managing data
+*/
+@ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
 class DataManager(
-    @Autowired var edcClient: DefaultApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,
-    @Autowired var metaDataManager: DataMetaInformationManager
+    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var storageClient: StorageControllerApi,
+
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -73,20 +76,20 @@ class DataManager(
     ): String {
         val dataId: String
         try {
-            dataId = edcClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
+            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
-            val message = "Error sending insertData Request to Eurodat." +
+            val internalMessage = "Error storing data." +
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
-            logger.error(message)
+            logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                message,
+                internalMessage,
                 e
             )
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from EuroDaT. Correlation ID: $correlationId"
+                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
         )
         return dataId
     }
@@ -99,7 +102,7 @@ class DataManager(
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
-        val dataAsString: String = getDataFromEdcClient(dataId, correlationId)
+        val dataAsString: String = getDataFromStorage(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
@@ -118,14 +121,14 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromEdcClient(dataId: String, correlationId: String): String {
+    private fun getDataFromStorage(dataId: String, correlationId: String): String {
         val dataAsString: String
-        logger.info("Retrieve data from edc client. Correlation ID: $correlationId")
+        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
-            dataAsString = edcClient.selectDataById(dataId, correlationId)
+            dataAsString = storageClient.selectDataById(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
-                "Error sending selectDataById request to Eurodat. Received ServerException with Message:" +
+                "Error requesting data. Received ServerException with Message:" +
                     " ${e.message}. Correlation ID: $correlationId"
             )
             throw e

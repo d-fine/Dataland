@@ -95,7 +95,7 @@ jacoco {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.build)
-    dependsOn(tasks.getByPath("compileKotlin"))
+    dependsOn(subprojects.flatMap { it.tasks.filter { it.name == "compileKotlin" } })
     sourceDirectories.setFrom(
         subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
     )
@@ -106,7 +106,7 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    executionData.setFrom(fileTree(projectDir).include("**.exec"))
+    executionData.setFrom(fileTree("$projectDir") { include("**/*.exec")}.files)
 }
 
 detekt {

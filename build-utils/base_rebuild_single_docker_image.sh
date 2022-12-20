@@ -21,7 +21,7 @@ echo Rebuilding docker image. Parameters: "$@"
 
 input_sha1=$( \
   find "$0" "$@" -type f | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/.gradle/\|/.git/\|/build/\|package-lock.json\|.log\|/local/\|/.nyc_output/\|/cypress/' | \
+  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
   sort -u | \
   xargs sha1sum | \
   sha1sum | \
@@ -53,6 +53,7 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_E2ETESTS_BASE_VERSION="${DATALAND_E2ETESTS_BASE_VERSION:-}" \
                         --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
                         --build-arg DATALAND_API_KEY_MANAGER_BASE_VERSION="${DATALAND_API_KEY_MANAGER_BASE_VERSION:-}" \
+                        --build-arg DATALAND_INTERNAL_STORAGE_BASE_VERSION="${DATALAND_INTERNAL_STORAGE_BASE_VERSION:-}" \
                         --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}"
                   )
 

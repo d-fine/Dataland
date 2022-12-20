@@ -34,6 +34,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./swagger-ui");
   require("./company-metadata/SearchCompaniesForFrameworkDataDropdownFilter");
   require("./company-metadata/CompaniesOnlySearch");
+  require("./user-api-key");
 }
 
 if (cypressTestGroup === 102) {
@@ -46,6 +47,10 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
+  /**
+   * user-authentication and admin-tools both need the admin tunnel to be present.
+   * That's why they live together.
+   */
   require("./user-authentication");
   require("./admin-tools");
 }

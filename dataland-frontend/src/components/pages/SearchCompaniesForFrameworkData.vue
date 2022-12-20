@@ -80,7 +80,10 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import { FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {
+  FrameworkDataSearchFilterInterface,
+  DataSearchStoredCompany,
+} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
@@ -88,7 +91,6 @@ import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { defineComponent, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
-import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";

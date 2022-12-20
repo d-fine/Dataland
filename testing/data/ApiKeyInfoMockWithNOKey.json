@@ -1,0 +1,7 @@
+{
+  "keycloakUserId":null,
+  "keycloakRoles":null,
+  "expiryDate":null,
+  "active":false,
+  "validationMessage":"Your Dataland account has no API key registered. Please generate one."
+}

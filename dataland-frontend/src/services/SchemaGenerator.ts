@@ -4,6 +4,17 @@ export interface SchemaInterface {
   required: string[];
   properties: { [key: string]: { format?: string; type: string; enum?: string[]; items?: { enum: string[] } } };
 }
+
+interface ProcessedSchemaInterface {
+  $formkit: string;
+  label: string;
+  placeholder?: string;
+  name: string;
+  validation: string;
+  options?: Record<string, unknown>;
+  classes?: { inner: object; outer?: object; input: object };
+}
+
 export class SchemaGenerator {
   private readonly rawSchema: SchemaInterface;
   private readonly hiddenIndices: Array<string>;
@@ -27,7 +38,7 @@ export class SchemaGenerator {
     return "";
   }
 
-  private processEnum(rawEnumProperties: string[] | undefined): Record<string, unknown> {
+  private getEnumProperties(rawEnumProperties: string[] | undefined): Record<string, unknown> {
     const enumProperties: Record<string, unknown> = {};
     if (rawEnumProperties !== undefined) {
       for (const enumItem of rawEnumProperties) {
@@ -45,85 +56,109 @@ export class SchemaGenerator {
 
   generate(): object {
     const propertiesSchema = this.rawSchema.properties;
-    const schema = [];
+    const processedSchema = [] as Array<ProcessedSchemaInterface>;
     for (const index in propertiesSchema) {
       if (this.hiddenIndices.indexOf(index) >= 0) continue;
       const validation = this.getValidationStatus(index);
       if ("enum" in propertiesSchema[index]) {
-        const enumProperties = this.processEnum(propertiesSchema[index].enum);
-        if (Object.keys(enumProperties).length > 2) {
-          /* create a select form */
-          schema.push({
-            $formkit: "select",
-            label: humanizeString(index),
-            placeholder: "Please Choose",
-            name: index,
-            validation: validation,
-            options: enumProperties,
-          });
-        } else {
-          /* create a radio form */
-          schema.push({
-            $formkit: "radio",
-            label: humanizeString(index),
-            name: index,
-            validation: validation,
-            classes: {
-              outer: { "formkit-outer": false },
-              inner: { "formkit-inner": false },
-              input: { "formkit-input": false, "p-radiobutton:": true },
-            },
-            options: enumProperties,
-          });
-        }
+        this.processEnum(propertiesSchema, index, processedSchema, validation);
       } else if (this.getType(index).includes("date")) {
         /* create a date form */
-        schema.push({
-          $formkit: "date",
-          label: humanizeString(index),
-          name: index,
-          validation: validation,
-          classes: {
-            inner: { "formkit-inner": false, "p-inputwrapper": true },
-            input: { "formkit-input": false, "p-inputtext": true },
-          },
-        });
+        this.processDate(processedSchema, index, validation);
       } else if (this.getType(index) == "array") {
         /* create a checkbox form */
-        const items = propertiesSchema[index]?.items;
-        if (items !== undefined && "enum" in items) {
-          const enumProperties = this.processEnum(items.enum);
-          schema.push({
-            $formkit: "checkbox",
-            label: humanizeString(index),
-            placeholder: humanizeString(index),
-            name: index,
-            validation: validation,
-            options: enumProperties,
-            classes: {
-              outer: { "formkit-outer": false },
-              inner: { "formkit-inner": false },
-              input: { "formkit-input": false },
-            },
-          });
-        }
+        this.processArray(propertiesSchema, index, processedSchema, validation);
       } else {
-        {
-          /* create a text form */
-          schema.push({
-            $formkit: "text",
-            label: humanizeString(index),
-            placeholder: humanizeString(index),
-            name: index,
-            validation: validation,
-            classes: {
-              inner: { "formkit-inner": false, "p-inputwrapper": true },
-              input: { "formkit-input": false, "p-inputtext": true },
-            },
-          });
-        }
+        this.processText(processedSchema, index, validation);
       }
     }
-    return schema;
+    return processedSchema;
+  }
+
+  private processEnum(
+    propertiesSchema: { [p: string]: { format?: string; type: string; enum?: string[]; items?: { enum: string[] } } },
+    index: string,
+    processedSchema: Array<ProcessedSchemaInterface>,
+    validation: string
+  ): void {
+    const enumProperties = this.getEnumProperties(propertiesSchema[index].enum);
+    if (Object.keys(enumProperties).length > 2) {
+      /* create a select form */
+      processedSchema.push({
+        $formkit: "select",
+        label: humanizeString(index),
+        placeholder: "Please Choose",
+        name: index,
+        validation: validation,
+        options: enumProperties,
+      });
+    } else {
+      /* create a radio form */
+      processedSchema.push({
+        $formkit: "radio",
+        label: humanizeString(index),
+        name: index,
+        validation: validation,
+        classes: {
+          outer: { "formkit-outer": false },
+          inner: { "formkit-inner": false },
+          input: { "formkit-input": false, "p-radiobutton:": true },
+        },
+        options: enumProperties,
+      });
+    }
+  }
+
+  private processText(processedSchema: Array<ProcessedSchemaInterface>, index: string, validation: string): void {
+    /* create a text form */
+    processedSchema.push({
+      $formkit: "text",
+      label: humanizeString(index),
+      placeholder: humanizeString(index),
+      name: index,
+      validation: validation,
+      classes: {
+        inner: { "formkit-inner": false, "p-inputwrapper": true },
+        input: { "formkit-input": false, "p-inputtext": true },
+      },
+    });
+  }
+
+  private processArray(
+    propertiesSchema: { [p: string]: { format?: string; type: string; enum?: string[]; items?: { enum: string[] } } },
+    index: string,
+    processedSchema: Array<ProcessedSchemaInterface>,
+    validation: string
+  ): void {
+    const items = propertiesSchema[index]?.items;
+    if (items !== undefined && "enum" in items) {
+      const enumProperties = this.getEnumProperties(items.enum);
+      processedSchema.push({
+        $formkit: "checkbox",
+        label: humanizeString(index),
+        placeholder: humanizeString(index),
+        name: index,
+        validation: validation,
+        options: enumProperties,
+        classes: {
+          outer: { "formkit-outer": false },
+          inner: { "formkit-inner": false },
+          input: { "formkit-input": false },
+        },
+      });
+    }
+  }
+
+  private processDate(processedSchema: Array<ProcessedSchemaInterface>, index: string, validation: string): void {
+    processedSchema.push({
+      $formkit: "date",
+      label: humanizeString(index),
+      name: index,
+      validation: validation,
+      classes: {
+        inner: { "formkit-inner": false, "p-inputwrapper": true },
+        input: { "formkit-input": false, "p-inputtext": true },
+      },
+    });
   }
 }

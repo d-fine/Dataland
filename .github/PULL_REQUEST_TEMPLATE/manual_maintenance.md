@@ -42,7 +42,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db and frontend-dev
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Server updates

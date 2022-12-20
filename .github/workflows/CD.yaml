@@ -15,16 +15,6 @@ on:
         description: "Choose environment"
         required: true
         type: environment
-      useInMemoryStorage:
-        description: 'Mock Trustee'
-        required: false
-        type: boolean
-      trusteeEnvironmentName:
-        description: 'Trustee Environment Name'
-        required: false
-        type: string
-        default: integration
-
 
 jobs:
   log-everything:
@@ -104,16 +94,14 @@ jobs:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
           TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
-          TRUSTEE_BASE_URL: ${{ secrets.TRUSTEE_BASE_URL }}
-          TRUSTEE_ENVIRONMENT_NAME: ${{ github.event.inputs.trusteeEnvironmentName }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          IN_MEMORY: ${{ github.event.inputs.useInMemoryStorage }}
           KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           BACKEND_DB_PASSWORD: ${{ secrets.BACKEND_DB_PASSWORD }}
           API_KEY_MANAGER_DB_PASSWORD: ${{ secrets.API_KEY_MANAGER_DB_PASSWORD }}
+          INTERNAL_STORAGE_DB_PASSWORD: ${{ secrets.INTERNAL_STORAGE_DB_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
@@ -196,8 +184,6 @@ jobs:
         run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
-          CYPRESS_PREPOPULATE_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 900 }}
-          CYPRESS_PREVISIT_TIMEOUT_S: ${{ github.event.inputs.useInMemoryStorage && 180 || 1200 }}
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           CYPRESS_KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
