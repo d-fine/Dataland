@@ -106,7 +106,7 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    executionData.setFrom(fileTree("$projectDir").include("**/*.exec").include("**.exec"))
+    executionData.setFrom(fileTree("$projectDir") { include("**/*.exec")}.files)
 }
 
 detekt {
