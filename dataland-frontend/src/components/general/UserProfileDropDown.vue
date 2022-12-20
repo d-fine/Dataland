@@ -15,6 +15,7 @@
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
   <PrimeMenu
+    data-test="profileMenu"
     ref="menu"
     :model="dropdownMenuItems"
     :popup="true"
@@ -67,6 +68,12 @@ export default defineComponent({
           clickAction: this.gotoUserSettings,
         },
         {
+          label: "API",
+          icon: "key",
+          id: "profile-api-generate-key-button",
+          clickAction: this.gotoApiKeysPage,
+        },
+        {
           label: "LOG OUT",
           icon: "logout",
           id: "profile-picture-dropdown-toggle",
@@ -97,6 +104,9 @@ export default defineComponent({
           }
         })
         .catch((error) => console.log(error));
+    },
+    gotoApiKeysPage() {
+      void this.$router.push("/api-key");
     },
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {

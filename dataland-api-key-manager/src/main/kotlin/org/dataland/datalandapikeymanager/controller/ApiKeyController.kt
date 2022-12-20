@@ -22,6 +22,10 @@ class ApiKeyController(
         return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
     }
 
+    override fun getApiKeyMetaInfoForUser(): ResponseEntity<ApiKeyMetaInfo> {
+        return ResponseEntity.ok(apiKeyManager.getApiKeyMetaInfoForFrontendUser())
+    }
+
     override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
         return ResponseEntity.ok(apiKeyManager.validateApiKey(apiKey))
     }
