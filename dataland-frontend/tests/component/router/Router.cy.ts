@@ -25,8 +25,6 @@ describe("routerTest", () => {
   it("checks if the router pushes to Welcome page as expected", async () => {
     await router.push("/");
     await router.isReady();
-    expect(mountAppWithRouter(router).html()).to.contain(
-      "COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE COSTS"
-    );
+    expect(mountAppWithRouter(router).html()).to.contain("THE ALTERNATIVE TO DATA MONOPOLIES");
   });
 });
