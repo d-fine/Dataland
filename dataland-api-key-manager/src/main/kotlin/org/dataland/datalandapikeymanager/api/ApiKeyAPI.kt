@@ -46,6 +46,30 @@ interface ApiKeyAPI {
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(
+        summary = "Get API key meta info of a specific user.",
+        description = "Gets meta info about the API key status of a user based on the Keycloak user ID."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved API key status for the user ID.")
+        ]
+    )
+    @GetMapping(
+        value = ["/getApiKeyMetaInfoForUser"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @SecurityRequirement(name = "default-bearer-auth")
+    @SecurityRequirement(name = "default-oauth")
+    /** A method to get meta information about the API key status of a specific user, like if that user
+     * even has an API key registered, and what the expiry date of that (potential) API key is.
+     * Information about the user is derived from the Bearer token of the request.
+     * This method is needed by the Frontend to display the API key status to a logged in user.
+     * @return API key meta info which includes all the required info for the API key status
+     */
+    fun getApiKeyMetaInfoForUser(): ResponseEntity<ApiKeyMetaInfo>
+
+    @Operation(
         summary = "Validate an API key.",
         description = "Checks if an API key is valid and returns the validation results together with its meta info."
     )
