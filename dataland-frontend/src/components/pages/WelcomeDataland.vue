@@ -20,11 +20,11 @@ export default defineComponent({
   },
 
   mounted() {
-    this.checkAuthenticatedAndRedirectIfLoggedIn();
+    void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
   watch: {
     authenticated() {
-      this.checkAuthenticatedAndRedirectIfLoggedIn();
+      void this.checkAuthenticatedAndRedirectIfLoggedIn();
     },
   },
   methods: {
