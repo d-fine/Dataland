@@ -108,16 +108,13 @@ class InviteManager(
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
-        if (!checkFilename(excelFile)) {
-            return handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)
-        }
-        if (excelFile.isEmpty) {
-            return handleSubmissionError(fileId, inviteId, inviteResultFileIsEmpty)
-        }
-        if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
-            return handleSubmissionError(fileId, inviteId, inviteResultEmailError)
-        }
-        return handleSubmission(fileId, inviteId, true, inviteResultSuccess)
+        return if (!checkFilename(excelFile)) {
+            handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)
+        } else if (excelFile.isEmpty) {
+            handleSubmissionError(fileId, inviteId, inviteResultFileIsEmpty)
+        } else if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
+            handleSubmissionError(fileId, inviteId, inviteResultEmailError)
+        } else handleSubmission(fileId, inviteId, true, inviteResultSuccess)
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(

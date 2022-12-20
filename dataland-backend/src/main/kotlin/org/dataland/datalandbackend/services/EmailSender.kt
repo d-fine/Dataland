@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient
+import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandbackend.model.email.Email
@@ -35,7 +36,8 @@ class EmailSender {
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(client)
             response.messages.forEach { logger.info(it.toString()) }
-        } catch (e: Exception) {
+        } catch (e: MailjetException) {
+            logger.error("Error sending email, with error: $e")
             return false
         }
         return true

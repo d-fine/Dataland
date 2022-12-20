@@ -133,6 +133,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.p-menuitem-link {
+  background-color: #0b191f;
+}
 .d-drop-down-toggle {
   cursor: pointer;
 }
