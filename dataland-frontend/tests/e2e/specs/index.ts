@@ -44,11 +44,15 @@ if (cypressTestGroup === 102) {
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./eu-taxonomy-non-financials");
   require("./eu-taxonomy-financials");
-  require("./admin-tools");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
+  /**
+   * user-authentication and admin-tools both need the admin tunnel to be present.
+   * That's why they live together.
+   */
   require("./user-authentication");
+  require("./admin-tools");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
