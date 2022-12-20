@@ -12,7 +12,7 @@ interface ProcessedSchemaInterface {
   name: string;
   validation: string;
   options?: Record<string, unknown>;
-  classes?: { inner: object, outer?: object, input: object };
+  classes?: { inner: object; outer?: object; input: object };
 }
 
 export class SchemaGenerator {
