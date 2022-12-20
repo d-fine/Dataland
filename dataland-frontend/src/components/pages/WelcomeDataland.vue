@@ -9,7 +9,7 @@ import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
 import { defineComponent, inject } from "vue";
-import {NavigationFailure} from "vue-router";
+import { NavigationFailure } from "vue-router";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -33,7 +33,7 @@ export default defineComponent({
       if (this.authenticated === true) {
         return this.$router.push({ path: "/companies", replace: true });
       }
-      return Promise.resolve()
+      return Promise.resolve();
     },
   },
 });

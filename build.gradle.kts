@@ -89,13 +89,6 @@ sonarqube {
     }
 }
 
-tasks.getByName("sonarqube") {
-    dependsOn(subprojects.flatMap { subproject -> subproject.tasks.filter { task -> task.name == "npmInstall" } })
-    dependsOn(subprojects.flatMap { subproject -> subproject.tasks.filter { task -> task.name == "npmBuild" } })
-    dependsOn("jacocoTestReport")
-    // dependsOn("npmBuild")
-}
-
 jacoco {
     toolVersion = jacocoVersion
 }
@@ -113,7 +106,7 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    executionData.setFrom(fileTree(projectDir).include("**.exec"))
+    executionData.setFrom(fileTree("$projectDir").include("**/*.exec"))
 }
 
 detekt {
