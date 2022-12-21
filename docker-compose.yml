@@ -145,23 +145,6 @@ services:
       - "80"
     networks:
       - internal
-  dataland-edc:
-    restart: always
-    profiles: ["unused"]
-    image: ghcr.io/d-fine/datalandedc/edcserver:0.2.9
-    networks:
-      - internal
-    expose:
-      - "9191"
-      - "9292"
-    environment:
-      DATALAND_EDC_ASSET_ACCESS_URI: ${DATALAND_EDC_ASSET_ACCESS_URI}
-      TRUSTEE_IDS_URI: ${TRUSTEE_IDS_URI}
-      EDC_OAUTH_PROVIDER_AUDIENCE: ${EDC_OAUTH_PROVIDER_AUDIENCE}
-      EDC_OAUTH_PROVIDER_JWKS_URL: ${EDC_OAUTH_PROVIDER_JWKS_URL}
-      EDC_OAUTH_TOKEN_URL: ${EDC_OAUTH_TOKEN_URL}
-      IDS_WEBHOOK_ADDRESS: ${IDS_WEBHOOK_ADDRESS}
-      SERVER_TOMCAT_THREADS_MIN-SPARE: 100
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]

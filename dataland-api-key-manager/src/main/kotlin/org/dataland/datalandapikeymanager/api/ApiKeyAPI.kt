@@ -42,7 +42,7 @@ interface ApiKeyAPI {
      * @return new API key for the user together with meta info associated with that API key
      */
     fun generateApiKey(
-        @RequestParam(required = false) daysValid: Int? = null
+        @RequestParam(required = false) daysValid: Int?
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(

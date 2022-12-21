@@ -24,7 +24,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
     cy.get("div#expireTime").find('div[role="button"]').click();
-    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click();
+    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
     cy.get("#expireTimeWrapper").should("not.exist");
     cy.get('[data-test="expireDataPicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
@@ -34,7 +34,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
       expect(val).to.include("13");
     });
     cy.get("div#expireTime").find('div[role="button"]').click();
-    cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click();
+    cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
