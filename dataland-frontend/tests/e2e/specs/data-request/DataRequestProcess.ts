@@ -1,7 +1,7 @@
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "../../../../src/utils/Constants";
 import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
-import { InviteMetaInfoEntity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/invite-meta-info-entity";
+import { InviteMetaInfoEntity } from "@clients/backend";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
@@ -121,13 +121,13 @@ describe("As a user I expect a data request page where I can download an excel t
           });
       }
 
-      function visit(): void {
+      function visitRequestPage(): void {
         cy.visitAndCheckAppMount("/requests");
       }
 
       beforeEach(() => {
         cy.ensureLoggedIn();
-        visit();
+        visitRequestPage();
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
@@ -149,7 +149,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.deleteDownloadsFolder();
       });
 
-      it(`Test submitting two files and if the upload request contains the inserted files`, () => {
+      it(`Test overriding and removing files from the upload box`, () => {
         const overrideFile = "override_file.xlsx";
         uploadDummyExcelFile(overrideFile);
         uploadBoxEntryShouldBe(overrideFile);
@@ -162,7 +162,7 @@ describe("As a user I expect a data request page where I can download an excel t
 
         const smallEnoughFilename = "small_enough_file.xlsx";
         // also test that maximum filesize is really accepted here
-        uploadDummyExcelFile(smallEnoughFilename, UPLOAD_MAX_FILE_SIZE_IN_BYTES);
+        uploadDummyExcelFile(smallEnoughFilename);
 
         submitAndValidateSuccess((interception) => {
           expect(interception.request.body).to.contain(smallEnoughFilename);
@@ -171,26 +171,27 @@ describe("As a user I expect a data request page where I can download an excel t
         });
       });
 
-      it(`Test that a too large file gets rejected`, () => {
-        const rejectFilename = "reject_test.xlsx";
-        uploadDummyExcelFile(rejectFilename, UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1);
-        uploadBoxShouldBeEmpty();
-        validateThatErrorMessageContains([rejectFilename, "Invalid file size"]);
-        validateThatSubmitButtonIsDisabled();
-      });
-      // TODO merge these two tests? + forloop
-      it(`Test that a wrong file type gets rejected`, () => {
-        const rejectFilename = "reject_test.png";
-
-        uploadDummyExcelFile(rejectFilename);
-        uploadBoxShouldBeEmpty();
-        validateThatErrorMessageContains([rejectFilename, "Invalid file type"]);
-        validateThatSubmitButtonIsDisabled();
-      });
-
-      // TODO merge this test into a different test
-      it(`Test that the submit button is disabled when there is no file to be submittable`, () => {
-        validateThatSubmitButtonIsDisabled();
+      it(`Test that the right error messages are displayed at the right time`, () => {
+        const tooLargeFilename = "slightly_too_large.xlsx";
+        const wrongTypeFilename = "wrong_type.png";
+        [
+          {
+            filename: tooLargeFilename,
+            fileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1,
+            errorMessage: "Invalid file size",
+          },
+          {
+            filename: wrongTypeFilename,
+            fileSize: 1,
+            errorMessage: "Invalid file type",
+          },
+        ].forEach((it) => {
+          uploadDummyExcelFile(it.filename, it.fileSize);
+          uploadBoxShouldBeEmpty();
+          validateThatErrorMessageContains([it.filename, it.errorMessage]);
+          validateThatSubmitButtonIsDisabled();
+        });
+        // TODO check if submitting empty file yields a fail response via error message
       });
 
       it(`Test that the reset button works as expected`, () => {
@@ -212,9 +213,9 @@ describe("As a user I expect a data request page where I can download an excel t
         submitAndValidateSuccess((interception: Interception) => {
           expect(interception.request.url.includes("isSubmitterNameHidden=false")).to.eq(true);
         });
-      });
 
-      it(`Test that the checked checkbox state is transferred correctly to the request`, () => {
+        visitRequestPage(); // TODO replace this by the / a button from the submission success page
+
         uploadDummyExcelFile("test.xlsx");
         setHideUsernameCheckbox(true);
         submitAndValidateSuccess((interception: Interception) => {
@@ -222,11 +223,18 @@ describe("As a user I expect a data request page where I can download an excel t
         });
       });
 
+      // TODO merge this test into a different test
+      it(`Test the submit button and the upload screen`, () => {
+        validateThatSubmitButtonIsDisabled();
+        // TODO test progressbar for correct color, depending on percentage.
+        // TODO check existence of return to home
+      });
+
+      it(`Test the failure response screen`, () => {
+        // TODO intercept to get a non 200 request
+      });
+
       // TODO check if the request view got reset when you revisit it after a submission
-      // TODO check if submitting empty file yields a fail response via error message
-      // TODO intercept to get a non 200 request
-      // TODO test progressbar for correct color, depending on percentage.
-      // TODO check existence of return to home
       // TODO BURGER MENU!
     }
   );
