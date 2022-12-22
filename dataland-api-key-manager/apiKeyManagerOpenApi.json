@@ -122,6 +122,56 @@
         }
       }
     },
+    "/getApiKeyMetaInfoForUser": {
+      "get": {
+        "tags": [
+          "api-key-controller"
+        ],
+        "summary": "Get API key meta info of a specific user.",
+        "description": "Gets meta info about the API key status of a user based on the Keycloak user ID.",
+        "operationId": "getApiKeyMetaInfoForUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved API key status for the user ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyMetaInfo"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/generateApiKey": {
       "get": {
         "tags": [

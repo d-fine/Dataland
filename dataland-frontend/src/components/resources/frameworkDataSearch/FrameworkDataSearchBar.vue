@@ -78,9 +78,9 @@ import {
   DataSearchStoredCompany,
   getCompanyDataForFrameworkDataSearchPage,
   getRouterLinkTargetFramework,
+  FrameworkDataSearchFilterInterface,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
-import { FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";

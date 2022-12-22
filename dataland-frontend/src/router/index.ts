@@ -12,6 +12,7 @@ import UploadCompany from "@/components/pages/UploadCompany.vue";
 import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
+import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
 
 import StyleGuidePage from "@/components/pages/StyleGuidePage.vue";
 
@@ -80,6 +81,11 @@ const routes = [
     path: "/imprint",
     name: "LandingImprint",
     component: TheImprint,
+  },
+  {
+    path: "/api-key",
+    name: "ApiKeysPage",
+    component: ApiKeysPage,
   },
   {
     path: "/nocontent",

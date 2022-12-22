@@ -36,33 +36,29 @@ server {
       root /var/www;
     }
 
-    location /api-keys {
-      proxy_pass http://api-key-manager:8080/api-keys;
+    location /api-keys/ {
+      proxy_pass http://api-key-manager:8080/api-keys/;
       include utils/proxy.conf;
       include utils/apiKeysErrors.conf;
     }
 
-    location /api {
-      proxy_pass http://host.docker.internal:8080/api;
+    location /api/ {
+      proxy_pass http://host.docker.internal:8080/api/;
       include utils/proxy.conf;
       include utils/apiErrors.conf;
     }
 
-    location /edc/api/dataland/eurodat {
-      proxy_pass http://dataland-edc:9191/api/dataland/eurodat;
-      include utils/proxy.conf;
-    }
-
-    location /edc/ids/api {
-      proxy_pass http://dataland-edc:9292/api;
+    location /internal-storage/actuator/health {
+      proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
       include utils/proxy.conf;
     }
 
     location = /gitinfo {
        root /var/www/html;
+       default_type application/json;
     }
 
-    location /health/proxy {
+    location = /health/proxy {
        return 200 'UP';
     }
 
