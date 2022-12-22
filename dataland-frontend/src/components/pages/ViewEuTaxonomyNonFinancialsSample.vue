@@ -28,7 +28,7 @@
         </div>
       </div>
     </MarginWrapper>
-    <MarginWrapper bgClass="surface-800">
+    <MarginWrapper bgClass="paper-section">
       <template v-if="dataId">
         <div class="grid">
           <div class="col-12 text-left">

@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
 
-    <TheContent class="surface-800 flex">
+    <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
         <h1>{{ PageTitleState }}</h1>

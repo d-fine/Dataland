@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="grid m-0 pt-6">
-    <div class="col-offset-1 col-5 p-0 border-solid border-gray-50 border-1">
+    <div class="col-offset-1 col-5 p-0 top-left-blue-border">
       <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full" />
     </div>
     <div class="col-5 p-0 bg-primary">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="col-5 p-0 border-solid border-gray-50 border-1">
+    <div class="col-5 p-0 right-bottom-blue-border">
       <img src="@/assets/images/elements/data_workflow.svg" alt="Data Workflow" class="pl-0 pt-0 w-full" />
     </div>
   </div>
@@ -82,5 +82,15 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   border: 0;
+}
+.top-left-blue-border {
+  border-style: solid;
+  border-width: 1px 0 0 1px;
+  border-color: #a1c5d3;
+}
+.right-bottom-blue-border {
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  border-color: #a1c5d3;
 }
 </style>

@@ -9,7 +9,7 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper bg-class="surface-800" class="text-left">
+      <MarginWrapper bg-class="paper-section" class="text-left">
         <CreateEUTaxonomyForFinancials :companyID="companyID" />
       </MarginWrapper>
     </TheContent>

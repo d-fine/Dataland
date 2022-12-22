@@ -1,16 +1,18 @@
+@import "variables";
+
 :root {
   // BRAND COLORS
-  --text-color: $brown-dark;
-  --text-color-secondary: $brown;
-  --text-color-third: $brown-light;
-  --primary-color: $orange-prime;
-  --primary-color-text: $paper-white;
-  --secondary-color: $aquamarine-dark;
-  --secondary-color-text: $paper-white;
+  --text-color: #{$brown-dark};
+  --text-color-secondary: #{$brown};
+  --text-color-third: #{$brown-light};
+  --primary-color: #{$orange-prime};
+  --primary-color-text: #{$paper-white};
+  --secondary-color: #{$aquamarine-dark};
+  --secondary-color-text: #{$paper-white};
 
   // added colors
   --primary-color-100: #FDEFE6;
-  --color-blue: $aquamarine-dark;
+  --color-blue: #{$aquamarine-dark};
 
   // default prime colors
   --surface-0: #ffffff;
@@ -157,13 +159,13 @@
   --primary-900:#0d3c61;
 
   // Typography
-  --font-family: $ibm-plex-sans;
+  --font-family: #{$ibm-plex-sans};
 
 
   --content-padding: 1rem;
   --inline-spacing: 0.5rem;
   --border-radius: 0;
-  --surface-ground: #f6f5ef;
+  --surface-ground: #{$surface-ground};
   --surface-section: #ffffff;
   --surface-card: #ffffff;
   --surface-overlay: #ffffff;

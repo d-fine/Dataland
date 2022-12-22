@@ -1,7 +1,7 @@
 <template>
   <div class="surface-ground pb-8">
     <div class="m-0">
-      <div class="grid align-items-center m-0 bg-gray-800">
+      <div class="grid align-items-center m-0 third-section">
         <div class="col-9 col-offset-1">
           <p class="text-white text-left text-xl pl-3 pr-3">
             This preview page is intended to give a first impression of Dataland's goals and has no further
@@ -21,7 +21,7 @@
       </div>
       <div class="grid align-items-center m-0">
         <div class="col-5 col-offset-1">
-          <h1 class="text-justify text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
+          <h1 class="text-left text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
         <div class="col-4 col-offset-1">
           <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />

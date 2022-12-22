@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="surface-800 min-h-screen">
+    <TheContent class="paper-section min-h-screen">
       <MarginWrapper class="text-left mt-2 surface-0">
         <BackButton />
         <FrameworkDataSearchBar class="mt-2" @search-confirmed="handleSearchConfirm" />
