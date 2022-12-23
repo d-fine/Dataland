@@ -1,0 +1,27 @@
+.p-dropdown {
+  background:$input-text-bg;
+  .p-dropdown-trigger {
+    background: transparent;
+    color: $brown-dark;
+    width: 2.357rem;
+  }
+}
+
+.p-dropdown-panel {
+  background:$white;
+  .p-dropdown-items {
+    .p-dropdown-item {
+      margin: 0;
+      padding: 0.5rem 1rem;
+      border: 0.1em solid #e5e4e2;
+      color: #1b1b1b;
+      background: transparent;
+      transition: background-color .2s,border-color .2s,box-shadow .2s;
+      border-radius: 0;
+      &.p-highlight {
+        color: #fff;
+        background: #e67f3f;
+      }
+    }
+  }
+}

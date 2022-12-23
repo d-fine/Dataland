@@ -50,68 +50,7 @@ body {
   }
 }
 
-.p-button {
-  color: $btn-primary-color;
-  background: $btn-primary-bg;
-  border: 1px solid $btn-primary-bg;
-  padding: $spacing-xxs $spacing-sm;
-  font-size: $fs-base;
-  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
-  border-radius: 0;
-  font-weight: $fw-semibold;
-  line-height: $line-height-2;
-  &:enabled:hover {
-    background: darken($btn-primary-bg, 20%);
-    border-color: darken($btn-primary-bg, 20%)
-  }
-  &:enabled:active {
-    background: darken($btn-primary-bg, 10%);
-    border-color: darken($btn-primary-bg, 10%)
-  }
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: $btn-disabled-color;
-    cursor: not-allowed
-  }
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 .2rem $btn-focus-border-color
-  }
-  &.p-button-rounded {
-    border-radius: $radius-lg
-  }
-  &.p-button-sm {
-    font-size: $fs-sm;
-    padding: $spacing-xxs $spacing-xs;
-  }
-  &.p-button-outlined {
-    background-color: transparent;
-    color: $btn-primary-bg;
-    border: 1px solid $btn-primary-bg;
-    &:enabled:hover {
-      background: lighten($btn-primary-bg, 40%);
-    }
-    &:enabled:active {
-      background: lighten($btn-primary-bg, 30%);
-      border-color: lighten($btn-primary-bg, 10%);
-    }
-  }
-  &.p-button-text {
-    background-color: transparent;
-    color: $btn-primary-bg;
-    border-color: transparent;
-    &:enabled:hover {
-      background: lighten($btn-primary-bg, 40%);
-      border-color: transparent
-    }
-    &:enabled:active {
-      background: lighten($btn-primary-bg, 30%);
-      border-color: transparent
-    }
-  }
-}
+
 
 .p-badge {
   color: $btn-primary-color;
@@ -274,6 +213,22 @@ input[type="checkbox"], input[type="radio"]{
 }
 .paper-section {
   background-color: $paper-white;
+}
+
+.p-progressbar {
+  border: 0 none;
+  height: 1.5rem;
+  background: #dee2e6;
+  border-radius: 0;
+  .p-progressbar-value {
+    border: 0 none;
+    margin: 0;
+    background: #cb6b29
+  };
+  .p-progressbar-label {
+      color: #fff;
+      line-height: 1.5rem
+    }
 }
 
 

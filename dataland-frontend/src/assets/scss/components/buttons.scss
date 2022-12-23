@@ -1,0 +1,128 @@
+.p-button {
+  color: $btn-primary-color;
+  background: $btn-primary-bg;
+  border: 1px solid $btn-primary-bg;
+  padding: $spacing-xxs $spacing-sm;
+  font-size: $fs-base;
+  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+  border-radius: 0;
+  font-weight: $fw-semibold;
+  line-height: $line-height-2;
+  &:enabled:hover {
+    background: darken($btn-primary-bg, 20%);
+    border-color: darken($btn-primary-bg, 20%)
+  }
+  &:enabled:active {
+    background: darken($btn-primary-bg, 10%);
+    border-color: darken($btn-primary-bg, 10%)
+  }
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: $btn-disabled-color;
+    cursor: not-allowed
+  }
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 .2rem $btn-focus-border-color
+  }
+  &.p-button-danger {
+    background: $btn-danger-bg;
+    border: 1px solid $btn-danger-bg;
+    &:enabled:hover {
+      background: darken($btn-danger-bg, 20%);
+      border-color: darken($btn-danger-bg, 20%)
+    }
+    &:enabled:active {
+      background: darken($btn-danger-bg, 10%);
+      border-color: darken($btn-danger-bg, 10%)
+    }
+  }
+  &.p-button-success {
+    background: $btn-success-bg;
+    border: 1px solid $btn-success-bg;
+    &:enabled:hover {
+      background: darken($btn-success-bg, 20%);
+      border-color: darken($btn-success-bg, 20%)
+    }
+    &:enabled:active {
+      background: darken($btn-success-bg, 10%);
+      border-color: darken($btn-success-bg, 10%)
+    }
+  }
+  &.p-button-rounded {
+    border-radius: $radius-lg
+  }
+  &.p-button-sm {
+    font-size: $fs-sm;
+    padding: $spacing-xxs $spacing-xs;
+  }
+  &.p-button-outlined {
+    background-color: transparent;
+    color: $btn-primary-bg;
+    border-style: solid;
+    border-color: $btn-primary-bg;
+    border-width: 1px;
+    &:enabled:hover {
+      background: lighten($btn-primary-bg, 45%);
+    }
+    &:enabled:active {
+      background: lighten($btn-primary-bg, 40%);
+    }
+    &.p-button-danger {
+      color: $btn-danger-bg;
+      border-color: $btn-danger-bg;
+      &:enabled:hover {
+        background: lighten($btn-danger-bg, 45%);
+      }
+      &:enabled:active {
+        background: lighten($btn-danger-bg, 40%);
+      }
+    }
+    &.p-button-success {
+      color: $btn-success-bg;
+      border-color: $btn-success-bg;
+      &:enabled:hover {
+        background: lighten($btn-success-bg, 45%);
+      }
+      &:enabled:active {
+        background: lighten($btn-success-bg, 40%);
+      }
+    }
+  }
+  &.p-button-text {
+    background-color: transparent;
+    color: $btn-primary-bg;
+    border-color: transparent;
+    &:enabled:hover {
+      background: lighten($btn-primary-bg, 40%);
+    }
+    &:enabled:active {
+      background: lighten($btn-primary-bg, 30%);
+    }
+    &.p-button-danger {
+      color: $btn-danger-bg;
+      &:enabled:hover {
+        background: lighten($btn-danger-bg, 40%);
+      }
+      &:enabled:active {
+        background: lighten($btn-danger-bg, 30%);
+      }
+    }
+    &.p-button-success {
+      color: $btn-success-bg;
+
+      &:enabled:hover {
+        background: lighten($btn-success-bg, 40%);
+      }
+
+      &:enabled:active {
+        background: lighten($btn-success-bg, 30%);
+      }
+    }
+  }
+  .p-button-icon-left {
+    margin-right: 0.5rem;
+  }
+}
