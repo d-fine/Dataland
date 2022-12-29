@@ -1,9 +1,13 @@
 @import "@/assets/scss/variables";
 @import "@/assets/scss/colors";
+@import "@/assets/scss/units";
 @import "@/assets/scss/theme";
-@import "@/assets/scss/components/components-style.scss";
+@import "@/assets/scss/components/base.scss";
 @import "@/assets/scss/components/datatable.scss";
 @import "@/assets/scss/components/menu.scss";
 @import "@/assets/scss/components/form.scss";
 @import "@/assets/scss/components/messages.scss";
 @import "@/assets/scss/components/buttons.scss";
+@import "@/assets/scss/components/dialog.scss";
+@import "@/assets/scss/components/cards.scss";
+@import "@/assets/scss/components/icon-styles.scss";

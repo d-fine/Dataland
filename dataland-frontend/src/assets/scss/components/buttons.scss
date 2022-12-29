@@ -3,11 +3,11 @@
   background: $btn-primary-bg;
   border: 1px solid $btn-primary-bg;
   padding: $spacing-xxs $spacing-sm;
-  font-size: $fs-base;
+  font-size: $button-fs;
   transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
   border-radius: 0;
-  font-weight: $fw-semibold;
   line-height: $line-height-2;
+  margin: $spacing-xxxs;
   &:enabled:hover {
     background: darken($btn-primary-bg, 20%);
     border-color: darken($btn-primary-bg, 20%)

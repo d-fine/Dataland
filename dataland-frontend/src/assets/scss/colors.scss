@@ -6,23 +6,39 @@ $btn-success-bg: $green;
 $btn-disabled-color: $gray;
 $btn-focus-border-color: $blue-light;
 
+//table
+$table-background-color: $white;
+$table-background-hover-color: $gray-light;
+$table-border: $gray-light;
+$table-border-dark: $gray;
+$table-icon-color: $gray;
+
+//pagination
+$pagination-color: $gray;
+$pagination-bg-hover: $gray-light;
 
 // typography
+$main-text-color: $brown-dark;
+$main-color: $orange-prime;
+$bg-text-primary: $white;
 $text-color-secondary: $gray;
 $text-color-third: $brown-light;
+$menu-text-color: $orange-prime;
 
 //cards
 $card-background: $paper-white;
 $card-text: $brown-dark;
-
 $progressbar-bg: $surface-ground;
 $progressbar-color: $orange-prime;
 
 //forms
 $input-text-color: $brown-dark;
-$input-text-bg: $surface-ground;
+$input-label-color: $aquamarine-dark;
+$input-text-bg: $gray-lighter;
+$input-text-border: $brown-lighter;
 $input-text-border-hover: $orange-prime;
 $input-error: $red;
+$input-checked-color: $orange-prime;
 
 //messages
 $message-block-bg: var(--primary-color-100);

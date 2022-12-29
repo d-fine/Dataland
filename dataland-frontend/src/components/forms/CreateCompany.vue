@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-5 col-offset-1">
+  <Card class="col-5 col-offset-1 text-left">
     <template #title>Create a Company </template>
     <template #content>
       <FormKit
@@ -47,7 +47,7 @@
       </PrimeButton>
       <p></p>
       <PrimeButton @click="identifierListSize++"> Add a new identifier</PrimeButton>
-      <PrimeButton v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
+      <PrimeButton v-if="identifierListSize > 1" @click="identifierListSize--">
         Remove the last identifier
       </PrimeButton>
       <template v-if="postCompanyProcessed">

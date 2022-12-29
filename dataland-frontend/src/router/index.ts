@@ -93,11 +93,6 @@ const routes = [
     component: NoContentFound,
   },
   {
-    path: "/styleGuidePage",
-    name: "StyleGuidePage",
-    component: StyleGuidePage,
-  },
-  {
     path: "/:notFound(.*)",
     redirect: "/nocontent",
   },

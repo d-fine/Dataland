@@ -51,7 +51,7 @@
             <template #text-info>
               <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
               <div class="my-2">
-                <div class="p-input-icon-right border-round-sm form-inputs-bg pl-1 col-10">
+                <div class="p-input-icon-right border-round-sm paper-section pl-1 col-10 fs-lg">
                   <PrimeTextarea
                     ref="newKeyHolderRef"
                     v-on:focus="$event.target.select()"
@@ -63,7 +63,7 @@
                     placeholder="Key goes here"
                     class="p-inputText p-component col-10"
                   />
-                  <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button" />
+                  <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button fs-lg" />
                 </div>
               </div>
             </template>

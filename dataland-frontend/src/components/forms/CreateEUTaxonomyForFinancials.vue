@@ -16,8 +16,6 @@
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          :inner-class="innerClass"
-          :input-class="inputClass"
           :model-value="companyID"
           disabled="true"
         />
@@ -29,8 +27,6 @@
             validation="required"
             label="Financial Services Types"
             placeholder="Please choose"
-            :inner-class="innerClass"
-            :input-class="inputClass"
             :options="{
               CreditInstitution: humanizeString('CreditInstitution'),
               InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
@@ -45,8 +41,6 @@
               name="assurance"
               label="Assurance"
               placeholder="Please choose"
-              :inner-class="innerClass"
-              :input-class="inputClass"
               :options="{
                 None: humanizeString('None'),
                 LimitedAssurance: humanizeString('LimitedAssurance'),
@@ -58,16 +52,6 @@
             type="radio"
             name="reportingObligation"
             label="Reporting Obligation"
-            :outer-class="{
-              'formkit-outer': false,
-            }"
-            :inner-class="{
-              'formkit-inner': false,
-            }"
-            :input-class="{
-              'formkit-input': false,
-              'p-radiobutton:': true,
-            }"
             :options="['Yes', 'No']"
           />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">

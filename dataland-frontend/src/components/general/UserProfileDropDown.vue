@@ -19,13 +19,11 @@
     ref="menu"
     :model="dropdownMenuItems"
     :popup="true"
-    style="transform: translate(0px, 1rem)"
-    class="text-primary surface-900 p-0"
   >
     <template #item="{ item }">
       <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
-        <span class="p-menuitem-icon material-icons text-primary font-semibold">{{ item.icon }}</span>
-        <span class="p-menuitem-text text-primary font-semibold">{{ item.label }}</span>
+        <span class="p-menuitem-icon material-icons">{{ item.icon }}</span>
+        <span class="p-menuitem-text">{{ item.label }}</span>
       </a>
     </template>
   </PrimeMenu>

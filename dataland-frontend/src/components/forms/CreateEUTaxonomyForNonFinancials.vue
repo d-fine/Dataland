@@ -15,8 +15,6 @@
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          :inner-class="innerClass"
-          :input-class="inputClass"
           :disabled="true"
           :model-value="companyID"
         />
@@ -28,8 +26,6 @@
               validation="required"
               label="Assurance"
               placeholder="Please choose"
-              :inner-class="innerClass"
-              :input-class="inputClass"
               :options="{
                 None: humanizeString('None'),
                 LimitedAssurance: humanizeString('LimitedAssurance'),
@@ -42,16 +38,6 @@
             name="reportingObligation"
             validation="required"
             label="Reporting Obligation"
-            :outer-class="{
-              'formkit-outer': false,
-            }"
-            :inner-class="{
-              'formkit-inner': false,
-            }"
-            :input-class="{
-              'formkit-input': false,
-              'p-radiobutton:': true,
-            }"
             :options="['Yes', 'No']"
           />
           <div title="capex">
