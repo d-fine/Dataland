@@ -36,7 +36,7 @@
                   value:
                     'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
                     'for data items including organizations, instruments, funds, issuers and people. You can search and verify an id at permid.org/search',
-                  class: 'd-tooltip-mw25',
+                  class: 'd-tooltip',
                 }"
                 >info</i
               >

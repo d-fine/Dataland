@@ -254,6 +254,9 @@ input[type="checkbox"], input[type="radio"]{
   }
   .p-multiselect-items {
     padding: .5rem 0;
+    .p-multiselect-empty-message {
+      margin-left:1.25rem;
+    }
     .p-multiselect-item {
       padding: .5rem 1rem;
       &.p-highlight {
@@ -269,5 +272,27 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
 }
+
+.p-tooltip {
+  .p-tooltip-text {
+    background: $input-label-color;
+    color: $bg-text-primary;
+    padding: .5rem;
+    border-radius: 0;
+  }
+  &.p-tooltip-right .p-tooltip-arrow {
+    border-right-color: $input-label-color
+  };
+  &.p-tooltip-left .p-tooltip-arrow {
+    border-left-color: $input-label-color
+  };
+  &.p-tooltip-top .p-tooltip-arrow {
+    border-top-color: $input-label-color
+  };
+  &.p-tooltip-bottom .p-tooltip-arrow {
+    border-bottom-color: $input-label-color
+  };
+}
+
 
 
