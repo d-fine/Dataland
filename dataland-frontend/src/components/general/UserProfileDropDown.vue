@@ -14,12 +14,7 @@
     />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
-  <PrimeMenu
-    data-test="profileMenu"
-    ref="menu"
-    :model="dropdownMenuItems"
-    :popup="true"
-  >
+  <PrimeMenu data-test="profileMenu" ref="menu" :model="dropdownMenuItems" :popup="true">
     <template #item="{ item }">
       <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
         <span class="p-menuitem-icon material-icons">{{ item.icon }}</span>

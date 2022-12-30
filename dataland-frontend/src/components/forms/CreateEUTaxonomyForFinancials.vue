@@ -48,12 +48,7 @@
               }"
             />
           </FormKit>
-          <FormKit
-            type="radio"
-            name="reportingObligation"
-            label="Reporting Obligation"
-            :options="['Yes', 'No']"
-          />
+          <FormKit type="radio" name="reportingObligation" label="Reporting Obligation" :options="['Yes', 'No']" />
           <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
             <template
               v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"

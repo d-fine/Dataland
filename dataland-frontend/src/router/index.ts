@@ -14,8 +14,6 @@ import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancial
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
 
-import StyleGuidePage from "@/components/pages/StyleGuidePage.vue";
-
 const routes = [
   {
     path: "/",
