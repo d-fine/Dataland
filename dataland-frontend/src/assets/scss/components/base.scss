@@ -73,11 +73,11 @@ body {
   background-color: $paper-white;
 }
 .text-primary, .primary-color {
-  color: $main-color;
+  color: $main-color !important;
 }
 .bg-primary {
-  color: $bg-text-primary;
-  background-color: $main-color;
+  color: $bg-text-primary !important;
+  background-color: $main-color !important;
 }
 .fs-xs { font-size: $fs-xs} // 12px
 .fs-sm{ font-size: $fs-sm}  // 14px
