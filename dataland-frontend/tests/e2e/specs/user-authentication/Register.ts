@@ -6,6 +6,36 @@ describe("As a user I want to be able to register for an account and be able to 
   const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
+  it.only("Checks that the Dataland password-policy gets respected", () => {
+    cy.visitAndCheckAppMount("/")
+      .get("button[name='join_dataland_button']")
+      .click()
+      .get("#email")
+      .should("exist")
+      .type(email, { force: true });
+
+    const typePasswordAndExpectError = (password: string, errorMessageSubstring: string): void => {
+      cy.get("#password")
+        .should("exist")
+        .clear()
+        .type(password)
+        .get("input[type='submit']")
+        .should("exist")
+        .click()
+        .get("#input-error-password span.input-error")
+        .should("be.visible")
+        .should("contain.text", errorMessageSubstring);
+    };
+
+    typePasswordAndExpectError("abc", "at least 12 characters");
+    typePasswordAndExpectError(
+      "PasswordPasswordPassword",
+      'Repeated character patterns like "abcabcabc" are easy to guess'
+    );
+    typePasswordAndExpectError("qwerty123456", "This is a commonly used password");
+    typePasswordAndExpectError("a".repeat(200), "at most 128 characters");
+  });
+
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);

@@ -46,8 +46,14 @@ function evaluatePasswordSecurity(): boolean {
     checkIfPasswordAndConfirmMatch()
 
     const passwordLength = passwordField.value.length;
-    if (passwordLength <= 12) {
+    if (passwordLength < 12) {
         overrideFieldErrorMessage(passwordFieldId, 'Please choose a password with at least 12 characters')
+        updatePasswordStrengthIndicator("d-password-strength-too-short")
+        return false;
+    }
+
+    if (passwordLength > 128) {
+        overrideFieldErrorMessage(passwordFieldId, 'Please choose a password with at most 128 characters')
         updatePasswordStrengthIndicator("d-password-strength-too-short")
         return false;
     }
