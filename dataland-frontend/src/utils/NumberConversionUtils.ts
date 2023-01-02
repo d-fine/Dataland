@@ -12,7 +12,7 @@
 export function roundNumber(rawNumber: number, precision: number): number {
   const multiplier = Math.pow(10, precision || 0);
   const rounded = Math.round(rawNumber * multiplier) / multiplier;
-  return rounded
+  return rounded;
 }
 
 /**

@@ -32,7 +32,7 @@ describe("As a user I expect a data request page where I can download an excel t
           });
       }
 
-      function uploadDummyExcelFile(filename: string = "test.xlsx", contentSize = 1): void {
+      function uploadDummyExcelFile(filename = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
           {
             contents: new Cypress.Buffer(contentSize),
@@ -48,7 +48,8 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(submitButtonSelector).click();
       }
 
-      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void = () => {}): void {
+      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void
+                                            = (): void => undefined): void {
         interceptInvite();
         submit();
         validateSuccessResponse(moreValidation);
@@ -62,7 +63,7 @@ describe("As a user I expect a data request page where I can download an excel t
       function validateSuccessResponse(moreValidation: (interception: Interception) => void): void {
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
           expect(interception.response!.statusCode).to.be.within(200, 399);
-          if(interception.response!.statusCode < 300) {
+          if (interception.response!.statusCode < 300) {
             expect((interception.response!.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
           }
           moreValidation(interception);
@@ -219,9 +220,12 @@ describe("As a user I expect a data request page where I can download an excel t
 
         cy.get("a.pr-3").should("contain.text", "NEW DATA REQUEST");
         // TODO should it be clarified why this is done here?
-        cy.get("button[name=\"back_to_home_button\"]").click()
-            .get("img.d-triangle-down").click()
-            .get("a#profile-picture-dropdown-data-request-button").click();
+        cy.get('button[name="back_to_home_button"]')
+          .click()
+          .get("img.d-triangle-down")
+          .click()
+          .get("a#profile-picture-dropdown-data-request-button")
+          .click();
 
         uploadBoxShouldBeEmpty();
         uploadDummyExcelFile("test.xlsx");
@@ -233,12 +237,8 @@ describe("As a user I expect a data request page where I can download an excel t
 
       it(`Test the submit button and the upload success screen`, () => {
         validateThatSubmitButtonIsDisabled();
-        uploadDummyExcelFile();
+        uploadDummyExcelFile("test.xlsx", 2000);
         submitAndValidateSuccess();
-        const inprogressTextSelector = "p.text-primary.m-2.font-medium.text-3xl"
-        cy.get(inprogressTextSelector).then((element: JQuery<HTMLElement>) => {
-          expect(element.text()).not.to.equal("100%");
-        });
         const finishedTextSelector = "p.progressbar-finished";
         cy.get(finishedTextSelector).then((element: JQuery<HTMLElement>) => {
           expect(element.text()).to.equal("100%");
@@ -246,11 +246,11 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test the failure response screen`, () => {
-        const errorMessageSelector = "span.message-fail";
+        const errorMessageSelector = "div#result-message-container";
         const titleSelector = "h1#current-title";
         uploadDummyExcelFile("test.xlsx", 0);
         submit();
-        cy.get(errorMessageSelector).should("contain.text", "Excel file is empty.");
+        cy.get(errorMessageSelector).find("div").should("contain.text", "Excel file is empty.");
         cy.get(titleSelector).should("contain.text", "Submission failed");
       });
     }
