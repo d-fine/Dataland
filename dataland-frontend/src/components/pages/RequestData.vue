@@ -28,8 +28,7 @@
 
         <ProgressBar
             v-if="submissionInProgress || isInviteSuccessful"
-            :progressInPercent="uploadProgressInPercent"
-            @finished="handleFinishedSubmission"
+            :progressInPercent="formatProgressPercentage(uploadProgressInPercent)"
         />
 
         <div v-if="submissionFinished" class="mt-6 ml-3 mr-3" id="new-data-request">
@@ -38,8 +37,8 @@
               <span
                   class="font-medium text-left col-6">Submit a new data request for more companies or frameworks</span>
                 <div class="flex align-items-center">
-                  <a class="pr-3 text-primary font-semibold" @click="newRequest">NEW DATA REQUEST</a>
-                  <img src="@/assets/images/elements/add_button.svg" alt="remove-file-button" @click="newRequest"/>
+                  <a class="pr-3 text-primary font-semibold" @click="createNewRequest">NEW DATA REQUEST</a>
+                  <img src="@/assets/images/elements/add_button.svg" alt="remove-file-button" @click="createNewRequest"/>
                 </div>
               </div>
           </InfoCard>
@@ -50,7 +49,6 @@
               @click="returnToHome"
           />
         </div>
-        <PrimeButton class="mt-8" @click="manualProgresserForDebug"> Increase progress manually (debug)</PrimeButton>
       </div>
 
       <div v-else>
@@ -218,11 +216,11 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import InfoCard from "@/components/general/InfoCard.vue";
 import ProgressBar from "@/components/general/ProgressBar.vue";
 import {assertDefined} from "@/utils/TypeScriptUtils";
-import {humanizeBytes} from "@/utils/StringHumanizer";
+import {formatBytesUserFriendly, roundNumber} from "@/utils/NumberConversionUtils";
 import {
   UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
-  UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+  UPLOAD_MAX_FILE_SIZE_IN_BYTES, UPLOAD_PROGRESS_PERCENTAGE_DISPLAY_DECIMALS,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -263,10 +261,9 @@ export default defineComponent({
 
   computed: {
     submissionProgressTitle() {
-      // TODO cleanup
       if (this.submissionInProgress) {
-        return "Submitting invite";
-      } else if (this.submissionFinished && !this.submissionInProgress) {
+        return "Uploading Excel file";
+      } else if (this.submissionFinished) {
         if (this.isInviteSuccessful) {
           return "Success";
         } else {
@@ -281,23 +278,8 @@ export default defineComponent({
       this.$router.push("/");
     },
 
-    newRequest() {
+    createNewRequest() {
       this.$router.go();
-    },
-
-    manualProgresserForDebug() {
-      //TODO for debug only!
-      if (this.uploadProgressInPercent != 100) {
-        this.uploadProgressInPercent = this.uploadProgressInPercent + 20;
-      }
-      if (this.uploadProgressInPercent === 100) {
-        this.isInviteSuccessful = true;
-      }
-    },
-
-    handleFinishedSubmission() {
-      this.submissionInProgress = false;
-      this.submissionFinished = true;
     },
 
     clearSelection() {
@@ -324,7 +306,11 @@ export default defineComponent({
       this.displayModal = false;
     },
     formatBytes(bytes: number): string {
-      return humanizeBytes(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
+      return formatBytesUserFriendly(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
+    },
+
+    formatProgressPercentage(percentage: number){
+      return roundNumber(percentage, 0)
     },
 
     chooseFiles() {
@@ -337,10 +323,10 @@ export default defineComponent({
       return this.$refs.fileUpload.files[0];
     },
 
-    handleSubmission() {
+    async handleSubmission() {
       this.submissionInProgress = true;
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.uploadAllSelectedFiles();
+      await this.uploadAllSelectedFiles();
       this.submissionFinished = true;
       this.submissionInProgress = false;
     },
@@ -356,7 +342,12 @@ export default defineComponent({
         const inviteControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile);
+        const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile, {
+          onUploadProgress: progressEvent => {
+            const percentageCompleted = (progressEvent.loaded/progressEvent.total)*100
+            this.uploadProgressInPercent = percentageCompleted
+          }
+        });
         this.readInviteStatusFromResponse(response);
       } catch (error) {
         console.error(error);

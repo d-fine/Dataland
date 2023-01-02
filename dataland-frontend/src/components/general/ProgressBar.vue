@@ -19,7 +19,6 @@ export default defineComponent({
   components: {
     ProgressBar: PrimeProgressNar,
   },
-  emits: ["finished"],
 
   data() {
     return {
@@ -31,7 +30,6 @@ export default defineComponent({
     progressInPercent(newValue) {
       if (newValue === 100) {
         this.processIsFinished = true;
-        this.$emit("finished");
       }
     },
   },
