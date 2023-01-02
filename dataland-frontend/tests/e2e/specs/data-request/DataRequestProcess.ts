@@ -48,8 +48,9 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(submitButtonSelector).click();
       }
 
-      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void
-                                            = (): void => undefined): void {
+      function submitAndValidateSuccess(
+        moreValidation: (interception: Interception) => void = (): void => undefined
+      ): void {
         interceptInvite();
         submit();
         validateSuccessResponse(moreValidation);
