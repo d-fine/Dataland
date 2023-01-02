@@ -1,14 +1,14 @@
 .p-message {
   .p-message-wrapper {
     padding: 1rem 1.5rem
-  };
+  }
   .p-message-close {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
     background: transparent;
     transition: background-color .2s, color .2s, box-shadow .2s
-  };
+  }
   margin: 1rem 0;
   border-radius: 0;
   border-width: 0 0 0 4px;
@@ -16,27 +16,27 @@
     background: $message-block-bg;
     border: solid $message-block-border;
     color: $message-block-text;
-  };
+  }
   &.p-message-info {
     background: $message-info-bg;
     border: solid $message-info-border;
     color: $message-info-text
-  };
+  }
   &.p-message-success {
     background: $message-success-bg;
     border: solid $message-success-border;
     color: $message-success-text
-  };
+  }
   &.p-message-warn {
     background: $message-warn-bg;
     border: solid $message-warn-border;
     color: $message-warn-text
-  };
+  }
   &.p-message-error {
     background: $message-error-bg;
     border: solid $message-error-border;
     color: $message-error-text
-  };
+  }
   .p-message-text {
      font-size: $fs-base;
      font-weight: $fw-medium
