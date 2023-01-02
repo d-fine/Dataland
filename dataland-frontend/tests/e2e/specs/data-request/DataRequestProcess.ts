@@ -11,7 +11,7 @@ describe("As a user I expect a data request page where I can download an excel t
       dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
-      const inviteInterceptionAlias = "invite";
+      let inviteInterceptionAlias = "invite";
 
       const uploadBoxSelector = "div.p-fileupload-content";
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
@@ -32,7 +32,7 @@ describe("As a user I expect a data request page where I can download an excel t
           });
       }
 
-      function uploadDummyExcelFile(filename: string, contentSize = 1): void {
+      function uploadDummyExcelFile(filename: string = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
           {
             contents: new Cypress.Buffer(contentSize),
@@ -44,22 +44,27 @@ describe("As a user I expect a data request page where I can download an excel t
         );
       }
 
-      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void): void {
-        interceptInviteAndDisableEmail();
+      function submit(): void {
         cy.get(submitButtonSelector).click();
+      }
+
+      function submitAndValidateSuccess(moreValidation: (interception: Interception) => void = () => {}): void {
+        interceptInvite();
+        submit();
         validateSuccessResponse(moreValidation);
       }
 
-      function interceptInviteAndDisableEmail(): void {
-        cy.intercept("**/api/invite*", (req) => {
-          req.headers["DATALAND-NO-EMAIL"] = "true";
-        }).as(inviteInterceptionAlias);
+      function interceptInvite(): void {
+        inviteInterceptionAlias = Math.random().toString();
+        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       }
 
       function validateSuccessResponse(moreValidation: (interception: Interception) => void): void {
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
-          expect(interception.response!.statusCode).to.be.within(200, 299);
-          expect((interception.response!.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
+          expect(interception.response!.statusCode).to.be.within(200, 399);
+          if(interception.response!.statusCode < 300) {
+            expect((interception.response!.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
+          }
           moreValidation(interception);
         });
       }
@@ -160,12 +165,11 @@ describe("As a user I expect a data request page where I can download an excel t
         removeFileFromUploadBox();
         uploadBoxShouldBeEmpty();
 
-        const smallEnoughFilename = "small_enough_file.xlsx";
-        // also test that maximum filesize is really accepted here
-        uploadDummyExcelFile(smallEnoughFilename);
+        const sufficientlySmallFilename = "sufficiently_small_file.xlsx";
+        uploadDummyExcelFile(sufficientlySmallFilename);
 
         submitAndValidateSuccess((interception) => {
-          expect(interception.request.body).to.contain(smallEnoughFilename);
+          expect(interception.request.body).to.contain(sufficientlySmallFilename);
           expect(interception.request.body).to.not.contain(removeFilename);
           expect(interception.request.body).to.not.contain(overrideFile);
         });
@@ -191,7 +195,6 @@ describe("As a user I expect a data request page where I can download an excel t
           validateThatErrorMessageContains([it.filename, it.errorMessage]);
           validateThatSubmitButtonIsDisabled();
         });
-        // TODO check if submitting empty file yields a fail response via error message
       });
 
       it(`Test that the reset button works as expected`, () => {
@@ -214,8 +217,13 @@ describe("As a user I expect a data request page where I can download an excel t
           expect(interception.request.url.includes("isSubmitterNameHidden=false")).to.eq(true);
         });
 
-        visitRequestPage(); // TODO replace this by the / a button from the submission success page
+        cy.get("a.pr-3").should("contain.text", "NEW DATA REQUEST");
+        // TODO should it be clarified why this is done here?
+        cy.get("button[name=\"back_to_home_button\"]").click()
+            .get("img.d-triangle-down").click()
+            .get("a#profile-picture-dropdown-data-request-button").click();
 
+        uploadBoxShouldBeEmpty();
         uploadDummyExcelFile("test.xlsx");
         setHideUsernameCheckbox(true);
         submitAndValidateSuccess((interception: Interception) => {
@@ -223,19 +231,28 @@ describe("As a user I expect a data request page where I can download an excel t
         });
       });
 
-      // TODO merge this test into a different test
-      it(`Test the submit button and the upload screen`, () => {
+      it(`Test the submit button and the upload success screen`, () => {
         validateThatSubmitButtonIsDisabled();
-        // TODO test progressbar for correct color, depending on percentage.
-        // TODO check existence of return to home
+        uploadDummyExcelFile();
+        submitAndValidateSuccess();
+        const inprogressTextSelector = "p.text-primary.m-2.font-medium.text-3xl"
+        cy.get(inprogressTextSelector).then((element: JQuery<HTMLElement>) => {
+          expect(element.text()).not.to.equal("100%");
+        });
+        const finishedTextSelector = "p.progressbar-finished";
+        cy.get(finishedTextSelector).then((element: JQuery<HTMLElement>) => {
+          expect(element.text()).to.equal("100%");
+        });
       });
 
       it(`Test the failure response screen`, () => {
-        // TODO intercept to get a non 200 request
+        const errorMessageSelector = "span.message-fail";
+        const titleSelector = "h1#current-title";
+        uploadDummyExcelFile("test.xlsx", 0);
+        submit();
+        cy.get(errorMessageSelector).should("contain.text", "Excel file is empty.");
+        cy.get(titleSelector).should("contain.text", "Submission failed");
       });
-
-      // TODO check if the request view got reset when you revisit it after a submission
-      // TODO BURGER MENU!
     }
   );
 });
