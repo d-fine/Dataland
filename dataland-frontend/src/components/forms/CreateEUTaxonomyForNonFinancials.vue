@@ -38,6 +38,16 @@
             name="reportingObligation"
             validation="required"
             label="Reporting Obligation"
+            :outer-class="{
+              'formkit-outer': false,
+            }"
+            :inner-class="{
+              'formkit-inner': false,
+            }"
+            :input-class="{
+              'formkit-input': false,
+              'p-radiobutton:': true,
+            }"
             :options="['Yes', 'No']"
           />
           <div title="capex">

@@ -21,6 +21,7 @@ form {
       }
     }
   }
+  .formkit-decorator {display: none;}
 }
 
 input {
@@ -37,9 +38,10 @@ input[type="checkbox"], input[type="radio"]{
   margin: 0;
   height: 25px;
   width: 25px;
+  margin-right: .5rem;
   background-color: $input-text-bg;
   border: 3px solid $input-text-border-hover;
-  border-radius: $radius-xxxs;
+  border-radius: 50%;
   cursor: pointer;
   &::before {
     content: "";
@@ -293,6 +295,3 @@ input[type="checkbox"], input[type="radio"]{
     border-bottom-color: $input-label-color
   };
 }
-
-
-
