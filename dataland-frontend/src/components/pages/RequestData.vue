@@ -5,16 +5,14 @@
       <div v-if="submissionInProgress || submissionFinished" id="progress-container" class="col-6 col-offset-3">
         <div id="empty-space" class="h-7rem"/>
 
-        <div v-if="submissionFinished" id="result-message-container" class="mb-8">
-          <span
-              v-if="isInviteSuccessful"
-              class="message-success border-2 bg-white p-2"
-          >
+        <div v-if="submissionFinished" id="result-message-container"
+             :class="[isInviteSuccessful ? 'message-success' : 'message-fail']" class="border-2 bg-white p-2 mb-3">
+          <div v-if="isInviteSuccessful">
             Your data request was submitted. You will be notified about its state via email.
-          </span>
-          <span v-else class="message-fail border-2 bg-white p-2">
+          </div>
+          <div v-else>
             {{ inviteResultMessage }}
-          </span>
+          </div>
         </div>
 
         <h1 id="current-title" class="pb-5 m-0">
@@ -220,7 +218,7 @@ import {formatBytesUserFriendly, roundNumber} from "@/utils/NumberConversionUtil
 import {
   UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
-  UPLOAD_MAX_FILE_SIZE_IN_BYTES, UPLOAD_PROGRESS_PERCENTAGE_DISPLAY_DECIMALS,
+  UPLOAD_MAX_FILE_SIZE_IN_BYTES,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -262,7 +260,7 @@ export default defineComponent({
   computed: {
     submissionProgressTitle() {
       if (this.submissionInProgress) {
-        return "Uploading Excel file";
+        return "Submitting file";
       } else if (this.submissionFinished) {
         if (this.isInviteSuccessful) {
           return "Success";
@@ -344,8 +342,7 @@ export default defineComponent({
         ).getInviteControllerApi();
         const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile, {
           onUploadProgress: progressEvent => {
-            const percentageCompleted = (progressEvent.loaded/progressEvent.total)*100
-            this.uploadProgressInPercent = percentageCompleted
+            this.uploadProgressInPercent = (progressEvent.loaded/progressEvent.total)*100
           }
         });
         this.readInviteStatusFromResponse(response);
@@ -367,14 +364,12 @@ export default defineComponent({
 .message-success {
   border-color: #4bb917;
   border-radius: 4px;
-  white-space: nowrap;
 }
 
 .message-fail {
   border-color: #ee1a1a;
   border-radius: 4px;
   color: #ee1a1a;
-  white-space: nowrap
 }
 
 a,
