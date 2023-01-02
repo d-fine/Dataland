@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@ibm/plex": "^6.1.1",
+    "@zxcvbn-ts/core": "^2.1.0",
+    "@zxcvbn-ts/language-common": "^2.0.1",
+    "@zxcvbn-ts/language-en": "^2.1.0",
     "material-icons": "^1.12.1",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1"

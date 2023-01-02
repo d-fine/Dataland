@@ -22,7 +22,14 @@
             autofocus=false
             type="password"
             autocomplete="off"
-            />
+            >
+                <div class="p-progressbar p-progressbar-determinate bg-black-alpha-20 d-progressbar mt-2"
+                     id="password-strength-indicator"
+                >
+                    <div class="p-progressbar-value p-progressbar-value-animate flex d-password-strength-empty">
+                    </div>
+                </div>
+            </@inputField.dala>
 
             <@inputField.dala
             fieldName="password-confirm"
@@ -50,5 +57,6 @@
 
 
         </form>
+        <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
 </@layout.registrationLayout>

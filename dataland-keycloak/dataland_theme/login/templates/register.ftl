@@ -21,13 +21,21 @@
 
             <@inputField.dala
             fieldName="password"
+            inputGroupMargin="mt-5 mb-2"
             fieldErrorHandlers=["password", "password-confirm"]
             fieldHeading="Password"
             tabindex="2"
             autofocus=false
             type="password"
             autocomplete="off"
-            />
+            >
+                <div class="p-progressbar p-progressbar-determinate bg-black-alpha-20 d-progressbar mt-2"
+                     id="password-strength-indicator"
+                >
+                    <div class="p-progressbar-value p-progressbar-value-animate flex d-password-strength-empty">
+                    </div>
+                </div>
+            </@inputField.dala>
 
             <@inputField.dala
             fieldName="password-confirm"
@@ -57,5 +65,6 @@
                 LOGIN TO PREVIEW ACCOUNT
             </Button>
         </div>
+        <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
 </@layout.registrationLayout>
