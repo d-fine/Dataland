@@ -46,6 +46,7 @@ server {
 
     location = /gitinfo {
        root /var/www/html;
+       default_type application/json;
     }
 
     location = /health/proxy {
