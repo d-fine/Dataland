@@ -12,6 +12,7 @@
           <i v-else aria-hidden="true" />
           <AutoComplete
             :suggestions="autocompleteArrayDisplayed"
+            :autoOptionFocus="false"
             :name="searchBarName"
             v-model="searchBarInput"
             ref="autocomplete"
@@ -25,7 +26,7 @@
             panelClass="d-framework-searchbar-panel"
           >
             <template #item="slotProps">
-              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+              <em class="pi pi-search pl-3 pr-3" aria-hidden="true" />
               <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="searchBarInput" />
             </template>
             <template #footer>
@@ -128,14 +129,14 @@ export default defineComponent({
     void this.queryCompany();
     if (!this.route.query.input) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+      // this.autocomplete.focus();
     }
   },
 
   watch: {
     searchBarName() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+      // this.autocomplete.focus();
     },
     filter: {
       handler() {

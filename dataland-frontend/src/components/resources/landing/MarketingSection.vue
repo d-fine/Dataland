@@ -67,30 +67,3 @@ export default defineComponent({
   name: "MarketingSection",
 });
 </script>
-
-<style>
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  height: 0;
-}
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-.top-left-blue-border {
-  border-style: solid;
-  border-width: 1px 0 0 1px;
-  border-color: #a1c5d3;
-}
-.right-bottom-blue-border {
-  border-style: solid;
-  border-width: 0 1px 1px 0;
-  border-color: #a1c5d3;
-}
-</style>
