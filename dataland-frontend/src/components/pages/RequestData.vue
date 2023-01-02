@@ -1,53 +1,36 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent class="pl-0 min-h-screen surface-800">
-      <div v-if="submissionInProgress || submissionFinished" id="progress-container" class="col-6 col-offset-3">
-        <div id="empty-space" class="h-7rem"/>
-
-        <div v-if="submissionFinished" id="result-message-container"
-             :class="[isInviteSuccessful ? 'message-success' : 'message-fail']" class="border-2 bg-white p-2 mb-3">
-          <div v-if="isInviteSuccessful">
-            Your data request was submitted. You will be notified about its state via email.
-          </div>
-          <div v-else>
-            {{ inviteResultMessage }}
-          </div>
-        </div>
-
-        <h1 id="current-title" class="pb-5 m-0">
-          <img
-              v-if="isInviteSuccessful"
-              src="@/assets/images/elements/successful_invite_submission_img.svg"
-              alt="success-img"
-          />
-          {{ submissionProgressTitle }}
-        </h1>
-
-        <ProgressBar
-            v-if="submissionInProgress || isInviteSuccessful"
-            :progressInPercent="formatProgressPercentage(uploadProgressInPercent)"
-        />
-
-        <div v-if="submissionFinished" class="mt-6 ml-3 mr-3" id="new-data-request">
-          <InfoCard>
+      <ProgressBar
+        v-if="submissionInProgress || submissionFinished"
+        :processHasStarted="submissionInProgress"
+        :processIsFinished="submissionFinished"
+        :wasProcessSuccessful="isInviteSuccessful"
+        :processResultMessage="inviteResultMessage"
+        :progressTitle="submissionProgressTitle"
+        :progressInPercent="formatProgressPercentage(uploadProgressInPercent)"
+      >
+        <template #options>
+          <div v-if="submissionFinished" class="mt-6 pl-3 pr-3" id="new-data-request">
+            <InfoCard>
               <div class="flex justify-content-between align-items-center">
-              <span
-                  class="font-medium text-left col-6">Submit a new data request for more companies or frameworks</span>
+                <span class="font-medium text-left col-6"
+                  >Submit a new data request for more companies or frameworks</span
+                >
                 <div class="flex align-items-center">
                   <a class="pr-3 text-primary font-semibold" @click="createNewRequest">NEW DATA REQUEST</a>
-                  <img src="@/assets/images/elements/add_button.svg" alt="remove-file-button" @click="createNewRequest"/>
+                  <img
+                    src="@/assets/images/elements/add_button.svg"
+                    alt="remove-file-button"
+                    @click="createNewRequest"
+                  />
                 </div>
               </div>
-          </InfoCard>
-          <PrimeButton
-              label="return to home"
-              class="mt-3 p-button-sm border-2 uppercase text-primary d-letters bg-white-alpha-10"
-              name="back_to_home_button"
-              @click="returnToHome"
-          />
-        </div>
-      </div>
+            </InfoCard>
+          </div>
+        </template>
+      </ProgressBar>
 
       <div v-else>
         <div class="pl-4 col-5 text-left">
@@ -59,10 +42,10 @@
               Download and fill the EXCEL template with your request and upload it below.
               <div class="mt-3">
                 <a
-                    class="text-primary"
-                    :href="'/' + fileNameOfExcelTemplate"
-                    id="download-data-request-excel-template"
-                    download
+                  class="text-primary"
+                  :href="'/' + fileNameOfExcelTemplate"
+                  id="download-data-request-excel-template"
+                  download
                 >
                   DOWNLOAD - EXCEL TEMPLATE .XLS
                 </a>
@@ -74,15 +57,15 @@
             <h2>Upload</h2>
 
             <FileUpload
-                ref="fileUpload"
-                mode="advanced"
-                :auto="false"
-                accept=".xlsx"
-                :maxFileSize="maxFileSize"
-                :fileLimit="1"
-                @select="handleSelectFile"
-                @clear="clearSelection"
-                @remove="clearSelection"
+              ref="fileUpload"
+              mode="advanced"
+              :auto="false"
+              accept=".xlsx"
+              :maxFileSize="maxFileSize"
+              :fileLimit="1"
+              @select="handleSelectFile"
+              @clear="clearSelection"
+              @remove="clearSelection"
             >
               <template #header>
                 <div></div>
@@ -90,7 +73,7 @@
 
               <template #content="{ files, removeFileCallback, messages }">
                 <FileSelectMessage v-for="msg of messages" :key="msg" severity="error" @close="onMessageClose"
-                >{{ msg }}
+                  >{{ msg }}
                 </FileSelectMessage>
                 <div v-if="files.length > 0">
                   <p class="m-0">Your selected Excel file for the upload:</p>
@@ -100,9 +83,9 @@
                       <span class="font-light mr-4">{{ "(" + formatBytes(files[0].size) + ")" }}</span>
                     </div>
                     <img
-                        src="@/assets/images/elements/remove_button.svg"
-                        alt="remove-file-button"
-                        @click="removeFileCallback()"
+                      src="@/assets/images/elements/remove_button.svg"
+                      alt="remove-file-button"
+                      @click="removeFileCallback()"
                     />
                   </div>
                 </div>
@@ -110,7 +93,7 @@
 
               <template #empty>
                 <div class="flex align-items-center justify-content-center flex-column">
-                  <em class="pi pi-cloud-upload p-3 text-6xl text-400"/>
+                  <em class="pi pi-cloud-upload p-3 text-6xl text-400" />
                   <div class="flex align-items-center">
                     <p>+ Drag and drop a file or</p>
                     <a class="text-primary font-medium pl-1" @click="chooseFiles">BROWSE</a>
@@ -123,7 +106,7 @@
           <div id="settings-section">
             <h2>Additional Settings</h2>
             <div>
-              <Checkbox class="mr-2" id="chkbox1" v-model="hideName" :binary="true"/>
+              <Checkbox class="mr-2" id="chkbox1" v-model="hideName" :binary="true" />
               <label class="font-medium" for="chkbox1">Hide my name from the data request.</label>
             </div>
           </div>
@@ -132,21 +115,21 @@
           <div class="flex justify-content-end flex-wrap">
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
-                  label="Reset"
-                  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
-                  name="reset_request_button"
-                  @click="openModal"
+                label="Reset"
+                class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
+                name="reset_request_button"
+                @click="openModal"
               >
                 Reset
               </PrimeButton>
             </div>
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
-                  label="Submit"
-                  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
-                  name="submit_request_button"
-                  @click="handleSubmission"
-                  :disabled="!selectedFile"
+                label="Submit"
+                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
+                name="submit_request_button"
+                @click="handleSubmission"
+                :disabled="!selectedFile"
               >
                 Submit
               </PrimeButton>
@@ -154,17 +137,17 @@
           </div>
         </div>
         <PrimeDialog
-            header="Reset Request Data"
-            v-model:visible="displayModal"
-            :style="{ width: '34vw' }"
-            :modal="true"
-            :showHeader="false"
-            closeIcon="pi pi-times-circle"
+          header="Reset Request Data"
+          v-model:visible="displayModal"
+          :style="{ width: '34vw' }"
+          :modal="true"
+          :showHeader="false"
+          closeIcon="pi pi-times-circle"
         >
           <div class="grid">
-            <Button class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 buttonstyle">
-              <span @click="closeModal" class="p-dialog-header-close-icon pi pi-times-circle hovericon iconstyle"></span
-              ></Button>
+            <PrimeButton class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 buttonstyle">
+              <span @click="closeModal" class="p-dialog-header-close-icon pi pi-times-circle hovericon iconstyle" />
+            </PrimeButton>
           </div>
           <h2 class="mt-0 mb-5">Reset Request Data</h2>
 
@@ -173,21 +156,19 @@
           <div class="flex justify-content-end flex-wrap mb-2">
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
-                  label="No"
-                  class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white w-6rem"
-                  @click="closeModal"
-              >Cancel
-              </PrimeButton
-              >
+                label="No"
+                class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white w-6rem"
+                @click="closeModal"
+                >Cancel
+              </PrimeButton>
             </div>
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
-                  label="Yes"
-                  class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem"
-                  @click="resetPage"
-              >Confirm
-              </PrimeButton
-              >
+                label="Yes"
+                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem"
+                @click="resetPage"
+                >Confirm
+              </PrimeButton>
             </div>
           </div>
         </PrimeDialog>
@@ -197,24 +178,24 @@
 </template>
 
 <script lang="ts">
-import FileUpload, {FileUploadSelectEvent} from "primevue/fileupload";
+import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
 import PrimeDialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
 import PrimeButton from "primevue/button";
 import Card from "primevue/card";
-import {defineComponent, inject, ref} from "vue";
-import {AxiosResponse} from "axios";
+import { defineComponent, inject, ref } from "vue";
+import { AxiosResponse } from "axios";
 import Keycloak from "keycloak-js";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {InviteMetaInfoEntity} from "@clients/backend";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { InviteMetaInfoEntity } from "@clients/backend";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import InfoCard from "@/components/general/InfoCard.vue";
 import ProgressBar from "@/components/general/ProgressBar.vue";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-import {formatBytesUserFriendly, roundNumber} from "@/utils/NumberConversionUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import {
   UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
   EXCEL_TEMPLATE_FILE_NAME,
@@ -272,10 +253,6 @@ export default defineComponent({
   },
 
   methods: {
-    returnToHome() {
-      this.$router.push("/");
-    },
-
     createNewRequest() {
       this.$router.go();
     },
@@ -307,8 +284,8 @@ export default defineComponent({
       return formatBytesUserFriendly(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
     },
 
-    formatProgressPercentage(percentage: number){
-      return roundNumber(percentage, 0)
+    formatProgressPercentage(percentage: number) {
+      return roundNumber(percentage, 0);
     },
 
     chooseFiles() {
@@ -330,6 +307,7 @@ export default defineComponent({
     },
 
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
+      console.log("AAA");
       this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },
@@ -338,12 +316,12 @@ export default defineComponent({
       const selectedFile = this.getSelectedFile();
       try {
         const inviteControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
         const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile, {
-          onUploadProgress: progressEvent => {
-            this.uploadProgressInPercent = (progressEvent.loaded/progressEvent.total)*100
-          }
+          onUploadProgress: (progressEvent) => {
+            this.uploadProgressInPercent = (progressEvent.loaded / progressEvent.total) * 100;
+          },
         });
         this.readInviteStatusFromResponse(response);
       } catch (error) {
@@ -361,17 +339,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.message-success {
-  border-color: #4bb917;
-  border-radius: 4px;
-}
-
-.message-fail {
-  border-color: #ee1a1a;
-  border-radius: 4px;
-  color: #ee1a1a;
-}
-
 a,
 img:hover {
   cursor: pointer;
