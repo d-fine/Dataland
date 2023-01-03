@@ -23,10 +23,8 @@
             type="password"
             autocomplete="off"
             >
-                <div class="p-progressbar p-progressbar-determinate bg-black-alpha-20 d-progressbar mt-2"
-                     id="password-strength-indicator"
-                >
-                    <div class="p-progressbar-value p-progressbar-value-animate flex d-password-strength-empty">
+                <div class="bg-black-alpha-20 d-progressbar mt-2" id="password-strength-indicator">
+                    <div class="d-progressbar-value flex d-password-strength-empty">
                     </div>
                 </div>
             </@inputField.dala>
