@@ -1,6 +1,5 @@
 module.exports = (on, config) => {
   require("@cypress/code-coverage/task")(on, config);     // TODO could this be written to cypress.config.ts ?
-  config.env.commit_id = require("git-commit-id")({ cwd: "../" });  // TODO this too ?
 
   if (process.env.REALDATA === "true") {
     config.env["DATA_ENVIRONMENT"] = "realData";

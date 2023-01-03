@@ -4,6 +4,11 @@ let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
 export default defineConfig({
+
+  env: {
+    commit_id: require("git-commit-id")({ cwd: "../" })
+  },
+
   numTestsKeptInMemory: 2,
   defaultCommandTimeout: 10000,
   viewportHeight: 684,
