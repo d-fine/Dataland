@@ -156,7 +156,7 @@ jobs:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
-          INVITATION_REQUEST_CC: ""
+          INVITATION_REQUEST_CC: "dev.null@dataland.com"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
