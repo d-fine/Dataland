@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
+import org.dataland.datalandbackend.utils.KeycloakUserUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
@@ -36,10 +36,6 @@ class InviteManager(
 
     private fun generateUUID(): String {
         return UUID.randomUUID().toString()
-    }
-
-    private fun getUserIdFromSecurityContext(): String { // TODO duplicate method => centralize somewhere
-        return SecurityContextHolder.getContext().authentication.name
     }
 
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
@@ -72,7 +68,7 @@ class InviteManager(
         associatedInviteId: String
     ): Boolean {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
-        val email = InvitationEmailGenerator().generate(file, isSubmitterNameHidden)
+        val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
         return if (isEmailSent) {
             logger.info("Emails were sent.")
@@ -89,7 +85,7 @@ class InviteManager(
         success: Boolean,
         message: String
     ): InviteMetaInfoEntity {
-        val userId = getUserIdFromSecurityContext()
+        val userId = KeycloakUserUtils.getUserIdFromSecurityContext()
         removeFileFromStorage(fileId, inviteId)
         return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(success, message))
     }
