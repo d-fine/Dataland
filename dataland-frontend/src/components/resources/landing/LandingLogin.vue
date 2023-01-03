@@ -10,9 +10,9 @@
         </div>
       </div>
       <div class="grid align-items-center m-0">
-        <div class="col-5 text-left">
+        <div class="col-5 text-left col-offset-1">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2" />
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
           </router-link>
         </div>
         <div class="col-2 col-offset-4">
@@ -21,49 +21,10 @@
       </div>
       <div class="grid align-items-center m-0">
         <div class="col-5 col-offset-1">
-          <h1 class="text-justify text-6xl font-normal">
-            COME TOGETHER TO CREATE A DATASET THAT NOBODY CAN CREATE ALONE WHILE SHARING THE COSTS.
-          </h1>
+          <h1 class="text-justify text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
         <div class="col-4 col-offset-1">
           <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
-        </div>
-      </div>
-      <div class="grid text-left m-0">
-        <div class="col-10 col-offset-1 pb-0">
-          <p class="uppercase mb-0">Built by</p>
-        </div>
-        <div class="col-1 col-offset-1 pt-0">
-          <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
-        </div>
-      </div>
-      <div class="grid text-left m-0">
-        <div class="col-offset-1 col-10">
-          <div class="grid align-items-baseline">
-            <div class="col-1">
-              <img src="@/assets/images/logos/pwc.svg" alt="pwc" class="pr-5" />
-            </div>
-            <div class="col-1">
-              <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="d-small-logo pr-5" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid text-left m-0">
-        <div class="col-10 col-offset-1 pb-0">
-          <p class="uppercase mb-0">Supported by</p>
-        </div>
-        <div class="col-1 col-offset-1 pt-0">
-          <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
-        </div>
-      </div>
-      <div class="grid text-left m-0">
-        <div class="col-offset-1 col-10">
-          <div class="grid align-items-baseline">
-            <div class="col-1">
-              <img src="@/assets/images/logos/t_systems_logo.svg" alt="T-Systems" class="pr-5" height="25" />
-            </div>
-          </div>
         </div>
       </div>
       <div class="grid m-0">
@@ -84,6 +45,33 @@
               </div>
             </template>
           </Card>
+        </div>
+      </div>
+      <div class="grid align-items-baseline">
+        <div class="col-0 text-left col-offset-5">
+          <p class="uppercase mb-0">Built by</p>
+          <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
+        </div>
+        <div class="col-1"></div>
+        <div class="col-0 text-left">
+          <p class="uppercase mb-0">Supported by</p>
+          <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
+        </div>
+      </div>
+      <div class="grid align-items-baseline mt-1">
+        <div class="col-0 col-offset-5">
+          <img src="@/assets/images/logos/pwc.svg" alt="pwc" />
+        </div>
+        <div class="col-1">
+          <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="d-small-logo" />
+        </div>
+        <div class="col-0">
+          <img
+            src="@/assets/images/logos/t_systems_logo.svg"
+            alt="T-Systems"
+            class="d-small-logo ml-3"
+            style="fill: #ff9e2c"
+          />
         </div>
       </div>
     </div>
