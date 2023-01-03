@@ -216,7 +216,7 @@ describe("As a user I expect a data request page where I can download an excel t
           expect(interception.request.url.includes("isSubmitterNameHidden=true")).to.eq(true);
         });
 
-        cy.get("a.pr-3").should("contain.text", "NEW DATA REQUEST");
+        cy.get("a.pr-3").click();
         uploadBoxShouldBeEmpty();
       });
 
