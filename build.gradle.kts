@@ -54,7 +54,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.5.0" apply false
-    id("org.springframework.boot") version "3.0.1" apply false
+    id("org.springframework.boot") version "2.7.7" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.8.0" apply false
