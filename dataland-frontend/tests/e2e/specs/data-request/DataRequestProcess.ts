@@ -43,11 +43,15 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
         submit();
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
-          expect(interception.response.statusCode).to.be.within(200, 399);
-          if (interception.response.statusCode < 300) {
-            expect((interception.response.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
+          if (interception.response != undefined) {
+            expect(interception.response.statusCode).to.be.within(200, 399);
+            if (interception.response.statusCode < 300) {
+              expect((interception.response.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
+            }
+            moreValidation(interception);
+          } else {
+            expect(interception.response).not.to.equal(undefined);
           }
-          moreValidation(interception);
         });
       }
 
