@@ -110,12 +110,8 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     )
 }
 
-tasks.register("generateClients") {
-    dependsOn("generateInternalStorageClient")
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateClients")
+    dependsOn("generateInternalStorageClient")
 }
 
 sourceSets {
