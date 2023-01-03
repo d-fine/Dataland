@@ -11,7 +11,6 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
-- [ ] springboot 2.7.7 not updated to 3.0.X, due to issues when resolving main class name in api key manager 
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
