@@ -1,5 +1,4 @@
 module.exports = (on, config) => {
-  require("@cypress/code-coverage/task")(on, config);     // TODO could this be written to cypress.config.ts ?
 
   if (process.env.REALDATA === "true") {
     config.env["DATA_ENVIRONMENT"] = "realData";
