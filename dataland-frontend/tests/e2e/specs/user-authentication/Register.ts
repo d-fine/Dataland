@@ -6,7 +6,7 @@ describe("As a user I want to be able to register for an account and be able to 
   const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
-  it.only("Checks that the Dataland password-policy gets respected", () => {
+  it("Checks that the Dataland password-policy gets respected", () => {
     cy.visitAndCheckAppMount("/")
       .get("button[name='join_dataland_button']")
       .click()
