@@ -144,7 +144,8 @@ describe("As a user I expect a data request page where I can download an excel t
           Cypress.config("downloadsFolder") + "/Dataland_Request_Template.xlsx";
 
         cy.readFile(expectedPathToDownloadedExcelTemplate).should("not.exist");
-        cy.get("a[id=download-data-request-excel-template]").click();
+        const downloadLinkSelector = "a[id=download-data-request-excel-template]";
+        cy.get(downloadLinkSelector).click();
         cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", { timeout: 15000 }).then(
           (expectedExcelTemplateBinary) => {
             cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", { timeout: 15000 }).should(
@@ -157,9 +158,8 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test overriding and removing files from the upload box`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         const overrideFile = "override_file.xlsx";
+        cy.wait(2000);
         uploadDummyExcelFile(overrideFile);
         uploadBoxEntryShouldBe(overrideFile);
 
@@ -180,8 +180,6 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test that the right error messages are displayed at the right time`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         const tooLargeFilename = "slightly_too_large.xlsx";
         const wrongTypeFilename = "wrong_type.png";
         [
@@ -204,8 +202,6 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test that the reset button works as expected`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         const removeFilename = "remove_test.xlsx";
         uploadDummyExcelFile(removeFilename);
         setHideUsernameCheckbox(true);
@@ -220,8 +216,6 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test if the checkbox state is transferred correctly to the request`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         uploadDummyExcelFile("test.xlsx");
         submitAndValidateSuccess((interception: Interception) => {
           expect(interception.request.url.includes("isSubmitterNameHidden=false")).to.eq(true);
@@ -245,8 +239,6 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test the submit button and the upload success screen`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         validateThatSubmitButtonIsDisabled();
         uploadDummyExcelFile();
         submitAndValidateSuccess();
@@ -257,8 +249,6 @@ describe("As a user I expect a data request page where I can download an excel t
       });
 
       it(`Test the failure response screen`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         const errorMessageSelector = "div#result-message-container";
         const titleSelector = "h1#current-progress-title";
         uploadDummyExcelFile("test.xlsx", 0);
