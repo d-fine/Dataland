@@ -134,7 +134,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.deleteDownloadsFolder();
       });
 
-      it(`Test overriding and removing files from the upload box`, () => {
+      it(`Test overriding and removing files from the upload box`, { scrollBehavior: false }, () => {
         const overrideFile = "override_file.xlsx";
         cy.wait(2000);
         uploadDummyExcelFile(overrideFile);
