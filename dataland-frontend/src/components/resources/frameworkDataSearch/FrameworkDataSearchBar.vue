@@ -102,14 +102,14 @@ export default defineComponent({
     void this.queryCompany();
     if (!this.route.query.input) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      // this.autocomplete.focus();
+      this.autocomplete.focus();
     }
   },
 
   watch: {
     searchBarName() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      // this.autocomplete.focus();
+      this.autocomplete.focus();
     },
     filter: {
       handler() {
