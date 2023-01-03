@@ -79,7 +79,6 @@ export default defineConfig({
                     })
                 },
             })
-            return require("./tests/e2e/plugins/index.js")(on, config);
         },
         experimentalSessionAndOrigin: true,
         supportFile: "tests/e2e/support/index.ts",
