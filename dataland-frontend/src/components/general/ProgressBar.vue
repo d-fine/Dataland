@@ -96,7 +96,7 @@ export default defineComponent({
   },
   methods: {
     returnToHome() {
-      this.$router.push("/");
+      void this.$router.push("/");
     },
   },
 });

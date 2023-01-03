@@ -183,7 +183,6 @@ import Message from "primevue/message";
 import PrimeDialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
 import PrimeButton from "primevue/button";
-import Card from "primevue/card";
 import { defineComponent, inject, ref } from "vue";
 import { AxiosResponse } from "axios";
 import Keycloak from "keycloak-js";
@@ -210,7 +209,6 @@ export default defineComponent({
     TheHeader,
     TheContent,
     InfoCard,
-    Card,
     ProgressBar,
     FileUpload,
     FileSelectMessage: Message,
