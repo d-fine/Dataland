@@ -1,5 +1,9 @@
 <#import "dataland_template.ftl" as layout>
-<@layout.registrationLayout displayMessage=false; section>
+<@layout.registrationLayout
+    displayMessage=false
+    formContainerStyle="width: 635px;"
+    outerContainerStyle=""
+    ; section>
     <#if section = "header">
         <script type="text/javascript">
             function fillAndSubmit(authExecId) {
@@ -11,25 +15,26 @@
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
-        <form id="kc-select-credential-form" action="${url.loginAction}" method="post">
-            <div class="text-left">
-                <#list auth.authenticationSelections as authenticationSelection>
-                    <div class="mt-3 cursor-pointer p-button w-full bg-white-alpha-10 text-color flex gap-3 align-items-center" onclick="fillAndSubmit('${authenticationSelection.authExecId}')">
-                        <span class="material-icons text-primary">
-                            <#if authenticationSelection.authenticationExecution.authenticator="idp-email-verification">
-                                email
-                            <#elseif authenticationSelection.authenticationExecution.authenticator="idp-username-password-form">
-                                password
-                            </#if>
+        <form id="kc-select-credential-form" class="pt-5" action="${url.loginAction}" method="post">
+            <#list auth.authenticationSelections as authenticationSelection>
+                <div class="mt-4 cursor-pointer d-link-account-box w-full flex justify-content-between align-items-center px-3" onclick="fillAndSubmit('${authenticationSelection.authExecId}')">
+                    <span class>${msg('${authenticationSelection.helpText}')}</span>
+
+                    <div class="text-primary flex align-items-center gap-3 py-5">
+                        <span class="font-semibold">
+                            ${msg('${authenticationSelection.displayName}')}
                         </span>
-                        <div>
-                            <strong>${msg('${authenticationSelection.displayName}')}</strong><br>
-                            <span>${msg('${authenticationSelection.helpText}')}</span>
-                        </div>
+                        <span class="material-icons">
+                        <#if authenticationSelection.authenticationExecution.authenticator="idp-email-verification">
+                            verified
+                        <#elseif authenticationSelection.authenticationExecution.authenticator="idp-username-password-form">
+                            login
+                        </#if>
+                    </span>
                     </div>
-                </#list>
-                <input type="hidden" id="authexec-hidden-input" name="authenticationExecution" />
-            </div>
+                </div>
+            </#list>
+            <input type="hidden" id="authexec-hidden-input" name="authenticationExecution" />
         </form>
     </#if>
 </@layout.registrationLayout>

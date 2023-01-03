@@ -1,11 +1,15 @@
 <#import "dataland_template.ftl" as layout>
-<@layout.registrationLayout displayMessage=false; section>
+<@layout.registrationLayout
+    displayMessage=false
+    formContainerStyle="width: 480px;"
+    outerContainerStyle="max-width: 600px;"
+; section>
     <#if section = "header">
         ${msg("emailLinkIdpTitle", idpDisplayName)}
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
-        <div class="text-left">
+        <div class="text-left pb-3 font-semibold">
             <p>
                 ${kcSanitize(message.summary)?no_esc}
             </p>

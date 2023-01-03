@@ -1,4 +1,4 @@
-<#macro registrationLayout displayInfo=false displayMessage=true displayRequiredFields=false>
+<#macro registrationLayout formContainerStyle="width: 364px;" outerContainerStyle="max-width: 500px;" displayInfo=false displayMessage=true displayRequiredFields=false>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,10 +25,10 @@
 
 
         <!-- Main Content -->
-        <div class="block ml-auto mr-auto pt-8" style="max-width: 500px;">
+        <div class="block ml-auto mr-auto pt-8" style="${outerContainerStyle}">
             <img src="${url.resourcesPath}/logo_dataland_long.svg" class="d-dataland-logo">
             <h1 class="text-6xl"><#compress><#nested "header"></#compress></h1>
-            <div class="ml-auto mr-auto" style="width: 364px;">
+            <div class="ml-auto mr-auto" style="${formContainerStyle}">
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                 <#-- during login. -->
                 <#if displayMessage && message?has_content>
@@ -54,7 +54,7 @@
 
                 <#if auth?has_content && auth.showTryAnotherWayLink()>
                     <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post">
-                        <div class="text-left">
+                        <div class="text-left d-primary-login-width ml-auto mr-auto">
                             <input type="hidden" name="tryAnotherWay" value="on"/>
                             <Button
                                     class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-2 p-login-button"
