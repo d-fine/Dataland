@@ -1,6 +1,6 @@
 import { formatExpiryDate } from "@/utils/DateFormatUtils";
 
-describe("As a user I expect my api key will be generate correctly", () => {
+describe("As a user I expect my api key will be generated correctly", () => {
   it("successfully generate api key", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/api-key");
@@ -29,7 +29,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get('[data-test="expireDataPicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get('[data-test="expireDataPicker"]').should(($input) => {
+    cy.get('[data-test="expireDataPicker"]').find("input").should(($input) => {
       const val = $input.val();
       expect(val).to.include("13");
     });
