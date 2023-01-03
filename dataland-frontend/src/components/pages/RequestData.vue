@@ -240,14 +240,13 @@ export default defineComponent({
 
   computed: {
     submissionProgressTitle() {
-      if (this.submissionInProgress) {
-        return "Submitting file";
-      } else if (this.submissionFinished) {
-        if (this.isInviteSuccessful) {
-          return "Success";
-        } else {
-          return "Submission failed";
+      if (this.submissionFinished) {
+        switch (this.isInviteSuccessful) {
+        case true: { return "Success"}
+        case false: { return "Submission failed"}
         }
+      } else {
+        return "Submitting file"
       }
     },
   },
