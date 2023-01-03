@@ -29,10 +29,12 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="expireDataPicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get('[data-test="expireDataPicker"]').find("input").should(($input) => {
-      const val = $input.val();
-      expect(val).to.include("13");
-    });
+    cy.get('[data-test="expireDataPicker"]')
+      .find("input")
+      .should(($input) => {
+        const val = $input.val();
+        expect(val).to.include("13");
+      });
     cy.get("div#expireTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
