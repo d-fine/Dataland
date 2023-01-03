@@ -65,7 +65,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
