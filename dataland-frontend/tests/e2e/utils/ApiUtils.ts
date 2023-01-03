@@ -36,5 +36,6 @@ export function interceptAllAndCheckFor500Errors(): void {
       }
     });
   };
-  cy.intercept("/api/**", handler).as("Detect 500");
+  cy.intercept("/api/**", handler);
+  cy.intercept("/api-keys/**", handler);
 }
