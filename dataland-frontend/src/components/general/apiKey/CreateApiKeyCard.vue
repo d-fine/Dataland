@@ -97,7 +97,7 @@ export default defineComponent({
     expireTimeDays: 0,
     expireTimeDropdown: "",
     isExpireTimeCorrect: true,
-    customDate: 0,
+    customDate: "",
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -132,10 +132,14 @@ export default defineComponent({
       }
     },
   },
+  mounted() {
+    console.log('1 customDate ', this.customDate)
+  },
   watch: {
     customDate: function () {
       this.expireTimeDays = calculateDaysFromNow(this.customDate);
       this.isExpireTimeCorrect = true;
+      console.log('2 customDate ', this.customDate)
     },
   },
 });

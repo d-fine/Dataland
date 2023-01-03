@@ -13,6 +13,7 @@ import SearchCompanies from "@/components/pages/SearchCompanies.vue";
 import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
 import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
 import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
+import ViewLksg from "@/components/pages/ViewLksg.vue";
 
 const routes = [
   {
@@ -64,6 +65,12 @@ const routes = [
     props: true,
     name: "Company EU Taxonomy for financials",
     component: ViewEuTaxonomyFinancials,
+  },
+  {
+    path: "/companies/:companyID/frameworks/lksg",
+    props: true,
+    name: "Company lksg",
+    component: ViewLksg,
   },
   {
     path: "/companies-only-search",

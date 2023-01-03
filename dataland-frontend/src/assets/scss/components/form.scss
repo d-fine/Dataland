@@ -221,6 +221,9 @@ input[type="checkbox"], input[type="radio"]{
         &:hover {
           background: $gray-light;
         }
+        &.p-disabled {
+          opacity: .3;
+        }
       }
       &.p-datepicker-today > span {
         background: $gray-light;
