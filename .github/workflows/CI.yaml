@@ -256,6 +256,9 @@ jobs:
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
   summary:
