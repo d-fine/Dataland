@@ -13,7 +13,7 @@ import java.util.UUID
 /**
  * A utility object which contains functions to generate invitation emails
  */
-object InvitationEmailGenerator {
+class InvitationEmailGenerator {
     private val sender = EmailContact("info@dataland.com", "Dataland")
     private val receivers = getEmailsFromEnv("INVITATION_REQUEST_RECEIVERS")
     private val cc = getEmailsFromEnv("INVITATION_REQUEST_CC")

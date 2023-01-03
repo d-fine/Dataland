@@ -72,7 +72,7 @@ class InviteManager(
         associatedInviteId: String
     ): Boolean {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
-        val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
+        val email = InvitationEmailGenerator().generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
         return if (isEmailSent) {
             logger.info("Emails were sent.")
