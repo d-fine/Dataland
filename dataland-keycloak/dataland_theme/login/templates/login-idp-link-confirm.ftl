@@ -16,7 +16,7 @@
             </div>
         </form>
         <div class="mt-5">
-            <span style="font-size:16px;">
+            <span>
                 Login using existing account?
                 <Button
                         class="p-button uppercase font-semibold text-primary justify-content-center bg-white-alpha-10 ml-4 cursor-pointer"

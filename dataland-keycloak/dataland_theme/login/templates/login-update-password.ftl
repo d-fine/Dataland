@@ -47,8 +47,6 @@
                     <button tabindex="5" formnovalidate class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1 p-login-button" type="submit" name="cancel-aia" value="true" />Cancel</button>
                 </#if>
             </div>
-
-
         </form>
     </#if>
 </@layout.registrationLayout>
