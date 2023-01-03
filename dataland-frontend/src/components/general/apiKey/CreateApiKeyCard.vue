@@ -97,7 +97,7 @@ export default defineComponent({
     expireTimeDays: 0,
     expireTimeDropdown: "",
     isExpireTimeCorrect: true,
-    customDate: 0,
+    customDate: "",
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
