@@ -20,18 +20,6 @@ describe("As a user I expect a data request page where I can download an excel t
       const resetButtonSelector = "button[name=reset_request_button]";
       const removeButtonSelector = 'img[alt="remove-file-button"]';
 
-      function setReloadOnClicksToAvoidPageLoadBug(): void {
-        cy.window()
-          .document()
-          .then((document) => {
-            document.addEventListener("click", () => {
-              setTimeout(function () {
-                document.location.reload();
-              }, 5000);
-            });
-          });
-      }
-
       function uploadDummyExcelFile(filename = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
           {
@@ -51,17 +39,9 @@ describe("As a user I expect a data request page where I can download an excel t
       function submitAndValidateSuccess(
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
-        interceptInvite();
-        submit();
-        validateSuccessResponse(moreValidation);
-      }
-
-      function interceptInvite(): void {
         inviteInterceptionAlias = Math.random().toString();
         cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
-      }
-
-      function validateSuccessResponse(moreValidation: (interception: Interception) => void): void {
+        submit();
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
           expect(interception.response!.statusCode).to.be.within(200, 399);
           if (interception.response!.statusCode < 300) {
@@ -128,24 +108,21 @@ describe("As a user I expect a data request page where I can download an excel t
           });
       }
 
-      function visitRequestPage(): void {
-        cy.visitAndCheckAppMount("/requests");
-      }
-
       beforeEach(() => {
         cy.ensureLoggedIn();
-        visitRequestPage();
+        cy.visitAndCheckAppMount("/requests");
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
-        setReloadOnClicksToAvoidPageLoadBug();
-
         const expectedPathToDownloadedExcelTemplate =
           Cypress.config("downloadsFolder") + "/Dataland_Request_Template.xlsx";
 
         cy.readFile(expectedPathToDownloadedExcelTemplate).should("not.exist");
         const downloadLinkSelector = "a[id=download-data-request-excel-template]";
+        const downloadAlias = "download";
+        cy.intercept("**/Dataland_Request_Template.xlsx").as(downloadAlias);
         cy.get(downloadLinkSelector).click();
+        cy.wait(`@${downloadAlias}`);
         cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", { timeout: 15000 }).then(
           (expectedExcelTemplateBinary) => {
             cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", { timeout: 15000 }).should(
