@@ -120,11 +120,14 @@ input[type="checkbox"], input[type="radio"]{
     .p-dropdown-item {
       margin: 0;
       padding: 0.5rem 1rem;
-      //border: 0.1em solid #e5e4e2;
+      border: 0.1em solid $dropdown-options-bg;
       color: $input-text-color;
       background: transparent;
       transition: background-color .2s,border-color .2s,box-shadow .2s;
       border-radius: 0;
+      &:not(.p-highlight):not(.p-disabled):hover {
+        background: $dropdown-options-bg;
+      }
       &.p-highlight {
         color: $input-text-bg;
         background: $input-text-border-hover;
@@ -293,5 +296,55 @@ input[type="checkbox"], input[type="radio"]{
   }
   &.p-tooltip-bottom .p-tooltip-arrow {
     border-bottom-color: $input-label-color
+  }
+}
+
+.d-framework-searchbar-input-icon {
+  padding-left: 0.75rem;
+}
+
+.d-framework-data-search-dropdown {
+  .p-multiselect-item {
+    color: $input-text-color;
+    border: none;
+    font-weight: 400;
+
+    &.p-highlight {
+      background: $table-background-color;
+      color: $main-color;
+    }
+
+    &.p-disabled {
+      color: $brown-lighter;
+
+      &::after {
+        content: "(Not available)";
+        margin-left: 0.2rem;
+        font-weight: $light-bold-weight;
+        color: $input-text-color;
+      }
+    }
+  }
+  .p-multiselect-close {
+    display: none;
+  }
+}
+
+.d-framework-searchbar-panel {
+  // this important is to overwrite styles injected to panel directly
+  max-height: 50vh !important;
+  .p-autocomplete-items {
+    background:$input-text-bg;
+    padding: 0;
+    .p-autocomplete-item {
+      height: 3.5rem;
+      padding: 0;
+      display: flex;
+      align-content: center;
+      align-items: center;
+      &:not(.p-disabled):hover {
+        background: $dropdown-options-bg;
+      }
+    }
   }
 }

@@ -9,14 +9,14 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  margin: unset;
+  margin: unset
 }
 body {
   font-family: $ibm-plex-sans;
   font-size: $fs-base;
   font-weight: $fw-normal;
   margin:0;
-  padding:0;
+  padding:0
 }
 .p-component {
   &:disabled {
@@ -26,7 +26,7 @@ body {
 .d-content {
   flex:1;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 .d-header {
   z-index: 100
@@ -48,7 +48,7 @@ body {
   margin-left: $spacing-xxs;
   min-width: 1.5rem;
   height: 1.5rem;
-  line-height: 1.5rem;
+  line-height: 1.5rem
 }
 .d-search-toggle {
   z-index: 99;
@@ -63,22 +63,24 @@ body {
 // sections
 .third-section {
   background-color: $brown-lighter;
-  color: $white;
+  color: $white
 }
 .second-section {
   background-color: $paper-white;
-  color: $aquamarine-dark;
+  color: $aquamarine-dark
 }
 .paper-section {
-  background-color: $paper-white;
+  background-color: $paper-white
 }
+// We want this classes to always overwrite styles to main colors
 .text-primary, .primary-color {
-  color: $main-color !important;
+  color: $main-color !important
 }
 .bg-primary {
   color: $bg-text-primary !important;
-  background-color: $main-color !important;
+  background-color: $main-color !important
 }
+// --- //
 .fs-xs { font-size: $fs-xs} // 12px
 .fs-sm{ font-size: $fs-sm}  // 14px
 .fs-base{ font-size: $fs-base}  // 16px
@@ -91,7 +93,7 @@ body {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
-  height: 0;
+  height: 0
 }
 .video-container iframe {
   position: absolute;
@@ -99,15 +101,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 0;
+  border: 0
 }
 .top-left-blue-border {
   border-style: solid;
   border-width: 1px 0 0 1px;
-  border-color: $blue-light;
+  border-color: $blue-light
 }
 .right-bottom-blue-border {
   border-style: solid;
   border-width: 0 1px 1px 0;
-  border-color: $blue-light;
+  border-color: $blue-light
 }

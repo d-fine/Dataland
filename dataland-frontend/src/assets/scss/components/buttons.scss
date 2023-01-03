@@ -4,6 +4,8 @@
   border: 1px solid $btn-primary-bg;
   padding: $spacing-xxs $spacing-sm;
   font-size: $button-fs;
+  font-weight: $button-fw;
+  font-family: $ibm-plex-sans;
   transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
   border-radius: 0;
   line-height: $line-height-2;
@@ -112,11 +114,9 @@
     }
     &.p-button-success {
       color: $btn-success-bg;
-
       &:enabled:hover {
         background: lighten($btn-success-bg, 40%);
       }
-
       &:enabled:active {
         background: lighten($btn-success-bg, 30%);
       }

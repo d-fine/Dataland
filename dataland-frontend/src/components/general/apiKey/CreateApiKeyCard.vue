@@ -142,9 +142,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.custom-dropdown {
-  border: none !important;
-}
 .invalidExpireTime {
   border: 1px solid var(--red-600);
 }
