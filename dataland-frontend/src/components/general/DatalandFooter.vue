@@ -4,7 +4,7 @@
       <div class="grid m-0">
         <div class="col-4 col-offset-1">
           <div class="grid text-left">
-            <div class="col-12">
+            <div class="col-12 m-0 p-0">
               <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
             </div>
             <div class="col-12">
@@ -17,7 +17,7 @@
         <div class="col-offset-3 col-3 justify-content-center">
           <div class="grid text-left">
             <div class="col-12">
-              <p class="font-semibold">Legal</p>
+              <p class="font-semibold m-0">Legal</p>
             </div>
             <div class="col-12">
               <router-link to="/imprint" class="no-underline">

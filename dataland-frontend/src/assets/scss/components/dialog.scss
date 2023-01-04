@@ -1,0 +1,78 @@
+.p-dialog {
+  border-radius: 0;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1);
+  border: 0 none;
+  background: $card-background;
+  .p-dialog-header {
+    padding: 1.5rem;
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    .p-dialog-header-icon {
+      width: 2rem;
+      height: 2rem;
+      color: #6c757d;
+      border: 0 none;
+      background: transparent;
+      transition: background-color .2s, color .2s, box-shadow .2s;
+      margin-right: .5rem;
+      &:enabled:hover {
+        color: #1b1b1b;
+      }
+      &:focus {
+        outline: 0 none;
+        outline-offset: 0;
+        box-shadow: 0 0 0 .2rem #bfd1f6;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .p-dialog-content {
+    padding: 1.5rem;
+  }
+  .p-dialog-footer {
+    padding: 1.5rem;
+    text-align: right;
+    button {
+      margin: 0 .5rem 0 0;
+      width: auto;
+    }
+  }
+}
+.p-dialog.p-confirm-dialog {
+  .p-confirm-dialog-icon {
+    font-size: 2rem;
+  }
+  .p-confirm-dialog-message {
+    margin-left: 1rem;
+  }
+}
+
+.p-component-overlay-enter {
+  animation: p-component-overlay-enter-animation 150ms forwards
+}
+
+.p-component-overlay-leave {
+  animation: p-component-overlay-leave-animation 150ms forwards
+}
+
+@keyframes p-component-overlay-enter-animation {
+  from {
+    background-color: transparent
+  }
+  to {
+    background-color: var(--maskbg)
+  }
+}
+
+@keyframes p-component-overlay-leave-animation {
+  from {
+    background-color: var(--maskbg)
+  }
+  to {
+    background-color: transparent
+  }
+}
