@@ -16,8 +16,8 @@
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
-          <span :class="{ 'text-red-700': !isKeyExpired }" class="block text-600 mb-3 mt-6">
-            {{ isKeyExpired }}
+          <span :class="{ 'text-red-700': !isKeyExpired() }" class="block text-600 mb-3 mt-6">
+            {{ whenKeyExpire }}
           </span>
         </div>
 
@@ -67,7 +67,7 @@ export default defineComponent({
       return calculateDaysFromNow(this.expiryDate);
     },
 
-    isKeyExpired() {
+    whenKeyExpire() {
       if (this.expiryDate && this.expiryDate >= Date.now()) {
         return `The API Key will expire on ${formatExpiryDate(this.expiryDateInDays)}`;
       } else if (this.expiryDate && this.expiryDate < Date.now()) {
@@ -80,6 +80,9 @@ export default defineComponent({
   methods: {
     deleteConfirmToggle() {
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
+    },
+    isKeyExpired() {
+      return this.expiryDate >= new Date().getTime();
     },
   },
 });
