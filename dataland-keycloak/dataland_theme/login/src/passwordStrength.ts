@@ -22,17 +22,17 @@ const form = document.querySelector<HTMLInputElement>('form')!
 const passwordStrengthIndicatorInner = document.querySelector<HTMLInputElement>('#password-strength-indicator > div')!
 
 function updatePasswordStrengthIndicator(levelCss: string) {
+    const classesToRemove: string[] = []
     passwordStrengthIndicatorInner.classList.forEach((cls) => {
         if (cls.startsWith("d-password-strength")) {
-            passwordStrengthIndicatorInner.classList.remove(cls)
+            classesToRemove.push(cls)
         }
     })
+    classesToRemove.forEach((cls) => passwordStrengthIndicatorInner.classList.remove(cls))
     passwordStrengthIndicatorInner.classList.add(levelCss)
 }
 
 function evaluatePasswordSecurity(): boolean {
-    checkIfPasswordAndConfirmMatch()
-
     const passwordLength = passwordField.inputField.value.length;
     if (passwordLength < 12) {
         passwordField.overrideFieldErrorMessage('Please choose a password with at least 12 characters')
@@ -59,7 +59,7 @@ function evaluatePasswordSecurity(): boolean {
     passwordField.overrideFieldErrorMessage(undefined)
     return true;
 }
-const debouncedEvaluatePasswordSecurity = debounce(evaluatePasswordSecurity, 200, true)
+const debouncedEvaluatePasswordSecurity = debounce(evaluatePasswordSecurity, 200, false)
 
 function checkIfPasswordAndConfirmMatch(): boolean {
     if (passwordField.inputField.value === confirmPasswordField.inputField.value) {
@@ -73,15 +73,20 @@ function checkIfPasswordAndConfirmMatch(): boolean {
     }
 }
 passwordField.inputField.addEventListener('change', function () {
+    checkIfPasswordAndConfirmMatch();
     evaluatePasswordSecurity();
 });
 passwordField.inputField.addEventListener('input', function () {
+    checkIfPasswordAndConfirmMatch();
     debouncedEvaluatePasswordSecurity()
 });
 confirmPasswordField.inputField.addEventListener('input', function () {
     checkIfPasswordAndConfirmMatch();
 });
 
-form.onsubmit = function () {
-    return evaluatePasswordSecurity() && checkIfPasswordAndConfirmMatch()
+form.onsubmit = function (event) {
+    const acceptFormSubmission = evaluatePasswordSecurity() && checkIfPasswordAndConfirmMatch();
+    if (!acceptFormSubmission)
+        event.preventDefault()
+    return acceptFormSubmission
 }
