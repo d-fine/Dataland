@@ -20,29 +20,26 @@
 <!--      <h2>No EU-Taxonomy data for financial companies present</h2>-->
 <!--    </div>-->
     <div class="grid">
-            <div class="col-3">
-              <Calendar inputId="basic" v-model="date1" autocomplete="off"  style="border: 3px solid red"/>
-            </div>
-            <div class="col-7">
+            <div class="col-12">
+              <h3>{{ JSON.stringify(frameworkDataId) }}</h3>
+
+
+
               <LksgPanel :dataID="frameworkDataId" />
             </div>
           </div>
 
-    <div class="col-12 text-left">
-      <h2>Loading...</h2>
-    </div>
   </ViewFrameworkBase>
 </template>
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import Calendar from "primevue/calendar";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "ViewEuTaxonomyFinancials",
-  components: { ViewFrameworkBase, LksgPanel, Calendar },
+  name: "ViewLksg",
+  components: { ViewFrameworkBase, LksgPanel },
   props: {
     companyID: {
       type: String,
@@ -50,7 +47,6 @@ export default defineComponent({
   },
   data() {
     return {
-      date1: null,
       frameworkDataId: undefined,
     };
   },
