@@ -85,7 +85,9 @@ confirmPasswordField.inputField.addEventListener('input', function () {
 });
 
 form.onsubmit = function (event) {
-    const acceptFormSubmission = evaluatePasswordSecurity() && checkIfPasswordAndConfirmMatch();
+    const passwordSecurityOk = evaluatePasswordSecurity()
+    const passwordAndConfirmMatch = checkIfPasswordAndConfirmMatch();
+    const acceptFormSubmission = passwordSecurityOk && passwordAndConfirmMatch
     if (!acceptFormSubmission)
         event.preventDefault()
     return acceptFormSubmission
