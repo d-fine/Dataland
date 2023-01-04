@@ -102,7 +102,7 @@
           data-test="regenerateApiKeyCancelButton"
           label="CANCEL"
           @click="regenerateConfirmToggle"
-          class="p-button-outlined text-sm"
+          class="p-button-outlined"
         />
         <PrimeButton
           data-test="regenerateApiKeyConfirmButton"
@@ -113,7 +113,6 @@
               regenerateConfirmToggle();
             }
           "
-          class="text-sm"
         />
       </template>
     </PrimeDialog>
