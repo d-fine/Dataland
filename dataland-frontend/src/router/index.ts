@@ -1,22 +1,24 @@
 import { createWebHistory, createRouter, RouteComponent } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = (): RouteComponent =>
+const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
-const WelcomeDataland = (): RouteComponent => import("@/components/pages/WelcomeDataland.vue");
-const CompanyInformation = (): RouteComponent => import("@/components/pages/CompanyInformation.vue");
-const SearchCompaniesForFrameworkData = (): RouteComponent =>
+const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
+const CompanyInformation = (): Promise<RouteComponent> => import("@/components/pages/CompanyInformation.vue");
+const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
-const ViewEuTaxonomyNonFinancialsSample = (): RouteComponent =>
+const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
   import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
-const TheImprint = (): RouteComponent => import("@/components/pages/TheImprint.vue");
-const DataPrivacy = (): RouteComponent => import("@/components/pages/DataPrivacy.vue");
-const NoContentFound = (): RouteComponent => import("@/components/pages/NoContentFound.vue");
-const UploadEuTaxonomyDataForFinancials = (): RouteComponent =>
+const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
+const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
+const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
+const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
-const UploadCompany = (): RouteComponent => import("@/components/pages/UploadCompany.vue");
-const SearchCompanies = (): RouteComponent => import("@/components/pages/SearchCompanies.vue");
-const ViewEuTaxonomyFinancials = (): RouteComponent => import("@/components/pages/ViewEuTaxonomyFinancials.vue");
-const ViewEuTaxonomyNonFinancials = (): RouteComponent => import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
-const ApiKeysPage = (): RouteComponent => import("@/components/pages/ApiKeysPage.vue");
+const UploadCompany = (): Promise<RouteComponent> => import("@/components/pages/UploadCompany.vue");
+const SearchCompanies = (): Promise<RouteComponent> => import("@/components/pages/SearchCompanies.vue");
+const ViewEuTaxonomyFinancials = (): Promise<RouteComponent> =>
+  import("@/components/pages/ViewEuTaxonomyFinancials.vue");
+const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
+  import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
+const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 
 const routes = [
   {
