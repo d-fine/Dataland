@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component
  * A class that manages sending emails
  */
 @Component
-class EmailSender {
+class EmailSender(
+    mailServerUrl: String = "https://api.eu.mailjet.com"
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val mailServerUrl: String = "https://api.eu.mailjet.com"
     private val clientOptions = ClientOptions.builder()
         .baseUrl(mailServerUrl)
         .apiKey(System.getenv("MAILJET_API_ID"))
