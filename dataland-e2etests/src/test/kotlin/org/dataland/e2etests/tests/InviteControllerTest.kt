@@ -20,7 +20,7 @@ class InviteControllerTest {
         val inviteMetaInfoEntity = inviteControllerApi.submitInvite(false, file)
         assertFalse(inviteMetaInfoEntity.wasInviteSuccessful!!)
         assertTrue(inviteMetaInfoEntity.inviteResultMessage!!.contains("file is empty"))
-        file.delete()
+        assertTrue(file.delete())
     }
 
     @Test
@@ -31,6 +31,6 @@ class InviteControllerTest {
         val inviteMetaInfoEntity = inviteControllerApi.submitInvite(false, file)
         assertFalse(inviteMetaInfoEntity.wasInviteSuccessful!!)
         assertTrue(inviteMetaInfoEntity.inviteResultMessage!!.contains(".xlsx format"))
-        file.delete()
+        assertTrue(file.delete())
     }
 }
