@@ -65,12 +65,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-@import "./assets/css/main.css";
-@import "./assets/css/variables";
-
-body {
-  margin: unset;
-}
-</style>
