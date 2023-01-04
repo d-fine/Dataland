@@ -5,16 +5,28 @@ let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
 
-let dataEnvironment
 let customSpecPattern
 
-if (process.env.REALDATA === "true") {
-    // config.env["DATA_ENVIRONMENT"] = "realData";
-    dataEnvironment = "realData"
-} else {
-    // config.env["DATA_ENVIRONMENT"] = "fakeFixtures";
-    dataEnvironment = "fakeFixtures"
+function getDataEnvironment() {
+    if (process.env.REALDATA === "true") {
+        // config.env["DATA_ENVIRONMENT"] = "realData";
+        return "realData"
+    } else {
+        return "fakeFixtures"
+    }
 }
+
+/*
+function getEnvironment() {
+    if (process.env.ENVIRONMENT == "development") {
+        console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
+        customSpecPattern = ["tests/e2e/specs/index.ts"];
+    } else {
+        console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+        customSpecPattern = ["tests/e2e/specs"];
+    }
+}
+ */
 
 if (process.env.ENVIRONMENT == "development") {
     console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
@@ -28,7 +40,7 @@ if (process.env.ENVIRONMENT == "development") {
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
-        DATA_ENVIRONMENT: dataEnvironment
+        DATA_ENVIRONMENT: getDataEnvironment()
     },
 
     numTestsKeptInMemory: 2,
