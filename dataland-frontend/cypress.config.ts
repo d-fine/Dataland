@@ -5,9 +5,8 @@ let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
 
-function getDataEnvironment() {
+function getDataEnvironmentBasedOnOperatingSystemEnv() {
     if (process.env.REALDATA === "true") {
-        // config.env["DATA_ENVIRONMENT"] = "realData";
         return "realData"
     } else {
         return "fakeFixtures"
@@ -15,7 +14,7 @@ function getDataEnvironment() {
 }
 
 
-function getEnvironment() {
+function getSpecPatternBasedOnOperatingSystemEnv() {
     if (process.env.ENVIRONMENT == "development") {
         console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
         return ["tests/e2e/specs/index.ts"];
@@ -26,11 +25,10 @@ function getEnvironment() {
 }
 
 
-
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
-        DATA_ENVIRONMENT: getDataEnvironment()
+        data_environment: getDataEnvironmentBasedOnOperatingSystemEnv()
     },
 
     numTestsKeptInMemory: 2,
@@ -49,7 +47,7 @@ export default defineConfig({
     downloadsFolder: "./tests/e2e/cypress_downloads",
 
     e2e: {
-        specPattern: getEnvironment(),
+        specPattern: getSpecPatternBasedOnOperatingSystemEnv(),
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
             on("task", {
