@@ -25,6 +25,8 @@ form {
 }
 
 input {
+  font-family: $ibm-plex-sans;
+  font-size: $input-text-fs;
   &[type="submit"], &[type="reset"] {
     border-radius: $radius-none
   }

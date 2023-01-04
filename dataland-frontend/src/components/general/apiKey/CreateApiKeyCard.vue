@@ -52,7 +52,7 @@
           {{
             expireTimeDropdown === "noExpiry"
               ? `The API Key has no defined expire date`
-              : `The API Key will expire on ${formatExpiryDate(expireTimeDropdown)}`
+              : `The API Key will expire on ${formatExpiryDate(expireTimeDays)}`
           }}
         </span>
       </div>
@@ -97,7 +97,7 @@ export default defineComponent({
     expireTimeDays: 0,
     expireTimeDropdown: "",
     isExpireTimeCorrect: true,
-    customDate: "",
+    customDate: null,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -112,8 +112,8 @@ export default defineComponent({
     setExpireTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expireTimeDays = 0;
-      } else if (event.value === "custom" && calculateDaysFromNow(this.customDate) > 0) {
-        this.expireTimeDays = calculateDaysFromNow(this.customDate);
+      } else if (event.value === "custom" && calculateDaysFromNow(this.customDate as unknown as number) > 0) {
+        this.expireTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
       } else {
         this.expireTimeDays = event.value as unknown as number;
       }
@@ -132,14 +132,10 @@ export default defineComponent({
       }
     },
   },
-  mounted() {
-    console.log('1 customDate ', this.customDate)
-  },
   watch: {
     customDate: function () {
-      this.expireTimeDays = calculateDaysFromNow(this.customDate);
+      this.expireTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
       this.isExpireTimeCorrect = true;
-      console.log('2 customDate ', this.customDate)
     },
   },
 });

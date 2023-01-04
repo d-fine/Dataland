@@ -78,7 +78,7 @@
 
           <ApiKeyCard
             :userRoles="userRolesAccordingToApiKey"
-            :expiryDate="expiryDate * 1000"
+            :expiryDate="expiryDate"
             @revokeKey="revokeApiKey"
           />
         </div>
@@ -204,7 +204,9 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
+        console.log('this.existsApiKey', this.existsApiKey)
+        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
+        console.log('this.expiryDate', new Date(this.expiryDate).toDateString())
       } catch (error) {
         console.error(error);
       }
@@ -234,7 +236,8 @@ export default defineComponent({
         const response = await apiKeyManagerController.generateApiKey(expirationTime);
         this.waitingForData = false;
         this.existsApiKey = true;
-        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : 0;
+        console.log('------> response.data ', response.data)
+        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles
