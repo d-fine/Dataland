@@ -9,25 +9,25 @@
     <#elseif section = "form">
         <form id="kc-register-form" action="${url.registrationAction}" method="post">
             <@inputField.dala
-            fieldName="email"
-            fieldErrorHandlers=["email"]
-            fieldHeading="Enter your email address"
-            tabindex="1"
-            autofocus=true
-            autocomplete="email"
-            type="text"
-            value=(register.formData.email!'')
+                fieldName="email"
+                fieldErrorHandlers=["email"]
+                fieldHeading="Enter your email address"
+                tabindex="1"
+                autofocus=true
+                autocomplete="email"
+                type="text"
+                value=(register.formData.email!'')
             />
 
             <@inputField.dala
-            fieldName="password"
-            inputGroupMargin="mt-5 mb-2"
-            fieldErrorHandlers=["password", "password-confirm"]
-            fieldHeading="Password"
-            tabindex="2"
-            autofocus=false
-            type="password"
-            autocomplete="off"
+                fieldName="password"
+                fieldErrorHandlers=["password", "password-confirm"]
+                fieldHeading="Password"
+                wrappingDivAttributes="data-role=\"password-primary\""
+                tabindex="2"
+                autofocus=false
+                type="password"
+                autocomplete="off"
             >
                 <div class="bg-black-alpha-20 d-progressbar mt-2" id="password-strength-indicator">
                     <div class="d-progressbar-value flex d-password-strength-empty">
@@ -36,13 +36,14 @@
             </@inputField.dala>
 
             <@inputField.dala
-            fieldName="password-confirm"
-            fieldErrorHandlers=["password", "password-confirm"]
-            fieldHeading="Repeat password"
-            tabindex="3"
-            autofocus=false
-            type="password"
-            autocomplete="off"
+                fieldName="password-confirm"
+                fieldErrorHandlers=["password", "password-confirm"]
+                fieldHeading="Repeat password"
+                wrappingDivAttributes="data-role=\"password-confirm\""
+                tabindex="3"
+                autofocus=false
+                type="password"
+                autocomplete="off"
             />
             
             <div class="text-left mt-4 flex align-items-center">

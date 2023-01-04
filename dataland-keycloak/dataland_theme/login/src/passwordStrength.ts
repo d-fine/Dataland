@@ -12,10 +12,12 @@ zxcvbnOptions.setOptions({
     },
 })
 
-const passwordFieldId = document.querySelector<HTMLInputElement>('#password-new') ? "password-new" : "password"
+const passwordFieldWrappingDiv = document.querySelector<HTMLDivElement>('div[data-role=password-primary]')!
+const passwordField = new InputField(passwordFieldWrappingDiv)
 
-const passwordField = new InputField(passwordFieldId)
-const confirmPasswordField = new InputField('password-confirm')
+const confirmPasswordFieldWrappingDiv = document.querySelector<HTMLDivElement>('div[data-role=password-confirm]')!
+const confirmPasswordField = new InputField(confirmPasswordFieldWrappingDiv)
+
 const form = document.querySelector<HTMLInputElement>('form')!
 const passwordStrengthIndicatorInner = document.querySelector<HTMLInputElement>('#password-strength-indicator > div')!
 

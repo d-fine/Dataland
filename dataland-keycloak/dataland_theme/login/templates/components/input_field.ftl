@@ -1,5 +1,5 @@
-<#macro dala fieldName fieldErrorHandlers fieldHeading autofocus=false message=true inputGroupMargin="mt-5 mb-5" additionalInputProperties...>
-    <div class="input-group text-left ${inputGroupMargin}">
+<#macro dala fieldName fieldErrorHandlers fieldHeading wrappingDivAttributes="" autofocus=false message=true additionalInputProperties...>
+    <div class="input-group text-left mt-5 mb-5" ${wrappingDivAttributes?no_esc}>
         <input
                 <#if messagesPerField.existsError(fieldErrorHandlers)>
                 class="error"
@@ -18,10 +18,7 @@
         <#nested>
 
         <div
-            id="input-error-${fieldName}"
-            <#if !message || !messagesPerField.existsError(fieldErrorHandlers)>
-            class="hidden"
-            </#if>
+            class="input-error-container <#if !message || !messagesPerField.existsError(fieldErrorHandlers)>hidden</#if>"
         >
             <span class="material-icons-outlined input-error-icon">error</span>
             <div class="input-error-wrapper">

@@ -15,13 +15,14 @@
             <input type="password" id="password" name="password" autocomplete="current-password" style="display:none;"/>
 
             <@inputField.dala
-            fieldName="password-new"
-            fieldErrorHandlers=["password", "password-confirm"]
-            fieldHeading="Password"
-            tabindex="1"
-            autofocus=false
-            type="password"
-            autocomplete="off"
+                fieldName="password-new"
+                fieldErrorHandlers=["password", "password-confirm"]
+                fieldHeading="Password"
+                wrappingDivAttributes="data-role=\"password-primary\""
+                tabindex="1"
+                autofocus=false
+                type="password"
+                autocomplete="off"
             >
                 <div class="bg-black-alpha-20 d-progressbar mt-2" id="password-strength-indicator">
                     <div class="d-progressbar-value flex d-password-strength-empty">
@@ -30,13 +31,14 @@
             </@inputField.dala>
 
             <@inputField.dala
-            fieldName="password-confirm"
-            fieldErrorHandlers=["password", "password-confirm"]
-            fieldHeading="Repeat password"
-            tabindex="2"
-            autofocus=false
-            type="password"
-            autocomplete="off"
+                fieldName="password-confirm"
+                fieldErrorHandlers=["password", "password-confirm"]
+                fieldHeading="Repeat password"
+                wrappingDivAttributes="data-role=\"password-confirm\""
+                tabindex="2"
+                autofocus=false
+                type="password"
+                autocomplete="off"
             />
 
             <#if isAppInitiatedAction??>

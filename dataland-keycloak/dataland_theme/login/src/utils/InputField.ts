@@ -3,10 +3,10 @@ export class InputField {
     public readonly inputErrorContainer: HTMLDivElement;
     public readonly inputErrorTextSpan: HTMLSpanElement;
 
-    constructor(fieldId: string) {
-        this.inputField = document.querySelector<HTMLInputElement>(`#${fieldId}`)!,
-        this.inputErrorContainer = document.querySelector<HTMLDivElement>(`#input-error-${fieldId}`)!,
-        this.inputErrorTextSpan = document.querySelector<HTMLSpanElement>(`#input-error-${fieldId} span.input-error`)!
+    constructor(public readonly inputFieldContainer: HTMLDivElement) {
+        this.inputField = inputFieldContainer.querySelector<HTMLInputElement>(`input`)!
+        this.inputErrorContainer = inputFieldContainer.querySelector<HTMLDivElement>(`div.input-error-container`)!
+        this.inputErrorTextSpan = inputFieldContainer.querySelector<HTMLSpanElement>(`span.input-error`)!
     }
     overrideFieldErrorMessage(errorMessage?: string) {
         if (errorMessage) {
