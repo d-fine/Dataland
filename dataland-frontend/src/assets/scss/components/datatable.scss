@@ -1,0 +1,72 @@
+.p-datatable {
+  border-radius: 0;
+  background: $table-background-color;
+  color: $main-text-color;
+  tr {
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: $table-border-dark;
+    &:hover {
+      background: $table-background-hover-color;
+    }
+    th, td {
+      text-align: left;
+      padding: 1rem;
+    }
+  }
+  .p-datatable-tbody {
+    tr {
+      border-color: lighten($table-border-dark, 45%);
+    }
+  }
+  .p-sortable-column {
+    .p-sortable-column-icon {
+      color: $table-icon-color;
+      margin-left: .5rem;
+    }
+    &.p-highlight {
+      background: $table-background-color;
+      color: $main-color;
+      .p-sortable-column-icon {
+        color: $main-color;
+      }
+    }
+  }
+
+}
+
+.p-paginator {
+  background: #fff;
+  color: $pagination-color;
+  padding: .5rem 1rem;
+  .p-paginator-first, .p-paginator-prev, .p-paginator-next, .p-paginator-last {
+    min-width: 2.357rem;
+    height: 2.357rem;
+    margin: .143rem;
+    &:not(.p-disabled) {
+      &:not(.p-highlight) {
+        &:hover {
+          background: $pagination-bg-hover;
+        }
+      }
+    }
+  }
+  .p-paginator-current {
+    min-width: 2.357rem;
+    height: 2.357rem;
+    margin: .143rem;
+    padding: 0 .5rem;
+  }
+  .p-paginator-pages {
+    .p-paginator-page {
+      min-width: 2.357rem;
+      height: 2.357rem;
+      margin: .143rem;
+    }
+    .p-paginator-page.p-highlight {
+      background: $main-color;
+      border-color: $main-color;
+      color: $bg-text-primary;
+    }
+  }
+}

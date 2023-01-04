@@ -15,8 +15,6 @@
           name="companyId"
           label="Company ID"
           placeholder="Company ID"
-          :inner-class="innerClass"
-          :input-class="inputClass"
           :disabled="true"
           :model-value="companyID"
         />
@@ -28,8 +26,6 @@
               validation="required"
               label="Assurance"
               placeholder="Please choose"
-              :inner-class="innerClass"
-              :input-class="inputClass"
               :options="{
                 None: humanizeString('None'),
                 LimitedAssurance: humanizeString('LimitedAssurance'),

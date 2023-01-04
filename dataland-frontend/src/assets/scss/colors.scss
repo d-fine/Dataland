@@ -1,0 +1,65 @@
+// buttons
+$btn-primary-color: $white;
+$btn-primary-bg: $orange-prime;
+$btn-danger-bg: $red;
+$btn-success-bg: $green;
+$btn-disabled-color: $gray;
+$btn-focus-border-color: $blue-light;
+
+//table
+$table-background-color: $white;
+$table-background-hover-color: $gray-light;
+$table-border: $gray-light;
+$table-border-dark: $gray;
+$table-icon-color: $gray;
+
+//pagination
+$pagination-color: $gray;
+$pagination-bg-hover: $gray-light;
+
+// typography
+$main-text-color: $brown-dark;
+$main-color: $orange-prime;
+$bg-text-primary: $white;
+$text-color-secondary: $gray;
+$text-color-third: $brown-light;
+$menu-text-color: $orange-prime;
+
+//cards
+$card-background: $paper-white;
+$card-text: $brown-dark;
+$progressbar-bg: $surface-ground;
+$progressbar-color: $orange-prime;
+
+//forms
+$input-text-color: $brown-dark;
+$input-label-color: $aquamarine-dark;
+$input-text-bg: $paper-white;
+$input-text-border: $brown-lighter;
+$input-text-border-hover: $orange-prime;
+$input-error: $red;
+$input-checked-color: $orange-prime;
+$dropdown-options-bg: var(--surface-hover);
+
+//messages
+$message-block-bg: var(--primary-color-100);
+$message-block-border: $orange-prime;
+$message-block-text: $brown-dark;
+
+$message-info-bg: var(--blue-600);
+$message-info-border: var(--blue-800);
+$message-info-text: $white;
+
+$message-success-bg: var(--green-600);
+$message-success-border: var(--green-800);
+$message-success-text: $white;
+
+$message-warn-bg: var(--yellow-600);
+$message-warn-border: var(--yellow-800);
+$message-warn-text: $brown-dark;
+
+$message-error-bg: var(--red-600);
+$message-error-border: var(--red-800);
+$message-error-text: $white;
+
+

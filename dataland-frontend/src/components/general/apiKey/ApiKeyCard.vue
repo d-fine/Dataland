@@ -33,7 +33,7 @@
         <PrimeButton
           label="DELETE"
           icon="pi pi-trash"
-          class="p-button-outlined ml-3 px-4 text-sm border-2 p-button-danger font-bold"
+          class="p-button-outlined ml-3 px-4 border-2 p-button-danger"
           @click="deleteConfirmToggle"
         />
       </div>

@@ -1,0 +1,22 @@
+.p-menu {
+  padding: .25rem 0;
+  background: var(--surface-900);
+  color: $menu-text-color;
+  border: 1px solid #dee2e6;
+  border-radius: 0;
+  transform: translate(0, 1rem);
+  width: 12.5rem;
+  font-weight: $light-bold-weight;
+  .p-menuitem-link {
+    padding: 1rem;
+    border-radius: 0;
+    transition: background-color .2s, border-color .2s, box-shadow .2s;
+    user-select: none;
+    &:not(.p-disabled):hover {
+      background: #e9ecef;
+    }
+    .p-menuitem-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
