@@ -99,11 +99,6 @@ export class SchemaGenerator {
         label: humanizeString(index),
         name: index,
         validation: validation,
-        classes: {
-          outer: { "formkit-outer": false },
-          inner: { "formkit-inner": false },
-          input: { "formkit-input": false, "p-radiobutton:": true },
-        },
         options: enumProperties,
       });
     }
@@ -117,10 +112,6 @@ export class SchemaGenerator {
       placeholder: humanizeString(index),
       name: index,
       validation: validation,
-      classes: {
-        inner: { "formkit-inner": false, "p-inputwrapper": true },
-        input: { "formkit-input": false, "p-inputtext": true },
-      },
     });
   }
 
@@ -140,11 +131,6 @@ export class SchemaGenerator {
         name: index,
         validation: validation,
         options: enumProperties,
-        classes: {
-          outer: { "formkit-outer": false },
-          inner: { "formkit-inner": false },
-          input: { "formkit-input": false },
-        },
       });
     }
   }
@@ -155,10 +141,6 @@ export class SchemaGenerator {
       label: humanizeString(index),
       name: index,
       validation: validation,
-      classes: {
-        inner: { "formkit-inner": false, "p-inputwrapper": true },
-        input: { "formkit-input": false, "p-inputtext": true },
-      },
     });
   }
 }

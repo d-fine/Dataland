@@ -1,13 +1,13 @@
 <template>
-  <div class="surface-800">
+  <div class="second-section">
     <div class="grid m-0">
       <div class="col-offset-3 col-3">
         <div class="grid">
-          <div class="col-10 text-left text-gray-100">
+          <div class="col-10 text-left">
             <h2 class="mb-0">Explore Dataland.</h2>
             <h2 class="mt-0">No preview account required.</h2>
           </div>
-          <div class="col-10 text-left text-gray-100">
+          <div class="col-10 text-left">
             <p>View the EU Taxonomy Data of <strong>BMW</strong>, before creating a preview account.</p>
           </div>
           <div class="col-10 text-left p-fluid">
