@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import javax.validation.Valid
+import jakarta.validation.Valid
 
 /**
  * Defines the restful dataland-backend API regarding data exchange
