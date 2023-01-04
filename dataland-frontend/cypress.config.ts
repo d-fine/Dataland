@@ -90,6 +90,7 @@ export default defineConfig({
                 },
             })
         },
+        experimentalSessionAndOrigin: true,
         supportFile: "tests/e2e/support/index.ts",
     },
     component: {
