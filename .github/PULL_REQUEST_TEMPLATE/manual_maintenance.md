@@ -60,6 +60,8 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Check that the verification e-mail is sent and displayed correctly
 - [ ] Check that the reset password e-mail is sent and displayed correctly
 - [ ] Check that the password can be reset
+- [ ] Check that account linking via e-mail verification works correctly
+- [ ] Check that account linking via username & password verification works correctly
 
 ## Conclusion
 - [ ] After updating all components check if everything still works
