@@ -68,9 +68,9 @@ export default defineComponent({
     },
 
     whenKeyExpire() {
-      if (this.expiryDate && this.expiryDate >= Date.now()) {
+      if (this.expiryDate && this.expiryDate * 1000 >= Date.now()) {
         return `The API Key will expire on ${formatExpiryDate(this.expiryDateInDays)}`;
-      } else if (this.expiryDate && this.expiryDate < Date.now()) {
+      } else if (this.expiryDate && this.expiryDate * 1000 < Date.now()) {
         return `The API Key expired ${formatExpiryDate(this.expiryDateInDays)}`;
       } else {
         return "The API Key has no defined expire date";
