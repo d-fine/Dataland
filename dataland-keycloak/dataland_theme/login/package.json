@@ -4,6 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && tsc -p tsconfig.config.json && vite build",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0 --no-fix",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix"
   },
@@ -18,8 +20,12 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.13",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "npm-check-updates": "^16.3.18",
-    "typescript": "^4.9.3",
+    "typescript": "^4.9.4",
     "vite": "^3.2.5"
   }
 }
