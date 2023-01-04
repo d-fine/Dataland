@@ -76,11 +76,7 @@
             </template>
           </MessageComponent>
 
-          <ApiKeyCard
-            :userRoles="userRolesAccordingToApiKey"
-            :expiryDate="expiryDate * 1000"
-            @revokeKey="revokeApiKey"
-          />
+          <ApiKeyCard :userRoles="userRolesAccordingToApiKey" :expiryDate="expiryDate" @revokeKey="revokeApiKey" />
         </div>
       </div>
     </TheContent>
@@ -165,7 +161,7 @@ export default defineComponent({
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
-      expiryDate: 0,
+      expiryDate: null as null | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
     };
@@ -203,7 +199,7 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
+        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
       } catch (error) {
         console.error(error);
       }
@@ -233,7 +229,7 @@ export default defineComponent({
         const response = await apiKeyManagerController.generateApiKey(expirationTime);
         this.waitingForData = false;
         this.existsApiKey = true;
-        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : 0;
+        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles

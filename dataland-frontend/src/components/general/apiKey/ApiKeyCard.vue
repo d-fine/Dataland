@@ -64,7 +64,7 @@ export default defineComponent({
   }),
   computed: {
     expiryDateInDays() {
-      return calculateDaysFromNow(this.expiryDate);
+      return calculateDaysFromNow(this.expiryDate * 1000);
     },
 
     whenKeyExpire() {
@@ -82,7 +82,7 @@ export default defineComponent({
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
     },
     isKeyExpired() {
-      return this.expiryDate >= new Date().getTime();
+      return this.expiryDate * 1000 >= new Date().getTime() || this.expiryDate == null;
     },
   },
 });
