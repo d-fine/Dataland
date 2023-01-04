@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -21,7 +22,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
-import javax.transaction.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)

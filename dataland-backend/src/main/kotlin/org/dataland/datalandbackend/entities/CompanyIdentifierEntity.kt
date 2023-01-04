@@ -1,9 +1,5 @@
 package org.dataland.datalandbackend.entities
 
-import org.dataland.datalandbackend.interfaces.ApiModelConversion
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.springframework.data.domain.Persistable
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -14,6 +10,10 @@ import jakarta.persistence.IdClass
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
+import org.dataland.datalandbackend.model.CompanyIdentifier
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.springframework.data.domain.Persistable
 
 /**
  * The database entity for storing company identifiers

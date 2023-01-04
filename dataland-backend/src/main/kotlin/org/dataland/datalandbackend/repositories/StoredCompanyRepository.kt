@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.repositories
 
+import jakarta.persistence.QueryHint
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.jpa.repository.QueryHints
 import org.springframework.data.repository.query.Param
-import jakarta.persistence.QueryHint
 
 /**
  * A JPA repository for accessing the StoredCompany Entity

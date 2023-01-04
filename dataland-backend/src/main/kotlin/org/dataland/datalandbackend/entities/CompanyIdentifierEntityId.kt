@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.entities
 
+import jakarta.persistence.Embeddable
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import java.io.Serializable
-import jakarta.persistence.Embeddable
 
 /**
  * The Composite Id for the company identifier entity

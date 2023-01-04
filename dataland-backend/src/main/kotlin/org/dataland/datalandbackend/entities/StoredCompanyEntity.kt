@@ -1,15 +1,15 @@
 package org.dataland.datalandbackend.entities
 
 import com.fasterxml.jackson.annotation.JsonValue
-import org.dataland.datalandbackend.interfaces.ApiModelConversion
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.StoredCompany
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.interfaces.ApiModelConversion
+import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.StoredCompany
 
 /**
  * The entity storing data regarding a company stored in dataland
