@@ -4,10 +4,31 @@ import {rmdir} from "fs";
 let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
-export default defineConfig({
 
+let dataEnvironment
+let customSpecPattern
+
+if (process.env.REALDATA === "true") {
+    // config.env["DATA_ENVIRONMENT"] = "realData";
+    dataEnvironment = "realData"
+} else {
+    // config.env["DATA_ENVIRONMENT"] = "fakeFixtures";
+    dataEnvironment = "fakeFixtures"
+}
+
+if (process.env.ENVIRONMENT == "development") {
+    console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
+    customSpecPattern = ["tests/e2e/specs/index.ts"];
+} else {
+    console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+    customSpecPattern = ["tests/e2e/specs"];
+}
+
+
+export default defineConfig({
     env: {
-        commit_id: require("git-commit-id")({cwd: "../"})
+        commit_id: require("git-commit-id")({cwd: "../"}),
+        DATA_ENVIRONMENT: dataEnvironment
     },
 
     numTestsKeptInMemory: 2,
@@ -20,28 +41,15 @@ export default defineConfig({
         runMode: 2,
         openMode: 1,
     },
+    watchForFileChanges: false,
 
     fixturesFolder: "../testing/data",
     downloadsFolder: "./tests/e2e/cypress_downloads",
 
     e2e: {
+        specPattern: customSpecPattern,
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
-
-            if (process.env.REALDATA === "true") {
-                config.env["DATA_ENVIRONMENT"] = "realData";
-            } else {
-                config.env["DATA_ENVIRONMENT"] = "fakeFixtures";
-            }
-
-            if (config.env["EXECUTION_ENVIRONMENT"] !== "developmentLocal") {
-                console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
-                config.specPattern = ["tests/e2e/specs/index.ts"];
-            } else {
-                console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
-                config.specPattern = ["tests/e2e/specs"];
-            }
-
             on("task", {
                 setEmail: (val: string) => {
                     return (returnEmail = val);
@@ -80,7 +88,6 @@ export default defineConfig({
                 },
             })
         },
-        experimentalSessionAndOrigin: true,
         supportFile: "tests/e2e/support/index.ts",
     },
     component: {
