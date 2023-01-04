@@ -15,7 +15,8 @@ function getDataEnvironmentBasedOnOperatingSystemEnv() {
 
 
 function getSpecPatternBasedOnOperatingSystemEnv() {
-    if (process.env.ENVIRONMENT == "development") {
+    console.log("ENVIRONMENT is " + process.env.ENVIRONMENT)
+    if (process.env.ENVIRONMENT) {
         console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
         return ["tests/e2e/specs/index.ts"];
     } else {
