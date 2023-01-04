@@ -76,11 +76,7 @@
             </template>
           </MessageComponent>
 
-          <ApiKeyCard
-            :userRoles="userRolesAccordingToApiKey"
-            :expiryDate="expiryDate"
-            @revokeKey="revokeApiKey"
-          />
+          <ApiKeyCard :userRoles="userRolesAccordingToApiKey" :expiryDate="expiryDate" @revokeKey="revokeApiKey" />
         </div>
       </div>
     </TheContent>
@@ -102,7 +98,7 @@
           data-test="regenerateApiKeyCancelButton"
           label="CANCEL"
           @click="regenerateConfirmToggle"
-          class="p-button-outlined text-sm"
+          class="p-button-outlined"
         />
         <PrimeButton
           data-test="regenerateApiKeyConfirmButton"
@@ -113,7 +109,6 @@
               regenerateConfirmToggle();
             }
           "
-          class="text-sm"
         />
       </template>
     </PrimeDialog>
@@ -166,7 +161,7 @@ export default defineComponent({
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
-      expiryDate: 0,
+      expiryDate: null as null | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
     };
@@ -204,9 +199,7 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        console.log('this.existsApiKey', this.existsApiKey)
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
-        console.log('this.expiryDate', new Date(this.expiryDate).toDateString())
       } catch (error) {
         console.error(error);
       }
@@ -236,7 +229,6 @@ export default defineComponent({
         const response = await apiKeyManagerController.generateApiKey(expirationTime);
         this.waitingForData = false;
         this.existsApiKey = true;
-        console.log('------> response.data ', response.data)
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles

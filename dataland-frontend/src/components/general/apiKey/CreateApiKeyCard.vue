@@ -62,7 +62,7 @@
         data-test="cancelGenerateApiKey"
         label="CANCEL"
         @click="$emit('cancelCreate')"
-        class="p-button-outlined text-sm ml-3"
+        class="p-button-outlined ml-3"
       />
       <PrimeButton
         id="generateApiKey"

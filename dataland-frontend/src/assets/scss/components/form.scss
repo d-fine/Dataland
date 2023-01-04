@@ -65,6 +65,7 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .p-inputtext {
+  font-family: $ibm-plex-sans;
   color: $input-text-color;
   background: $input-text-bg;
   padding: $spacing-xs;

@@ -50,6 +50,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
       "apiKeyInfo"
     );
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
+    cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
       "contain",
       "If you don't have access to your API Key you can generate a new one"

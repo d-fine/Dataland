@@ -6,8 +6,8 @@
     Are you sure you want to delete this API key?
     <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
     <template #footer>
-      <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined text-sm" />
-      <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" class="text-sm" />
+      <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined" />
+      <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" />
     </template>
   </PrimeDialog>
 
@@ -16,9 +16,8 @@
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
-          <h4>{{expiryDate}}</h4>
-          <span :class="{ 'text-red-700': !isKeyExpired }" class="block text-600 mb-3 mt-6">
-            {{ isKeyExpired }}
+          <span :class="{ 'text-red-700': !isKeyExpired() }" class="block text-600 mb-3 mt-6">
+            {{ whenKeyExpire }}
           </span>
         </div>
 
@@ -68,10 +67,10 @@ export default defineComponent({
       return calculateDaysFromNow(this.expiryDate * 1000);
     },
 
-    isKeyExpired() {
-      if (this.expiryDate && this.expiryDate >= Date.now()) {
+    whenKeyExpire() {
+      if (this.expiryDate && this.expiryDate * 1000 >= Date.now()) {
         return `The API Key will expire on ${formatExpiryDate(this.expiryDateInDays)}`;
-      } else if (this.expiryDate && this.expiryDate < Date.now()) {
+      } else if (this.expiryDate && this.expiryDate * 1000 < Date.now()) {
         return `The API Key expired ${formatExpiryDate(this.expiryDateInDays)}`;
       } else {
         return "The API Key has no defined expire date";
@@ -81,6 +80,9 @@ export default defineComponent({
   methods: {
     deleteConfirmToggle() {
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
+    },
+    isKeyExpired() {
+      return this.expiryDate * 1000 >= new Date().getTime() || this.expiryDate == null;
     },
   },
 });
