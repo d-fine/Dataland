@@ -20,10 +20,7 @@
                 >
                 <div class="flex align-items-center" @click="createNewRequest">
                   <a class="pr-3 text-primary font-semibold">NEW DATA REQUEST</a>
-                  <img
-                    src="@/assets/images/elements/add_button.svg"
-                    alt="remove-file-button"
-                  />
+                  <img src="@/assets/images/elements/add_button.svg" alt="remove-file-button" />
                 </div>
               </div>
             </InfoCard>
