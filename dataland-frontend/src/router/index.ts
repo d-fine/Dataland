@@ -1,18 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
-import UploadEuTaxonomyDataForNonFinancials from "@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue";
-import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
-import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import ViewEuTaxonomyNonFinancialsSample from "@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue";
-import TheImprint from "@/components/pages/TheImprint.vue";
-import DataPrivacy from "@/components/pages/DataPrivacy.vue";
-import NoContentFound from "@/components/pages/NoContentFound.vue";
-import UploadEuTaxonomyDataForFinancials from "@/components/pages/UploadEuTaxonomyDataForFinancials.vue";
-import UploadCompany from "@/components/pages/UploadCompany.vue";
-import SearchCompanies from "@/components/pages/SearchCompanies.vue";
-import ViewEuTaxonomyFinancials from "@/components/pages/ViewEuTaxonomyFinancials.vue";
-import ViewEuTaxonomyNonFinancials from "@/components/pages/ViewEuTaxonomyNonFinancials.vue";
-import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
+const UploadEuTaxonomyDataForNonFinancials = () => import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
+const WelcomeDataland = () => import("@/components/pages/WelcomeDataland.vue");
+const CompanyInformation = () => import("@/components/pages/CompanyInformation.vue");
+const SearchCompaniesForFrameworkData = () => import("@/components/pages/SearchCompaniesForFrameworkData.vue");
+const ViewEuTaxonomyNonFinancialsSample = () => import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
+const TheImprint = () => import("@/components/pages/TheImprint.vue");
+const DataPrivacy = () => import("@/components/pages/DataPrivacy.vue");
+const NoContentFound = () => import("@/components/pages/NoContentFound.vue");
+const UploadEuTaxonomyDataForFinancials = () => import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
+const UploadCompany = () => import("@/components/pages/UploadCompany.vue");
+const SearchCompanies = () => import("@/components/pages/SearchCompanies.vue");
+const ViewEuTaxonomyFinancials = () => import("@/components/pages/ViewEuTaxonomyFinancials.vue");
+const ViewEuTaxonomyNonFinancials = () => import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
+const ApiKeysPage = () => import("@/components/pages/ApiKeysPage.vue");
 
 const routes = [
   {
