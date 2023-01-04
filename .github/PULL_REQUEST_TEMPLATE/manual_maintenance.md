@@ -12,6 +12,7 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
 - [ ] springboot 2.7.7 not updated to 3.0.X, due to various issues
+- [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
