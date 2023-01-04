@@ -45,32 +45,6 @@
   </div>
 </template>
 
-<style>
-.d-framework-searchbar-input-icon {
-  padding-left: 0.75rem !important;
-}
-
-.d-framework-searchbar-input {
-  padding-left: 3rem !important;
-}
-
-.d-framework-searchbar-panel {
-  max-height: 500px !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-items {
-  padding: 0 !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-item {
-  height: 3.5rem !important;
-  padding: 0 !important;
-  display: flex;
-  align-content: center;
-  align-items: center;
-}
-</style>
-
 <script lang="ts">
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";

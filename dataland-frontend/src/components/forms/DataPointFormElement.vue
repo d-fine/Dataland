@@ -6,8 +6,6 @@
       type="text"
       :name="`${name}`"
       :label="label"
-      :inner-class="innerClass"
-      :input-class="inputClass"
       validation="number"
       :ignore="true"
     />

@@ -94,36 +94,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-// Global style is required to overwrite styles of the panel
-.d-framework-data-search-dropdown {
-  .p-multiselect-item {
-    color: black !important;
-    border: none !important;
-    font-weight: 400;
-
-    &.p-highlight {
-      color: #e67f3f !important;
-      background: #fdefe6 !important;
-    }
-
-    &.p-disabled {
-      color: #958d7c !important;
-
-      &::after {
-        content: "(Not available)";
-        margin-left: 0.2rem;
-        font-weight: 500;
-        color: black !important;
-      }
-    }
-  }
-  .p-multiselect-close {
-    display: none;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 :deep(.p-multiselect-label-container) {
   display: none;
@@ -136,11 +106,11 @@ export default defineComponent({
 
 :deep(.p-multiselect) {
   background: none;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 :deep(.p-multiselect-trigger) {
-  width: auto !important;
+  width: auto;
 }
 
 :deep(.selection-button) {
