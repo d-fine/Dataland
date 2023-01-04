@@ -22,7 +22,7 @@ describe("As a user I want to be able to register for an account and be able to 
         .get("input[type='submit']")
         .should("exist")
         .click()
-        .get("#input-error-password span.input-error")
+        .get("div[data-role=password-primary] span.input-error")
         .should("be.visible")
         .should("contain.text", errorMessageSubstring);
     };
