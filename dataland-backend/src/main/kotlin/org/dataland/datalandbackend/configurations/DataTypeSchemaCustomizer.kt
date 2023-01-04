@@ -4,8 +4,8 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.media.Schema
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.model.DataType
-import org.springdoc.core.utils.SpringDocUtils
 import org.springdoc.core.customizers.OpenApiCustomizer
+import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.stereotype.Component
 
 /**
