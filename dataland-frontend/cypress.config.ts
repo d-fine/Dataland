@@ -5,8 +5,6 @@ let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
 
-let customSpecPattern
-
 function getDataEnvironment() {
     if (process.env.REALDATA === "true") {
         // config.env["DATA_ENVIRONMENT"] = "realData";
@@ -16,25 +14,17 @@ function getDataEnvironment() {
     }
 }
 
-/*
+
 function getEnvironment() {
     if (process.env.ENVIRONMENT == "development") {
         console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
-        customSpecPattern = ["tests/e2e/specs/index.ts"];
+        return ["tests/e2e/specs/index.ts"];
     } else {
         console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
-        customSpecPattern = ["tests/e2e/specs"];
+        return ["tests/e2e/specs"];
     }
 }
- */
 
-if (process.env.ENVIRONMENT == "development") {
-    console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
-    customSpecPattern = ["tests/e2e/specs/index.ts"];
-} else {
-    console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
-    customSpecPattern = ["tests/e2e/specs"];
-}
 
 
 export default defineConfig({
@@ -59,7 +49,7 @@ export default defineConfig({
     downloadsFolder: "./tests/e2e/cypress_downloads",
 
     e2e: {
-        specPattern: customSpecPattern,
+        specPattern: getEnvironment(),
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
             on("task", {
