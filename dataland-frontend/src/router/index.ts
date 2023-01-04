@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = () => import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
+const UploadEuTaxonomyDataForNonFinancials = () =>
+  import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = () => import("@/components/pages/WelcomeDataland.vue");
 const CompanyInformation = () => import("@/components/pages/CompanyInformation.vue");
 const SearchCompaniesForFrameworkData = () => import("@/components/pages/SearchCompaniesForFrameworkData.vue");
