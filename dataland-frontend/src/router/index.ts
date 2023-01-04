@@ -1,19 +1,22 @@
-import { createWebHistory, createRouter } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = () =>
+import { createWebHistory, createRouter, RouteComponent } from "vue-router";
+const UploadEuTaxonomyDataForNonFinancials = (): RouteComponent =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
-const WelcomeDataland = () => import("@/components/pages/WelcomeDataland.vue");
-const CompanyInformation = () => import("@/components/pages/CompanyInformation.vue");
-const SearchCompaniesForFrameworkData = () => import("@/components/pages/SearchCompaniesForFrameworkData.vue");
-const ViewEuTaxonomyNonFinancialsSample = () => import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
-const TheImprint = () => import("@/components/pages/TheImprint.vue");
-const DataPrivacy = () => import("@/components/pages/DataPrivacy.vue");
-const NoContentFound = () => import("@/components/pages/NoContentFound.vue");
-const UploadEuTaxonomyDataForFinancials = () => import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
-const UploadCompany = () => import("@/components/pages/UploadCompany.vue");
-const SearchCompanies = () => import("@/components/pages/SearchCompanies.vue");
-const ViewEuTaxonomyFinancials = () => import("@/components/pages/ViewEuTaxonomyFinancials.vue");
-const ViewEuTaxonomyNonFinancials = () => import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
-const ApiKeysPage = () => import("@/components/pages/ApiKeysPage.vue");
+const WelcomeDataland = (): RouteComponent => import("@/components/pages/WelcomeDataland.vue");
+const CompanyInformation = (): RouteComponent => import("@/components/pages/CompanyInformation.vue");
+const SearchCompaniesForFrameworkData = (): RouteComponent =>
+  import("@/components/pages/SearchCompaniesForFrameworkData.vue");
+const ViewEuTaxonomyNonFinancialsSample = (): RouteComponent =>
+  import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
+const TheImprint = (): RouteComponent => import("@/components/pages/TheImprint.vue");
+const DataPrivacy = (): RouteComponent => import("@/components/pages/DataPrivacy.vue");
+const NoContentFound = (): RouteComponent => import("@/components/pages/NoContentFound.vue");
+const UploadEuTaxonomyDataForFinancials = (): RouteComponent =>
+  import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
+const UploadCompany = (): RouteComponent => import("@/components/pages/UploadCompany.vue");
+const SearchCompanies = (): RouteComponent => import("@/components/pages/SearchCompanies.vue");
+const ViewEuTaxonomyFinancials = (): RouteComponent => import("@/components/pages/ViewEuTaxonomyFinancials.vue");
+const ViewEuTaxonomyNonFinancials = (): RouteComponent => import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
+const ApiKeysPage = (): RouteComponent => import("@/components/pages/ApiKeysPage.vue");
 
 const routes = [
   {
