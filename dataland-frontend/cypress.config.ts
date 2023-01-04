@@ -13,19 +13,6 @@ function getDataEnvironmentBasedOnOperatingSystemEnv() {
     }
 }
 
-
-function getSpecPatternBasedOnOperatingSystemEnv() {
-    console.log("ENVIRONMENT is " + process.env.ENVIRONMENT)
-    if (process.env.ENVIRONMENT) {
-        console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
-        return ["tests/e2e/specs/index.ts"];
-    } else {
-        console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
-        return ["tests/e2e/specs"];
-    }
-}
-
-
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
@@ -48,9 +35,17 @@ export default defineConfig({
     downloadsFolder: "./tests/e2e/cypress_downloads",
 
     e2e: {
-        specPattern: getSpecPatternBasedOnOperatingSystemEnv(),
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
+
+            if (config.env["EXECUTION_ENVIRONMENT"] === "developmentLocal") {
+                console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+                config.specPattern = ["tests/e2e/specs"];
+            } else {
+                console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
+                config.specPattern = ["tests/e2e/specs/index.ts"];
+            }
+
             on("task", {
                 setEmail: (val: string) => {
                     return (returnEmail = val);
@@ -88,6 +83,7 @@ export default defineConfig({
                     })
                 },
             })
+            return config
         },
         experimentalSessionAndOrigin: true,
         supportFile: "tests/e2e/support/index.ts",
