@@ -17,7 +17,6 @@ The following known issues need to be reviewed in case a compatible version is a
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
-  Note: fasterXML is managed by spring, thus NO manual version update should be conducted
 - [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
@@ -81,7 +80,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
 - [ ] The new version is deployed to the dev server using this branch
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
