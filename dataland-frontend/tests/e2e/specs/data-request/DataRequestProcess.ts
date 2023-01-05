@@ -179,6 +179,7 @@ describe("As a user I expect a data request page where I can download an excel t
           uploadBoxShouldBeEmpty();
           validateThatErrorMessageContains([it.filename, it.errorMessage]);
           validateThatSubmitButtonIsDisabled();
+          cy.get("button.p-message-close").click();
         });
       });
 
@@ -229,6 +230,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(finishedTextSelector).then((element: JQuery<HTMLElement>) => {
           expect(element.text()).to.equal("100%");
         });
+        cy.get("div.message-success").should("contain.text", "submit");
       });
 
       it(`Test the failure response screen`, () => {
