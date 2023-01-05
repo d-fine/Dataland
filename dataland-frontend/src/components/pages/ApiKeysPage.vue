@@ -81,6 +81,17 @@
             :expiryDate="expiryDate * 1000"
             @revokeKey="revokeApiKey"
           />
+
+          <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
+            <div>
+              <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
+              <div class="block text-600 mb-2 mt-4 text-left">
+                In order to use the API Key, include it into the http request header via "dataland-api-key:
+                &lt;ApiKeyValue&gt;". Alternatively it can be used like a bearer token by adding "Authorization: Bearer
+                &lt;ApiKeyValue&gt;" to the http request header.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </TheContent>
