@@ -4,8 +4,8 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.media.Schema
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.model.DataType
-import org.springdoc.core.SpringDocUtils
-import org.springdoc.core.customizers.OpenApiCustomiser
+import org.springdoc.core.customizers.OpenApiCustomizer
+import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.stereotype.Component
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  * in the OpenApi Spec
  */
 @Component
-class DataTypeSchemaCustomizer : OpenApiCustomiser {
+class DataTypeSchemaCustomizer : OpenApiCustomizer {
     init {
         val dataTypeEnumRefSchema = Schema<Any>()
         dataTypeEnumRefSchema.`$ref` = "#/components/schemas/DataTypeEnum"

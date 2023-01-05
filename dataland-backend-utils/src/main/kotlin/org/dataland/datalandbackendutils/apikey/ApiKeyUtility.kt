@@ -99,14 +99,14 @@ class ApiKeyUtility {
      * verifies whether an encoded secret and a secret match
      */
     fun matchesSecretAndEncodedSecret(secret: String, encodedSecret: String): Boolean {
-        return Argon2PasswordEncoder().matches(secret, encodedSecret)
+        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().matches(secret, encodedSecret)
     }
 
     /**
      * Encodes a secret to a storable format
      */
     fun encodeSecret(secret: String): String {
-        return Argon2PasswordEncoder().encode(secret)
+        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(secret)
     }
 
     /**

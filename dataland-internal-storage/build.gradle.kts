@@ -37,6 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")

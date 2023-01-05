@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.preauth.RequestHeaderAuth
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 
 /**
  * Configuration applied on all web endpoints defined for this
@@ -24,7 +25,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
  */
 @Configuration
 @Profile("!unprotected")
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
@@ -65,12 +66,12 @@ class WebSecurityConfig(
 
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
-        val publicLinksArray = publicLinks.split(",").toTypedArray()
+        val publicLinkMatchers = publicLinks.split(",").map { antMatcher(it) }.toTypedArray()
         http
-            .authorizeRequests()
-            .antMatchers(*publicLinksArray).permitAll()
-            .anyRequest()
-            .fullyAuthenticated().and()
+            .authorizeHttpRequests()
+            .requestMatchers(*publicLinkMatchers).permitAll()
+            .anyRequest().fullyAuthenticated()
+            .and()
             .csrf().disable()
             .oauth2ResourceServer().jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
     }
