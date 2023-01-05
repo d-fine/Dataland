@@ -372,6 +372,7 @@
     "containerId" : "datalandsecurity"
   },
   "requiredCredentials" : [ "password" ],
+  "passwordPolicy" : "length(12) and maxLength(128)",
   "otpPolicyType" : "totp",
   "otpPolicyAlgorithm" : "HmacSHA1",
   "otpPolicyInitialCounter" : 0,
@@ -2053,7 +2054,7 @@
     "frontendUrl" : "${KEYCLOAK_FRONTEND_URL}",
     "acr.loa.map" : "{}"
   },
-  "keycloakVersion" : "20.0.1",
+  "keycloakVersion" : "20.0.2",
   "userManagedAccessAllowed" : false,
   "clientProfiles" : {
     "profiles" : [ ]
