@@ -101,6 +101,7 @@ describe("As a user I expect a data request page where I can download an excel t
       }
 
       function reset(areYouSure: boolean): void {
+        cy.get(dialogSelector).should("not.exist");
         cy.get(resetButtonSelector)
           .click()
           .then(() => {
@@ -110,6 +111,7 @@ describe("As a user I expect a data request page where I can download an excel t
               cy.get(dialogSelector).find("button[aria-label=No]").click();
             }
           });
+        cy.get(dialogSelector).should("not.exist");
       }
 
       function resetAndCloseDialog(): void {
@@ -117,7 +119,8 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(resetButtonSelector).click();
         cy.get(dialogSelector).should("exist");
         cy.get(dialogSelector).should("be.visible");
-        cy.get(dialogSelector).find("span.p-dialog-header-close-icon");
+        cy.get(dialogSelector).find("span.p-dialog-header-close-icon").click();
+        cy.get(dialogSelector).should("not.exist");
       }
 
       beforeEach(() => {
