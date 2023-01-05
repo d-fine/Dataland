@@ -11,7 +11,7 @@ describe("As a user I expect a data request page where I can download an excel t
       dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
-      let inviteInterceptionAlias = "invite";
+      const inviteInterceptionAlias = "invite";
 
       const uploadBoxSelector = "div.p-fileupload-content";
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
