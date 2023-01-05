@@ -7,11 +7,8 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
 - [ ] primevue 3.15.0 (higher versions have issues with AutoComplete PrimeVue issue 2881)
 - [ ] primeicon 5.0.0 (higher version require higher version of primevue)
-- [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
-- [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
-- [ ] springboot 2.7.7 not updated to 3.0.X, due to various issues
 - [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI
 
 ### Gradle update
