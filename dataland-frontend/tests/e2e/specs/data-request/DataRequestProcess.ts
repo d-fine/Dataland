@@ -113,7 +113,10 @@ describe("As a user I expect a data request page where I can download an excel t
       }
 
       function resetAndCloseDialog(): void {
+        cy.get(dialogSelector).should("not.exist");
         cy.get(resetButtonSelector).click();
+        cy.get(dialogSelector).should("exist");
+        cy.get(dialogSelector).should("be.visible");
         cy.get(dialogSelector).find("span.p-dialog-header-close-icon");
       }
 
