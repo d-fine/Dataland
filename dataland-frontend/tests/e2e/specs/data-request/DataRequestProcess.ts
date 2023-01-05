@@ -19,6 +19,7 @@ describe("As a user I expect a data request page where I can download an excel t
       const submitButtonSelector = "button[name=submit_request_button]";
       const resetButtonSelector = "button[name=reset_request_button]";
       const removeButtonSelector = 'img[alt="remove-file-button"]';
+      const dialogSelector = "div.p-dialog";
 
       function uploadDummyExcelFile(filename = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
@@ -100,16 +101,20 @@ describe("As a user I expect a data request page where I can download an excel t
       }
 
       function reset(areYouSure: boolean): void {
-        const resetDialogSelector = "div.p-dialog";
         cy.get(resetButtonSelector)
           .click()
           .then(() => {
             if (areYouSure) {
-              cy.get(resetDialogSelector).find("button[aria-label=Yes]").parent().click();
+              cy.get(dialogSelector).find("button[aria-label=Yes]").click();
             } else {
-              cy.get(resetDialogSelector).find("button[aria-label=No]").parent().click();
+              cy.get(dialogSelector).find("button[aria-label=No]").click();
             }
           });
+      }
+
+      function resetAndCloseDialog(): void {
+        cy.get(resetButtonSelector).click();
+        cy.get(dialogSelector).find("span.p-dialog-header-close-icon");
       }
 
       beforeEach(() => {
@@ -187,6 +192,10 @@ describe("As a user I expect a data request page where I can download an excel t
         const removeFilename = "remove_test.xlsx";
         uploadDummyExcelFile(removeFilename);
         setHideUsernameCheckbox(true);
+
+        resetAndCloseDialog();
+        validateHideUsernameCheckboxIs(true);
+        uploadBoxEntryShouldBe(removeFilename);
 
         reset(false);
         validateHideUsernameCheckboxIs(true);
