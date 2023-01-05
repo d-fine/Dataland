@@ -39,7 +39,7 @@
               <div class="mt-3">
                 <a
                   class="text-primary"
-                  :href="'/' + fileNameOfExcelTemplate"
+                  :href="pathToExcelTemplate"
                   id="download-data-request-excel-template"
                   download
                 >
@@ -224,7 +224,7 @@ export default defineComponent({
       inviteResultMessage: "No invite result message available.",
       submissionFinished: false,
       submissionInProgress: false,
-      fileNameOfExcelTemplate: EXCEL_TEMPLATE_FILE_NAME,
+      pathToExcelTemplate: "/" + EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null,
       hideName: false,
