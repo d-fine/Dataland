@@ -157,8 +157,6 @@ jobs:
       - name: Get GitHub real data image on demand
         run: |
           if [[ $REALDATA == true ]]; then
-            echo "Removing fake fixture data"
-            rm ./testing/data/CompanyInformationWith*.json
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.15
           fi
