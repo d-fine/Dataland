@@ -46,25 +46,25 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.21")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.0")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
-    id("com.github.node-gradle.node") version "3.5.0" apply false
-    id("org.springframework.boot") version "2.7.5" apply false
+    id("com.github.node-gradle.node") version "3.5.1" apply false
+    id("org.springframework.boot") version "3.0.1" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
-    kotlin("jvm") version "1.7.21"
-    kotlin("plugin.spring") version "1.7.21" apply false
+    kotlin("jvm") version "1.8.0"
+    kotlin("plugin.spring") version "1.8.0" apply false
     id("org.sonarqube") version "3.4.0.2513"
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") version "1.4.0" apply false
+    id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.2.1" apply false
-    id("com.github.ben-manes.versions") version "0.43.0"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.7.21" apply false
+    id("com.github.ben-manes.versions") version "0.44.0"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0" apply false
 }
 
 sonarqube {

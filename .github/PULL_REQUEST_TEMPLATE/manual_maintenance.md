@@ -9,17 +9,17 @@ The following known issues need to be reviewed in case a compatible version is a
 - [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
+- [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco and ktlint)
-  Note: fasterXML is managed by spring, thus NO manual version update should be conducted
 - [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 - [ ] Update node version in `dataland-frontend/build.gradle.kts`
 - [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
-- [ ]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
+- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
 
 ### Dataland keycloak theme
 - [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
@@ -58,6 +58,8 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Check that the verification e-mail is sent and displayed correctly
 - [ ] Check that the reset password e-mail is sent and displayed correctly
 - [ ] Check that the password can be reset
+- [ ] Check that account linking via e-mail verification works correctly
+- [ ] Check that account linking via username & password verification works correctly
 
 ## Check e-mails sent by backend
 - [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
@@ -65,7 +67,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
@@ -78,7 +80,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
 - [ ] The new version is deployed to the dev server using this branch
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response

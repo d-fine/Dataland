@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 pt-0 min-h-screen surface-800 relative">
+    <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
       <div
         class="col-12 bg-white"
         :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
@@ -64,10 +64,6 @@
 </template>
 
 <style scoped>
-.d-shadow-bottom {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-}
-
 .d-page-display {
   margin-left: auto;
   margin-top: auto;

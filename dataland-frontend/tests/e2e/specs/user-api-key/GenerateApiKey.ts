@@ -43,6 +43,9 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("textarea#newKeyHolder").should("exist");
 
     cy.get('[data-test="apiKeyInfo"]').find("em").should("exist");
+    cy.get('[data-test="text-info"]').find("em").click();
+    cy.get('[data-test="text-info"]').find("textarea").should("have.focus");
+    cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
     cy.reload(true);
     cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
