@@ -5,8 +5,6 @@ import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
@@ -44,18 +42,9 @@ object InvitationEmailGenerator {
         )
     }
 
-    private fun getUsernameFromSecurityContext(): String {
-        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
-        return jwt.getClaimAsString("preferred_username")
-    }
-
-    private fun getUserIdFromSecurityContext(): String { // TODO duplicate method => centralize somewhere
-        return SecurityContextHolder.getContext().authentication.name
-    }
-
     private fun buildUserInfo(isSubmitterNameHidden: Boolean): String {
-        val userName = getUsernameFromSecurityContext()
-        val userId = getUserIdFromSecurityContext()
+        val userName = KeycloakUserUtils.getUsernameFromSecurityContext()
+        val userId = KeycloakUserUtils.getUserIdFromSecurityContext()
         return when (isSubmitterNameHidden) {
             true -> "Anonymous user"
             else -> "User $userName (Keycloak id: $userId)"
@@ -73,7 +62,7 @@ object InvitationEmailGenerator {
             "Dataland Invitation Request",
             message,
             message,
-            attachment
+            listOf(attachment)
         )
         return Email(sender, receivers, cc, content)
     }

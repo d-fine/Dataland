@@ -18,13 +18,9 @@
                 <span class="font-medium text-left col-6"
                   >Submit a new data request for more companies or frameworks</span
                 >
-                <div class="flex align-items-center">
-                  <a class="pr-3 text-primary font-semibold" @click="createNewRequest">NEW DATA REQUEST</a>
-                  <img
-                    src="@/assets/images/elements/add_button.svg"
-                    alt="remove-file-button"
-                    @click="createNewRequest"
-                  />
+                <div class="flex align-items-center" @click="createNewRequest">
+                  <a class="pr-3 text-primary font-semibold">NEW DATA REQUEST</a>
+                  <img src="@/assets/images/elements/add_button.svg" alt="remove-file-button" />
                 </div>
               </div>
             </InfoCard>

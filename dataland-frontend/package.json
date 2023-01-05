@@ -47,7 +47,6 @@
     "@vue/tsconfig": "^0.1.3",
     "big.js": "^6.2.1",
     "cypress": "^11.0.1",
-    "cypress-file-upload": "^5.0.8",
     "depcheck": "^1.4.3",
     "eslint": "^8.27.0",
     "eslint-plugin-cypress": "^2.12.1",

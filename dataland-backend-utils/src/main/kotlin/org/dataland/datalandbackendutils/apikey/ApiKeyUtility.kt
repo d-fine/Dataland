@@ -69,20 +69,13 @@ class ApiKeyUtility {
         val expectedCrc32Value = getCrc(parsedKeycloakUserIdBase64Encoded, parsedApiKeySecret)
 
         if (parsedCrc32Value != expectedCrc32Value) {
-            throw InvalidInputApiException(
-                apiKeyInvalidFormatSummary,
-                validateApiKeyChecksumWrongValueExceptionMessage
-            )
+            throw InvalidInputApiException(apiKeyInvalidFormatSummary, validateApiKeyChecksumWrongValueExceptionMessage)
         }
 
         val keycloakUserId = try {
             String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
         } catch (e: IllegalArgumentException) {
-            throw InvalidInputApiException(
-                apiKeyInvalidFormatSummary,
-                validateKeycloakUserIdExceptionMessage,
-                e
-            )
+            throw InvalidInputApiException(apiKeyInvalidFormatSummary, validateKeycloakUserIdExceptionMessage, e)
         }
         validateApiKeySecret(parsedApiKeySecret)
         return ParsedApiKey(keycloakUserId, parsedApiKeySecret)
