@@ -216,6 +216,7 @@ describe("As a user I expect a data request page where I can download an excel t
           expect(interception.request.url.includes("isSubmitterNameHidden=true")).to.eq(true);
         });
 
+        cy.get("#new-data-request div.p-card-content div.flex.align-items-center img").should("exist");
         cy.get("#new-data-request div.p-card-content div.flex.align-items-center a").click();
         uploadBoxShouldBeEmpty();
       });
