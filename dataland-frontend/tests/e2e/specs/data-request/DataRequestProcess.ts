@@ -105,9 +105,9 @@ describe("As a user I expect a data request page where I can download an excel t
           .click()
           .then(() => {
             if (areYouSure) {
-              cy.get(resetDialogSelector).find("button[aria-label=Yes]").click();
+              cy.get(resetDialogSelector).find("button[aria-label=Yes]").parent().click();
             } else {
-              cy.get(resetDialogSelector).find("button[aria-label=No]").click();
+              cy.get(resetDialogSelector).find("button[aria-label=No]").parent().click();
             }
           });
       }
