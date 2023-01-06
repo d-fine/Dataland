@@ -151,7 +151,7 @@ export default defineComponent({
     },
 
     getCurrentFocusedOptionIndex() {
-      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
+      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex;
     },
 
     setCurrentFocusedOptionIndexToDefault() {
