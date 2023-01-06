@@ -19,7 +19,7 @@
             :class="{ invalidExpiryTimeText: !isExpiryDateValid, 'text-900': isExpiryDateValid }"
             class="block font-medium mb-2"
           >
-            {{ !isExpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
+            {{ !isExpiryDateValid ? "Please select expiration date" : "Expiration" }}
           </label>
           <Dropdown
             id="expiryTime"
