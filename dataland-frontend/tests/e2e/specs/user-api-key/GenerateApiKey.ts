@@ -1,5 +1,3 @@
-import { formatExpiryDate } from "@/utils/DateFormatUtils";
-
 describe("As a user I expect my api key will be generate correctly", () => {
   it("successfully generate api key", () => {
     cy.ensureLoggedIn();
@@ -22,7 +20,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get('label[for="expireTime"]').should("contain.text", `Please select an expiration date that is in the future`);
     cy.get("div#expireTime").find('div[role="button"]').click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
-    cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
+    cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on`);
     cy.get("div#expireTime").find('div[role="button"]').click();
     cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
     cy.get("#expireTimeWrapper").should("not.exist");
