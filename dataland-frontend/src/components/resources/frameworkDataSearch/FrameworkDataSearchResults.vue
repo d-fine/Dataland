@@ -1,6 +1,4 @@
 <template>
-  <MarginWrapper>
-    <div class="grid mt-2">
       <div class="col-12 text-left">
         <DataTable
           v-if="data && data.length > 0"
@@ -64,8 +62,6 @@
           <p class="font-medium">Try again please!</p>
         </div>
       </div>
-    </div>
-  </MarginWrapper>
 </template>
 
 <style scoped>
