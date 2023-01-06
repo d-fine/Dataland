@@ -5,7 +5,7 @@
     <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
-        <h1>{{ pageTitleState }}</h1>
+        <h1>{{ pageTitle }}</h1>
       </div>
 
       <MiddleCenterDiv v-if="waitingForData" class="col-12">
@@ -167,7 +167,7 @@ export default defineComponent({
     };
   },
   computed: {
-    pageTitleState() {
+    pageTitle() {
       if (this.pageState === "view") return "API";
       if (this.pageState === "create") return "Create new API Key";
       return "API";

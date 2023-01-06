@@ -2,7 +2,7 @@ import CreateApiKeyCard from "@/components/general/apiKey/CreateApiKeyCard.vue";
 import { mount } from "cypress/vue";
 
 describe("Component test for CreateApiKeyCard", () => {
-  it("Should have class invalidExpireTimeText when expire time is invalid", () => {
+  it("Should have class invalidExpiryTimeText when expire time is invalid", () => {
     mount(CreateApiKeyCard, {
       data() {
         return {
@@ -13,9 +13,9 @@ describe("Component test for CreateApiKeyCard", () => {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
       },
     });
-    cy.get('label[for="expireTime"]').should("have.class", "invalidExpireTimeText");
+    cy.get('label[for="expiryTime"]').should("have.class", "invalidExpiryTimeText");
   });
-  it("Should not have class invalidExpireTimeText when expire time is valid", () => {
+  it("Should not have class invalidExpiryTimeText when expire time is valid", () => {
     mount(CreateApiKeyCard, {
       data() {
         return {
@@ -26,6 +26,6 @@ describe("Component test for CreateApiKeyCard", () => {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
       },
     });
-    cy.get('label[for="expireTime"]').should("not.have.class", "invalidExpireTimeText");
+    cy.get('label[for="expiryTime"]').should("not.have.class", "invalidExpiryTimeText");
   });
 });

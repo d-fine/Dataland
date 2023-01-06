@@ -1,5 +1,4 @@
 const msPerDay = 86400000;
-const today = new Date().getTime();
 export const dateFormatOptions = {
   weekday: "short",
   year: "numeric",
@@ -10,11 +9,12 @@ export const dateFormatOptions = {
 } as Intl.DateTimeFormatOptions;
 
 export function calculateDaysFromNow(endDateInMilliseconds: number): number {
+  const today = new Date().getTime();
   const daysFromNow = (endDateInMilliseconds - today) / msPerDay;
   return Math.ceil(daysFromNow);
 }
 
-export function formatExpiryDate(expireTimeDays: number): string {
-  console.log("expire time days", expireTimeDays);
-  return new Date(today + expireTimeDays * msPerDay).toLocaleDateString(undefined, dateFormatOptions);
+export function formatExpiryDate(expiryTimeDays: number): string {
+  const today = new Date().getTime();
+  return new Date(today + expiryTimeDays * msPerDay).toLocaleDateString(undefined, dateFormatOptions);
 }
