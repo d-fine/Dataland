@@ -21,10 +21,13 @@
             inputClass="h-3rem d-framework-searchbar-input"
             panelClass="d-framework-searchbar-panel"
             style="z-index: 10"
-            @change="activateKeyupEnterSearch"
             @complete="searchCompanyName"
+            @keydown="noteThatAKeyWasPressed"
+            @keydown.down="getCurrentFocusedOptionIndex"
+            @keydown.up="getCurrentFocusedOptionIndex"
             @item-select="pushToViewDataPageForItem"
-            @keyup.enter="executeSearch"
+            @keyup.enter="executeSearchIfNoItemFocused"
+            @focus="setCurrentFocusedOptionIndexToDefault"
           >
             <template #option="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -36,7 +39,7 @@
                 class="p-autocomplete-items pt-0"
                 v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
               >
-                <li class="p-autocomplete-item" @click="executeSearch">
+                <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
                   <span class="text-primary font-medium underline pl-3"> View all results </span>
                 </li>
               </ul>
@@ -126,7 +129,8 @@ export default defineComponent({
 
   data: function () {
     return {
-      isKeyupEnterSearchMethodDeactivated: true,
+      wereKeysPressed: false,
+      currentFocusedOptionIndex: -1,
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
@@ -136,10 +140,22 @@ export default defineComponent({
     };
   },
   methods: {
+    noteThatAKeyWasPressed() {
+      this.wereKeysPressed = true;
+    },
+
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
       if (currentSearchString && typeof currentSearchString === "string") {
         this.latestValidSearchString = currentSearchString;
       }
+    },
+
+    getCurrentFocusedOptionIndex() {
+      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
+    },
+
+    setCurrentFocusedOptionIndexToDefault() {
+      this.currentFocusedOptionIndex = -1;
     },
 
     focusOnSearchBar() {
@@ -147,17 +163,12 @@ export default defineComponent({
       this.autocomplete.$refs.focusInput.focus();
     },
 
-    activateKeyupEnterSearch() {
-      this.isKeyupEnterSearchMethodDeactivated = false;
-    },
-
     pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
       void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
 
-    executeSearch() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      if (!this.isKeyupEnterSearchMethodDeactivated && this.autocomplete.focusedOptionIndex === -1) {
+    executeSearchIfNoItemFocused() {
+      if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         this.autocomplete.hide();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
