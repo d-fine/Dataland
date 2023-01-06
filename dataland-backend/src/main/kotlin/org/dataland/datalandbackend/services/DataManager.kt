@@ -65,7 +65,7 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        metaDataManager.storeDataMetaInformation(company, dataId, storableDataSet.dataType)
+        metaDataManager.storeDataMetaInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company)
         return dataId
     }
 
@@ -102,7 +102,8 @@ class DataManager(
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
-        val dataAsString: String = getDataFromStorage(dataId, correlationId)
+        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+        val dataAsString = getDataFromStorage(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
@@ -111,13 +112,7 @@ class DataManager(
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        if (dataAsStorableDataSet.dataType != dataType) {
-            throw InternalServerErrorApiException(
-                "Dataland-Internal inconsistency regarding dataset $dataId",
-                "We are having some internal issues with the dataset $dataId, please contact support.",
-                "Dataset $dataId should be of type $dataType but is of type ${dataAsStorableDataSet.dataType}"
-            )
-        }
+        dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataSet
     }
 

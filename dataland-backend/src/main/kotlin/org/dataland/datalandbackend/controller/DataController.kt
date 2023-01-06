@@ -10,6 +10,8 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
+import java.time.Instant
 import java.util.UUID.randomUUID
 
 /**
@@ -30,14 +32,19 @@ abstract class DataController<T>(
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
+        val userId = SecurityContextHolder.getContext().authentication.name
+        val uploadTime = Instant.now()
         logger.info(
-            "Received a request to post company associated data of type $dataType" +
+            "Received a request from user $userId to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
         val dataIdOfPostedData = dataManager.addDataSet(
             StorableDataSet(
-                companyAssociatedData.companyId, dataType,
+                companyId = companyAssociatedData.companyId,
+                dataType = dataType,
+                uploaderUserId = userId,
+                uploadTime = uploadTime,
                 data = objectMapper.writeValueAsString(companyAssociatedData.data),
             ),
             correlationId
@@ -46,7 +53,7 @@ abstract class DataController<T>(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId"
         )
-        return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId))
+        return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId))
     }
 
     private fun generatedCorrelationId(companyId: String): String {

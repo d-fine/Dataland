@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.Instant
 
 /**
  * --- API model ---
@@ -15,6 +16,12 @@ data class DataMetaInformation(
 
     @field:JsonProperty(required = true)
     val dataType: DataType,
+
+    @field:JsonProperty()
+    val uploaderUserId: String?,
+
+    @field:JsonProperty()
+    val uploadTime: Instant,
 
     @field:JsonProperty(required = true)
     val companyId: String

@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -20,12 +21,14 @@ class MetaDataController(
 
     override fun getListOfDataMetaInfo(companyId: String?, dataType: DataType?):
         ResponseEntity<List<DataMetaInformation>> {
+        val currentUser = SecurityContextHolder.getContext().authentication
         return ResponseEntity.ok(
-            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel() }
+            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel(currentUser) }
         )
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
-        return ResponseEntity.ok(dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel())
+        val currentUser = SecurityContextHolder.getContext().authentication
+        return ResponseEntity.ok(dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser))
     }
 }
