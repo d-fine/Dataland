@@ -151,7 +151,8 @@ export default defineComponent({
     },
 
     getCurrentFocusedOptionIndex() {
-      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
     },
 
     setCurrentFocusedOptionIndexToDefault() {
