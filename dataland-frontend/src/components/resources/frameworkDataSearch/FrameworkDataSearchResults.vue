@@ -77,7 +77,6 @@
 <script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
 import {
@@ -88,7 +87,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { MarginWrapper, DataTable, Column },
+  components: { DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },
