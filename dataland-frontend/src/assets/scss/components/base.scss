@@ -113,3 +113,11 @@ body {
   border-width: 0 1px 1px 0;
   border-color: $blue-light
 }
+.middle-center-div {
+  flex: 1;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}

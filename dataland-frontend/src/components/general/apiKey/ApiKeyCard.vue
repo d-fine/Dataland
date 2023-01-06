@@ -16,7 +16,7 @@
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
-          <span :class="{ 'text-red-700': !isKeyExpired() }" class="block text-600 mb-3 mt-6">
+          <span :class="{ 'text-red-700': isKeyExpired() }" class="block text-600 mb-3 mt-6">
             {{ whenKeyExpire }}
           </span>
         </div>
@@ -40,13 +40,13 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import { dateFormatOptions, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
   setup() {
-    return { formatExpiryDate, calculateDaysFromNow };
+    return { dateFormatOptions, calculateDaysFromNow };
   },
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
@@ -63,17 +63,16 @@ export default defineComponent({
     viewDeleteConfirmation: false,
   }),
   computed: {
-    expiryDateInDays() {
-      return calculateDaysFromNow(this.expiryDate * 1000);
-    },
-
     whenKeyExpire() {
-      if (this.expiryDate && this.expiryDate * 1000 >= Date.now()) {
-        return `The API Key will expire on ${formatExpiryDate(this.expiryDateInDays)}`;
-      } else if (this.expiryDate && this.expiryDate * 1000 < Date.now()) {
-        return `The API Key expired ${formatExpiryDate(this.expiryDateInDays)}`;
+      if (this.expiryDate && this.expiryDate >= Date.now()) {
+        return `The API Key will expire on ${new Date(this.expiryDate).toLocaleDateString(
+          undefined,
+          dateFormatOptions
+        )}`;
+      } else if (this.expiryDate && this.expiryDate < Date.now()) {
+        return `The API Key expired on ${new Date(this.expiryDate).toLocaleDateString(undefined, dateFormatOptions)}`;
       } else {
-        return "The API Key has no defined expire date";
+        return "The API Key has no defined expiry date";
       }
     },
   },
@@ -82,7 +81,7 @@ export default defineComponent({
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
     },
     isKeyExpired() {
-      return this.expiryDate * 1000 >= new Date().getTime() || this.expiryDate == null;
+      return !(this.expiryDate >= new Date().getTime() || this.expiryDate == null);
     },
   },
 });

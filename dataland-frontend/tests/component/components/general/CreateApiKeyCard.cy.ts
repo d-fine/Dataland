@@ -6,7 +6,7 @@ describe("Component test for CreateApiKeyCard", () => {
     mount(CreateApiKeyCard, {
       data() {
         return {
-          isExpireTimeCorrect: false,
+          isExpiryDateValid: false,
         };
       },
       props: {
@@ -19,7 +19,7 @@ describe("Component test for CreateApiKeyCard", () => {
     mount(CreateApiKeyCard, {
       data() {
         return {
-          isExpireTimeCorrect: true,
+          isExpiryDateValid: true,
         };
       },
       props: {

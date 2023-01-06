@@ -5,22 +5,21 @@
         <div>
           <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
-
         <div data-test="userRoles" class="pr-1">
           <UserRolesBadges :userRoles="userRoles" />
         </div>
       </div>
       <div
-        :class="{ invalidExpireTime: !isExpireTimeCorrect }"
+        :class="{ invalidExpireTime: !isExpiryDateValid }"
         class="col-12 flex justify-content-between align-items-end"
       >
         <div class="text-left col-5">
           <label
             for="expireTime"
-            :class="{ invalidExpireTimeText: !isExpireTimeCorrect, 'text-900': isExpireTimeCorrect }"
+            :class="{ invalidExpireTimeText: !isExpiryDateValid, 'text-900': isExpiryDateValid }"
             class="block font-medium mb-2"
           >
-            {{ !isExpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
+            {{ !isExpiryDateValid ? "Please select an expiration date that is in the future" : "Expiration" }}
           </label>
           <Dropdown
             id="expireTime"
@@ -51,7 +50,7 @@
         >
           {{
             expireTimeDropdown === "noExpiry"
-              ? `The API Key has no defined expire date`
+              ? `The API Key has no defined expiry date`
               : `The API Key will expire on ${formatExpiryDate(expireTimeDays)}`
           }}
         </span>
@@ -94,9 +93,9 @@ export default defineComponent({
     },
   },
   data: () => ({
-    expireTimeDays: 0,
+    expireTimeDays: null as null | number,
     expireTimeDropdown: "",
-    isExpireTimeCorrect: true,
+    isExpiryDateValid: true,
     customDate: null,
     days: [
       { label: "7 days", value: 7 },
@@ -111,31 +110,29 @@ export default defineComponent({
   methods: {
     setExpireTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
-        this.expireTimeDays = 0;
+        this.expireTimeDays = null;
       } else if (event.value === "custom" && calculateDaysFromNow(this.customDate as unknown as number) > 0) {
         this.expireTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
       } else {
         this.expireTimeDays = event.value as unknown as number;
       }
-      this.isExpireTimeCorrect = true;
+      this.isExpiryDateValid = true;
     },
+
     checkDateAndEmitGenerateApiKey() {
-      if (
-        (this.expireTimeDays && this.expireTimeDays > 0) ||
-        (this.expireTimeDropdown === "custom" && this.expireTimeDays > 0)
-      ) {
+      if (this.expireTimeDays && this.expireTimeDays > 0) {
         this.$emit("generateApiKey", this.expireTimeDays);
-      } else if (this.expireTimeDropdown === "noExpiry" && this.expireTimeDays === 0) {
+      } else if (this.expireTimeDropdown === "noExpiry") {
         this.$emit("generateApiKey");
       } else {
-        this.isExpireTimeCorrect = false;
+        this.isExpiryDateValid = false;
       }
     },
   },
   watch: {
     customDate: function () {
       this.expireTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
-      this.isExpireTimeCorrect = true;
+      this.isExpiryDateValid = true;
     },
   },
 });

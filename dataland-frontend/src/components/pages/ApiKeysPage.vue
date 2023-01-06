@@ -5,7 +5,7 @@
     <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
-        <h1>{{ PageTitleState }}</h1>
+        <h1>{{ pageTitleState }}</h1>
       </div>
 
       <MiddleCenterDiv v-if="waitingForData" class="col-12">
@@ -167,7 +167,7 @@ export default defineComponent({
     };
   },
   computed: {
-    PageTitleState() {
+    pageTitleState() {
       if (this.pageState === "view") return "API";
       if (this.pageState === "create") return "Create new API Key";
       return "API";
@@ -199,7 +199,7 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
+        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate * 1000 : null;
       } catch (error) {
         console.error(error);
       }
@@ -218,7 +218,7 @@ export default defineComponent({
       }
     },
 
-    async generateApiKey(expirationTime: number) {
+    async generateApiKey(daysValid: number) {
       try {
         this.waitingForData = true;
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
@@ -226,10 +226,12 @@ export default defineComponent({
         const apiKeyManagerController = await new ApiClientProvider(
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
-        const response = await apiKeyManagerController.generateApiKey(expirationTime);
+        const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;
         this.existsApiKey = true;
-        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
+        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate
+          ? response.data.apiKeyMetaInfo.expiryDate * 1000
+          : null;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles

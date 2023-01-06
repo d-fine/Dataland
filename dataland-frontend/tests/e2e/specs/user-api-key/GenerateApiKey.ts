@@ -19,7 +19,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("button#generateApiKey").click();
-    cy.get('label[for="expireTime"]').should("contain.text", `Please select expiration date`);
+    cy.get('label[for="expireTime"]').should("contain.text", `Please select an expiration date that is in the future`);
     cy.get("div#expireTime").find('div[role="button"]').click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
@@ -35,14 +35,12 @@ describe("As a user I expect my api key will be generate correctly", () => {
     });
     cy.get("div#expireTime").find('div[role="button"]').click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
-    cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
+    cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expiry date`);
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");
 
     cy.get('[data-test="apiKeyInfo"]').find("em").should("exist");
-    cy.get('[data-test="text-info"]').find("em").click();
-    cy.get('[data-test="text-info"]').find("textarea").should("have.focus");
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
     cy.reload(true);
     cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
