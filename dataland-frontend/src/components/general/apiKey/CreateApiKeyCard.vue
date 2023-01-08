@@ -97,7 +97,7 @@ export default defineComponent({
     expiryTimeDays: null as null | number,
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
-    minDate: new Date(),
+    minDate: new Date(new Date().getTime() + 86400000),
     customDate: null,
     days: [
       { label: "7 days", value: 7 },
@@ -108,9 +108,6 @@ export default defineComponent({
       { label: "No expiry", value: "noExpiry" },
     ],
   }),
-  created() {
-    this.minDate = new Date(new Date().getTime() + 86400000);
-  },
   methods: {
     setExpiryTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {

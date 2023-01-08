@@ -9,12 +9,12 @@ export const dateFormatOptions = {
 } as Intl.DateTimeFormatOptions;
 
 export function calculateDaysFromNow(endDateInMilliseconds: number): number {
-  const today = new Date().getTime();
-  const daysFromNow = (endDateInMilliseconds - today) / msPerDay;
+  const currentUtcDateInMilliseconds = new Date().getTime();
+  const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
   return Math.ceil(daysFromNow);
 }
 
 export function formatExpiryDate(expiryTimeDays: number): string {
-  const today = new Date().getTime();
-  return new Date(today + expiryTimeDays * msPerDay).toLocaleDateString(undefined, dateFormatOptions);
+  const currentUtcDateInMilliseconds = new Date().getTime();
+  return new Date(currentUtcDateInMilliseconds + expiryTimeDays * msPerDay).toLocaleDateString(undefined, dateFormatOptions);
 }
