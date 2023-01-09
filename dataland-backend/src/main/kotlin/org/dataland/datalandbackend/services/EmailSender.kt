@@ -26,7 +26,7 @@ class EmailSender(
         .build()
     private val mailjetClient = MailjetClient(clientOptions)
 
-    /** This methods sends an email
+    /** This method sends an email
      * @param email the email to send
      */
     fun sendEmail(email: Email): Boolean {

@@ -108,19 +108,4 @@ export default defineComponent({
   position: absolute;
   top: 16rem;
 }
-
-.progressbar-finished p {
-  color: #4bb917;
-}
-
-.progressbar-finished .p-progressbar-value {
-  background-color: #4bb917;
-  color: #4bb917;
-}
-
-.progressbar-window-indication {
-  border-color: #ee1a1a;
-  border-radius: 4px;
-  color: #ee1a1a;
-}
 </style>

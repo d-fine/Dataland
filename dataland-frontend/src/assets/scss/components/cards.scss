@@ -26,17 +26,39 @@
 }
 
 .p-progressbar {
-  border: 0 none;
-  height: 1.5rem;
-  background: #dee2e6;
-  border-radius: 0;
+  height: 2rem;
+  background: $white;
+  border: 1px solid $gray-light;
+  border-radius: 6px;
   .p-progressbar-value {
-    border: 0 none;
     margin: 0;
-    background: #cb6b29
+    background: $orange-prime
   }
   .p-progressbar-label {
-    color: #fff;
+    color: $white;
     line-height: 1.5rem
   }
 }
+
+.progressbar-finished p {
+  color: $green;
+}
+
+.progressbar-finished .p-progressbar-value {
+  background-color: $green;
+}
+
+.progressbar-window-indication {
+  border-color: $red;
+  border-radius: 4px;
+  color: $red;
+}
+.p-fileupload .p-fileupload-content {
+  background: #fff;
+  padding: 2rem 1rem;
+  border: 1px dashed #958D7C;
+  border-radius: 8px;
+  color: #1b1b1b;
+}
+
+

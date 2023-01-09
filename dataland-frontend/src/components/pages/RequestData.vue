@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 min-h-screen surface-800">
+    <TheContent class="pl-0 min-h-screen paper-section">
       <ProgressBar
         v-if="submissionInProgress || submissionFinished"
         :processHasStarted="submissionInProgress"
@@ -83,7 +83,7 @@
               </template>
 
               <template #empty>
-                <div class="flex align-items-center justify-content-center flex-column">
+                <div class="flex align-items-center justify-content-center flex-column surface-0">
                   <em class="pi pi-cloud-upload p-3 text-6xl text-400" />
                   <div class="flex align-items-center">
                     <p>+ Drag and drop a file or</p>
@@ -286,18 +286,4 @@ img:hover {
   cursor: pointer;
 }
 
-.buttonstyle {
-  border: none;
-  color: #1b1b1b;
-}
-
-.iconstyle {
-  color: white;
-  background-color: #958d7c;
-  border-radius: 50%;
-}
-
-.hovericon {
-  cursor: pointer;
-}
 </style>
