@@ -161,7 +161,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      searchBarAndFiltersContainer: ref<typeof FileUpload>(),
+      fileUpload: ref<typeof FileUpload>(),
     };
   },
   data() {
@@ -173,7 +173,7 @@ export default defineComponent({
       submissionInProgress: false,
       pathToExcelTemplate: "/" + EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      selectedFile: null,
+      selectedFile: null as null | File,
       hideName: false,
       displayModal: false,
     };
@@ -203,14 +203,13 @@ export default defineComponent({
     },
 
     handleSelectFile(event: FileUploadSelectEvent) {
-      if (event.files.length > 1) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-        this.selectedFile = event.files[1];
+      const arrayOfSelectedFiles = event.files as Array<File>;
+      if (arrayOfSelectedFiles.length > 1) {
+        this.selectedFile = arrayOfSelectedFiles[1];
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        this.$refs.fileUpload.files.shift();
+        this.fileUpload?.files.shift();
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-        this.selectedFile = event.files[0];
+        this.selectedFile = arrayOfSelectedFiles[0];
       }
     },
 
@@ -230,17 +229,16 @@ export default defineComponent({
 
     chooseFiles() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.$refs.fileUpload.choose();
+      this.fileUpload?.choose();
     },
 
     getSelectedFile(): File {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-      return this.$refs.fileUpload.files[0];
+      return this.fileUpload?.files[0];
     },
 
     async handleSubmission() {
       this.submissionInProgress = true;
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       await this.uploadAllSelectedFiles();
       this.submissionFinished = true;
       this.submissionInProgress = false;
@@ -266,12 +264,6 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    },
-    resetPage() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.$refs.fileUpload.clear();
-      this.displayModal = false;
-      this.hideName = false;
     },
   },
 });
