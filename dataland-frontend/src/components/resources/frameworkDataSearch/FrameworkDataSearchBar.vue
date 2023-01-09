@@ -8,7 +8,8 @@
             aria-hidden="true"
             style="z-index: 20; color: #958d7c"
           />
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f; right: 0.5rem;" />
+          <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f; right: 0.5rem;" />
+          <i v-else aria-hidden="true" />
           <AutoComplete
             :inputId="searchBarId"
             ref="autocomplete"
