@@ -230,8 +230,8 @@ export default defineComponent({
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS as Array<string>;
-        return parseQueryParamArray(queryFrameworks).filter((it) =>
-          allowedDataTypeEnumValues.includes(it)
+        return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
+          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
         ) as Array<DataTypeEnum>;
       } else {
         return ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS;
@@ -302,8 +302,8 @@ export default defineComponent({
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((it) =>
-        this.currentFilteredFrameworks.includes(it)
+      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((frameworkAsDataTypeEnum) =>
+        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum)
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;
