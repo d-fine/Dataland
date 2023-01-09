@@ -205,7 +205,6 @@ export default defineComponent({
     },
 
     handleSelectFile(event: FileUploadSelectEvent) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (event.files.length > 1) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
         this.selectedFile = event.files[1];
