@@ -267,12 +267,6 @@ export default defineComponent({
         console.error(error);
       }
     },
-    resetPage() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.$refs.fileUpload.clear();
-      this.displayModal = false;
-      this.hideName = false;
-    },
   },
 });
 </script>
