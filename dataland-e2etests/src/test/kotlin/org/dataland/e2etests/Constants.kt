@@ -25,5 +25,6 @@ val MUTUAL_ROLES_UPLOADER_READER =
 
 val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
     DataTypeEnum.eutaxonomyMinusFinancials,
-    DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+    DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+    DataTypeEnum.lksg
 )
