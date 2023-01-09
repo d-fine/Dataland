@@ -39,7 +39,7 @@ class InviteManager(
     }
 
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
-        return regexForValidExcelFileName.matches(fileToCheck.originalFilename!!)
+        return regexForValidExcelFileName.containsMatchIn(fileToCheck.originalFilename!!)
     }
 
     private fun storeOneExcelFileAndReturnFileId(

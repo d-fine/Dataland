@@ -50,6 +50,7 @@ class InviteManagerTest {
         val file = MockMultipartFile("test.xlsx", "test.xlsx", "plain/text", "this is content".toByteArray())
         val inviteMetaInfo = inviteManager.submitInvitation(file, false)
         assertFalse(inviteMetaInfo.wasInviteSuccessful)
+        assertTrue(inviteMetaInfo.inviteResultMessage.contains("invite failed"))
         assertTrue(inviteMetaInfo.inviteResultMessage.contains("sending an email"))
     }
 }
