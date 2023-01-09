@@ -83,7 +83,7 @@
               </template>
 
               <template #empty>
-                <div class="flex align-items-center justify-content-center flex-column surface-0" style="border-radius: 8px; border-style: dashed; border-width: 1px; border-color: #958D7C;">
+                <div class="flex align-items-center justify-content-center flex-column surface-0">
                   <em class="pi pi-cloud-upload p-3 text-6xl text-400" />
                   <div class="flex align-items-center">
                     <p>+ Drag and drop a file or</p>
