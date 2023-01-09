@@ -287,18 +287,4 @@ img:hover {
   cursor: pointer;
 }
 
-.buttonstyle {
-  border: none;
-  color: #1b1b1b;
-}
-
-.iconstyle {
-  color: white;
-  background-color: #958d7c;
-  border-radius: 50%;
-}
-
-.hovericon {
-  cursor: pointer;
-}
 </style>
