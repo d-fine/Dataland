@@ -189,11 +189,6 @@ export default defineComponent({
           frameworkDataType: "sfdr" as DataTypeEnum,
           displayName: "SFDR",
           disabled: true,
-        },
-        {
-          frameworkDataType: "lksg" as DataTypeEnum,
-          displayName: "LkSG",
-          disabled: true,
         }
       );
     },
