@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.springframework.web.multipart.MultipartFile
-import java.util.UUID
 
 /**
  * A utility object which contains functions to generate invitation emails
@@ -34,7 +33,7 @@ object InvitationEmailGenerator {
     }
 
     private fun buildEmailAttachment(fileToAttach: MultipartFile): EmailAttachment {
-        val fileName = UUID.randomUUID().toString()
+        val fileName = IdUtils.generateUUID()
         return EmailAttachment(
             "$fileName.xlsx",
             fileToAttach.bytes,
