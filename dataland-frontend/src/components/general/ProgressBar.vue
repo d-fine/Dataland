@@ -3,8 +3,8 @@
     <div id="result-message-container" class="ml-3 mr-3">
       <div
         v-if="processIsFinished"
-        :class="[wasProcessSuccessful ? 'message-success' : 'message-fail']"
-        class="border-2 bg-white p-2 mb-5 mt-8"
+        class="p-2 mb-5 mt-8 border-2 p-message"
+        :class="[wasProcessSuccessful ? 'p-message-success' : 'p-message-error']"
       >
         {{ processResultMessage }}
       </div>
@@ -46,7 +46,7 @@
       <PrimeButton
         v-if="processIsFinished"
         label="return to home"
-        class="mt-3 p-button-sm border-2 uppercase text-primary d-letters bg-white-alpha-10"
+        class="mt-6 p-button-sm border-2 uppercase text-primary d-letters bg-white-alpha-10"
         name="back_to_home_button"
         @click="returnToHome"
       />
@@ -107,17 +107,6 @@ export default defineComponent({
   width: 50%;
   position: absolute;
   top: 16rem;
-}
-
-.message-success {
-  border-color: #4bb917;
-  border-radius: 4px;
-}
-
-.message-fail {
-  border-color: #ee1a1a;
-  border-radius: 4px;
-  color: #ee1a1a;
 }
 
 .progressbar-finished p {

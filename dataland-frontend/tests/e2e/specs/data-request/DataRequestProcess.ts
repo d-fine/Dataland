@@ -17,9 +17,7 @@ describe("As a user I expect a data request page where I can download an excel t
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
       const uploadFilenameSelector = "span.font-semibold.mr-2";
       const submitButtonSelector = "button[name=submit_request_button]";
-      const resetButtonSelector = "button[name=reset_request_button]";
       const removeButtonSelector = 'img[alt="remove-file-button"]';
-      const dialogSelector = "div.p-dialog";
 
       function uploadDummyExcelFile(filename = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
@@ -94,33 +92,6 @@ describe("As a user I expect a data request page where I can download an excel t
         }
       }
 
-      function validateHideUsernameCheckboxIs(hideUsername: boolean): void {
-        cy.get("input[type=checkbox]").should((hideUsername ? "" : "not.") + "be.checked");
-      }
-
-      function reset(areYouSure: boolean): void {
-        cy.get(dialogSelector).should("not.exist");
-        cy.get(resetButtonSelector)
-          .click()
-          .then(() => {
-            if (areYouSure) {
-              cy.get(dialogSelector).find("button[aria-label=Yes]").click();
-            } else {
-              cy.get(dialogSelector).find("button[aria-label=No]").click();
-            }
-          });
-        cy.get(dialogSelector).should("not.exist");
-      }
-
-      function resetAndCloseDialog(): void {
-        cy.get(dialogSelector).should("not.exist");
-        cy.get(resetButtonSelector).click();
-        cy.get(dialogSelector).should("exist");
-        cy.get(dialogSelector).should("be.visible");
-        cy.get(dialogSelector).find("span.p-dialog-header-close-icon").click();
-        cy.get(dialogSelector).should("not.exist");
-      }
-
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
@@ -191,24 +162,6 @@ describe("As a user I expect a data request page where I can download an excel t
           validateThatSubmitButtonIsDisabled();
           cy.get("button.p-message-close").click();
         });
-      });
-
-      it(`Test that the reset button works as expected`, () => {
-        const removeFilename = "remove_test.xlsx";
-        uploadDummyExcelFile(removeFilename);
-        setHideUsernameCheckbox(true);
-
-        resetAndCloseDialog();
-        validateHideUsernameCheckboxIs(true);
-        uploadBoxEntryShouldBe(removeFilename);
-
-        reset(false);
-        validateHideUsernameCheckboxIs(true);
-        uploadBoxEntryShouldBe(removeFilename);
-
-        reset(true);
-        validateHideUsernameCheckboxIs(false);
-        uploadBoxShouldBeEmpty();
       });
 
       it(`Test if the checkbox state is transferred correctly to the request`, () => {

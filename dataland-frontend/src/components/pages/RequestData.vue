@@ -106,16 +106,6 @@
           <div class="flex justify-content-end flex-wrap">
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
-                label="Reset"
-                class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center surface-900 w-6rem mr-3"
-                name="reset_request_button"
-                @click="openModal"
-              >
-                Reset
-              </PrimeButton>
-            </div>
-            <div class="flex align-items-center justify-content-center m-2">
-              <PrimeButton
                 label="Submit"
                 class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
                 name="submit_request_button"
@@ -127,42 +117,6 @@
             </div>
           </div>
         </div>
-        <PrimeDialog
-          header="Reset Request Data"
-          v-model:visible="displayModal"
-          :style="{ width: '34vw' }"
-          :modal="true"
-          :showHeader="false"
-          closeIcon="pi pi-times-circle"
-        >
-          <div class="grid">
-            <PrimeButton class="bg-white align-content-end col-1 col-offset-11 ml-9 mt-2 buttonstyle">
-              <span @click="closeModal" class="p-dialog-header-close-icon pi pi-times-circle hovericon iconstyle" />
-            </PrimeButton>
-          </div>
-          <h2 class="mt-0 mb-5">Reset Request Data</h2>
-
-          <p>Are you sure you want to reset your request?</p>
-          <p class="font-bold">This will remove all the selected files.</p>
-          <div class="flex justify-content-end flex-wrap mb-2">
-            <div class="flex align-items-center justify-content-center m-2">
-              <PrimeButton
-                label="No"
-                class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white w-6rem"
-                @click="closeModal"
-                >Cancel
-              </PrimeButton>
-            </div>
-            <div class="flex align-items-center justify-content-center m-2">
-              <PrimeButton
-                label="Yes"
-                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem"
-                @click="resetPage"
-                >Confirm
-              </PrimeButton>
-            </div>
-          </div>
-        </PrimeDialog>
       </div>
     </TheContent>
   </AuthenticationWrapper>
