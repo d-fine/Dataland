@@ -35,10 +35,10 @@ interface InviteApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     /**
-     * A method to create an invite in Dataland by sending an Excel file which includes the invite info
+     * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
      * @param excelFile is the Excel file which contains the invite info
-     * @param isSubmitterNameHidden is a flag that decides if info about the submitters Dataland account shall be
-     * included in the invite
+     * @param isSubmitterNameHidden flag that decides if info about the submitter shall be
+     * included
      * @return a response object with info about the result and the success of the invite process
      */
     fun submitInvite(

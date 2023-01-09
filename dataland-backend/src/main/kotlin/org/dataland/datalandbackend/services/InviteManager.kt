@@ -24,7 +24,7 @@ class InviteManager(
 
     private val temporaryFileStore = mutableMapOf<String, MultipartFile>()
 
-    private val regexForValidExcelFileName = Regex("^.*\\.xlsx\$")
+    private val regexForValidExcelFileName = Regex("\\.xlsx\$")
 
     private val inviteResultInvalidFileName = "The name of your Excel file does not match with the expected format. " +
         "Please make sure that your Excel file has the .xlsx format."
@@ -90,10 +90,6 @@ class InviteManager(
         return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(success, message))
     }
 
-    private fun handleSubmissionError(fileId: String, inviteId: String, errorMessage: String): InviteMetaInfoEntity {
-        return handleSubmission(fileId, inviteId, false, errorMessage)
-    }
-
     /**
      * Method to submit an invite
      * @param excelFile is the Excel file to submit, which contains the invite info
@@ -104,11 +100,11 @@ class InviteManager(
         val inviteId = generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         return if (!checkFilename(excelFile)) {
-            handleSubmissionError(fileId, inviteId, inviteResultInvalidFileName)
+            handleSubmission(fileId, inviteId, false, inviteResultInvalidFileName)
         } else if (excelFile.isEmpty) {
-            handleSubmissionError(fileId, inviteId, inviteResultFileIsEmpty)
+            handleSubmission(fileId, inviteId, false, inviteResultFileIsEmpty)
         } else if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
-            handleSubmissionError(fileId, inviteId, inviteResultEmailError)
+            handleSubmission(fileId, inviteId, false, inviteResultEmailError)
         } else handleSubmission(fileId, inviteId, true, inviteResultSuccess)
     }
 
