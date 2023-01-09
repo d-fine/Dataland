@@ -22,9 +22,6 @@
     <div class="grid">
             <div class="col-12">
               <h3>{{ JSON.stringify(frameworkDataId) }}</h3>
-
-
-
               <LksgPanel :dataID="frameworkDataId" />
             </div>
           </div>

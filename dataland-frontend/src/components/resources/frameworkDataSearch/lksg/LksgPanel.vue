@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="dataSet && !waitingForData">
-    <DetailCompanyDataTable :dataSet="dataSet" />
+    <DetailCompanyDataTable :dataSet="kpisDataObjects" :dataSetColumns="dataSetColumns" />
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DetailCompanyDataTable from "@/components/general/DetailCompanyDataTable.vue";
+import { LksgKpisImpactArea } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -24,13 +25,12 @@ export default defineComponent({
       waitingForData: true,
       dataSet: [
         {
-          "group": "general",
           "betterWorkProgramCertificate": "No",
           "dataDate": "2023-07-19",
           "companyLegalForm": "Sole Trader",
           "vatIdentificationNumber": "BJ564339879",
           "numberOfEmployees": 189085,
-          "shareOfTemporaryWorkers": 4.14,
+          "shareOfTemporaryWorkers": 4.1555,
           "totalRevenue": 23691057301.85,
           "totalRevenueCurrency": "CHF",
           "responsibilitiesForFairWorkingConditions": "No",
@@ -93,29 +93,28 @@ export default defineComponent({
           "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
           "equalOpportunitiesAndNondiscriminationPolicy": "No",
           "healthAndSafetyPolicy": "Yes",
-          "complaintsAndGrievancesPolicy": "No",
-          "listOfProductionSites": [
-            {
-              "name": "Merseburg Gruppe",
-              "isInHouseProductionOrIsContractProcessing": "No",
-              "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
-              "listOfGoodsAndServices": [
-                "Elegant Granite Chips",
-                "Tasty Bronze Mouse"
-              ]
-            }
-          ]
+          "complaintsAndGrievancesPolicy": "No"
+          // "listOfProductionSites": [
+          //   {
+          //     "name": "Merseburg Gruppe",
+          //     "isInHouseProductionOrIsContractProcessing": "No",
+          //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
+          //     "listOfGoodsAndServices": [
+          //       "Elegant Granite Chips",
+          //       "Tasty Bronze Mouse"
+          //     ]
+          //   }
+          // ]
         },
         {
-          "group": "general",
           "betterWorkProgramCertificate": "No",
-          "dataDate": "2022-97-79",
-          "companyLegalForm": "Sole Sole",
+          "dataDate": "2023-01-01",
+          "companyLegalForm": "Sole Trader",
           "vatIdentificationNumber": "BJ564339879",
           "numberOfEmployees": 189085,
-          "shareOfTemporaryWorkers": 4.14,
+          "shareOfTemporaryWorkers": 4.1555,
           "totalRevenue": 23691057301.85,
-          "totalRevenueCurrency": "CHF",
+          "totalRevenueCurrency": "ABC",
           "responsibilitiesForFairWorkingConditions": "No",
           "responsibilitiesForOccupationalSafety": "Yes",
           "riskManagementSystem": "No",
@@ -176,21 +175,20 @@ export default defineComponent({
           "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
           "equalOpportunitiesAndNondiscriminationPolicy": "No",
           "healthAndSafetyPolicy": "Yes",
-          "complaintsAndGrievancesPolicy": "No",
-          "listOfProductionSites": [
-            {
-              "name": "Merseburg Gruppe",
-              "isInHouseProductionOrIsContractProcessing": "No",
-              "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
-              "listOfGoodsAndServices": [
-                "Elegant Granite Chips",
-                "Tasty Bronze Mouse"
-              ]
-            }
-          ]
+          "complaintsAndGrievancesPolicy": "No"
+          // "listOfProductionSites": [
+          //   {
+          //     "name": "Merseburg Gruppe",
+          //     "isInHouseProductionOrIsContractProcessing": "No",
+          //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
+          //     "listOfGoodsAndServices": [
+          //       "Elegant Granite Chips",
+          //       "Tasty Bronze Mouse"
+          //     ]
+          //   }
+          // ]
         },
         {
-          "group": "social",
           "betterWorkProgramCertificate": "No",
           "dataDate": "2021-00-00",
           "companyLegalForm": "Trader Trader",
@@ -259,20 +257,24 @@ export default defineComponent({
           "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
           "equalOpportunitiesAndNondiscriminationPolicy": "No",
           "healthAndSafetyPolicy": "Yes",
-          "complaintsAndGrievancesPolicy": "No",
-          "listOfProductionSites": [
-            {
-              "name": "Merseburg Gruppe",
-              "isInHouseProductionOrIsContractProcessing": "No",
-              "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
-              "listOfGoodsAndServices": [
-                "Elegant Granite Chips",
-                "Tasty Bronze Mouse"
-              ]
-            }
-          ]
+          "complaintsAndGrievancesPolicy": "No"
+          // "listOfProductionSites": [
+          //   {
+          //     "name": "Merseburg Gruppe",
+          //     "isInHouseProductionOrIsContractProcessing": "No",
+          //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",
+          //     "listOfGoodsAndServices": [
+          //       "Elegant Granite Chips",
+          //       "Tasty Bronze Mouse"
+          //     ]
+          //   }
+          // ]
         },
-      ]
+      ],
+      newDataSet: {},
+      dataSetColumns: [] as string[],
+      kpisDataObjects: [],
+      LksgKpisImpactArea,
     };
   },
   props: {
@@ -283,6 +285,35 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyLksgDataset();
+    const dateRegex = "^\\d{4}-\\d{2}-\\d{2}$";
+
+    this.dataSet.forEach( oneDataObject => {
+        if (oneDataObject.dataDate && oneDataObject.dataDate.match(dateRegex)) {
+          this.dataSetColumns.push(oneDataObject.dataDate)
+          this.newDataSet = {...this.newDataSet, [oneDataObject.dataDate]:oneDataObject}
+        }
+    })
+
+    this.dataSet.forEach( el => {
+      for (const [key, value] of Object.entries(el)) {
+
+        if (!this.kpisDataObjects.some(e => e.kpi === key)) {
+          let kpiDataObject = {
+            kpi: `${key}`,
+            group: this.LksgKpisImpactArea[key],
+
+          };
+          this.dataSetColumns.forEach( dataDate => {
+            kpiDataObject = {...kpiDataObject, [dataDate]: this.newDataSet[`${dataDate}`][`${key}`]}
+
+          })
+          this.kpisDataObjects.push(kpiDataObject);
+
+        } else {
+          return;
+        }
+      }
+    })
   },
   watch: {
     dataID() {
@@ -325,3 +356,4 @@ export default defineComponent({
   },
 });
 </script>
+
