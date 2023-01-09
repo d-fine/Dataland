@@ -5,12 +5,12 @@ import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.dataland.datalandbackend.utils.KeycloakUserUtils
+import org.dataland.datalandbackend.utils.IdUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
-import java.util.UUID
 
 /**
  * Implementation of a invite manager for Dataland
@@ -34,10 +34,6 @@ class InviteManager(
             "sending an email to a Dataland administrator. Please try again or contact us."
     private val inviteResultSuccess = "Your data request was submitted. You will be notified about its state via email."
 
-    private fun generateUUID(): String {
-        return UUID.randomUUID().toString()
-    }
-
     private fun checkFilename(fileToCheck: MultipartFile): Boolean {
         return regexForValidExcelFileName.containsMatchIn(fileToCheck.originalFilename!!)
     }
@@ -46,7 +42,7 @@ class InviteManager(
         singleExcelFile: MultipartFile,
         associatedInviteId: String
     ): String {
-        val fileId = generateUUID()
+        val fileId = IdUtils.generateUUID()
         logger.info("Storing Excel file with file ID $fileId for invite ID $associatedInviteId.")
         temporaryFileStore[fileId] = singleExcelFile
         logger.info("Excel file was stored in-memory.")
@@ -97,7 +93,7 @@ class InviteManager(
      * @return a response model object with info about the invite process
      */
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
-        val inviteId = generateUUID()
+        val inviteId = IdUtils.generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         return if (!checkFilename(excelFile)) {
             handleSubmission(fileId, inviteId, false, inviteResultInvalidFileName)
