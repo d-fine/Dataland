@@ -125,7 +125,6 @@
 <script lang="ts">
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
-import PrimeDialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, ref } from "vue";
@@ -158,7 +157,6 @@ export default defineComponent({
     FileUpload,
     FileSelectMessage: Message,
     Checkbox,
-    PrimeDialog,
   },
   setup() {
     return {
@@ -249,7 +247,6 @@ export default defineComponent({
     },
 
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
-      console.log("AAA");
       this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },
@@ -285,5 +282,4 @@ a,
 img:hover {
   cursor: pointer;
 }
-
 </style>
