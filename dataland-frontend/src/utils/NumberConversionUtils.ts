@@ -15,16 +15,16 @@ export function roundNumber(rawNumber: number, precision: number): number {
 }
 
 /**
- * convert bytes to a human-readable text
+ * convert the number of bytes for a file to a human-readable text
  *
- * @param  {number} bytes is the number of bytes
- * @param  {number} decimals is the max number of digits that should be displayed after the decimal point
+ * @param  {number} numberOfBytes is the number of bytes
+ * @param  {number} precision is the number that defines how many digits should be considered after the decimal point
  */
-export function formatBytesUserFriendly(bytes: number, decimals: number): string {
-  if (!+bytes) return "0 Bytes";
+export function formatBytesUserFriendly(numberOfBytes: number, precision: number): string {
+  if (!+numberOfBytes) return "0 Bytes";
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const i = Math.floor(Math.log(numberOfBytes) / Math.log(k));
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`;
+  return `${parseFloat((numberOfBytes / Math.pow(k, i)).toFixed(precision))} ${sizes[i]}`;
 }
