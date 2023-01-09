@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.dataland.datalandbackend.utils.KeycloakUserUtils
-import org.dataland.datalandbackend.utils.IdUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -75,17 +75,6 @@ class InviteManager(
         }
     }
 
-    private fun handleSubmission(
-        fileId: String,
-        inviteId: String,
-        success: Boolean,
-        message: String
-    ): InviteMetaInfoEntity {
-        val userId = KeycloakUserUtils.getUserIdFromSecurityContext()
-        removeFileFromStorage(fileId, inviteId)
-        return storeMetaInfoAboutInviteInDatabase(userId, inviteId, fileId, InviteResult(success, message))
-    }
-
     /**
      * Method to submit an invite
      * @param excelFile is the Excel file to submit, which contains the invite info
@@ -95,21 +84,22 @@ class InviteManager(
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = IdUtils.generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
+        removeFileFromStorage(fileId, inviteId)
         return if (!checkFilename(excelFile)) {
-            handleSubmission(fileId, inviteId, false, inviteResultInvalidFileName)
+            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
         } else if (excelFile.isEmpty) {
-            handleSubmission(fileId, inviteId, false, inviteResultFileIsEmpty)
+            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultFileIsEmpty))
         } else if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
-            handleSubmission(fileId, inviteId, false, inviteResultEmailError)
-        } else handleSubmission(fileId, inviteId, true, inviteResultSuccess)
+            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultEmailError))
+        } else storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(true, inviteResultSuccess))
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(
-        userId: String,
         inviteId: String,
         fileId: String,
         inviteResult: InviteResult
     ): InviteMetaInfoEntity {
+        val userId = KeycloakUserUtils.getUserIdFromSecurityContext()
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
         val newInviteMetaInfoEntity = InviteMetaInfoEntity(
             inviteId, userId, fileId, timestampInEpochSeconds,
