@@ -144,10 +144,7 @@ import InfoCard from "@/components/general/InfoCard.vue";
 import ProgressBar from "@/components/general/ProgressBar.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
-import {
-  UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
-  UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-} from "@/utils/Constants";
+import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS, UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 
 export default defineComponent({
   name: "RequestData",
