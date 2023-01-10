@@ -6,5 +6,6 @@ export function calculateDaysFromNow(dateInMilliseconds: number, startDate = new
 }
 
 export function formatExpiryDate(expireTimeDays: number, startDate = Date.now()): string {
-  return new Date(startDate + expireTimeDays * msPerDay).toDateString();
+  const options = { weekday: "short", year: "numeric", month: "short", day: "numeric" } as Intl.DateTimeFormatOptions;
+  return new Date(startDate + expireTimeDays * msPerDay).toLocaleDateString("en-US", options);
 }
