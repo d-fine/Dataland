@@ -172,11 +172,12 @@ describe("As a user I expect a data request page where I can download an excel t
 
         cy.get('button[name="back_to_home_button"]')
           .click()
-          .get("img.d-triangle-down")
+        cy.wait(3000)
+          cy.get("img.d-triangle-down")
           .click()
           .get("a#profile-picture-dropdown-data-request-button")
           .click();
-
+        cy.wait(2000)
         uploadBoxShouldBeEmpty();
         uploadDummyExcelFile("test.xlsx");
         setHideUsernameCheckbox(true);
