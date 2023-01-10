@@ -23,7 +23,7 @@
         />
       </div>
       <div class="card-section-title">
-        <span class="font-medium text-xl">Revenue</span>
+        <span class="font-medium text-xl font-semibold">Revenue</span>
       </div>
       <div class="col-6">
         <TaxoCard
@@ -42,7 +42,7 @@
     </div>
     <div class="grid">
       <div class="card-section-title">
-        <span class="font-medium text-xl">CapEx</span>
+        <span class="font-medium text-xl font-semibold">CapEx</span>
       </div>
       <div class="col-6">
         <TaxoCard
@@ -61,7 +61,7 @@
     </div>
     <div class="grid">
       <div class="card-section-title">
-        <span class="font-medium text-xl">OpEx</span>
+        <span class="font-medium text-xl font-semibold">OpEx</span>
       </div>
       <div class="col-6">
         <TaxoCard
