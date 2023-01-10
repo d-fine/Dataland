@@ -29,6 +29,8 @@ class MetaDataController(
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
         val currentUser = SecurityContextHolder.getContext().authentication
-        return ResponseEntity.ok(dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser))
+        return ResponseEntity.ok(
+            dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser)
+        )
     }
 }

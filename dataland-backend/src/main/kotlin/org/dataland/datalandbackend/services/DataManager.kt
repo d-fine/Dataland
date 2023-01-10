@@ -65,7 +65,13 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        metaDataManager.storeDataMetaInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company)
+        metaDataManager.storeDataMetaInformation(
+            dataId,
+            storableDataSet.dataType,
+            storableDataSet.uploaderUserId,
+            storableDataSet.uploadTime,
+            company
+        )
         return dataId
     }
 

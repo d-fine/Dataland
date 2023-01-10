@@ -12,9 +12,8 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.keycloakAdapter.DatalandRealmRoles
 import org.dataland.keycloakAdapter.utils.getUserId
-import org.dataland.keycloakAdapter.utils.hasAuthority
+import org.dataland.keycloakAdapter.utils.hasRole
 import org.springframework.security.core.Authentication
-import java.time.Instant
 
 /**
  * The database entity for storing metadata regarding data uploaded to dataland
@@ -49,10 +48,17 @@ data class DataMetaInformationEntity(
             companyId = company.companyId,
         )
     }
-    fun toApiModel(viewingUser: Authentication): DataMetaInformation {
-       val displayUploaderUserId = viewingUser.hasAuthority(DatalandRealmRoles.ROLE_ADMIN) || viewingUser.getUserId() == this.uploaderUserId
 
-       return if (displayUploaderUserId) toApiModel().copy(uploaderUserId = this.uploaderUserId)
-       else toApiModel()
+    /**
+     * Returns the API model to be shown to the given viewingUser
+     * The uploaderUserId field will be populated if the user is admin or the uploader of this data
+     * otherwise the field will remain empty
+     */
+    fun toApiModel(viewingUser: Authentication): DataMetaInformation {
+        val displayUploaderUserId = viewingUser.hasRole(DatalandRealmRoles.ROLE_ADMIN) ||
+            viewingUser.getUserId() == this.uploaderUserId
+
+        return if (displayUploaderUserId) toApiModel().copy(uploaderUserId = this.uploaderUserId)
+        else toApiModel()
     }
 }

@@ -1512,7 +1512,8 @@
         "required": [
           "companyId",
           "dataId",
-          "dataType"
+          "dataType",
+          "uploadTime"
         ],
         "type": "object",
         "properties": {

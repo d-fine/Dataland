@@ -53,7 +53,9 @@ abstract class DataController<T>(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId"
         )
-        return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId))
+        return ResponseEntity.ok(
+            DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId)
+        )
     }
 
     private fun generatedCorrelationId(companyId: String): String {

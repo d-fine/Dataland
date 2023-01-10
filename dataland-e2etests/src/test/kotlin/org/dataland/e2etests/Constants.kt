@@ -20,7 +20,12 @@ const val READER_USER_NAME = "data_reader"
 const val READER_USER_ID = "18b67ecc-1176-4506-8414-1e81661017ca"
 val READER_USER_PASSWORD: String = System.getenv("KEYCLOAK_READER_PASSWORD")
 
-val MUTUAL_ROLES_UPLOADER_READER =
+const val ADMIN_USER_NAME = "data_admin"
+const val ADMIN_USER_ID = "136a9394-4873-4a61-a25b-65b1e8e7cc2f"
+val ADMIN_USER_PASSWORD: String = System.getenv("KEYCLOAK_DATALAND_ADMIN_PASSWORD")
+val ADMIN_EXTENDED_ROLES = listOf("ROLE_ADMIN")
+
+val MUTUAL_ROLES_DATALAND_USERS =
     listOf("default-roles-datalandsecurity", "ROLE_USER", "offline_access", "uma_authorization")
 
 val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
