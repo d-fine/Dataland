@@ -116,7 +116,7 @@ describe("As a user I expect a data request page where I can download an excel t
             );
           }
         );
-        cy.deleteDownloadsFolder();
+        cy.task("deleteFolder", Cypress.config("downloadsFolder"));
       });
 
       it(`Test overriding and removing files from the upload box`, { scrollBehavior: false }, () => {
