@@ -78,7 +78,6 @@ class InviteManager(
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         val inviteId = IdUtils.generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
-        removeFileFromStorage(fileId, inviteId)
         val inviteResult = if (!checkFilename(excelFile)) {
             InviteResult(false, inviteResultInvalidFileName)
         } else if (excelFile.isEmpty) {
@@ -86,6 +85,7 @@ class InviteManager(
         } else {
             sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)
         }
+        removeFileFromStorage(fileId, inviteId)
         return storeMetaInfoAboutInviteInDatabase(inviteId, fileId, inviteResult)
     }
 
