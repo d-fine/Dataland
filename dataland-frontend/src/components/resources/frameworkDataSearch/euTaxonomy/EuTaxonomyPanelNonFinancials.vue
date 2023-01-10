@@ -22,7 +22,7 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         />
       </div>
-      <div class="col-12 text-left pb-0">
+      <div class="col-12 text-left pb-0 mt-4">
         <h3>Revenue</h3>
       </div>
       <div class="col-6">
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-12 text-left pb-0">
+      <div class="col-12 text-left pb-0 mt-4">
         <h3>CapEx</h3>
       </div>
       <div class="col-6">
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-12 text-left pb-0">
+      <div class="col-12 text-left pb-0 mt-4">
         <h3>OpEx</h3>
       </div>
       <div class="col-6">

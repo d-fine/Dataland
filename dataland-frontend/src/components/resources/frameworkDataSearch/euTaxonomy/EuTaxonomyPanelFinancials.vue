@@ -23,7 +23,7 @@
         />
       </div>
       <template v-for="fsType in dataSet.financialServicesTypes" :key="fsType">
-        <div class="col-12 text-left pb-3">
+        <div class="col-12 text-left pb-3 mt-4">
           <span class="font-medium text-xl">Exposures for {{ getSectionHeading(fsType) }}</span>
           <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
         </div>
@@ -64,7 +64,7 @@
           />
         </div>
         <template v-if="fsType === 'CreditInstitution'">
-          <div class="col-12 text-left pb-3">
+          <div class="col-12 text-left pb-3 mt-4">
             <span class="font-medium text-xl">Credit Institution KPIs</span>
             <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
           </div>
@@ -117,7 +117,7 @@
           </div>
         </template>
         <template v-if="fsType === 'InsuranceOrReinsurance'">
-          <div class="col-12 text-left pb-0">
+          <div class="col-12 text-left pb-0 mt-4">
             <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
             <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
           </div>
@@ -130,7 +130,7 @@
           </div>
         </template>
         <template v-if="fsType === 'InvestmentFirm'">
-          <div class="col-12 text-left pb-0">
+          <div class="col-12 text-left pb-0 mt-4">
             <span class="font-medium text-xl">Investment Firm KPIs</span>
             <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
           </div>
