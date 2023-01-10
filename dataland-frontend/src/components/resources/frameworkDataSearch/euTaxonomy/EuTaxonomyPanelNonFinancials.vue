@@ -22,8 +22,8 @@
                   None: low level of comfort that the subject matter is not materially misstated."
         />
       </div>
-      <div class="col-12 text-left pb-0 mt-4">
-        <h3>Revenue</h3>
+      <div class="card-section-title">
+        <span class="font-medium text-xl">Revenue</span>
       </div>
       <div class="col-6">
         <TaxoCard
@@ -41,8 +41,8 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-12 text-left pb-0 mt-4">
-        <h3>CapEx</h3>
+      <div class="card-section-title">
+        <span class="font-medium text-xl">CapEx</span>
       </div>
       <div class="col-6">
         <TaxoCard
@@ -60,8 +60,8 @@
       </div>
     </div>
     <div class="grid">
-      <div class="col-12 text-left pb-0 mt-4">
-        <h3>OpEx</h3>
+      <div class="card-section-title">
+        <span class="font-medium text-xl">OpEx</span>
       </div>
       <div class="col-6">
         <TaxoCard
