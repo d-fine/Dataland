@@ -37,7 +37,7 @@
             <InfoCard class="mb-3 font-medium">
               Download and fill the EXCEL template with your request and upload it below.
               <div class="mt-3">
-                <a class="text-primary" :href="pathToExcelTemplate" id="download-data-request-excel-template" download>
+                <a class="text-primary" href="/Dataland_Request_Template.xlsx" id="download-data-request-excel-template" download>
                   DOWNLOAD - EXCEL TEMPLATE .XLS
                 </a>
               </div>
@@ -171,7 +171,6 @@ export default defineComponent({
       inviteResultMessage: "No invite result message available.",
       submissionFinished: false,
       submissionInProgress: false,
-      pathToExcelTemplate: "/" + EXCEL_TEMPLATE_FILE_NAME,
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null as null | File,
       hideName: false,
