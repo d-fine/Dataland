@@ -3,14 +3,14 @@
     <template #title></template>
     <template #content>
       <div class="grid">
-        <div class="col-7 text-left">
+        <div class="col-6 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div v-if="percent !== undefined && percent !== null" class="col-5 text-right text-primary">
+        <div v-if="percent !== undefined && percent !== null" class="col-6 text-right text-primary">
           <span class="font-medium text-3xl">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
-        <div v-else class="col-5 col-offset-1 grid align-items-center text-right">
+        <div v-else class="col-6 grid align-items-center text-right">
           <span class="pl-4 font-semibold">No data has been reported </span>
         </div>
       </div>
