@@ -24,6 +24,9 @@ import org.springframework.security.oauth2.jwt.Jwt
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class InviteManagerTest {
+    private val emailErrorMessage = "Your invite failed due to an error that occurred when Dataland was trying to " +
+        "forward your Excel file by sending an email to a Dataland administrator."
+
     @Mock lateinit var mockEmail: Email
     @Mock lateinit var mockEmailSender: EmailSender
     @Mock lateinit var mockInviteMetaInfoRepository: InviteMetaInfoRepository
@@ -50,11 +53,6 @@ class InviteManagerTest {
         val file = MockMultipartFile("test.xlsx", "test.xlsx", "plain/text", "this is content".toByteArray())
         val inviteMetaInfo = inviteManager.submitInvitation(file, false)
         assertFalse(inviteMetaInfo.wasInviteSuccessful)
-        assertTrue(
-            inviteMetaInfo.inviteResultMessage.contains(
-                "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file" +
-                    " by sending an email to a Dataland administrator. Please try again or contact us."
-            )
-        )
+        assertTrue(inviteMetaInfo.inviteResultMessage.contains(emailErrorMessage))
     }
 }
