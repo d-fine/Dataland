@@ -1,6 +1,7 @@
 import Chainable = Cypress.Chainable;
 import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
 import { browserThen } from "@e2e/utils/Cypress";
+import {rmdir} from "fs";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -19,8 +20,16 @@ export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
   return cy.visit(endpoint).get("#app").should("exist");
 }
 
-export function deleteDownloadsFolder(): Chainable<void> {
-  return cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+export function deleteDownloadsFolder(): Promise<void | null> {
+  return new Promise((resolve, reject) => {
+    rmdir(Cypress.config("downloadsFolder"), {recursive: true}, (err) => {
+      if (err) {
+        console.error(err)
+        return reject(err)
+      }
+      resolve(null)
+    })
+  })
 }
 
 Cypress.Commands.add("visitAndCheckAppMount", visitAndCheckAppMount);
