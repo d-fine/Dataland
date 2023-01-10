@@ -9,9 +9,11 @@ $btn-focus-border-color: $blue-light;
 //table
 $table-background-color: $white;
 $table-background-hover-color: $gray-light;
+$table-background-hover-color-light: $gray-lighter;
 $table-border: $gray-light;
 $table-border-dark: $gray;
 $table-icon-color: $gray;
+$tables-headers-bg: $surface-ground;
 
 //pagination
 $pagination-color: $gray;
@@ -61,8 +63,5 @@ $message-warn-text: $brown-dark;
 $message-error-bg: var(--red-600);
 $message-error-border: var(--red-800);
 $message-error-text: $white;
-
-//tables
-$tables-headers-bg: $surface-ground;
 
 

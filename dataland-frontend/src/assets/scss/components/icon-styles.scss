@@ -30,3 +30,12 @@
 .pi {
   font-size: $fs-base;
 }
+
+.p-rowgroup-header {
+  .p-row-toggler-icon {
+    font-size: $fs-xl;
+    color: $main-color;
+    &.pi-chevron-down { @include icon-override("\f182"); }
+    &.pi-chevron-right { @include icon-override("\f181"); }
+  }
+}

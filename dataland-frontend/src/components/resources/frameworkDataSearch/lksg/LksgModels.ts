@@ -1,5 +1,4 @@
 export const LksgKpis = {
-  betterWorkProgramCertificate: "Better Work Program Certificate",
   dataDate: "Data Date",
   companyLegalForm: "Company Legal Form",
   vatIdentificationNumber: "Vat Identification Number",
@@ -10,6 +9,7 @@ export const LksgKpis = {
   responsibilitiesForFairWorkingConditions: "Responsibilities For Fair Working Conditions",
   responsibilitiesForOccupationalSafety: "Responsibilities For Occupational Safety",
   riskManagementSystem: "Risk Management System",
+  betterWorkProgramCertificate: "Better Work Program Certificate",
   grievanceHandlingMechanismUsedForReporting: "Grievance Handling Mechanism Used For Reporting",
   codeOfConduct: "Code Of Conduct",
   codeOfConductTraining: "Code Of Conduct Training",
@@ -76,7 +76,6 @@ export const LksgKpis = {
 };
 
 export const LksgKpisImpactArea = {
-  betterWorkProgramCertificate: "Better Work Program Certificate",
   dataDate: "General",
   companyLegalForm: "General",
   vatIdentificationNumber: "General",
@@ -84,6 +83,8 @@ export const LksgKpisImpactArea = {
   shareOfTemporaryWorkers: "General",
   totalRevenue: "General",
   totalRevenueCurrency: "General",
+  lksgInScope: "General",
+  betterWorkProgramCertificate: "Better Work Program Certificate",
   responsibilitiesForFairWorkingConditions: "Social and employee matters",
   responsibilitiesForOccupationalSafety: "OSH",
   riskManagementSystem: "Risk management",
@@ -124,7 +125,6 @@ export const LksgKpisImpactArea = {
   riskManagementSystemCertification: "Evidence, certificates and attestations",
   amforiBsciAuditReport: "Evidence, certificates and attestations",
   fairLabourAssociationCertification: "Evidence, certificates and attestations",
-  lksgInScope: "General",
   oshMonitoring: "OSH",
   oshPolicy: "OSH",
   smetaSocialAuditConcept: "Evidence, certificates and attestations",
@@ -146,3 +146,16 @@ export const LksgKpisImpactArea = {
   healthAndSafetyPolicy: "Evidence, certificates and attestations",
   complaintsAndGrievancesPolicy: "Evidence, certificates and attestations",
 };
+
+export const LksgGroupOrder = {
+  "General": "1",
+  "Social and employee matters": "2",
+  "Risk management": "1",
+  "Grievance mechanism": "1",
+  "Code Of Conduct": "1",
+  "Child labour": "1",
+  "Forced labour, slavery and debt bondage": "1",
+  "Freedom of association": "1",
+  "Human rights": "1",
+  "Evidence, certificates and attestations": "1",
+  };
