@@ -1522,6 +1522,13 @@
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
+          "uploaderUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
           "companyId": {
             "type": "string"
           }
