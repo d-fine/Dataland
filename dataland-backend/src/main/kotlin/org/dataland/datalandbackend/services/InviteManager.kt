@@ -62,17 +62,11 @@ class InviteManager(
         isSubmitterNameHidden: Boolean,
         fileId: String,
         associatedInviteId: String
-    ): Boolean {
+    ): InviteResult {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
         val isEmailSent = emailSender.sendEmail(email)
-        return if (isEmailSent) {
-            logger.info("Emails were sent.")
-            true
-        } else {
-            logger.info("Emails could not be sent.")
-            false
-        }
+        return InviteResult(isEmailSent, if(isEmailSent) inviteResultSuccess else inviteResultEmailError)
     }
 
     /**
@@ -85,13 +79,14 @@ class InviteManager(
         val inviteId = IdUtils.generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         removeFileFromStorage(fileId, inviteId)
-        return if (!checkFilename(excelFile)) {
-            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultInvalidFileName))
+        val inviteResult = if (!checkFilename(excelFile)) {
+            InviteResult(false, inviteResultInvalidFileName)
         } else if (excelFile.isEmpty) {
-            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultFileIsEmpty))
-        } else if (!sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)) {
-            storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(false, inviteResultEmailError))
-        } else storeMetaInfoAboutInviteInDatabase(inviteId, fileId, InviteResult(true, inviteResultSuccess))
+            InviteResult(false, inviteResultFileIsEmpty)
+        } else {
+            sendEmailWithFile(excelFile, isSubmitterNameHidden, fileId, inviteId)
+        }
+        return storeMetaInfoAboutInviteInDatabase(inviteId, fileId, inviteResult)
     }
 
     private fun storeMetaInfoAboutInviteInDatabase(

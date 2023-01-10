@@ -28,6 +28,7 @@ class EmailSender(
 
     /** This method sends an email
      * @param email the email to send
+     * @return a sending success indicator which is true if the sending was successful
      */
     fun sendEmail(email: Email): Boolean {
         try {
@@ -37,6 +38,7 @@ class EmailSender(
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)
             response.messages.forEach { logger.info(it.toString()) }
+            logger.info("Email successfully sent.")
         } catch (e: MailjetException) {
             logger.error("Error sending email, with error: $e")
             return false
