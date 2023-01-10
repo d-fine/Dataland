@@ -80,5 +80,4 @@ export default defineComponent({
 .d-card > .p-card-body > .p-card-content {
   padding: 0;
 }
-
 </style>
