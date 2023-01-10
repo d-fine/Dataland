@@ -146,7 +146,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import {
   UPLOAD_FILE_SIZE_DISPLAY_DECIMALS,
-  EXCEL_TEMPLATE_FILE_NAME,
   UPLOAD_MAX_FILE_SIZE_IN_BYTES,
 } from "@/utils/Constants";
 
