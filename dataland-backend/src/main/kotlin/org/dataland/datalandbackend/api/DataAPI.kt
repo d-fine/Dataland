@@ -35,7 +35,7 @@ interface DataAPI<T> {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored

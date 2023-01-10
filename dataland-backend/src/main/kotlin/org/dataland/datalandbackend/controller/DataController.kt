@@ -33,7 +33,7 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
         val userId = SecurityContextHolder.getContext().authentication.name
-        val uploadTime = Instant.now()
+        val uploadTime = Instant.now().epochSecond
         logger.info(
             "Received a request from user $userId to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"

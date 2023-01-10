@@ -33,7 +33,7 @@ data class DataMetaInformationEntity(
     var uploaderUserId: String,
 
     @Column(name = "upload_time", nullable = false)
-    var uploadTime: Instant,
+    var uploadTime: Long,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")

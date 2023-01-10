@@ -15,7 +15,7 @@ data class StorableDataSet(
     val companyId: String,
     val dataType: DataType,
     val uploaderUserId: String,
-    val uploadTime: Instant,
+    val uploadTime: Long,
     val data: String
 ) {
     fun requireConsistencyWith(metaDataEntry: DataMetaInformationEntity) {
