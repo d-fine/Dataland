@@ -50,7 +50,11 @@ class InviteManagerTest {
         val file = MockMultipartFile("test.xlsx", "test.xlsx", "plain/text", "this is content".toByteArray())
         val inviteMetaInfo = inviteManager.submitInvitation(file, false)
         assertFalse(inviteMetaInfo.wasInviteSuccessful)
-        assertTrue(inviteMetaInfo.inviteResultMessage.contains("invite failed"))
-        assertTrue(inviteMetaInfo.inviteResultMessage.contains("sending an email"))
+        assertTrue(
+            inviteMetaInfo.inviteResultMessage.contains(
+                "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file" +
+                        " by sending an email to a Dataland administrator. Please try again or contact us."
+            )
+        )
     }
 }
