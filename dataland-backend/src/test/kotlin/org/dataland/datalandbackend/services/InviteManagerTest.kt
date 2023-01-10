@@ -53,7 +53,7 @@ class InviteManagerTest {
         assertTrue(
             inviteMetaInfo.inviteResultMessage.contains(
                 "Your invite failed due to an error that occurred when Dataland was trying to forward your Excel file" +
-                        " by sending an email to a Dataland administrator. Please try again or contact us."
+                    " by sending an email to a Dataland administrator. Please try again or contact us."
             )
         )
     }

@@ -37,7 +37,12 @@
             <InfoCard class="mb-3 font-medium">
               Download and fill the EXCEL template with your request and upload it below.
               <div class="mt-3">
-                <a class="text-primary" href="/Dataland_Request_Template.xlsx" id="download-data-request-excel-template" download>
+                <a
+                  class="text-primary"
+                  href="/Dataland_Request_Template.xlsx"
+                  id="download-data-request-excel-template"
+                  download
+                >
                   DOWNLOAD - EXCEL TEMPLATE .XLS
                 </a>
               </div>
