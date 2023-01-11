@@ -1,4 +1,4 @@
-import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
@@ -53,9 +53,9 @@ describe("As a user, I expect the footer section to be present and contain relev
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
         getKeycloakToken(reader_name, reader_pw).then((token) => {
-          cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
-            (datasetNonFinancial) => {
-              const companyId = datasetNonFinancial[0].companyId;
+          cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+            (storedCompanies) => {
+              const companyId = storedCompanies[0].companyId;
               cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
               assertFooterPresence();
             }

@@ -1,4 +1,4 @@
-import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
@@ -155,7 +155,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
 
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);
           cy.get("input[id=framework_data_search_bar_standard]")
@@ -171,7 +171,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Click on an autocomplete-suggestion and check if forwarded to company framework data view page", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
           cy.visitAndCheckAppMount("/companies");
