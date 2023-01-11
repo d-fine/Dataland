@@ -8,7 +8,7 @@ import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxo
 
 const timeout = 120 * 1000;
 describeIf(
-  "As a user, I expect data that I upload for a company to be displayed correctly",
+  "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
