@@ -1,13 +1,16 @@
 package org.dataland.datalandbackend.model.lksg
 
+/**
+ * --- API model ---
+ * Impact topics of the LKSG questionnaire's impact area "Social"
+ */
 data class Social(
-    val general: General,
-    val grievanceMechanism: GrievanceMechanism,
-    val childLabour: ChildLabour,
-    val forcedLabourSlaveryAndDebtBondage: ForcedLabourSlaveryAndDebtBondage,
-    val osh: SocialOsh,
-    val freedomOfAssociation: FreedomOfAssociation,
-    val humanRights: HumanRights,
-    val evidenceCertificatesAndAttestations: EvidenceCertificatesAndAttestations,
-
-    )
+    val general: General? = null,
+    val grievanceMechanism: GrievanceMechanism? = null,
+    val childLabour: ChildLabour? = null,
+    val forcedLabourSlaveryAndDebtBondage: ForcedLabourSlaveryAndDebtBondage? = null,
+    val osh: SocialOsh? = null,
+    val freedomOfAssociation: FreedomOfAssociation? = null,
+    val humanRights: HumanRights? = null,
+    val evidenceCertificatesAndAttestations: EvidenceCertificatesAndAttestations? = null,
+)
