@@ -3,88 +3,96 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Esser GmbH & Co. KG",
-				"Neubert UG",
-				"Hohenberger-Caspers"
+				"Neubauer, Leide und Zeidler",
+				"Reinelt, Horna und Haaf",
+				"Schenk-Steding",
+				"Kunz Gruppe"
 			],
-			"companyLegalForm": "vortals",
-			"headquarters": "Saphiradorf",
-			"headquartersPostalCode": "97624",
-			"sector": "eyeballs",
+			"companyLegalForm": "deliverables",
+			"headquarters": "Süd Claireburg",
+			"headquartersPostalCode": "48166",
+			"sector": "methodologies",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "27kfwc3ri"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "jf652t7pzsgo"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "02wsrp1h7txt9lr6ucvc"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "11aum7stea"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "j85s1iv"
+					"identifierValue": "4vm8l6r6m"
 				}
 			],
-			"countryCode": "IS",
+			"countryCode": "AE",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "https://lukrativ-tier.de/niveauvoll-haut.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-02-20",
+					"currency": "ILS"
+				},
+				"IntegratedReport": {
+					"reference": "http://gigantisch-imperialismus.de/gro%C3%9Fz%C3%BCgig-s%C3%A4ugling.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "BSD"
+				},
 				"AnnualReport": {
-					"reference": "https://xn--mitreiend-lnge-5fb9f.info/feinsinnig-pilz.pdf",
-					"reportDate": "2022-05-15",
-					"currency": "LVL"
+					"reference": "http://beschwingt-pilz.net/stark-biographie.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-08-11",
+					"currency": "BRL"
+				},
+				"SustainabilityReport": {
+					"reference": "https://ausdrucksstark-kubus.ch/hochmotiviert-malaria.pdf",
+					"currency": "KHR"
 				}
 			},
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-11-07",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Marquart, Thränhardt und Brehmer",
+				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 987,
-					"report": "AnnualReport",
-					"tagName": "infrastructures"
+					"page": 147,
+					"report": "IntegratedReport",
+					"tagName": "e-business"
 				}
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 2043,
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 67530,
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.4392,
+					"value": 0.1244,
 					"dataSource": {
-						"page": 523,
-						"report": "AnnualReport",
-						"tagName": "portals"
+						"page": 865,
+						"report": "IntegratedReport",
+						"tagName": "supply-chains"
 					},
-					"quality": "Audited",
-					"comment": "back up primary pixel"
+					"quality": "Estimated",
+					"comment": "transmit 1080p port"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8863,
-					"quality": "Estimated"
+					"value": 0.3961,
+					"dataSource": {
+						"page": 1020,
+						"report": "ESEFReport",
+						"tagName": "convergence"
+					},
+					"quality": "Incomplete",
+					"comment": "back up primary matrix"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5916,
+					"value": 0.2378,
 					"dataSource": {
-						"page": 231,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 808,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
 					},
-					"quality": "Audited",
-					"comment": "override solid state protocol"
+					"quality": "Incomplete",
+					"comment": "navigate redundant matrix"
 				}
 			}
 		}
@@ -93,92 +101,115 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Bielert, Soller und Goy",
-				"Gerhardt-Zümsande",
-				"Bak GmbH",
-				"Splinter-Karst"
+				"Grüner OHG",
+				"Beckel Gruppe",
+				"Kalinowski KG",
+				"Jess-Umbach"
 			],
-			"headquarters": "Savoialand",
-			"headquartersPostalCode": "39006",
-			"sector": "metrics",
+			"companyLegalForm": "methodologies",
+			"headquarters": "Alt Valeriascheid",
+			"headquartersPostalCode": "51967",
+			"sector": "experiences",
 			"identifiers": [
 				{
 					"identifierType": "Lei",
-					"identifierValue": "oyblu9g4pry6e3g13dsn"
+					"identifierValue": "0zokjoim6t1ci460u1mp"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "mm9u4eqffx"
+					"identifierValue": "koxmn1ph7z"
 				}
 			],
-			"countryCode": "BJ",
+			"countryCode": "ME",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://komfortabel-schiff.com/heimlich-ebene.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-06-15",
+					"currency": "BIF"
+				},
 				"AnnualReport": {
-					"reference": "http://geschickt-durchfall.name/plausibel-erde.pdf",
-					"currency": "GIP"
+					"reference": "http://originell-frau.net/grundsolide-tier.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-12-09",
+					"currency": "JMD"
 				}
 			},
-			"fiscalYearEnd": "2022-11-01",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-10-31",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "No",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 994712.45,
+					"value": 438905.94,
 					"dataSource": {
-						"page": 225,
+						"page": 52,
 						"report": "AnnualReport",
-						"tagName": "architectures"
+						"tagName": "experiences"
 					},
-					"quality": "Reported",
-					"comment": "quantify virtual circuit"
+					"quality": "Estimated",
+					"comment": "back up 1080p bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.6481,
-					"quality": "Estimated"
+					"value": 0.9181,
+					"dataSource": {
+						"page": 629,
+						"report": "AnnualReport",
+						"tagName": "markets"
+					},
+					"quality": "Reported",
+					"comment": "index digital alarm"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 122371.64,
+					"value": 148984.96,
 					"dataSource": {
-						"page": 1119,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 712,
+						"report": "IntegratedReport",
+						"tagName": "content"
 					},
-					"quality": "Audited",
-					"comment": "generate cross-platform monitor"
+					"quality": "Reported",
+					"comment": "transmit virtual firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.8255,
-					"quality": "Estimated"
+					"value": 0.0158,
+					"dataSource": {
+						"page": 326,
+						"report": "IntegratedReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Reported",
+					"comment": "override bluetooth feed"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 233159.07,
+					"value": 121387.91,
 					"dataSource": {
-						"page": 985,
-						"report": "AnnualReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "back up online alarm"
-				},
-				"eligiblePercentage": {
-					"value": 0.3553,
-					"dataSource": {
-						"page": 372,
-						"report": "AnnualReport",
-						"tagName": "convergence"
+						"page": 1059,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
 					},
 					"quality": "Audited",
-					"comment": "synthesize mobile program"
+					"comment": "compress cross-platform system"
+				},
+				"eligiblePercentage": {
+					"value": 0.5634,
+					"dataSource": {
+						"page": 915,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Reported",
+					"comment": "transmit back-end matrix"
 				}
 			}
 		}
