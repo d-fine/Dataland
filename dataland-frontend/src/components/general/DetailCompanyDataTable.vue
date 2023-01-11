@@ -1,35 +1,45 @@
 <template>
   <div>
     <div class="card">
-      <h5>Lksg data</h5>
+      <h5>LKSG data</h5>
       <DataTable
         :value="customers"
         rowGroupMode="subheader"
         groupRowsBy="group"
         dataKey="group"
+        sortField="group"
+        :sortOrder="1"
+        sortMode="single"
         responsiveLayout="scroll"
         :expandableRowGroups="true"
         :reorderableColumns="true"
         v-model:expandedRowGroups="expandedRowGroups"
-        >
+      >
         <Column
-          bodyClass="headers-bg"
-          headerStyle="min-width: 30vw;"
+          bodyClass="headers-bg flex"
+          headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpi"
           header="KPIs"
         >
           <template #body="slotProps">
-            <div>
-              {{ LksgKpis[slotProps.data.kpi] }}
-              <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" width="32" style="vertical-align: middle; float:right;" />
-            </div>
+            <span class="col-10">{{ kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : "" }}</span>
+
+            <em
+              class="material-icons info-icon col-2"
+              aria-hidden="true"
+              title="kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : ''"
+              v-tooltip.top="{
+                value: hintsForKpis[slotProps.data.kpi] ? hintsForKpis[slotProps.data.kpi] : '',
+              }"
+              >info</em
+            >
           </template>
         </Column>
         <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col"></Column>
         <Column field="group" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.group }}</span>
+          <span>{{ slotProps.data.group ? slotProps.data.group : "" }}</span>
         </template>
       </DataTable>
     </div>
@@ -38,19 +48,20 @@
 
 <script>
 import { defineComponent } from "vue";
+import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-
-import { LksgKpis } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
 
 export default defineComponent({
   name: "DetailCompanyDataTable",
   components: { DataTable, Column },
+  directives: {
+    tooltip: Tooltip,
+  },
   data() {
     return {
-      LksgKpis,
       customers: null,
-      expandedRowGroups: ['General'],
+      expandedRowGroups: ["General"],
     };
   },
   props: {
@@ -62,9 +73,18 @@ export default defineComponent({
       type: [],
       default: [],
     },
+    kpisNames: {
+      type: Object,
+      default: {},
+    },
+    hintsForKpis: {
+      type: Object,
+      default: {},
+    },
   },
   created() {
     this.customers = this.dataSet;
+    console.log("this.customers", this.kpisNames);
   },
 });
 </script>

@@ -35,7 +35,14 @@
   .p-row-toggler-icon {
     font-size: $fs-xl;
     color: $main-color;
-    &.pi-chevron-down { @include icon-override("\f182"); }
-    &.pi-chevron-right { @include icon-override("\f181"); }
+    &.pi-chevron-down { @include icon-override("\e5c6"); transform: rotate(180deg); }
+    &.pi-chevron-right { @include icon-override("\e5c6"); }
   }
+}
+.p-datatable-tbody .info-icon {
+  align-self: center;
+  text-align: center;
+}
+.info-icon {
+  cursor: help;
 }
