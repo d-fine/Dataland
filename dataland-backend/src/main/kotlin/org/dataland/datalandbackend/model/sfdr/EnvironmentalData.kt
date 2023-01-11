@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.model.sfdr.submodels.Biodiversity
 import org.dataland.datalandbackend.model.sfdr.submodels.Emissions
 import org.dataland.datalandbackend.model.sfdr.submodels.EnergyPerformance
 import org.dataland.datalandbackend.model.sfdr.submodels.GreenhouseGasEmissions
-import org.dataland.datalandbackend.model.sfdr.submodels.Waste
+import org.dataland.datalandbackend.model.sfdr.submodels.SfdrWaste
 import org.dataland.datalandbackend.model.sfdr.submodels.Water
 
 /**
@@ -20,7 +20,7 @@ data class EnvironmentalData(
 
     val water: Water? = null,
 
-    val waste: Waste? = null,
+    val waste: SfdrWaste? = null,
 
     val emissions: Emissions? = null,
 )

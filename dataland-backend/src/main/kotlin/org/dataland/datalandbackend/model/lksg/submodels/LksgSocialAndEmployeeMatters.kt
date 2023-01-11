@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg
+package org.dataland.datalandbackend.model.lksg.submodels
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
@@ -6,6 +6,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "Social and employee matters"
  */
-data class SocialAndEmployeeMatters(
+data class LksgSocialAndEmployeeMatters(
     val responsibilitiesForFairWorkingConditions: YesNo?,
 )

@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg
+package org.dataland.datalandbackend.model.lksg.submodels
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -8,7 +8,7 @@ import java.time.LocalDate
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "General"
  */
-data class General(
+data class LksgGeneral(
     val dataDate: LocalDate?,
 
     val lksgInScope: YesNo?,

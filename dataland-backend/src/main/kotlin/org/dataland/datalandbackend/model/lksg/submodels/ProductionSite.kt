@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg
+package org.dataland.datalandbackend.model.lksg.submodels
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.commons.YesNo

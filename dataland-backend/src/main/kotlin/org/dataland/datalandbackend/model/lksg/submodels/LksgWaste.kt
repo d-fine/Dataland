@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg
+package org.dataland.datalandbackend.model.lksg.submodels
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "Waste"
  */
-data class Waste(
+data class LksgWaste(
     val mercuryAndMercuryWasteHandling: YesNo?,
 
     val mercuryAndMercuryWasteHandlingPolicy: YesNo?,
