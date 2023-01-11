@@ -197,9 +197,7 @@ export const LksgKpisImpactArea = {
   equalOpportunitiesAndNondiscriminationPolicy: "10. Human rights",
   healthAndSafetyPolicy: "12. Evidence, certificates and attestations",
   complaintsAndGrievancesPolicy: "12. Evidence, certificates and attestations",
-  responsibilitiesForFairWorkingConditions: "2. Social and employee matters",
   responsibilitiesForTheEnvironment: "14. Environment",
-  responsibilitiesForOccupationalSafety: "3. OSH",
 };
 
 export const LksgQuestions = {
