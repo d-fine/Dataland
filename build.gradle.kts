@@ -23,6 +23,7 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "com.github.jk1.dependency-license-report")
 
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
@@ -52,6 +53,7 @@ dependencies {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
+    id("com.github.jk1.dependency-license-report") version "2.0"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.5.1" apply false
     id("org.springframework.boot") version "3.0.1" apply false
