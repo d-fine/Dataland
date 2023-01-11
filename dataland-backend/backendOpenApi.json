@@ -1924,7 +1924,7 @@
             "$ref": "#/components/schemas/Water"
           },
           "waste": {
-            "$ref": "#/components/schemas/Waste"
+            "$ref": "#/components/schemas/SfdrWaste"
           },
           "emissions": {
             "$ref": "#/components/schemas/Emissions"
@@ -1938,7 +1938,65 @@
           "NoDeviation"
         ]
       },
-      "General": {
+      "GreenSecurities": {
+        "type": "object",
+        "properties": {
+          "securitiesNotCertifiedAsGreen": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "GreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "scope2": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "scope3": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "enterpriseValue": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "totalRevenue": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "fossilFuelSectorExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "QualityOptions": {
+        "type": "string",
+        "enum": [
+          "Audited",
+          "Reported",
+          "Estimated",
+          "Incomplete",
+          "NA"
+        ]
+      },
+      "SfdrData": {
+        "type": "object",
+        "properties": {
+          "socialData": {
+            "$ref": "#/components/schemas/SocialData"
+          },
+          "environmentalData": {
+            "$ref": "#/components/schemas/EnvironmentalData"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "SfdrGeneral": {
         "type": "object",
         "properties": {
           "fiscalYear": {
@@ -2005,38 +2063,7 @@
           }
         }
       },
-      "GreenSecurities": {
-        "type": "object",
-        "properties": {
-          "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "GreenhouseGasEmissions": {
-        "type": "object",
-        "properties": {
-          "scope1": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "scope2": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "scope3": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "enterpriseValue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "totalRevenue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "HumanRights": {
+      "SfdrHumanRights": {
         "type": "object",
         "properties": {
           "humanRightsPolicy": {
@@ -2059,34 +2086,7 @@
           }
         }
       },
-      "QualityOptions": {
-        "type": "string",
-        "enum": [
-          "Audited",
-          "Reported",
-          "Estimated",
-          "Incomplete",
-          "NA"
-        ]
-      },
-      "SfdrData": {
-        "type": "object",
-        "properties": {
-          "socialData": {
-            "$ref": "#/components/schemas/SocialData"
-          },
-          "environmentalData": {
-            "$ref": "#/components/schemas/EnvironmentalData"
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          }
-        }
-      },
-      "SocialAndEmployeeMatters": {
+      "SfdrSocialAndEmployeeMatters": {
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
@@ -2178,27 +2178,7 @@
           }
         }
       },
-      "SocialData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/General"
-          },
-          "socialAndEmployeeMatters": {
-            "$ref": "#/components/schemas/SocialAndEmployeeMatters"
-          },
-          "greenSecurities": {
-            "$ref": "#/components/schemas/GreenSecurities"
-          },
-          "humanRights": {
-            "$ref": "#/components/schemas/HumanRights"
-          },
-          "anticorruptionAndAntibribery": {
-            "$ref": "#/components/schemas/AnticorruptionAndAntibribery"
-          }
-        }
-      },
-      "Waste": {
+      "SfdrWaste": {
         "type": "object",
         "properties": {
           "hazardousWaste": {
@@ -2227,6 +2207,26 @@
           },
           "deforestationPolicy": {
             "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "SocialData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
+          },
+          "socialAndEmployeeMatters": {
+            "$ref": "#/components/schemas/SfdrSocialAndEmployeeMatters"
+          },
+          "greenSecurities": {
+            "$ref": "#/components/schemas/GreenSecurities"
+          },
+          "humanRights": {
+            "$ref": "#/components/schemas/SfdrHumanRights"
+          },
+          "anticorruptionAndAntibribery": {
+            "$ref": "#/components/schemas/AnticorruptionAndAntibribery"
           }
         }
       },
@@ -2319,14 +2319,6 @@
         "properties": {
           "responsibilitiesForTheEnvironment": {
             "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "Environmental": {
-        "type": "object",
-        "properties": {
-          "waste": {
-            "$ref": "#/components/schemas/Waste"
           }
         }
       },
@@ -2459,7 +2451,51 @@
           }
         }
       },
-      "General": {
+      "GovernanceOsh": {
+        "type": "object",
+        "properties": {
+          "responsibilitiesForOccupationalSafety": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "GrievanceMechanism": {
+        "type": "object",
+        "properties": {
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceHandlingMechanismUsedForReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalProceedings": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgData": {
+        "type": "object",
+        "properties": {
+          "social": {
+            "$ref": "#/components/schemas/LksgSocialData"
+          },
+          "governance": {
+            "$ref": "#/components/schemas/LksgGovernanceData"
+          },
+          "environmental": {
+            "$ref": "#/components/schemas/LksgEnvironmentalData"
+          }
+        }
+      },
+      "LksgEnvironmentalData": {
+        "type": "object",
+        "properties": {
+          "waste": {
+            "$ref": "#/components/schemas/LksgWaste"
+          }
+        }
+      },
+      "LksgGeneral": {
         "type": "object",
         "properties": {
           "dataDate": {
@@ -2492,11 +2528,11 @@
           }
         }
       },
-      "Governance": {
+      "LksgGovernanceData": {
         "type": "object",
         "properties": {
           "socialAndEmployeeMatters": {
-            "$ref": "#/components/schemas/SocialAndEmployeeMatters"
+            "$ref": "#/components/schemas/LksgSocialAndEmployeeMatters"
           },
           "environment": {
             "$ref": "#/components/schemas/Environment"
@@ -2512,29 +2548,7 @@
           }
         }
       },
-      "GovernanceOsh": {
-        "type": "object",
-        "properties": {
-          "responsibilitiesForOccupationalSafety": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "GrievanceMechanism": {
-        "type": "object",
-        "properties": {
-          "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceHandlingMechanismUsedForReporting": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "legalProceedings": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "HumanRights": {
+      "LksgHumanRights": {
         "type": "object",
         "properties": {
           "diversityAndInclusionRole": {
@@ -2560,53 +2574,19 @@
           }
         }
       },
-      "LksgData": {
+      "LksgSocialAndEmployeeMatters": {
         "type": "object",
         "properties": {
-          "social": {
-            "$ref": "#/components/schemas/Social"
-          },
-          "governance": {
-            "$ref": "#/components/schemas/Governance"
-          },
-          "environmental": {
-            "$ref": "#/components/schemas/Environmental"
-          }
-        }
-      },
-      "ProductionSite": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "isInHouseProductionOrIsContractProcessing": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "address": {
-            "type": "string"
-          },
-          "listOfGoodsAndServices": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "RiskManagement": {
-        "type": "object",
-        "properties": {
-          "riskManagementSystem": {
+          "responsibilitiesForFairWorkingConditions": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
       },
-      "Social": {
+      "LksgSocialData": {
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/General"
+            "$ref": "#/components/schemas/LksgGeneral"
           },
           "grievanceMechanism": {
             "$ref": "#/components/schemas/GrievanceMechanism"
@@ -2624,78 +2604,14 @@
             "$ref": "#/components/schemas/FreedomOfAssociation"
           },
           "humanRights": {
-            "$ref": "#/components/schemas/HumanRights"
+            "$ref": "#/components/schemas/LksgHumanRights"
           },
           "evidenceCertificatesAndAttestations": {
             "$ref": "#/components/schemas/EvidenceCertificatesAndAttestations"
           }
         }
       },
-      "SocialAndEmployeeMatters": {
-        "type": "object",
-        "properties": {
-          "responsibilitiesForFairWorkingConditions": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "SocialOsh": {
-        "type": "object",
-        "properties": {
-          "oshMonitoring": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicy": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyPersonalProtectiveEquipment": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyMachineSafety": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyDisasterBehaviouralResponse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyAccidentsBehaviouralResponse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyWorkplaceErgonomics": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyFireProtection": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyWorkingHours": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyTrainingAddressed": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "workplaceAccidentsUnder10": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "Waste": {
+      "LksgWaste": {
         "type": "object",
         "properties": {
           "mercuryAndMercuryWasteHandling": {
@@ -2765,6 +2681,90 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "hazardousAndOtherWasteImport": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "ProductionSite": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isInHouseProductionOrIsContractProcessing": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "address": {
+            "type": "string"
+          },
+          "listOfGoodsAndServices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RiskManagement": {
+        "type": "object",
+        "properties": {
+          "riskManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "SocialOsh": {
+        "type": "object",
+        "properties": {
+          "oshMonitoring": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyPersonalProtectiveEquipment": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyMachineSafety": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyDisasterBehaviouralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyAccidentsBehaviouralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkplaceErgonomics": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyFireProtection": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkingHours": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTrainingAddressed": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystemInternationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystemNationalCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "workplaceAccidentsUnder10": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshTraining": {
             "$ref": "#/components/schemas/YesNo"
           }
         }

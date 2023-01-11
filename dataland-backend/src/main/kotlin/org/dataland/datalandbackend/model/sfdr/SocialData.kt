@@ -1,23 +1,23 @@
 package org.dataland.datalandbackend.model.sfdr
 
 import org.dataland.datalandbackend.model.sfdr.submodels.AnticorruptionAndAntibribery
-import org.dataland.datalandbackend.model.sfdr.submodels.General
+import org.dataland.datalandbackend.model.sfdr.submodels.SfdrGeneral
 import org.dataland.datalandbackend.model.sfdr.submodels.GreenSecurities
-import org.dataland.datalandbackend.model.sfdr.submodels.HumanRights
-import org.dataland.datalandbackend.model.sfdr.submodels.SocialAndEmployeeMatters
+import org.dataland.datalandbackend.model.sfdr.submodels.SfdrHumanRights
+import org.dataland.datalandbackend.model.sfdr.submodels.SfdrSocialAndEmployeeMatters
 
 /**
  * --- API model ---
  * Impact topics for the "Social" impact area of the SFDR framework
  */
 data class SocialData(
-    val general: General? = null,
+    val general: SfdrGeneral? = null,
 
-    val socialAndEmployeeMatters: SocialAndEmployeeMatters? = null,
+    val socialAndEmployeeMatters: SfdrSocialAndEmployeeMatters? = null,
 
     val greenSecurities: GreenSecurities? = null,
 
-    val humanRights: HumanRights? = null,
+    val humanRights: SfdrHumanRights? = null,
 
     val anticorruptionAndAntibribery: AnticorruptionAndAntibribery? = null,
 )

@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Human rights"
  */
-data class HumanRights(
+data class SfdrHumanRights(
     val humanRightsPolicy: DataPoint<YesNo>?,
 
     val humanRightsDueDiligence: DataPoint<YesNo>?,

@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
-data class General(
+data class SfdrGeneral(
     val fiscalYear: FiscalYearDeviation?,
 
     val fiscalYearEnd: LocalDate?,

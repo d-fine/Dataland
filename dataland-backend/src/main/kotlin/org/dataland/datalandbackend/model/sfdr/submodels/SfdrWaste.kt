@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Waste"
  */
-data class Waste(
+data class SfdrWaste(
     val hazardousWaste: DataPoint<BigDecimal>?,
 
     val manufactureOfAgrochemicalPesticidesProducts: DataPoint<YesNo>?,

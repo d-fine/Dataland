@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.annotations.DataType
  */
 @DataType("lksg")
 data class LksgData(
-    val social: Social,
-    val governance: Governance,
-    val environmental: Environmental,
+    val social: LksgSocialData? = null,
+    val governance: LksgGovernanceData? = null,
+    val environmental: LksgEnvironmentalData? = null,
 )
