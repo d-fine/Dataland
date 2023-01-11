@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sfdr
+package org.dataland.datalandbackend.model.sfdr.submodels
 
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
