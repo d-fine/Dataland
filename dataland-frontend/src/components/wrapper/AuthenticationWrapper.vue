@@ -28,7 +28,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-             return keycloak.login();
+            return keycloak.login();
           }
         })
         .catch((error) => console.log(error));
