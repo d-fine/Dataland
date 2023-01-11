@@ -195,7 +195,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               .should("exist");
           });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]")
+          cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
@@ -252,7 +252,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
         verifyTaxonomySearchResultTable();
-        cy.get("input[name=search_bar_top]")
+        cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {

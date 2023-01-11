@@ -2,8 +2,8 @@
 # The Script can take quite some time (something like a minute) to complete
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "", [System.EnvironmentVariableTarget]::User)
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
-# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
-# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("KEYCLOAK_MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
+# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
+# SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INTERNAL_STORAGE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)

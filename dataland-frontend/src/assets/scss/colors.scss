@@ -52,16 +52,16 @@ $message-info-bg: var(--blue-600);
 $message-info-border: var(--blue-800);
 $message-info-text: $white;
 
-$message-success-bg: var(--green-600);
-$message-success-border: var(--green-800);
-$message-success-text: $white;
+$message-success-bg: $white;
+$message-success-border: $green;
+$message-success-text: $brown-light;
 
 $message-warn-bg: var(--yellow-600);
 $message-warn-border: var(--yellow-800);
 $message-warn-text: $brown-dark;
 
-$message-error-bg: var(--red-600);
-$message-error-border: var(--red-800);
+$message-error-bg: $red;
+$message-error-border: $red;
 $message-error-text: $white;
 
 

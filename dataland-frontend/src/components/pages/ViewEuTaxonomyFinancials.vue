@@ -23,16 +23,18 @@
       <h2>Loading...</h2>
     </div>
   </ViewFrameworkBase>
+  <DatalandFooter />
 </template>
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { defineComponent } from "vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
-  components: { ViewFrameworkBase, EuTaxonomyPanelFinancials },
+  components: { ViewFrameworkBase, EuTaxonomyPanelFinancials, DatalandFooter },
   props: {
     companyID: {
       type: String,

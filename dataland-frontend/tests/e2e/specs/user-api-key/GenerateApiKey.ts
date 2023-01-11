@@ -1,6 +1,6 @@
 import { formatExpiryDate } from "@/utils/DateFormatUtils";
 
-describe("As a user I expect my api key will be generate correctly", () => {
+describe("As a user I expect my api key will be generated correctly", () => {
   it("successfully generate api key", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/api-key");
@@ -20,20 +20,22 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("button#generateApiKey").click();
     cy.get('label[for="expireTime"]').should("contain.text", `Please select expiration date`);
-    cy.get("div#expireTime").find('div[role="button"]').click();
+    cy.get("div#expireTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
-    cy.get("div#expireTime").find('div[role="button"]').click();
+    cy.get("div#expireTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
     cy.get("#expireTimeWrapper").should("not.exist");
     cy.get('[data-test="expireDataPicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get('[data-test="expireDataPicker"]').should(($input) => {
-      const val = $input.val();
-      expect(val).to.include("13");
-    });
-    cy.get("div#expireTime").find('div[role="button"]').click();
+    cy.get('[data-test="expireDataPicker"]')
+      .find("input")
+      .should(($input) => {
+        const val = $input.val();
+        expect(val).to.include("13");
+      });
+    cy.get("div#expireTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
     cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
     cy.get("button#generateApiKey").click();
@@ -55,6 +57,7 @@ describe("As a user I expect my api key will be generate correctly", () => {
       "contain",
       "If you don't have access to your API Key you can generate a new one"
     );
+    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "In order to use the API Key");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();
     cy.get("div#regenerateApiKeyModal").should("be.visible").find('[data-test="regenerateApiKeyCancelButton"]').click();
     cy.get("div#regenerateApiKeyModal").should("not.exist");

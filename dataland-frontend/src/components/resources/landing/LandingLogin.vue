@@ -15,7 +15,7 @@
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
           </router-link>
         </div>
-        <div class="col-2 col-offset-4">
+        <div class="col-2 col-offset-3">
           <UserAuthenticationButtons />
         </div>
       </div>
