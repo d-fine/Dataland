@@ -265,6 +265,27 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
+  rabbitmq:
+    profiles: ["production", "testing", "development"]
+    image: rabbitmq:3.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+ #producer:
+  #build:
+   # context: producer/
+  #ports:
+   # - 8089:8089
+  #depends_on:
+   # - rabbitmq
+ #consumer:
+  #build:
+   # context: consumer/
+  #depends_on:
+   # - rabbitmq
 networks:
   internal:
   external:
