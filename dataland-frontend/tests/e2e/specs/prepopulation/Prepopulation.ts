@@ -7,7 +7,7 @@ import {
   SfdrData,
   SmeData,
 } from "@clients/backend";
-import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
@@ -45,12 +45,12 @@ describe(
 
     function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
-        .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
+        .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.matchingDataIds === expectedNumberOfIds && response.matchingCompanies === expectedNumberOfIds,
-            `Found ${response.matchingCompanies} companies with matching data 
-                  and ${response.matchingDataIds} uploaded data ids, expected both to be ${expectedNumberOfIds}`
+            response.numberOfDataSetsForDataType === expectedNumberOfIds && response.numberOfCompaniesForDataType === expectedNumberOfIds,
+            `Found ${response.numberOfCompaniesForDataType} companies with matching data 
+                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected both to be ${expectedNumberOfIds}`
           );
         });
     }

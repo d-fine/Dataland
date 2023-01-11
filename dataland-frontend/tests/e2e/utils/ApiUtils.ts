@@ -1,28 +1,27 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { RouteHandler } from "cypress/types/net-stubbing";
 
-export async function getCompanyAndDataIds(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
-  const dataset = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
+  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
     new Set([dataType])
   );
-  return dataset.data;
+  return response.data;
 }
 
-export async function countCompanyAndDataIds(
+export async function countCompaniesAndDataSetsForDataType(
   token: string,
   dataType: DataTypeEnum
-): Promise<{ matchingCompanies: number; matchingDataIds: number }> {
-  const dataset = await getCompanyAndDataIds(token, dataType);
-  const matchingCompanies = dataset.length;
-  let matchingDataIds = 0;
-  dataset.forEach((it) => {
-    matchingDataIds += it.dataRegisteredByDataland.length;
+): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
+  const storedCompaniesForDataType = await getStoredCompaniesForDataType(token, dataType);
+  let numberOfDataSetsForDataType = 0;
+  storedCompaniesForDataType.forEach((storedCompany) => {
+    numberOfDataSetsForDataType += storedCompany.dataRegisteredByDataland.length;
   });
 
   return {
-    matchingDataIds,
-    matchingCompanies,
+    numberOfDataSetsForDataType,
+    numberOfCompaniesForDataType: storedCompaniesForDataType.length,
   };
 }
 

@@ -1,4 +1,4 @@
-import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { doThingsInChunks, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, MetaDataControllerApi, StoredCompany } from "@clients/backend";
@@ -11,15 +11,15 @@ describe(
   () => {
     function visitTaxonomyData(dataType: DataTypeEnum): void {
       getKeycloakToken(reader_name, reader_pw).then((token) => {
-        cy.browserThen(getCompanyAndDataIds(token, dataType)).then((myDataset: StoredCompany[]) =>
-          doThingsInChunks(myDataset, chunkSize, (element) =>
+        cy.browserThen(getStoredCompaniesForDataType(token, dataType)).then((storedCompanies: StoredCompany[]) =>
+          doThingsInChunks(storedCompanies, chunkSize, (storedCompany) =>
             new MetaDataControllerApi(new Configuration({ accessToken: token }))
-              .getDataMetaInfo(element.dataRegisteredByDataland[0].dataId)
+              .getDataMetaInfo(storedCompany.dataRegisteredByDataland[0].dataId)
               .then((dataGetResponse) => {
                 if (dataGetResponse.status !== 200) {
                   assert(
                     dataGetResponse.status === 200,
-                    `Got status code ${dataGetResponse.status.toString()} during Previsit of ${String(element)}`
+                    `Got status code ${dataGetResponse.status.toString()} during Previsit of ${String(storedCompany)}`
                   );
                 }
               })
