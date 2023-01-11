@@ -6,7 +6,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
   it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
     cy.visitAndCheckAppMount("/companies");
     const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
-    cy.get("input[name=search_bar_top]")
+    cy.get("input[id=search_bar_top]")
       .should("exist")
       .type(inputValueThatWillResultInZeroMatches)
       .type("{enter}")
@@ -18,7 +18,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
   it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
     cy.visitAndCheckAppMount("/companies");
     const inputValue = "a";
-    cy.get("input[name=search_bar_top]")
+    cy.get("input[id=search_bar_top]")
       .should("not.be.disabled")
       .click({ force: true })
       .type(inputValue)
@@ -35,7 +35,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
     cy.get('button[class="p-paginator-page p-paginator-element p-link"]').eq(0).should("contain.text", "2").click();
     cy.get("table.p-datatable-table").should("exist");
     const inputValue = "a";
-    cy.get("input[name=search_bar_top]")
+    cy.get("input[id=search_bar_top]")
       .should("not.be.disabled")
       .click({ force: true })
       .type(inputValue)

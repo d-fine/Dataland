@@ -351,3 +351,40 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
 }
+.p-checkbox .p-checkbox-box {
+  border: 2px solid #ced4da;
+  background: #f6f5ef;
+  width: 20px;
+  height: 20px;
+  color: #1b1b1b;
+  border-radius: 0;
+  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s
+}
+
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+  transition-duration: .2s;
+  color: #fff;
+  font-size: 14px
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: #e67f3f;
+  background: #e67f3f
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: #e67f3f
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 .2rem #bfd1f6;
+  border-color: #e67f3f
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+  border-color: #cb6b29;
+  background: #cb6b29;
+  color: #fff
+}

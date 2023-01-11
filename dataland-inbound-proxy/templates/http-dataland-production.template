@@ -23,10 +23,6 @@ server {
       include utils/proxy.conf;
     }
 
-    location /images/ {
-      root /var/www;
-    }
-
     location /api-keys/ {
       proxy_pass http://api-key-manager:8080/api-keys/;
       include utils/proxy.conf;
@@ -42,6 +38,10 @@ server {
     location /internal-storage/actuator/health {
       proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
       include utils/proxy.conf;
+    }
+
+    location /images/ {
+      root /var/www;
     }
 
     location = /gitinfo {

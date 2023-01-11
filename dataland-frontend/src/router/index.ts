@@ -19,6 +19,7 @@ const ViewEuTaxonomyFinancials = (): Promise<RouteComponent> =>
 const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
+const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 
 const routes = [
   {
@@ -77,6 +78,16 @@ const routes = [
     component: SearchCompanies,
   },
   {
+    path: "/requests",
+    name: "Request Data",
+    component: RequestData,
+  },
+  {
+    path: "/api-key",
+    name: "ApiKeysPage",
+    component: ApiKeysPage,
+  },
+  {
     path: "/dataprivacy",
     name: "DataPrivacy",
     component: DataPrivacy,
@@ -85,11 +96,6 @@ const routes = [
     path: "/imprint",
     name: "LandingImprint",
     component: TheImprint,
-  },
-  {
-    path: "/api-key",
-    name: "ApiKeysPage",
-    component: ApiKeysPage,
   },
   {
     path: "/nocontent",

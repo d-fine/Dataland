@@ -19,17 +19,20 @@
       </MarginWrapper>
     </div>
   </div>
+  <DatalandFooter />
 </template>
 
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default {
   name: "DataPrivacy",
   components: {
     BackButton,
     MarginWrapper,
+    DatalandFooter,
   },
 };
 </script>

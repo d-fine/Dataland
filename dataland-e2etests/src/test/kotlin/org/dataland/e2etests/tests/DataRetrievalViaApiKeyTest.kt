@@ -81,7 +81,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @AfterEach
-    fun`delete the API key from Backend client to esnure clean state`() {
+    fun `delete the API key from Backend client to esnure clean state`() {
         apiKeyHandler.deleteApiKeyFromBackendClient()
     }
 

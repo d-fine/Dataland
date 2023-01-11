@@ -15,7 +15,7 @@ import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxo
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
-import { describeIf } from "../../support/TestUtility";
+import { describeIf } from "@e2e/support/TestUtility";
 const chunkSize = 15;
 
 describe(

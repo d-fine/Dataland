@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
-interface CompanyAPI {
+interface CompanyApi {
 
     @Operation(
         summary = "Add a new company.",

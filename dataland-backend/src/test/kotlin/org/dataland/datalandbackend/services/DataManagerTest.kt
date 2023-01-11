@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import java.util.*
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -34,7 +34,7 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient)
-    val correlationId = UUID.randomUUID().toString()
+    val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt(): StorableDataSet {
