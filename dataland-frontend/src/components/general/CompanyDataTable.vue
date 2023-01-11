@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DetailsCompanyDataTable />
     <div class="card">
       <h5>LKSG data</h5>
       <DataTable
@@ -36,7 +37,12 @@
             >
           </template>
         </Column>
-        <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col"></Column>
+        <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col">
+          <template #body="{ data }">
+            <DetailsCompanyDataTable v-if="Array.isArray(data[col])" :detailDataForKpi="data[col]" />
+            <span v-else>{{ data[col] }}</span>
+          </template>
+        </Column>
         <Column field="group" header="Impact Area"></Column>
         <template #groupheader="slotProps">
           <span>{{ slotProps.data.group ? slotProps.data.group : "" }}</span>
@@ -51,17 +57,18 @@ import { defineComponent } from "vue";
 import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 
 export default defineComponent({
   name: "DetailCompanyDataTable",
-  components: { DataTable, Column },
+  components: { DataTable, Column, DetailsCompanyDataTable },
   directives: {
     tooltip: Tooltip,
   },
   data() {
     return {
       customers: null,
-      expandedRowGroups: ["General"],
+      expandedRowGroups: ["1. General"],
     };
   },
   props: {
@@ -82,9 +89,8 @@ export default defineComponent({
       default: {},
     },
   },
-  created() {
-    this.customers = this.dataSet;
-    console.log("this.customers", this.kpisNames);
+  mounted() {
+    this.customers = this.dataSet; //sort data before table
   },
 });
 </script>

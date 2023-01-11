@@ -5,10 +5,10 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <DetailCompanyDataTable
-        :dataSet="kpisDataObjects"
-        :kpisNames="LksgKpis"
-        :dataSetColumns="dataSetColumns"
-        :hintsForKpis="LksgQuestions"
+      :dataSet="kpisDataObjects"
+      :kpisNames="LksgKpis"
+      :dataSetColumns="dataSetColumns"
+      :hintsForKpis="LksgQuestions"
     />
   </div>
 </template>
@@ -19,7 +19,7 @@ import { LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import DetailCompanyDataTable from "@/components/general/DetailCompanyDataTable.vue";
+import DetailCompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   LksgKpisImpactArea,
   LksgKpis,
@@ -102,7 +102,7 @@ export default defineComponent({
     },
 
     generateConvertedData(): void {
-      console.log('kpisthis.dataSet', this.dataSet)
+      console.log("kpisthis.dataSet", this.dataSet);
       if (this.dataSet && Array.isArray(this.dataSet)) {
         this.dataSet.forEach((el) => {
           for (const [key] of Object.entries(el)) {
@@ -129,101 +129,65 @@ export default defineComponent({
             };
 
             this.dataSetColumns.forEach((dataDate) => {
-
               kpiDataObject = { ...kpiDataObject, [dataDate]: this.newDataSet[dataDate][key] };
-
             });
             this.kpisDataObjects.push(kpiDataObject);
           } else {
             return;
           }
         }
-
       }
     },
   },
 });
 </script>
+<!--[-->
+<!--{-->
+<!--  dataDate: "2023-03-03",-->
+<!--  companyLegalForm: "Trader Trader",-->
+<!--  complaintsAndGrievancesPolicy: "No",-->
+<!--  // "listOfProductionSites": [-->
+<!--  //   {-->
+<!--  //     "name": "Merseburg Gruppe",-->
+<!--  //     "isInHouseProductionOrIsContractProcessing": "No",-->
+<!--  //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",-->
+<!--  //     "listOfGoodsAndServices": [-->
+<!--  //       "Elegant Granite Chips",-->
+<!--  //       "Tasty Bronze Mouse"-->
+<!--  //     ]-->
+<!--  //   }-->
+<!--  // ]-->
+<!--  },-->
+<!--  {-->
+<!--  dataDate: "2021-00-00",-->
+<!--  companyLegalForm: "Trader Trader",-->
+<!--  complaintsAndGrievancesPolicy: "No",-->
+<!--  // "listOfProductionSites": [-->
+<!--  //   {-->
+<!--  //     "name": "Merseburg Gruppe",-->
+<!--  //     "isInHouseProductionOrIsContractProcessing": "No",-->
+<!--  //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",-->
+<!--  //     "listOfGoodsAndServices": [-->
+<!--  //       "Elegant Granite Chips",-->
+<!--  //       "Tasty Bronze Mouse"-->
+<!--  //     ]-->
+<!--  //   }-->
+<!--  // ]-->
+<!--  },-->
+<!--]-->
 
 <!--{-->
-<!--dataDate: "2021-00-00",-->
-<!--companyLegalForm: "Trader Trader",-->
-<!--vatIdentificationNumber: "BJ564339879",-->
-<!--numberOfEmployees: 189085,-->
-<!--shareOfTemporaryWorkers: 4.14,-->
-<!--totalRevenue: 23691057301.85,-->
-<!--totalRevenueCurrency: "CHF",-->
-<!--betterWorkProgramCertificate: "No",-->
-<!--responsibilitiesForFairWorkingConditions: "No",-->
-<!--responsibilitiesForOccupationalSafety: "Yes",-->
-<!--riskManagementSystem: "No",-->
-<!--grievanceHandlingMechanismUsedForReporting: "No",-->
-<!--codeOfConduct: "No",-->
-<!--codeOfConductTraining: "Yes",-->
-<!--legalProceedings: "Yes",-->
-<!--employeeUnder18Under15: "No",-->
-<!--employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "No",-->
-<!--forcedLabourAndSlaveryPrevention: "No",-->
-<!--forcedLabourAndSlaveryPreventionIdentityDocuments: "Yes",-->
-<!--forcedLabourAndSlaveryPreventionFreeMovement: "No",-->
-<!--forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",-->
-<!--forcedLabourAndSlaveryPreventionProvisionTraining: "No",-->
-<!--adequateLivingWage: "No",-->
-<!--regularWagesProcessFlow: "No",-->
-<!--fixedHourlyWages: "Yes",-->
-<!--workplaceAccidentsUnder10: "No",-->
-<!--freedomOfAssociation: "Yes",-->
-<!--discriminationForTradeUnionMembers: "No",-->
-<!--freedomOfOperationForTradeUnion: "Yes",-->
-<!--worksCouncil: "No",-->
-<!--diversityAndInclusionRole: "Yes",-->
-<!--equalOpportunitiesOfficer: "Yes",-->
-<!--riskOfHarmfulPollution: "Yes",-->
-<!--unlawfulEvictionAndTakingOfLand: "Yes",-->
-<!--useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "No",-->
-<!--mercuryAndMercuryWasteHandlingPolicy: "Yes",-->
-<!--chemicalHandling: "Yes",-->
-<!--environmentalManagementSystem: "No",-->
-<!--legalRestrictedWaste: "No",-->
-<!--mercuryAddedProductsHandling: "Yes",-->
-<!--mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: "Yes",-->
-<!--persistentOrganicPollutantsProductionAndUse: "Yes",-->
-<!--persistentOrganicPollutantsProductionAndUseRiskOfDisposal: "Yes",-->
-<!--hazardousWasteDisposal: "No",-->
-<!--hazardousAndOtherWasteImport: "Yes",-->
-<!--riskManagementSystemCertification: "Yes",-->
-<!--amforiBsciAuditReport: "Yes",-->
-<!--fairLabourAssociationCertification: "No",-->
-<!--lksgInScope: "No",-->
-<!--oshMonitoring: "No",-->
-<!--oshPolicy: "Yes",-->
-<!--smetaSocialAuditConcept: "Yes",-->
-<!--iso45001Certification: "No",-->
-<!--iso14000Certification: "No",-->
-<!--sa8000Certification: "Yes",-->
-<!--iso37001Certification: "Yes",-->
-<!--iso37301Certification: "Yes",-->
-<!--oshPolicyFireProtection: "Yes",-->
-<!--oshPolicyWorkingHours: "Yes",-->
-<!--oshManagementSystem: "No",-->
-<!--oshPolicyWorkplaceErgonomics: "No",-->
-<!--oshPolicyTraining: "Yes",-->
-<!--oshPolicyPersonalProtectiveEquipment: "No",-->
-<!--oshPolicyAccidentsBehaviouralResponse: "Yes",-->
-<!--oshPolicyDisasterBehaviouralResponse: "Yes",-->
-<!--oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",-->
-<!--equalOpportunitiesAndNondiscriminationPolicy: "No",-->
-<!--healthAndSafetyPolicy: "Yes",-->
-<!--complaintsAndGrievancesPolicy: "No",-->
-<!--// "listOfProductionSites": [-->
-<!--//   {-->
-<!--//     "name": "Merseburg Gruppe",-->
-<!--//     "isInHouseProductionOrIsContractProcessing": "No",-->
-<!--//     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",-->
-<!--//     "listOfGoodsAndServices": [-->
-<!--//       "Elegant Granite Chips",-->
-<!--//       "Tasty Bronze Mouse"-->
-<!--//     ]-->
-<!--//   }-->
-<!--// ]-->
-<!--},-->
+<!-- Socials: {-->
+<!--    Freedom of association {-->
+<!--      kpi: {}-->
+<!--      kpi: {}-->
+<!--      kpi: {}-->
+<!--    },-->
+<!--    OSH {-->
+<!--      kpi: {}-->
+<!--      kpi: {}-->
+<!--      kpi: {}-->
+<!--    }-->
+
+<!--}-->
+<!--}-->
