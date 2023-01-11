@@ -63,6 +63,11 @@ class CompanyDataController(
         return ResponseEntity.ok(companyManager.getCompanyApiModelById(companyId))
     }
 
+    override fun getCompanyFrameworkDataById(companyId: String, dataType: DataType):
+            ResponseEntity<List<Map<String, Any>>> {
+        return ResponseEntity.ok(companyManager.getCompanyFrameworkDataById(companyId, dataType))
+    }
+
     override fun getTeaserCompanies(): List<String> {
         return companyManager.getTeaserCompanyIds()
     }

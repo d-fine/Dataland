@@ -11,8 +11,10 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.hibernate.exception.ConstraintViolationException
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -27,6 +29,8 @@ import java.util.UUID
 class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Lazy private val dataMetaInformationManager: DataMetaInformationManager,
+    @Lazy private val dataManager: DataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -180,6 +184,27 @@ class CompanyManager(
     fun getCompanyApiModelById(companyId: String): StoredCompany {
         val searchResult = getCompanyById(companyId)
         return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
+    }
+
+    /**
+     * Method to retrieve framework information about a specific company
+     * @param companyId
+     * @param dataType
+     * @return the StoredCompany object of the retrieved company TODO
+     */
+    @Transactional
+    fun getCompanyFrameworkDataById(companyId: String, dataType: DataType): List<Map<String, Any>> {
+        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
+        val frameworkData: MutableList<Map<String, Any>> = mutableListOf()
+        metaInfos.forEach {
+            val correlationId = UUID.randomUUID().toString() // TODO replace after merge with main
+            logger.info(
+                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
+            )
+            val dataAsString = dataManager.getDataSet(it.dataId, DataType(it.dataType), correlationId).data
+            frameworkData.add(JSONObject(dataAsString).toMap())
+        }
+        return frameworkData
     }
 
     /**

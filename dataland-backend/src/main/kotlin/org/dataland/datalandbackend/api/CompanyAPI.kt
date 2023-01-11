@@ -117,7 +117,6 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
@@ -125,6 +124,29 @@ interface CompanyAPI {
      * @return information about the company
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
+
+    @Operation(
+        summary = "Retrieve company framework information.",
+        description = "Company framework information behind the given company Id is retrieved."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information.")
+        ]
+    )
+    @GetMapping(
+        value = ["/{companyId}/data"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    /**
+     * A method to retrieve company framework information for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @param dataType the data type of the requested info
+     * @return company framework data
+     */
+    fun getCompanyFrameworkDataById(@PathVariable("companyId") companyId: String, @RequestParam dataType: DataType):
+            ResponseEntity<List<Map<String, Any>>>
 
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
