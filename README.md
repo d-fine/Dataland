@@ -56,3 +56,7 @@ Requests can be authorized via two different methods:
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
 * start the cypress UI by using `npm run cypress`
 * Select `E2E Testing` or `Component Testing` and run the tests
+
+## Licenses
+This project makes use of open source dependencies. To see a list gradle dependencies along with their 
+licenses, run `\gradlew generateLicenseReport` 

@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.hibernate.exception.ConstraintViolationException
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 /**
  * Implementation of a company manager for Dataland
@@ -97,7 +97,7 @@ class CompanyManager(
      */
     @Transactional
     fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
-        val companyId = UUID.randomUUID().toString()
+        val companyId = IdUtils.generateUUID()
         logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
         val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
         val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation)
@@ -197,7 +197,7 @@ class CompanyManager(
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData: MutableList<Map<String, Any>> = mutableListOf()
         metaInfos.forEach {
-            val correlationId = UUID.randomUUID().toString() // TODO replace after merge with main
+            val correlationId = IdUtils.generateUUID()
             logger.info(
                 "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
             )

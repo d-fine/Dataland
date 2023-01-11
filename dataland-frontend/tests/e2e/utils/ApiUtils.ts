@@ -1,4 +1,5 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
+import { RouteHandler } from "cypress/types/net-stubbing";
 
 export async function getCompanyAndDataIds(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const dataset = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
@@ -26,7 +27,7 @@ export async function countCompanyAndDataIds(
 }
 
 export function interceptAllAndCheckFor500Errors(): void {
-  cy.intercept("/api/**", (req) => {
+  const handler: RouteHandler = (req) => {
     const allow500 = req.headers["DATALAND-ALLOW-5XX"] === "true";
     delete req.headers["DATALAND-ALLOW-5XX"];
     req.continue((res) => {
@@ -34,5 +35,7 @@ export function interceptAllAndCheckFor500Errors(): void {
         assert(false, `Received a ${res.statusCode} Response from the Dataland backend (request to ${req.url})`);
       }
     });
-  }).as("Detect 500");
+  };
+  cy.intercept("/api/**", handler);
+  cy.intercept("/api-keys/**", handler);
 }

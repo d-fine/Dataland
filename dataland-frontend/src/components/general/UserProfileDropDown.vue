@@ -57,7 +57,7 @@ export default defineComponent({
         {
           label: "USER SETTINGS",
           icon: "settings",
-          id: "profile-pocture-dropdown-settings-button",
+          id: "profile-picture-dropdown-settings-button",
           clickAction: this.gotoUserSettings,
         },
         {
@@ -65,6 +65,12 @@ export default defineComponent({
           icon: "key",
           id: "profile-api-generate-key-button",
           clickAction: this.gotoApiKeysPage,
+        },
+        {
+          label: "DATA REQUEST",
+          icon: "mail",
+          id: "profile-picture-dropdown-data-request-button",
+          clickAction: this.gotoDataRequest,
         },
         {
           label: "LOG OUT",
@@ -98,6 +104,13 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    gotoDataRequest() {
+      assertDefined(this.getKeycloakPromise)()
+        .then(() => {
+          return this.$router.push("requests");
+        })
+        .catch((error) => console.log(error));
+    },
     gotoApiKeysPage() {
       void this.$router.push("/api-key");
     },
@@ -123,6 +136,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.p-menuitem-link {
+  background-color: #0b191f;
+}
 .d-drop-down-toggle {
   cursor: pointer;
 }
@@ -136,5 +152,13 @@ export default defineComponent({
   width: 0.625rem;
   margin-left: 0.5rem;
   margin-right: 1rem;
+}
+
+.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
+  color: #e67f3fff;
+}
+.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-icon,
+.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-submenu-icon {
+  color: #e67f3fff;
 }
 </style>

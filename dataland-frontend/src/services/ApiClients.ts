@@ -10,6 +10,7 @@ import {
   MetaDataControllerApiInterface,
   LksgDataControllerApi,
   LksgDataControllerApiInterface,
+  InviteControllerApi,
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
@@ -73,5 +74,9 @@ export class ApiClientProvider {
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
+  }
+
+  async getInviteControllerApi(): Promise<InviteControllerApi> {
+    return this.getConstructedApi(InviteControllerApi);
   }
 }

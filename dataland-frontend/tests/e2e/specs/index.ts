@@ -60,4 +60,5 @@ if (testGroupingDisabled || cypressTestGroup === 4) {
   require("./company-metadata/CompanyUpload");
   require("./company-metadata/FrameworkDataUpload");
   require("./company-metadata/SearchCompaniesForFrameworkData");
+  require("./data-request/DataRequestProcess");
 }

@@ -1,4 +1,4 @@
-<#macro registrationLayout displayInfo=false displayMessage=true displayRequiredFields=false>
+<#macro registrationLayout formContainerStyle="width: 364px;" outerContainerStyle="max-width: 500px;" displayInfo=false displayMessage=true displayRequiredFields=false>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,16 +25,21 @@
 
 
         <!-- Main Content -->
-        <div class="block ml-auto mr-auto pt-8" style="max-width: 500px;">
+        <div class="block ml-auto mr-auto pt-8" style="${outerContainerStyle}">
             <img src="${url.resourcesPath}/logo_dataland_long.svg" class="d-dataland-logo">
             <h1 class="text-6xl"><#compress><#nested "header"></#compress></h1>
-            <div class="ml-auto mr-auto" style="width: 364px;">
+            <div class="ml-auto mr-auto" style="${formContainerStyle}">
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                 <#-- during login. -->
                 <#if displayMessage && message?has_content>
                     <#if message.type="success">
-                        <div class="d-success-modal">
+                        <div class="d-success-modal d-modal-base">
                             <span class="material-icons">check_circle</span>
+                            <span>${kcSanitize(message.summary)?no_esc}</span>
+                        </div>
+                    <#elseif message.type="error">
+                        <div class="d-error-modal d-modal-base">
+                            <span class="material-icons">error_outline</span>
                             <span>${kcSanitize(message.summary)?no_esc}</span>
                         </div>
                     <#else>
@@ -46,6 +51,20 @@
                 </#if>
 
                 <#nested "form">
+
+                <#if auth?has_content && auth.showTryAnotherWayLink()>
+                    <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post">
+                        <div class="text-left d-primary-login-width ml-auto mr-auto">
+                            <input type="hidden" name="tryAnotherWay" value="on"/>
+                            <Button
+                                    class="p-button uppercase w-full text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-2 p-login-button"
+                                    name="join_dataland_button"
+                                    onclick="document.forms['kc-select-try-another-way-form'].submit();return false;">
+                                Authenticate in a different way
+                            </Button>
+                        </div>
+                    </form>
+                </#if>
             </div>
         </div>
     </body>

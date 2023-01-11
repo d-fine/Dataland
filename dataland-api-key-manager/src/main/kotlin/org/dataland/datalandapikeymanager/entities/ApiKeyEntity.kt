@@ -1,11 +1,11 @@
 package org.dataland.datalandapikeymanager.entities
 
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.Id
-import javax.persistence.Table
 
 /**
  * The entity storing hashed and encoded API keys together with meta info
