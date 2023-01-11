@@ -10,6 +10,7 @@
         </div>
       </div>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -18,6 +19,7 @@ import RetrieveCompany from "@/components/forms/RetrieveCompany.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default {
   name: "SearchCompanies",
@@ -26,6 +28,7 @@ export default {
     TheHeader,
     RetrieveCompany,
     AuthenticationWrapper,
+    DatalandFooter,
   },
 };
 </script>

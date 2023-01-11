@@ -60,6 +60,7 @@
         @update:first="setFirstShownRow"
       />
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -91,6 +92,7 @@ import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSear
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
@@ -103,6 +105,7 @@ export default defineComponent({
     FrameworkDataSearchBar,
     PrimeButton,
     FrameworkDataSearchResults,
+    DatalandFooter,
   },
 
   created() {

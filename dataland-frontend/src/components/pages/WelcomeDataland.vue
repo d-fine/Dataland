@@ -2,18 +2,20 @@
   <LandingLogin />
   <SampleSection />
   <MarketingSection />
+  <DatalandFooter />
 </template>
 
 <script lang="ts">
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { defineComponent, inject } from "vue";
 import { NavigationFailure } from "vue-router";
 
 export default defineComponent({
   name: "WelcomeDataland",
-  components: { SampleSection, MarketingSection, LandingLogin },
+  components: { SampleSection, MarketingSection, LandingLogin, DatalandFooter },
   setup() {
     return {
       authenticated: inject<boolean>("authenticated"),

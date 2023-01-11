@@ -33,5 +33,5 @@ export function getComponentOptionsForDatalandInfoCard(componentName: string): C
         return humanizedValue !== "" ? humanizedValue : "No data has been reported";
       },
     },
-  };
+  } as ComponentOptionsWithObjectProps;
 }

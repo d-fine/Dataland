@@ -127,6 +127,7 @@
         />
       </template>
     </PrimeDialog>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -147,6 +148,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -162,6 +164,7 @@ export default defineComponent({
     CreateApiKeyCard,
     MessageComponent,
     PrimeTextarea,
+    DatalandFooter,
   },
   setup() {
     return {
