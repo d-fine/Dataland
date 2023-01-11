@@ -12,5 +12,4 @@ class ConsumerApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

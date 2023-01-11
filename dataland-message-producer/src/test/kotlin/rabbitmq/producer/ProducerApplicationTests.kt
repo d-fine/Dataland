@@ -12,5 +12,4 @@ class ProducerApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
