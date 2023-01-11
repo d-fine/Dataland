@@ -2136,14 +2136,6 @@
           },
           "averageGrossHourlyEarningsMaleEmployees": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
-          }
-        }
-      },
-      "SocialData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/General"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
@@ -2183,6 +2175,14 @@
           },
           "ceoToEmployeePayGap": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
+          }
+        }
+      },
+      "SocialData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/General"
           },
           "socialAndEmployeeMatters": {
             "$ref": "#/components/schemas/SocialAndEmployeeMatters"
