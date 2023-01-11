@@ -40,14 +40,11 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { dateFormatOptions, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import { dateFormatOptions } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
-  setup() {
-    return { dateFormatOptions, calculateDaysFromNow };
-  },
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
   props: {
@@ -65,12 +62,9 @@ export default defineComponent({
   computed: {
     whenKeyExpire() {
       if (this.expiryDate && this.expiryDate >= Date.now()) {
-        return `The API Key will expire on ${new Date(this.expiryDate).toLocaleDateString(
-          undefined,
-          dateFormatOptions
-        )}`;
+        return `The API Key will expire on ${new Date(this.expiryDate).toLocaleDateString("en-gb", dateFormatOptions)}`;
       } else if (this.expiryDate && this.expiryDate < Date.now()) {
-        return `The API Key expired on ${new Date(this.expiryDate).toLocaleDateString(undefined, dateFormatOptions)}`;
+        return `The API Key expired on ${new Date(this.expiryDate).toLocaleDateString("en-gb", dateFormatOptions)}`;
       } else {
         return "The API Key has no defined expiry date";
       }

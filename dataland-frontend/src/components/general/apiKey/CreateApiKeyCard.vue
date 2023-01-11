@@ -52,7 +52,7 @@
           {{
             expiryTimeDropdown === "noExpiry"
               ? `The API Key has no defined expiry date`
-              : `The API Key will expire on ${formatExpiryDate(expiryTimeDays)}`
+              : `The API Key will expire on ${expiryDateFormated}`
           }}
         </span>
       </div>
@@ -83,9 +83,6 @@ import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils"
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
-  setup() {
-    return { formatExpiryDate, calculateDaysFromNow };
-  },
   name: "CreateApiKeyCard",
   components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
   props: {
@@ -112,8 +109,8 @@ export default defineComponent({
     setExpiryTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expiryTimeDays = null;
-      } else if (event.value === "custom" && this.customDate) {
-        this.expiryTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
+      } else if (event.value === "custom") {
+        this.expiryTimeDays = this.customDate ? calculateDaysFromNow(this.customDate as unknown as number) : null;
       } else {
         this.expiryTimeDays = event.value as unknown as number;
       }
@@ -128,6 +125,11 @@ export default defineComponent({
       } else {
         this.isExpiryDateValid = false;
       }
+    },
+  },
+  computed: {
+    expiryDateFormated(): string {
+      return formatExpiryDate(this.expiryTimeDays as unknown as number);
     },
   },
   watch: {
