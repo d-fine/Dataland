@@ -197,7 +197,7 @@ class CompanyManager(
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData: MutableList<Map<String, Any>> = mutableListOf()
         metaInfos.forEach {
-            val correlationId = UUID.randomUUID().toString() // TODO replace after merge with main
+            val correlationId = IdUtils.generateUUID()
             logger.info(
                 "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
             )
