@@ -2,7 +2,7 @@
   <div class="col-12">
     <PrimeButton
       label="Login to preview account"
-      class="uppercase p-button p-button-sm d-letters text-primary d-button justify-content-center bg-white-alpha-10 w-15rem ml-4"
+      class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
       name="login_dataland_button"
       @click="login"
     />

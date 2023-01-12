@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -35,7 +36,7 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient)
-    val correlationId = UUID.randomUUID().toString()
+    val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt(): StorableDataSet {

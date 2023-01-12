@@ -115,7 +115,7 @@ describe("As a user I want to be able to register for an account and be able to 
           cy.visitAndCheckAppMount("/companies")
             .get("div[id='profile-picture-dropdown-toggle']")
             .click()
-            .get("a[id='profile-pocture-dropdown-settings-button']")
+            .get("a[id='profile-picture-dropdown-settings-button']")
             .click()
             .get("div[id='landing-signingin'] > a")
             .should("be.visible", { timeout: 20000 })

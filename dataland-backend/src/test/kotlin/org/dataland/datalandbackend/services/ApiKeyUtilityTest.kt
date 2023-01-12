@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.apikey.ParsedApiKey
-import org.dataland.datalandbackendutils.exceptions.ApiKeyFormatException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.EncodingUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,7 +26,7 @@ class ApiKeyUtilityTest {
     }
 
     private fun parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey: String, expectedMessage: String) {
-        val thrown = assertThrows<ApiKeyFormatException> { apiKeyUtility.parseApiKey(brokenApiKey) }
+        val thrown = assertThrows<InvalidInputApiException> { apiKeyUtility.parseApiKey(brokenApiKey) }
         assertEquals(expectedMessage, thrown.message)
     }
 
@@ -46,9 +46,9 @@ class ApiKeyUtilityTest {
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value + "_"
         val apiKeyWithOneDelimiterTooFew =
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "+" + testApiKeyCrc32Value
-        val expectedApiKeyFormatExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
+        val expectedInvalidInputApiExceptionMessage = apiKeyUtility.validateApiKeyDelimitersExceptionMessage
         listOf(apiKeyWithOneDelimiterTooMany, apiKeyWithOneDelimiterTooFew).forEach { brokenApiKey ->
-            parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedApiKeyFormatExceptionMessage)
+            parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey, expectedInvalidInputApiExceptionMessage)
         }
     }
 

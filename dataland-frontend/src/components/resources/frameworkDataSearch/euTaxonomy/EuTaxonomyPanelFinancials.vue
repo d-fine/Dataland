@@ -23,9 +23,9 @@
         />
       </div>
       <template v-for="fsType in dataSet.financialServicesTypes" :key="fsType">
-        <div class="col-12 text-left pb-3">
-          <span class="font-medium text-xl">Exposures for {{ getSectionHeading(fsType) }}</span>
-          <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+        <div class="card-section-title">
+          <span class="font-medium text-xl font-semibold">Exposures for {{ getSectionHeading(fsType) }}</span>
+          <span class="pl-2 font-italic">In percentage of the total assets</span>
         </div>
         <div class="col-6">
           <TaxoCard
@@ -64,9 +64,9 @@
           />
         </div>
         <template v-if="fsType === 'CreditInstitution'">
-          <div class="col-12 text-left pb-3">
-            <span class="font-medium text-xl">Credit Institution KPIs</span>
-            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          <div class="card-section-title">
+            <span class="font-medium text-xl font-semibold">Credit Institution KPIs</span>
+            <span class="pl-2 font-italic">In percentage of the total assets</span>
           </div>
           <div
             class="col-6"
@@ -117,9 +117,9 @@
           </div>
         </template>
         <template v-if="fsType === 'InsuranceOrReinsurance'">
-          <div class="col-12 text-left pb-0">
-            <span class="font-medium text-xl">Insurance and Reinsurance KPIs</span>
-            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          <div class="card-section-title">
+            <span class="font-medium text-xl font-semibold">Insurance and Reinsurance KPIs</span>
+            <span class="pl-2 font-italic">In percentage of the total assets</span>
           </div>
           <div class="col-6">
             <TaxoCard
@@ -130,9 +130,9 @@
           </div>
         </template>
         <template v-if="fsType === 'InvestmentFirm'">
-          <div class="col-12 text-left pb-0">
-            <span class="font-medium text-xl">Investment Firm KPIs</span>
-            <span class="pl-2 font-italic text-gray-100">In percentage of the total assets</span>
+          <div class="card-section-title">
+            <span class="font-medium text-xl font-semibold">Investment Firm KPIs</span>
+            <span class="pl-2 font-italic">In percentage of the total assets</span>
           </div>
           <div class="col-6">
             <TaxoCard

@@ -1288,13 +1288,13 @@
     "auth" : "true",
     "envelopeFrom" : "",
     "ssl" : "true",
-    "password" : "${KEYCLOAK_MAILJET_API_SECRET}",
+    "password" : "${MAILJET_API_SECRET}",
     "port" : "465",
     "host" : "in-v3.mailjet.com",
     "replyTo" : "",
     "from" : "info@dataland.com",
     "fromDisplayName" : "",
-    "user" : "${KEYCLOAK_MAILJET_API_ID}"
+    "user" : "${MAILJET_API_ID}"
   },
   "loginTheme" : "dataland_theme",
   "emailTheme" : "dataland_theme",

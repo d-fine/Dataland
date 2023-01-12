@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
-interface DataAPI<T> {
+interface DataApi<T> {
     @Operation(
         summary = "Upload new data set.",
         description = "The uploaded data is added to the data store, the generated data id is returned."
