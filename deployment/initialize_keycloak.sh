@@ -29,7 +29,7 @@ if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   actual_users=$((current_users-current_technical_users))
   expected_users=$((all_users-test_users-technical_users))
   echo "The new instance contains a total of $current_users users with $current_technical_users technical users (Actual users: $actual_users)"
-  echo "The old instance contained a total of $all_users users with $technical_users technical users and $test_user test users (Actual users: $expected_users)"
+  echo "The old instance contained a total of $all_users users with $technical_users technical users and $test_users test users (Actual users: $expected_users)"
   if [[ ! $expected_users -eq actual_users ]]; then
     echo "Found $actual_users but $expected_users were expected."
     exit 1
