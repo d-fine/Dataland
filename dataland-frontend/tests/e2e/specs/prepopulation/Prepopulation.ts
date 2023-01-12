@@ -130,6 +130,18 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
         });
+
+        it("Upload an additional lksg data set to existing fake-fixtures", () => {
+          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+            const storedCompany = await getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg);
+            const dataSet = generateLksgData();
+            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, dataSet);
+          });
+        });
+
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length + 1);
+        });
       }
     );
 
@@ -179,35 +191,6 @@ describe(
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
-        });
-      }
-    );
-
-    describeIf(
-      "Extending and validate a fake fixture with lksg data",
-      {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
-      },
-      () => {
-        let companiesWithLksgData: Array<FixtureData<LksgData>>;
-
-        before(function () {
-          cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-            companiesWithLksgData = jsonContent as Array<FixtureData<LksgData>>;
-          });
-        });
-
-        it("Upload additional lksg data set to existing fake-fixtures", () => {
-          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-            const storedCompany = await getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg);
-            const dataSet = generateLksgData();
-            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, dataSet);
-          });
-        });
-
-        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length + 1);
         });
       }
     );
