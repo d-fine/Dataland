@@ -22,11 +22,16 @@ timeout 300 bash -c "while ! docker logs $container_name 2>/dev/null | grep -q \
 if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   echo "Testing if the number of current users matches the number of exported users"
   current_users=$(sudo docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -c '\"username\" :')
+  current_technical_users=$(sudo docker exec $container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -E -c '"username" : "data_(reader|uploader|admin)"')
   all_users=$(sudo docker exec "$container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  technical_users=$(sudo docker exec --env USER_PATTERN='"username" : "data_(reader|uploader|admin)"' "$container_name" bash -c 'grep -E -l "$USER_PATTERN" /keycloak_users/datalandsecurity-users-*.json | wc -l')
   test_users=$(sudo docker exec "$container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  expected_users=$((all_users-test_users))
-  if [[ ! $expected_users -eq $current_users ]]; then
-    echo "Found $current_users but $expected_users were expected."
+  actual_users=$((current_users-current_technical_users))
+  expected_users=$((all_users-test_users-technical_users))
+  echo "The new instance contains a total of $current_users users with $current_technical_users technical users (Actual users: $actual_users)"
+  echo "The old instance contained a total of $all_users users with $technical_users technical users and $test_user test users (Actual users: $expected_users)"
+  if [[ ! $expected_users -eq actual_users ]]; then
+    echo "Found $actual_users but $expected_users were expected."
     exit 1
   fi
   echo "Number of imported users match the exported users."
