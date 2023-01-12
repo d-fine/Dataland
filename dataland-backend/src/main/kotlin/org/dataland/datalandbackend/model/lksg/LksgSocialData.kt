@@ -1,6 +1,13 @@
 package org.dataland.datalandbackend.model.lksg
 
-import org.dataland.datalandbackend.model.lksg.submodels.*
+import org.dataland.datalandbackend.model.lksg.submodels.ChildLabour
+import org.dataland.datalandbackend.model.lksg.submodels.EvidenceCertificatesAndAttestations
+import org.dataland.datalandbackend.model.lksg.submodels.ForcedLabourSlaveryAndDebtBondage
+import org.dataland.datalandbackend.model.lksg.submodels.FreedomOfAssociation
+import org.dataland.datalandbackend.model.lksg.submodels.GrievanceMechanism
+import org.dataland.datalandbackend.model.lksg.submodels.LksgGeneral
+import org.dataland.datalandbackend.model.lksg.submodels.LksgHumanRights
+import org.dataland.datalandbackend.model.lksg.submodels.SocialOsh
 
 /**
  * --- API model ---

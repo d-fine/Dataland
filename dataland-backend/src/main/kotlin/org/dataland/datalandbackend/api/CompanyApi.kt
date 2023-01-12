@@ -146,7 +146,7 @@ interface CompanyApi {
      * @return company framework data
      */
     fun getCompanyFrameworkDataById(@PathVariable("companyId") companyId: String, @RequestParam dataType: DataType):
-            ResponseEntity<List<Map<String, Any>>>
+        ResponseEntity<List<Map<String, Any>>>
 
     @Operation(
         summary = "Get the company IDs of the teaser companies.",

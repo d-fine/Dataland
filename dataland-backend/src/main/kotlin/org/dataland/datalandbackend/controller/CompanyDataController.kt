@@ -64,7 +64,7 @@ class CompanyDataController(
     }
 
     override fun getCompanyFrameworkDataById(companyId: String, dataType: DataType):
-            ResponseEntity<List<Map<String, Any>>> {
+        ResponseEntity<List<Map<String, Any>>> {
         return ResponseEntity.ok(companyManager.getCompanyFrameworkDataById(companyId, dataType))
     }
 

@@ -45,9 +45,9 @@ dependencies {
 
 openApi {
     outputFileName.set("$projectDir/internalStorageOpenApi.json")
-    apiDocsUrl.set("http://localhost:8080/internal-storage/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8484/internal-storage/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
 }
 

@@ -55,9 +55,9 @@ dependencies {
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8482/api/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
     outputFileName.set("$projectDir/backendOpenApi.json")
 }

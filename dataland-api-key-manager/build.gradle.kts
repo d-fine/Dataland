@@ -51,9 +51,9 @@ dependencies {
 
 openApi {
     outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
-    apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8483/api-keys/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
     }
 }
 tasks.test {
