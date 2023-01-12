@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 }
 
 @Service
-@RabbitListener(queues = ["hello"])
+@RabbitListener(queues = ["qa_queue"])
 class RabbitReceiver {
     @RabbitHandler
     fun receive(name: String) {

@@ -33,7 +33,7 @@
   "policies": [],
   "queues": [
     {
-      "name": "hello",
+      "name": "qa_queue",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
