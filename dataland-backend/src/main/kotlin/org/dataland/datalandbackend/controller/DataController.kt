@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.http.ResponseEntity
 import java.util.UUID.randomUUID
 
@@ -23,6 +24,7 @@ abstract class DataController<T>(
     var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
+    private val rabbitTemplate: RabbitTemplate,
     private val clazz: Class<T>,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
@@ -46,6 +48,7 @@ abstract class DataController<T>(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId"
         )
+        postToQaQueue("TestTESTtestTEST")
         return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId))
     }
 
@@ -76,4 +79,8 @@ abstract class DataController<T>(
         )
         return ResponseEntity.ok(companyAssociatedData)
     }
+    private fun postToQaQueue(input: String) {
+        rabbitTemplate.convertAndSend("qa_queue", input)
+    }
+
 }

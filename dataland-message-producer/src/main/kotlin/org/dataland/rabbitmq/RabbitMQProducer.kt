@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 class RabbitProduceController(val rabbitTemplate: RabbitTemplate) {
     @PostMapping("/person/{name}")
     fun postPerson(@PathVariable name: String): ResponseEntity<String> {
-        rabbitTemplate.convertAndSend("qa_queue", name)
+        rabbitTemplate.convertAndSend("upload_queue", name)
         return ResponseEntity.ok(name)
     }
 }

@@ -44,6 +44,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
@@ -52,6 +53,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.11.0")
     implementation(project(":dataland-keycloak-adapter"))
     implementation("com.mailjet:mailjet-client:5.2.1")
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
 }
 
 openApi {

@@ -21,3 +21,11 @@ class RabbitReceiver {
         println("Received: '$name'")
     }
 }
+@Service
+@RabbitListener(queues = ["upload_queue"])
+class RabbitReceiver2 {
+    @RabbitHandler
+    fun receive(name: String) {
+        println("Received: '$name'")
+    }
+}
