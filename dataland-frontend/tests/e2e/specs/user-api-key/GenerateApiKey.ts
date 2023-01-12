@@ -1,5 +1,5 @@
 describe("As a user I expect my api key will be generated correctly", () => {
-  it("successfully generate api key", () => {
+  it("successfully generate api key", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
@@ -26,7 +26,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("#expiryTimeWrapper").should("not.exist");
     cy.get('[data-test="expiryDatePicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
-    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click()
+    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
     cy.get('[data-test="expiryDatePicker"]')
       .find("input")
