@@ -2,6 +2,7 @@ package org.dataland.rabbitmq
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Service
@@ -15,17 +16,21 @@ fun main(args: Array<String>) {
 
 @Service
 @RabbitListener(queues = ["qa_queue"])
-class RabbitReceiver {
+class ReceiverAndSender(val rabbitTemplate: RabbitTemplate) {
     @RabbitHandler
     fun receive(name: String) {
-        println("Received: '$name'")
+        println("Received entry on QA message queue: '$name'")
+        if(name != null) {
+            rabbitTemplate.convertAndSend("upload_queue", name)
+        }
     }
+
 }
 @Service
 @RabbitListener(queues = ["upload_queue"])
-class RabbitReceiver2 {
+class Receiver {
     @RabbitHandler
     fun receive(name: String) {
-        println("Received: '$name'")
+        println("Received data on upload queue, ready to store: '$name'")
     }
 }
