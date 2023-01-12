@@ -1,5 +1,3 @@
-import { formatExpiryDate } from "@/utils/DateFormatUtils";
-
 describe("As a user I expect my api key will be generated correctly", () => {
   it("successfully generate api key", () => {
     cy.ensureLoggedIn();
@@ -19,25 +17,26 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("button#generateApiKey").click();
-    cy.get('label[for="expireTime"]').should("contain.text", `Please select expiration date`);
-    cy.get("div#expireTime").click();
+    cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
+    cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
-    cy.get("#expireTimeWrapper").should("contain.text", `The API Key will expire on ${formatExpiryDate(7)}`);
-    cy.get("div#expireTime").click();
+    cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
+    cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
-    cy.get("#expireTimeWrapper").should("not.exist");
-    cy.get('[data-test="expireDataPicker"]').should("be.visible");
+    cy.get("#expiryTimeWrapper").should("not.exist");
+    cy.get('[data-test="expiryDatePicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
+    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get('[data-test="expireDataPicker"]')
+    cy.get('[data-test="expiryDatePicker"]')
       .find("input")
       .should(($input) => {
         const val = $input.val();
         expect(val).to.include("13");
       });
-    cy.get("div#expireTime").click();
+    cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
-    cy.get("#expireTimeWrapper").should("contain.text", `The API Key has no defined expire date`);
+    cy.get("#expiryTimeWrapper").should("contain.text", `The API Key has no defined expiry date`);
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");

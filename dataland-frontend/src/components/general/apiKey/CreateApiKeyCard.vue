@@ -5,54 +5,54 @@
         <div>
           <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
-
         <div data-test="userRoles" class="pr-1">
           <UserRolesBadges :userRoles="userRoles" />
         </div>
       </div>
       <div
-        :class="{ invalidExpireTime: !isExpireTimeCorrect }"
+        :class="{ invalidExpiryTime: !isExpiryDateValid }"
         class="col-12 flex justify-content-between align-items-end"
       >
         <div class="text-left col-5">
           <label
-            for="expireTime"
-            :class="{ invalidExpireTimeText: !isExpireTimeCorrect, 'text-900': isExpireTimeCorrect }"
+            for="expiryTime"
+            :class="{ invalidExpiryTimeText: !isExpiryDateValid, 'text-900': isExpiryDateValid }"
             class="block font-medium mb-2"
           >
-            {{ !isExpireTimeCorrect ? "Please select expiration date" : "Expiration" }}
+            {{ !isExpiryDateValid ? "Please select expiration date" : "Expiration" }}
           </label>
           <Dropdown
-            id="expireTime"
-            v-model="expireTimeDropdown"
+            id="expiryTime"
+            v-model="expiryTimeDropdown"
             :options="days"
             optionLabel="label"
             optionValue="value"
             placeholder="Select expiry"
             class="w-full custom-dropdown"
-            @change="setExpireTimeDays($event)"
+            @change="setExpiryTimeDays($event)"
           />
         </div>
 
-        <div v-if="expireTimeDropdown === 'custom'" class="col-7 text-right">
+        <div v-if="expiryTimeDropdown === 'custom'" class="col-7 text-right">
           <Calendar
-            data-test="expireDataPicker"
+            data-test="expiryDatePicker"
             inputId="icon"
-            v-model="customDate"
+            v-model="customDateInMilliseconds"
             :showIcon="true"
             dateFormat="D, M dd, yy"
+            :minDate="minDate"
           />
         </div>
 
         <span
-          id="expireTimeWrapper"
-          v-if="expireTimeDropdown && expireTimeDropdown !== 'custom'"
+          id="expiryTimeWrapper"
+          v-if="expiryTimeDropdown && expiryTimeDropdown !== 'custom'"
           class="block text-600 col-7"
         >
           {{
-            expireTimeDropdown === "noExpiry"
-              ? `The API Key has no defined expire date`
-              : `The API Key will expire on ${formatExpiryDate(expireTimeDropdown)}`
+            expiryTimeDropdown === "noExpiry"
+              ? `The API Key has no defined expiry date`
+              : `The API Key will expire on ${expiryDateFormated}`
           }}
         </span>
       </div>
@@ -62,7 +62,7 @@
         data-test="cancelGenerateApiKey"
         label="CANCEL"
         @click="$emit('cancelCreate')"
-        class="p-button-outlined text-sm ml-3"
+        class="p-button-outlined ml-3"
       />
       <PrimeButton
         id="generateApiKey"
@@ -83,9 +83,6 @@ import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils"
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
-  setup() {
-    return { formatExpiryDate, calculateDaysFromNow };
-  },
   name: "CreateApiKeyCard",
   components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
   props: {
@@ -94,10 +91,11 @@ export default defineComponent({
     },
   },
   data: () => ({
-    expireTimeDays: 0,
-    expireTimeDropdown: "",
-    isExpireTimeCorrect: true,
-    customDate: "",
+    expiryTimeDays: null as null | number,
+    expiryTimeDropdown: "",
+    isExpiryDateValid: true,
+    minDate: new Date(new Date().getTime() + 86400000),
+    customDateInMilliseconds: null,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -107,45 +105,49 @@ export default defineComponent({
       { label: "No expiry", value: "noExpiry" },
     ],
   }),
-  computed: {},
   methods: {
-    setExpireTimeDays(event: HTMLSelectElement) {
+    setExpiryTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
-        this.expireTimeDays = 0;
-      } else if (event.value === "custom" && calculateDaysFromNow(this.customDate) > 0) {
-        this.expireTimeDays = calculateDaysFromNow(this.customDate);
+        this.expiryTimeDays = null;
+      } else if (event.value === "custom") {
+        this.expiryTimeDays = this.customDateInMilliseconds
+          ? calculateDaysFromNow(this.customDateInMilliseconds as unknown as number)
+          : null;
       } else {
-        this.expireTimeDays = event.value as unknown as number;
+        this.expiryTimeDays = event.value as unknown as number;
       }
-      this.isExpireTimeCorrect = true;
+      this.isExpiryDateValid = true;
     },
+
     checkDateAndEmitGenerateApiKey() {
-      if (
-        (this.expireTimeDays && this.expireTimeDays > 0) ||
-        (this.expireTimeDropdown === "custom" && this.expireTimeDays > 0)
-      ) {
-        this.$emit("generateApiKey", this.expireTimeDays);
-      } else if (this.expireTimeDropdown === "noExpiry" && this.expireTimeDays === 0) {
+      if (this.expiryTimeDays) {
+        this.$emit("generateApiKey", this.expiryTimeDays);
+      } else if (this.expiryTimeDropdown === "noExpiry") {
         this.$emit("generateApiKey");
       } else {
-        this.isExpireTimeCorrect = false;
+        this.isExpiryDateValid = false;
       }
     },
   },
+  computed: {
+    expiryDateFormated(): string {
+      return formatExpiryDate(this.expiryTimeDays as unknown as number);
+    },
+  },
   watch: {
-    customDate: function () {
-      this.expireTimeDays = calculateDaysFromNow(this.customDate);
-      this.isExpireTimeCorrect = true;
+    customDateInMilliseconds: function () {
+      this.expiryTimeDays = calculateDaysFromNow(this.customDateInMilliseconds as unknown as number);
+      this.isExpiryDateValid = true;
     },
   },
 });
 </script>
 
 <style scoped>
-.invalidExpireTime {
+.invalidExpiryTime {
   border: 1px solid var(--red-600);
 }
-.invalidExpireTimeText {
+.invalidExpiryTimeText {
   color: var(--red-600);
 }
 </style>
