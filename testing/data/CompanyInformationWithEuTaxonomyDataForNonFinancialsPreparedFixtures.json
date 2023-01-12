@@ -3,89 +3,76 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Kass, Kesselring und Bieler"
+				"Schmuhl, Newton und Kowalick",
+				"Wallstab, Kazmarek und Seeger"
 			],
-			"companyLegalForm": "e-commerce",
-			"headquarters": "Löserstadt",
-			"headquartersPostalCode": "96576",
-			"sector": "functionalities",
+			"companyLegalForm": "e-tailers",
+			"headquarters": "Teoburg",
+			"headquartersPostalCode": "44814",
+			"sector": "e-tailers",
 			"identifiers": [
 				{
+					"identifierType": "Duns",
+					"identifierValue": "a4pf9ybqw"
+				},
+				{
 					"identifierType": "Isin",
-					"identifierValue": "11tn4wprihiy"
+					"identifierValue": "hha7q6iipz2g"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "025hkpa9xs4zqlzb8619"
+					"identifierValue": "pkbxhlhmh4hijgus7v91"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "ynpa5r1a0f"
+					"identifierValue": "ftbmv0r41r"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "n5ilrwq"
+					"identifierValue": "8sqwoyn"
 				}
 			],
-			"countryCode": "CO",
+			"countryCode": "GM",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "https://blind-bakterium.de/musterhaft-nomen.pdf",
+				"ESEFReport": {
+					"reference": "http://musterhaft-fisch.org/steil-kommunismus.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-08-14",
+					"reportDate": "2022-12-03",
 					"currency": "BAM"
-				},
-				"IntegratedReport": {
-					"reference": "http://durchdacht-neutron.com/etabliert-pfund.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "INR"
-				},
-				"AnnualReport": {
-					"reference": "http://funkelnd-stahl.net/risikobereit-schlange.pdf",
-					"reportDate": "2022-05-02",
-					"currency": "CNY"
 				}
 			},
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 943,
-					"report": "AnnualReport",
-					"tagName": "channels"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 32202,
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2143,
-					"dataSource": {
-						"page": 268,
-						"report": "IntegratedReport",
-						"tagName": "action-items"
-					},
-					"quality": "Incomplete",
-					"comment": "input haptic pixel"
+					"value": 0.5738,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.1522,
+					"value": 0.4797,
 					"dataSource": {
-						"page": 495,
-						"report": "AnnualReport",
-						"tagName": "mindshare"
+						"page": 1015,
+						"report": "ESEFReport",
+						"tagName": "architectures"
 					},
-					"quality": "Reported",
-					"comment": "calculate wireless port"
+					"quality": "Audited",
+					"comment": "index cross-platform capacitor"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6417,
-					"quality": "Estimated"
+					"value": 0.6362,
+					"quality": "Incomplete"
 				}
 			}
 		}
@@ -93,107 +80,92 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Thieke-Dörre"
-			],
-			"companyLegalForm": "bandwidth",
-			"headquarters": "Fitschenburg",
-			"headquartersPostalCode": "30845",
-			"sector": "communities",
+			"companyAlternativeNames": [],
+			"headquarters": "Pallentinstadt",
+			"headquartersPostalCode": "09168",
+			"sector": "channels",
 			"identifiers": [
 				{
 					"identifierType": "Lei",
-					"identifierValue": "0qhmjv1xh4rnmtswlnrh"
+					"identifierValue": "mlvxasvm6nps2hwf2svj"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "qnc5ej4z5r"
 				}
 			],
-			"countryCode": "GP",
+			"countryCode": "NA",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
-					"reference": "http://erfrischend-computer.name/nass-feuer.pdf",
+					"reference": "https://ehrenhaft-schlucht.org/raumf%C3%BCllend-wasserfall.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-12-15",
-					"currency": "HNL"
-				},
-				"ESEFReport": {
-					"reference": "https://taktvoll-alphabet.org/konventionell-auge.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-12-05",
-					"currency": "BYN"
-				},
-				"SustainabilityReport": {
-					"reference": "http://xn--imagefrdernd-tee-rwb.de/hei%C3%9F-telefon.pdf",
-					"isGroupLevel": "NA",
-					"currency": "RSD"
-				},
-				"AnnualReport": {
-					"reference": "http://besonders-neutron.net/komfortabel-geschichte.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-15",
-					"currency": "USD"
+					"reportDate": "2022-04-01",
+					"currency": "BAM"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-04-14",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
-			"numberOfEmployees": 15723,
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "NA",
+			"numberOfEmployees": 15671,
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 806267.69,
+					"value": 285341.27,
 					"dataSource": {
-						"page": 67,
+						"page": 223,
 						"report": "IntegratedReport",
-						"tagName": "partnerships"
+						"tagName": "applications"
 					},
-					"quality": "Estimated",
-					"comment": "program neural protocol"
+					"quality": "Reported",
+					"comment": "compress 1080p system"
 				},
 				"eligiblePercentage": {
-					"value": 0.7215,
-					"dataSource": {
-						"page": 351,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
-					},
-					"quality": "Audited",
-					"comment": "input 1080p transmitter"
+					"value": 0.9391,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 862688.73,
+					"value": 407217.75,
 					"dataSource": {
-						"page": 354,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
+						"page": 571,
+						"report": "IntegratedReport",
+						"tagName": "e-business"
 					},
-					"quality": "Audited",
-					"comment": "hack auxiliary system"
+					"quality": "Reported",
+					"comment": "reboot bluetooth monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.1091,
-					"quality": "Incomplete"
+					"value": 0.7428,
+					"dataSource": {
+						"page": 215,
+						"report": "IntegratedReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "synthesize primary alarm"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 983522.8,
-					"quality": "Incomplete"
+					"value": 145032.8,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.572,
+					"value": 0.2625,
 					"dataSource": {
-						"page": 240,
-						"report": "AnnualReport",
-						"tagName": "communities"
+						"page": 1150,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
 					},
-					"quality": "Estimated",
-					"comment": "connect online protocol"
+					"quality": "Incomplete",
+					"comment": "synthesize open-source bus"
 				}
 			}
 		}
