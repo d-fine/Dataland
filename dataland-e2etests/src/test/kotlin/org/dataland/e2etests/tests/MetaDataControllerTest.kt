@@ -33,25 +33,20 @@ class MetaDataControllerTest {
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        val uploadedMetaInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTestCompanyInformation), 1
-        )
+        )[0].actualStoredDataMetaInfo!!
         apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
-        val dataMetaInformation =
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId)
+        val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
+        val expectedDataMetaInformation =
+            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0, uploadedMetaInfo.companyId, null)
         assertEquals(
-            DataMetaInformation(
-                listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId,
-                testDataType,
-                0,
-                listOfUploadInfo[0].actualStoredCompany.companyId,
-                null,
-            ),
-            dataMetaInformation.copy(uploadTime = 0),
+            expectedDataMetaInformation,
+            actualDataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
 
-        val timeDiffFromUploadToNow = dataMetaInformation.uploadTime - Instant.now().epochSecond
+        val timeDiffFromUploadToNow = actualDataMetaInformation.uploadTime - Instant.now().epochSecond
         assertTrue(
             abs(timeDiffFromUploadToNow) < 60,
             "The server-upload-time and the local upload time differ too much."
@@ -208,15 +203,37 @@ class MetaDataControllerTest {
         val uploaderUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Uploader)
         val adminUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Admin)
 
-        expectUserIdToBe(
-            testUploadDataUploaderDataId, UserType.Reader, null,
-            "A reader should not see any uploader ids"
+        validateReaderAcessToUserId(testUploadDataUploaderDataId, testUploadDataAdminDataId)
+        validateUploaderAccessToUserId(testUploadDataUploaderDataId, uploaderUserId, testUploadDataAdminDataId)
+        validateAdminAccessToUserId(
+            testUploadDataUploaderDataId,
+            uploaderUserId,
+            testUploadDataAdminDataId,
+            adminUserId
         )
-        expectUserIdToBe(
-            testUploadDataAdminDataId, UserType.Reader, null,
-            "A reader should not see any uploader ids"
-        )
+    }
 
+    private fun validateAdminAccessToUserId(
+        testUploadDataUploaderDataId: String,
+        uploaderUserId: String,
+        testUploadDataAdminDataId: String,
+        adminUserId: String
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderDataId, UserType.Admin, uploaderUserId,
+            "Admins should be able to view uploaderUserids for all users"
+        )
+        expectUserIdToBe(
+            testUploadDataAdminDataId, UserType.Admin, adminUserId,
+            "Admins should be able to view uploaderUserids for all users"
+        )
+    }
+
+    private fun validateUploaderAccessToUserId(
+        testUploadDataUploaderDataId: String,
+        uploaderUserId: String,
+        testUploadDataAdminDataId: String
+    ) {
         expectUserIdToBe(
             testUploadDataUploaderDataId, UserType.Uploader, uploaderUserId,
             "Expected user id to be present if the user requests data about an upload he performed himself"
@@ -225,14 +242,16 @@ class MetaDataControllerTest {
             testUploadDataAdminDataId, UserType.Uploader, null,
             "Data Uploaders should not be able to view the user id of uploads of other users"
         )
+    }
 
+    private fun validateReaderAcessToUserId(testUploadDataUploaderDataId: String, testUploadDataAdminDataId: String) {
         expectUserIdToBe(
-            testUploadDataUploaderDataId, UserType.Admin, uploaderUserId,
-            "Admins should be able to view uploaderUserids for all users"
+            testUploadDataUploaderDataId, UserType.Reader, null,
+            "A reader should not see any uploader ids"
         )
         expectUserIdToBe(
-            testUploadDataAdminDataId, UserType.Admin, adminUserId,
-            "Admins should be able to view uploaderUserids for all users"
+            testUploadDataAdminDataId, UserType.Reader, null,
+            "A reader should not see any uploader ids"
         )
     }
 
