@@ -3,96 +3,73 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Neubauer, Leide und Zeidler",
-				"Reinelt, Horna und Haaf",
-				"Schenk-Steding",
-				"Kunz Gruppe"
+				"Kraus GmbH & Co. KG"
 			],
-			"companyLegalForm": "deliverables",
-			"headquarters": "Süd Claireburg",
-			"headquartersPostalCode": "48166",
-			"sector": "methodologies",
+			"companyLegalForm": "channels",
+			"headquarters": "Neu Anastasialand",
+			"sector": "relationships",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "4vm8l6r6m"
+					"identifierValue": "dsd8huwhy"
 				}
 			],
-			"countryCode": "AE",
+			"countryCode": "SV",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "https://lukrativ-tier.de/niveauvoll-haut.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-02-20",
-					"currency": "ILS"
-				},
-				"IntegratedReport": {
-					"reference": "http://gigantisch-imperialismus.de/gro%C3%9Fz%C3%BCgig-s%C3%A4ugling.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "BSD"
+				"SustainabilityReport": {
+					"reference": "http://gewinnend-jugendliche.com/friedlich-feuerstein.pdf",
+					"isGroupLevel": "No",
+					"currency": "BYN"
 				},
 				"AnnualReport": {
-					"reference": "http://beschwingt-pilz.net/stark-biographie.pdf",
+					"reference": "https://liberal-jugendliche.com/phantasievoll-verben.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-08-11",
-					"currency": "BRL"
-				},
-				"SustainabilityReport": {
-					"reference": "https://ausdrucksstark-kubus.ch/hochmotiviert-malaria.pdf",
-					"currency": "KHR"
+					"currency": "BAM"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-11-07",
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 147,
-					"report": "IntegratedReport",
-					"tagName": "e-business"
-				}
+				"provider": "Porth GmbH & Co. KG"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 67530,
+			"numberOfEmployees": 52073,
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.1244,
+					"value": 0.7058,
 					"dataSource": {
-						"page": 865,
-						"report": "IntegratedReport",
-						"tagName": "supply-chains"
+						"page": 31,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Estimated",
-					"comment": "transmit 1080p port"
+					"quality": "Audited",
+					"comment": "bypass cross-platform bandwidth"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3961,
+					"value": 0.0294,
 					"dataSource": {
-						"page": 1020,
-						"report": "ESEFReport",
-						"tagName": "convergence"
+						"page": 200,
+						"report": "SustainabilityReport",
+						"tagName": "eyeballs"
 					},
-					"quality": "Incomplete",
-					"comment": "back up primary matrix"
+					"quality": "Reported",
+					"comment": "navigate back-end port"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2378,
+					"value": 0.0566,
 					"dataSource": {
-						"page": 808,
-						"report": "SustainabilityReport",
-						"tagName": "e-business"
+						"page": 964,
+						"report": "AnnualReport",
+						"tagName": "solutions"
 					},
-					"quality": "Incomplete",
-					"comment": "navigate redundant matrix"
+					"quality": "Audited",
+					"comment": "calculate digital matrix"
 				}
 			}
 		}
@@ -101,115 +78,103 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Grüner OHG",
-				"Beckel Gruppe",
-				"Kalinowski KG",
-				"Jess-Umbach"
+				"Goldfuss KG",
+				"Kühnel AG"
 			],
-			"companyLegalForm": "methodologies",
-			"headquarters": "Alt Valeriascheid",
-			"headquartersPostalCode": "51967",
-			"sector": "experiences",
+			"companyLegalForm": "models",
+			"headquarters": "Neu Vinstadt",
+			"sector": "networks",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "0zokjoim6t1ci460u1mp"
+					"identifierType": "Isin",
+					"identifierValue": "orfkrfcpp73l"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "koxmn1ph7z"
+					"identifierType": "Ticker",
+					"identifierValue": "ol5qkov"
 				}
 			],
-			"countryCode": "ME",
+			"countryCode": "NL",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
-					"reference": "http://komfortabel-schiff.com/heimlich-ebene.pdf",
+					"reference": "https://xn--auerordentlich-stuhl-cwb.com/diplomatisch-kreide.pdf",
 					"isGroupLevel": "Yes",
-					"reportDate": "2022-06-15",
-					"currency": "BIF"
+					"reportDate": "2022-08-24",
+					"currency": "BND"
 				},
-				"AnnualReport": {
-					"reference": "http://originell-frau.net/grundsolide-tier.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-12-09",
-					"currency": "JMD"
+				"SustainabilityReport": {
+					"reference": "http://emotional-sport.de/gespr%C3%A4chig-hochhaus.pdf",
+					"reportDate": "2022-03-23",
+					"currency": "BBD"
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-10-31",
+			"fiscalYearEnd": "2022-09-16",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 438905.94,
+					"value": 335002.36,
 					"dataSource": {
-						"page": 52,
-						"report": "AnnualReport",
-						"tagName": "experiences"
+						"page": 600,
+						"report": "SustainabilityReport",
+						"tagName": "paradigms"
 					},
-					"quality": "Estimated",
-					"comment": "back up 1080p bandwidth"
+					"quality": "Audited",
+					"comment": "calculate online interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.9181,
+					"value": 0.3813,
 					"dataSource": {
-						"page": 629,
-						"report": "AnnualReport",
-						"tagName": "markets"
+						"page": 240,
+						"report": "SustainabilityReport",
+						"tagName": "models"
 					},
-					"quality": "Reported",
-					"comment": "index digital alarm"
+					"quality": "Incomplete",
+					"comment": "connect wireless system"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 148984.96,
+					"value": 176421.69,
 					"dataSource": {
-						"page": 712,
-						"report": "IntegratedReport",
-						"tagName": "content"
+						"page": 550,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "transmit virtual firewall"
+					"quality": "Audited",
+					"comment": "compress back-end array"
 				},
 				"eligiblePercentage": {
-					"value": 0.0158,
-					"dataSource": {
-						"page": 326,
-						"report": "IntegratedReport",
-						"tagName": "deliverables"
-					},
-					"quality": "Reported",
-					"comment": "override bluetooth feed"
+					"value": 0.3525,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 121387.91,
+					"value": 191702.33,
 					"dataSource": {
-						"page": 1059,
+						"page": 324,
 						"report": "IntegratedReport",
-						"tagName": "blockchains"
+						"tagName": "communities"
 					},
-					"quality": "Audited",
-					"comment": "compress cross-platform system"
+					"quality": "Estimated",
+					"comment": "index haptic matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.5634,
+					"value": 0.775,
 					"dataSource": {
-						"page": 915,
+						"page": 340,
 						"report": "IntegratedReport",
-						"tagName": "e-markets"
+						"tagName": "convergence"
 					},
-					"quality": "Reported",
-					"comment": "transmit back-end matrix"
+					"quality": "Estimated",
+					"comment": "hack cross-platform system"
 				}
 			}
 		}

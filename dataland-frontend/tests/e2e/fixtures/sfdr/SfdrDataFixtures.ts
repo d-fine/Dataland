@@ -5,14 +5,14 @@ import {
   Emissions,
   EnergyPerformance,
   EnvironmentalData,
-  General,
+  SfdrGeneral,
   GreenhouseGasEmissions,
   GreenSecurities,
-  HumanRights,
+  SfdrHumanRights,
   SfdrData,
-  SocialAndEmployeeMatters,
+  SfdrSocialAndEmployeeMatters,
   SocialData,
-  Waste,
+  SfdrWaste,
   Water,
 } from "@clients/backend";
 import {
@@ -30,7 +30,7 @@ export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {};
   const reports = generateReferencedReports();
 
-  const general: General = {};
+  const general: SfdrGeneral = {};
   general.fiscalYear = randomFiscalYearDeviationOrUndefined();
   general.fiscalYearEnd = randomFutureDate();
   general.annualReport = faker.datatype.string();
@@ -95,7 +95,7 @@ export function generateSfdrData(): SfdrData {
   water.waterManagementPolicy = generateYesNoOrEmptyDatapoint(reports);
   water.waterStressAreaExposure = generateYesNoOrEmptyDatapoint(reports);
 
-  const waste: Waste = {};
+  const waste: SfdrWaste = {};
   waste.hazardousWaste = generateNumericOrEmptyDatapoint(reports);
   waste.manufactureOfAgrochemicalPesticidesProducts = generateYesNoOrEmptyDatapoint(reports);
   waste.landDegradationDesertificationSoilSealingExposure = generateYesNoOrEmptyDatapoint(reports);
@@ -106,7 +106,7 @@ export function generateSfdrData(): SfdrData {
   waste.biodiversityProtectionPolicy = generateYesNoOrEmptyDatapoint(reports);
   waste.deforestationPolicy = generateYesNoOrEmptyDatapoint(reports);
 
-  const socialAndEmployeeMatters: SocialAndEmployeeMatters = {};
+  const socialAndEmployeeMatters: SfdrSocialAndEmployeeMatters = {};
   socialAndEmployeeMatters.humanRightsLegalProceedings = generateYesNoOrEmptyDatapoint(reports);
   socialAndEmployeeMatters.iloCoreLabourStandards = generateYesNoOrEmptyDatapoint(reports);
   socialAndEmployeeMatters.environmentalPolicy = generateYesNoOrEmptyDatapoint(reports);
@@ -152,7 +152,7 @@ export function generateSfdrData(): SfdrData {
   const greenSecurities: GreenSecurities = {};
   greenSecurities.securitiesNotCertifiedAsGreen = generateYesNoOrEmptyDatapoint(reports);
 
-  const humanRights: HumanRights = {};
+  const humanRights: SfdrHumanRights = {};
   humanRights.humanRightsPolicy = generateYesNoOrEmptyDatapoint(reports);
   humanRights.humanRightsDueDiligence = generateYesNoOrEmptyDatapoint(reports);
   humanRights.traffickingInHumanBeingsPolicy = generateYesNoOrEmptyDatapoint(reports);
