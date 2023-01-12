@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.model.sfdr.submodels
 
-import java.math.BigDecimal
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import java.math.BigDecimal
 
 /**
  * --- API model ---
