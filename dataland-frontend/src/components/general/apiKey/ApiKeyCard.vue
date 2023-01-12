@@ -48,7 +48,7 @@ export default defineComponent({
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
   props: {
-    expiryDate: {
+    expiryDateInMilliseconds: {
       type: Number,
       default: null,
     },
@@ -61,10 +61,16 @@ export default defineComponent({
   }),
   computed: {
     whenKeyExpire() {
-      if (this.expiryDate && this.expiryDate >= Date.now()) {
-        return `The API Key will expire on ${new Date(this.expiryDate).toLocaleDateString("en-gb", dateFormatOptions)}`;
-      } else if (this.expiryDate && this.expiryDate < Date.now()) {
-        return `The API Key expired on ${new Date(this.expiryDate).toLocaleDateString("en-gb", dateFormatOptions)}`;
+      if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds >= Date.now()) {
+        return `The API Key will expire on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
+          "en-gb",
+          dateFormatOptions
+        )}`;
+      } else if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds < Date.now()) {
+        return `The API Key expired on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
+          "en-gb",
+          dateFormatOptions
+        )}`;
       } else {
         return "The API Key has no defined expiry date";
       }
@@ -75,7 +81,7 @@ export default defineComponent({
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
     },
     isKeyExpired() {
-      return !(this.expiryDate >= new Date().getTime() || this.expiryDate == null);
+      return !(this.expiryDateInMilliseconds >= new Date().getTime() || this.expiryDateInMilliseconds == null);
     },
   },
 });

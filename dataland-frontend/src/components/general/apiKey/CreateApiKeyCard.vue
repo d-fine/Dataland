@@ -37,7 +37,7 @@
           <Calendar
             data-test="expiryDatePicker"
             inputId="icon"
-            v-model="customDate"
+            v-model="customDateInMilliseconds"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             :minDate="minDate"
@@ -95,7 +95,7 @@ export default defineComponent({
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
     minDate: new Date(new Date().getTime() + 86400000),
-    customDate: null,
+    customDateInMilliseconds: null,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -110,7 +110,9 @@ export default defineComponent({
       if (event.value === "noExpiry") {
         this.expiryTimeDays = null;
       } else if (event.value === "custom") {
-        this.expiryTimeDays = this.customDate ? calculateDaysFromNow(this.customDate as unknown as number) : null;
+        this.expiryTimeDays = this.customDateInMilliseconds
+          ? calculateDaysFromNow(this.customDateInMilliseconds as unknown as number)
+          : null;
       } else {
         this.expiryTimeDays = event.value as unknown as number;
       }
@@ -133,8 +135,8 @@ export default defineComponent({
     },
   },
   watch: {
-    customDate: function () {
-      this.expiryTimeDays = calculateDaysFromNow(this.customDate as unknown as number);
+    customDateInMilliseconds: function () {
+      this.expiryTimeDays = calculateDaysFromNow(this.customDateInMilliseconds as unknown as number);
       this.isExpiryDateValid = true;
     },
   },
