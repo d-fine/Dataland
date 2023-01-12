@@ -6,7 +6,7 @@ describe("Component test for ApiKeyCard", () => {
     mount(ApiKeyCard, {
       props: {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
-        expiryDate: 1,
+        expiryDateInMilliseconds: 1,
       },
     });
     cy.get("div#existingApiKeyCard").should("exist").should("contain.text", "The API Key expired");
@@ -16,7 +16,7 @@ describe("Component test for ApiKeyCard", () => {
     mount(ApiKeyCard, {
       props: {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
-        expiryDate: null,
+        expiryDateInMilliseconds: null,
       },
     });
     cy.get("div#existingApiKeyCard").should("exist").should("contain.text", "The API Key has no defined expiry date");
