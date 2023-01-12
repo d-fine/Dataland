@@ -59,7 +59,6 @@ export function generateLksgData(): LksgData {
       general: {
         dataDate: randomFutureDate(),
         lksgInScope: randomYesNoUndefined(),
-        // companyLegalForm: getCompanyLegalForm(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
         numberOfEmployees: faker.datatype.number({min: 1000, max: 200000}),
         shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),
