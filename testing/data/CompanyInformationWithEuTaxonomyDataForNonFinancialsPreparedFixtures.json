@@ -3,73 +3,83 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Kraus GmbH & Co. KG"
+				"Cors, Prey und Drechsler",
+				"Lindenberg-Rosbach",
+				"Mauroff, Demut und Schlachter"
 			],
-			"companyLegalForm": "channels",
-			"headquarters": "Neu Anastasialand",
-			"sector": "relationships",
+			"companyLegalForm": "applications",
+			"headquarters": "Dejascheid",
+			"headquartersPostalCode": "67515",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "dsd8huwhy"
+					"identifierType": "Isin",
+					"identifierValue": "uiam2zu52wxx"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "0zxu502lal"
 				}
 			],
-			"countryCode": "SV",
+			"countryCode": "TK",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://gewinnend-jugendliche.com/friedlich-feuerstein.pdf",
-					"isGroupLevel": "No",
-					"currency": "BYN"
+				"IntegratedReport": {
+					"reference": "https://qualitativ-tisch.com/hei%C3%9Fbl%C3%BCtig-lampe.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-09-12",
+					"currency": "MUR"
 				},
 				"AnnualReport": {
-					"reference": "https://liberal-jugendliche.com/phantasievoll-verben.pdf",
-					"isGroupLevel": "No",
-					"currency": "BAM"
+					"reference": "http://rege-kernschmelze.net/beachtsam-diamant.pdf",
+					"currency": "NGN"
 				}
 			},
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-02-01",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Porth GmbH & Co. KG"
+				"assurance": "ReasonableAssurance",
+				"provider": "Schacht, Moedl und Sinnhuber"
 			},
-			"numberOfEmployees": 52073,
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.7058,
+					"value": 0.8791,
 					"dataSource": {
-						"page": 31,
+						"page": 312,
 						"report": "AnnualReport",
-						"tagName": "portals"
+						"tagName": "markets"
 					},
 					"quality": "Audited",
-					"comment": "bypass cross-platform bandwidth"
+					"comment": "hack auxiliary sensor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.0294,
+					"value": 0.7799,
 					"dataSource": {
-						"page": 200,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
+						"page": 231,
+						"report": "IntegratedReport",
+						"tagName": "bandwidth"
 					},
-					"quality": "Reported",
-					"comment": "navigate back-end port"
+					"quality": "Incomplete",
+					"comment": "input mobile port"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0566,
+					"value": 0.797,
 					"dataSource": {
-						"page": 964,
+						"page": 834,
 						"report": "AnnualReport",
-						"tagName": "solutions"
+						"tagName": "paradigms"
 					},
-					"quality": "Audited",
-					"comment": "calculate digital matrix"
+					"quality": "Incomplete",
+					"comment": "program solid state array"
 				}
 			}
 		}
@@ -78,103 +88,108 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Goldfuss KG",
-				"Kühnel AG"
+				"Reichardt, Zümsande und Battke",
+				"Marx, Seeger und Ritschel",
+				"Helpling, Werner und Pogorzelski"
 			],
-			"companyLegalForm": "models",
-			"headquarters": "Neu Vinstadt",
-			"sector": "networks",
+			"companyLegalForm": "web-readiness",
+			"headquarters": "Deerbergburg",
+			"sector": "portals",
 			"identifiers": [
 				{
 					"identifierType": "Isin",
-					"identifierValue": "orfkrfcpp73l"
+					"identifierValue": "7a1e0d5lsjlt"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "ol5qkov"
+					"identifierType": "PermId",
+					"identifierValue": "2s54cl6kme"
 				}
 			],
-			"countryCode": "NL",
+			"countryCode": "TV",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "https://xn--auerordentlich-stuhl-cwb.com/diplomatisch-kreide.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-08-24",
-					"currency": "BND"
-				},
 				"SustainabilityReport": {
-					"reference": "http://emotional-sport.de/gespr%C3%A4chig-hochhaus.pdf",
-					"reportDate": "2022-03-23",
-					"currency": "BBD"
+					"reference": "http://xn--gebt-see-75a.ch/vertrauensw%C3%BCrdig-laden.pdf",
+					"currency": "BHD"
+				},
+				"IntegratedReport": {
+					"reference": "http://verantwortungsvoll-kupfer.info/ausgew%C3%A4hlt-staatsmann.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-11-14",
+					"currency": "TOP"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-16",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "LimitedAssurance",
+				"provider": "Golomski-Zekl",
+				"dataSource": {
+					"page": 1008,
+					"report": "IntegratedReport",
+					"tagName": "applications"
+				}
 			},
-			"activityLevelReporting": "No",
+			"numberOfEmployees": 41153,
 			"opex": {
 				"totalAmount": {
-					"value": 335002.36,
-					"dataSource": {
-						"page": 600,
-						"report": "SustainabilityReport",
-						"tagName": "paradigms"
-					},
-					"quality": "Audited",
-					"comment": "calculate online interface"
+					"value": 460474.89,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.3813,
+					"value": 0.7841,
 					"dataSource": {
-						"page": 240,
+						"page": 608,
 						"report": "SustainabilityReport",
-						"tagName": "models"
+						"tagName": "deliverables"
 					},
-					"quality": "Incomplete",
-					"comment": "connect wireless system"
+					"quality": "Estimated",
+					"comment": "navigate cross-platform matrix"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 176421.69,
+					"value": 374003.29,
 					"dataSource": {
-						"page": 550,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"page": 1051,
+						"report": "IntegratedReport",
+						"tagName": "users"
 					},
-					"quality": "Audited",
-					"comment": "compress back-end array"
+					"quality": "Reported",
+					"comment": "copy neural pixel"
 				},
 				"eligiblePercentage": {
-					"value": 0.3525,
-					"quality": "Incomplete"
+					"value": 0.5993,
+					"dataSource": {
+						"page": 140,
+						"report": "IntegratedReport",
+						"tagName": "applications"
+					},
+					"quality": "Estimated",
+					"comment": "hack primary system"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 191702.33,
+					"value": 791151.69,
 					"dataSource": {
-						"page": 324,
+						"page": 270,
 						"report": "IntegratedReport",
-						"tagName": "communities"
+						"tagName": "applications"
 					},
-					"quality": "Estimated",
-					"comment": "index haptic matrix"
+					"quality": "Audited",
+					"comment": "quantify haptic alarm"
 				},
 				"eligiblePercentage": {
-					"value": 0.775,
+					"value": 0.8994,
 					"dataSource": {
-						"page": 340,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
+						"page": 269,
+						"report": "SustainabilityReport",
+						"tagName": "e-tailers"
 					},
-					"quality": "Estimated",
-					"comment": "hack cross-platform system"
+					"quality": "Reported",
+					"comment": "back up haptic application"
 				}
 			}
 		}
