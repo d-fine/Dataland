@@ -3,73 +3,89 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Kraus GmbH & Co. KG"
+				"Kass, Kesselring und Bieler"
 			],
-			"companyLegalForm": "channels",
-			"headquarters": "Neu Anastasialand",
-			"sector": "relationships",
+			"companyLegalForm": "e-commerce",
+			"headquarters": "Löserstadt",
+			"headquartersPostalCode": "96576",
+			"sector": "functionalities",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "dsd8huwhy"
+					"identifierType": "Isin",
+					"identifierValue": "11tn4wprihiy"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "025hkpa9xs4zqlzb8619"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ynpa5r1a0f"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "n5ilrwq"
 				}
 			],
-			"countryCode": "SV",
+			"countryCode": "CO",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "http://gewinnend-jugendliche.com/friedlich-feuerstein.pdf",
+					"reference": "https://blind-bakterium.de/musterhaft-nomen.pdf",
 					"isGroupLevel": "No",
-					"currency": "BYN"
+					"reportDate": "2022-08-14",
+					"currency": "BAM"
+				},
+				"IntegratedReport": {
+					"reference": "http://durchdacht-neutron.com/etabliert-pfund.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "INR"
 				},
 				"AnnualReport": {
-					"reference": "https://liberal-jugendliche.com/phantasievoll-verben.pdf",
-					"isGroupLevel": "No",
-					"currency": "BAM"
+					"reference": "http://funkelnd-stahl.net/risikobereit-schlange.pdf",
+					"reportDate": "2022-05-02",
+					"currency": "CNY"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Porth GmbH & Co. KG"
+				"dataSource": {
+					"page": 943,
+					"report": "AnnualReport",
+					"tagName": "channels"
+				}
 			},
-			"numberOfEmployees": 52073,
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.7058,
+					"value": 0.2143,
 					"dataSource": {
-						"page": 31,
-						"report": "AnnualReport",
-						"tagName": "portals"
+						"page": 268,
+						"report": "IntegratedReport",
+						"tagName": "action-items"
 					},
-					"quality": "Audited",
-					"comment": "bypass cross-platform bandwidth"
+					"quality": "Incomplete",
+					"comment": "input haptic pixel"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.0294,
+					"value": 0.1522,
 					"dataSource": {
-						"page": 200,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
+						"page": 495,
+						"report": "AnnualReport",
+						"tagName": "mindshare"
 					},
 					"quality": "Reported",
-					"comment": "navigate back-end port"
+					"comment": "calculate wireless port"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0566,
-					"dataSource": {
-						"page": 964,
-						"report": "AnnualReport",
-						"tagName": "solutions"
-					},
-					"quality": "Audited",
-					"comment": "calculate digital matrix"
+					"value": 0.6417,
+					"quality": "Estimated"
 				}
 			}
 		}
@@ -78,103 +94,106 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Goldfuss KG",
-				"Kühnel AG"
+				"Thieke-Dörre"
 			],
-			"companyLegalForm": "models",
-			"headquarters": "Neu Vinstadt",
-			"sector": "networks",
+			"companyLegalForm": "bandwidth",
+			"headquarters": "Fitschenburg",
+			"headquartersPostalCode": "30845",
+			"sector": "communities",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "orfkrfcpp73l"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "ol5qkov"
+					"identifierType": "Lei",
+					"identifierValue": "0qhmjv1xh4rnmtswlnrh"
 				}
 			],
-			"countryCode": "NL",
+			"countryCode": "GP",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
-					"reference": "https://xn--auerordentlich-stuhl-cwb.com/diplomatisch-kreide.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-08-24",
-					"currency": "BND"
+					"reference": "http://erfrischend-computer.name/nass-feuer.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-12-15",
+					"currency": "HNL"
+				},
+				"ESEFReport": {
+					"reference": "https://taktvoll-alphabet.org/konventionell-auge.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-12-05",
+					"currency": "BYN"
 				},
 				"SustainabilityReport": {
-					"reference": "http://emotional-sport.de/gespr%C3%A4chig-hochhaus.pdf",
-					"reportDate": "2022-03-23",
-					"currency": "BBD"
+					"reference": "http://xn--imagefrdernd-tee-rwb.de/hei%C3%9F-telefon.pdf",
+					"isGroupLevel": "NA",
+					"currency": "RSD"
+				},
+				"AnnualReport": {
+					"reference": "http://besonders-neutron.net/komfortabel-geschichte.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-15",
+					"currency": "USD"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-16",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "LimitedAssurance"
 			},
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
+			"numberOfEmployees": 15723,
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 335002.36,
+					"value": 806267.69,
 					"dataSource": {
-						"page": 600,
-						"report": "SustainabilityReport",
-						"tagName": "paradigms"
+						"page": 67,
+						"report": "IntegratedReport",
+						"tagName": "partnerships"
 					},
-					"quality": "Audited",
-					"comment": "calculate online interface"
+					"quality": "Estimated",
+					"comment": "program neural protocol"
 				},
 				"eligiblePercentage": {
-					"value": 0.3813,
+					"value": 0.7215,
 					"dataSource": {
-						"page": 240,
-						"report": "SustainabilityReport",
-						"tagName": "models"
+						"page": 351,
+						"report": "IntegratedReport",
+						"tagName": "architectures"
 					},
-					"quality": "Incomplete",
-					"comment": "connect wireless system"
+					"quality": "Audited",
+					"comment": "input 1080p transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 176421.69,
+					"value": 862688.73,
 					"dataSource": {
-						"page": 550,
+						"page": 354,
 						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"tagName": "eyeballs"
 					},
 					"quality": "Audited",
-					"comment": "compress back-end array"
+					"comment": "hack auxiliary system"
 				},
 				"eligiblePercentage": {
-					"value": 0.3525,
+					"value": 0.1091,
 					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 191702.33,
+					"value": 983522.8,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.572,
 					"dataSource": {
-						"page": 324,
-						"report": "IntegratedReport",
+						"page": 240,
+						"report": "AnnualReport",
 						"tagName": "communities"
 					},
 					"quality": "Estimated",
-					"comment": "index haptic matrix"
-				},
-				"eligiblePercentage": {
-					"value": 0.775,
-					"dataSource": {
-						"page": 340,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
-					},
-					"quality": "Estimated",
-					"comment": "hack cross-platform system"
+					"comment": "connect online protocol"
 				}
 			}
 		}
