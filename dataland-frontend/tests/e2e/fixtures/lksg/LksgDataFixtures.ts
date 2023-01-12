@@ -60,16 +60,18 @@ export function generateLksgData(): LksgData {
         dataDate: randomFutureDate(),
         lksgInScope: randomYesNoUndefined(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
-        numberOfEmployees: faker.datatype.number({min: 1000, max: 200000}),
+        numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),
         shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),
         totalRevenue: faker.datatype.float({ min: 10000000, max: 100000000000 }),
         totalRevenueCurrency: generateIso4217CurrencyCode(),
         listOfProductionSites: generateArrayOfProductionSites(),
-      }, grievanceMechanism: {
+      },
+      grievanceMechanism: {
         grievanceHandlingMechanism: randomYesNoUndefined(),
         grievanceHandlingMechanismUsedForReporting: randomYesNoUndefined(),
         legalProceedings: randomYesNoUndefined(),
-      }, childLabour: {
+      },
+      childLabour: {
         employeeUnder18: randomYesNoUndefined(),
         employeeUnder18Under15: randomYesNoUndefined(),
         employeeUnder18Apprentices: randomYesNoUndefined(),
@@ -79,7 +81,8 @@ export function generateLksgData(): LksgData {
         employmentUnderLocalMinimumAgePreventionIdentityDocuments: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionTraining: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: randomYesNoUndefined(),
-      }, forcedLabourSlaveryAndDebtBondage: {
+      },
+      forcedLabourSlaveryAndDebtBondage: {
         forcedLabourAndSlaveryPrevention: randomYesNoUndefined(),
         forcedLabourAndSlaveryPreventionEmploymentContracts: randomYesNoUndefined(),
         forcedLabourAndSlaveryPreventionIdentityDocuments: randomYesNoUndefined(),
@@ -90,7 +93,8 @@ export function generateLksgData(): LksgData {
         adequateLivingWage: randomYesNoUndefined(),
         regularWagesProcessFlow: randomYesNoUndefined(),
         fixedHourlyWages: randomYesNoUndefined(),
-      }, osh: {
+      },
+      osh: {
         oshMonitoring: randomYesNoUndefined(),
         oshPolicy: randomYesNoUndefined(),
         oshPolicyPersonalProtectiveEquipment: randomYesNoUndefined(),
@@ -108,13 +112,15 @@ export function generateLksgData(): LksgData {
         oshManagementSystemNationalCertification: randomYesNoUndefined(),
         workplaceAccidentsUnder10: randomYesNoUndefined(),
         oshTraining: randomYesNoUndefined(),
-      }, freedomOfAssociation: {
+      },
+      freedomOfAssociation: {
         freedomOfAssociation: randomYesNoUndefined(),
         discriminationForTradeUnionMembers: randomYesNoUndefined(),
         freedomOfOperationForTradeUnion: randomYesNoUndefined(),
         freedomOfAssociationTraining: randomYesNoUndefined(),
         worksCouncil: randomYesNoUndefined(),
-      }, humanRights: {
+      },
+      humanRights: {
         diversityAndInclusionRole: randomYesNoUndefined(),
         preventionOfMistreatments: randomYesNoUndefined(),
         equalOpportunitiesOfficer: randomYesNoUndefined(),
@@ -122,7 +128,8 @@ export function generateLksgData(): LksgData {
         unlawfulEvictionAndTakingOfLand: randomYesNoUndefined(),
         useOfPrivatePublicSecurityForces: randomYesNoUndefined(),
         useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: randomYesNoUndefined(),
-      }, evidenceCertificatesAndAttestations: {
+      },
+      evidenceCertificatesAndAttestations: {
         iso26000: randomYesNoUndefined(),
         sa8000Certification: randomYesNoUndefined(),
         smetaSocialAuditConcept: randomYesNoUndefined(),
@@ -147,21 +154,27 @@ export function generateLksgData(): LksgData {
         environmentalImpactPolicy: randomYesNoUndefined(),
         supplierCodeOfConduct: randomYesNoUndefined(),
       },
-    }, governance: {
+    },
+    governance: {
       socialAndEmployeeMatters: {
         responsibilitiesForFairWorkingConditions: randomYesNoUndefined(),
-      }, environment: {
+      },
+      environment: {
         responsibilitiesForTheEnvironment: randomYesNoUndefined(),
-      }, osh: {
+      },
+      osh: {
         responsibilitiesForOccupationalSafety: randomYesNoUndefined(),
-      }, riskManagement: {
+      },
+      riskManagement: {
         riskManagementSystem: randomYesNoUndefined(),
-      }, codeOfConduct: {
+      },
+      codeOfConduct: {
         codeOfConduct: randomYesNoUndefined(),
         codeOfConductRiskManagementTopics: randomYesNoUndefined(),
         codeOfConductTraining: randomYesNoUndefined(),
       },
-    }, environmental: {
+    },
+    environmental: {
       waste: {
         mercuryAndMercuryWasteHandling: randomYesNoUndefined(),
         mercuryAndMercuryWasteHandlingPolicy: randomYesNoUndefined(),

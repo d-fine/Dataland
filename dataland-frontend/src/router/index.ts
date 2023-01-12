@@ -22,7 +22,6 @@ const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/Ap
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
 
-
 const routes = [
   {
     path: "/",
