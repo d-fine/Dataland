@@ -1,5 +1,5 @@
 describe("As a user I expect my api key will be generated correctly", () => {
-  it("successfully generate api key", { scrollBehavior: false }, () => {
+  it("successfully generate api key", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
