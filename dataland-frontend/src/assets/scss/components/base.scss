@@ -50,6 +50,13 @@ body {
   height: 1.5rem;
   line-height: 1.5rem
 }
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
 .d-search-toggle {
   z-index: 99;
   top: 4em

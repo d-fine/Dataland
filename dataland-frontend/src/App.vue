@@ -1,16 +1,13 @@
 <template>
   <router-view />
-  <DatalandFooter />
 </template>
 
 <script lang="ts">
 import Keycloak from "keycloak-js";
 import { computed, defineComponent } from "vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "app",
-  components: { DatalandFooter },
   data() {
     return {
       keycloak: undefined,

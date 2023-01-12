@@ -19,7 +19,7 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
  *
  * @param  {string} rawText      is the string to be converted to a human-readable string
  */
-function humaniseViaMapping(rawText: string): string {
+function humanizeViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
     isin: "ISIN",
     permid: "PermID",
@@ -54,7 +54,7 @@ export function humanizeString(rawText: string | null | undefined): string {
   if (!rawText) {
     return "";
   }
-  const resultOfCustomMappingHumanisation = humaniseViaMapping(rawText);
+  const resultOfCustomMappingHumanisation = humanizeViaMapping(rawText);
   return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawText)
     : resultOfCustomMappingHumanisation;

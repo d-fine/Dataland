@@ -57,8 +57,16 @@ jobs:
       - name: Execute Backend unit tests
         run: ./gradlew :dataland-backend:test :dataland-csvconverter:test --no-daemon --stacktrace
         if: always()
+        env:
+          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
+          INVITATION_REQUEST_CC: "dev.null@dataland.com"
       - name: Execute Frontend Component Tests
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+        if: always()
+      - name: Keycloak theme linting
+        run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()
       - name: Upload FE lcov Exec Results
         if: always()
@@ -155,6 +163,10 @@ jobs:
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
+          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
+          INVITATION_REQUEST_CC: "dev.null@dataland.com"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -253,11 +265,20 @@ jobs:
         with:
           name: SonarStageReports
           path: ./build/reports
+  manual-maintenance-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: "Check if manual maintenance was executed recently"
+        run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
   summary:
     runs-on: ubuntu-latest
     if: success()
     needs:
       - sonar
+      - manual-maintenance-check
     steps:
       - name: Summary of this workflow's overall outcome
         run: exit 0

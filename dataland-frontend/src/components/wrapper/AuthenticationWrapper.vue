@@ -1,12 +1,13 @@
 <template>
-  <MiddleCenterDiv v-if="!authenticated">
-    <h1 class="text-justify text-base font-normal">
-      Checking Log-In status.
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-    </h1>
-  </MiddleCenterDiv>
   <slot v-if="authenticated"></slot>
+  <MiddleCenterDiv v-else >
+      <h1 class="text-justify text-base font-normal">
+        Checking Log-In status.
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      </h1>
+  </MiddleCenterDiv>
 </template>
+
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";

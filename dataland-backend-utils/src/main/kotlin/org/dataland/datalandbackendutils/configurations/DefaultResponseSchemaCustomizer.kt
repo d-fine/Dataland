@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.responses.ApiResponse
 import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.dataland.datalandbackendutils.model.ErrorResponse
-import org.springdoc.core.customizers.OpenApiCustomiser
+import org.springdoc.core.customizers.OpenApiCustomizer
 import org.springframework.stereotype.Component
 
 /**
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component
  * (ref https://swagger.io/docs/specification/describing-responses/)
  */
 @Component
-class DefaultResponseSchemaCustomizer : OpenApiCustomiser {
+class DefaultResponseSchemaCustomizer : OpenApiCustomizer {
 
     private val errorResponseSchema = Schema<Any>().`$ref`("#/components/schemas/ErrorResponse")
 

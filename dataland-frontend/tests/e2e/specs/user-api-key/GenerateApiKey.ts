@@ -32,6 +32,13 @@ describe("As a user I expect my api key will be generate correctly", () => {
       expect(val).to.include("13");
     });
     cy.get("div#expiryTime").find('div[role="button"]').click();
+    cy.get('[data-test="expireDataPicker"]')
+      .find("input")
+      .should(($input) => {
+        const val = $input.val();
+        expect(val).to.include("13");
+      });
+    cy.get("div#expireTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key has no defined expiry date`);
     cy.get("button#generateApiKey").click();
@@ -39,6 +46,8 @@ describe("As a user I expect my api key will be generate correctly", () => {
     cy.get("textarea#newKeyHolder").should("exist");
 
     cy.get('[data-test="apiKeyInfo"]').find("em").should("exist");
+    cy.get('[data-test="text-info"]').find("em").click();
+    cy.get('[data-test="text-info"]').find("textarea").should("have.focus");
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
     cy.reload(true);
     cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
@@ -46,11 +55,11 @@ describe("As a user I expect my api key will be generate correctly", () => {
       "apiKeyInfo"
     );
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
-    cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
       "contain",
       "If you don't have access to your API Key you can generate a new one"
     );
+    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "In order to use the API Key");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();
     cy.get("div#regenerateApiKeyModal").should("be.visible").find('[data-test="regenerateApiKeyCancelButton"]').click();
     cy.get("div#regenerateApiKeyModal").should("not.exist");
