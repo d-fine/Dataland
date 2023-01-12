@@ -8,5 +8,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the SFDR questionnaire regarding the impact topic "Green securities"
  */
 data class GreenSecurities(
-    val securitiesNotCertifiedAsGreen: DataPoint<YesNo>?,
+    val securitiesNotCertifiedAsGreen: DataPoint<YesNo>? = null,
 )

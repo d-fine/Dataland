@@ -9,15 +9,15 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the SFDR questionnaire regarding the impact topic "Greenhouse Gas Emissions"
  */
 data class GreenhouseGasEmissions(
-    val scope1: DataPoint<BigDecimal>?,
+    val scope1: DataPoint<BigDecimal>? = null,
 
-    val scope2: DataPoint<BigDecimal>?,
+    val scope2: DataPoint<BigDecimal>? = null,
 
-    val scope3: DataPoint<BigDecimal>?,
+    val scope3: DataPoint<BigDecimal>? = null,
 
-    val enterpriseValue: DataPoint<BigDecimal>?,
+    val enterpriseValue: DataPoint<BigDecimal>? = null,
 
-    val totalRevenue: DataPoint<BigDecimal>?,
+    val totalRevenue: DataPoint<BigDecimal>? = null,
 
-    val fossilFuelSectorExposure: DataPoint<YesNo>?,
+    val fossilFuelSectorExposure: DataPoint<YesNo>? = null,
 )

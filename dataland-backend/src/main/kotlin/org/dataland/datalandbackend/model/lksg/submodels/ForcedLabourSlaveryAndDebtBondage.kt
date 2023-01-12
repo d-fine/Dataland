@@ -7,23 +7,23 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Forced labour, slavery and debt bondage"
  */
 data class ForcedLabourSlaveryAndDebtBondage(
-    val forcedLabourAndSlaveryPrevention: YesNo?,
+    val forcedLabourAndSlaveryPrevention: YesNo? = null,
 
-    val forcedLabourAndSlaveryPreventionEmploymentContracts: YesNo?,
+    val forcedLabourAndSlaveryPreventionEmploymentContracts: YesNo? = null,
 
-    val forcedLabourAndSlaveryPreventionIdentityDocuments: YesNo?,
+    val forcedLabourAndSlaveryPreventionIdentityDocuments: YesNo? = null,
 
-    val forcedLabourAndSlaveryPreventionFreeMovement: YesNo?,
+    val forcedLabourAndSlaveryPreventionFreeMovement: YesNo? = null,
 
-    val forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo?,
+    val forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo? = null,
 
-    val forcedLabourAndSlaveryPreventionProvisionTraining: YesNo?,
+    val forcedLabourAndSlaveryPreventionProvisionTraining: YesNo? = null,
 
-    val documentedWorkingHoursAndWages: YesNo?,
+    val documentedWorkingHoursAndWages: YesNo? = null,
 
-    val adequateLivingWage: YesNo?,
+    val adequateLivingWage: YesNo? = null,
 
-    val regularWagesProcessFlow: YesNo?,
+    val regularWagesProcessFlow: YesNo? = null,
 
-    val fixedHourlyWages: YesNo?,
+    val fixedHourlyWages: YesNo? = null,
 )

@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
 data class AnticorruptionAndAntibribery(
-    val reportedCasesOfBriberyCorruption: DataPoint<YesNo>?,
+    val reportedCasesOfBriberyCorruption: DataPoint<YesNo>? = null,
 
-    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>?,
+    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>? = null,
 
-    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>?,
+    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>? = null,
 )

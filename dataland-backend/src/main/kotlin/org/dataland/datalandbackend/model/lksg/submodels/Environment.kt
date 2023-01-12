@@ -7,5 +7,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Environment"
  */
 data class Environment(
-    val responsibilitiesForTheEnvironment: YesNo?,
+    val responsibilitiesForTheEnvironment: YesNo? = null,
 )

@@ -9,41 +9,41 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
 data class SfdrGeneral(
-    val fiscalYear: FiscalYearDeviation?,
+    val fiscalYear: FiscalYearDeviation? = null,
 
-    val fiscalYearEnd: LocalDate?,
+    val fiscalYearEnd: LocalDate? = null,
 
-    val annualReport: String?,
+    val annualReport: String? = null,
 
-    val groupLevelAnnualReport: YesNoNa?,
+    val groupLevelAnnualReport: YesNoNa? = null,
 
-    val annualReportDate: LocalDate?,
+    val annualReportDate: LocalDate? = null,
 
-    val annualReportCurrency: String?,
+    val annualReportCurrency: String? = null,
 
-    val sustainabilityReport: String?,
+    val sustainabilityReport: String? = null,
 
-    val groupLevelSustainabilityReport: YesNoNa?,
+    val groupLevelSustainabilityReport: YesNoNa? = null,
 
-    val sustainabilityReportDate: LocalDate?,
+    val sustainabilityReportDate: LocalDate? = null,
 
-    val sustainabilityReportCurrency: String?,
+    val sustainabilityReportCurrency: String? = null,
 
-    val integratedReport: String?,
+    val integratedReport: String? = null,
 
-    val groupLevelIntegratedReport: YesNoNa?,
+    val groupLevelIntegratedReport: YesNoNa? = null,
 
-    val integratedReportDate: LocalDate?,
+    val integratedReportDate: LocalDate? = null,
 
-    val integratedReportCurrency: String?,
+    val integratedReportCurrency: String? = null,
 
-    val esefReport: String?,
+    val esefReport: String? = null,
 
-    val groupLevelEsefReport: YesNoNa?,
+    val groupLevelEsefReport: YesNoNa? = null,
 
-    val esefReportDate: LocalDate?,
+    val esefReportDate: LocalDate? = null,
 
-    val esefReportCurrency: String?,
+    val esefReportCurrency: String? = null,
 
-    val scopeOfEntities: YesNoNa?,
+    val scopeOfEntities: YesNoNa? = null,
 )

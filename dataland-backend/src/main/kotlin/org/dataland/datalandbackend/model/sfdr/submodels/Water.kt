@@ -9,13 +9,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the SFDR questionnaire regarding the impact topic "Water"
  */
 data class Water(
-    val emissionsToWater: DataPoint<BigDecimal>?,
+    val emissionsToWater: DataPoint<BigDecimal>? = null,
 
-    val waterConsumption: DataPoint<BigDecimal>?,
+    val waterConsumption: DataPoint<BigDecimal>? = null,
 
-    val waterReused: DataPoint<BigDecimal>?,
+    val waterReused: DataPoint<BigDecimal>? = null,
 
-    val waterManagementPolicy: DataPoint<YesNo>?,
+    val waterManagementPolicy: DataPoint<YesNo>? = null,
 
-    val waterStressAreaExposure: DataPoint<YesNo>?,
+    val waterStressAreaExposure: DataPoint<YesNo>? = null,
 )

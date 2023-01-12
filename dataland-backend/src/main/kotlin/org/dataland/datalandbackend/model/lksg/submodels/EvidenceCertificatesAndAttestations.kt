@@ -7,49 +7,49 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Evidence certificates and attestations"
  */
 data class EvidenceCertificatesAndAttestations(
-    val iso26000: YesNo?,
+    val iso26000: YesNo? = null,
 
-    val sa8000Certification: YesNo?,
+    val sa8000Certification: YesNo? = null,
 
-    val smetaSocialAuditConcept: YesNo?,
+    val smetaSocialAuditConcept: YesNo? = null,
 
-    val betterWorkProgramCertificate: YesNo?,
+    val betterWorkProgramCertificate: YesNo? = null,
 
-    val iso45001Certification: YesNo?,
+    val iso45001Certification: YesNo? = null,
 
-    val iso14000Certification: YesNo?,
+    val iso14000Certification: YesNo? = null,
 
-    val emasCertification: YesNo?,
+    val emasCertification: YesNo? = null,
 
-    val iso37001Certification: YesNo?,
+    val iso37001Certification: YesNo? = null,
 
-    val iso37301Certification: YesNo?,
+    val iso37301Certification: YesNo? = null,
 
-    val riskManagementSystemCertification: YesNo?,
+    val riskManagementSystemCertification: YesNo? = null,
 
-    val amforiBsciAuditReport: YesNo?,
+    val amforiBsciAuditReport: YesNo? = null,
 
-    val initiativeClauseSocialCertification: YesNo?,
+    val initiativeClauseSocialCertification: YesNo? = null,
 
-    val responsibleBusinessAssociationCertification: YesNo?,
+    val responsibleBusinessAssociationCertification: YesNo? = null,
 
-    val fairLabourAssociationCertification: YesNo?,
+    val fairLabourAssociationCertification: YesNo? = null,
 
-    val fairWorkingConditionsPolicy: YesNo?,
+    val fairWorkingConditionsPolicy: YesNo? = null,
 
-    val fairAndEthicalRecruitmentPolicy: YesNo?,
+    val fairAndEthicalRecruitmentPolicy: YesNo? = null,
 
-    val equalOpportunitiesAndNondiscriminationPolicy: YesNo?,
+    val equalOpportunitiesAndNondiscriminationPolicy: YesNo? = null,
 
-    val healthAndSafetyPolicy: YesNo?,
+    val healthAndSafetyPolicy: YesNo? = null,
 
-    val complaintsAndGrievancesPolicy: YesNo?,
+    val complaintsAndGrievancesPolicy: YesNo? = null,
 
-    val forcedLabourPolicy: YesNo?,
+    val forcedLabourPolicy: YesNo? = null,
 
-    val childLabourPolicy: YesNo?,
+    val childLabourPolicy: YesNo? = null,
 
-    val environmentalImpactPolicy: YesNo?,
+    val environmentalImpactPolicy: YesNo? = null,
 
-    val supplierCodeOfConduct: YesNo?,
+    val supplierCodeOfConduct: YesNo? = null,
 )

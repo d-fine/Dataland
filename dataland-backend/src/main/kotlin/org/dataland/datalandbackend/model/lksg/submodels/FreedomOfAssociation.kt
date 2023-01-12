@@ -7,13 +7,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Freedom of association"
  */
 data class FreedomOfAssociation(
-    val freedomOfAssociation: YesNo?,
+    val freedomOfAssociation: YesNo? = null,
 
-    val discriminationForTradeUnionMembers: YesNo?,
+    val discriminationForTradeUnionMembers: YesNo? = null,
 
-    val freedomOfOperationForTradeUnion: YesNo?,
+    val freedomOfOperationForTradeUnion: YesNo? = null,
 
-    val freedomOfAssociationTraining: YesNo?,
+    val freedomOfAssociationTraining: YesNo? = null,
 
-    val worksCouncil: YesNo?,
+    val worksCouncil: YesNo? = null,
 )

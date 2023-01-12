@@ -8,45 +8,45 @@ import org.dataland.datalandbackend.model.DataPoint
  * Fields of the SFDR questionnaire regarding the impact topic "Energy performance"
  */
 data class EnergyPerformance(
-    val renewableEnergyProduction: DataPoint<BigDecimal>?,
+    val renewableEnergyProduction: DataPoint<BigDecimal>? = null,
 
-    val renewableEnergyConsumption: DataPoint<BigDecimal>?,
+    val renewableEnergyConsumption: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumption: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumption: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyProduction: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyProduction: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceA: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceA: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceB: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceB: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceC: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceC: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceD: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceD: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceE: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceE: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceF: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceF: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceG: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceG: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceH: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceH: DataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceL: DataPoint<BigDecimal>?,
+    val highImpactClimateSectorEnergyConsumptionNaceL: DataPoint<BigDecimal>? = null,
 
-    val totalHighImpactClimateSectorEnergyConsumption: DataPoint<BigDecimal>?,
+    val totalHighImpactClimateSectorEnergyConsumption: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionFossilFuels: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionFossilFuels: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionCrudeOil: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionCrudeOil: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionNaturalGas: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionNaturalGas: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionLignite: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionLignite: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionCoal: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionCoal: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionNuclearEnergy: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionNuclearEnergy: DataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionOther: DataPoint<BigDecimal>?,
+    val nonRenewableEnergyConsumptionOther: DataPoint<BigDecimal>? = null,
 )

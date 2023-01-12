@@ -7,5 +7,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Social and employee matters"
  */
 data class LksgSocialAndEmployeeMatters(
-    val responsibilitiesForFairWorkingConditions: YesNo?,
+    val responsibilitiesForFairWorkingConditions: YesNo? = null,
 )

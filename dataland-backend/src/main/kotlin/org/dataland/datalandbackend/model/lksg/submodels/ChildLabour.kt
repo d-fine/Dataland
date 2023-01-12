@@ -7,21 +7,21 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Child labour"
  */
 data class ChildLabour(
-    val employeeUnder18: YesNo?,
+    val employeeUnder18: YesNo? = null,
 
-    val employeeUnder18Under15: YesNo?,
+    val employeeUnder18Under15: YesNo? = null,
 
-    val employeeUnder18Apprentices: YesNo?,
+    val employeeUnder18Apprentices: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePrevention: YesNo?,
+    val employmentUnderLocalMinimumAgePrevention: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo?,
+    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo?,
+    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo?,
+    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePreventionTraining: YesNo?,
+    val employmentUnderLocalMinimumAgePreventionTraining: YesNo? = null,
 
-    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo?,
+    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo? = null,
 )

@@ -7,9 +7,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Grievance Mechanism"
  */
 data class GrievanceMechanism(
-    val grievanceHandlingMechanism: YesNo?,
+    val grievanceHandlingMechanism: YesNo? = null,
 
-    val grievanceHandlingMechanismUsedForReporting: YesNo?,
+    val grievanceHandlingMechanismUsedForReporting: YesNo? = null,
 
-    val legalProceedings: YesNo?,
+    val legalProceedings: YesNo? = null,
 )

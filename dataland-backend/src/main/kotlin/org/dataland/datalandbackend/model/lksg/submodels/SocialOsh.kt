@@ -7,37 +7,37 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "OSH" of the impact area "Social"
  */
 data class SocialOsh(
-    val oshMonitoring: YesNo?,
+    val oshMonitoring: YesNo? = null,
 
-    val oshPolicy: YesNo?,
+    val oshPolicy: YesNo? = null,
 
-    val oshPolicyPersonalProtectiveEquipment: YesNo?,
+    val oshPolicyPersonalProtectiveEquipment: YesNo? = null,
 
-    val oshPolicyMachineSafety: YesNo?,
+    val oshPolicyMachineSafety: YesNo? = null,
 
-    val oshPolicyDisasterBehaviouralResponse: YesNo?,
+    val oshPolicyDisasterBehaviouralResponse: YesNo? = null,
 
-    val oshPolicyAccidentsBehaviouralResponse: YesNo?,
+    val oshPolicyAccidentsBehaviouralResponse: YesNo? = null,
 
-    val oshPolicyWorkplaceErgonomics: YesNo?,
+    val oshPolicyWorkplaceErgonomics: YesNo? = null,
 
-    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo?,
+    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo? = null,
 
-    val oshPolicyFireProtection: YesNo?,
+    val oshPolicyFireProtection: YesNo? = null,
 
-    val oshPolicyWorkingHours: YesNo?,
+    val oshPolicyWorkingHours: YesNo? = null,
 
-    val oshPolicyTrainingAddressed: YesNo?,
+    val oshPolicyTrainingAddressed: YesNo? = null,
 
-    val oshPolicyTraining: YesNo?,
+    val oshPolicyTraining: YesNo? = null,
 
-    val oshManagementSystem: YesNo?,
+    val oshManagementSystem: YesNo? = null,
 
-    val oshManagementSystemInternationalCertification: YesNo?,
+    val oshManagementSystemInternationalCertification: YesNo? = null,
 
-    val oshManagementSystemNationalCertification: YesNo?,
+    val oshManagementSystemNationalCertification: YesNo? = null,
 
-    val workplaceAccidentsUnder10: YesNo?,
+    val workplaceAccidentsUnder10: YesNo? = null,
 
-    val oshTraining: YesNo?,
+    val oshTraining: YesNo? = null,
 )

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.submodels
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.lksg.ProductionSite
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -9,19 +10,19 @@ import java.time.LocalDate
  * Fields of the LKSG questionnaire regarding the impact topic "General"
  */
 data class LksgGeneral(
-    val dataDate: LocalDate?,
+    val dataDate: LocalDate? = null,
 
-    val lksgInScope: YesNo?,
+    val lksgInScope: YesNo? = null,
 
-    val vatIdentificationNumber: String?,
+    val vatIdentificationNumber: String? = null,
 
-    val numberOfEmployees: BigDecimal?,
+    val numberOfEmployees: BigDecimal? = null,
 
-    val shareOfTemporaryWorkers: BigDecimal?,
+    val shareOfTemporaryWorkers: BigDecimal? = null,
 
-    val totalRevenue: BigDecimal?,
+    val totalRevenue: BigDecimal? = null,
 
-    val totalRevenueCurrency: String?,
+    val totalRevenueCurrency: String? = null,
 
-    val listOfProductionSites: List<ProductionSite>?,
+    val listOfProductionSites: List<ProductionSite>? = null,
 )
