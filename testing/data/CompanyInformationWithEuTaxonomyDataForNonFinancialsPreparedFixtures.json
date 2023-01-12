@@ -3,88 +3,73 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Esser GmbH & Co. KG",
-				"Neubert UG",
-				"Hohenberger-Caspers"
+				"Kraus GmbH & Co. KG"
 			],
-			"companyLegalForm": "vortals",
-			"headquarters": "Saphiradorf",
-			"headquartersPostalCode": "97624",
-			"sector": "eyeballs",
+			"companyLegalForm": "channels",
+			"headquarters": "Neu Anastasialand",
+			"sector": "relationships",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "27kfwc3ri"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "jf652t7pzsgo"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "02wsrp1h7txt9lr6ucvc"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "11aum7stea"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "j85s1iv"
+					"identifierValue": "dsd8huwhy"
 				}
 			],
-			"countryCode": "IS",
+			"countryCode": "SV",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "http://gewinnend-jugendliche.com/friedlich-feuerstein.pdf",
+					"isGroupLevel": "No",
+					"currency": "BYN"
+				},
 				"AnnualReport": {
-					"reference": "https://xn--mitreiend-lnge-5fb9f.info/feinsinnig-pilz.pdf",
-					"reportDate": "2022-05-15",
-					"currency": "LVL"
+					"reference": "https://liberal-jugendliche.com/phantasievoll-verben.pdf",
+					"isGroupLevel": "No",
+					"currency": "BAM"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Marquart, Thränhardt und Brehmer",
-				"dataSource": {
-					"page": 987,
-					"report": "AnnualReport",
-					"tagName": "infrastructures"
-				}
+				"assurance": "LimitedAssurance",
+				"provider": "Porth GmbH & Co. KG"
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 2043,
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 52073,
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.4392,
+					"value": 0.7058,
 					"dataSource": {
-						"page": 523,
+						"page": 31,
 						"report": "AnnualReport",
 						"tagName": "portals"
 					},
 					"quality": "Audited",
-					"comment": "back up primary pixel"
+					"comment": "bypass cross-platform bandwidth"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8863,
-					"quality": "Estimated"
+					"value": 0.0294,
+					"dataSource": {
+						"page": 200,
+						"report": "SustainabilityReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Reported",
+					"comment": "navigate back-end port"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5916,
+					"value": 0.0566,
 					"dataSource": {
-						"page": 231,
+						"page": 964,
 						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"tagName": "solutions"
 					},
 					"quality": "Audited",
-					"comment": "override solid state protocol"
+					"comment": "calculate digital matrix"
 				}
 			}
 		}
@@ -93,92 +78,103 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Bielert, Soller und Goy",
-				"Gerhardt-Zümsande",
-				"Bak GmbH",
-				"Splinter-Karst"
+				"Goldfuss KG",
+				"Kühnel AG"
 			],
-			"headquarters": "Savoialand",
-			"headquartersPostalCode": "39006",
-			"sector": "metrics",
+			"companyLegalForm": "models",
+			"headquarters": "Neu Vinstadt",
+			"sector": "networks",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "oyblu9g4pry6e3g13dsn"
+					"identifierType": "Isin",
+					"identifierValue": "orfkrfcpp73l"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "mm9u4eqffx"
+					"identifierType": "Ticker",
+					"identifierValue": "ol5qkov"
 				}
 			],
-			"countryCode": "BJ",
+			"countryCode": "NL",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://geschickt-durchfall.name/plausibel-erde.pdf",
-					"currency": "GIP"
+				"IntegratedReport": {
+					"reference": "https://xn--auerordentlich-stuhl-cwb.com/diplomatisch-kreide.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-08-24",
+					"currency": "BND"
+				},
+				"SustainabilityReport": {
+					"reference": "http://emotional-sport.de/gespr%C3%A4chig-hochhaus.pdf",
+					"reportDate": "2022-03-23",
+					"currency": "BBD"
 				}
 			},
-			"fiscalYearEnd": "2022-11-01",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-09-16",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "NA",
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 994712.45,
+					"value": 335002.36,
 					"dataSource": {
-						"page": 225,
-						"report": "AnnualReport",
-						"tagName": "architectures"
+						"page": 600,
+						"report": "SustainabilityReport",
+						"tagName": "paradigms"
 					},
-					"quality": "Reported",
-					"comment": "quantify virtual circuit"
+					"quality": "Audited",
+					"comment": "calculate online interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.6481,
-					"quality": "Estimated"
+					"value": 0.3813,
+					"dataSource": {
+						"page": 240,
+						"report": "SustainabilityReport",
+						"tagName": "models"
+					},
+					"quality": "Incomplete",
+					"comment": "connect wireless system"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 122371.64,
+					"value": 176421.69,
 					"dataSource": {
-						"page": 1119,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 550,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
 					"quality": "Audited",
-					"comment": "generate cross-platform monitor"
+					"comment": "compress back-end array"
 				},
 				"eligiblePercentage": {
-					"value": 0.8255,
-					"quality": "Estimated"
+					"value": 0.3525,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 233159.07,
+					"value": 191702.33,
 					"dataSource": {
-						"page": 985,
-						"report": "AnnualReport",
-						"tagName": "systems"
+						"page": 324,
+						"report": "IntegratedReport",
+						"tagName": "communities"
 					},
-					"quality": "Reported",
-					"comment": "back up online alarm"
+					"quality": "Estimated",
+					"comment": "index haptic matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.3553,
+					"value": 0.775,
 					"dataSource": {
-						"page": 372,
-						"report": "AnnualReport",
+						"page": 340,
+						"report": "IntegratedReport",
 						"tagName": "convergence"
 					},
-					"quality": "Audited",
-					"comment": "synthesize mobile program"
+					"quality": "Estimated",
+					"comment": "hack cross-platform system"
 				}
 			}
 		}

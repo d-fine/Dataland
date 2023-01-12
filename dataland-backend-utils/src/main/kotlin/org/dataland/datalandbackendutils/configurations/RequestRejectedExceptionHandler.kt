@@ -1,6 +1,8 @@
 package org.dataland.datalandbackendutils.configurations
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.dataland.datalandbackendutils.model.ErrorResponse
@@ -10,8 +12,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.web.firewall.RequestRejectedException
 import org.springframework.security.web.firewall.RequestRejectedHandler
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 /**
  * Handles RequestRejectedException errors. Because these errors are handled on the servlet level,

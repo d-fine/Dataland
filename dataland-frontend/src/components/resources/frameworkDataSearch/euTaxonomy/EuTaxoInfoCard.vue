@@ -31,34 +31,8 @@
 </template>
 
 <script lang="ts">
-import Card from "primevue/card";
-import Tooltip from "primevue/tooltip";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
+import { getComponentOptionsForDatalandInfoCard } from "@/components/PredefinedComponentOptionsGetter";
 
-export default defineComponent({
-  name: "TaxoInfoCard",
-  components: { Card },
-  directives: {
-    tooltip: Tooltip,
-  },
-  props: {
-    title: {
-      type: String,
-    },
-    value: {
-      type: null as unknown as PropType<string | null>,
-    },
-    tooltipText: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {
-    humanizedValue() {
-      const humanizedValue = humanizeString(this.value);
-      return humanizedValue !== "" ? humanizedValue : "No data has been reported";
-    },
-  },
-});
+export default defineComponent(getComponentOptionsForDatalandInfoCard("TaxoInfoCard"));
 </script>

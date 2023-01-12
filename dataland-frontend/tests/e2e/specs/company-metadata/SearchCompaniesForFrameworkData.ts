@@ -1,4 +1,4 @@
-import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
@@ -24,24 +24,11 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.ensureLoggedIn();
   });
 
-  function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
-    const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
-    cy.get("input[name=search_bar_top]")
-      .should("not.be.disabled")
-      .click({ force: true })
-      .type(inputValue)
-      .should("have.value", inputValue)
-      .type("{enter}")
-      .should("have.value", inputValue);
-    cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-    verifyTaxonomySearchResultTable();
-  }
-
   it("Check static layout of the search page", function () {
     cy.visitAndCheckAppMount("/companies");
     const placeholder = "Search company by name or PermID";
     const inputValue = "A company name";
-    cy.get("input[name=search_bar_top]")
+    cy.get("input[id=search_bar_top]")
       .should("not.be.disabled")
       .type(inputValue)
       .should("have.value", inputValue)
@@ -49,44 +36,29 @@ describe("As a user, I expect the search functionality on the /companies page to
       .should("contain", placeholder);
   });
 
-  it(
-    "Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed",
-    { scrollBehavior: false },
-    () => {
-      cy.visitAndCheckAppMount("/companies");
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[name=search_bar_top]").type("b");
-      cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
-        verifyTaxonomySearchResultTable();
-        cy.url().should("include", "/companies?input=b");
-      });
-    }
-  );
-
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
     verifyTaxonomySearchResultTable();
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 500, { duration: 300 });
-    cy.get("input[name=search_bar_top]").should("exist");
+    cy.get("input[id=search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("be.visible");
 
     cy.scrollTo(0, 0, { duration: 300 });
-    cy.get("input[name=search_bar_top]").should("exist");
+    cy.get("input[id=search_bar_top]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 500, { duration: 300 });
     cy.get("button[name=search_bar_collapse]").should("exist").click();
-    cy.get("input[name=search_bar_top]").should("not.exist");
-    cy.get("input[name=search_bar_scrolled]").should("exist");
+    cy.get("input[id=search_bar_top]").should("not.exist");
+    cy.get("input[id=search_bar_scrolled]").should("exist");
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 480, { duration: 300 });
     cy.get("button[name=search_bar_collapse]").should("be.visible");
-    cy.get("input[name=search_bar_top]").should("exist");
-    cy.get("input[name=search_bar_scrolled]").should("not.exist");
+    cy.get("input[id=search_bar_top]").should("exist");
+    cy.get("input[id=search_bar_scrolled]").should("not.exist");
   });
 
   it(
@@ -97,14 +69,42 @@ describe("As a user, I expect the search functionality on the /companies page to
       const inputValue2 = "XYZ";
       cy.visitAndCheckAppMount("/companies");
       verifyTaxonomySearchResultTable();
-      cy.get("input[name=search_bar_top]").type(inputValue1);
+      cy.get("input[id=search_bar_top]").type(inputValue1);
       cy.scrollTo(0, 500);
       cy.get("button[name=search_bar_collapse]").click();
-      cy.get("input[name=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
+      cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
       cy.scrollTo(0, 0);
-      cy.get("input[name=search_bar_top]").should("have.value", inputValue1 + inputValue2);
+      cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
     }
   );
+
+  it(
+    "Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed",
+    { scrollBehavior: false },
+    () => {
+      cy.visitAndCheckAppMount("/companies");
+      cy.intercept("**/api/companies*").as("searchCompany");
+      cy.get("input[id=search_bar_top]").type("b");
+      cy.get(".p-autocomplete-item").contains("View all results").click();
+      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        verifyTaxonomySearchResultTable();
+        cy.url().should("include", "/companies?input=b");
+      });
+    }
+  );
+
+  function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
+    const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
+    cy.get("input[id=search_bar_top]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(inputValue)
+      .should("have.value", inputValue)
+      .type("{enter}")
+      .should("have.value", inputValue);
+    cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
+    verifyTaxonomySearchResultTable();
+  }
 
   it(
     "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
@@ -136,6 +136,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       checkViewButtonWorks();
       cy.get("h1").contains(inputValue);
       cy.get("[title=back_button").should("be.visible").click({ force: true });
+      cy.get("input[id=search_bar_top]").should("contain.value", inputValue);
       checkViewButtonWorks();
       cy.get("h1").contains(inputValue);
     }
@@ -154,10 +155,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
 
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);
-          cy.get("input[name=framework_data_search_bar_standard]")
+          cy.get("input[id=framework_data_search_bar_standard]")
             .should("not.be.disabled")
             .type(inputValue)
             .should("have.value", inputValue)
@@ -168,14 +169,14 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Click on an autocomplete-suggestion and check if forwarded to company framework data page", () => {
+  it("Click on an autocomplete-suggestion and check if forwarded to company framework data view page", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]").click({ force: true }).type(searchString);
+          cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
@@ -190,6 +191,38 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
+  it(
+    "Navigate with arrow keys, press enter on an autocomplete-suggestion and check if forwarded to company framework data view page",
+    { scrollBehavior: false },
+    () => {
+      const primevueHighlightedSuggestionClass = "p-focus";
+      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+      cy.visitAndCheckAppMount("/companies");
+      cy.intercept("**/api/companies*").as("searchCompany");
+      cy.get("input[id=search_bar_top]")
+        .click({ force: true })
+        .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
+      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        cy.get("ul[class=p-autocomplete-items]");
+        cy.get("input[id=search_bar_top]").type("{downArrow}");
+        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+        cy.get("input[id=search_bar_top]").type("{downArrow}");
+        cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+        cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
+        cy.get("input[id=search_bar_top]").type("{upArrow}");
+        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+        cy.get("input[id=search_bar_top]")
+          .type("{enter}")
+          .url()
+          .should("include", "/companies/")
+          .url()
+          .should("include", "/frameworks/eutaxonomy");
+      });
+    }
+  );
+
   describeIf(
     "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
     {
@@ -197,7 +230,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       dataEnvironments: ["fakeFixtures"],
     },
     () => {
-      // following test needs the DataIntegrity.ts test to be executed before
       it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
         cy.ensureLoggedIn();
         const highlightedSubString = "this_is_highlighted";
@@ -211,7 +243,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         });
         cy.visitAndCheckAppMount("/companies");
         cy.intercept("**/api/companies*").as("searchCompany");
-        cy.get("input[name=search_bar_top]").click({ force: true }).type(highlightedSubString);
+        cy.get("input[id=search_bar_top]").click({ force: true }).type(highlightedSubString);
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)

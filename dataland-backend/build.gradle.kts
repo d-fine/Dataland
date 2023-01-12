@@ -42,19 +42,22 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.mockito:mockito-core:4.11.0")
     implementation(project(":dataland-keycloak-adapter"))
+    implementation("com.mailjet:mailjet-client:5.2.1")
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8482/api/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
     outputFileName.set("$projectDir/backendOpenApi.json")
 }
@@ -108,12 +111,8 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     )
 }
 
-tasks.register("generateClients") {
-    dependsOn("generateInternalStorageClient")
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateClients")
+    dependsOn("generateInternalStorageClient")
 }
 
 sourceSets {

@@ -3,8 +3,38 @@ import { authenticator } from "otplib";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
-  const passwordBytes = crypto.getRandomValues(new Uint32Array(32));
+  const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
+
+  it("Checks that the Dataland password-policy gets respected", () => {
+    cy.visitAndCheckAppMount("/")
+      .get("button[name='join_dataland_button']")
+      .click()
+      .get("#email")
+      .should("exist")
+      .type(email, { force: true });
+
+    const typePasswordAndExpectError = (password: string, errorMessageSubstring: string): void => {
+      cy.get("#password")
+        .should("exist")
+        .clear()
+        .type(password)
+        .get("input[type='submit']")
+        .should("exist")
+        .click()
+        .get("div[data-role=password-primary] span.input-error")
+        .should("be.visible")
+        .should("contain.text", errorMessageSubstring);
+    };
+
+    typePasswordAndExpectError("abc", "at least 12 characters");
+    typePasswordAndExpectError(
+      "PasswordPasswordPassword",
+      'Repeated character patterns like "abcabcabc" are easy to guess'
+    );
+    typePasswordAndExpectError("qwerty123456", "This is a commonly used password");
+    typePasswordAndExpectError("a".repeat(200), "at most 128 characters");
+  });
 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
@@ -85,7 +115,7 @@ describe("As a user I want to be able to register for an account and be able to 
           cy.visitAndCheckAppMount("/companies")
             .get("div[id='profile-picture-dropdown-toggle']")
             .click()
-            .get("a[id='profile-pocture-dropdown-settings-button']")
+            .get("a[id='profile-picture-dropdown-settings-button']")
             .click()
             .get("div[id='landing-signingin'] > a")
             .should("be.visible", { timeout: 20000 })

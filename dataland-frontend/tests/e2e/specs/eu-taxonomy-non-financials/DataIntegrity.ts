@@ -8,7 +8,7 @@ import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxo
 
 const timeout = 120 * 1000;
 describeIf(
-  "As a user, I expect data that I upload for a company to be displayed correctly",
+  "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -69,7 +69,7 @@ describeIf(
       });
     }
 
-    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
+    it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers");
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
@@ -83,7 +83,7 @@ describeIf(
       });
     });
 
-    it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
+    it("Create a EU Taxonomy Dataset via Api with only eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-numbers");
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body")

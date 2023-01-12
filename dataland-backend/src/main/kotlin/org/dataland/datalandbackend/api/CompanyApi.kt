@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import javax.validation.Valid
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -25,7 +25,7 @@ import javax.validation.Valid
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
-interface CompanyAPI {
+interface CompanyApi {
 
     @Operation(
         summary = "Add a new company.",
@@ -117,7 +117,6 @@ interface CompanyAPI {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id
@@ -125,6 +124,29 @@ interface CompanyAPI {
      * @return information about the company
      */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
+
+    @Operation(
+        summary = "Retrieve company framework information.",
+        description = "Company framework information behind the given company Id is retrieved."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information.")
+        ]
+    )
+    @GetMapping(
+        value = ["/{companyId}/data"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    /**
+     * A method to retrieve company framework information for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @param dataType the data type of the requested info
+     * @return company framework data
+     */
+    fun getCompanyFrameworkDataById(@PathVariable("companyId") companyId: String, @RequestParam dataType: DataType):
+        ResponseEntity<List<Map<String, Any>>>
 
     @Operation(
         summary = "Get the company IDs of the teaser companies.",

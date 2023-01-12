@@ -39,7 +39,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("junit:junit:4.13.1")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("junit:junit:4.13.2")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     kapt("org.springframework.boot:spring-boot-configuration-processor")
@@ -50,9 +51,9 @@ dependencies {
 
 openApi {
     outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
-    apiDocsUrl.set("http://localhost:8080/api-keys/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8483/api-keys/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
     }
 }
 tasks.test {

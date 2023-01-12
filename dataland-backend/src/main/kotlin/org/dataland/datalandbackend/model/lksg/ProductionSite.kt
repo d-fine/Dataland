@@ -15,5 +15,6 @@ data class ProductionSite(
 
     val address: String? = null,
 
+    // TODO should this be production site associated? See data dictionary
     val listOfGoodsAndServices: List<String>? = null
 )

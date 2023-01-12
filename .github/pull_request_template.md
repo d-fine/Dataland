@@ -10,9 +10,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
 - [ ] The new version is deployed to the dev server "dev1" using this branch
-  - [ ] It's verified that this version actually is the one deployed (check actuator/info for branch name and commit id!)
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma 
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` in dataland-frontend
-- [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.CompanyAPI
+import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CompanyDataController(
     @Autowired var companyManager: CompanyManager,
-) : CompanyAPI {
+) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
@@ -61,6 +61,11 @@ class CompanyDataController(
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(companyManager.getCompanyApiModelById(companyId))
+    }
+
+    override fun getCompanyFrameworkDataById(companyId: String, dataType: DataType):
+        ResponseEntity<List<Map<String, Any>>> {
+        return ResponseEntity.ok(companyManager.getCompanyFrameworkDataById(companyId, dataType))
     }
 
     override fun getTeaserCompanies(): List<String> {

@@ -7,14 +7,16 @@ import {
   SfdrData,
   SmeData,
 } from "@clients/backend";
-import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { countCompaniesAndDataSetsForDataType, getOneCompanyThatHasDataForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
-import { uploadOneSmeDataset } from "../../utils/SmeUpload";
+import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
+import { describeIf } from "@e2e/support/TestUtility";
+import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 const chunkSize = 15;
 
 describe(
@@ -42,14 +44,20 @@ describe(
       });
     }
 
-    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
+    function checkMatchingIds(
+      dataType: DataTypeEnum,
+      expectedNumberOfCompanyIds: number,
+      expectedNumberOfDataSetIds: number
+    ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
-        .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
+        .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.matchingDataIds === expectedNumberOfIds && response.matchingCompanies === expectedNumberOfIds,
-            `Found ${response.matchingCompanies} companies with matching data 
-                  and ${response.matchingDataIds} uploaded data ids, expected both to be ${expectedNumberOfIds}`
+            response.numberOfDataSetsForDataType === expectedNumberOfDataSetIds &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanyIds,
+            `Found ${response.numberOfCompaniesForDataType} companies with matching data 
+                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected ${expectedNumberOfCompanyIds} 
+                  company ids and ${expectedNumberOfDataSetIds} data set ids`
           );
         });
     }
@@ -68,7 +76,11 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyFinancials, companiesWithEuTaxonomyDataForFinancials.length);
+        checkMatchingIds(
+          DataTypeEnum.EutaxonomyFinancials,
+          companiesWithEuTaxonomyDataForFinancials.length,
+          companiesWithEuTaxonomyDataForFinancials.length
+        );
       });
     });
 
@@ -88,62 +100,99 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
+        checkMatchingIds(
+          DataTypeEnum.EutaxonomyNonFinancials,
+          companiesWithEuTaxonomyDataForNonFinancials.length,
+          companiesWithEuTaxonomyDataForNonFinancials.length
+        );
       });
     });
 
-    describe("Upload and validate Lksg data", () => {
-      let companiesWithLksgData: Array<FixtureData<LksgData>>;
+    describeIf(
+      "Upload and validate Lksg data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
+        let companiesWithLksgData: Array<FixtureData<LksgData>>;
 
-      before(function () {
-        cy.fixture("CompanyInformationWithLksgData").then(function (jsonContent) {
-          companiesWithLksgData = jsonContent as Array<FixtureData<LksgData>>;
+        before(function () {
+          cy.fixture("CompanyInformationWithLksgData").then(function (jsonContent) {
+            companiesWithLksgData = jsonContent as Array<FixtureData<LksgData>>;
+          });
         });
-      });
 
-      it("Upload Lksg fake-fixtures", () => {
-        prepopulate(companiesWithLksgData, uploadOneLksgDatasetViaApi);
-      });
-
-      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
-      });
-    });
-
-    describe("Upload and validate Sfdr data", () => {
-      let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
-
-      before(function () {
-        cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
-          companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
+        it("Upload Lksg fake-fixtures", () => {
+          prepopulate(companiesWithLksgData, uploadOneLksgDatasetViaApi);
         });
-      });
 
-      it("Upload Sfdr fake-fixtures", () => {
-        prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
-      });
-
-      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
-      });
-    });
-
-    describe("Upload and validate Sme data", () => {
-      let companiesWithSmeData: Array<FixtureData<SmeData>>;
-
-      before(function () {
-        cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-          companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
         });
-      });
 
-      it("Upload Sme fake-fixtures", () => {
-        prepopulate(companiesWithSmeData, uploadOneSmeDataset);
-      });
+        it("Upload an additional lksg data set to existing fake-fixtures", () => {
+          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+            const storedCompany = await getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg);
+            const dataSet = generateLksgData();
+            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, dataSet);
+          });
+        });
 
-      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
-      });
-    });
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length + 1);
+        });
+      }
+    );
+
+    describeIf(
+      "Upload and validate Sfdr data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
+        let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
+
+        before(function () {
+          cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
+            companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
+          });
+        });
+
+        it("Upload Sfdr fake-fixtures", () => {
+          prepopulate(companiesWithSfdrData, uploadOneSfdrDataset);
+        });
+
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
+        });
+      }
+    );
+
+    describeIf(
+      "Upload and validate Sme data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
+        let companiesWithSmeData: Array<FixtureData<SmeData>>;
+
+        before(function () {
+          cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+            companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+          });
+        });
+
+        it("Upload Sme fake-fixtures", () => {
+          prepopulate(companiesWithSmeData, uploadOneSmeDataset);
+        });
+
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
+        });
+      }
+    );
   }
 );

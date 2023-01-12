@@ -23,7 +23,7 @@ before(function () {
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   it(
-    "The framework filter should contain LKSG and SFDR even though they are not yet implemented, and synchronise " +
+    "The framework filter should contain SFDR even though it is not yet implemented, and synchronise " +
       "between the search bar and the URL",
     { scrollBehavior: false },
     () => {
@@ -35,9 +35,6 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click()
         .get("div.p-multiselect-panel")
         .find("li.p-disabled:contains('SFDR')")
-        .should("exist")
-        .get("div.p-multiselect-panel")
-        .find("li.p-disabled:contains('LkSG')")
         .should("exist")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
@@ -195,7 +192,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               .should("exist");
           });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[name=search_bar_top]")
+          cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
@@ -252,7 +249,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
         verifyTaxonomySearchResultTable();
-        cy.get("input[name=search_bar_top]")
+        cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
         cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
