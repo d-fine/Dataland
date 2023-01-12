@@ -113,7 +113,9 @@ export default defineComponent({
   computed: {
     selectedCountriesInt: {
       get(): Array<CountryCodeSelectableItem> {
-        return this.availableCountries.filter((countryCodeSelectableItem) => this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode));
+        return this.availableCountries.filter((countryCodeSelectableItem) =>
+          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
+        );
       },
       set(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
@@ -124,7 +126,9 @@ export default defineComponent({
     },
     selectedFrameworksInt: {
       get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((frameworkSelectableItem) => this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType));
+        return this.availableFrameworks.filter((frameworkSelectableItem) =>
+          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
+        );
       },
       set(newValue: Array<FrameworkSelectableItem>) {
         this.$emit(
@@ -135,7 +139,9 @@ export default defineComponent({
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
-        return this.availableSectors.filter((selectableItem) => this.selectedSectors.includes(selectableItem.displayName));
+        return this.availableSectors.filter((selectableItem) =>
+          this.selectedSectors.includes(selectableItem.displayName)
+        );
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
@@ -184,13 +190,11 @@ export default defineComponent({
           disabled: false,
         };
       });
-      this.availableFrameworks.push(
-        {
-          frameworkDataType: "sfdr" as DataTypeEnum,
-          displayName: "SFDR",
-          disabled: true,
-        }
-      );
+      this.availableFrameworks.push({
+        frameworkDataType: "sfdr" as DataTypeEnum,
+        displayName: "SFDR",
+        disabled: true,
+      });
     },
     retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();
