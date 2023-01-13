@@ -5,6 +5,20 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";
 
+export function getCompanyLegalForm(): string {
+  const legalForms = [
+    "Public Limited Company (PLC)",
+    "Private Limited Company (Ltd)",
+    "Limited Liability Partnership (LLP)",
+    "Partnership without Limited Liability",
+    "Sole Trader",
+    "GmbH",
+    "AG",
+    "GmbH & Co. KG",
+  ];
+  return legalForms[Math.floor(Math.random() * legalForms.length)];
+}
+
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
@@ -41,7 +55,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
   }).sort();
-  const companyLegalForm = valueOrUndefined(faker.company.bsNoun());
+  const companyLegalForm = valueOrUndefined(getCompanyLegalForm());
 
   return {
     companyName: companyName,
