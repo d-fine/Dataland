@@ -19,6 +19,11 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("button#generateApiKey").click();
     cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
     cy.get("div#expiryTime").click();
+    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click();
+    cy.get('label[for="expiryTime"]').should("not.contain.text", `Please select expiration date`);
+    cy.get("button#generateApiKey").click();
+    cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
+    cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
     cy.get("div#expiryTime").click();
