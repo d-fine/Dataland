@@ -5,7 +5,7 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  SmeData
+  SmeData,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -128,12 +128,13 @@ describe(
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-              DataTypeEnum.Lksg,
-              companiesWithLksgData.length,
-              companiesWithLksgData.length
+            DataTypeEnum.Lksg,
+            companiesWithLksgData.length,
+            companiesWithLksgData.length
           );
         });
-      });
+      }
+    );
 
     describeIf(
       "Upload and validate Sfdr data",
@@ -155,7 +156,11 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.Sfdr,
+            companiesWithSfdrData.length,
+            companiesWithSfdrData.length
+          );
         });
       }
     );
@@ -180,7 +185,11 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.Sme,
+            companiesWithSmeData.length,
+            companiesWithSmeData.length
+          );
         });
       }
     );
