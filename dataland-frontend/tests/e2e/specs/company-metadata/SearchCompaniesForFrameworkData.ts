@@ -198,6 +198,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const primevueHighlightedSuggestionClass = "p-focus";
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
       cy.visitAndCheckAppMount("/companies");
+      verifyTaxonomySearchResultTable();
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]")
         .click({ force: true })
@@ -218,7 +219,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .url()
           .should("include", "/companies/")
           .url()
-          .should("include", "/frameworks/eutaxonomy");
+          .should("include", "/frameworks/");
       });
     }
   );

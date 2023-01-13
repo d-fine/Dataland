@@ -5,9 +5,9 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  SmeData,
+  SmeData, CompanyDataControllerApi, Configuration,
 } from "@clients/backend";
-import { countCompaniesAndDataSetsForDataType, getOneCompanyThatHasDataForDataType } from "@e2e/utils/ApiUtils";
+import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
@@ -132,15 +132,23 @@ describe(
         });
 
         it("Upload an additional lksg data set to existing fake-fixtures", () => {
+          let preparedFixtures: Array<FixtureData<LksgData>>;
+          cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+            preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          }).then(() => {
+            prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
+          });
           cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-            const storedCompany = await getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg);
+            const preparedCompanyId =
+                (await new CompanyDataControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanies("two-lksg-data-sets")).data[0].companyId;
             const dataSet = generateLksgData();
-            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, dataSet);
+            await uploadOneLksgDatasetViaApi(token, preparedCompanyId, dataSet);
           });
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length + 1);
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
         });
       }
     );

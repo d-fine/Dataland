@@ -3,73 +3,76 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Kraus GmbH & Co. KG"
+				"Schmuhl, Newton und Kowalick",
+				"Wallstab, Kazmarek und Seeger"
 			],
-			"companyLegalForm": "channels",
-			"headquarters": "Neu Anastasialand",
-			"sector": "relationships",
+			"companyLegalForm": "e-tailers",
+			"headquarters": "Teoburg",
+			"headquartersPostalCode": "44814",
+			"sector": "e-tailers",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "dsd8huwhy"
+					"identifierValue": "a4pf9ybqw"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "hha7q6iipz2g"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "pkbxhlhmh4hijgus7v91"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ftbmv0r41r"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "8sqwoyn"
 				}
 			],
-			"countryCode": "SV",
+			"countryCode": "GM",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://gewinnend-jugendliche.com/friedlich-feuerstein.pdf",
+				"ESEFReport": {
+					"reference": "http://musterhaft-fisch.org/steil-kommunismus.pdf",
 					"isGroupLevel": "No",
-					"currency": "BYN"
-				},
-				"AnnualReport": {
-					"reference": "https://liberal-jugendliche.com/phantasievoll-verben.pdf",
-					"isGroupLevel": "No",
+					"reportDate": "2022-12-03",
 					"currency": "BAM"
 				}
 			},
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Porth GmbH & Co. KG"
+				"assurance": "None"
 			},
-			"numberOfEmployees": 52073,
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 32202,
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.7058,
-					"dataSource": {
-						"page": 31,
-						"report": "AnnualReport",
-						"tagName": "portals"
-					},
-					"quality": "Audited",
-					"comment": "bypass cross-platform bandwidth"
+					"value": 0.5738,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.0294,
+					"value": 0.4797,
 					"dataSource": {
-						"page": 200,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
+						"page": 1015,
+						"report": "ESEFReport",
+						"tagName": "architectures"
 					},
-					"quality": "Reported",
-					"comment": "navigate back-end port"
+					"quality": "Audited",
+					"comment": "index cross-platform capacitor"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0566,
-					"dataSource": {
-						"page": 964,
-						"report": "AnnualReport",
-						"tagName": "solutions"
-					},
-					"quality": "Audited",
-					"comment": "calculate digital matrix"
+					"value": 0.6362,
+					"quality": "Incomplete"
 				}
 			}
 		}
@@ -77,104 +80,92 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Goldfuss KG",
-				"Kühnel AG"
-			],
-			"companyLegalForm": "models",
-			"headquarters": "Neu Vinstadt",
-			"sector": "networks",
+			"companyAlternativeNames": [],
+			"headquarters": "Pallentinstadt",
+			"headquartersPostalCode": "09168",
+			"sector": "channels",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "orfkrfcpp73l"
+					"identifierType": "Lei",
+					"identifierValue": "mlvxasvm6nps2hwf2svj"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "ol5qkov"
+					"identifierType": "PermId",
+					"identifierValue": "qnc5ej4z5r"
 				}
 			],
-			"countryCode": "NL",
+			"countryCode": "NA",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
-					"reference": "https://xn--auerordentlich-stuhl-cwb.com/diplomatisch-kreide.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-08-24",
-					"currency": "BND"
-				},
-				"SustainabilityReport": {
-					"reference": "http://emotional-sport.de/gespr%C3%A4chig-hochhaus.pdf",
-					"reportDate": "2022-03-23",
-					"currency": "BBD"
+					"reference": "https://ehrenhaft-schlucht.org/raumf%C3%BCllend-wasserfall.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-04-01",
+					"currency": "BAM"
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-16",
+			"fiscalYearEnd": "2022-04-14",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
+			"scopeOfEntities": "NA",
+			"numberOfEmployees": 15671,
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 335002.36,
+					"value": 285341.27,
 					"dataSource": {
-						"page": 600,
-						"report": "SustainabilityReport",
-						"tagName": "paradigms"
+						"page": 223,
+						"report": "IntegratedReport",
+						"tagName": "applications"
 					},
-					"quality": "Audited",
-					"comment": "calculate online interface"
+					"quality": "Reported",
+					"comment": "compress 1080p system"
 				},
 				"eligiblePercentage": {
-					"value": 0.3813,
-					"dataSource": {
-						"page": 240,
-						"report": "SustainabilityReport",
-						"tagName": "models"
-					},
-					"quality": "Incomplete",
-					"comment": "connect wireless system"
+					"value": 0.9391,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 176421.69,
+					"value": 407217.75,
 					"dataSource": {
-						"page": 550,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"page": 571,
+						"report": "IntegratedReport",
+						"tagName": "e-business"
 					},
-					"quality": "Audited",
-					"comment": "compress back-end array"
+					"quality": "Reported",
+					"comment": "reboot bluetooth monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.3525,
-					"quality": "Incomplete"
+					"value": 0.7428,
+					"dataSource": {
+						"page": 215,
+						"report": "IntegratedReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "synthesize primary alarm"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 191702.33,
-					"dataSource": {
-						"page": 324,
-						"report": "IntegratedReport",
-						"tagName": "communities"
-					},
-					"quality": "Estimated",
-					"comment": "index haptic matrix"
+					"value": 145032.8,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.775,
+					"value": 0.2625,
 					"dataSource": {
-						"page": 340,
+						"page": 1150,
 						"report": "IntegratedReport",
-						"tagName": "convergence"
+						"tagName": "technologies"
 					},
-					"quality": "Estimated",
-					"comment": "hack cross-platform system"
+					"quality": "Incomplete",
+					"comment": "synthesize open-source bus"
 				}
 			}
 		}

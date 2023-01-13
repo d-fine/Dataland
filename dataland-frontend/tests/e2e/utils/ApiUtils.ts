@@ -25,8 +25,11 @@ export async function countCompaniesAndDataSetsForDataType(
   };
 }
 
-export async function getOneCompanyThatHasDataForDataType(token: string, dataType: DataTypeEnum): Promise <StoredCompany>{
-  return (await getStoredCompaniesForDataType(token, dataType))[0]
+export async function getOneCompanyThatHasDataForDataType(
+  token: string,
+  dataType: DataTypeEnum
+): Promise<StoredCompany> {
+  return (await getStoredCompaniesForDataType(token, dataType))[0];
 }
 
 export function interceptAllAndCheckFor500Errors(): void {
