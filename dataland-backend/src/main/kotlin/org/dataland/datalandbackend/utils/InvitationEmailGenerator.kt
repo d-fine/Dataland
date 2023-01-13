@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -42,11 +43,10 @@ object InvitationEmailGenerator {
     }
 
     private fun buildUserInfo(isSubmitterNameHidden: Boolean): String {
-        val userName = KeycloakUserUtils.getUsernameFromSecurityContext()
-        val userId = KeycloakUserUtils.getUserIdFromSecurityContext()
+        val user = DatalandAuthentication.fromContext()
         return when (isSubmitterNameHidden) {
             true -> "Anonymous user"
-            else -> "User $userName (Keycloak id: $userId)"
+            else -> "User ${user.username} (Keycloak id: ${user.userId})"
         }
     }
 

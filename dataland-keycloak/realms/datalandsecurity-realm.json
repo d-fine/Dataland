@@ -414,7 +414,6 @@
     "credentials" : [ {
       "id" : "f327a74c-ae09-43d6-bd98-a5c4a8080a55",
       "type" : "password",
-      "userLabel" : "My password",
       "createdDate" : 1673357534834,
       "secretData" : "{\"value\":\"${KEYCLOAK_DATALAND_ADMIN_VALUE}\",\"salt\":\"${KEYCLOAK_DATALAND_ADMIN_SALT}\",\"additionalParameters\":{}}",
       "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"

@@ -1,4 +1,4 @@
-package org.dataland.keycloakAdapter
+package org.dataland.keycloakAdapter.auth
 
 /**
  * A collection of all the Dataland Roles in the
