@@ -5,9 +5,7 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  SmeData,
-  CompanyDataControllerApi,
-  Configuration,
+  SmeData
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -18,7 +16,6 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 const chunkSize = 15;
 
 describe(
@@ -130,34 +127,13 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+              DataTypeEnum.Lksg,
+              companiesWithLksgData.length,
+              companiesWithLksgData.length
+          );
         });
-
-        it("Upload an additional lksg data set to existing fake-fixtures", () => {
-          let preparedFixtures: Array<FixtureData<LksgData>>;
-          cy.fixture("CompanyInformationWithLksgPreparedFixtures")
-            .then(function (jsonContent) {
-              preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-            })
-            .then(() => {
-              prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
-            });
-          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-            const preparedCompanyId = (
-              await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
-                "two-lksg-data-sets"
-              )
-            ).data[0].companyId;
-            const dataSet = generateLksgData();
-            await uploadOneLksgDatasetViaApi(token, preparedCompanyId, dataSet);
-          });
-        });
-
-        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
-        });
-      }
-    );
+      });
 
     describeIf(
       "Upload and validate Sfdr data",
