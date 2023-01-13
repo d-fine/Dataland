@@ -20,7 +20,6 @@ export function generateSfdrData(): SfdrData {
       general: {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
         fiscalYearEnd: randomFutureDate(),
-        annualReport: faker.datatype.string(),
         groupLevelAnnualReport: randomYesNoNaUndefined(),
         annualReport: faker.datatype.string(),
         annualReportDate: randomFutureDate(),
