@@ -4,6 +4,8 @@
 # SET to your own value! [Environment]::SetEnvironmentVariable("GITHUB_USER", "", [System.EnvironmentVariableTarget]::User)
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
+# SET to an email address you can access or leave it as is [Environment]::SetEnvironmentVariable("INVITE_REQUEST_RECEIVERS", "dev.null@dataland.com", [System.EnvironmentVariableTarget]::User)
+# SET to an email address you can access or leave it as is [Environment]::SetEnvironmentVariable("INVITE_REQUEST_CC", "dev.null@dataland.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INTERNAL_STORAGE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
