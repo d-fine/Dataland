@@ -1,11 +1,10 @@
 describe("As a user I expect my api key will be generated correctly", () => {
-
   function verifyInitialPageStateAndCreateApiKeyCard() {
     cy.get("[data-test='noApiKeyWelcomeComponent']").should("exist").should("contain.text", "You have no API Key!");
     cy.get("[data-test='noApiKeyWelcomeComponent']")
-        .find("button")
-        .should("contain.text", "CREATE NEW API KEY")
-        .click();
+      .find("button")
+      .should("contain.text", "CREATE NEW API KEY")
+      .click();
     cy.get('[data-test="CreateApiKeyCard"]').should("exist");
     cy.get("h1").should("contain.text", "Create new API Key");
     cy.get('[data-test="cancelGenerateApiKey"]').click();
@@ -28,21 +27,20 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
 
     cy.get("div#expiryTime").click();
-    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({force: true});
+    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
     cy.get("#expiryTimeWrapper").should("not.exist");
     cy.get('[data-test="expiryDatePicker"]').should("be.visible");
     cy.get("button.p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("13")').click();
     cy.get('[data-test="expiryDatePicker"]')
-        .find("input")
-        .should(($input) => {
-          const val = $input.val();
-          expect(val).to.include("13");
-        });
+      .find("input")
+      .should(($input) => {
+        const val = $input.val();
+        expect(val).to.include("13");
+      });
     cy.get('[data-test="cancelGenerateApiKey"]').click();
   }
-
 
   function verifyCreatingApiKeyAndCopyingIt() {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
@@ -53,48 +51,48 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");
 
-    // TODO this needs to run to enable writing to clipboard in Chrome
-    /*
-    cy.wrap(Cypress.automation('remote:debugger:protocol', {
-      command: 'Browser.grantPermissions',
-      params: {
-        permissions: ['clipboardReadWrite', 'clipboardSanitizedWrite'],
-        origin: window.location.origin
-      },
-    }))
-    */
+    if (Cypress.browser.displayName === "Chrome") {
+      console.log("yep");
+      cy.wrap(
+        Cypress.automation("remote:debugger:protocol", {
+          command: "Browser.grantPermissions",
+          params: {
+            permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"],
+            origin: window.location.origin,
+          },
+        })
+      );
+    }
 
     cy.get('[data-test="apiKeyInfo"]').find("em").should("exist");
     cy.get('[data-test="text-info"]').find("em").click();
 
-    // TODO this check can only be done in Chrome
-    /*
-    cy.wait("@generateApiKey", { timeout: 2 * 1000 }).then((interception) => {
-      cy.window().then((win) => {
-        win.navigator.clipboard.readText().then((text) => {
-          expect(text).to.eq(interception.response.body.apiKey);
+    if (Cypress.browser.displayName === "Chrome") {
+      cy.wait("@generateApiKey", { timeout: 2 * 1000 }).then((interception) => {
+        cy.window().then((win) => {
+          win.navigator.clipboard.readText().then((text) => {
+            expect(text).to.eq(interception.response.body.apiKey);
+          });
         });
       });
-    })
-    */
+    }
 
     cy.get('[data-test="text-info"]').find("textarea").should("have.focus");
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
   }
 
-
   function verifyAlreadyExistingApiKeyState() {
     cy.reload(true);
     cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
-        "getApiKeyMetaInfoForUser"
+      "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 })
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 });
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
-        "contain",
-        "If you don't have access to your API Key you can generate a new one"
+      "contain",
+      "If you don't have access to your API Key you can generate a new one"
     );
     cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "In order to use the API Key");
 
@@ -103,12 +101,11 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("div#regenerateApiKeyModal").should("not.exist");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();
     cy.get("div#regenerateApiKeyModal")
-        .should("be.visible")
-        .find('[data-test="regenerateApiKeyConfirmButton"]')
-        .click();
+      .should("be.visible")
+      .find('[data-test="regenerateApiKeyConfirmButton"]')
+      .click();
     cy.get("h1").should("contain.text", "Create new API Key");
   }
-
 
   it("check Api Key functionalities", () => {
     cy.ensureLoggedIn();
@@ -116,14 +113,14 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 })
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 });
 
-    verifyInitialPageStateAndCreateApiKeyCard()
+    verifyInitialPageStateAndCreateApiKeyCard();
 
-    verifyExpirationDropdownOptions()
+    verifyExpirationDropdownOptions();
 
-    verifyCreatingApiKeyAndCopyingIt()
+    verifyCreatingApiKeyAndCopyingIt();
 
-    verifyAlreadyExistingApiKeyState()
+    verifyAlreadyExistingApiKeyState();
   });
 });
