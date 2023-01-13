@@ -25,6 +25,8 @@ form {
 }
 
 input {
+  font-family: $ibm-plex-sans;
+  font-size: $input-text-fs;
   &[type="submit"], &[type="reset"] {
     border-radius: $radius-none
   }
@@ -63,6 +65,7 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .p-inputtext {
+  font-family: $ibm-plex-sans;
   color: $input-text-color;
   background: $input-text-bg;
   padding: $spacing-xs;

@@ -6,8 +6,8 @@
     Are you sure you want to delete this API key?
     <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
     <template #footer>
-      <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined text-sm" />
-      <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" class="text-sm" />
+      <PrimeButton label="CANCEL" @click="deleteConfirmToggle" class="p-button-outlined" />
+      <PrimeButton id="confirmRevokeButton" label="CONFIRM" @click="$emit('revokeKey')" />
     </template>
   </PrimeDialog>
 
@@ -16,12 +16,8 @@
       <div class="flex justify-content-between mb-3">
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
-          <span :class="{ 'text-red-700': !isKeyExpired }" class="block text-600 mb-3 mt-6">
-            {{
-              isKeyExpired
-                ? `The API Key will expire on ${formatExpiryDate(expiryDateInDays)}`
-                : `The API Key expired ${formatExpiryDate(expiryDateInDays)}`
-            }}
+          <span :class="{ 'text-red-700': isKeyExpired() }" class="block text-600 mb-3 mt-6">
+            {{ whenKeyExpire }}
           </span>
         </div>
 
@@ -44,18 +40,15 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import { dateFormatOptions } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
-  setup() {
-    return { formatExpiryDate, calculateDaysFromNow };
-  },
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
   props: {
-    expiryDate: {
+    expiryDateInMilliseconds: {
       type: Number,
       default: null,
     },
@@ -67,17 +60,28 @@ export default defineComponent({
     viewDeleteConfirmation: false,
   }),
   computed: {
-    expiryDateInDays() {
-      return calculateDaysFromNow(this.expiryDate);
-    },
-
-    isKeyExpired() {
-      return this.expiryDate >= Date.now();
+    whenKeyExpire() {
+      if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds >= Date.now()) {
+        return `The API Key will expire on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
+          "en-gb",
+          dateFormatOptions
+        )}`;
+      } else if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds < Date.now()) {
+        return `The API Key expired on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
+          "en-gb",
+          dateFormatOptions
+        )}`;
+      } else {
+        return "The API Key has no defined expiry date";
+      }
     },
   },
   methods: {
     deleteConfirmToggle() {
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
+    },
+    isKeyExpired() {
+      return !(this.expiryDateInMilliseconds >= new Date().getTime() || this.expiryDateInMilliseconds == null);
     },
   },
 });
