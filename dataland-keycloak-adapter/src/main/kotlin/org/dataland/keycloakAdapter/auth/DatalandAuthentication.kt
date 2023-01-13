@@ -41,7 +41,6 @@ class DatalandAuthentication(val authentication: Authentication) {
             }
         }
 
-
     val userId: String = authentication.name
     val roles: Set<DatalandRealmRoles> = computeRealmRoles()
 

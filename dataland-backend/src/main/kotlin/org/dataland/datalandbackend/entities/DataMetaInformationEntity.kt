@@ -55,7 +55,8 @@ data class DataMetaInformationEntity(
     fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
             viewingUser.roles.contains(DatalandRealmRoles.ROLE_ADMIN) ||
-            viewingUser.userId == this.uploaderUserId)
+                viewingUser.userId == this.uploaderUserId
+            )
 
         return if (displayUploaderUserId) toApiModel().copy(uploaderUserId = this.uploaderUserId)
         else toApiModel()
