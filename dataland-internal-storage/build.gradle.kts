@@ -43,13 +43,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
+val openApiGeneratorTimeOutThresholdInSeconds = 60
 openApi {
     outputFileName.set("$projectDir/internalStorageOpenApi.json")
     apiDocsUrl.set("http://localhost:8484/internal-storage/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
-    waitTimeInSeconds.set(60)
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds)
 }
 
 jacoco {
