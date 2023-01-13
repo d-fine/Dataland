@@ -46,7 +46,7 @@ class DataManagerTest(
         return StorableDataSet(
             companyId,
             DataType("eutaxonomy-non-financials"),
-            "ADMIN_USER_ID",
+            "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().epochSecond,
             euTaxonomyDataForNonFinancialsAsString
         )
