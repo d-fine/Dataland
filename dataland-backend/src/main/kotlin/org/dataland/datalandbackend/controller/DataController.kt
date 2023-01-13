@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.KeycloakUserUtils
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.UUID.randomUUID
 
