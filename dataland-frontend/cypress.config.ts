@@ -20,7 +20,7 @@ export default defineConfig({
     },
 
     numTestsKeptInMemory: 2,
-    defaultCommandTimeout: 15000,
+    defaultCommandTimeout: 10000,
     viewportHeight: 684,
     viewportWidth: 1536,
     video: false,
@@ -40,6 +40,7 @@ export default defineConfig({
             if (config.env["EXECUTION_ENVIRONMENT"] === "developmentLocal") {
                 console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
                 config.specPattern = ["tests/e2e/specs"];
+                config.defaultCommandTimeout = 22000
             } else {
                 console.log("Detected preview / development CI environment. Only loading index.ts to run all tests");
                 config.specPattern = ["tests/e2e/specs/index.ts"];
