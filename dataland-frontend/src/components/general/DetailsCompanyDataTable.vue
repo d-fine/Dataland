@@ -1,5 +1,5 @@
 <template>
-  <DataTable responsiveLayout="scroll" :value="displayedData">
+  <DataTable responsiveLayout="scroll" :value="dataToDisplay">
     <Column
       v-for="col of columns"
       :field="col.field"
@@ -24,7 +24,7 @@ export default defineComponent({
   components: { DataTable, Column },
   data() {
     return {
-      displayedData: [],
+      dataToDisplay: [],
       columns: [],
     };
   },
@@ -39,19 +39,19 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.displayedData = this.detailDataForKpi;
+    this.dataToDisplay = this.detailDataForKpi;
   },
   methods: {
     generateColsNames(): void {
-      if (this.displayedData.length && Array.isArray(this.displayedData)) {
-        for (const key of Object.keys(this.displayedData[0])) {
+      if (this.dataToDisplay.length && Array.isArray(this.dataToDisplay)) {
+        for (const key of Object.keys(this.dataToDisplay[0])) {
           this.columns.push({ field: `${key}`, header: `${key}` });
         }
       }
     },
   },
   watch: {
-    displayedData() {
+    dataToDisplay() {
       void this.generateColsNames();
     },
   },
