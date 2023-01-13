@@ -3,7 +3,7 @@
     <Column
       v-for="col of columns"
       :field="col.field"
-      :header="listOfProductionSitesNames[col.header]"
+      :header="listOfProductionSitesConvertedNames[col.header]"
       :key="col.field"
       headerStyle="min-width: 15vw;"
     >
@@ -31,11 +31,11 @@ export default defineComponent({
   props: {
     detailDataForKpi: {
       type: Array,
-      default: [],
+      default: () => [],
     },
-    listOfProductionSitesNames: {
+    listOfProductionSitesConvertedNames: {
       type: Object,
-      default: {},
+      default: () => ({}),
     },
   },
   mounted() {

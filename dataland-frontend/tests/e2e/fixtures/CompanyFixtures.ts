@@ -108,7 +108,8 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
     ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((identifiyerTypeAsString) => {
       return {
         label: humanizeString(identifiyerTypeAsString),
-        value: (row: FixtureData<T>): string => getIdentifierValueForCsv(row.companyInformation.identifiers, identifiyerTypeAsString),
+        value: (row: FixtureData<T>): string =>
+          getIdentifierValueForCsv(row.companyInformation.identifiers, identifiyerTypeAsString),
       };
     }),
   ];

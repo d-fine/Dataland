@@ -4,11 +4,11 @@ import { mount } from "cypress/vue";
 describe("Component test for ApiKeyCard", () => {
   it("Should contain text 'The API Key expired' when Api Key is expired", () => {
     mount(ApiKeyCard, {
-    data() {
+      data() {
         return {
-            viewDeleteConfirmation: false,
+          viewDeleteConfirmation: false,
         };
-    },
+      },
       props: {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
         expiryDateInMilliseconds: 1,
@@ -19,11 +19,11 @@ describe("Component test for ApiKeyCard", () => {
   });
   it("Should contain text 'The API Key has no defined expiry date' when Api Key has no defined expiry date", () => {
     mount(ApiKeyCard, {
-        data() {
-            return {
-                viewDeleteConfirmation: false,
-            };
-        },
+      data() {
+        return {
+          viewDeleteConfirmation: false,
+        };
+      },
       props: {
         userRoles: ["ROLE_USER", "ROLE_ADMIN"],
         expiryDateInMilliseconds: null,

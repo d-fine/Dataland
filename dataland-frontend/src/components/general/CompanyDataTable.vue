@@ -4,7 +4,7 @@
     <div class="card">
       <h5>LKSG data</h5>
       <DataTable
-        :value="customers"
+        :value="dataToDisplay"
         rowGroupMode="subheader"
         groupRowsBy="group"
         dataKey="group"
@@ -40,7 +40,7 @@
           <template #body="{ data }">
             <DetailsCompanyDataTable
               v-if="Array.isArray(data[col])"
-              :listOfProductionSitesNames="listOfProductionSitesNames"
+              :listOfProductionSitesConvertedNames="listOfProductionSitesConvertedNames"
               :detailDataForKpi="data[col]"
             />
             <span v-else>{{ data[col] }}</span>
@@ -61,7 +61,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -71,39 +71,35 @@ export default defineComponent({
   },
   data() {
     return {
-      customers: null,
+      dataToDisplay: null,
       expandedRowGroups: ["_general"],
-      listOfProductionSitesNames,
+      listOfProductionSitesConvertedNames,
     };
   },
   props: {
     dataSet: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     dataSetColumns: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     kpisNames: {
       type: Object,
-      default: {},
+      default: () => ({}),
     },
     hintsForKpis: {
       type: Object,
-      default: {},
-    },
-    listOfProductionSitesNames: {
-      type: Object,
-      default: {},
+      default: () => ({}),
     },
     impactTopicNames: {
       type: Object,
-      default: {},
+      default: () => ({}),
     },
   },
   mounted() {
-    this.customers = this.dataSet; //sort data before table
+    this.dataToDisplay = this.dataSet; //sort data before table
   },
 });
 </script>

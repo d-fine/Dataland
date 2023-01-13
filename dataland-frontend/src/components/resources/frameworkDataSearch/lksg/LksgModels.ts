@@ -342,7 +342,7 @@ export const lksgQuestions = {
   listOfGoodsOrServices: "Which goods/services are manufactured or provided at the (production) sites?",
 };
 
-export const listOfProductionSitesNames = {
+export const listOfProductionSitesConvertedNames = {
   name: "Name",
   isInHouseProductionOrIsContractProcessing: "Is In House Production Or Is Contract Processing",
   address: "Address",

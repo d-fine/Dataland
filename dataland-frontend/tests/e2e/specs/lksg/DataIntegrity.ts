@@ -1,22 +1,22 @@
-import {describeIf} from "@e2e/support/TestUtility";
-import {uploader_name, uploader_pw} from "@e2e/utils/Cypress";
-import {getKeycloakToken} from "@e2e/utils/Auth";
-import {DataTypeEnum, LksgData} from "@clients/backend";
-import {getOneCompanyThatHasDataForDataType} from "../../utils/ApiUtils";
+import { describeIf } from "@e2e/support/TestUtility";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { DataTypeEnum } from "@clients/backend";
+import { getOneCompanyThatHasDataForDataType } from "../../utils/ApiUtils";
 
 const timeout = 120 * 1000;
 describeIf(
-    "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
-    {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        dataEnvironments: ["fakeFixtures"],
-    },
-    function (): void {
-        beforeEach(() => {
-            cy.ensureLoggedIn(uploader_name, uploader_pw);
-        });
+  "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
+  {
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    dataEnvironments: ["fakeFixtures"],
+  },
+  function (): void {
+    beforeEach(() => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+    });
 
-        /*
+    /*
         let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
         before(function () {
@@ -40,30 +40,26 @@ describeIf(
           TODO activate and adjust as soon as (or if) we have prepared fixtures for lskg
          */
 
-
-        /**
-         * todo
-         */
-        function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
-            getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-                return getOneCompanyThatHasDataForDataType(
-                    token,
-                    DataTypeEnum.Lksg
-                ).then((storedCompany) => {
-                    // TODO get one lksg data set for this company and put it into a variable
-                    // TODO then start to do the actual test:
-                    cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-                    cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg`);
-                    cy.wait("@retrieveLksgData", {timeout: timeout}).then(() => {
-                        // TODO verify code by comparing the displayed data to the actual lksg dataset and by general
-                        // TODO checks
-                    });
-                });
-            });
-        }
-
-
-        it("Visit Lksg view page for an existing Lksg dataset and verify that it is displayed as expected", () => {
-          pickOneUploadedLksgDataSetAndVerifyLksgPageForIt()
+    /**
+     * todo
+     */
+    function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg).then((storedCompany) => {
+          // TODO get one lksg data set for this company and put it into a variable
+          // TODO then start to do the actual test:
+          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg`);
+          cy.wait("@retrieveLksgData", { timeout: timeout }).then(() => {
+            // TODO verify code by comparing the displayed data to the actual lksg dataset and by general
+            // TODO checks
+          });
         });
-    })
+      });
+    }
+
+    it("Visit Lksg view page for an existing Lksg dataset and verify that it is displayed as expected", () => {
+      pickOneUploadedLksgDataSetAndVerifyLksgPageForIt();
+    });
+  }
+);
