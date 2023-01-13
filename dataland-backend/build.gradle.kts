@@ -60,7 +60,8 @@ openApi {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
     outputFileName.set("$projectDir/backendOpenApi.json")
-    waitTimeInSeconds.set(60)
+    val openApiGeneratorTimeOutThresholdInSeconds = 60
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds)
 }
 
 tasks.test {

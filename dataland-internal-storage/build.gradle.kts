@@ -49,7 +49,8 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
-    waitTimeInSeconds.set(60)
+    val openApiGeneratorTimeOutThresholdInSeconds = 60
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds)
 }
 
 jacoco {
