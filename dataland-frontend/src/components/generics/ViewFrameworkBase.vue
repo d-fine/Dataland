@@ -80,8 +80,10 @@ export default defineComponent({
           this.dataType as DataTypeEnum
         );
         const listOfMetaData = apiResponse.data;
-        if (listOfMetaData.length > 0) {
+        if (listOfMetaData.length == 1) {
           this.$emit("updateDataId", listOfMetaData[0].dataId);
+        } else if (listOfMetaData.length > 1) {
+          this.$emit("updateDataId", listOfMetaData);
         } else {
           this.$emit("updateDataId", null);
         }

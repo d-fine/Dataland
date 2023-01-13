@@ -18,7 +18,7 @@
       >
         <Column
           bodyClass="headers-bg flex"
-          headerStyle="width: 30vw;"
+          headerStyle="min-width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpi"
           header="KPIs"
@@ -39,28 +39,33 @@
         </Column>
         <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col">
           <template #body="{ data }">
-            <DetailsCompanyDataTable v-if="Array.isArray(data[col])" :detailDataForKpi="data[col]" />
+            <DetailsCompanyDataTable
+              v-if="Array.isArray(data[col])"
+              :listOfProductionSitesNames="listOfProductionSitesNames"
+              :detailDataForKpi="data[col]"
+            />
             <span v-else>{{ data[col] }}</span>
           </template>
         </Column>
         <Column field="group" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.group ? slotProps.data.group : "" }}</span>
+          <span>{{ slotProps.data.group ? impactTopicNames[slotProps.data.group] : "" }}</span>
         </template>
       </DataTable>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import { listOfProductionSitesNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
 
 export default defineComponent({
-  name: "DetailCompanyDataTable",
+  name: "CompanyDataTable",
   components: { DataTable, Column, DetailsCompanyDataTable },
   directives: {
     tooltip: Tooltip,
@@ -68,16 +73,17 @@ export default defineComponent({
   data() {
     return {
       customers: null,
-      expandedRowGroups: ["1. General"],
+      expandedRowGroups: ["_general"],
+      listOfProductionSitesNames,
     };
   },
   props: {
     dataSet: {
-      type: [],
+      type: Array,
       default: [],
     },
     dataSetColumns: {
-      type: [],
+      type: Array,
       default: [],
     },
     kpisNames: {
@@ -85,6 +91,14 @@ export default defineComponent({
       default: {},
     },
     hintsForKpis: {
+      type: Object,
+      default: {},
+    },
+    listOfProductionSitesNames: {
+      type: Object,
+      default: {},
+    },
+    impactTopicNames: {
       type: Object,
       default: {},
     },

@@ -4,11 +4,12 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="dataSet && !waitingForData">
-    <DetailCompanyDataTable
+    <CompanyDataTable
       :dataSet="kpisDataObjects"
-      :kpisNames="LksgKpis"
+      :kpisNames="lksgKpis"
       :dataSetColumns="dataSetColumns"
-      :hintsForKpis="LksgQuestions"
+      :hintsForKpis="lksgQuestions"
+      :impactTopicNames="impactTopicNames"
     />
   </div>
 </template>
@@ -19,45 +20,35 @@ import { LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import DetailCompanyDataTable from "@/components/general/CompanyDataTable.vue";
-import {
-  LksgKpisImpactArea,
-  LksgKpis,
-  LksgQuestions,
-} from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
+import { impactTopicNames, lksgKpis, lksgQuestions } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: { DetailCompanyDataTable },
+  components: { CompanyDataTable },
   data() {
     return {
       waitingForData: true,
-      dataSet: [] as LksgData | undefined,
+      dataSet: [] as Array<LksgData> | undefined,
       newDataSet: {},
       dataSetColumns: [] as string[],
       kpisDataObjects: [],
-      LksgKpisImpactArea,
-      LksgKpis,
-      LksgQuestions,
+      lksgKpis,
+      lksgQuestions,
+      impactTopicNames,
     };
   },
   props: {
     dataID: {
-      type: String,
-      default: "",
+      type: Array,
+      default: [],
     },
-  },
-  mounted() {
-    void this.getCompanyLksgDataset();
   },
   watch: {
     dataID() {
-      void this.getCompanyLksgDataset();
+      void this.allDataSet(this.dataID as []);
     },
     dataSet() {
-      void this.generateColsNames();
-    },
-    newDataSet() {
       void this.generateConvertedData();
     },
   },
@@ -67,127 +58,54 @@ export default defineComponent({
     };
   },
   methods: {
-    async getCompanyLksgDataset() {
+    async getCompanyLksgDataset(singleDataId: string) {
       try {
         this.waitingForData = true;
-        if (this.dataID != "loading") {
-          const LksgDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getLksgDataControllerApi();
-          const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(
-            assertDefined(this.dataID)
-          );
-          this.dataSet = companyAssociatedData.data.data;
-          this.waitingForData = false;
-        }
+        const LksgDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getLksgDataControllerApi();
+        const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(
+          assertDefined(singleDataId)
+        );
+        this.waitingForData = false;
+        return companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);
       }
     },
 
-    generateColsNames(): void {
-      const dateRegex = "^\\d{4}-\\d{2}-\\d{2}$";
-
-      if (this.dataSet && Array.isArray(this.dataSet)) {
-        this.dataSet.forEach((oneDataObject: LksgData) => {
-          if (oneDataObject.dataDate && oneDataObject.dataDate.match(dateRegex)) {
-            this.dataSetColumns.push(oneDataObject.dataDate);
-            this.newDataSet = { ...this.newDataSet, [oneDataObject.dataDate]: oneDataObject };
-          }
-        });
-      } else if (this.dataSet?.dataDate && this.dataSet.dataDate.match(dateRegex)) {
-        this.dataSetColumns.push(this.dataSet.dataDate);
-        this.newDataSet = { ...this.newDataSet, [this.dataSet.dataDate]: this.dataSet };
-      }
+    async allDataSet(ids: []) {
+      this.dataSet = await Promise.all(ids.map((singleDataId) => this.getCompanyLksgDataset(singleDataId)));
     },
 
     generateConvertedData(): void {
-      console.log("kpisthis.dataSet", this.dataSet);
-      if (this.dataSet && Array.isArray(this.dataSet)) {
-        this.dataSet.forEach((el) => {
-          for (const [key] of Object.entries(el)) {
-            if (!this.kpisDataObjects.some((e) => e.kpi === key)) {
-              let kpiDataObject = {
-                kpi: `${key}`,
-                group: this.LksgKpisImpactArea[key],
+      this.dataSet?.forEach((dataByYear) => {
+        let dataDate = "";
+        for (const area of Object.values(dataByYear)) {
+          for (const [topic, topicValues] of Object.entries(area)) {
+            for (const [kpi, kpiValues] of Object.entries(topicValues)) {
+              let indexOfExistingItem = -1;
+              const singleKpiData = {
+                kpi: kpi,
+                group: topic == "general" ? `_${topic}` : topic,
+                [dataDate]: kpiValues,
               };
-              this.dataSetColumns.forEach((dataDate) => {
-                kpiDataObject = { ...kpiDataObject, [dataDate]: this.newDataSet[dataDate][key] };
-              });
-              this.kpisDataObjects.push(kpiDataObject);
-            } else {
-              return;
+              if (kpi === "dataDate") {
+                this.dataSetColumns.push(kpiValues as string);
+                dataDate = kpiValues as string;
+              }
+              indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
+
+              if (indexOfExistingItem > 0) {
+                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiData);
+              } else {
+                this.kpisDataObjects.push(singleKpiData);
+              }
             }
           }
-        });
-      } else if (this.dataSet) {
-        for (const [key] of Object.entries(this.dataSet)) {
-          if (!this.kpisDataObjects.some((e) => e.kpi === key)) {
-            let kpiDataObject = {
-              kpi: `${key}`,
-              group: this.LksgKpisImpactArea[key],
-            };
-
-            this.dataSetColumns.forEach((dataDate) => {
-              kpiDataObject = { ...kpiDataObject, [dataDate]: this.newDataSet[dataDate][key] };
-            });
-            this.kpisDataObjects.push(kpiDataObject);
-          } else {
-            return;
-          }
         }
-      }
+      });
     },
   },
 });
 </script>
-<!--[-->
-<!--{-->
-<!--  dataDate: "2023-03-03",-->
-<!--  companyLegalForm: "Trader Trader",-->
-<!--  complaintsAndGrievancesPolicy: "No",-->
-<!--  // "listOfProductionSites": [-->
-<!--  //   {-->
-<!--  //     "name": "Merseburg Gruppe",-->
-<!--  //     "isInHouseProductionOrIsContractProcessing": "No",-->
-<!--  //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",-->
-<!--  //     "listOfGoodsAndServices": [-->
-<!--  //       "Elegant Granite Chips",-->
-<!--  //       "Tasty Bronze Mouse"-->
-<!--  //     ]-->
-<!--  //   }-->
-<!--  // ]-->
-<!--  },-->
-<!--  {-->
-<!--  dataDate: "2021-00-00",-->
-<!--  companyLegalForm: "Trader Trader",-->
-<!--  complaintsAndGrievancesPolicy: "No",-->
-<!--  // "listOfProductionSites": [-->
-<!--  //   {-->
-<!--  //     "name": "Merseburg Gruppe",-->
-<!--  //     "isInHouseProductionOrIsContractProcessing": "No",-->
-<!--  //     "address": "Köttershof 0, 76326 Nord Joschua, Libyen",-->
-<!--  //     "listOfGoodsAndServices": [-->
-<!--  //       "Elegant Granite Chips",-->
-<!--  //       "Tasty Bronze Mouse"-->
-<!--  //     ]-->
-<!--  //   }-->
-<!--  // ]-->
-<!--  },-->
-<!--]-->
-
-<!--{-->
-<!-- Socials: {-->
-<!--    Freedom of association {-->
-<!--      kpi: {}-->
-<!--      kpi: {}-->
-<!--      kpi: {}-->
-<!--    },-->
-<!--    OSH {-->
-<!--      kpi: {}-->
-<!--      kpi: {}-->
-<!--      kpi: {}-->
-<!--    }-->
-
-<!--}-->
-<!--}-->

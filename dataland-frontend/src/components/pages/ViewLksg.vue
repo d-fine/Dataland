@@ -28,15 +28,18 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: undefined,
+      frameworkDataId: [] as string[],
     };
   },
-  mounted() {
-    console.log(`LKSG DataID`, this.frameworkDataId);
-  },
   methods: {
-    receiveDataId(id: undefined) {
-      this.frameworkDataId = id;
+    receiveDataId(id: string | []) {
+      let dataIdsArray = [] as string[];
+      if (Object.prototype.toString.call(id) === "[object String]") {
+        dataIdsArray.push(id as string);
+      } else if (Array.isArray(id)) {
+        dataIdsArray = id.map((el) => (el as { dataId: string; dataType: string; companyId: string }).dataId);
+      }
+      this.frameworkDataId = dataIdsArray;
     },
   },
 });
