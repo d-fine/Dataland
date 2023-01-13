@@ -9,15 +9,15 @@ import java.math.BigDecimal
  * Fields of the SFDR questionnaire regarding the impact topic "Human rights"
  */
 data class SfdrHumanRights(
-    val humanRightsPolicy: DataPoint<YesNo>? = null,
+    val humanRightsPolicy: DataPoint<YesNo>?,
 
-    val humanRightsDueDiligence: DataPoint<YesNo>? = null,
+    val humanRightsDueDiligence: DataPoint<YesNo>?,
 
-    val traffickingInHumanBeingsPolicy: DataPoint<YesNo>? = null,
+    val traffickingInHumanBeingsPolicy: DataPoint<YesNo>?,
 
-    val reportedChildLabourIncidents: DataPoint<YesNo>? = null,
+    val reportedChildLabourIncidents: DataPoint<YesNo>?,
 
-    val reportedForcedOrCompulsoryLabourIncidents: DataPoint<YesNo>? = null,
+    val reportedForcedOrCompulsoryLabourIncidents: DataPoint<YesNo>?,
 
-    val reportedIncidentsOfHumanRights: DataPoint<BigDecimal>? = null,
+    val reportedIncidentsOfHumanRights: DataPoint<BigDecimal>?,
 )

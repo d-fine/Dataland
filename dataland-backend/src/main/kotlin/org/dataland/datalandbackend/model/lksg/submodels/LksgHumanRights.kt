@@ -7,17 +7,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Human rights"
  */
 data class LksgHumanRights(
-    val diversityAndInclusionRole: YesNo? = null,
+    val diversityAndInclusionRole: YesNo?,
 
-    val preventionOfMistreatments: YesNo? = null,
+    val preventionOfMistreatments: YesNo?,
 
-    val equalOpportunitiesOfficer: YesNo? = null,
+    val equalOpportunitiesOfficer: YesNo?,
 
-    val riskOfHarmfulPollution: YesNo? = null,
+    val riskOfHarmfulPollution: YesNo?,
 
-    val unlawfulEvictionAndTakingOfLand: YesNo? = null,
+    val unlawfulEvictionAndTakingOfLand: YesNo?,
 
-    val useOfPrivatePublicSecurityForces: YesNo? = null,
+    val useOfPrivatePublicSecurityForces: YesNo?,
 
-    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
+    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo?,
 )

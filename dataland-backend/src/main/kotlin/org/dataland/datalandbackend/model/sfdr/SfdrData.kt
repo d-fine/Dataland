@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.CompanyReport
  */
 @DataType("sfdr")
 data class SfdrData(
-    val socialData: SocialData? = null,
+    val social: SfdrSocial?,
 
-    val environmentalData: EnvironmentalData? = null,
+    val environmental: SfdrEnvironmental?,
 
-    val referencedReports: Map<String, CompanyReport>? = null,
+    val referencedReports: Map<String, CompanyReport>?,
 )

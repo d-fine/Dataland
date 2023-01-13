@@ -9,21 +9,21 @@ import java.math.BigDecimal
  * Fields of the SFDR questionnaire regarding the impact topic "Waste"
  */
 data class SfdrWaste(
-    val hazardousWaste: DataPoint<BigDecimal>? = null,
+    val hazardousWaste: DataPoint<BigDecimal>?,
 
-    val manufactureOfAgrochemicalPesticidesProducts: DataPoint<YesNo>? = null,
+    val manufactureOfAgrochemicalPesticidesProducts: DataPoint<YesNo>?,
 
-    val landDegradationDesertificationSoilSealingExposure: DataPoint<YesNo>? = null,
+    val landDegradationDesertificationSoilSealingExposure: DataPoint<YesNo>?,
 
-    val sustainableAgriculturePolicy: DataPoint<YesNo>? = null,
+    val sustainableAgriculturePolicy: DataPoint<YesNo>?,
 
-    val sustainableOceansAndSeasPolicy: DataPoint<YesNo>? = null,
+    val sustainableOceansAndSeasPolicy: DataPoint<YesNo>?,
 
-    val wasteNonRecycled: DataPoint<BigDecimal>? = null,
+    val wasteNonRecycled: DataPoint<BigDecimal>?,
 
-    val threatenedSpeciesExposure: DataPoint<YesNo>? = null,
+    val threatenedSpeciesExposure: DataPoint<YesNo>?,
 
-    val biodiversityProtectionPolicy: DataPoint<YesNo>? = null,
+    val biodiversityProtectionPolicy: DataPoint<YesNo>?,
 
-    val deforestationPolicy: DataPoint<YesNo>? = null,
+    val deforestationPolicy: DataPoint<YesNo>?,
 )

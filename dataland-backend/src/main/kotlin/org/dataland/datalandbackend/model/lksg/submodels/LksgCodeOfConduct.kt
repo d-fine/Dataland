@@ -6,10 +6,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "Code of conduct"
  */
-data class CodeOfConduct(
-    val codeOfConduct: YesNo? = null,
+data class LksgCodeOfConduct(
+    val codeOfConduct: YesNo?,
 
-    val codeOfConductRiskManagementTopics: YesNo? = null,
+    val codeOfConductRiskManagementTopics: YesNo?,
 
-    val codeOfConductTraining: YesNo? = null,
+    val codeOfConductTraining: YesNo?,
 )

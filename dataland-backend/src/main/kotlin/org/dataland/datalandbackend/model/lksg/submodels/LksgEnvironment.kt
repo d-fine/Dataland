@@ -6,6 +6,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "Environment"
  */
-data class Environment(
+data class LksgEnvironment(
     val responsibilitiesForTheEnvironment: YesNo? = null,
 )

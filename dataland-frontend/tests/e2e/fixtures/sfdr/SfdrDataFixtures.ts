@@ -16,7 +16,7 @@ import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/Fisca
 export function generateSfdrData(): SfdrData {
   const reports = generateReferencedReports();
   return {
-    socialData: {
+    social: {
       general: {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
         fiscalYearEnd: randomFutureDate(),
@@ -92,7 +92,7 @@ export function generateSfdrData(): SfdrData {
         reportedFinesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
       },
     },
-    environmentalData: {
+    environmental: {
       greenhouseGasEmissions: {
         scope1: generateNumericOrEmptyDatapoint(reports),
         scope2: generateNumericOrEmptyDatapoint(reports),

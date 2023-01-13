@@ -9,41 +9,41 @@ import java.time.LocalDate
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
 data class SfdrGeneral(
-    val fiscalYear: FiscalYearDeviation? = null,
+    val fiscalYear: FiscalYearDeviation?,
 
-    val fiscalYearEnd: LocalDate? = null,
+    val fiscalYearEnd: LocalDate?,
 
-    val annualReport: String? = null,
+    val annualReport: String?,
 
-    val groupLevelAnnualReport: YesNoNa? = null,
+    val groupLevelAnnualReport: YesNoNa?,
 
-    val annualReportDate: LocalDate? = null,
+    val annualReportDate: LocalDate?,
 
-    val annualReportCurrency: String? = null,
+    val annualReportCurrency: String?,
 
-    val sustainabilityReport: String? = null,
+    val sustainabilityReport: String?,
 
-    val groupLevelSustainabilityReport: YesNoNa? = null,
+    val groupLevelSustainabilityReport: YesNoNa?,
 
-    val sustainabilityReportDate: LocalDate? = null,
+    val sustainabilityReportDate: LocalDate?,
 
-    val sustainabilityReportCurrency: String? = null,
+    val sustainabilityReportCurrency: String?,
 
-    val integratedReport: String? = null,
+    val integratedReport: String?,
 
-    val groupLevelIntegratedReport: YesNoNa? = null,
+    val groupLevelIntegratedReport: YesNoNa?,
 
-    val integratedReportDate: LocalDate? = null,
+    val integratedReportDate: LocalDate?,
 
-    val integratedReportCurrency: String? = null,
+    val integratedReportCurrency: String?,
 
-    val esefReport: String? = null,
+    val esefReport: String?,
 
-    val groupLevelEsefReport: YesNoNa? = null,
+    val groupLevelEsefReport: YesNoNa?,
 
-    val esefReportDate: LocalDate? = null,
+    val esefReportDate: LocalDate?,
 
-    val esefReportCurrency: String? = null,
+    val esefReportCurrency: String?,
 
-    val scopeOfEntities: YesNoNa? = null,
+    val scopeOfEntities: YesNoNa?,
 )

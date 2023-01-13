@@ -6,6 +6,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the LKSG questionnaire regarding the impact topic "OSH" of the impact area "Governance"
  */
-data class GovernanceOsh(
+data class LksgGovernanceOsh(
     val responsibilitiesForOccupationalSafety: YesNo? = null,
 )

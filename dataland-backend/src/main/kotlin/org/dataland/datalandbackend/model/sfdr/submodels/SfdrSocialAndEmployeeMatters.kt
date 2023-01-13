@@ -9,61 +9,61 @@ import java.math.BigDecimal
  * Fields of the SFDR questionnaire regarding the impact topic "Social and employee matters"
  */
 data class SfdrSocialAndEmployeeMatters(
-    val humanRightsLegalProceedings: DataPoint<YesNo>? = null,
+    val humanRightsLegalProceedings: DataPoint<YesNo>?,
 
-    val iloCoreLabourStandards: DataPoint<YesNo>? = null,
+    val iloCoreLabourStandards: DataPoint<YesNo>?,
 
-    val environmentalPolicy: DataPoint<YesNo>? = null,
+    val environmentalPolicy: DataPoint<YesNo>?,
 
-    val corruptionLegalProceedings: DataPoint<YesNo>? = null,
+    val corruptionLegalProceedings: DataPoint<YesNo>?,
 
-    val transparencyDisclosurePolicy: DataPoint<YesNo>? = null,
+    val transparencyDisclosurePolicy: DataPoint<YesNo>?,
 
-    val humanRightsDueDiligencePolicy: DataPoint<YesNo>? = null,
+    val humanRightsDueDiligencePolicy: DataPoint<YesNo>?,
 
-    val childForcedDiscriminationPolicy: DataPoint<YesNo>? = null,
+    val childForcedDiscriminationPolicy: DataPoint<YesNo>?,
 
-    val iso14001: DataPoint<YesNo>? = null,
+    val iso14001: DataPoint<YesNo>?,
 
-    val briberyCorruptionPolicy: DataPoint<YesNo>? = null,
+    val briberyCorruptionPolicy: DataPoint<YesNo>?,
 
-    val fairBusinessMarketingAdvertisingPolicy: DataPoint<YesNo>? = null,
+    val fairBusinessMarketingAdvertisingPolicy: DataPoint<YesNo>?,
 
-    val technologiesExpertiseTransferPolicy: DataPoint<YesNo>? = null,
+    val technologiesExpertiseTransferPolicy: DataPoint<YesNo>?,
 
-    val fairCompetitionPolicy: DataPoint<YesNo>? = null,
+    val fairCompetitionPolicy: DataPoint<YesNo>?,
 
-    val violationOfTaxRulesAndRegulation: DataPoint<YesNo>? = null,
+    val violationOfTaxRulesAndRegulation: DataPoint<YesNo>?,
 
-    val unGlobalCompactPrinciplesCompliancePolicy: DataPoint<YesNo>? = null,
+    val unGlobalCompactPrinciplesCompliancePolicy: DataPoint<YesNo>?,
 
-    val oecdGuidelinesForMultinationalEnterprisesPolicy: DataPoint<YesNo>? = null,
+    val oecdGuidelinesForMultinationalEnterprisesPolicy: DataPoint<YesNo>?,
 
-    val averageGrossHourlyEarningsMaleEmployees: DataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: DataPoint<BigDecimal>?,
 
-    val averageGrossHourlyEarningsFemaleEmployees: DataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: DataPoint<BigDecimal>?,
 
-    val femaleBoardMembers: DataPoint<BigDecimal>? = null,
+    val femaleBoardMembers: DataPoint<BigDecimal>?,
 
-    val maleBoardMembers: DataPoint<BigDecimal>? = null,
+    val maleBoardMembers: DataPoint<BigDecimal>?,
 
-    val controversialWeaponsExposure: DataPoint<YesNo>? = null,
+    val controversialWeaponsExposure: DataPoint<YesNo>?,
 
-    val workplaceAccidentPreventionPolicy: DataPoint<YesNo>? = null,
+    val workplaceAccidentPreventionPolicy: DataPoint<YesNo>?,
 
-    val rateOfAccidents: DataPoint<BigDecimal>? = null,
+    val rateOfAccidents: DataPoint<BigDecimal>?,
 
-    val workdaysLost: DataPoint<BigDecimal>? = null,
+    val workdaysLost: DataPoint<BigDecimal>?,
 
-    val supplierCodeOfConduct: DataPoint<YesNo>? = null,
+    val supplierCodeOfConduct: DataPoint<YesNo>?,
 
-    val grievanceHandlingMechanism: DataPoint<YesNo>? = null,
+    val grievanceHandlingMechanism: DataPoint<YesNo>?,
 
-    val whistleblowerProtectionPolicy: DataPoint<YesNo>? = null,
+    val whistleblowerProtectionPolicy: DataPoint<YesNo>?,
 
-    val reportedIncidentsOfDiscrimination: DataPoint<BigDecimal>? = null,
+    val reportedIncidentsOfDiscrimination: DataPoint<BigDecimal>?,
 
-    val sanctionsIncidentsOfDiscrimination: DataPoint<BigDecimal>? = null,
+    val sanctionsIncidentsOfDiscrimination: DataPoint<BigDecimal>?,
 
-    val ceoToEmployeePayGap: DataPoint<BigDecimal>? = null,
+    val ceoToEmployeePayGap: DataPoint<BigDecimal>?,
 )

@@ -8,12 +8,12 @@ import java.math.BigDecimal
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Emissions"
  */
-data class Emissions(
-    val inorganicPollutants: DataPoint<BigDecimal>? = null,
+data class SfdrEmissions(
+    val inorganicPollutants: DataPoint<BigDecimal>?,
 
-    val airPollutants: DataPoint<BigDecimal>? = null,
+    val airPollutants: DataPoint<BigDecimal>?,
 
-    val ozoneDepletionSubstances: DataPoint<BigDecimal>? = null,
+    val ozoneDepletionSubstances: DataPoint<BigDecimal>?,
 
-    val carbonReductionInitiatives: DataPoint<YesNo>? = null,
+    val carbonReductionInitiatives: DataPoint<YesNo>?,
 )

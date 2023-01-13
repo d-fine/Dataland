@@ -8,10 +8,10 @@ import java.math.BigDecimal
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
-data class AnticorruptionAndAntibribery(
-    val reportedCasesOfBriberyCorruption: DataPoint<YesNo>? = null,
+data class SfdrAnticorruptionAndAntibribery(
+    val reportedCasesOfBriberyCorruption: DataPoint<YesNo>?,
 
-    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>? = null,
+    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>?,
 
-    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>? = null,
+    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>?,
 )

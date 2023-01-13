@@ -39,20 +39,6 @@ export function generateVatIdentificationNumber(): string {
   return fakeCountryCode + randomNineDigitNumber.toString();
 }
 
-export function getCompanyLegalForm(): string {
-  const legalForms = [
-    "Public Limited Company (PLC)",
-    "Private Limited Company (Ltd)",
-    "Limited Liability Partnership (LLP)",
-    "Partnership without Limited Liability",
-    "Sole Trader",
-    "GmbH",
-    "AG",
-    "GmbH & Co. KG",
-  ];
-  return legalForms[Math.floor(Math.random() * legalForms.length)];
-}
-
 export function generateLksgData(): LksgData {
   return {
     social: {

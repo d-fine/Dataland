@@ -10,19 +10,19 @@ import java.time.LocalDate
  * Fields of the LKSG questionnaire regarding the impact topic "General"
  */
 data class LksgGeneral(
-    val dataDate: LocalDate? = null,
+    val dataDate: LocalDate?,
 
-    val lksgInScope: YesNo? = null,
+    val lksgInScope: YesNo?,
 
-    val vatIdentificationNumber: String? = null,
+    val vatIdentificationNumber: String?,
 
-    val numberOfEmployees: BigDecimal? = null,
+    val numberOfEmployees: BigDecimal?,
 
-    val shareOfTemporaryWorkers: BigDecimal? = null,
+    val shareOfTemporaryWorkers: BigDecimal?,
 
-    val totalRevenue: BigDecimal? = null,
+    val totalRevenue: BigDecimal?,
 
-    val totalRevenueCurrency: String? = null,
+    val totalRevenueCurrency: String?,
 
-    val listOfProductionSites: List<ProductionSite>? = null,
+    val listOfProductionSites: List<ProductionSite>?,
 )

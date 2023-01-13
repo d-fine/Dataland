@@ -7,49 +7,49 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Waste"
  */
 data class LksgWaste(
-    val mercuryAndMercuryWasteHandling: YesNo? = null,
+    val mercuryAndMercuryWasteHandling: YesNo?,
 
-    val mercuryAndMercuryWasteHandlingPolicy: YesNo? = null,
+    val mercuryAndMercuryWasteHandlingPolicy: YesNo?,
 
-    val chemicalHandling: YesNo? = null,
+    val chemicalHandling: YesNo?,
 
-    val environmentalManagementSystem: YesNo? = null,
+    val environmentalManagementSystem: YesNo?,
 
-    val environmentalManagementSystemInternationalCertification: YesNo? = null,
+    val environmentalManagementSystemInternationalCertification: YesNo?,
 
-    val environmentalManagementSystemNationalCertification: YesNo? = null,
+    val environmentalManagementSystemNationalCertification: YesNo?,
 
-    val legalRestrictedWaste: YesNo? = null,
+    val legalRestrictedWaste: YesNo?,
 
-    val legalRestrictedWasteProcesses: YesNo? = null,
+    val legalRestrictedWasteProcesses: YesNo?,
 
-    val mercuryAddedProductsHandling: YesNo? = null,
+    val mercuryAddedProductsHandling: YesNo?,
 
-    val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfExposure: YesNo?,
 
-    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo?,
 
-    val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUse: YesNo?,
 
-    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUse: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo?,
 
-    val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo?,
 
-    val hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: YesNo? = null,
+    val hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: YesNo?,
 
-    val hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: YesNo? = null,
+    val hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: YesNo?,
 
-    val hazardousWasteDisposal: YesNo? = null,
+    val hazardousWasteDisposal: YesNo?,
 
-    val hazardousWasteDisposalRiskOfImport: YesNo? = null,
+    val hazardousWasteDisposalRiskOfImport: YesNo?,
 
-    val hazardousAndOtherWasteImport: YesNo? = null,
+    val hazardousAndOtherWasteImport: YesNo?,
 )

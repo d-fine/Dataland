@@ -7,10 +7,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * --- API model ---
  * Fields of the SFDR questionnaire regarding the impact topic "Biodiversity"
  */
-data class Biodiversity(
-    val primaryForestAndWoodedLandOfNativeSpeciesExposure: DataPoint<YesNo>? = null,
+data class SfdrBiodiversity(
+    val primaryForestAndWoodedLandOfNativeSpeciesExposure: DataPoint<YesNo>?,
 
-    val protectedAreasExposure: DataPoint<YesNo>? = null,
+    val protectedAreasExposure: DataPoint<YesNo>?,
 
-    val rareOrEndangeredEcosystemsExposure: DataPoint<YesNo>? = null,
+    val rareOrEndangeredEcosystemsExposure: DataPoint<YesNo>?,
 )
