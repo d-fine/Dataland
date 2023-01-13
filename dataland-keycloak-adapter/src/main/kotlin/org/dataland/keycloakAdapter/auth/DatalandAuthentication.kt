@@ -12,16 +12,37 @@ class DatalandAuthentication(val authentication: Authentication) {
     companion object {
         /**
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication
-         * linked to the current thread
+         * linked to the current thread. Throws an exception if no authentication data can be retrieved
          */
         fun fromContext(): DatalandAuthentication {
-            return DatalandAuthentication(SecurityContextHolder.getContext().authentication)
+            val auth = fromContextOrNull()
+            requireNotNull(auth)
+            return auth
+        }
+
+        /**
+         * Builds a new DatalandAuthentication object from the Spring Boot Authentication
+         * linked to the current thread
+         */
+        fun fromContextOrNull(): DatalandAuthentication? {
+            val auth = SecurityContextHolder.getContext().authentication
+            return if (auth == null) null
+            else DatalandAuthentication(auth)
         }
     }
 
-    val jwt: Jwt = authentication.principal as Jwt
+    val username: String
+        get() {
+            if (authentication.principal is Jwt) {
+                val jwt: Jwt = authentication.principal as Jwt
+                return jwt.getClaimAsString("preferred_username")
+            } else {
+                throw UnsupportedOperationException("Cannot get the username of a user logged in via API key")
+            }
+        }
+
+
     val userId: String = authentication.name
-    val username: String = jwt.getClaimAsString("preferred_username")
     val roles: Set<DatalandRealmRoles> = computeRealmRoles()
 
     private fun computeRealmRoles(): Set<DatalandRealmRoles> {
