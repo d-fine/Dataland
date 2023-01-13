@@ -49,13 +49,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-val openApiGeneratorTimeOutThresholdInSeconds = 60
 openApi {
     outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
     apiDocsUrl.set("http://localhost:8483/api-keys/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
     }
+    val openApiGeneratorTimeOutThresholdInSeconds = 60
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds)
 }
 tasks.test {
