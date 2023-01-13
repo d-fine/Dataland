@@ -5,7 +5,7 @@
     <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
-        <h1>{{ PageTitleState }}</h1>
+        <h1>{{ pageTitle }}</h1>
       </div>
 
       <MiddleCenterDiv v-if="waitingForData" class="col-12">
@@ -78,7 +78,7 @@
 
           <ApiKeyCard
             :userRoles="userRolesAccordingToApiKey"
-            :expiryDate="expiryDate * 1000"
+            :expiryDateInMilliseconds="expiryDate * 1000"
             @revokeKey="revokeApiKey"
           />
           <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
@@ -184,7 +184,7 @@ export default defineComponent({
     };
   },
   computed: {
-    PageTitleState() {
+    pageTitle() {
       if (this.pageState === "view") return "API";
       if (this.pageState === "create") return "Create new API Key";
       return "API";
@@ -235,7 +235,7 @@ export default defineComponent({
       }
     },
 
-    async generateApiKey(expirationTime: number) {
+    async generateApiKey(daysValid: number) {
       try {
         this.waitingForData = true;
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
@@ -243,7 +243,7 @@ export default defineComponent({
         const apiKeyManagerController = await new ApiClientProvider(
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
-        const response = await apiKeyManagerController.generateApiKey(expirationTime);
+        const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;
         this.existsApiKey = true;
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;

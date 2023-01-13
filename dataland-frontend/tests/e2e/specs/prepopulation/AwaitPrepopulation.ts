@@ -37,15 +37,24 @@ describe("I want to ensure that the prepopulation has finished before executing 
       cy.wait(5000)
         .then(() => getKeycloakToken(reader_name, reader_pw))
         .then(async (token) => {
-          const financialResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.EutaxonomyFinancials);
-          const nonFinancialResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
-          let totalCompanies = financialResponse.numberOfCompaniesForDataType + nonFinancialResponse.numberOfCompaniesForDataType;
+          const financialResponse = await countCompaniesAndDataSetsForDataType(
+            token,
+            DataTypeEnum.EutaxonomyFinancials
+          );
+          const nonFinancialResponse = await countCompaniesAndDataSetsForDataType(
+            token,
+            DataTypeEnum.EutaxonomyNonFinancials
+          );
+          let totalCompanies =
+            financialResponse.numberOfCompaniesForDataType + nonFinancialResponse.numberOfCompaniesForDataType;
           if (Cypress.env("DATA_ENVIRONMENT") === "fakeFixtures") {
             const lksgResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Lksg);
             const sfdrResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sfdr);
             const smeResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sme);
             totalCompanies +=
-              lksgResponse.numberOfCompaniesForDataType + sfdrResponse.numberOfCompaniesForDataType + smeResponse.numberOfCompaniesForDataType;
+              lksgResponse.numberOfCompaniesForDataType +
+              sfdrResponse.numberOfCompaniesForDataType +
+              smeResponse.numberOfCompaniesForDataType;
           }
           assert(
             totalCompanies >= expectedNumberOfCompanies,

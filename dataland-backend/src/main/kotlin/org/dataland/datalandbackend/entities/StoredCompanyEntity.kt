@@ -6,6 +6,7 @@ import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
@@ -26,6 +27,7 @@ data class StoredCompanyEntity(
 
     @ElementCollection
     @Column(name = "company_alternative_names")
+    @OrderBy("asc")
     var companyAlternativeNames: List<String>?,
 
     @Column(name = "company_legal_form")

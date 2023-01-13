@@ -40,7 +40,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const countryCode = faker.address.countryCode();
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
-  });
+  }).sort();
   const companyLegalForm = valueOrUndefined(faker.company.bsNoun());
 
   return {
@@ -91,10 +91,10 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
       label: "Teaser Company",
       value: (row: FixtureData<T>): string => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
-    ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((e) => {
+    ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((identifiyerTypeAsString) => {
       return {
-        label: humanizeString(e),
-        value: (row: FixtureData<T>): string => getIdentifierValueForCsv(row.companyInformation.identifiers, e),
+        label: humanizeString(identifiyerTypeAsString),
+        value: (row: FixtureData<T>): string => getIdentifierValueForCsv(row.companyInformation.identifiers, identifiyerTypeAsString),
       };
     }),
   ];

@@ -5,7 +5,7 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  SmeData,
+  SmeData, CompanyDataControllerApi, Configuration,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -16,6 +16,7 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
+import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 const chunkSize = 15;
 
 describe(
@@ -43,14 +44,20 @@ describe(
       });
     }
 
-    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
+    function checkMatchingIds(
+      dataType: DataTypeEnum,
+      expectedNumberOfCompanyIds: number,
+      expectedNumberOfDataSetIds: number
+    ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.numberOfDataSetsForDataType === expectedNumberOfIds && response.numberOfCompaniesForDataType === expectedNumberOfIds,
+            response.numberOfDataSetsForDataType === expectedNumberOfDataSetIds &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanyIds,
             `Found ${response.numberOfCompaniesForDataType} companies with matching data 
-                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected both to be ${expectedNumberOfIds}`
+                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected ${expectedNumberOfCompanyIds} 
+                  company ids and ${expectedNumberOfDataSetIds} data set ids`
           );
         });
     }
@@ -69,7 +76,11 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyFinancials, companiesWithEuTaxonomyDataForFinancials.length);
+        checkMatchingIds(
+          DataTypeEnum.EutaxonomyFinancials,
+          companiesWithEuTaxonomyDataForFinancials.length,
+          companiesWithEuTaxonomyDataForFinancials.length
+        );
       });
     });
 
@@ -89,7 +100,11 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
+        checkMatchingIds(
+          DataTypeEnum.EutaxonomyNonFinancials,
+          companiesWithEuTaxonomyDataForNonFinancials.length,
+          companiesWithEuTaxonomyDataForNonFinancials.length
+        );
       });
     });
 
@@ -113,7 +128,27 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
+        });
+
+        it("Upload an additional lksg data set to existing fake-fixtures", () => {
+          let preparedFixtures: Array<FixtureData<LksgData>>;
+          cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+            preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          }).then(() => {
+            prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
+          });
+          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+            const preparedCompanyId =
+                (await new CompanyDataControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanies("two-lksg-data-sets")).data[0].companyId;
+            const dataSet = generateLksgData();
+            await uploadOneLksgDatasetViaApi(token, preparedCompanyId, dataSet);
+          });
+        });
+
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
         });
       }
     );
@@ -138,7 +173,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
+          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
         });
       }
     );
@@ -163,7 +198,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
+          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
         });
       }
     );

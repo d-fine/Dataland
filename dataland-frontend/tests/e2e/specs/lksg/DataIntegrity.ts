@@ -1,7 +1,7 @@
 import {describeIf} from "@e2e/support/TestUtility";
 import {uploader_name, uploader_pw} from "@e2e/utils/Cypress";
 import {getKeycloakToken} from "@e2e/utils/Auth";
-import {Lksg} from "@clients/backend";
+import {DataTypeEnum, LksgData} from "@clients/backend";
 import {getOneCompanyThatHasDataForDataType} from "../../utils/ApiUtils";
 
 const timeout = 120 * 1000;
@@ -48,7 +48,7 @@ describeIf(
             getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
                 return getOneCompanyThatHasDataForDataType(
                     token,
-                    DataTypeEnum.lksg
+                    DataTypeEnum.Lksg
                 ).then((storedCompany) => {
                     // TODO get one lksg data set for this company and put it into a variable
                     // TODO then start to do the actual test:

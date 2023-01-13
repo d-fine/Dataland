@@ -3,5 +3,4 @@
  */
 describe("Prepopulation tests", () => {
   require("./Prepopulation");
-  require("./Previsit");
 });

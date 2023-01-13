@@ -8,16 +8,18 @@ describe("As a user, I expect the back button to work properly", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/companies");
     getKeycloakToken(reader_name, reader_pw).then((token) => {
-      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then((storedCompanies) => {
-        cy.visitAndCheckAppMount(
-          "/companies/" + storedCompanies[0].companyId + "/frameworks/eutaxonomy-non-financials"
-        );
-        cy.get("span.text-primary[title=back_button]")
-          .parent(".cursor-pointer.grid.align-items-center")
-          .click()
-          .url()
-          .should("include", "/companies");
-      });
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+        (storedCompanies) => {
+          cy.visitAndCheckAppMount(
+            "/companies/" + storedCompanies[0].companyId + "/frameworks/eutaxonomy-non-financials"
+          );
+          cy.get("span.text-primary[title=back_button]")
+            .parent(".cursor-pointer.grid.align-items-center")
+            .click()
+            .url()
+            .should("include", "/companies");
+        }
+      );
     });
   });
 });

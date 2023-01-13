@@ -1,0 +1,193 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "two-lksg-data-sets",
+			"companyAlternativeNames": [
+				"Keil, Hartwig und Kreb",
+				"Steinmetz Gruppe"
+			],
+			"companyLegalForm": "e-markets",
+			"headquarters": "Madleenburg",
+			"headquartersPostalCode": "58082",
+			"sector": "schemas",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "c462qj6ro"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "1ctwko3vee"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "bfneo5z"
+				}
+			],
+			"countryCode": "SX",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"social": {
+				"general": {
+					"dataDate": "2023-07-26",
+					"lksgInScope": "No",
+					"vatIdentificationNumber": "RE598894629",
+					"numberOfEmployees": 184933,
+					"shareOfTemporaryWorkers": 17.69,
+					"totalRevenue": 6006503602.65,
+					"totalRevenueCurrency": "AUD",
+					"listOfProductionSites": [
+						{
+							"name": "Mielke, Wissing und Wierig",
+							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"address": "Treuburger Str. 34, 03635 Poehnscheid, Island",
+							"listOfGoodsAndServices": [
+								"Ergonomic Fresh Cheese",
+								"Small Cotton Computer"
+							]
+						},
+						{
+							"name": "Norris-Jasinski",
+							"address": "Am Silbersee 37, 64946 Welzelburg, São Tomé und Príncipe",
+							"listOfGoodsAndServices": [
+								"Recycled Metal Computer",
+								"Modern Granite Towels",
+								"Handmade Frozen Table"
+							]
+						},
+						{
+							"name": "Gotz-Franzmann",
+							"isInHouseProductionOrIsContractProcessing": "No",
+							"address": "Bürriger Weg 64b, 37802 Neu Abdulstadt, Falklandinseln",
+							"listOfGoodsAndServices": [
+								"Bespoke Cotton Pizza",
+								"Licensed Fresh Chair"
+							]
+						},
+						{
+							"name": "Byrd, Bornscheuer und Breitenstein",
+							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"address": "Grundermühlenhof 428, 92555 Lehmannland, Uruguay",
+							"listOfGoodsAndServices": [
+								"Recycled Fresh Keyboard",
+								"Handmade Cotton Shoes"
+							]
+						},
+						{
+							"name": "Daimer KG",
+							"isInHouseProductionOrIsContractProcessing": "No",
+							"address": "Havelstr. 047, 57947 Aymandorf, Togo",
+							"listOfGoodsAndServices": [
+								"Oriental Rubber Chips",
+								"Recycled Rubber Towels"
+							]
+						}
+					]
+				},
+				"grievanceMechanism": {
+					"grievanceHandlingMechanismUsedForReporting": "Yes",
+					"legalProceedings": "Yes"
+				},
+				"childLabour": {
+					"employeeUnder18Apprentices": "No",
+					"employmentUnderLocalMinimumAgePrevention": "No",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
+					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
+					"employmentUnderLocalMinimumAgePreventionTraining": "No",
+					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "Yes"
+				},
+				"forcedLabourSlaveryAndDebtBondage": {
+					"forcedLabourAndSlaveryPrevention": "Yes",
+					"forcedLabourAndSlaveryPreventionEmploymentContracts": "Yes",
+					"forcedLabourAndSlaveryPreventionIdentityDocuments": "Yes",
+					"forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
+					"forcedLabourAndSlaveryPreventionProvisionTraining": "No",
+					"documentedWorkingHoursAndWages": "No",
+					"adequateLivingWage": "Yes",
+					"fixedHourlyWages": "Yes"
+				},
+				"osh": {
+					"oshMonitoring": "No",
+					"oshPolicy": "No",
+					"oshPolicyDisasterBehaviouralResponse": "Yes",
+					"oshPolicyAccidentsBehaviouralResponse": "Yes",
+					"oshPolicyWorkplaceErgonomics": "Yes",
+					"oshPolicyFireProtection": "Yes",
+					"oshPolicyTrainingAddressed": "No",
+					"oshPolicyTraining": "Yes",
+					"oshManagementSystem": "Yes",
+					"oshManagementSystemInternationalCertification": "Yes",
+					"oshManagementSystemNationalCertification": "Yes",
+					"workplaceAccidentsUnder10": "No"
+				},
+				"freedomOfAssociation": {
+					"freedomOfOperationForTradeUnion": "Yes",
+					"freedomOfAssociationTraining": "No"
+				},
+				"humanRights": {
+					"diversityAndInclusionRole": "Yes",
+					"equalOpportunitiesOfficer": "No",
+					"riskOfHarmfulPollution": "Yes",
+					"unlawfulEvictionAndTakingOfLand": "No",
+					"useOfPrivatePublicSecurityForces": "Yes",
+					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No"
+				},
+				"evidenceCertificatesAndAttestations": {
+					"iso26000": "Yes",
+					"sa8000Certification": "No",
+					"betterWorkProgramCertificate": "Yes",
+					"iso45001Certification": "No",
+					"iso14000Certification": "No",
+					"iso37301Certification": "Yes",
+					"riskManagementSystemCertification": "No",
+					"amforiBsciAuditReport": "Yes",
+					"initiativeClauseSocialCertification": "No",
+					"responsibleBusinessAssociationCertification": "No",
+					"fairLabourAssociationCertification": "No",
+					"fairWorkingConditionsPolicy": "No",
+					"equalOpportunitiesAndNondiscriminationPolicy": "No",
+					"complaintsAndGrievancesPolicy": "No",
+					"environmentalImpactPolicy": "No",
+					"supplierCodeOfConduct": "No"
+				}
+			},
+			"governance": {
+				"socialAndEmployeeMatters": {
+					"responsibilitiesForFairWorkingConditions": "Yes"
+				},
+				"environment": {},
+				"osh": {},
+				"riskManagement": {
+					"riskManagementSystem": "Yes"
+				},
+				"codeOfConduct": {
+					"codeOfConduct": "Yes"
+				}
+			},
+			"environmental": {
+				"waste": {
+					"mercuryAndMercuryWasteHandling": "No",
+					"mercuryAndMercuryWasteHandlingPolicy": "No",
+					"chemicalHandling": "Yes",
+					"environmentalManagementSystem": "Yes",
+					"environmentalManagementSystemInternationalCertification": "No",
+					"legalRestrictedWasteProcesses": "Yes",
+					"mercuryAddedProductsHandling": "No",
+					"mercuryAddedProductsHandlingRiskOfExposure": "No",
+					"mercuryAddedProductsHandlingRiskOfDisposal": "Yes",
+					"mercuryAndMercuryCompoundsProductionAndUse": "No",
+					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "No",
+					"persistentOrganicPollutantsProductionAndUse": "No",
+					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
+					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "No",
+					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
+					"hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein": "Yes",
+					"hazardousWasteDisposal": "No",
+					"hazardousWasteDisposalRiskOfImport": "No"
+				}
+			}
+		}
+	}
+]

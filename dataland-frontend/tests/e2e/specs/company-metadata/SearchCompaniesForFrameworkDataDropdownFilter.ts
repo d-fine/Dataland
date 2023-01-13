@@ -41,7 +41,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click();
       verifyTaxonomySearchResultTable();
       cy.url()
-        .should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-non-financials")
+        .should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-non-financials&framework=lksg")
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
         .click();
@@ -52,7 +52,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
-      cy.url().should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-financials");
+      cy.url().should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-financials&framework=lksg");
     }
   );
   it(
