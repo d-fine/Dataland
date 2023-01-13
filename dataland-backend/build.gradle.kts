@@ -60,6 +60,7 @@ openApi {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
     outputFileName.set("$projectDir/backendOpenApi.json")
+    waitTimeInSeconds.set(60)
 }
 
 tasks.test {
