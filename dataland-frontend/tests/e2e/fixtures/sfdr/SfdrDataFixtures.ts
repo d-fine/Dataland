@@ -1,7 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  SfdrData,
-} from "@clients/backend";
+import { SfdrData } from "@clients/backend";
 import {
   generateNumericOrEmptyDatapoint,
   generateYesNoOrEmptyDatapoint,
@@ -54,14 +52,8 @@ export function generateSfdrData(): SfdrData {
         violationOfTaxRulesAndRegulation: generateYesNoOrEmptyDatapoint(reports),
         unGlobalCompactPrinciplesCompliancePolicy: generateYesNoOrEmptyDatapoint(reports),
         oecdGuidelinesForMultinationalEnterprisesPolicy: generateYesNoOrEmptyDatapoint(reports),
-        averageGrossHourlyEarningsMaleEmployees: generateNumericOrEmptyDatapoint(
-            reports,
-            randomEuroValue(0, 100)
-        ),
-        averageGrossHourlyEarningsFemaleEmployees: generateNumericOrEmptyDatapoint(
-            reports,
-            randomEuroValue(0, 100)
-        ),
+        averageGrossHourlyEarningsMaleEmployees: generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
+        averageGrossHourlyEarningsFemaleEmployees: generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
         femaleBoardMembers: generateNumericOrEmptyDatapoint(reports),
         maleBoardMembers: generateNumericOrEmptyDatapoint(reports),
         controversialWeaponsExposure: generateYesNoOrEmptyDatapoint(reports),
@@ -154,6 +146,6 @@ export function generateSfdrData(): SfdrData {
         carbonReductionInitiatives: generateYesNoOrEmptyDatapoint(reports),
       },
     },
-    referencedReports: reports
+    referencedReports: reports,
   };
 }

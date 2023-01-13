@@ -2,7 +2,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import fs from "fs";
 import { LksgData } from "@clients/backend";
-import {generateLksgPreparedFixtures} from "./LksgPreparedFixtures";
+import { generateLksgPreparedFixtures } from "./LksgPreparedFixtures";
 
 export function exportFixturesLksg(): void {
   const companyInformationWithLksgData = generateFixtureDataset<LksgData>(generateLksgData, 150);
@@ -12,7 +12,7 @@ export function exportFixturesLksg(): void {
   );
   const preparedFixtureLksgDataForFinancials = generateLksgPreparedFixtures();
   fs.writeFileSync(
-      "../testing/data/CompanyInformationWithLksgPreparedFixtures.json",
-      JSON.stringify(preparedFixtureLksgDataForFinancials, null, "\t")
+    "../testing/data/CompanyInformationWithLksgPreparedFixtures.json",
+    JSON.stringify(preparedFixtureLksgDataForFinancials, null, "\t")
   );
 }

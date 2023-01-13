@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.model.lksg.submodels.LksgChildLabour
 import org.dataland.datalandbackend.model.lksg.submodels.LksgEvidenceCertificatesAndAttestations
 import org.dataland.datalandbackend.model.lksg.submodels.LksgForcedLabourSlaveryAndDebtBondage
 import org.dataland.datalandbackend.model.lksg.submodels.LksgFreedomOfAssociation
-import org.dataland.datalandbackend.model.lksg.submodels.LksgGrievanceMechanism
 import org.dataland.datalandbackend.model.lksg.submodels.LksgGeneral
+import org.dataland.datalandbackend.model.lksg.submodels.LksgGrievanceMechanism
 import org.dataland.datalandbackend.model.lksg.submodels.LksgHumanRights
 import org.dataland.datalandbackend.model.lksg.submodels.LksgSocialOsh
 

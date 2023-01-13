@@ -5,7 +5,9 @@ import {
   DataTypeEnum,
   LksgData,
   SfdrData,
-  SmeData, CompanyDataControllerApi, Configuration,
+  SmeData,
+  CompanyDataControllerApi,
+  Configuration,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -133,15 +135,19 @@ describe(
 
         it("Upload an additional lksg data set to existing fake-fixtures", () => {
           let preparedFixtures: Array<FixtureData<LksgData>>;
-          cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-            preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-          }).then(() => {
-            prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
-          });
+          cy.fixture("CompanyInformationWithLksgPreparedFixtures")
+            .then(function (jsonContent) {
+              preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+            })
+            .then(() => {
+              prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
+            });
           cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-            const preparedCompanyId =
-                (await new CompanyDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanies("two-lksg-data-sets")).data[0].companyId;
+            const preparedCompanyId = (
+              await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+                "two-lksg-data-sets"
+              )
+            ).data[0].companyId;
             const dataSet = generateLksgData();
             await uploadOneLksgDatasetViaApi(token, preparedCompanyId, dataSet);
           });

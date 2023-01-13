@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.model.sfdr
 
 import org.dataland.datalandbackend.model.sfdr.submodels.SfdrAnticorruptionAndAntibribery
-import org.dataland.datalandbackend.model.sfdr.submodels.SfdrGreenSecurities
 import org.dataland.datalandbackend.model.sfdr.submodels.SfdrGeneral
+import org.dataland.datalandbackend.model.sfdr.submodels.SfdrGreenSecurities
 import org.dataland.datalandbackend.model.sfdr.submodels.SfdrHumanRights
 import org.dataland.datalandbackend.model.sfdr.submodels.SfdrSocialAndEmployeeMatters
 

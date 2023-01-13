@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.model.lksg
 import org.dataland.datalandbackend.model.lksg.submodels.LksgCodeOfConduct
 import org.dataland.datalandbackend.model.lksg.submodels.LksgEnvironment
 import org.dataland.datalandbackend.model.lksg.submodels.LksgGovernanceOsh
-import org.dataland.datalandbackend.model.lksg.submodels.LksgSocialAndEmployeeMatters
 import org.dataland.datalandbackend.model.lksg.submodels.LksgRiskManagement
+import org.dataland.datalandbackend.model.lksg.submodels.LksgSocialAndEmployeeMatters
 
 /**
  * --- API model ---
