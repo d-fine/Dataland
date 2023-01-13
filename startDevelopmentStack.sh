@@ -1,6 +1,7 @@
 #!/bin/bash
 # Login to the docker repository
 set -euxo pipefail
+./verifyEnvironmentVariables.sh
 
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 
