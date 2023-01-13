@@ -46,20 +46,20 @@ describe(
       });
     }
 
-    function checkMatchingIds(
+    function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,
-      expectedNumberOfCompanyIds: number,
-      expectedNumberOfDataSetIds: number
+      expectedNumberOfCompanies: number,
+      expectedNumberOfDataSets: number
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.numberOfDataSetsForDataType === expectedNumberOfDataSetIds &&
-              response.numberOfCompaniesForDataType === expectedNumberOfCompanyIds,
-            `Found ${response.numberOfCompaniesForDataType} companies with matching data 
-                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected ${expectedNumberOfCompanyIds} 
-                  company ids and ${expectedNumberOfDataSetIds} data set ids`
+            response.numberOfDataSetsForDataType === expectedNumberOfDataSets &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+            `Found ${response.numberOfCompaniesForDataType} companies having 
+            ${response.numberOfDataSetsForDataType} datasets with datatype ${dataType}, 
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfDataSets} datasets`
           );
         });
     }
@@ -78,7 +78,7 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyFinancials,
           companiesWithEuTaxonomyDataForFinancials.length,
           companiesWithEuTaxonomyDataForFinancials.length
@@ -102,7 +102,7 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyNonFinancials,
           companiesWithEuTaxonomyDataForNonFinancials.length,
           companiesWithEuTaxonomyDataForNonFinancials.length
@@ -130,7 +130,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
         });
 
         it("Upload an additional lksg data set to existing fake-fixtures", () => {
@@ -154,7 +154,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
         });
       }
     );
@@ -179,7 +179,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
         });
       }
     );
@@ -204,7 +204,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
         });
       }
     );
