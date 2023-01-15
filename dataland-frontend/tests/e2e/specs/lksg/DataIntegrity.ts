@@ -1,8 +1,14 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum } from "@clients/backend";
 import { getOneCompanyThatHasDataForDataType } from "../../utils/ApiUtils";
+import { FixtureData } from "../../fixtures/FixtureUtils";
+import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
+import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
+import { CompanyInformation, LksgData, CompanyDataControllerApi, Configuration, DataTypeEnum } from "@clients/backend";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
+
+// TODO use shortcuts in imports above
 
 const timeout = 120 * 1000;
 describeIf(
@@ -16,33 +22,51 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
-    /*
-        let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    let preparedFixtures: Array<FixtureData<LksgData>>;
 
-        before(function () {
-          cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-            preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-          });
-        });
+    before(function () {
+      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+        preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      });
+    });
 
+    function getPreparedFixture(name: string): FixtureData<LksgData> {
+      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+      if (!preparedFixture) {
+        throw new ReferenceError(
+          "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
+        );
+      } else {
+        return preparedFixture;
+      }
+    } // TODO delete at the end if not needed
 
-
-        function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForNonFinancials> {
-          const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
-          if (!preparedFixture) {
-            throw new ReferenceError(
-              "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
-            );
-          } else {
-            return preparedFixture;
+    function uploadCompanyAndEuTaxonomyDataForFinancialsViaApi(
+      companyInformation: CompanyInformation,
+      testData: LksgData
+    ): void {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+          (storedCompany) => {
+            return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData);
           }
-        }
-          TODO activate and adjust as soon as (or if) we have prepared fixtures for lskg
-         */
+        );
+      });
+    }
 
-    /**
-     * todo
-     */
+    function uploadSecondLksgDataSetToExistingCompany() {
+      // TODO could set a flag if we want the second lksg data set to be reported in another year or same year
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        const existingCompanyId = (
+          await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+            "two-lksg-data-sets"
+          )
+        ).data[0].companyId;
+        const dataSet = generateLksgData();
+        await uploadOneLksgDatasetViaApi(token, existingCompanyId, dataSet);
+      });
+    }
+
     function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg).then((storedCompany) => {
@@ -58,8 +82,18 @@ describeIf(
       });
     }
 
-    it("Visit Lksg view page for an existing Lksg dataset and verify that it is displayed as expected", () => {
+    it("Check Lksg view page for company with one Lksg data set", () => {
       pickOneUploadedLksgDataSetAndVerifyLksgPageForIt();
+    });
+
+    it("Check Lksg view page for company with two Lksg data sets reported for the same year", () => {
+      // uploadSecondLksgDataSetToExistingCompany( companyName: "two-lksg-data-sets-same-year", sameYear: true)
+      // checks
+    });
+
+    it("Check Lksg view page for company with two Lksg data sets reported in different years", () => {
+      // uploadSecondLksgDataSetToExistingCompany( companyName: "two-lksg-data-sets-different-years", sameYear: false)
+      // checks
     });
   }
 );

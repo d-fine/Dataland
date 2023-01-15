@@ -6,8 +6,6 @@ import {
   LksgData,
   SfdrData,
   SmeData,
-  CompanyDataControllerApi,
-  Configuration,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -18,7 +16,6 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 const chunkSize = 15;
 
 describe(
@@ -46,20 +43,20 @@ describe(
       });
     }
 
-    function checkMatchingIds(
+    function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,
-      expectedNumberOfCompanyIds: number,
-      expectedNumberOfDataSetIds: number
+      expectedNumberOfCompanies: number,
+      expectedNumberOfDataSets: number
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.numberOfDataSetsForDataType === expectedNumberOfDataSetIds &&
-              response.numberOfCompaniesForDataType === expectedNumberOfCompanyIds,
-            `Found ${response.numberOfCompaniesForDataType} companies with matching data 
-                  and ${response.numberOfDataSetsForDataType} uploaded data ids, expected ${expectedNumberOfCompanyIds} 
-                  company ids and ${expectedNumberOfDataSetIds} data set ids`
+            response.numberOfDataSetsForDataType === expectedNumberOfDataSets &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+            `Found ${response.numberOfCompaniesForDataType} companies having 
+            ${response.numberOfDataSetsForDataType} datasets with datatype ${dataType}, 
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfDataSets} datasets`
           );
         });
     }
@@ -78,7 +75,7 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyFinancials,
           companiesWithEuTaxonomyDataForFinancials.length,
           companiesWithEuTaxonomyDataForFinancials.length
@@ -102,7 +99,7 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyNonFinancials,
           companiesWithEuTaxonomyDataForNonFinancials.length,
           companiesWithEuTaxonomyDataForNonFinancials.length
@@ -130,31 +127,11 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length, companiesWithLksgData.length);
-        });
-
-        it("Upload an additional lksg data set to existing fake-fixtures", () => {
-          let preparedFixtures: Array<FixtureData<LksgData>>;
-          cy.fixture("CompanyInformationWithLksgPreparedFixtures")
-            .then(function (jsonContent) {
-              preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-            })
-            .then(() => {
-              prepopulate(preparedFixtures, uploadOneLksgDatasetViaApi);
-            });
-          cy.getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-            const preparedCompanyId = (
-              await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
-                "two-lksg-data-sets"
-              )
-            ).data[0].companyId;
-            const dataSet = generateLksgData();
-            await uploadOneLksgDatasetViaApi(token, preparedCompanyId, dataSet);
-          });
-        });
-
-        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length + 1, companiesWithLksgData.length + 2);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.Lksg,
+            companiesWithLksgData.length,
+            companiesWithLksgData.length
+          );
         });
       }
     );
@@ -179,7 +156,11 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length, companiesWithSfdrData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.Sfdr,
+            companiesWithSfdrData.length,
+            companiesWithSfdrData.length
+          );
         });
       }
     );
@@ -204,7 +185,11 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length, companiesWithSmeData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.Sme,
+            companiesWithSmeData.length,
+            companiesWithSmeData.length
+          );
         });
       }
     );
