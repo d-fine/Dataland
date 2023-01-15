@@ -11,10 +11,12 @@ import "@formkit/themes/genesis";
 import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
+import DialogService from "primevue/dialogservice";
 
 function instantiateVueApp(): void {
   const app = createApp(App);
   app.use(plugin, defaultConfig);
+  app.use(DialogService);
   app.use(router);
   app.use(PrimeVue);
   app.config.unwrapInjectedRef = true;
