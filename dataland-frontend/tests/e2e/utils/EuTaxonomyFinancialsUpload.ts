@@ -14,12 +14,23 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }
 
+/**
+ * Uploads a single eutaxonomy-financials data entry for a company via the Dataland upload form
+ *
+ * @param companyId The Id of the company to upload the dataset for
+ * @returns the id of the dataset that has been uploaded
+ */
 export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string): Cypress.Chainable {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
   fillEuTaxonomyFinancialsDummyUploadFields();
   return submitEuTaxonomyFinancialsUploadForm();
 }
 
+/**
+ * Fills the eutaxonomy-financials upload form with the given dataset
+ *
+ * @param data the data to fill the form with
+ */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
@@ -50,6 +61,12 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
   fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
 }
 
+/**
+ * Fills a set of eligibility-kpis for different company types
+ *
+ * @param divName the name of the parent div of the kpis to fill in
+ * @param data the kpi data to use to fill the form
+ */
 function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined): void {
   fillField(divName, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
   fillField(divName, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivity);
@@ -58,6 +75,13 @@ function fillEligibilityKpis(divName: string, data: EligibilityKpis | undefined)
   fillField(divName, "investmentNonNfrd", data?.investmentNonNfrd);
 }
 
+/**
+ * Enters a single decimal value into an input field in the upload eutaxonomy-financials form
+ *
+ * @param divName the name of the parent div of the input field
+ * @param inputName the name of the input field
+ * @param value the value to fill in
+ */
 function fillField(divName: string, inputName: string, value?: DataPointBigDecimal): void {
   if (value !== undefined && value.value !== undefined) {
     const input = value.value.toString();
@@ -69,12 +93,20 @@ function fillField(divName: string, inputName: string, value?: DataPointBigDecim
   }
 }
 
+/**
+ * Enters the minimum set of dummy values that can be used to submit an eutaxonomy-financials upload form
+ */
 function fillEuTaxonomyFinancialsDummyUploadFields(): void {
   cy.get("select[name=financialServicesTypes]").select("Credit Institution");
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[name="reportingObligation"][value=Yes]').check();
 }
 
+/**
+ * Extracts the first eutaxonomy-financials dataset from the fake fixtures
+ *
+ * @returns the first eutaxonomy-financials dataset from the fake fixtures
+ */
 export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForFinancials> {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
@@ -82,6 +114,13 @@ export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuT
   });
 }
 
+/**
+ * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
+ *
+ * @param token The API bearer token to use
+ * @param companyId The Id of the company to upload the dataset for
+ * @param data The Dataset to upload
+ */
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,

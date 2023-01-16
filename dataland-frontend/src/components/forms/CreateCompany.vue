@@ -109,6 +109,10 @@ export default defineComponent({
     alternativeNamesListSize: 0,
   }),
   methods: {
+    /**
+     * Creates a new company with the data entered in the FormKit form
+     * by callind the Dataland API
+     */
     async postCompanyData() {
       try {
         this.postCompanyProcessed = false;
