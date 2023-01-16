@@ -20,11 +20,10 @@ class ReceiverAndSender(val rabbitTemplate: RabbitTemplate) {
     @RabbitHandler
     fun receive(message: String) {
         println("Received data upload on QA message queue with Correlation ID: '$message'")
-        if(message != null) {
+        if (message != null) {
             rabbitTemplate.convertAndSend("upload_queue", message)
         }
     }
-
 }
 @Service
 @RabbitListener(queues = ["upload_queue"])

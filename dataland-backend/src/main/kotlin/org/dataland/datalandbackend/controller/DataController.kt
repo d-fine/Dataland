@@ -82,5 +82,4 @@ abstract class DataController<T>(
     private fun postToQaQueue(input: String) {
         rabbitTemplate.convertAndSend("qa_queue", input)
     }
-
 }
