@@ -3,9 +3,11 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.services.CompanyManager
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -24,7 +26,10 @@ class CompanyDataController(
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-        return ResponseEntity.ok(companyManager.addCompany(companyInformation).toApiModel())
+        return ResponseEntity.ok(
+            companyManager.addCompany(companyInformation)
+                .toApiModel(DatalandAuthentication.fromContext())
+        )
     }
 
     override fun getCompanies(
@@ -40,12 +45,15 @@ class CompanyDataController(
                 "countryCodes='$countryCodes', sectors='$sectors'"
         )
         return ResponseEntity.ok(
-            companyManager.searchCompanies(
-                searchString ?: "",
-                onlyCompanyNames,
-                dataTypes ?: setOf(),
-                countryCodes ?: setOf(),
-                sectors ?: setOf()
+            companyManager.searchCompaniesAndGetApiModel(
+                CompanySearchFilter(
+                    searchString ?: "",
+                    onlyCompanyNames,
+                    dataTypes ?: setOf(),
+                    countryCodes ?: setOf(),
+                    sectors ?: setOf(),
+                ),
+                DatalandAuthentication.fromContextOrNull()
             )
         )
     }
@@ -60,7 +68,10 @@ class CompanyDataController(
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
-        return ResponseEntity.ok(companyManager.getCompanyApiModelById(companyId))
+        return ResponseEntity.ok(
+            companyManager
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+        )
     }
 
     override fun getTeaserCompanies(): List<String> {

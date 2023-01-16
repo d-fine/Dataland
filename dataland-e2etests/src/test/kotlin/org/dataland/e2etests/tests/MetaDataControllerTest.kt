@@ -193,76 +193,86 @@ class MetaDataControllerTest {
     @Test
     fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
-        val testUploadDataUploaderDataId = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Uploader
-        )[0].actualStoredDataMetaInfo!!.dataId
-        val testUploadDataAdminDataId = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        )[0].actualStoredDataMetaInfo!!
+        val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Admin
-        )[0].actualStoredDataMetaInfo!!.dataId
+        )[0].actualStoredDataMetaInfo!!
 
         val uploaderUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Uploader)
         val adminUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Admin)
 
-        validateReaderAcessToUserId(testUploadDataUploaderDataId, testUploadDataAdminDataId)
-        validateUploaderAccessToUserId(testUploadDataUploaderDataId, uploaderUserId, testUploadDataAdminDataId)
+        validateReaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
+        validateUploaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload, uploaderUserId)
         validateAdminAccessToUserId(
-            testUploadDataUploaderDataId,
+            metaInfoOfUploaderUpload,
+            metaInfoOfAdminUpload,
             uploaderUserId,
-            testUploadDataAdminDataId,
             adminUserId
         )
     }
 
     private fun validateAdminAccessToUserId(
-        testUploadDataUploaderDataId: String,
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
         uploaderUserId: String,
-        testUploadDataAdminDataId: String,
         adminUserId: String
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderDataId, UserType.Admin, uploaderUserId,
+            testUploadDataUploaderMetaInfo, UserType.Admin, uploaderUserId,
             "Admins should be able to view uploaderUserids for all users"
         )
         expectUserIdToBe(
-            testUploadDataAdminDataId, UserType.Admin, adminUserId,
+            testUploadDataAdminMetaInfo, UserType.Admin, adminUserId,
             "Admins should be able to view uploaderUserids for all users"
         )
     }
 
     private fun validateUploaderAccessToUserId(
-        testUploadDataUploaderDataId: String,
-        uploaderUserId: String,
-        testUploadDataAdminDataId: String
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+        uploaderUserId: String
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderDataId, UserType.Uploader, uploaderUserId,
+            testUploadDataUploaderMetaInfo, UserType.Uploader, uploaderUserId,
             "Expected user id to be present if the user requests data about an upload he performed himself"
         )
         expectUserIdToBe(
-            testUploadDataAdminDataId, UserType.Uploader, null,
+            testUploadDataAdminMetaInfo, UserType.Uploader, null,
             "Data Uploaders should not be able to view the user id of uploads of other users"
         )
     }
 
-    private fun validateReaderAcessToUserId(testUploadDataUploaderDataId: String, testUploadDataAdminDataId: String) {
+    private fun validateReaderAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation
+    ) {
         expectUserIdToBe(
-            testUploadDataUploaderDataId, UserType.Reader, null,
+            testUploadDataUploaderMetaInfo, UserType.Reader, null,
             "A reader should not see any uploader ids"
         )
         expectUserIdToBe(
-            testUploadDataAdminDataId, UserType.Reader, null,
+            testUploadDataAdminMetaInfo, UserType.Reader, null,
             "A reader should not see any uploader ids"
         )
     }
 
     private fun expectUserIdToBe(
-        dataId: String,
+        dataMetaInformation: DataMetaInformation,
         requestingUserType: UserType,
         expectedUploaderId: String?,
         msg: String
     ) {
         apiAccessor.tokenHandler.obtainTokenForUserType(requestingUserType)
-        val uploaderUserId = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId
-        assertEquals(expectedUploaderId, uploaderUserId, msg)
+
+        val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
+            .uploaderUserId
+        assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
+
+        val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi
+            .getCompanyById(dataMetaInformation.companyId)
+            .dataRegisteredByDataland.firstOrNull()?.uploaderUserId
+        assertEquals(uploaderUserIdFromCompanyInfo, uploaderUserIdFromMetaInfo, msg)
     }
 }

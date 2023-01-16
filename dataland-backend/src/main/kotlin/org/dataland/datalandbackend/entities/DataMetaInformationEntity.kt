@@ -37,28 +37,17 @@ data class DataMetaInformationEntity(
     var company: StoredCompanyEntity,
 ) : ApiModelConversion<DataMetaInformation> {
 
-    override fun toApiModel(): DataMetaInformation {
-        return DataMetaInformation(
-            dataId = dataId,
-            dataType = DataType.valueOf(dataType),
-            uploaderUserId = null,
-            uploadTime = this.uploadTime,
-            companyId = company.companyId,
-        )
-    }
-
-    /**
-     * Returns the API model to be shown to the given viewingUser
-     * The uploaderUserId field will be populated if the user is admin or the uploader of this data
-     * otherwise the field will remain empty
-     */
-    fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
             viewingUser.roles.contains(DatalandRealmRoles.ROLE_ADMIN) ||
                 viewingUser.userId == this.uploaderUserId
             )
-
-        return if (displayUploaderUserId) toApiModel().copy(uploaderUserId = this.uploaderUserId)
-        else toApiModel()
+        return DataMetaInformation(
+            dataId = dataId,
+            dataType = DataType.valueOf(dataType),
+            uploaderUserId = if (displayUploaderUserId) this.uploaderUserId else null,
+            uploadTime = this.uploadTime,
+            companyId = company.companyId,
+        )
     }
 }
