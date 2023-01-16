@@ -12,6 +12,7 @@ val jacocoClasses by extra(
     }
 )
 val jacocoVersion: String by project
+val openApiGeneratorTimeOutThresholdInSeconds: String by project
 
 plugins {
     kotlin("jvm")
@@ -49,8 +50,7 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
-    val openApiGeneratorTimeOutThresholdInSeconds = 60
-    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds)
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
 jacoco {
