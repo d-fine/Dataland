@@ -41,7 +41,7 @@ export default defineComponent({
   props: {
     dataID: {
       type: Array,
-      default: [],
+      default: () => [],
     },
   },
   watch: {
@@ -83,20 +83,20 @@ export default defineComponent({
         let dataDate = "";
         for (const area of Object.values(dataByYear)) {
           for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues)) {
+            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
               let indexOfExistingItem = -1;
-              const singleKpiData = {
-                kpi: kpi,
-                group: topic == "general" ? `_${topic}` : topic,
-                [dataDate]: kpiValues,
-              };
               if (kpi === "dataDate") {
                 this.dataSetColumns.push(kpiValues as string);
                 dataDate = kpiValues as string;
               }
+              const singleKpiData = {
+                kpi: kpi,
+                group: topic == "general" ? `_${topic}` : topic,
+                [dataDate ? dataDate : ""]: kpiValues,
+              };
               indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
 
-              if (indexOfExistingItem > 0) {
+              if (indexOfExistingItem !== -1) {
                 Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiData);
               } else {
                 this.kpisDataObjects.push(singleKpiData);

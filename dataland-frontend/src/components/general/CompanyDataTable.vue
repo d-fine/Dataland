@@ -1,8 +1,10 @@
 <template>
+  <DynamicDialog />
+  <div class="col-12 text-left">
+    <h2>LKSG data</h2>
+  </div>
   <div>
-    <DetailsCompanyDataTable />
     <div class="card">
-      <h5>LKSG data</h5>
       <DataTable
         :value="dataToDisplay"
         rowGroupMode="subheader"
@@ -18,7 +20,7 @@
       >
         <Column
           bodyClass="headers-bg flex"
-          headerStyle="min-width: 30vw;"
+          headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpi"
           header="KPIs"
@@ -38,11 +40,17 @@
         </Column>
         <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col">
           <template #body="{ data }">
-            <DetailsCompanyDataTable
+            <a
               v-if="Array.isArray(data[col])"
-              :listOfProductionSitesConvertedNames="listOfProductionSitesConvertedNames"
-              :detailDataForKpi="data[col]"
-            />
+              @click="
+                () => {
+                  onShow(data[col], kpisNames[data.kpi]);
+                }
+              "
+              class="link"
+              >Show "{{ kpisNames[data.kpi] }}"
+              <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+            </a>
             <span v-else>{{ data[col] }}</span>
           </template>
         </Column>
@@ -62,16 +70,17 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
   name: "CompanyDataTable",
-  components: { DataTable, Column, DetailsCompanyDataTable },
+  components: { DataTable, Column, DynamicDialog },
   directives: {
     tooltip: Tooltip,
   },
   data() {
     return {
-      dataToDisplay: null,
+      dataToDisplay: [],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames,
     };
@@ -99,7 +108,21 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.dataToDisplay = this.dataSet; //sort data before table
+    this.dataToDisplay = this.dataSet;
+  },
+  methods: {
+    onShow(onShowData: [], onShowDataTitle: string) {
+      this.$dialog.open(DetailsCompanyDataTable, {
+        props: {
+          header: onShowDataTitle,
+          modal: true,
+        },
+        data: {
+          detailDataForKpi: onShowData,
+          listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
+        },
+      });
+    },
   },
 });
 </script>
