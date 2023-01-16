@@ -1,7 +1,7 @@
 <template>
   <DynamicDialog />
   <div class="col-12 text-left">
-    <h2>LKSG data</h2>
+    <h2>{{ tableDataTitle }}</h2>
   </div>
   <div>
     <div class="card">
@@ -69,7 +69,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
@@ -105,6 +105,10 @@ export default defineComponent({
     impactTopicNames: {
       type: Object,
       default: () => ({}),
+    },
+    tableDataTitle: {
+      type: String,
+      default: "",
     },
   },
   mounted() {

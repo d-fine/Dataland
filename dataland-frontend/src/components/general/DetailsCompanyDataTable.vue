@@ -22,8 +22,10 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { TypeOfProductionSitesNames } from "@/components/resources/frameworkDataSearch/lksg/LksgTypes";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import {
+  TypeOfProductionSitesNames,
+  TypeOfProductionSitesConvertedNames,
+} from "@/components/resources/frameworkDataSearch/DataModelsTypes";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -33,18 +35,19 @@ export default defineComponent({
     return {
       dataToDisplay: [] as TypeOfProductionSitesNames[],
       columns: [] as { field: string; header: string }[],
-      listOfProductionSitesConvertedNames: {} as typeof listOfProductionSitesConvertedNames,
+      listOfProductionSitesConvertedNames: {} as TypeOfProductionSitesConvertedNames,
     };
   },
   mounted() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    this.dataToDisplay = (this.dialogRef as DynamicDialogInstance).data
-      .detailDataForKpi as TypeOfProductionSitesNames[];
+    const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
+    const dialogRefData = dialogRefToDisplay.data as {
+      detailDataForKpi: TypeOfProductionSitesNames[];
+      listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
+    };
+    this.dataToDisplay = dialogRefData.detailDataForKpi;
     console.log("this.dialogRef", this.dialogRef);
     console.log("this.dataToDisplay", this.dataToDisplay);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    this.listOfProductionSitesConvertedNames = (this.dialogRef as DynamicDialogInstance).data
-      .listOfProductionSitesConvertedNames as typeof listOfProductionSitesConvertedNames;
+    this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
     console.log("this.listOfProductionSitesConvertedNames", this.listOfProductionSitesConvertedNames);
   },
   methods: {

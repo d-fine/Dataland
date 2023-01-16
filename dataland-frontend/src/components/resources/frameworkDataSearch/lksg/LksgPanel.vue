@@ -10,6 +10,7 @@
       :dataSetColumns="dataSetColumns"
       :hintsForKpis="lksgQuestions"
       :impactTopicNames="impactTopicNames"
+      tableDataTitle="LkSG data"
     />
   </div>
 </template>
@@ -21,7 +22,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
-import { impactTopicNames, lksgKpis, lksgQuestions } from "@/components/resources/frameworkDataSearch/lksg/LksgModels";
+import { impactTopicNames, lksgKpis, lksgQuestions } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -92,7 +93,7 @@ export default defineComponent({
               const singleKpiData = {
                 kpi: kpi,
                 group: topic == "general" ? `_${topic}` : topic,
-                [dataDate ? dataDate : ""]: kpiValues,
+                [dataDate ? dataDate : ""]: kpiValues as string,
               };
               indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
 
