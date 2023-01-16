@@ -1,4 +1,4 @@
-import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";

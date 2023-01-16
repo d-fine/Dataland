@@ -1,4 +1,4 @@
-import { getStoredCompaniesForDataType } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";

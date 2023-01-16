@@ -4,6 +4,7 @@ import {
   DataPointBigDecimal,
   EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
+  DataMetaInformation,
 } from "@clients/backend";
 import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
@@ -15,6 +16,7 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
 }
 
 export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string): Cypress.Chainable {
+  //TODO why grey in IDE?  don't we use it?  if not, why not anymore?
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
   fillEuTaxonomyFinancialsDummyUploadFields();
   return submitEuTaxonomyFinancialsUploadForm();
@@ -86,11 +88,12 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   data: EuTaxonomyDataForFinancials
-): Promise<void> {
-  await new EuTaxonomyDataForFinancialsControllerApi(
+): Promise<DataMetaInformation> {
+  const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForFinancials({
     companyId,
     data,
   });
+  return response.data;
 }

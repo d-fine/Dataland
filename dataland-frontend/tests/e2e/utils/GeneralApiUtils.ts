@@ -1,6 +1,11 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { RouteHandler } from "cypress/types/net-stubbing";
 
+export interface UploadIds {
+  companyId: string;
+  dataId: string;
+}
+
 export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
@@ -23,13 +28,6 @@ export async function countCompaniesAndDataSetsForDataType(
     numberOfDataSetsForDataType,
     numberOfCompaniesForDataType: storedCompaniesForDataType.length,
   };
-}
-
-export async function getOneCompanyThatHasDataForDataType(
-  token: string,
-  dataType: DataTypeEnum
-): Promise<StoredCompany> {
-  return (await getStoredCompaniesForDataType(token, dataType))[0];
 }
 
 export function interceptAllAndCheckFor500Errors(): void {

@@ -39,11 +39,11 @@ export function generateVatIdentificationNumber(): string {
   return fakeCountryCode + randomNineDigitNumber.toString();
 }
 
-export function generateLksgData(): LksgData {
+export function generateLksgData(dataDate?: string): LksgData {
   return {
     social: {
       general: {
-        dataDate: randomFutureDate(),
+        dataDate: dataDate === undefined ? randomFutureDate() : dataDate,
         lksgInScope: randomYesNoUndefined(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
         numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),

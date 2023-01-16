@@ -6,13 +6,14 @@ import {
   LksgData,
   SfdrData,
   SmeData,
+  DataMetaInformation,
 } from "@clients/backend";
-import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/ApiUtils";
+import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgApiUtils";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -29,7 +30,7 @@ describe(
   },
 
   () => {
-    type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<void>;
+    type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<DataMetaInformation>;
 
     function prepopulate<T>(
       companiesWithFrameworkData: Array<FixtureData<T>>,

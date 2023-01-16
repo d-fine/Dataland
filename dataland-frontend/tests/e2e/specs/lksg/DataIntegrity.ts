@@ -1,18 +1,14 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { getOneCompanyThatHasDataForDataType } from "../../utils/ApiUtils";
-import { FixtureData } from "../../fixtures/FixtureUtils";
-import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
-import { CompanyInformation, LksgData, CompanyDataControllerApi, Configuration, DataTypeEnum } from "@clients/backend";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
-import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
+import { CompanyInformation, LksgData } from "@clients/backend";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { getReportingYearOfLksgDataSet, uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgApiUtils";
+import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import Chainable = Cypress.Chainable;
 
-// TODO use shortcuts in imports above
-
-const timeout = 120 * 1000;
 describeIf(
   "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
   {
@@ -32,8 +28,10 @@ describeIf(
       });
     });
 
-    function getPreparedFixture(name: string): FixtureData<LksgData> {
-      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+    function getPreparedFixture(companyName: string): FixtureData<LksgData> {
+      const preparedFixture = preparedFixtures.find(
+        (fixtureData): boolean => fixtureData.companyInformation.companyName == companyName
+      )!;
       if (!preparedFixture) {
         throw new ReferenceError(
           "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
@@ -41,70 +39,157 @@ describeIf(
       } else {
         return preparedFixture;
       }
-    } // TODO delete at the end if not needed
+    } // TODO this is partially a duplicate in all DataIntegrity tests
 
-    function uploadCompanyAndEuTaxonomyDataForFinancialsViaApi(
+    function uploadCompanyAndLksgDataViaApi(
       companyInformation: CompanyInformation,
       testData: LksgData
-    ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+    ): Chainable<UploadIds> {
+      return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
-            return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData);
+            return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
+              return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
+            });
+          }
+        );
+      }); // TODO might be that the companyId is sufficient as returned in Chainable
+    } // TODO might be kind of a duplicate for all Dataintegrity tests!
+
+    function uploadAnotherLksgDataSetToExistingCompany(
+      companyId: string,
+      alreadyExistingLksgDataSetIdForCompany: string,
+      isNewLksgDataSetInSameYear: boolean
+    ): Chainable<UploadIds> {
+      return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        return getReportingYearOfLksgDataSet(alreadyExistingLksgDataSetIdForCompany, token).then(
+          (reportingYearAsString) => {
+            let reportingYearOfNewLksgDataSet;
+            if (isNewLksgDataSetInSameYear) {
+              reportingYearOfNewLksgDataSet = reportingYearAsString;
+            } else {
+              const reportingYear: number = +reportingYearAsString;
+              reportingYearOfNewLksgDataSet = reportingYear - 1;
+            }
+            const dataSet = generateLksgData(reportingYearOfNewLksgDataSet.toString() + "-05-08");
+            return uploadOneLksgDatasetViaApi(token, companyId, dataSet).then((dataMetaInformation) => {
+              return { companyId: companyId, dataId: dataMetaInformation.dataId };
+            });
           }
         );
       });
     }
 
-    function uploadSecondLksgDataSetToExistingCompany(): void {
-      // TODO could set a flag if we want the second lksg data set to be reported in another year or same year
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = getCompanyIdByName(token, "two-lksg-data-sets");
-        const dataSet = generateLksgData();
-        await uploadOneLksgDatasetViaApi(token, await existingCompanyId, dataSet);
-      });
-    }
+    function uploadCompanyWithOneLksgDataSetAndVerifyLksgPageForIt(): void {
+      const preparedFixture = getPreparedFixture("one-lksg-data-set");
+      const companyInformation = preparedFixture.companyInformation;
+      const lksgData = preparedFixture.t;
 
-    function uploadEuTaxonomyFinancialsDataSetToExistingCompany(): void {
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = getCompanyIdByName(token, "two-different-data-set-types");
-        const dataSet = generateEuTaxonomyDataForFinancials();
-        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, await existingCompanyId, dataSet);
-      });
-    }
+      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
+        cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+        cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+        cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
+          cy.get(`h1`).should("contain", companyInformation.companyName);
 
-    async function getCompanyIdByName(token: string, companyName: string): Promise<string> {
-      return (await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(companyName))
-        .data[0].companyId;
-    }
+          cy.get(`span.p-column-title`) // TODO "!"
+            .should("contain.text", lksgData.social!.general!.dataDate!.split("-").shift());
 
-    function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return getOneCompanyThatHasDataForDataType(token, DataTypeEnum.Lksg).then((storedCompany) => {
-          // TODO get one lksg data set for this company and put it into a variable
-          // TODO then start to do the actual test:
-          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-          cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg`);
-          cy.wait("@retrieveLksgData", { timeout: timeout }).then(() => {
-            // TODO verify code by comparing the displayed data to the actual lksg dataset and by general
-            // TODO checks
-          });
+          cy.get("table.p-datatable-table")
+            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .should("exist");
+
+          cy.get("button.p-row-toggler").eq(0).click();
+          cy.get("table.p-datatable-table")
+            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .should("not.exist");
+
+          cy.get("button.p-row-toggler").eq(0).click();
+          cy.get("table.p-datatable-table")
+            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .should("exist");
+
+          cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
+
+          cy.get("button.p-row-toggler").eq(1).click();
+          cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
+
+          // TODO check if the value for Employee under 18 is (dsiplayed) as expected (either Yes or No)
+
+          cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
+
+          // TODO check that actual Production Sites are displayed
+
+          cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
         });
       });
     }
 
     it("Check Lksg view page for company with one Lksg data set", () => {
-      pickOneUploadedLksgDataSetAndVerifyLksgPageForIt();
+      uploadCompanyWithOneLksgDataSetAndVerifyLksgPageForIt();
     });
 
     it("Check Lksg view page for company with two Lksg data sets reported for the same year", () => {
-      // uploadSecondLksgDataSetToExistingCompany( companyName: "two-lksg-data-sets-same-year", sameYear: true)
-      // checks
+      const preparedFixture = getPreparedFixture("two-lksg-data-sets-in-same-year");
+      const companyInformation = preparedFixture.companyInformation;
+      const lksgData = preparedFixture.t;
+
+      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
+        return uploadAnotherLksgDataSetToExistingCompany(uploadIds.companyId, uploadIds.dataId, true).then(() => {
+          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
+            cy.get(`h1`).should("contain", companyInformation.companyName);
+
+            //  TODO  check if it looks as expected
+          });
+        });
+      });
     });
 
     it("Check Lksg view page for company with two Lksg data sets reported in different years", () => {
-      // uploadSecondLksgDataSetToExistingCompany( companyName: "two-lksg-data-sets-different-years", sameYear: false)
-      // checks
+      const preparedFixture = getPreparedFixture("two-lksg-data-sets-in-different-years");
+      const companyInformation = preparedFixture.companyInformation;
+      const lksgData = preparedFixture.t;
+
+      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
+        return uploadAnotherLksgDataSetToExistingCompany(uploadIds.companyId, uploadIds.dataId, false).then(() => {
+          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
+            cy.get(`h1`).should("contain", companyInformation.companyName);
+
+            //  TODO  check if it looks as expected
+          });
+        });
+      });
+    });
+
+    it("Check Lksg view page for company with six Lksg data sets reported in different years ", () => {
+      const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years");
+      const companyInformation = preparedFixture.companyInformation;
+      const lksgData = preparedFixture.t;
+
+      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
+        const companyId = uploadIds.companyId;
+        return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
+          return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
+            return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
+              return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
+                return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then(() => {
+                  cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+                  cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+                  cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
+                    cy.get(`h1`).should("contain", companyInformation.companyName);
+                    // TODO the "repeat five times" must be possible with less code"
+
+                    //  TODO  check if it looks as expected
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
     });
 
     // TODO find the right place for this test
