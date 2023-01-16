@@ -52,9 +52,13 @@ $message-info-bg: var(--blue-600);
 $message-info-border: var(--blue-800);
 $message-info-text: $white;
 
-$message-success-bg: $white;
+$message-bordered-success-bg: $white;
+$message-bordered-success-border: $green;
+$message-bordered-success-text: $brown-light;
+
+$message-success-bg: $green;
 $message-success-border: $green;
-$message-success-text: $brown-light;
+$message-success-text: $white;
 
 $message-warn-bg: var(--yellow-600);
 $message-warn-border: var(--yellow-800);
