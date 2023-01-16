@@ -281,9 +281,9 @@ export const lksgQuestions = {
     "If the answer to the previous question was 'YES': Is there a risk in your company that O hazardous waste within the meaning of the Basel Convention (Article 1 Paragraph 1, BGBI. 1994 II p. 2703, 2704) or O other wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)) count among these cross-border movements?",
   persistentOrganicPollutantsProductionAndUseRiskForImportingState:
     'Are these wastes transported or shipped to an importing State that is subject to the Basel Convention and O has not given its written consent to the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c)) O is not a contracting party (Article 4, paragraph 5) O does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal and cannot guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or O transported by a Party that has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The term "importing state" includes: a contracting party to which a transboundary shipment of hazardous waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to disposal in an area not under the sovereignty of a state. (Article 2 No. 11)',
-  hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein:
+  hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein:
     "Is your company based in a country that is within the OECD, EU, or Liechtenstein?",
-  hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein:
+  hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein:
     "Is there a risk in your company that hazardous waste is transported to a country that is outside the OECD, EU / Liechtenstein?",
   hazardousWasteDisposal:
     "Do you dispose of hazardous waste within the meaning of the Basel Convention (Article 1 Paragraph 1, BGBI. 1994 II p. 2703, 2704)?",
