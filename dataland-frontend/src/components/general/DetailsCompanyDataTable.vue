@@ -45,10 +45,7 @@ export default defineComponent({
       listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
     };
     this.dataToDisplay = dialogRefData.detailDataForKpi;
-    console.log("this.dialogRef", this.dialogRef);
-    console.log("this.dataToDisplay", this.dataToDisplay);
     this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
-    console.log("this.listOfProductionSitesConvertedNames", this.listOfProductionSitesConvertedNames);
   },
   methods: {
     generateColsNames(): void {

@@ -12,7 +12,7 @@
       </div>
       <div class="grid">
         <div class="col-7">
-          <EuTaxonomyPanelFinancials :dataID="frameworkDataId" />
+          <EuTaxonomyPanelFinancials :dataID="frameworkDataId[0]" />
         </div>
       </div>
     </template>
@@ -31,6 +31,7 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { DataMetaInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
@@ -42,12 +43,12 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: undefined,
+      frameworkDataId: [] as string[],
     };
   },
   methods: {
-    receiveDataId(id: undefined) {
-      this.frameworkDataId = id;
+    receiveDataId(id: []) {
+      this.frameworkDataId = id.map((el) => (el as DataMetaInformation).dataId);
     },
   },
 });

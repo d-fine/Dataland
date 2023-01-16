@@ -239,9 +239,4 @@ export default defineComponent({
   align-content: center;
   align-items: center;
 }
-
-.p-focus {
-  color: #fff !important;
-  background: #e67f3f !important;
-}
 </style>
