@@ -194,7 +194,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(finishedTextSelector).then((element: JQuery<HTMLElement>) => {
           expect(element.text()).to.equal("100%");
         });
-        cy.get("div.p-message-success").should("contain.text", "submit");
+        cy.get("div.p-message-bordered-success").should("contain.text", "submit");
       });
 
       it(`Test the failure response screen`, () => {
