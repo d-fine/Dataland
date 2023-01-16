@@ -43,6 +43,9 @@ Update versions in the following dockerfiles
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
+## Dataland Monitoring
+- [ ] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
+
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
@@ -50,6 +53,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] test.dataland.com
 - [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
+- [ ] monitoring.dataland.com 
 - [ ] (OPT) dataland.com
 
 ## Check e-mails sent by keycloak
