@@ -32,6 +32,7 @@ module.exports = {
       "contexts": ['CallExpression[callee.name="defineComponent"] > ObjectExpression > Property[key.name="methods"] > ObjectExpression > Property > FunctionExpression']
     }],
     "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off",
     "vue/block-lang": ["error",
       {
         "script": {
