@@ -51,7 +51,7 @@ export function uploadCompanyAndLksgDataViaApi(
           });
         }
     );
-  }); // TODO might be that the companyId is sufficient as returned in Chainable
+  });
 } // TODO might be kind of a duplicate for all Dataintegrity tests!
 
 export async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
