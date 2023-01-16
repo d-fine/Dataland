@@ -75,7 +75,7 @@ describeIf(
 
     function uploadEuTaxonomyFinancialsDataSetToExistingCompany() {
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = getCompanyIdByName(token, "two-different-data-sets")
+        const existingCompanyId = getCompanyIdByName(token, "two-different-data-set-types")
         const dataSet = generateEuTaxonomyDataForFinancials();
         await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, existingCompanyId, dataSet);
       });
