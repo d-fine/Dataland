@@ -268,6 +268,7 @@ services:
   rabbitmq:
     profiles: ["production", "testing", "development"]
     image: rabbitmq:3.7-management
+    container_name: rabbitmq
     networks:
       - internal
     ports:
@@ -280,13 +281,9 @@ services:
     profiles: ["production", "testing", "development"]
     networks:
       - internal
-    #build:
-      #context: dataland-dummy-qa-service/
     image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service_test:${DATALAND_DUMMY_QA_SERVICE_TEST_VERSION}
     depends_on:
       - rabbitmq
-    #environment:
-      #SPRING_PROFILES_ACTIVE: docker
 networks:
   internal:
   external:
