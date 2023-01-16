@@ -26,7 +26,7 @@
           header="KPIs"
         >
           <template #body="slotProps">
-            <span class="col-10">{{ kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : "" }}</span>
+            <span class="col-10">{{ kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : slotProps.data.kpi }}</span>
             <em
               class="material-icons info-icon col-2"
               aria-hidden="true"

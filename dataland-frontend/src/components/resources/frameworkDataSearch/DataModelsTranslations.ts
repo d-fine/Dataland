@@ -91,9 +91,9 @@ export const lksgKpis = {
   emasCertification: "EMAS Certification",
   iso26000: "ISO 26000",
   hazardousWasteDisposalRiskOfImport: "Hazardous Waste Disposal Risk Of Import",
-  hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein:
+  hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein:
     "Hazardous Waste Transboundary Movements Outside OECD, EU, Liechtenstein",
-  hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein:
+  hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein:
     "Hazardous Waste Transboundary Movements Located OECD, EU, Liechtenstein",
   persistentOrganicPollutantsProductionAndUseRiskForImportingState:
     "Persistent Organic Pollutants Production And Use Risk For Importing State",
