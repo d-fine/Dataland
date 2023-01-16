@@ -1,6 +1,6 @@
 import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
-import { generateLksgData } from "./LksgDataFixtures";
+import { generateLksgData, generateProductionSite } from "./LksgDataFixtures";
 
 type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>;
 
@@ -40,6 +40,8 @@ function createCompanyToHaveSixLksgDataSetsInDifferentYears(input: FixtureData<L
 
 function createCompanyToHaveOneLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "one-lksg-data-set";
+  input.t.social!.childLabour!.employeeUnder18 = "No";
+  input.t.social!.general!.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
   return input;
 }
 

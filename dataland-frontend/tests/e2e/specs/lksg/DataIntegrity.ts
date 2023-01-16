@@ -191,11 +191,5 @@ describeIf(
         });
       });
     });
-
-    // TODO find the right place for this test
-    it("Check the dropdown menu works as expected", () => {
-      uploadEuTaxonomyFinancialsDataSetToExistingCompany();
-      // TODO finish test after dropdown is there.
-    });
   }
 );
