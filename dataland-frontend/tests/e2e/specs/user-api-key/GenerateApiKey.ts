@@ -1,5 +1,5 @@
 describe("As a user I expect my api key will be generated correctly", () => {
-  function verifyInitialPageStateAndCreateApiKeyCard() {
+  function verifyInitialPageStateAndCreateApiKeyCard(): void {
     cy.get("[data-test='noApiKeyWelcomeComponent']").should("exist").should("contain.text", "You have no API Key!");
     cy.get("[data-test='noApiKeyWelcomeComponent']")
       .find("button")
@@ -12,7 +12,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
   }
 
-  function verifyExpirationDropdownOptions() {
+  function verifyExpirationDropdownOptions(): void {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("button#generateApiKey").click();
     cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
@@ -42,7 +42,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="cancelGenerateApiKey"]').click();
   }
 
-  function verifyCreatingApiKeyAndCopyingIt() {
+  function verifyCreatingApiKeyAndCopyingIt(): void {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });

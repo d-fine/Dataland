@@ -37,10 +37,12 @@ export default defineComponent({
     };
   },
   mounted() {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.dataToDisplay = (this.dialogRef as DynamicDialogInstance).data
       .detailDataForKpi as TypeOfProductionSitesNames[];
     console.log("this.dialogRef", this.dialogRef);
     console.log("this.dataToDisplay", this.dataToDisplay);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.listOfProductionSitesConvertedNames = (this.dialogRef as DynamicDialogInstance).data
       .listOfProductionSitesConvertedNames as typeof listOfProductionSitesConvertedNames;
     console.log("this.listOfProductionSitesConvertedNames", this.listOfProductionSitesConvertedNames);

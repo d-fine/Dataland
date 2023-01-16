@@ -5,18 +5,10 @@ import { getOneCompanyThatHasDataForDataType } from "../../utils/ApiUtils";
 import { FixtureData } from "../../fixtures/FixtureUtils";
 import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
-import {
-  CompanyInformation,
-  LksgData,
-  CompanyDataControllerApi,
-  Configuration,
-  DataTypeEnum,
-} from "@clients/backend";
+import { CompanyInformation, LksgData, CompanyDataControllerApi, Configuration, DataTypeEnum } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
-import {
-  generateEuTaxonomyDataForFinancials
-} from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import {uploadOneEuTaxonomyFinancialsDatasetViaApi} from "../../utils/EuTaxonomyFinancialsUpload";
+import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
 
 // TODO use shortcuts in imports above
 
@@ -64,28 +56,26 @@ describeIf(
       });
     }
 
-    function uploadSecondLksgDataSetToExistingCompany() {
+    function uploadSecondLksgDataSetToExistingCompany(): void {
       // TODO could set a flag if we want the second lksg data set to be reported in another year or same year
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = getCompanyIdByName(token, "two-lksg-data-sets")
+        const existingCompanyId = getCompanyIdByName(token, "two-lksg-data-sets");
         const dataSet = generateLksgData();
-        await uploadOneLksgDatasetViaApi(token, existingCompanyId, dataSet);
+        await uploadOneLksgDatasetViaApi(token, await existingCompanyId, dataSet);
       });
     }
 
-    function uploadEuTaxonomyFinancialsDataSetToExistingCompany() {
+    function uploadEuTaxonomyFinancialsDataSetToExistingCompany(): void {
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = getCompanyIdByName(token, "two-different-data-set-types")
+        const existingCompanyId = getCompanyIdByName(token, "two-different-data-set-types");
         const dataSet = generateEuTaxonomyDataForFinancials();
-        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, existingCompanyId, dataSet);
+        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, await existingCompanyId, dataSet);
       });
     }
 
-    async function getCompanyIdByName(token: string, companyName: string): string {
-      return (await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
-              companyName
-          )
-      ).data[0].companyId;
+    async function getCompanyIdByName(token: string, companyName: string): Promise<string> {
+      return (await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(companyName))
+        .data[0].companyId;
     }
 
     function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
@@ -119,7 +109,7 @@ describeIf(
 
     // TODO find the right place for this test
     it("Check the dropdown menu works as expected", () => {
-      uploadEuTaxonomyFinancialsDataSetToExistingCompany()
+      uploadEuTaxonomyFinancialsDataSetToExistingCompany();
       // TODO finish test after dropdown is there.
     });
   }
