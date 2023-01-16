@@ -113,13 +113,19 @@ describeIf(
           cy.get("button.p-row-toggler").eq(1).click();
           cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
-          // TODO check if the value for Employee under 18 is (dsiplayed) as expected (either Yes or No)
+          cy.get("table > tbody > tr:nth-child(11) > td.headers-bg.flex").find(`span:contains("Employee Under 18")`).should("exist")
+          cy.get("table > tbody > tr:nth-child(11) > td:nth-child(2)").find(`span:contains("No")`).should("exist")
+          // TODO we could think about a way to make this more stable,  e.g. looking for "Employee Under 18" and look for a sibling td-element
 
           cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
 
-          // TODO check that actual Production Sites are displayed
+          lksgData.social!.general!.listOfProductionSites!.forEach(  // TODO catch undefined case?
+              (productionSite) => cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
+          )
 
           cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
+
+          // TODO one tooltip
         });
       });
     }
