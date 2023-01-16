@@ -71,7 +71,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
       cy.wait("@generateApiKey", { timeout: 2 * 1000 }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
-            expect(text).to.eq(interception.response.body.apiKey);
+            expect(text).to.eq(interception.response!.body.apiKey);
           });
         });
       });
