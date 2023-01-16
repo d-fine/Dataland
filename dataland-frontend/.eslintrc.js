@@ -9,7 +9,8 @@ module.exports = {
     'plugin:vue/vue3-essential',
     '@vue/eslint-config-typescript/recommended',
     '@vue/eslint-config-prettier',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jsdoc/recommended'
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -18,7 +19,7 @@ module.exports = {
     extraFileExtensions: ['.vue'],
     sourceType: "module"
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jsdoc'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
@@ -26,6 +27,11 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": ["error", {
       "allowTypedFunctionExpressions": true,
     }],
+    "jsdoc/require-jsdoc": ["error", {
+      "enableFixer": false,
+      "contexts": ['CallExpression[callee.name="defineComponent"] > ObjectExpression > Property[key.name="methods"] > ObjectExpression > Property > FunctionExpression']
+    }],
+    "jsdoc/require-param-type": "off",
     "vue/block-lang": ["error",
       {
         "script": {

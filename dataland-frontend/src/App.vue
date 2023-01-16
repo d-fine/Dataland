@@ -16,6 +16,10 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Sets up the keycloak and keycloakPromise objects that are passed down
+     * to the other components to handle authentication
+     */
     initKeycloak() {
       const initOptions = {
         realm: "datalandsecurity",
