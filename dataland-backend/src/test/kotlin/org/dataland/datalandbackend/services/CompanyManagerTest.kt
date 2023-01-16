@@ -119,9 +119,7 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString)
-        )
+        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter(searchString))
         assertEquals(
             occurencesOfSearchString, searchResponse.size,
             "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
