@@ -268,6 +268,8 @@ services:
   rabbitmq:
     profiles: ["production", "testing", "development"]
     image: rabbitmq:3.7-management
+    networks:
+      - internal
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -276,9 +278,11 @@ services:
       - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
   dummy-qa-service:
     profiles: ["production", "testing", "development"]
+    networks:
+      - internal
     #build:
       #context: dataland-dummy-qa-service/
-    image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service:${DATALAND_DUMMY_QA_SERVICE_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service_test:${DATALAND_DUMMY_QA_SERVICE_TEST_VERSION}
     depends_on:
       - rabbitmq
     #environment:
