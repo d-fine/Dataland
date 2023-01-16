@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -104,31 +105,23 @@ class CompanyManager(
 
     /**
      * Method to search for companies matching the company name or identifier
-     * @param searchString string used for substring matching against the company name and/or identifiers
-     * @param onlyCompanyNames boolean determining if the search should be solely against the company names
-     * @param dataTypeFilter if not empty, return only companies that have data reported for
-     * one of the specified dataTypes
-     * @param countryCodeFilter set of strings with ISO country codes to return companies whose headquarters are in
-     * the country of one of those ISO country codes
-     * @param sectorFilter set of strings with sector names to return companies which operate in one of those sectors
+     * @param filter The filter to use during searching
+     * @param viewingUser The user that is viewing the API model
      * @return list of all matching companies in Dataland
      */
     @Transactional
-    fun searchCompanies(
-        searchString: String = "",
-        onlyCompanyNames: Boolean = false,
-        dataTypeFilter: Set<DataType> = setOf(),
-        countryCodeFilter: Set<String> = setOf(),
-        sectorFilter: Set<String> = setOf(),
+    fun searchCompaniesAndGetApiModel(
+        filter: CompanySearchFilter,
+        viewingUser: DatalandAuthentication? = null
     ): List<StoredCompany> {
-        val searchFilter = StoredCompanySearchFilter(
-            searchString = searchString,
-            nameOnlyFilter = onlyCompanyNames,
-            dataTypeFilter = dataTypeFilter.map { it.name },
-            sectorFilter = sectorFilter.toList(),
-            countryCodeFilter = countryCodeFilter.toList(),
+        val searchFilterForJPA = StoredCompanySearchFilter(
+            searchString = filter.searchString,
+            nameOnlyFilter = filter.onlyCompanyNames,
+            dataTypeFilter = filter.dataTypeFilter.map { it.name },
+            sectorFilter = filter.sectorFilter.toList(),
+            countryCodeFilter = filter.countryCodeFilter.toList(),
         )
-        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilter)
+        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
@@ -136,7 +129,7 @@ class CompanyManager(
 
         val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy { sortingMap[it.companyId]!! }
 
-        return results.map { it.toApiModel() }
+        return results.map { it.toApiModel(viewingUser) }
     }
 
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
@@ -177,9 +170,9 @@ class CompanyManager(
      * @return the StoredCompany object of the retrieved company
      */
     @Transactional
-    fun getCompanyApiModelById(companyId: String): StoredCompany {
+    fun getCompanyApiModelById(companyId: String, viewingUser: DatalandAuthentication? = null): StoredCompany {
         val searchResult = getCompanyById(companyId)
-        return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
+        return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
     }
 
     /**

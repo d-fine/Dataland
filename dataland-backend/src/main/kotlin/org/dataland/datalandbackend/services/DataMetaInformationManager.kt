@@ -27,13 +27,17 @@ class DataMetaInformationManager(
      */
     @Transactional
     fun storeDataMetaInformation(
-        company: StoredCompanyEntity,
         dataId: String,
-        dataType: DataType
+        dataType: DataType,
+        uploaderUserId: String,
+        uploadTime: Long,
+        company: StoredCompanyEntity,
     ): DataMetaInformationEntity {
         val dataMetaInformationEntity = DataMetaInformationEntity(
             dataId = dataId,
             dataType = dataType.name,
+            uploaderUserId = uploaderUserId,
+            uploadTime = uploadTime,
             company = company,
         )
 

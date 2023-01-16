@@ -40,7 +40,7 @@ interface CompanyApi {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information

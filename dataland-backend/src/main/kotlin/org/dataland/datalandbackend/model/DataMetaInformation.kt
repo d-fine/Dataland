@@ -16,6 +16,11 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val dataType: DataType,
 
+    val uploaderUserId: String? = null,
+
+    @field:JsonProperty(required = true)
+    val uploadTime: Long,
+
     @field:JsonProperty(required = true)
     val companyId: String
 )
