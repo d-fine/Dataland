@@ -1,3 +1,5 @@
+import { ApiKeyAndMetaInfo } from "../../../../build/clients/apikeymanager";
+
 describe("As a user I expect my api key will be generated correctly", () => {
   function verifyInitialPageStateAndCreateApiKeyCard(): void {
     cy.get("[data-test='noApiKeyWelcomeComponent']").should("exist").should("contain.text", "You have no API Key!");
@@ -71,8 +73,8 @@ describe("As a user I expect my api key will be generated correctly", () => {
       cy.wait("@generateApiKey", { timeout: 2 * 1000 }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
-            expect(text).to.eq(interception.response!.body.apiKey);
-          });
+            expect(text).to.eq((interception.response!.body as ApiKeyAndMetaInfo).apiKey);
+          }, null);
         });
       });
     }
@@ -81,7 +83,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
   }
 
-  function verifyAlreadyExistingApiKeyState() {
+  function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
     cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(

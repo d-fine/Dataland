@@ -22,7 +22,11 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
-import { impactTopicNames, lksgKpis, lksgQuestions } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import {
+  impactTopicNames,
+  lksgKpis,
+  lksgQuestions,
+} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "LksgPanel",
