@@ -5,8 +5,18 @@ import { getOneCompanyThatHasDataForDataType } from "../../utils/ApiUtils";
 import { FixtureData } from "../../fixtures/FixtureUtils";
 import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
-import { CompanyInformation, LksgData, CompanyDataControllerApi, Configuration, DataTypeEnum } from "@clients/backend";
+import {
+  CompanyInformation,
+  LksgData,
+  CompanyDataControllerApi,
+  Configuration,
+  DataTypeEnum,
+} from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "../../utils/CompanyUpload";
+import {
+  generateEuTaxonomyDataForFinancials
+} from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
+import {uploadOneEuTaxonomyFinancialsDatasetViaApi} from "../../utils/EuTaxonomyFinancialsUpload";
 
 // TODO use shortcuts in imports above
 
@@ -57,14 +67,25 @@ describeIf(
     function uploadSecondLksgDataSetToExistingCompany() {
       // TODO could set a flag if we want the second lksg data set to be reported in another year or same year
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        const existingCompanyId = (
-          await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
-            "two-lksg-data-sets"
-          )
-        ).data[0].companyId;
+        const existingCompanyId = getCompanyIdByName(token, "two-lksg-data-sets")
         const dataSet = generateLksgData();
         await uploadOneLksgDatasetViaApi(token, existingCompanyId, dataSet);
       });
+    }
+
+    function uploadEuTaxonomyFinancialsDataSetToExistingCompany() {
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        const existingCompanyId = getCompanyIdByName(token, "two-different-data-sets")
+        const dataSet = generateEuTaxonomyDataForFinancials();
+        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, existingCompanyId, dataSet);
+      });
+    }
+
+    async function getCompanyIdByName(token: string, companyName: string): string {
+      return (await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+              companyName
+          )
+      ).data[0].companyId;
     }
 
     function pickOneUploadedLksgDataSetAndVerifyLksgPageForIt(): void {
@@ -94,6 +115,12 @@ describeIf(
     it("Check Lksg view page for company with two Lksg data sets reported in different years", () => {
       // uploadSecondLksgDataSetToExistingCompany( companyName: "two-lksg-data-sets-different-years", sameYear: false)
       // checks
+    });
+
+    // TODO find the right place for this test
+    it("Check the dropdown menu works as expected", () => {
+      uploadEuTaxonomyFinancialsDataSetToExistingCompany()
+      // TODO finish test after dropdown is there.
     });
   }
 );
