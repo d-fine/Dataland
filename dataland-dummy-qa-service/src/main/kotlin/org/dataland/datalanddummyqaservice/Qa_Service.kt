@@ -1,4 +1,4 @@
-package org.dataland.rabbitmq
+package org.dataland.datalanddummyqaservice
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener

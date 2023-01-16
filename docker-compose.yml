@@ -274,18 +274,15 @@ services:
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
       - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
- #producer:
-  #build:
-   # context: producer/
-  #ports:
-   # - 8089:8089
-  #depends_on:
-   # - rabbitmq
- #consumer:
-  #build:
-   # context: consumer/
-  #depends_on:
-   # - rabbitmq
+  dummy-qa-service:
+    profiles: ["production", "testing", "development"]
+    #build:
+      #context: dataland-dummy-qa-service/
+    image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service:${DATALAND_DUMMY_QA_SERVICE_VERSION}
+    depends_on:
+      - rabbitmq
+    #environment:
+      #SPRING_PROFILES_ACTIVE: docker
 networks:
   internal:
   external:

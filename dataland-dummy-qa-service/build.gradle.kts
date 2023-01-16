@@ -1,4 +1,4 @@
-// rabbitmq
+// dataland-dummy-qa-service
 
 plugins {
     kotlin("jvm")
