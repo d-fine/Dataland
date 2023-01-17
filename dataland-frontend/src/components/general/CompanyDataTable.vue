@@ -26,7 +26,7 @@
           header="KPIs"
         >
           <template #body="slotProps">
-            <span class="col-10">{{ kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : "" }}</span>
+            <span class="col-10">{{ kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : slotProps.data.kpi }}</span>
             <em
               class="material-icons info-icon col-2"
               aria-hidden="true"
@@ -41,7 +41,7 @@
         <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col">
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[col])"
+              v-if="Array.isArray(data[col]) && data[col].length"
               @click="
                 () => {
                   onShow(data[col], kpisNames[data.kpi]);
@@ -51,7 +51,7 @@
               >Show "{{ kpisNames[data.kpi] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <span v-else>{{ data[col] }}</span>
+            <span v-else>{{ Array.isArray(data[col]) ? "" : data[col] }}</span>
           </template>
         </Column>
         <Column field="group" header="Impact Area"></Column>

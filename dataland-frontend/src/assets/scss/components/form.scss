@@ -117,6 +117,47 @@ input[type="checkbox"], input[type="radio"]{
   }
 }
 
+.outline-dropdown {
+  background: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $outline-dropdown-border;
+  border-radius: 8px;
+  .p-inputtext {
+    background: transparent;
+  }
+}
+
+.fill-dropdown {
+  background: $fill-dropdown-bg;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $fill-dropdown-bg;
+  border-radius: 8px;
+  &.p-overlay-open {
+    background: $fill-dropdown-hover-bg;
+    .p-inputtext {
+      color: $fill-dropdown-hover-text;
+    }
+    .p-dropdown-trigger {
+      color: $fill-dropdown-hover-text;
+    }
+  }
+  &.p-focus {
+    .p-inputtext {
+      outline-width: 0;
+    }
+  }
+  .p-inputtext {
+    background: transparent;
+    padding: .5rem .75rem;
+    color: $fill-input-color;
+  }
+  .p-dropdown-trigger {
+    color: $fill-input-color;
+  }
+}
+
 .p-dropdown-panel {
   background:$white;
   .p-dropdown-items {

@@ -13,6 +13,20 @@
           </div>
         </div>
       </MarginWrapper>
+      <MarginWrapper class="choseFrameworkData surface-0">
+        <Dropdown
+          id="frameworkDataDropdown"
+          v-model="currentDataType"
+          :options="dataTypesList"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Chose Framework"
+          aria-label="Chose framework"
+          class="fill-dropdown"
+          dropdownIcon="pi pi-angle-down"
+          @change="setFrameworkData()"
+        />
+      </MarginWrapper>
       <MarginWrapper>
         <slot></slot>
       </MarginWrapper>
@@ -31,8 +45,10 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { DataTypeEnum } from "@clients/backend";
+import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+
+import Dropdown from "primevue/dropdown";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -42,6 +58,7 @@ export default defineComponent({
     BackButton,
     MarginWrapper,
     FrameworkDataSearchBar,
+    Dropdown,
     AuthenticationWrapper,
     CompanyInformation,
   },
@@ -53,6 +70,8 @@ export default defineComponent({
   data() {
     return {
       currentInput: "",
+      currentDataType: "",
+      dataTypesList: [] as { label: string; value: string }[],
     };
   },
   props: {
@@ -64,26 +83,33 @@ export default defineComponent({
     },
   },
   methods: {
+    setFrameworkData() {
+      void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.currentDataType}`);
+    },
     handleSearchConfirm(searchTerm: string) {
       return this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
     },
-    async getDataIdToLoad() {
+    async getAllFrameworkDataToLoad() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-          this.companyID,
-          this.dataType as DataTypeEnum
-        );
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const listOfDataIds = [] as DataMetaInformation[];
         const listOfMetaData = apiResponse.data;
-        if (listOfMetaData.length == 1) {
-          this.$emit("updateDataId", listOfMetaData[0].dataId);
-        } else if (listOfMetaData.length > 1) {
-          this.$emit("updateDataId", listOfMetaData);
+        listOfMetaData.forEach((el) => {
+          if (!this.dataTypesList.some((e) => e.label === el.dataType)) {
+            this.dataTypesList.push({ label: el.dataType, value: el.dataType });
+          }
+          if (el.dataType === this.dataType) {
+            listOfDataIds.push(el);
+          }
+        });
+        if (listOfDataIds.length) {
+          this.$emit("updateDataId", listOfDataIds);
         } else {
           this.$emit("updateDataId", null);
         }
@@ -93,12 +119,23 @@ export default defineComponent({
     },
   },
   created() {
-    void this.getDataIdToLoad();
+    void this.getAllFrameworkDataToLoad();
   },
   watch: {
     companyID() {
-      void this.getDataIdToLoad();
+      void this.getAllFrameworkDataToLoad();
     },
   },
 });
 </script>
+
+<style lang="scss">
+.choseFrameworkData {
+  text-align: left;
+  .p-multiselect {
+    margin-left: 0;
+  }
+}
+</style>
+
+<!--this.dataType as DataTypeEnum-->
