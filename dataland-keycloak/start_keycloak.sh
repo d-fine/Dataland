@@ -14,7 +14,7 @@ if [[ "$mode" == initialize ]]; then
   rm $(grep -E -l '"username" : "test_user.*@dataland.com"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   realm_file=$dataland_realm_folder/datalandsecurity-realm.json
-  for variable in $(grep -oP '"\$\{([A-Z_]+)\}"' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
+  for variable in $(grep -oP '\$\{([A-Z_]+)\}' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
     if env | grep -eq "^$variable="; then
       echo "Error: Required variable $variable not set in environmental variables."
       exit 1
