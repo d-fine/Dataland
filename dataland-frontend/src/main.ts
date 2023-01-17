@@ -12,13 +12,16 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
+import { createPinia } from "pinia";
 
 function instantiateVueApp(): void {
   const app = createApp(App);
+  const pinia = createPinia();
   app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);
   app.use(PrimeVue);
+  app.use(pinia);
   app.config.unwrapInjectedRef = true;
   app.mount("#app");
 }
