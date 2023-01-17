@@ -187,10 +187,10 @@ class CompanyManager(
     }
 
     /**
-     * Method to retrieve framework information about a specific company
+     * Method to retrieve framework data sets about a specific company
      * @param companyId
      * @param dataType
-     * @return the StoredCompany object of the retrieved company TODO
+     * @return a list of the available framework data for the company with the given ID
      */
     @Transactional
     fun getCompanyFrameworkDataById(companyId: String, dataType: DataType): List<Map<String, Any>> {

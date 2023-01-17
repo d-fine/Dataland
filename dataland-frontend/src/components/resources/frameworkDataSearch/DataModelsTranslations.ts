@@ -346,7 +346,7 @@ export const listOfProductionSitesConvertedNames = {
   name: "Name",
   isInHouseProductionOrIsContractProcessing: "Is In-house Production Or Is Contract Processing",
   address: "Address",
-  listOfGoodsAndServices: "List Of Goods Or Services",
+  listOfGoodsOrServices: "List Of Goods Or Services",
 };
 
 export const impactTopicNames = {

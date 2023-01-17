@@ -17,7 +17,7 @@ export function generateProductionSite(): ProductionSite {
     faker.address.city() +
     ", " +
     faker.address.country();
-  const fakeGoodsAndServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
+  const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
@@ -25,7 +25,7 @@ export function generateProductionSite(): ProductionSite {
     name: fakeSiteName,
     isInHouseProductionOrIsContractProcessing: yesNo,
     address: fullFormattedFakeAddress,
-    listOfGoodsAndServices: fakeGoodsAndServices,
+    listOfGoodsOrServices: fakeGoodsOrServices,
   };
 }
 

@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
+ * Fields of the SFDR questionnaire regarding the impact topic "General"
  */
 data class SfdrGeneral(
     val fiscalYear: FiscalYearDeviation?,

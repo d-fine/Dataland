@@ -127,7 +127,7 @@ interface CompanyApi {
 
     @Operation(
         summary = "Retrieve company framework information.",
-        description = "Company framework information behind the given company Id is retrieved."
+        description = "Company framework information behind the given company ID is retrieved."
     )
     @ApiResponses(
         value = [

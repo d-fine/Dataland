@@ -7,7 +7,6 @@ type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const creationFunctions: Array<generatorFunction> = [
     createCompanyToHaveTwoLksgDataSetsInSameYear,
-    createCompanyToHaveTwoLksgDataSetsInDifferentYears,
     createCompanyToHaveSixLksgDataSetsInDifferentYears,
     createCompanyToHaveOneLksgDataSetsInDifferentYears,
     createCompanyToHaveTwoDifferentDataSetTypes,
@@ -22,12 +21,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 
 function createCompanyToHaveTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-lksg-data-sets-in-same-year";
-  input.t.social!.general!.dataDate = "2022-01-01";
-  return input;
-}
-
-function createCompanyToHaveTwoLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
-  input.companyInformation.companyName = "two-lksg-data-sets-in-different-years";
   input.t.social!.general!.dataDate = "2022-01-01";
   return input;
 }
