@@ -2761,7 +2761,7 @@
           "address": {
             "type": "string"
           },
-          "listOfGoodsAndServices": {
+          "listOfGoodsOrServices": {
             "type": "array",
             "items": {
               "type": "string"

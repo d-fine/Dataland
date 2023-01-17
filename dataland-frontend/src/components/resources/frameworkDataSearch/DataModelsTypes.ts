@@ -2,12 +2,12 @@ export type TypeOfProductionSitesNames = {
   name: string;
   isInHouseProductionOrIsContractProcessing: string;
   address: string;
-  listOfGoodsAndServices: [];
+  listOfGoodsOrServices: [];
 };
 
 export type TypeOfProductionSitesConvertedNames = {
   name: string;
   isInHouseProductionOrIsContractProcessing: string;
   address: string;
-  listOfGoodsAndServices: string;
+  listOfGoodsOrServices: string;
 };
