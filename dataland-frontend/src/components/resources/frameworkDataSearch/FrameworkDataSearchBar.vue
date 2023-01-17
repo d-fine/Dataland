@@ -8,32 +8,43 @@
             aria-hidden="true"
             style="z-index: 20; color: #958d7c"
           />
-          <i v-if="loading" class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          <i
+            v-if="loading"
+            class="pi pi-spinner pi-spin"
+            aria-hidden="true"
+            style="z-index: 20; color: #e67f3f; right: 0.5rem"
+          />
           <i v-else aria-hidden="true" />
           <AutoComplete
-            :suggestions="autocompleteArrayDisplayed"
-            :name="searchBarName"
-            v-model="searchBarInput"
+            :inputId="searchBarId"
             ref="autocomplete"
-            inputClass="h-3rem d-framework-searchbar-input"
-            field="companyName"
-            style="z-index: 10"
+            v-model="searchBarInput"
+            :suggestions="autocompleteArrayDisplayed"
+            optionLabel="companyName"
+            :autoOptionFocus="false"
             placeholder="Search company by name or PermID"
-            @complete="searchCompanyName"
-            @item-select="handleItemSelect"
-            @keyup.enter="handleKeyupEnter"
+            inputClass="h-3rem d-framework-searchbar-input"
             panelClass="d-framework-searchbar-panel"
+            style="z-index: 10"
+            @complete="searchCompanyName"
+            @keydown="noteThatAKeyWasPressed"
+            @keydown.down="getCurrentFocusedOptionIndex"
+            @keydown.up="getCurrentFocusedOptionIndex"
+            @item-select="pushToViewDataPageForItem"
+            @keyup.enter="executeSearchIfNoItemFocused"
+            @focus="setCurrentFocusedOptionIndexToDefault"
           >
-            <template #item="slotProps">
+            <template #option="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.item.companyName" :searchString="searchBarInput" />
+              <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
             </template>
+
             <template #footer>
               <ul
                 class="p-autocomplete-items pt-0"
-                v-if="autocompleteArray && autocompleteArray.length >= maxNumAutoCompleteEntries"
+                v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
               >
-                <li class="p-autocomplete-item" @click="handleKeyupEnter">
+                <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
                   <span class="text-primary font-medium underline pl-3"> View all results </span>
                 </li>
               </ul>
@@ -73,7 +84,7 @@ export default defineComponent({
   emits: ["companies-received", "search-confirmed"],
 
   props: {
-    searchBarName: {
+    searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
     },
@@ -88,7 +99,7 @@ export default defineComponent({
         };
       },
     },
-    maxNumAutoCompleteEntries: {
+    maxNumOfDisplayedAutocompleteEntries: {
       type: Number,
       default: 3,
     },
@@ -101,15 +112,16 @@ export default defineComponent({
     this.searchBarInput = this.filter?.companyNameFilter ?? "";
     void this.queryCompany();
     if (!this.route.query.input) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+      this.focusOnSearchBar();
     }
   },
 
   watch: {
-    searchBarName() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.focus();
+    searchBarId() {
+      this.focusOnSearchBar();
+    },
+    searchBarInput(newValue: string) {
+      this.saveCurrentSearchStringIfValid(newValue);
     },
     filter: {
       handler() {
@@ -122,7 +134,10 @@ export default defineComponent({
 
   data: function () {
     return {
+      wereKeysPressed: false,
+      currentFocusedOptionIndex: -1,
       searchBarInput: "",
+      latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       loading: false,
@@ -130,16 +145,43 @@ export default defineComponent({
     };
   },
   methods: {
-    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+    noteThatAKeyWasPressed() {
+      this.wereKeysPressed = true;
+    },
+
+    saveCurrentSearchStringIfValid(currentSearchString: string | object) {
+      if (currentSearchString && typeof currentSearchString === "string") {
+        this.latestValidSearchString = currentSearchString;
+      }
+    },
+
+    getCurrentFocusedOptionIndex() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
+    },
+
+    setCurrentFocusedOptionIndexToDefault() {
+      this.currentFocusedOptionIndex = -1;
+    },
+
+    focusOnSearchBar() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.autocomplete.$refs.focusInput.focus();
+    },
+
+    pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
       void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
-    handleKeyupEnter() {
-      this.$emit("search-confirmed", this.searchBarInput);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.hideOverlay();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.$refs.input.blur();
-      void this.queryCompany();
+
+    executeSearchIfNoItemFocused() {
+      if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        this.autocomplete.hide();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        this.autocomplete.$refs.focusInput.blur();
+        this.$emit("search-confirmed", this.searchBarInput);
+        void this.queryCompany();
+      }
     },
     async queryCompany() {
       if (this.emitSearchResultsArray) {
@@ -166,9 +208,40 @@ export default defineComponent({
         new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)()
       );
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumAutoCompleteEntries);
+      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
       this.loading = false;
     },
   },
 });
 </script>
+
+<style>
+.d-framework-searchbar-input-icon {
+  padding-left: 0.75rem !important;
+}
+
+.d-framework-searchbar-input {
+  padding-left: 3rem !important;
+}
+
+.d-framework-searchbar-panel {
+  max-height: 500px !important;
+}
+
+.d-framework-searchbar-panel .p-autocomplete-items {
+  padding: 0 !important;
+}
+
+.d-framework-searchbar-panel .p-autocomplete-item {
+  height: 3.5rem !important;
+  padding: 0 !important;
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+.p-focus {
+  color: #fff !important;
+  background: #e67f3f !important;
+}
+</style>

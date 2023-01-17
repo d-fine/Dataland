@@ -5,7 +5,7 @@
     <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
-        <h1>{{ PageTitleState }}</h1>
+        <h1>{{ pageTitle }}</h1>
       </div>
 
       <MiddleCenterDiv v-if="waitingForData" class="col-12">
@@ -78,10 +78,9 @@
 
           <ApiKeyCard
             :userRoles="userRolesAccordingToApiKey"
-            :expiryDate="expiryDate * 1000"
+            :expiryDateInMilliseconds="expiryDate * 1000"
             @revokeKey="revokeApiKey"
           />
-
           <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
             <div>
               <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
@@ -128,6 +127,7 @@
         />
       </template>
     </PrimeDialog>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -148,6 +148,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -163,6 +164,7 @@ export default defineComponent({
     CreateApiKeyCard,
     MessageComponent,
     PrimeTextarea,
+    DatalandFooter,
   },
   setup() {
     return {
@@ -177,13 +179,13 @@ export default defineComponent({
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
-      expiryDate: 0,
+      expiryDate: null as null | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
     };
   },
   computed: {
-    PageTitleState() {
+    pageTitle() {
       if (this.pageState === "view") return "API";
       if (this.pageState === "create") return "Create new API Key";
       return "API";
@@ -215,7 +217,7 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : 0;
+        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
       } catch (error) {
         console.error(error);
       }
@@ -234,7 +236,7 @@ export default defineComponent({
       }
     },
 
-    async generateApiKey(expirationTime: number) {
+    async generateApiKey(daysValid: number) {
       try {
         this.waitingForData = true;
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
@@ -242,10 +244,10 @@ export default defineComponent({
         const apiKeyManagerController = await new ApiClientProvider(
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
-        const response = await apiKeyManagerController.generateApiKey(expirationTime);
+        const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;
         this.existsApiKey = true;
-        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : 0;
+        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles

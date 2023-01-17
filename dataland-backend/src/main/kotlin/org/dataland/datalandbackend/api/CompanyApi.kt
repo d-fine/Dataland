@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import javax.validation.Valid
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -25,7 +25,7 @@ import javax.validation.Valid
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
-interface CompanyAPI {
+interface CompanyApi {
 
     @Operation(
         summary = "Add a new company.",
@@ -40,7 +40,7 @@ interface CompanyAPI {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
      * A method to create a new company entry in dataland
      * @param companyInformation includes the company information

@@ -5,13 +5,8 @@ Note: To create a PR using this template add the query parameter `template=manua
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
 - [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
-- [ ] primevue 3.15.0 (higher versions have issues with AutoComplete PrimeVue issue 2881)
-- [ ] primeicon 5.0.0 (higher version require higher version of primevue)
-- [ ] logback-classic and logback-core 1.2.11 (higher version break backend)
-- [ ] slf4j-api 1.7.36 (1.7.x is required in current setup otherwise logging breaks)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
-- [ ] springboot 2.7.7 not updated to 3.0.X, due to various issues
 - [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI
 
 ### Gradle update
@@ -48,6 +43,9 @@ Update versions in the following dockerfiles
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
+## Dataland Monitoring
+- [ ] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
+
 ## Server updates
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
@@ -55,6 +53,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] test.dataland.com
 - [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
+- [ ] monitoring.dataland.com 
 - [ ] (OPT) dataland.com
 
 ## Check e-mails sent by keycloak
@@ -63,6 +62,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Check that the password can be reset
 - [ ] Check that account linking via e-mail verification works correctly
 - [ ] Check that account linking via username & password verification works correctly
+
+## Check e-mails sent by backend
+- [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
 
 ## Conclusion
 - [ ] After updating all components check if everything still works

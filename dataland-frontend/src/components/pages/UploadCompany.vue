@@ -6,6 +6,7 @@
         <CreateCompany />
       </div>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -14,6 +15,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default {
   name: "UploadCompany",
@@ -22,6 +24,7 @@ export default {
     TheContent,
     TheHeader,
     AuthenticationWrapper,
+    DatalandFooter,
   },
 };
 </script>

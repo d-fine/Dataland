@@ -58,6 +58,17 @@
       "name" : "ROLE_ADMIN",
       "composite" : true,
       "composites" : {
+        "realm" : [ "ROLE_USER", "ROLE_UPLOADER" ]
+      },
+      "clientRole" : false,
+      "containerId" : "datalandsecurity",
+      "attributes" : { }
+    }, {
+      "id" : "e44adac3-4df0-41be-b7eb-1a997ef8ec25",
+      "name" : "ROLE_UPLOADER",
+      "description" : "",
+      "composite" : true,
+      "composites" : {
         "realm" : [ "ROLE_USER" ]
       },
       "clientRole" : false,
@@ -354,15 +365,7 @@
       } ]
     }
   },
-  "groups" : [ {
-    "id" : "6bd6cc0b-e55a-4c60-8ad3-8cb7bd8b1254",
-    "name" : "DFINEDEVELOPERS",
-    "path" : "/DFINEDEVELOPERS",
-    "attributes" : { },
-    "realmRoles" : [ ],
-    "clientRoles" : { },
-    "subGroups" : [ ]
-  } ],
+  "groups" : [ ],
   "defaultRole" : {
     "id" : "bb092f71-42b3-4957-b808-9906f2d82fca",
     "name" : "default-roles-datalandsecurity",
@@ -401,8 +404,26 @@
   "webAuthnPolicyPasswordlessCreateTimeout" : 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister" : false,
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
-  "users" : [
-    {
+  "users" : [ {
+    "id" : "136a9394-4873-4a61-a25b-65b1e8e7cc2f",
+    "createdTimestamp" : 1673357193251,
+    "username" : "data_admin",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [ {
+      "id" : "f327a74c-ae09-43d6-bd98-a5c4a8080a55",
+      "type" : "password",
+      "createdDate" : 1673357534834,
+      "secretData" : "{\"value\":\"${KEYCLOAK_DATALAND_ADMIN_VALUE}\",\"salt\":\"${KEYCLOAK_DATALAND_ADMIN_SALT}\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
       "id" : "c5ef10b1-de23-4a01-9005-e62ea226ee83",
       "createdTimestamp" : 1655881231268,
       "username" : "data_uploader",
@@ -421,7 +442,7 @@
       "disableableCredentialTypes" : [ ],
       "requiredActions" : [ ],
       "realmRoles" : [
-        "ROLE_ADMIN",
+        "ROLE_UPLOADER",
         "default-roles-datalandsecurity"
       ],
       "notBefore" : 0,
@@ -1266,13 +1287,13 @@
     "auth" : "true",
     "envelopeFrom" : "",
     "ssl" : "true",
-    "password" : "${KEYCLOAK_MAILJET_API_SECRET}",
+    "password" : "${MAILJET_API_SECRET}",
     "port" : "465",
     "host" : "in-v3.mailjet.com",
     "replyTo" : "",
     "from" : "info@dataland.com",
     "fromDisplayName" : "",
-    "user" : "${KEYCLOAK_MAILJET_API_ID}"
+    "user" : "${MAILJET_API_ID}"
   },
   "loginTheme" : "dataland_theme",
   "emailTheme" : "dataland_theme",

@@ -13,6 +13,7 @@
         <CreateEUTaxonomyForNonFinancials :companyID="companyID" />
       </MarginWrapper>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -23,6 +24,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default {
   name: "UploadEutaxonomyDataForNonFinancials",
@@ -33,6 +35,7 @@ export default {
     AuthenticationWrapper,
     CompanyInformation,
     MarginWrapper,
+    DatalandFooter,
   },
   props: {
     companyID: {

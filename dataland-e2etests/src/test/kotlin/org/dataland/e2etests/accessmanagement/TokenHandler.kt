@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.dataland.e2etests.MUTUAL_ROLES_UPLOADER_READER
+import org.dataland.e2etests.ADMIN_EXTENDED_ROLES
+import org.dataland.e2etests.ADMIN_USER_ID
+import org.dataland.e2etests.ADMIN_USER_NAME
+import org.dataland.e2etests.ADMIN_USER_PASSWORD
+import org.dataland.e2etests.MUTUAL_ROLES_DATALAND_USERS
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
 import org.dataland.e2etests.READER_USER_ID
 import org.dataland.e2etests.READER_USER_NAME
@@ -54,6 +58,7 @@ class TokenHandler {
 
     fun obtainTokenForUserType(userType: UserType) {
         val token = when (userType) {
+            UserType.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
             UserType.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
             UserType.Uploader -> requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
         }
@@ -82,14 +87,16 @@ class TokenHandler {
 
     fun getUserIdForTechnicalUsers(userType: UserType): String {
         return when (userType) {
+            UserType.Admin -> ADMIN_USER_ID
             UserType.Reader -> READER_USER_ID
             UserType.Uploader -> UPLOADER_USER_ID
         }
     }
     fun getRolesForTechnicalUsers(userType: UserType): List<String> {
         return when (userType) {
-            UserType.Reader -> MUTUAL_ROLES_UPLOADER_READER
-            UserType.Uploader -> MUTUAL_ROLES_UPLOADER_READER + UPLOADER_EXTENDED_ROLES
+            UserType.Admin -> MUTUAL_ROLES_DATALAND_USERS + ADMIN_EXTENDED_ROLES
+            UserType.Reader -> MUTUAL_ROLES_DATALAND_USERS
+            UserType.Uploader -> MUTUAL_ROLES_DATALAND_USERS + UPLOADER_EXTENDED_ROLES
         }
     }
 }

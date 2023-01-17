@@ -1,15 +1,16 @@
 package org.dataland.datalandbackend.entities
 
 import com.fasterxml.jackson.annotation.JsonValue
+import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.Table
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -53,7 +54,7 @@ data class StoredCompanyEntity(
     var isTeaserCompany: Boolean
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
-    override fun toApiModel(): StoredCompany {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
         return StoredCompany(
             companyId = companyId,
             companyInformation = CompanyInformation(
@@ -63,11 +64,11 @@ data class StoredCompanyEntity(
                 headquarters = headquarters,
                 headquartersPostalCode = headquartersPostalCode,
                 sector = sector,
-                identifiers = identifiers.map { it.toApiModel() }.toList(),
+                identifiers = identifiers.map { it.toApiModel(viewingUser) }.toList(),
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
             ),
-            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList()
+            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList()
         )
     }
 }

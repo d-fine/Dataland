@@ -22,21 +22,21 @@ To explicitly mark a script executable, do:
 ## Environment Variables
 Some environment variables are used within the project. Find attached the variables and their meaning
 
-| Variable name                     | Description                                                                                                                                         | example values                                                   |
-|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
-| BACKEND_DB_PASSWORD               | Defines the password for the backend DB when keycloak is set up from scratch                                                                        |                                                                  |
-| KEYCLOAK_ADMIN                    | Defines the name of the admin user when keycloak is set up from scratch                                                                             |                                                                  |
-| KEYCLOAK_ADMIN_PASSWORD           | Defines the password for the admin user when keycloak is set up from scratch                                                                        |                                                                  |
-| KEYCLOAK_FRONTEND_URL             | Defines the frontend URL to be used when keycloak is set up from scratch                                                                            |                                                                  |
-| KEYCLOAK_DB_PASSWORD              | Defines the password for the keycloak DB when keycloak is set up from scratch                                                                       |                                                                  |
-| KEYCLOAK_READER/UPLOADER_PASSWORD | Defines the password for the technical users (data_reader and data_uploader) in keycloak for reading or uploading data                              |                                                                  |
-| KEYCLOAK_READER/UPLOADER_VALUE    | Together with KEYCLOAK_(READER\UPLOADER)_SALT it defines the secret for the keycloak realm json file                                                |                                                                  |
-| KEYCLOAK_READER/UPLOADER_SALT     | Together with KEYCLOAK_(READER\UPLOADER)_VALUE it defines the secret for the keycloak realm json file                                               |                                                                  |
-| PROXY_PRIMARY_URL                 | The primary URL of the webservice. Requests to other URLS will get redirected to here (make sure this is consistent with the KEYCLOAK_FRONTEND_URL) | `dataland.com`                                                   |
-| PROXY_LETSENCRYPT_PATH            | The LetsEncrypt path for the domain (usually /etc/letsencrypt/live/FIRST_DOMAIN                                                                     | `/etc/letsencrypt/live/dataland.com`                             |
-| PROXY_LETSENCRYPT_ARGS            | The LetsEncrypt Certbot arguments for the initial certificate request                                                                               | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
-| PGADMIN_PASSWORD                  | The password for the PGAdmin interface                                                                                                              | `password`                                                       |
-| EXPECT_STACKTRACE                 | Set to true if the e2etests should expect a stacktrace for malicious request to the backend. Should be true locally, else not set.                  | `true`                                                           |
+| Variable name                                      | Description                                                                                                                                         | example values                                                   |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| BACKEND_DB_PASSWORD                                | Defines the password for the backend DB when keycloak is set up from scratch                                                                        |                                                                  |
+| KEYCLOAK_ADMIN                                     | Defines the name of the admin user when keycloak is set up from scratch                                                                             |                                                                  |
+| KEYCLOAK_ADMIN_PASSWORD                            | Defines the password for the admin user when keycloak is set up from scratch                                                                        |                                                                  |
+| KEYCLOAK_FRONTEND_URL                              | Defines the frontend URL to be used when keycloak is set up from scratch                                                                            |                                                                  |
+| KEYCLOAK_DB_PASSWORD                               | Defines the password for the keycloak DB when keycloak is set up from scratch                                                                       |                                                                  |
+| KEYCLOAK_(READER\UPLOADER\DATALAND_ADMIN)_PASSWORD | Defines the password for the technical users (data_reader and data_uploader) in keycloak for reading or uploading data                              |                                                                  |
+| KEYCLOAK_(READER\UPLOADER\DATALAND_ADMIN)_VALUE    | Together with KEYCLOAK_(READER\UPLOADER\DATALAND_ADMIN)_SALT it defines the secret for the keycloak realm json file                                 |                                                                  |
+| KEYCLOAK_(READER\UPLOADER\DATALAND_ADMIN)_SALT     | Together with KEYCLOAK_(READER\UPLOADER\DATALAND_ADMIN)_VALUE it defines the secret for the keycloak realm json file                                |                                                                  |
+| PROXY_PRIMARY_URL                                  | The primary URL of the webservice. Requests to other URLS will get redirected to here (make sure this is consistent with the KEYCLOAK_FRONTEND_URL) | `dataland.com`                                                   |
+| PROXY_LETSENCRYPT_PATH                             | The LetsEncrypt path for the domain (usually /etc/letsencrypt/live/FIRST_DOMAIN                                                                     | `/etc/letsencrypt/live/dataland.com`                             |
+| PROXY_LETSENCRYPT_ARGS                             | The LetsEncrypt Certbot arguments for the initial certificate request                                                                               | `--email dataland@d-fine.de -d dataland.com -d www.dataland.com` |
+| PGADMIN_PASSWORD                                   | The password for the PGAdmin interface                                                                                                              | `password`                                                       |
+| EXPECT_STACKTRACE                                  | Set to true if the e2etests should expect a stacktrace for malicious request to the backend. Should be true locally, else not set.                  | `true`                                                           |
 
 Please note that the variables `KEYCLOAK_<USER>_PASSWORD`, `KEYCLOAK_<USER>_VALUE` and `KEYCLOAK_<USER>_SALT` need to be consistent.
 
@@ -56,3 +56,7 @@ Requests can be authorized via two different methods:
 * start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
 * start the cypress UI by using `npm run cypress`
 * Select `E2E Testing` or `Component Testing` and run the tests
+
+## Licenses
+This project makes use of open source dependencies. To see a list gradle dependencies along with their 
+licenses, run `\gradlew generateLicenseReport` 

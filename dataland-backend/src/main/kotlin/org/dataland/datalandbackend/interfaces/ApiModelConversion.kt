@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.interfaces
 
 import com.fasterxml.jackson.annotation.JsonValue
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * A class implementing this interface should be a database entity
@@ -11,5 +12,5 @@ interface ApiModelConversion<T> {
      * Returns the API-Model for specified database entity
      */
     @JsonValue
-    fun toApiModel(): T
+    fun toApiModel(viewingUser: DatalandAuthentication?): T
 }
