@@ -3,11 +3,9 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
-import {uploadOneEuTaxonomyFinancialsDatasetViaApi} from "../../utils/EuTaxonomyFinancialsUpload";
-import {
-  generateEuTaxonomyDataForFinancials
-} from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import {getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi} from "../../utils/LksgApiUtils";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
+import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
+import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "../../utils/LksgApiUtils";
 
 describeIf(
   "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
@@ -32,7 +30,7 @@ describeIf(
       const fixture = getPreparedLksgFixture("two-different-data-set-types", preparedFixtures);
       uploadCompanyAndLksgDataViaApi(fixture.companyInformation, fixture.t).then((uploadIds) => {
         getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-          uploadOneEuTaxonomyFinancialsDatasetViaApi(token, uploadIds.companyId, generateEuTaxonomyDataForFinancials())
+          uploadOneEuTaxonomyFinancialsDatasetViaApi(token, uploadIds.companyId, generateEuTaxonomyDataForFinancials());
         });
       });
       // TODO finish test after dropdown is there.

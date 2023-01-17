@@ -8,7 +8,7 @@ import {
   getPreparedLksgFixture,
   getReportingYearOfLksgDataSet,
   uploadCompanyAndLksgDataViaApi,
-  uploadOneLksgDatasetViaApi
+  uploadOneLksgDatasetViaApi,
 } from "@e2e/utils/LksgApiUtils";
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
@@ -71,7 +71,7 @@ describeIf(
             .should("contain.text", lksgData.social!.general!.dataDate!.split("-").shift());
 
           cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .find(`span:contains(${lksgData.social!.general!.dataDate!})`) //TODO "!" ?? Is date always there?
             .should("exist");
 
           cy.get("button.p-row-toggler").eq(0).click();
@@ -89,15 +89,18 @@ describeIf(
           cy.get("button.p-row-toggler").eq(1).click();
           cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
-          cy.get("table > tbody > tr:nth-child(11) > td.headers-bg.flex").find(`span:contains("Employee Under 18")`).should("exist")
-          cy.get("table > tbody > tr:nth-child(11) > td:nth-child(2)").find(`span:contains("No")`).should("exist")
+          cy.get("table > tbody > tr:nth-child(11) > td.headers-bg.flex")
+            .find(`span:contains("Employee Under 18")`)
+            .should("exist");
+          cy.get("table > tbody > tr:nth-child(11) > td:nth-child(2)").find(`span:contains("No")`).should("exist");
           // TODO we could think about a way to make this more stable,  e.g. looking for "Employee Under 18" and look for a sibling td-element
 
           cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
 
-          lksgData.social!.general!.listOfProductionSites!.forEach(  // TODO catch undefined case?
-              (productionSite) => cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
-          )
+          lksgData.social!.general!.listOfProductionSites!.forEach(
+            // TODO catch undefined case?
+            (productionSite) => cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
+          );
 
           cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
 
@@ -120,10 +123,10 @@ describeIf(
           cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
           cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
-
-            cy.get(`span.p-column-title`)
-                .should("contain.text", lksgData.social!.general!.dataDate!.split("-").shift());
-
+            cy.get(`span.p-column-title`).should(
+              "contain.text",
+              lksgData.social!.general!.dataDate!.split("-").shift()
+            );
 
             /* TODO activate this test.   currently it is deactivated because it fails because frontend not like expected
             cy.get("table.p-datatable-table")

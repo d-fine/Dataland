@@ -3,13 +3,13 @@ import {
   LksgData,
   LksgDataControllerApi,
   DataMetaInformation,
-  CompanyInformation
+  CompanyInformation,
 } from "@clients/backend";
-import {UploadIds} from "./GeneralApiUtils";
-import {getKeycloakToken} from "./Auth";
-import {uploader_name, uploader_pw} from "./Cypress";
-import {generateDummyCompanyInformation, uploadCompanyViaApi} from "./CompanyUpload";
-import {FixtureData} from "../fixtures/FixtureUtils";
+import { UploadIds } from "./GeneralApiUtils";
+import { getKeycloakToken } from "./Auth";
+import { uploader_name, uploader_pw } from "./Cypress";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
 
 export async function uploadOneLksgDatasetViaApi(
@@ -26,13 +26,16 @@ export async function uploadOneLksgDatasetViaApi(
   return response.data;
 }
 
-export function getPreparedLksgFixture(companyName: string, preparedFixtures: Array<FixtureData<LksgData>>): FixtureData<LksgData> {
+export function getPreparedLksgFixture(
+  companyName: string,
+  preparedFixtures: Array<FixtureData<LksgData>>
+): FixtureData<LksgData> {
   const preparedFixture = preparedFixtures.find(
-      (fixtureData): boolean => fixtureData.companyInformation.companyName == companyName
+    (fixtureData): boolean => fixtureData.companyInformation.companyName == companyName
   )!;
   if (!preparedFixture) {
     throw new ReferenceError(
-        "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
+      "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
     );
   } else {
     return preparedFixture;
@@ -40,16 +43,16 @@ export function getPreparedLksgFixture(companyName: string, preparedFixtures: Ar
 } // TODO this is partially a duplicate in all DataIntegrity tests
 
 export function uploadCompanyAndLksgDataViaApi(
-    companyInformation: CompanyInformation,
-    testData: LksgData
+  companyInformation: CompanyInformation,
+  testData: LksgData
 ): Chainable<UploadIds> {
   return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-        (storedCompany) => {
-          return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
-            return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-          });
-        }
+      (storedCompany) => {
+        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
+          return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
+        });
+      }
     );
   });
 } // TODO might be kind of a duplicate for all Dataintegrity tests!
