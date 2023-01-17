@@ -8,9 +8,11 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.http.ResponseEntity
+import java.time.Instant
 import java.util.UUID.randomUUID
 
 /**
@@ -32,24 +34,40 @@ abstract class DataController<T>(
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
+        val userId = DatalandAuthentication.fromContext().userId
+        val uploadTime = Instant.now().epochSecond
         logger.info(
-            "Received a request to post company associated data of type $dataType" +
+            "Received a request from user $userId to post company associated data of type $dataType" +
                 "for companyId '${companyAssociatedData.companyId}'"
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
-        val dataIdOfPostedData = dataManager.addDataSet(
-            StorableDataSet(
-                companyAssociatedData.companyId, dataType,
-                data = objectMapper.writeValueAsString(companyAssociatedData.data),
-            ),
-            correlationId
-        )
+        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
+
+        val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
         logger.info(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId"
         )
         postToQaQueue("Request to store data with Correlation ID: $correlationId")
         return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId))
+        return ResponseEntity.ok(
+            DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId)
+        )
+    }
+
+    private fun buildDatasetToStore(
+        companyAssociatedData: CompanyAssociatedData<T>,
+        userId: String,
+        uploadTime: Long
+    ): StorableDataSet {
+        val datasetToStore = StorableDataSet(
+            companyId = companyAssociatedData.companyId,
+            dataType = dataType,
+            uploaderUserId = userId,
+            uploadTime = uploadTime,
+            data = objectMapper.writeValueAsString(companyAssociatedData.data),
+        )
+        return datasetToStore
     }
 
     private fun generatedCorrelationId(companyId: String): String {
