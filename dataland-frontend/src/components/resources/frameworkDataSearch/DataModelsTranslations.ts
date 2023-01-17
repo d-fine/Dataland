@@ -364,3 +364,11 @@ export const impactTopicNames = {
   waste: "Waste",
   environment: "Environment",
 };
+
+export const frameworksNames = {
+  "eutaxonomy-financials": "EutaxonomyFinancials",
+  "eutaxonomy-non-financials": "EutaxonomyNonFinancials",
+  lksg: "LkSG",
+  sfdr: "Sfdr",
+  sme: "SME",
+};

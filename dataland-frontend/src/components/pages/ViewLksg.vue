@@ -8,7 +8,7 @@
       </div>
     </template>
     <div v-if="frameworkDataId === null" class="col-12 text-left">
-      <h2>No LKSG data</h2>
+      <h2>No LkSG data</h2>
     </div>
   </ViewFrameworkBase>
 </template>

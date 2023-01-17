@@ -47,6 +47,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { frameworksNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 import Dropdown from "primevue/dropdown";
 
@@ -101,8 +102,11 @@ export default defineComponent({
         const listOfDataIds = [] as DataMetaInformation[];
         const listOfMetaData = apiResponse.data;
         listOfMetaData.forEach((el) => {
-          if (!this.dataTypesList.some((e) => e.label === el.dataType)) {
-            this.dataTypesList.push({ label: el.dataType, value: el.dataType });
+          if (!this.dataTypesList.some((e) => e.value === el.dataType)) {
+            this.dataTypesList.push({
+              label: frameworksNames[el.dataType] ? frameworksNames[el.dataType] : el.dataType,
+              value: el.dataType,
+            });
           }
           if (el.dataType === this.dataType) {
             listOfDataIds.push(el);
