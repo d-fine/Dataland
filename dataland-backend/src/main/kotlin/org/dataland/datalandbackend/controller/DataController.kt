@@ -49,7 +49,6 @@ abstract class DataController<T>(
                 "Correlation ID: $correlationId"
         )
         postToQaQueue("Request to store data with Correlation ID: $correlationId")
-        return ResponseEntity.ok(DataMetaInformation(dataIdOfPostedData, dataType, companyAssociatedData.companyId))
         return ResponseEntity.ok(
             DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId)
         )
