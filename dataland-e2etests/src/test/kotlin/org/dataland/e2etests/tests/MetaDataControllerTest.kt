@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
+import java.time.Instant
+import kotlin.math.abs
 
 class MetaDataControllerTest {
 
@@ -31,19 +33,23 @@ class MetaDataControllerTest {
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        val uploadedMetaInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTestCompanyInformation), 1
-        )
+        )[0].actualStoredDataMetaInfo!!
         apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
-        val dataMetaInformation =
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId)
+        val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
+        val expectedDataMetaInformation =
+            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0, uploadedMetaInfo.companyId, null)
         assertEquals(
-            DataMetaInformation(
-                listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId,
-                testDataType, listOfUploadInfo[0].actualStoredCompany.companyId
-            ),
-            dataMetaInformation,
+            expectedDataMetaInformation,
+            actualDataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
+        )
+
+        val timeDiffFromUploadToNow = actualDataMetaInformation.uploadTime - Instant.now().epochSecond
+        assertTrue(
+            abs(timeDiffFromUploadToNow) < 60,
+            "The server-upload-time and the local upload time differ too much."
         )
     }
 
@@ -135,8 +141,8 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, listOfUploadInfo[0].actualStoredCompany.companyId),
-            dataMetaInformation,
+            DataMetaInformation(testDataId, testDataType, 0, listOfUploadInfo[0].actualStoredCompany.companyId, null),
+            dataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
         )
     }
@@ -162,9 +168,10 @@ class MetaDataControllerTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, testCompanyId)
+        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, 0, testCompanyId, null)
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
+                .map { it.copy(uploadTime = 0) }
                 .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
                 "match the retrieved meta info."
@@ -181,5 +188,91 @@ class MetaDataControllerTest {
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
         }
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
+    }
+
+    @Test
+    fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
+        val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Uploader
+        )[0].actualStoredDataMetaInfo!!
+        val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Admin
+        )[0].actualStoredDataMetaInfo!!
+
+        val uploaderUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Uploader)
+        val adminUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Admin)
+
+        validateReaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
+        validateUploaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload, uploaderUserId)
+        validateAdminAccessToUserId(
+            metaInfoOfUploaderUpload,
+            metaInfoOfAdminUpload,
+            uploaderUserId,
+            adminUserId
+        )
+    }
+
+    private fun validateAdminAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+        uploaderUserId: String,
+        adminUserId: String
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, UserType.Admin, uploaderUserId,
+            "Admins should be able to view uploaderUserids for all users"
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, UserType.Admin, adminUserId,
+            "Admins should be able to view uploaderUserids for all users"
+        )
+    }
+
+    private fun validateUploaderAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+        uploaderUserId: String
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, UserType.Uploader, uploaderUserId,
+            "Expected user id to be present if the user requests data about an upload he performed himself"
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, UserType.Uploader, null,
+            "Data Uploaders should not be able to view the user id of uploads of other users"
+        )
+    }
+
+    private fun validateReaderAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, UserType.Reader, null,
+            "A reader should not see any uploader ids"
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, UserType.Reader, null,
+            "A reader should not see any uploader ids"
+        )
+    }
+
+    private fun expectUserIdToBe(
+        dataMetaInformation: DataMetaInformation,
+        requestingUserType: UserType,
+        expectedUploaderId: String?,
+        msg: String
+    ) {
+        apiAccessor.tokenHandler.obtainTokenForUserType(requestingUserType)
+
+        val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
+            .uploaderUserId
+        assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
+
+        val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi
+            .getCompanyById(dataMetaInformation.companyId)
+            .dataRegisteredByDataland.firstOrNull()?.uploaderUserId
+        assertEquals(uploaderUserIdFromCompanyInfo, uploaderUserIdFromMetaInfo, msg)
     }
 }

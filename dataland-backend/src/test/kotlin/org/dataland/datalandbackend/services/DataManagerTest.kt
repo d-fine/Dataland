@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.Instant
+import java.util.*
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -41,7 +43,13 @@ class DataManagerTest(
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val companyId = companyManager.addCompany(companyInformation).companyId
         val euTaxonomyDataForNonFinancialsAsString = "someEuTaxonomyDataForNonFinancials123"
-        return StorableDataSet(companyId, DataType("eutaxonomy-non-financials"), euTaxonomyDataForNonFinancialsAsString)
+        return StorableDataSet(
+            companyId,
+            DataType("eutaxonomy-non-financials"),
+            "USER_ID_OF_AN_UPLOADING_USER",
+            Instant.now().epochSecond,
+            euTaxonomyDataForNonFinancialsAsString
+        )
     }
 
     @Test
@@ -116,7 +124,7 @@ class DataManagerTest(
             dataManager.getDataSet(dataId, DataType(expectedDataTypeName), correlationId)
         }
         assertEquals(
-            "Dataset $dataId should be of type eutaxonomy-non-financials but is of type eutaxonomy-financials",
+            "The meta-data of dataset $dataId differs between the data store and the database",
             thrown.message
         )
     }
@@ -128,14 +136,30 @@ class DataManagerTest(
     ): String {
         val expectedDataTypeName = storableDataSet.dataType.name
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(
-                StorableDataSet(
-                    storableDataSet.companyId,
-                    DataType(unexpectedDataTypeName),
-                    storableDataSet.data
-                )
-            )
+            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName)))
         )
         return expectedDataTypeName
+    }
+
+    @Test
+    fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
+        val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
+        val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
+        `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
+            InsertDataResponse(dataUUId)
+        )
+        val dataId = dataManager.addDataSet(storableDataSet, correlationId)
+
+        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
+            objectMapper.writeValueAsString(storableDataSet.copy(uploaderUserId = "NOT_WHATS_EXPECTED"))
+        )
+
+        val thrown = assertThrows<InternalServerErrorApiException> {
+            dataManager.getDataSet(dataId, storableDataSet.dataType, correlationId)
+        }
+        assertEquals(
+            "The meta-data of dataset $dataId differs between the data store and the database",
+            thrown.message
+        )
     }
 }
