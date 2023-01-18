@@ -133,18 +133,17 @@ describeIf(
 
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
           cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
-            cy.get(`span.p-column-title`).should(
-              "contain.text",
-              getYearFromLksgDate(lksgData.social!.general!.dataDate!)
-            );
+            cy.get("table")
+              .find(`tr:contains("Data Date")`)
+              .find(`span`)
+              .eq(1)
+              .contains(dateAndMonthOfAdditionallyUploadedLksgDataSets);
 
-            cy.get("table.p-datatable-table")
-              .find(`span:contains(${MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES})`)
-              .should("exist");
-
-            cy.get("table.p-datatable-table")
-              .find(`span:contains(${dateAndMonthOfAdditionallyUploadedLksgDataSets})`)
-              .should("exist");
+            cy.get("table")
+              .find(`tr:contains("Data Date")`)
+              .find(`span`)
+              .eq(2)
+              .contains(MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES);
           });
         });
       });
