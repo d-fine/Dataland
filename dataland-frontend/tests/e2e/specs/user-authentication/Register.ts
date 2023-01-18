@@ -118,16 +118,16 @@ describe("As a user I want to be able to register for an account and be able to 
             .get("a[id='profile-picture-dropdown-settings-button']")
             .click()
             .get("div[id='landing-signingin'] > a")
-            .should("be.visible", { timeout: 20000 })
+            .should("be.visible")
             .click()
             .get("button:contains('Set up authenticator application')")
-            .should("be.visible", { timeout: 20000 })
+            .should("be.visible")
             .click()
             .get("a:contains('Unable to scan')")
-            .should("be.visible", { timeout: 10000 })
+            .should("be.visible")
             .click()
             .get("span[id='kc-totp-secret-key']")
-            .should("be.visible", { timeout: 10000 })
+            .should("be.visible")
             .invoke("text")
             .then((text) => {
               const totpKey = text.replace(/\s/g, "");
@@ -136,7 +136,7 @@ describe("As a user I want to be able to register for an account and be able to 
                 .get("input[id='saveTOTPBtn']")
                 .click()
                 .get("button[id='signOutButton']")
-                .should("be.visible", { timeout: 20000 });
+                .should("be.visible");
 
               cy.task("setTotpKey", totpKey);
             });
