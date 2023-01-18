@@ -1,13 +1,13 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="receiveDataId">
-    <template v-if="frameworkDataId">
+  <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="handleReceivedListOfDataMetaInfo">
+    <template v-if="listOfReceivedLksgDataIds">
       <div class="grid">
         <div class="col-12">
-          <LksgPanel :dataID="frameworkDataId" />
+          <LksgPanel :dataID="listOfReceivedLksgDataIds" />
         </div>
       </div>
     </template>
-    <div v-if="frameworkDataId === null" class="col-12 text-left">
+    <div v-if="listOfReceivedLksgDataIds === null" class="col-12 text-left">
       <h2>No LkSG data</h2>
     </div>
   </ViewFrameworkBase>
@@ -17,7 +17,7 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { defineComponent } from "vue";
-import { DataMetaInformation } from "@clients/backend";
+import {convertListOfDataMetaInfoToListOfDataIds} from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewLksg",
@@ -29,12 +29,12 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: [] as string[],
+      listOfReceivedLksgDataIds: [] as string[],
     };
   },
   methods: {
-    receiveDataId(id: []) {
-      this.frameworkDataId = id.map((el) => (el as DataMetaInformation).dataId);
+    handleReceivedListOfDataMetaInfo(receivedLksgDataMetaInfo: []) {
+      this.listOfReceivedLksgDataIds = convertListOfDataMetaInfoToListOfDataIds(receivedLksgDataMetaInfo)
     },
   },
 });
