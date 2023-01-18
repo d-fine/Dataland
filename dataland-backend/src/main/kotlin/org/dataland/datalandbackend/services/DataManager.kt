@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataMetaInformation
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.dataland.datalandbackend.model.DataMetaInformationMessageQueue
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -21,9 +21,6 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -79,7 +76,7 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val storingMessage = Json.encodeToString(DataMetaInformationMessageQueue(dataId,storableDataSet))
+        val storingMessage = Json.encodeToString(DataMetaInformationMessageQueue(dataId, storableDataSet))
 
         rabbitTemplate.convertAndSend("qa_queue", storingMessage)
         return dataId
@@ -99,9 +96,9 @@ class DataManager(
             )
     }
 */
-@RabbitListener(queues = ["upload_queue"])
-    private fun receive(storingMessage: String){
-        if(storingMessage != null){
+    @RabbitListener(queues = ["upload_queue"])
+    private fun receive(storingMessage: String) {
+        if (storingMessage != null) {
             println(storingMessage)
             val obj = Json.decodeFromString<DataMetaInformationMessageQueue>(storingMessage)
             val company = companyManager.getCompanyById(obj.storableDataSet.companyId)
