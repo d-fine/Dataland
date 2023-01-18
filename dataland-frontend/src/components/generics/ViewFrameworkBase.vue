@@ -108,7 +108,9 @@ export default defineComponent({
         listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
           if (!this.dataTypesList.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
             this.dataTypesList.push({
-              label: frameworkDropdownNames[dataMetaInfo.dataType] ? frameworkDropdownNames[dataMetaInfo.dataType] : dataMetaInfo.dataType,
+              label: frameworkDropdownNames[dataMetaInfo.dataType]
+                ? frameworkDropdownNames[dataMetaInfo.dataType]
+                : dataMetaInfo.dataType,
               value: dataMetaInfo.dataType,
             });
           }
@@ -128,7 +130,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getAllFrameworkDataToLoad();  // TODO why do we need this watcher?
+      void this.getAllFrameworkDataToLoad(); // TODO why do we need this watcher?
     },
   },
 });
