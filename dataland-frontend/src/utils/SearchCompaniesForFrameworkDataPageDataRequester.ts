@@ -113,8 +113,8 @@ export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompan
   let targetData = [dataRegisteredByDataland[0]];
   if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
   if (filtersStore.selectedFiltersForFrameworks.length) {
-    targetData = dataRegisteredByDataland.filter((el) =>
-      filtersStore.selectedFiltersForFrameworks.includes(el.dataType)
+    targetData = dataRegisteredByDataland.filter((dataMetaInformation) =>
+      filtersStore.selectedFiltersForFrameworks.includes(dataMetaInformation.dataType)
     );
   }
   return `/companies/${companyId}/frameworks/${targetData[0].dataType}`;
