@@ -13,7 +13,7 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper class="choseFrameworkData surface-0">
+      <MarginWrapper class="text-left surface-0">
         <Dropdown
           id="frameworkDataDropdown"
           v-model="currentDataType"
@@ -132,14 +132,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-.choseFrameworkData {
-  text-align: left;
-  .p-multiselect {
-    margin-left: 0;
-  }
-}
-</style>
-
-<!--this.dataType as DataTypeEnum-->

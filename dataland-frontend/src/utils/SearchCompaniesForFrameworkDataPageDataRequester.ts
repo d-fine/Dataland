@@ -7,6 +7,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { useFiltersStore } from "@/stores/filters";
 
 export interface DataSearchStoredCompany {
   companyName: string;
@@ -108,7 +109,13 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
   const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
   const companyId = companyData.companyId;
+  const filtersStore = useFiltersStore();
+  let targetData = [dataRegisteredByDataland[0]];
   if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
-  const targetData = dataRegisteredByDataland[0];
-  return `/companies/${companyId}/frameworks/${targetData.dataType}`;
+  if (filtersStore.selectedFiltersForFrameworks.length) {
+    targetData = dataRegisteredByDataland.filter((el) =>
+      filtersStore.selectedFiltersForFrameworks.includes(el.dataType)
+    );
+  }
+  return `/companies/${companyId}/frameworks/${targetData[0].dataType}`;
 }
