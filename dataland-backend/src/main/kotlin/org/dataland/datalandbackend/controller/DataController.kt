@@ -94,7 +94,8 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<T>> {val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<T>> {
+        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData: MutableList<T> = mutableListOf()
         metaInfos.forEach {
             val correlationId = generatedCorrelationId(companyId)
