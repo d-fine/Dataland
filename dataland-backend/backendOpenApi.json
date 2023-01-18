@@ -772,6 +772,70 @@
         ]
       }
     },
+    "/data/sme/company/{companyId}": {
+      "get": {
+        "tags": [
+          "sme-data-controller"
+        ],
+        "operationId": "getAllCompanySmeData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company framework information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SmeData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}": {
       "get": {
         "tags": [
@@ -795,6 +859,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr/company/{companyId}": {
+      "get": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "getAllCompanySfdrData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company framework information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SfdrData"
+                  }
                 }
               }
             }
@@ -894,6 +1022,70 @@
         ]
       }
     },
+    "/data/lksg/company/{companyId}": {
+      "get": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "getAllCompanyLksgData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company framework information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LksgData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
@@ -917,6 +1109,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          },
+          {
+            "dataland-api-key": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials/company/{companyId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "getAllCompanyEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company framework information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+                  }
                 }
               }
             }
@@ -1016,14 +1272,12 @@
         ]
       }
     },
-    "/companies/{companyId}": {
+    "/data/eutaxonomy-financials/company/{companyId}": {
       "get": {
         "tags": [
-          "company-data-controller"
+          "eu-taxonomy-data-for-financials-controller"
         ],
-        "summary": "Retrieve company information.",
-        "description": "Company information behind the given company Id is retrieved.",
-        "operationId": "getCompanyById",
+        "operationId": "getAllCompanyEuTaxonomyDataForFinancials",
         "parameters": [
           {
             "name": "companyId",
@@ -1036,11 +1290,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company information.",
+            "description": "Successfully retrieved company framework information.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredCompany"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+                  }
                 }
               }
             }
@@ -1079,14 +1336,14 @@
         ]
       }
     },
-    "/companies/{companyId}/data": {
+    "/companies/{companyId}": {
       "get": {
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve company framework information.",
-        "description": "Company framework information behind the given company Id is retrieved.",
-        "operationId": "getCompanyFrameworkDataById",
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company Id is retrieved.",
+        "operationId": "getCompanyById",
         "parameters": [
           {
             "name": "companyId",
@@ -1095,29 +1352,15 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/DataTypeEnum"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved company information.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "object"
-                    }
-                  }
+                  "$ref": "#/components/schemas/StoredCompany"
                 }
               }
             }

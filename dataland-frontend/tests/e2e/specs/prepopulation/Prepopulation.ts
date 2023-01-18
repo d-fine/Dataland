@@ -46,18 +46,17 @@ describe(
 
     function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,
-      expectedNumberOfCompanies: number,
-      expectedNumberOfDataSets: number
+      expectedNumberOfCompanies: number
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.numberOfDataSetsForDataType === expectedNumberOfDataSets &&
+            response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
               response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
             `Found ${response.numberOfCompaniesForDataType} companies having 
             ${response.numberOfDataSetsForDataType} datasets with datatype ${dataType}, 
-            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfDataSets} datasets`
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
           );
         });
     }
@@ -78,7 +77,6 @@ describe(
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyFinancials,
-          companiesWithEuTaxonomyDataForFinancials.length,
           companiesWithEuTaxonomyDataForFinancials.length
         );
       });
@@ -102,7 +100,6 @@ describe(
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyNonFinancials,
-          companiesWithEuTaxonomyDataForNonFinancials.length,
           companiesWithEuTaxonomyDataForNonFinancials.length
         );
       });
@@ -130,7 +127,6 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
             DataTypeEnum.Lksg,
-            companiesWithLksgData.length,
             companiesWithLksgData.length
           );
         });
@@ -159,7 +155,6 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
             DataTypeEnum.Sfdr,
-            companiesWithSfdrData.length,
             companiesWithSfdrData.length
           );
         });
@@ -188,7 +183,6 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
             DataTypeEnum.Sme,
-            companiesWithSmeData.length,
             companiesWithSmeData.length
           );
         });

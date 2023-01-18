@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -14,10 +13,8 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.hibernate.exception.ConstraintViolationException
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Lazy
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -30,9 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component("CompanyManager")
 class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
-    @Lazy private val dataMetaInformationManager: DataMetaInformationManager,
-    @Lazy private val dataManager: DataManager,
+    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -178,27 +173,6 @@ class CompanyManager(
     fun getCompanyApiModelById(companyId: String, viewingUser: DatalandAuthentication? = null): StoredCompany {
         val searchResult = getCompanyById(companyId)
         return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
-    }
-
-    /**
-     * Method to retrieve framework data sets about a specific company
-     * @param companyId
-     * @param dataType
-     * @return a list of the available framework data for the company with the given ID
-     */
-    @Transactional
-    fun getCompanyFrameworkDataById(companyId: String, dataType: DataType): List<Map<String, Any>> {
-        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
-        val frameworkData: MutableList<Map<String, Any>> = mutableListOf()
-        metaInfos.forEach {
-            val correlationId = IdUtils.generateUUID()
-            logger.info(
-                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
-            )
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType(it.dataType), correlationId).data
-            frameworkData.add(JSONObject(dataAsString).toMap())
-        }
-        return frameworkData
     }
 
     /**
