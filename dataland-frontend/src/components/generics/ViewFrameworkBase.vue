@@ -20,7 +20,7 @@
           :options="dataTypesList"
           optionLabel="label"
           optionValue="value"
-          placeholder="Choose framework"
+          :placeholder="frameworkNames[dataType]"
           aria-label="Choose framework"
           class="fill-dropdown"
           dropdownIcon="pi pi-angle-down"
@@ -47,7 +47,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { frameworksNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import { frameworkDropdownNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 import Dropdown from "primevue/dropdown";
 
@@ -73,6 +73,7 @@ export default defineComponent({
       currentInput: "",
       currentDataType: "",
       dataTypesList: [] as { label: string; value: string }[],
+      frameworkNames: frameworkDropdownNames,
     };
   },
   props: {
@@ -104,7 +105,7 @@ export default defineComponent({
         listOfMetaData.forEach((el) => {
           if (!this.dataTypesList.some((e) => e.value === el.dataType)) {
             this.dataTypesList.push({
-              label: frameworksNames[el.dataType] ? frameworksNames[el.dataType] : el.dataType,
+              label: frameworkDropdownNames[el.dataType] ? frameworkDropdownNames[el.dataType] : el.dataType,
               value: el.dataType,
             });
           }
