@@ -125,10 +125,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-            DataTypeEnum.Lksg,
-            companiesWithLksgData.length
-          );
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length);
         });
       }
     );
@@ -153,10 +150,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-            DataTypeEnum.Sfdr,
-            companiesWithSfdrData.length
-          );
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
         });
       }
     );
@@ -181,10 +175,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-            DataTypeEnum.Sme,
-            companiesWithSmeData.length
-          );
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sme, companiesWithSmeData.length);
         });
       }
     );
