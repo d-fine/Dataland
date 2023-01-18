@@ -63,6 +63,14 @@ export default defineComponent({
     AuthenticationWrapper,
     CompanyInformation,
   },
+  props: {
+    companyID: {
+      type: String,
+    },
+    dataType: {
+      type: String,
+    },
+  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -76,13 +84,8 @@ export default defineComponent({
       frameworkNames: frameworkDropdownNames,
     };
   },
-  props: {
-    companyID: {
-      type: String,
-    },
-    dataType: {
-      type: String,
-    },
+  created() {
+    void this.getAllFrameworkDataToLoad();
   },
   methods: {
     setFrameworkData() {
@@ -122,9 +125,6 @@ export default defineComponent({
         console.error(error);
       }
     },
-  },
-  created() {
-    void this.getAllFrameworkDataToLoad();
   },
   watch: {
     companyID() {
