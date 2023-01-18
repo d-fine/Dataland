@@ -72,7 +72,7 @@ describeIf(
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
         cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
         cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-        cy.wait("@retrieveLksgData").then(() => {
+        cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
           cy.get(`h1`).should("contain", companyInformation.companyName);
 
           cy.get(`span.p-column-title`).should(
@@ -131,7 +131,7 @@ describeIf(
           cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
 
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-          cy.wait("@retrieveLksgData").then(() => {
+          cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
             cy.get("table")
               .find(`tr:contains("Data Date")`)
               .find(`span`)
@@ -167,7 +167,7 @@ describeIf(
             .then(() => {
               cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
               cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-              cy.wait("@retrieveLksgData").then(() => {
+              cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
                 cy.get("table")
                   .find(`tr:contains("Data Date")`)
                   .find(`span`)

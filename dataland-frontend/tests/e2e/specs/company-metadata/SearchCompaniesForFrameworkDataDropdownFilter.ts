@@ -181,7 +181,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           verifyTaxonomySearchResultTable();
-          cy.wait("@getFilterOptions").then(() => {
+          cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
             verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
@@ -195,7 +195,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
-          cy.wait("@searchCompany").then(() => {
+          cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
@@ -252,7 +252,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait("@searchCompany").then(() => {
+        cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")

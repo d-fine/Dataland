@@ -23,7 +23,7 @@ describeIf(
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
             cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-            cy.wait("@retrieveTaxonomyData").then(() => {
+            cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
               cy.get("h1[class='mb-0']").contains(companyName);
               cy.get("body").should("contain", "Eligible Revenue").should("contain", missingDataMessage);
             });
