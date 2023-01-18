@@ -3,12 +3,12 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { LksgData } from "@clients/backend";
+import {  LksgData } from "@clients/backend";
 import {
-  getPreparedLksgFixture,
   getReportingYearOfLksgDataSet,
-  uploadCompanyAndLksgDataViaApi,
   uploadOneLksgDatasetViaApi,
+  getPreparedLksgFixture,
+  uploadCompanyAndLksgDataViaApi,
 } from "@e2e/utils/LksgApiUtils";
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
@@ -56,7 +56,7 @@ describeIf(
       });
     }
 
-    function uploadCompanyWithOneLksgDataSetAndVerifyLksgPageForIt(): void {
+    it("Check Lksg view page for company with one Lksg data set", () => {
       const preparedFixture = getPreparedLksgFixture("one-lksg-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
@@ -96,21 +96,17 @@ describeIf(
           // TODO we could think about a way to make this more stable,  e.g. looking for "Employee Under 18" and look for a sibling td-element
 
           cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-
           lksgData.social!.general!.listOfProductionSites!.forEach(
             // TODO catch undefined case?
             (productionSite) => cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
           );
-
           cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
 
-          // TODO one tooltip
+          cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
+          cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
+          cy.get("em.info-icon").eq(0).trigger("mouseleave");
         });
       });
-    }
-
-    it("Check Lksg view page for company with one Lksg data set", () => {
-      uploadCompanyWithOneLksgDataSetAndVerifyLksgPageForIt();
     });
 
     it("Check Lksg view page for company with two Lksg data sets reported for the same year", () => {
@@ -121,22 +117,19 @@ describeIf(
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
         return uploadAnotherLksgDataSetToExistingCompany(uploadIds.companyId, uploadIds.dataId, true).then(() => {
           cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
           cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
             cy.get(`span.p-column-title`).should(
               "contain.text",
               lksgData.social!.general!.dataDate!.split("-").shift()
-            );
+            ); //TODO export this method
 
-            /* TODO activate this test.   currently it is deactivated because it fails because frontend not like expected
-            cy.get("table.p-datatable-table")
-                .find(`span:contains("-01-01")`)
-                .should("not.exist");
+            cy.get("table.p-datatable-table").find(`span:contains("-01-01")`).should("exist");
 
             cy.get("table.p-datatable-table")
-                .find(`span:contains("-12-31")`)
-                .should("exist");
-            */
+              .find(`span:contains("-12-31")`) // TODO avoid magic value
+              .should("exist");
           });
         });
       });
@@ -149,6 +142,8 @@ describeIf(
 
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
         const companyId = uploadIds.companyId;
+        const reportingYearAsString = lksgData.social!.general!.dataDate!.split("-").shift()!;
+        const reportingYear: number = +reportingYearAsString;
         return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
             return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
@@ -158,9 +153,25 @@ describeIf(
                   cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
                   cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
                   cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
-                    cy.get(`h1`).should("contain", companyInformation.companyName);
+                    cy.get("table.p-datatable-table")
+                      .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+                      .should("exist");
 
-                    //  TODO  check if it looks as expected
+                    cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
+
+                    cy.get(`span.p-column-title`)
+                      .eq(2)
+                      .should("contain.text", (reportingYear - 1).toString());
+
+                    cy.get(`span.p-column-title`)
+                      .eq(3)
+                      .should("contain.text", (reportingYear - 2).toString());
+
+                    cy.get(`span.p-column-title`)
+                      .eq(4)
+                      .should("contain.text", (reportingYear - 3).toString());
+
+                    // TODO this must be somehow convertable to a loop
                   });
                 });
               });
