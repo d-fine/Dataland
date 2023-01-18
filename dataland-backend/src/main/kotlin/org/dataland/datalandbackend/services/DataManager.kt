@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.dataland.datalandbackend.model.DataMetaInformationMessageQueue
+import org.dataland.datalandbackend.model.MessageQueueMetaDataUpload
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -76,7 +76,7 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val storingMessage = Json.encodeToString(DataMetaInformationMessageQueue(dataId, storableDataSet))
+        val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
 
         rabbitTemplate.convertAndSend("qa_queue", storingMessage)
         return dataId
@@ -100,7 +100,7 @@ class DataManager(
     private fun receive(storingMessage: String) {
         if (storingMessage != null) {
             println(storingMessage)
-            val obj = Json.decodeFromString<DataMetaInformationMessageQueue>(storingMessage)
+            val obj = Json.decodeFromString<MessageQueueMetaDataUpload>(storingMessage)
             val company = companyManager.getCompanyById(obj.storableDataSet.companyId)
             println("TestTestQueueDoneTesttest")
             metaDataManager.storeDataMetaInformation(
