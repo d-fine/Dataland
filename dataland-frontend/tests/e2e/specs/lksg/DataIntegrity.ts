@@ -158,6 +158,7 @@ describeIf(
         const companyId = uploadIds.companyId;
         const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
         const reportingYear: number = +reportingYearAsString;
+        const totalNumberOfLksgDataSetsForCompany = 6;
         return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
             return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
@@ -167,25 +168,19 @@ describeIf(
                   cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
                   cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
                   cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
-                    cy.get("table.p-datatable-table")
-                      .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-                      .should("exist");
+                    cy.get("table")
+                      .find(`tr:contains("Data Date")`)
+                      .find(`span`)
+                      .eq(1)
+                      .contains(lksgData.social!.general!.dataDate!);
 
                     cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
 
-                    cy.get(`span.p-column-title`)
-                      .eq(2)
-                      .should("contain.text", (reportingYear - 1).toString());
-
-                    cy.get(`span.p-column-title`)
-                      .eq(3)
-                      .should("contain.text", (reportingYear - 2).toString());
-
-                    cy.get(`span.p-column-title`)
-                      .eq(4)
-                      .should("contain.text", (reportingYear - 3).toString());
-
-                    // TODO this must be somehow convertable to a loop
+                    for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
+                      cy.get(`span.p-column-title`)
+                        .eq(indexOfColumn)
+                        .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
+                    }
                   });
                 });
               });
