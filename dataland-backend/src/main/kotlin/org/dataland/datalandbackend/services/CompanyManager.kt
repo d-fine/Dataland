@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
