@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -32,10 +33,11 @@ class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
+    val rabbitTemplate: RabbitTemplate
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient)
+    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, rabbitTemplate)
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
