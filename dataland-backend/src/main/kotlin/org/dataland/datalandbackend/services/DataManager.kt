@@ -1,6 +1,10 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.DataMetaInformationMessageQueue
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -9,10 +13,17 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.annotation.RabbitHandler
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -23,11 +34,13 @@ import org.springframework.transaction.annotation.Transactional
 */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
+@Service
 class DataManager(
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
+    private val rabbitTemplate: RabbitTemplate
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -57,6 +70,7 @@ class DataManager(
      * @return ID of the newly stored data in the data store
      */
     @Transactional
+    @RabbitHandler
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -65,16 +79,42 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        metaDataManager.storeDataMetaInformation(
-            dataId,
-            storableDataSet.dataType,
-            storableDataSet.uploaderUserId,
-            storableDataSet.uploadTime,
-            company
-        )
+        val storingMessage = Json.encodeToString(DataMetaInformationMessageQueue(dataId,storableDataSet))
+
+        rabbitTemplate.convertAndSend("qa_queue", storingMessage)
         return dataId
     }
-
+/*
+    private fun storeMetaDataSet(
+        dataId: String,
+        storableDataSet: StorableDataSet,
+        company: StoredCompanyEntity,
+    ) {
+            metaDataManager.storeDataMetaInformation(
+                dataId,
+                storableDataSet.dataType,
+                storableDataSet.uploaderUserId,
+                storableDataSet.uploadTime,
+                company
+            )
+    }
+*/
+@RabbitListener(queues = ["upload_queue"])
+    private fun receive(storingMessage: String){
+        if(storingMessage != null){
+            println(storingMessage)
+            val obj = Json.decodeFromString<DataMetaInformationMessageQueue>(storingMessage)
+            val company = companyManager.getCompanyById(obj.storableDataSet.companyId)
+            println("TestTestQueueDoneTesttest")
+            metaDataManager.storeDataMetaInformation(
+                obj.dataId,
+                obj.storableDataSet.dataType,
+                obj.storableDataSet.uploaderUserId,
+                obj.storableDataSet.uploadTime,
+                company
+            )
+        }
+    }
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,

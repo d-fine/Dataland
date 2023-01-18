@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model
 
+import kotlinx.serialization.Serializable
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 
@@ -10,6 +11,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
  * @param dataType the type of the data set
  * @param data the actual data
  */
+@Serializable
 data class StorableDataSet(
     val companyId: String,
     val dataType: DataType,

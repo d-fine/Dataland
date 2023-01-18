@@ -19,17 +19,19 @@ fun main(args: Array<String>) {
 class ReceiverAndSender(val rabbitTemplate: RabbitTemplate) {
     @RabbitHandler
     fun receive(message: String) {
-        println("Received data upload on QA message queue with Correlation ID: '$message'")
+        println("Received data upload on QA message queue with Correlation ID:")
         if (message != null) {
             rabbitTemplate.convertAndSend("upload_queue", message)
         }
     }
 }
+/*
 @Service
 @RabbitListener(queues = ["upload_queue"])
 class Receiver {
     @RabbitHandler
     fun receive(message: String) {
-        println("Received data ready to be stored on upload queue. Correlation ID: '$message'")
+        println("Received data ready to be stored on upload queue. Correlation ID:")
     }
 }
+*/
