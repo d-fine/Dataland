@@ -59,7 +59,7 @@
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
