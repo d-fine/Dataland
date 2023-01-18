@@ -71,7 +71,7 @@ describeIf(
             .should("contain.text", lksgData.social!.general!.dataDate!.split("-").shift());
 
           cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate!})`) //TODO "!" ?? Is date always there?
+            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
             .should("exist");
 
           cy.get("button.p-row-toggler").eq(0).click();
