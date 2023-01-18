@@ -88,7 +88,7 @@ abstract class DataController<T>(
             ),
         )
         logger.info(
-            "Received company data with dataId '$dataId' for companyId '$companyId' from EuroDaT. " +
+            "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
                 "Correlation ID '$correlationId'"
         )
         return ResponseEntity.ok(companyAssociatedData)
