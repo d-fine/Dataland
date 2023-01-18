@@ -1,6 +1,6 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-non-financials" @updateDataId="receiveDataId">
-    <template v-if="frameworkDataId">
+  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-non-financials" @updateDataId="handleReceivedListOfDataMetaInfo">
+    <template v-if="listOfReceivedEuTaxoNonFinanicalsDataIds">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -12,14 +12,14 @@
       </div>
       <div class="grid">
         <div class="col-7">
-          <EuTaxonomyPanelNonFinancials :dataID="frameworkDataId[0]" />
+          <EuTaxonomyPanelNonFinancials :dataID="listOfReceivedEuTaxoNonFinanicalsDataIds[0]" />
         </div>
       </div>
     </template>
-    <div v-if="frameworkDataId === null" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoNonFinanicalsDataIds === null" class="col-12 text-left">
       <h2>No EU-Taxonomy data for non financial companies present</h2>
     </div>
-    <div v-if="frameworkDataId === undefined" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoNonFinanicalsDataIds === undefined" class="col-12 text-left">
       <h2>Loading...</h2>
     </div>
   </ViewFrameworkBase>
@@ -31,7 +31,7 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { DataMetaInformation } from "@clients/backend";
+import {convertListOfDataMetaInfoToListOfDataIds} from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancials",
@@ -43,12 +43,12 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: [] as string[],
+      listOfReceivedEuTaxoNonFinanicalsDataIds: [] as string[],
     };
   },
   methods: {
-    receiveDataId(id: []) {
-      this.frameworkDataId = id.map((el) => (el as DataMetaInformation).dataId);
+    handleReceivedListOfDataMetaInfo(receivedEuTaxoFinancialsDataMetaInfo: []) {
+      this.listOfReceivedEuTaxoNonFinanicalsDataIds = convertListOfDataMetaInfoToListOfDataIds(receivedEuTaxoFinancialsDataMetaInfo)
     },
   },
 });

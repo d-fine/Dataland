@@ -1,6 +1,6 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-financials" @updateDataId="receiveDataId">
-    <template v-if="frameworkDataId">
+  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-financials" @updateDataId="handleReceivedListOfDataMetaInfo">
+    <template v-if="listOfReceivedEuTaxoFinancialsDataIds">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -31,7 +31,7 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import {convertReceivedListOfDataMetaInfoToListOfDataIds} from "@/utils/DataUtils";
+import {convertListOfDataMetaInfoToListOfDataIds} from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
@@ -47,8 +47,8 @@ export default defineComponent({
     };
   },
   methods: {
-    handeReceivedListOfDataMetaInfo(receivedEuTaxoFinancialsDataMetaInfo: []) {
-      this.listOfReceivedEuTaxoFinancialsDataIds = convertReceivedListOfDataMetaInfoToListOfDataIds(receivedEuTaxoFinancialsDataMetaInfo)
+    handleReceivedListOfDataMetaInfo(receivedEuTaxoFinancialsDataMetaInfo: []) {
+      this.listOfReceivedEuTaxoFinancialsDataIds = convertListOfDataMetaInfoToListOfDataIds(receivedEuTaxoFinancialsDataMetaInfo)
     },
   },
 });
