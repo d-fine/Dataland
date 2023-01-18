@@ -59,7 +59,7 @@ export function generateLksgData(dataDate?: string): LksgData {
       },
       childLabour: {
         employeeUnder18: randomYesNoUndefined(),
-        employeeUnder18Under15: randomYesNoUndefined(),
+        employeeUnder15: randomYesNoUndefined(),
         employeeUnder18Apprentices: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePrevention: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionEmploymentContracts: randomYesNoUndefined(),

@@ -15,7 +15,7 @@ export const lksgKpis = {
   codeOfConduct: "Code Of Conduct",
   codeOfConductTraining: "Code Of Conduct Training",
   legalProceedings: "Legal Proceedings",
-  employeeUnder18Under15: "Employee Under 18 Under 15",
+  employeeUnder15: "Employee Under 15",
   employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge:
     "Employment Under Local Minimum Age Prevention Checking Of Legal Minimum Age",
   forcedLabourAndSlaveryPrevention: "Forced Labour And Slavery Prevention",
@@ -164,7 +164,7 @@ export const lksgQuestions = {
   legalProceedings:
     "Has your company been involved in the last 5 years, in legal disputes (including currently ongoing disputes) with third parties regarding human rights and environmental violations?",
   employeeUnder18: "Does your company have employees under the age of 18?",
-  employeeUnder18Under15:
+  employeeUnder15:
     "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
   employeeUnder18Apprentices:
     "Are employees under the age of 18 years exclusively apprentices according to definitions of the applicable Vocational Education Law?",

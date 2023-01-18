@@ -2525,7 +2525,7 @@
           "employeeUnder18": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "employeeUnder18Under15": {
+          "employeeUnder15": {
             "$ref": "#/components/schemas/YesNo"
           },
           "employeeUnder18Apprentices": {
