@@ -6,7 +6,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";

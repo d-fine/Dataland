@@ -16,10 +16,10 @@
         </div>
       </div>
     </template>
-    <div v-if="frameworkDataId === null" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoFinancialsDataIds === null" class="col-12 text-left">
       <h2>No EU-Taxonomy data for financial companies present</h2>
     </div>
-    <div v-if="frameworkDataId === undefined" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoFinancialsDataIds === undefined" class="col-12 text-left">
       <h2>Loading...</h2>
     </div>
   </ViewFrameworkBase>
@@ -31,7 +31,7 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { DataMetaInformation } from "@clients/backend";
+import {convertReceivedListOfDataMetaInfoToListOfDataIds} from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
@@ -43,12 +43,12 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: [] as string[],
+      listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
     };
   },
   methods: {
-    receiveDataId(id: []) {
-      this.frameworkDataId = id.map((el) => (el as DataMetaInformation).dataId);
+    handeReceivedListOfDataMetaInfo(receivedEuTaxoFinancialsDataMetaInfo: []) {
+      this.listOfReceivedEuTaxoFinancialsDataIds = convertReceivedListOfDataMetaInfoToListOfDataIds(receivedEuTaxoFinancialsDataMetaInfo)
     },
   },
 });
