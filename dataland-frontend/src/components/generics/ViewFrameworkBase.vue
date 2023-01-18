@@ -24,7 +24,7 @@
           aria-label="Choose framework"
           class="fill-dropdown"
           dropdownIcon="pi pi-angle-down"
-          @change="setFrameworkData()"
+          @change="setFrameworkData"
         />
       </MarginWrapper>
       <MarginWrapper>
@@ -103,21 +103,21 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const listOfDataIds = [] as DataMetaInformation[];
-        const listOfMetaData = apiResponse.data;
-        listOfMetaData.forEach((el) => {
-          if (!this.dataTypesList.some((e) => e.value === el.dataType)) {
+        const listOfDataMetaInfoForCompany = apiResponse.data;
+        const listOfDataMetaInfoToEmit = [] as DataMetaInformation[];
+        listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
+          if (!this.dataTypesList.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
             this.dataTypesList.push({
-              label: frameworkDropdownNames[el.dataType] ? frameworkDropdownNames[el.dataType] : el.dataType,
-              value: el.dataType,
+              label: frameworkDropdownNames[dataMetaInfo.dataType] ? frameworkDropdownNames[dataMetaInfo.dataType] : dataMetaInfo.dataType,
+              value: dataMetaInfo.dataType,
             });
           }
-          if (el.dataType === this.dataType) {
-            listOfDataIds.push(el);
+          if (dataMetaInfo.dataType === this.dataType) {
+            listOfDataMetaInfoToEmit.push(dataMetaInfo);
           }
         });
-        if (listOfDataIds.length) {
-          this.$emit("updateDataId", listOfDataIds);
+        if (listOfDataMetaInfoToEmit.length) {
+          this.$emit("updateDataId", listOfDataMetaInfoToEmit);
         } else {
           this.$emit("updateDataId", null);
         }
@@ -128,7 +128,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getAllFrameworkDataToLoad();
+      void this.getAllFrameworkDataToLoad();  // TODO why do we need this watcher?
     },
   },
 });
