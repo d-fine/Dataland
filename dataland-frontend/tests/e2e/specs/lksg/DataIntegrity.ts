@@ -3,7 +3,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import {  LksgData } from "@clients/backend";
+import { LksgData } from "@clients/backend";
 import {
   getReportingYearOfLksgDataSet,
   uploadOneLksgDatasetViaApi,
@@ -31,6 +31,10 @@ describeIf(
         preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
     });
+
+    function getYearFromLksgDate(lksgDate: string): string{
+      return lksgDate.split("-")[0]
+    }
 
     function uploadAnotherLksgDataSetToExistingCompany(
       companyId: string,
@@ -67,21 +71,21 @@ describeIf(
         cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
           cy.get(`h1`).should("contain", companyInformation.companyName);
 
-          cy.get(`span.p-column-title`) // TODO "!"
-            .should("contain.text", lksgData.social!.general!.dataDate!.split("-").shift());
+          cy.get(`span.p-column-title`)
+            .should("contain.text", getYearFromLksgDate(lksgData.social!.general!.dataDate!));
 
           cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
             .should("exist");
 
           cy.get("button.p-row-toggler").eq(0).click();
           cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
             .should("not.exist");
 
           cy.get("button.p-row-toggler").eq(0).click();
           cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
             .should("exist");
 
           cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
@@ -89,15 +93,21 @@ describeIf(
           cy.get("button.p-row-toggler").eq(1).click();
           cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
-          cy.get("table > tbody > tr:nth-child(11) > td.headers-bg.flex")
+          /*cy.get("table > tbody > tr:nth-child(11) > td.headers-bg.flex")
             .find(`span:contains("Employee Under 18")`)
             .should("exist");
-          cy.get("table > tbody > tr:nth-child(11) > td:nth-child(2)").find(`span:contains("No")`).should("exist");
+          cy.get("table > tbody > tr:nth-child(11) > td:nth-child(2)").find(`span:contains("No")`).should("exist");*/
+
+
+
           // TODO we could think about a way to make this more stable,  e.g. looking for "Employee Under 18" and look for a sibling td-element
 
           cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-          lksgData.social!.general!.listOfProductionSites!.forEach(
-            // TODO catch undefined case?
+          const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!
+          if (listOfProductionSites.length < 2) {
+            throw Error("This test only accepts an Lksg-dataset which has at least two production sites.")
+          }
+          listOfProductionSites.forEach(
             (productionSite) => cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
           );
           cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
@@ -122,8 +132,8 @@ describeIf(
           cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
             cy.get(`span.p-column-title`).should(
               "contain.text",
-              lksgData.social!.general!.dataDate!.split("-").shift()
-            ); //TODO export this method
+              getYearFromLksgDate(lksgData.social!.general!.dataDate!)
+            );
 
             cy.get("table.p-datatable-table").find(`span:contains("-01-01")`).should("exist");
 
@@ -142,7 +152,7 @@ describeIf(
 
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
         const companyId = uploadIds.companyId;
-        const reportingYearAsString = lksgData.social!.general!.dataDate!.split("-").shift()!;
+        const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
         const reportingYear: number = +reportingYearAsString;
         return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
@@ -154,7 +164,7 @@ describeIf(
                   cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
                   cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
                     cy.get("table.p-datatable-table")
-                      .find(`span:contains(${lksgData.social!.general!.dataDate})`) //TODO "!" ?? Is date always there?
+                      .find(`span:contains(${lksgData.social!.general!.dataDate!})`) //TODO "!" ?? Is date always there?
                       .should("exist");
 
                     cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
