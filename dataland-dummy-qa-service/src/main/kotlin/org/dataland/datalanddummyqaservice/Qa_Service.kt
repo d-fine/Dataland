@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @RabbitListener(queues = ["qa_queue"])
-class ReceiverAndSender(val rabbitTemplate: RabbitTemplate) {
+class Qa_Service(val rabbitTemplate: RabbitTemplate) {
     @RabbitHandler
     fun receive(message: String) {
         println("Received data upload on QA message queue with Correlation ID:")
