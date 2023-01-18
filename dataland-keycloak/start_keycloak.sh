@@ -13,10 +13,17 @@ if [[ "$mode" == initialize ]]; then
   rm $(grep -E -l '"username" : "data_(reader|uploader|admin)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
   rm $(grep -E -l '"username" : "test_user.*@dataland.com"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
-  for variable in $(env | grep KEYCLOAK_ | cut -d'=' -f1); do
-    # If one of the env variables containing "KEYCLOAK_" contains a % character the below sed statement will fail
-    # and the script will terminate because % is the sed delimiter
-    sed s%\$\{"$variable"\}%"${!variable}"%g -i $dataland_realm_folder/datalandsecurity-realm.json
+  realm_file=$dataland_realm_folder/datalandsecurity-realm.json
+  for variable in $(grep -oP '\$\{([A-Z_]+)\}' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
+    if env | grep -eq "^$variable="; then
+      echo "Error: Required variable $variable not set in environmental variables."
+      exit 1
+    fi
+    if echo ${!variable} | grep -q %; then
+      echo "Error: $variable contains delimiter for the sed command (%), which is not allowed."
+      exit 1
+    fi
+    sed s%\$\{"$variable"\}%"${!variable}"%g -i $realm_file
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
   ./kc.sh import --dir $dataland_realm_folder
