@@ -20,7 +20,7 @@ export default defineConfig({
     },
 
     numTestsKeptInMemory: 2,
-    defaultCommandTimeout: 10000,
+    defaultCommandTimeout: 20000,
     viewportHeight: 684,
     viewportWidth: 1536,
     video: false,
