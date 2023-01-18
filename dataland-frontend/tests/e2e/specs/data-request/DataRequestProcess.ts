@@ -1,4 +1,4 @@
-import {MEDIUM_TIMEOUT_IN_MS, UPLOAD_MAX_FILE_SIZE_IN_BYTES} from "@/utils/Constants";
+import { MEDIUM_TIMEOUT_IN_MS, UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";

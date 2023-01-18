@@ -10,6 +10,7 @@ import {
   getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -86,7 +87,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]").type("b");
       cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany").then(() => {
+      cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
         verifyTaxonomySearchResultTable();
         cy.url().should("include", "/companies?input=b");
       });
@@ -177,7 +178,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
           cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
-          cy.wait("@searchCompany").then(() => {
+          cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
               .click({ force: true })
@@ -203,7 +204,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("input[id=search_bar_top]")
         .click({ force: true })
         .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-      cy.wait("@searchCompany").then(() => {
+      cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
         cy.get("ul[class=p-autocomplete-items]");
         cy.get("input[id=search_bar_top]").type("{downArrow}");
         cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
@@ -245,7 +246,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visitAndCheckAppMount("/companies");
         cy.intercept("**/api/companies*").as("searchCompany");
         cy.get("input[id=search_bar_top]").click({ force: true }).type(highlightedSubString);
-        cy.wait("@searchCompany").then(() => {
+        cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-semibold']")

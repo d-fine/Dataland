@@ -1,6 +1,6 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
-import {MEDIUM_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
+import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -125,10 +125,10 @@ describe("As a user I want to be able to register for an account and be able to 
             .should("be.visible", { timeout: MEDIUM_TIMEOUT_IN_MS })
             .click()
             .get("a:contains('Unable to scan')")
-            .should("be.visible")
+            .should("be.visible", { timeout: SHORT_TIMEOUT_IN_MS })
             .click()
             .get("span[id='kc-totp-secret-key']")
-            .should("be.visible")
+            .should("be.visible", { timeout: SHORT_TIMEOUT_IN_MS })
             .invoke("text")
             .then((text) => {
               const totpKey = text.replace(/\s/g, "");

@@ -48,7 +48,7 @@ import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
-import {humanizeString} from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ViewFrameworkBase",

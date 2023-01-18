@@ -1,4 +1,5 @@
 import { ApiKeyAndMetaInfo } from "../../../../build/clients/apikeymanager";
+import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 describe("As a user I expect my api key will be generated correctly", () => {
   function verifyInitialPageStateAndCreateApiKeyCard(): void {
@@ -70,7 +71,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="text-info"]').find("em").click();
 
     if (Cypress.browser.displayName === "Chrome") {
-      cy.wait("@generateApiKey").then((interception) => {
+      cy.wait("@generateApiKey", { timeout: SHORT_TIMEOUT_IN_MS }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
             expect(text).to.eq((interception.response!.body as ApiKeyAndMetaInfo).apiKey);
@@ -85,11 +86,11 @@ describe("As a user I expect my api key will be generated correctly", () => {
 
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
-    cy.location("pathname").should("include", "/api-key");
+    cy.location("pathname", { timeout: SHORT_TIMEOUT_IN_MS }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser");
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: SHORT_TIMEOUT_IN_MS });
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
@@ -115,7 +116,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser");
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: SHORT_TIMEOUT_IN_MS });
 
     verifyInitialPageStateAndCreateApiKeyCard();
 
