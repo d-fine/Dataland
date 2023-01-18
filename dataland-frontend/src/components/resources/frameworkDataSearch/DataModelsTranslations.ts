@@ -365,9 +365,9 @@ export const impactTopicNames = {
   environment: "Environment",
 };
 
-export const frameworksNames = {
-  "eutaxonomy-financials": "EutaxonomyFinancials",
-  "eutaxonomy-non-financials": "EutaxonomyNonFinancials",
+export const frameworkDropdownNames = {
+  "eutaxonomy-financials": "EU Taxonomy Financials",
+  "eutaxonomy-non-financials": "EU Taxonomy Non-financials",
   lksg: "LkSG",
   sfdr: "Sfdr",
   sme: "SME",

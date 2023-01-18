@@ -109,9 +109,9 @@ describeIf(
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }
-          listOfProductionSites.forEach((productionSite) =>
-            cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address})`)
-          );
+          listOfProductionSites.forEach((productionSite) => {
+            cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address!})`);
+          });
           cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
 
           cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
