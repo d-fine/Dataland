@@ -25,18 +25,24 @@ describeIf(
 
     function selectCompanyViaUniqueSearchRequest(framework: string): void {
       cy.visit(`/companies?input=${companyName}&framework=${framework}`);
+      const alias = "retrieveMetaData";
+      cy.intercept("**/api/metadata**").as(alias);
       cy.get("a span:contains( VIEW)").click();
+      cy.wait(`@${alias}`);
     }
 
     function selectCompanyViaDropdown(framework: string): void {
-      cy.visit("/companies");
-      // TODO select framework via dropdown
-      cy.get("input#search_bar_top").type(companyName);
+      cy.visit(`/companies?framework=${framework}`);
+      const searchBarSelector = "input#search_bar_top";
+      cy.get(searchBarSelector).click();
+      cy.get(searchBarSelector).type(companyName, {force: true});
+      const alias = "retrieveMetaData";
+      cy.intercept("**/api/metadata**").as(alias);
       cy.get(".p-autocomplete-item").click();
+      cy.wait(`@${alias}`);
     }
 
     function validateDropdown(expectedDropdownText: string): void {
-      cy.wait(10000);
       //cy.get(dropdownSelector).find(".p-dropdown-label").should("have.text", expectedDropdownText);
       cy.get(dropdownSelector).click();
       let expectedDropdownItems = new Set<string>([financialsDropdownItem, lksgDropdownItem]);
@@ -89,16 +95,16 @@ describeIf(
       }
     });
 
-    it("Check that the framework select dropdown works as expected", () => {
+    it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
       companyId = Cypress.env(companyName) as string
 
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visitAndCheckAppMount("/companies");
 
-      selectCompanyViaDropdown("Financials");
-      //validateFinancialsPage();
+      selectCompanyViaDropdown("eutaxonomy-financials");
+      validateFinancialsPage();
       selectCompanyViaUniqueSearchRequest("eutaxonomy-financials");
-      //validateFinancialsPage();
+      validateFinancialsPage();
       validateDropdown("Choose framework");
       dropdownSelect(lksgDropdownItem);
       validateLksgPage();
@@ -106,14 +112,13 @@ describeIf(
       dropdownSelect(financialsDropdownItem);
       validateFinancialsPage();
 
-      selectCompanyViaDropdown("Lksg");
-      //validateLksgPage();
+      selectCompanyViaDropdown("lksg");
+      validateLksgPage();
       selectCompanyViaUniqueSearchRequest("lksg");
-      //validateLksgPage();
+      validateLksgPage();
       validateDropdown("Choose framework");
     });
 
     // TODO in frontend: make the dropdown text the current framework on load
-    // TODO in frontend: make redirect from both redirects to the correct framework
   }
 );
