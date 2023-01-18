@@ -3,9 +3,9 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
-import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "../../utils/LksgApiUtils";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
+import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
 
 describeIf(
   "As a user, I expect the framework selection dropdown to work correctly " +

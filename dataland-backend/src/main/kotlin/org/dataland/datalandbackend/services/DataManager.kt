@@ -47,7 +47,7 @@ class DataManager(
             )
         }
         logger.info(
-            "Requesting Data with ID $dataId and expected type $dataType from EuroDat. Correlation ID: $correlationId"
+            "Requesting Data with ID $dataId and expected type $dataType from framework data storage. Correlation ID: $correlationId"
         )
     }
 

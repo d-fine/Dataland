@@ -40,28 +40,27 @@ describeIf(
     }
 
     function uploadAnotherLksgDataSetToExistingCompany(
-      companyId: string,
-      alreadyExistingLksgDataSetIdForCompany: string,
-      isNewLksgDataSetInSameYear: boolean
+      uploadIdsOfExistingCompanyAndLksgDataSet: UploadIds,
+      isNewLksgDataSetInSameYear?: boolean
     ): Chainable<UploadIds> {
+      const companyId = uploadIdsOfExistingCompanyAndLksgDataSet.companyId;
+      const dataId = uploadIdsOfExistingCompanyAndLksgDataSet.dataId;
       return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        return getReportingYearOfLksgDataSet(alreadyExistingLksgDataSetIdForCompany, token).then(
-          (reportingYearAsString) => {
-            let reportingYearOfNewLksgDataSet;
-            if (isNewLksgDataSetInSameYear) {
-              reportingYearOfNewLksgDataSet = reportingYearAsString;
-            } else {
-              const reportingYear: number = +reportingYearAsString;
-              reportingYearOfNewLksgDataSet = reportingYear - 1;
-            }
-            const dataSet = generateLksgData(
-              reportingYearOfNewLksgDataSet.toString() + dateAndMonthOfAdditionallyUploadedLksgDataSets
-            );
-            return uploadOneLksgDatasetViaApi(token, companyId, dataSet).then((dataMetaInformation) => {
-              return { companyId: companyId, dataId: dataMetaInformation.dataId };
-            });
+        return getReportingYearOfLksgDataSet(dataId, token).then((reportingYearAsString) => {
+          let reportingYearOfNewLksgDataSet;
+          if (isNewLksgDataSetInSameYear) {
+            reportingYearOfNewLksgDataSet = reportingYearAsString;
+          } else {
+            const reportingYear: number = +reportingYearAsString;
+            reportingYearOfNewLksgDataSet = reportingYear + 1;
           }
-        );
+          const newLksgDataSet = generateLksgData(
+            reportingYearOfNewLksgDataSet.toString() + dateAndMonthOfAdditionallyUploadedLksgDataSets
+          );
+          return uploadOneLksgDatasetViaApi(token, companyId, newLksgDataSet).then((dataMetaInformation) => {
+            return { companyId: companyId, dataId: dataMetaInformation.dataId };
+          });
+        });
       });
     }
 
@@ -128,7 +127,7 @@ describeIf(
       const lksgData = preparedFixture.t;
 
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
-        return uploadAnotherLksgDataSetToExistingCompany(uploadIds.companyId, uploadIds.dataId, true).then(() => {
+        return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
           cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
 
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
@@ -155,38 +154,36 @@ describeIf(
       const lksgData = preparedFixture.t;
 
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
-        const companyId = uploadIds.companyId;
         const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
         const reportingYear: number = +reportingYearAsString;
         const totalNumberOfLksgDataSetsForCompany = 6;
-        return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
-          return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
-            return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
-              return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then((uploadIds) => {
-                return uploadAnotherLksgDataSetToExistingCompany(companyId, uploadIds.dataId, false).then(() => {
-                  // TODO the "repeat five times" could be possible with less code"
-                  cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-                  cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-                  cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
-                    cy.get("table")
-                      .find(`tr:contains("Data Date")`)
-                      .find(`span`)
-                      .eq(1)
-                      .contains(lksgData.social!.general!.dataDate!);
+        return (
+          uploadAnotherLksgDataSetToExistingCompany(uploadIds)
+            .then(uploadAnotherLksgDataSetToExistingCompany)
+            .then(uploadAnotherLksgDataSetToExistingCompany)
+            .then(uploadAnotherLksgDataSetToExistingCompany)
+            .then(uploadAnotherLksgDataSetToExistingCompany)
+            // TODO does someone have an idea how this can be done in one line like "queue this calllb
+            .then(() => {
+              cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+              cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+              cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
+                cy.get("table")
+                  .find(`tr:contains("Data Date")`)
+                  .find(`span`)
+                  .eq(1)
+                  .contains(lksgData.social!.general!.dataDate!);
 
-                    cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
+                cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
 
-                    for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
-                      cy.get(`span.p-column-title`)
-                        .eq(indexOfColumn)
-                        .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
-                    }
-                  });
-                });
+                for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
+                  cy.get(`span.p-column-title`)
+                    .eq(indexOfColumn)
+                    .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
+                }
               });
-            });
-          });
-        });
+            })
+        );
       });
     });
   }
