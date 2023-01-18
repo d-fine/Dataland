@@ -5,8 +5,8 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import {LONG_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
 
-const timeout = 120 * 1000;
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
   {
@@ -60,7 +60,7 @@ describeIf(
             () => {
               cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-              cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
+              cy.wait("@retrieveTaxonomyData", { timeout: LONG_TIMEOUT_IN_MS }).then(() => {
                 euTaxonomyPageVerifier();
               });
             }
