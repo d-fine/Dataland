@@ -20,7 +20,7 @@
           :options="dataTypesList"
           optionLabel="label"
           optionValue="value"
-          :placeholder="frameworkNames[dataType]"
+          :placeholder="humanizeString(dataType)"
           aria-label="Choose framework"
           class="fill-dropdown"
           dropdownIcon="pi pi-angle-down"
@@ -47,9 +47,8 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { frameworkDropdownNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
-
 import Dropdown from "primevue/dropdown";
+import {humanizeString} from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -81,7 +80,7 @@ export default defineComponent({
       currentInput: "",
       currentDataType: "",
       dataTypesList: [] as { label: string; value: string }[],
-      frameworkNames: frameworkDropdownNames,
+      humanizeString: humanizeString,
     };
   },
   created() {
@@ -108,8 +107,8 @@ export default defineComponent({
         listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
           if (!this.dataTypesList.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
             this.dataTypesList.push({
-              label: frameworkDropdownNames[dataMetaInfo.dataType]
-                ? frameworkDropdownNames[dataMetaInfo.dataType]
+              label: humanizeString(dataMetaInfo.dataType)
+                ? humanizeString(dataMetaInfo.dataType)
                 : dataMetaInfo.dataType,
               value: dataMetaInfo.dataType,
             });

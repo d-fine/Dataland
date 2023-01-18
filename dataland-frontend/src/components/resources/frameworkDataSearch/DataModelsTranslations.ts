@@ -364,12 +364,3 @@ export const impactTopicNames = {
   waste: "Waste",
   environment: "Environment",
 };
-
-export const frameworkDropdownNames = {
-  // TODO this is redundant!  we already have a conversion in the StringHumanizer I think
-  "eutaxonomy-financials": "EU Taxonomy Financials",
-  "eutaxonomy-non-financials": "EU Taxonomy Non-financials",
-  lksg: "LkSG",
-  sfdr: "Sfdr",
-  sme: "SME",
-};
