@@ -8,7 +8,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     cy.visitAndCheckAppMount("/");
     cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("body").should("contain.text", "Legal");
-    cy.get("body").should("contain.text", "Copyright © 2022 Dataland");
+    cy.get("body").should("contain.text", "Copyright © 2023 Dataland");
     cy.get('a span[title="imprint"]')
       .should("contain.text", "Imprint")
       .click({ force: true })
