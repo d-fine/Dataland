@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="dataSet && !waitingForData">
+  <div v-if="lksgData && !waitingForData">
     <CompanyDataTable
       :dataSet="kpisDataObjects"
       :kpisNames="lksgKpis"
@@ -34,7 +34,7 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      dataSet: [] as Array<LksgData> | undefined,
+      lksgData: [] as Array<LksgData> | undefined,
       newDataSet: {},
       dataSetColumns: [] as string[],
       kpisDataObjects: [],
@@ -53,7 +53,7 @@ export default defineComponent({
     dataID() {
       void this.allDataSet(this.dataID as []);
     },
-    dataSet() {
+    lksgData() {
       void this.generateConvertedData();
     },
   },
@@ -80,11 +80,11 @@ export default defineComponent({
     },
 
     async allDataSet(ids: []) {
-      this.dataSet = await Promise.all(ids.map((singleDataId) => this.getCompanyLksgDataset(singleDataId)));
+      this.lksgData = await Promise.all(ids.map((singleDataId) => this.getCompanyLksgDataset(singleDataId)));
     },
 
     generateConvertedData(): void {
-      this.dataSet?.forEach((dataByYear) => {
+      this.lksgData?.forEach((dataByYear) => {
         let dataDate = "";
         for (const area of Object.values(dataByYear)) {
           for (const [topic, topicValues] of Object.entries(area)) {
