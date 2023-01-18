@@ -3,76 +3,102 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Schmuhl, Newton und Kowalick",
-				"Wallstab, Kazmarek und Seeger"
+				"Forkel-Dauer",
+				"Heinemann UG",
+				"Hoffman-Sonnabend",
+				"Roggatz Gruppe"
 			],
-			"companyLegalForm": "e-tailers",
-			"headquarters": "Teoburg",
-			"headquartersPostalCode": "44814",
-			"sector": "e-tailers",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"headquarters": "West Miloburg",
+			"headquartersPostalCode": "11551",
+			"sector": "e-markets",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "a4pf9ybqw"
+					"identifierValue": "3mpdr0zyh"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "hha7q6iipz2g"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "pkbxhlhmh4hijgus7v91"
+					"identifierValue": "iz26mrooyqt2"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "ftbmv0r41r"
+					"identifierValue": "hm95at5vct"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "8sqwoyn"
+					"identifierValue": "h1tqtxw"
 				}
 			],
-			"countryCode": "GM",
+			"countryCode": "KN",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://musterhaft-fisch.org/steil-kommunismus.pdf",
+				"AnnualReport": {
+					"reference": "http://gern-schiff.com/ma%C3%9Fgeschneidert-religion.pdf",
+					"reportDate": "2022-12-26",
+					"currency": "XAG"
+				},
+				"SustainabilityReport": {
+					"reference": "https://irre-hand.ch/entspannt-k%C3%A4se.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-12-03",
-					"currency": "BAM"
+					"reportDate": "2022-11-23",
+					"currency": "GEL"
+				},
+				"IntegratedReport": {
+					"reference": "http://vielschichtig-dampfmaschine.info/luxuri%C3%B6s-telefon.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-03-14",
+					"currency": "KWD"
+				},
+				"ESEFReport": {
+					"reference": "https://xn--gnnerhaft-eisen-8sb.info/popul%C3%A4r-imperialismus.pdf",
+					"reportDate": "2022-08-01",
+					"currency": "MDL"
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-02-16",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "No",
-			"numberOfEmployees": 32202,
+			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.5738,
-					"quality": "Incomplete"
+					"value": 0.0965,
+					"dataSource": {
+						"page": 1032,
+						"report": "IntegratedReport",
+						"tagName": "methodologies"
+					},
+					"quality": "Incomplete",
+					"comment": "copy multi-byte monitor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.4797,
+					"value": 0.5523,
 					"dataSource": {
-						"page": 1015,
-						"report": "ESEFReport",
-						"tagName": "architectures"
+						"page": 279,
+						"report": "AnnualReport",
+						"tagName": "web services"
 					},
-					"quality": "Audited",
-					"comment": "index cross-platform capacitor"
+					"quality": "Estimated",
+					"comment": "synthesize bluetooth hard drive"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6362,
-					"quality": "Incomplete"
+					"value": 0.825,
+					"dataSource": {
+						"page": 1184,
+						"report": "ESEFReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "reboot mobile transmitter"
 				}
 			}
 		}
@@ -80,92 +106,106 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [],
-			"headquarters": "Pallentinstadt",
-			"headquartersPostalCode": "09168",
-			"sector": "channels",
+			"companyAlternativeNames": [
+				"Roschinsky OHG",
+				"Somssich-Obergföll"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"headquarters": "Sandraland",
+			"headquartersPostalCode": "88314",
+			"sector": "action-items",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "mlvxasvm6nps2hwf2svj"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "qnc5ej4z5r"
+					"identifierType": "Isin",
+					"identifierValue": "0q4i4ujbz1q0"
 				}
 			],
-			"countryCode": "NA",
+			"countryCode": "BY",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "https://ehrenhaft-schlucht.org/raumf%C3%BCllend-wasserfall.pdf",
+				"AnnualReport": {
+					"reference": "http://putzig-meer.com/sachkundig-hotel.pdf",
+					"currency": "CHF"
+				},
+				"SustainabilityReport": {
+					"reference": "https://kreativ-kopf.ch/tugendhaft-tier.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-04-01",
-					"currency": "BAM"
+					"reportDate": "2022-11-27",
+					"currency": "XBA"
+				},
+				"IntegratedReport": {
+					"reference": "https://xn--zusammenhngend-molekl-e2b77c.net/arbeitsam-kind.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-08-21",
+					"currency": "ETB"
+				},
+				"ESEFReport": {
+					"reference": "http://erprobt-pop.ch/stilsicher-sonne.pdf",
+					"isGroupLevel": "NA",
+					"currency": "COP"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-04-14",
+			"fiscalYearEnd": "2022-11-04",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"numberOfEmployees": 15671,
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 26740,
 			"opex": {
 				"totalAmount": {
-					"value": 285341.27,
+					"value": 137424.17,
 					"dataSource": {
-						"page": 223,
-						"report": "IntegratedReport",
-						"tagName": "applications"
+						"page": 82,
+						"report": "SustainabilityReport",
+						"tagName": "functionalities"
 					},
 					"quality": "Reported",
-					"comment": "compress 1080p system"
+					"comment": "parse neural application"
 				},
 				"eligiblePercentage": {
-					"value": 0.9391,
-					"quality": "Incomplete"
+					"value": 0.2723,
+					"dataSource": {
+						"page": 881,
+						"report": "IntegratedReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Reported",
+					"comment": "connect auxiliary port"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 407217.75,
+					"value": 410353.14,
 					"dataSource": {
-						"page": 571,
+						"page": 485,
 						"report": "IntegratedReport",
-						"tagName": "e-business"
+						"tagName": "blockchains"
 					},
-					"quality": "Reported",
-					"comment": "reboot bluetooth monitor"
+					"quality": "Incomplete",
+					"comment": "program online matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.7428,
-					"dataSource": {
-						"page": 215,
-						"report": "IntegratedReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "synthesize primary alarm"
+					"value": 0.4411,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 145032.8,
-					"quality": "Estimated"
+					"value": 855231.04,
+					"dataSource": {
+						"page": 174,
+						"report": "AnnualReport",
+						"tagName": "systems"
+					},
+					"quality": "Reported",
+					"comment": "generate multi-byte port"
 				},
 				"eligiblePercentage": {
-					"value": 0.2625,
-					"dataSource": {
-						"page": 1150,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
-					},
-					"quality": "Incomplete",
-					"comment": "synthesize open-source bus"
+					"value": 0.9889,
+					"quality": "Incomplete"
 				}
 			}
 		}
