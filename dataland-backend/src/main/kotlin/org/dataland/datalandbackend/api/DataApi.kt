@@ -9,10 +9,7 @@ import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 
 /**
  * Defines the restful dataland-backend API regarding data exchange
@@ -65,4 +62,26 @@ interface DataApi<T> {
      */
     fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<T>>
+
+
+    @Operation(
+        summary = "Retrieve company framework information.",
+        description = "Company framework information behind the given company ID is retrieved."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information.")
+        ]
+    )
+    @GetMapping(
+        value = ["/company/{companyId}"],
+        produces = ["application/json"]
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    /**
+     * A method to retrieve company framework information for one specific company identified by its company ID
+     * @param companyId identifier of the company in dataland
+     * @return company framework data
+     */
+    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<T>>
 }
