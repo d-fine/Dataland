@@ -66,11 +66,12 @@ describeIf(
     }
 
     function validateLksgPage(): void {
-      cy.url().should("contain", `${companyId}/frameworks/lksg`);  // TODO remove companyId
+      cy.url().should("contain", `${companyId}/frameworks/lksg`); // TODO remove companyId
       cy.get("h2").should("contain", "LkSG data");
     }
 
-    it("Upload an lksg company and an additional financials data set", () => { // TODO put it into before
+    it("Upload an lksg company and an additional financials data set", () => {
+      // TODO put it into before
       let preparedFixtures: Array<FixtureData<LksgData>>;
       cy.fixture("CompanyInformationWithLksgPreparedFixtures")
         .then(function (jsonContent) {
@@ -80,8 +81,8 @@ describeIf(
           const fixture = getPreparedLksgFixture(companyName, preparedFixtures);
           return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
             return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
-            companyId = uploadIds.companyId;
-            Cypress.env(companyName, companyId);
+              companyId = uploadIds.companyId;
+              Cypress.env(companyName, companyId);
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 uploadIds.companyId,
