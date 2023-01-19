@@ -6,8 +6,8 @@
   <div v-if="lksgData && !waitingForData">
     <CompanyDataTable
       :dataSet="kpisDataObjects"
+      :dataSetColumns="listOfDatesToDisplayAsColumns"
       :kpisNames="lksgKpis"
-      :dataSetColumns="dataSetColumns"
       :hintsForKpis="lksgQuestions"
       :impactTopicNames="impactTopicNames"
       tableDataTitle="LkSG data"
@@ -35,7 +35,7 @@ export default defineComponent({
     return {
       waitingForData: true,
       lksgData: [] as Array<LksgData> | undefined,
-      dataSetColumns: [] as string[],
+      listOfDatesToDisplayAsColumns: [] as string[],
       kpisDataObjects: [],
       lksgKpis,
       lksgQuestions,
@@ -51,9 +51,6 @@ export default defineComponent({
   watch: {
     lksgDataIds() {
       void this.fetchDataForAllDataIds(this.lksgDataIds as []);
-    },
-    lksgData() {
-      void this.convertLksgDataToFrontendFormat();
     },
   },
   setup() {
@@ -79,21 +76,22 @@ export default defineComponent({
       this.lksgData = (await Promise.all(
         dataIds.map((dataId) => this.getCompanyLksgDataset(dataId))
       )) as Array<LksgData>; // TODO can Florians new endpoint make this to just one call?
+      void this.convertLksgDataToFrontendFormat();
       this.waitingForData = false;
     },
 
     convertLksgDataToFrontendFormat(): void {
-      this.lksgData?.forEach((dataByYear) => {
+      this.lksgData?.forEach((oneLksgDataSet) => {
         let dataDate = "";
-        for (const area of Object.values(dataByYear)) {
+        for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
             for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
               let indexOfExistingItem = -1;
               if (kpi === "dataDate") {
-                this.dataSetColumns.push(kpiValues as string);
                 dataDate = kpiValues as string;
+                this.listOfDatesToDisplayAsColumns.push(dataDate);
               }
-              const singleKpiData = {
+              const singleKpiDataObject = {
                 kpi: kpi,
                 group: topic == "general" ? `_${topic}` : topic,
                 [dataDate ? dataDate : ""]: kpiValues as string,
@@ -101,9 +99,9 @@ export default defineComponent({
               indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
 
               if (indexOfExistingItem !== -1) {
-                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiData);
+                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
               } else {
-                this.kpisDataObjects.push(singleKpiData);
+                this.kpisDataObjects.push(singleKpiDataObject);
               }
             }
           }
