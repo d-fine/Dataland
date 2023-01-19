@@ -78,11 +78,11 @@ describeIf(
         })
         .then(() => {
           const fixture = getPreparedLksgFixture(companyName, preparedFixtures);
-          uploadCompanyAndLksgDataViaApi(fixture.companyInformation, fixture.t).then((uploadIds) => {
+          return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+            return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
             companyId = uploadIds.companyId;
             Cypress.env(companyName, companyId);
-            getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-              await uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 uploadIds.companyId,
                 generateEuTaxonomyDataForFinancials()
