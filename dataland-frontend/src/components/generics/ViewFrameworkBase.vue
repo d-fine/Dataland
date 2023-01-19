@@ -84,7 +84,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.getAllFrameworkDataToLoad();
+    void this.getAllDataIdsForFrameworkAndEmitThem();
   },
   methods: {
     setFramework() {
@@ -103,7 +103,7 @@ export default defineComponent({
       }
     },
 
-    async getAllFrameworkDataToLoad() {
+    async getAllDataIdsForFrameworkAndEmitThem() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -129,7 +129,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void console.log("change"); //this.getAllFrameworkDataToLoad(); // TODO why do we need this watcher?
+      void console.log("change"); //this.getAllDataIdsForFrameworkAndEmitThem(); // TODO why do we need this watcher?
     },
   },
 });
