@@ -79,12 +79,14 @@ export default defineComponent({
     convertLksgDataToFrontendFormat(): void {
       this.listOfDatesToDisplayAsColumns = [];
       this.lksgData?.forEach((oneLksgDataSet) => {
-        let dataDate = "";
+        let dataDate = "";  // TODO Florians suggestion: Why not handling all the date stuff directly here?
         for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
             for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
+              // TODO why as LksgData, dont we iterate over the fields of a whole LksgData structure
               let indexOfExistingItem = -1;
               if (kpi === "dataDate") {
+                // TODO this only works as long as dataDate is the first entry in LksgData
                 dataDate = kpiValues as string;
                 this.listOfDatesToDisplayAsColumns.push(dataDate);
               }

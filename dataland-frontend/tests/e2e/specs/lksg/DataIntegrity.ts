@@ -189,14 +189,14 @@ describeIf(
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
           const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
           const reportingYear: number = +reportingYearAsString;
-          const totalNumberOfLksgDataSetsForCompany = 6;
+          const numberOfLksgDataSetsForCompany = 6;
           return (
             uploadAnotherLksgDataSetToExistingCompany(uploadIds)
               .then(uploadAnotherLksgDataSetToExistingCompany)
               .then(uploadAnotherLksgDataSetToExistingCompany)
               .then(uploadAnotherLksgDataSetToExistingCompany)
               .then(uploadAnotherLksgDataSetToExistingCompany)
-              // TODO does someone have an idea how this can be done in one line like "queue this calllb
+              // TODO does someone have an idea how this can be done in one line like "queue this calllback four times"?
               .then(() => {
                 cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
                 cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
@@ -204,15 +204,18 @@ describeIf(
                   cy.get("table")
                     .find(`tr:contains("Data Date")`)
                     .find(`span`)
-                    .eq(1)
+                    .eq(numberOfLksgDataSetsForCompany)
                     .contains(lksgData.social!.general!.dataDate!);
 
-                  cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
+                  cy.get(`span.p-column-title`)
+                    .eq(numberOfLksgDataSetsForCompany)
+                    .should("contain.text", reportingYearAsString);
 
-                  for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
+                  const latestLksgDataSetReportingYear = reportingYear + numberOfLksgDataSetsForCompany - 1;
+                  for (let indexOfColumn = 1; indexOfColumn < numberOfLksgDataSetsForCompany; indexOfColumn++) {
                     cy.get(`span.p-column-title`)
                       .eq(indexOfColumn)
-                      .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
+                      .should("contain.text", (latestLksgDataSetReportingYear + 1 - indexOfColumn).toString());
                   }
                 });
               })
