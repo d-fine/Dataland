@@ -16,7 +16,7 @@
       </div>
       <div class="grid">
         <div class="col-7">
-          <EuTaxonomyPanelFinancials :dataID="frameworkDataId[0]" />
+          <EuTaxonomyPanelFinancials :dataID="listOfReceivedEuTaxoFinancialsDataIds[0]" />
         </div>
       </div>
     </template>
