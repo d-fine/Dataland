@@ -44,14 +44,14 @@ export default defineComponent({
     };
   },
   props: {
-    dataID: {
-      type: Array,
-      default: () => [],
+    companyID: {
+      type: String,
+      default: () => ""
     },
   },
   watch: {
-    dataID() {
-      void this.allDataSet(this.dataID as []);
+    companyID() {
+      void this.allDataSets();
     },
     lksgData() {
       void this.generateConvertedData();
@@ -62,25 +62,21 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  created() {
+    this.allDataSets();
+  },
   methods: {
-    async getCompanyLksgDataset(singleDataId: string) {
+    async allDataSets() {
       try {
         this.waitingForData = true;
-        const LksgDataControllerApi = await new ApiClientProvider(
+        const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(
-          assertDefined(singleDataId)
-        );
+        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyID!))).data;
         this.waitingForData = false;
-        return companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);
       }
-    },
-
-    async allDataSet(ids: []) {
-      this.lksgData = await Promise.all(ids.map((singleDataId) => this.getCompanyLksgDataset(singleDataId)));
     },
 
     generateConvertedData(): void {
@@ -88,9 +84,9 @@ export default defineComponent({
         let dataDate = "";
         for (const area of Object.values(dataByYear)) {
           for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
+            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) { // TODO why as LksgData, dont we iterate over the fields of a whole LksgData structure
               let indexOfExistingItem = -1;
-              if (kpi === "dataDate") {
+              if (kpi === "dataDate") { // TODO this only works as long as dataDate is the first entry in LksgData
                 this.dataSetColumns.push(kpiValues as string);
                 dataDate = kpiValues as string;
               }
