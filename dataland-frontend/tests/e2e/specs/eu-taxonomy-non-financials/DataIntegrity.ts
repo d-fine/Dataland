@@ -5,7 +5,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { LONG_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { LONG_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
