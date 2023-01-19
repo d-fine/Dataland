@@ -30,7 +30,7 @@ describeIf(
       cy.wait(`@${alias}`);
     }
 
-    function selectCompanyViaDropdown(framework: string): void {
+    function selectCompanyViaAutocompleteClick(framework: string): void {
       cy.visit(`/companies?framework=${framework}`);
       const searchBarSelector = "input#search_bar_top";
       cy.get(searchBarSelector).click();
@@ -61,16 +61,16 @@ describeIf(
     }
 
     function validateFinancialsPage(): void {
-      cy.url().should("contain", `${companyId}/frameworks/eutaxonomy-financials`);
+      cy.url().should("contain", `${companyId}/frameworks/eutaxonomy-financials`); // TODO remove companyId
       cy.get("h2").should("contain", "EU Taxonomy Data");
     }
 
     function validateLksgPage(): void {
-      cy.url().should("contain", `${companyId}/frameworks/lksg`);
+      cy.url().should("contain", `${companyId}/frameworks/lksg`);  // TODO remove companyId
       cy.get("h2").should("contain", "LkSG data");
     }
 
-    it("Upload an lksg company and an additional financials data set", () => {
+    it("Upload an lksg company and an additional financials data set", () => { // TODO put it into before
       let preparedFixtures: Array<FixtureData<LksgData>>;
       cy.fixture("CompanyInformationWithLksgPreparedFixtures")
         .then(function (jsonContent) {
@@ -97,18 +97,18 @@ describeIf(
 
       cy.ensureLoggedIn(uploader_name, uploader_pw);
 
-      selectCompanyViaDropdown("eutaxonomy-financials");
+      selectCompanyViaAutocompleteClick("eutaxonomy-financials");
       validateFinancialsPage();
       selectCompanyViaUniqueSearchRequest("eutaxonomy-financials");
       validateFinancialsPage();
-      validateDropdown("EU Taxonomy for financial companies");
+      validateDropdown("EU Taxonomy for financial companies"); // TODO variables instead of strings
       dropdownSelect(lksgDropdownItem);
       validateLksgPage();
       validateDropdown("LkSG");
       dropdownSelect(financialsDropdownItem);
       validateFinancialsPage();
 
-      selectCompanyViaDropdown("lksg");
+      selectCompanyViaAutocompleteClick("lksg");
       validateLksgPage();
       selectCompanyViaUniqueSearchRequest("lksg");
       validateLksgPage();
