@@ -101,7 +101,7 @@ describeIf(
       validateFinancialsPage();
       selectCompanyViaUniqueSearchRequest("eutaxonomy-financials");
       validateFinancialsPage();
-      validateDropdown("EU Taxonomy Financials");
+      validateDropdown("EU Taxonomy for financial companies");
       dropdownSelect(lksgDropdownItem);
       validateLksgPage();
       validateDropdown("LkSG");
