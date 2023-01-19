@@ -45,7 +45,7 @@ export default defineComponent({
   props: {
     companyId: {
       type: String,
-      default: () => ""
+      default: () => "",
     },
   },
   watch: {
@@ -68,7 +68,7 @@ export default defineComponent({
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId!))).data;
+        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
