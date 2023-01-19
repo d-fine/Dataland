@@ -23,7 +23,7 @@ timeout 300 bash -c "while ! docker logs $keycloak_initializer_container_name 2>
 if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   echo "Testing if the number of current users matches the number of exported users"
   current_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity'")
-  current_technical_users=$(sudo docker exec $keycloak_initializer_container_name /opt/keycloak/bin/kcadm.sh get users -r datalandsecurity --server http://localhost:8080/keycloak --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD | grep -E -c '"username" : "data_(reader|uploader|admin)"')
+  current_technical_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity' and username in ('data_reader','data_uploader','data_admin')")
   all_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
   technical_users=$(sudo docker exec --env USER_PATTERN='"username" : "data_(reader|uploader|admin)"' "$keycloak_initializer_container_name" bash -c 'grep -E -l "$USER_PATTERN" /keycloak_users/datalandsecurity-users-*.json | wc -l')
   test_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
