@@ -3,7 +3,6 @@ import { uploadCompanyViaApi, generateDummyCompanyInformation } from "@e2e/utils
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import {LONG_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
 
 describeIf(
   "As a user, I want to be able to upload new framework data via an upload form if I have the rights",
@@ -24,7 +23,7 @@ describeIf(
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
             cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-            cy.wait("@retrieveTaxonomyData", { timeout: LONG_TIMEOUT_IN_MS }).then(() => {
+            cy.wait("@retrieveTaxonomyData", { timeout: 120 * 1000 }).then(() => {
               cy.get("h1[class='mb-0']").contains(companyName);
               cy.get("body").should("contain", "Eligible Revenue").should("contain", missingDataMessage);
             });

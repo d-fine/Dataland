@@ -70,7 +70,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="text-info"]').find("em").click();
 
     if (Cypress.browser.displayName === "Chrome") {
-      cy.wait("@generateApiKey").then((interception) => {
+      cy.wait("@generateApiKey", { timeout: 2 * 1000 }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
             expect(text).to.eq((interception.response!.body as ApiKeyAndMetaInfo).apiKey);
@@ -85,11 +85,11 @@ describe("As a user I expect my api key will be generated correctly", () => {
 
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
-    cy.location("pathname").should("include", "/api-key");
+    cy.location("pathname", { timeout: 10000 }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser");
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 });
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
@@ -115,7 +115,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser");
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: 10 * 1000 });
 
     verifyInitialPageStateAndCreateApiKeyCard();
 
