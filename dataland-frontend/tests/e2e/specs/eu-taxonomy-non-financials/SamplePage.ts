@@ -1,4 +1,5 @@
 import { getBaseUrl } from "@e2e/utils/Cypress";
+import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 describe("As a user, I expect the sample page to be functional and reachable without logging in", () => {
   it("Check that the sample section works properly without authentication", () => {
@@ -17,7 +18,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       .should("contain.text", "EU Taxonomy")
       .click({ force: true })
       .wait(["@getTeaserCompanies", "@getMetaDataOfFirstTeaserCompany", "@getCompanyById", "@getDataById"], {
-        timeout: 10 * 1000,
+        timeout: SHORT_TIMEOUT_IN_MS,
       })
       .then(() => {
         cy.url()

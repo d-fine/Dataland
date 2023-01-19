@@ -12,6 +12,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
+import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -181,7 +182,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           verifyTaxonomySearchResultTable();
-          cy.wait("@getFilterOptions", { timeout: 2 * 1000 }).then(() => {
+          cy.wait("@getFilterOptions", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
             verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
@@ -195,7 +196,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
-          cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+          cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
@@ -252,7 +253,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")
