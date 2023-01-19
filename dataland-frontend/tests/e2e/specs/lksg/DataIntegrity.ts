@@ -13,7 +13,6 @@ import {
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import { MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES } from "@e2e/utils/Constants";
-import { MEDIUM_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 
@@ -73,7 +72,7 @@ describeIf(
       uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
         cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
         cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-        cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+        cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
           cy.get(`h1`).should("contain", companyInformation.companyName);
 
           cy.get(`span.p-column-title`).should(
@@ -132,7 +131,7 @@ describeIf(
           cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
 
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-          cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+          cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
             cy.get("table")
               .find(`tr:contains("Data Date")`)
               .find(`span`)
@@ -168,7 +167,7 @@ describeIf(
             .then(() => {
               cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
               cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-              cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+              cy.wait("@retrieveLksgData", { timeout: 15 * 1000 }).then(() => {
                 cy.get("table")
                   .find(`tr:contains("Data Date")`)
                   .find(`span`)

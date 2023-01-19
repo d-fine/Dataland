@@ -26,7 +26,7 @@ describeIf(
       cy.visit(`/companies?input=${companyName}&framework=${framework}`);
       const alias = "retrieveMetaData";
       cy.intercept("**/api/metadata**").as(alias);
-      cy.get("a span:contains( VIEW)").click();
+      cy.get("a span:contains( VIEW)").first().click();
       cy.wait(`@${alias}`);
     }
 
@@ -37,7 +37,7 @@ describeIf(
       cy.get(searchBarSelector).type(companyName, { force: true });
       const alias = "retrieveMetaData";
       cy.intercept("**/api/metadata**").as(alias);
-      cy.get(".p-autocomplete-item").click();
+      cy.get(".p-autocomplete-item").first().click();
       cy.wait(`@${alias}`);
     }
 

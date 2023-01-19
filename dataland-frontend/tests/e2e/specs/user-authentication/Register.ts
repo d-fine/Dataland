@@ -1,6 +1,5 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
-import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -119,16 +118,16 @@ describe("As a user I want to be able to register for an account and be able to 
             .get("a[id='profile-picture-dropdown-settings-button']")
             .click()
             .get("div[id='landing-signingin'] > a")
-            .should("be.visible", { timeout: MEDIUM_TIMEOUT_IN_MS })
+            .should("be.visible", { timeout: 20000 })
             .click()
             .get("button:contains('Set up authenticator application')")
-            .should("be.visible", { timeout: MEDIUM_TIMEOUT_IN_MS })
+            .should("be.visible", { timeout: 20000 })
             .click()
             .get("a:contains('Unable to scan')")
-            .should("be.visible", { timeout: SHORT_TIMEOUT_IN_MS })
+            .should("be.visible", { timeout: 10000 })
             .click()
             .get("span[id='kc-totp-secret-key']")
-            .should("be.visible", { timeout: SHORT_TIMEOUT_IN_MS })
+            .should("be.visible", { timeout: 10000 })
             .invoke("text")
             .then((text) => {
               const totpKey = text.replace(/\s/g, "");
@@ -137,7 +136,7 @@ describe("As a user I want to be able to register for an account and be able to 
                 .get("input[id='saveTOTPBtn']")
                 .click()
                 .get("button[id='signOutButton']")
-                .should("be.visible", { timeout: MEDIUM_TIMEOUT_IN_MS });
+                .should("be.visible", { timeout: 20000 });
 
               cy.task("setTotpKey", totpKey);
             });
