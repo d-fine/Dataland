@@ -3,7 +3,7 @@
     <template v-if="lksgDataExists">
       <div class="grid">
         <div class="col-12">
-          <LksgPanel :companyID="companyID" />
+          <LksgPanel :companyId="companyID" />
         </div>
       </div>
     </template>
