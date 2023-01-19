@@ -81,7 +81,7 @@ export default defineComponent({
     },
 
     convertLksgDataToFrontendFormat(): void {
-      this.listOfDatesToDisplayAsColumns = []
+      this.listOfDatesToDisplayAsColumns = [];
       this.lksgData?.forEach((oneLksgDataSet) => {
         let dataDate = "";
         for (const area of Object.values(oneLksgDataSet)) {

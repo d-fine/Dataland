@@ -3,17 +3,17 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { LksgData } from "@clients/backend";
+import { DataTypeEnum, LksgData } from "@clients/backend";
 import {
   getReportingYearOfLksgDataSet,
   uploadOneLksgDatasetViaApi,
   getPreparedLksgFixture,
   uploadCompanyAndLksgDataViaApi,
 } from "@e2e/utils/LksgApiUtils";
-import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import { MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES } from "@e2e/utils/Constants";
-import { MEDIUM_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 
@@ -70,54 +70,83 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 
-      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
-        cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-        cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-        cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
-          cy.get(`h1`).should("contain", companyInformation.companyName);
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+            cy.get(`h1`).should("contain", companyInformation.companyName);
 
-          cy.get(`span.p-column-title`).should(
-            "contain.text",
-            getYearFromLksgDate(lksgData.social!.general!.dataDate!)
-          );
+            cy.get(`span.p-column-title`).should(
+              "contain.text",
+              getYearFromLksgDate(lksgData.social!.general!.dataDate!)
+            );
 
-          cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-            .should("exist");
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
+              .should("exist");
 
-          cy.get("button.p-row-toggler").eq(0).click();
-          cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-            .should("not.exist");
+            cy.get("button.p-row-toggler").eq(0).click();
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
+              .should("not.exist");
 
-          cy.get("button.p-row-toggler").eq(0).click();
-          cy.get("table.p-datatable-table")
-            .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-            .should("exist");
+            cy.get("button.p-row-toggler").eq(0).click();
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
+              .should("exist");
 
-          cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
+            cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
-          cy.get("button.p-row-toggler").eq(1).click();
-          cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
+            cy.get("button.p-row-toggler").eq(1).click();
+            cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
-          cy.get("table")
-            .find(`tr:contains("Employee Under 18 Apprentices")`)
-            .find(`span:contains("No")`)
-            .should("exist");
+            cy.get("table")
+              .find(`tr:contains("Employee Under 18 Apprentices")`)
+              .find(`span:contains("No")`)
+              .should("exist");
 
-          cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-          const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
-          if (listOfProductionSites.length < 2) {
-            throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
-          }
-          listOfProductionSites.forEach((productionSite) => {
-            cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address!})`);
+            cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
+            const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
+            if (listOfProductionSites.length < 2) {
+              throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
+            }
+            listOfProductionSites.forEach((productionSite) => {
+              cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address!})`);
+            });
+            cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
+
+            cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
+            cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
+            cy.get("em.info-icon").eq(0).trigger("mouseleave");
+
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+              .should("exist");
+
+            return getStoredCompaniesForDataType(token, DataTypeEnum.Lksg).then((listOfStoredCompanies) => {
+              const nameOfSomeCompanyWithLksgData = listOfStoredCompanies[0].companyInformation.companyName;
+              cy.intercept("**/api/companies*").as("searchCompany");
+              cy.get("input[id=framework_data_search_bar_standard]")
+                .click({ force: true })
+                .type(nameOfSomeCompanyWithLksgData);
+              cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
+                cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+                cy.get("input[id=framework_data_search_bar_standard]")
+                  .type("{downArrow}")
+                  .type("{enter}")
+                  .url()
+                  .should("include", "/companies/")
+                  .url()
+                  .should("include", "/frameworks/");
+              });
+              cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+                cy.get("table.p-datatable-table")
+                  .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                  .should("not.exist");
+              });
+            });
           });
-          cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
-
-          cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
-          cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
-          cy.get("em.info-icon").eq(0).trigger("mouseleave");
         });
       });
     });
@@ -127,23 +156,25 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 
-      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
-        return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
-          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+          return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
+            cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
 
-          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-          cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
-            cy.get("table")
-              .find(`tr:contains("Data Date")`)
-              .find(`span`)
-              .eq(1)
-              .contains(dateAndMonthOfAdditionallyUploadedLksgDataSets);
+            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+            cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+              cy.get("table")
+                .find(`tr:contains("Data Date")`)
+                .find(`span`)
+                .eq(1)
+                .contains(dateAndMonthOfAdditionallyUploadedLksgDataSets);
 
-            cy.get("table")
-              .find(`tr:contains("Data Date")`)
-              .find(`span`)
-              .eq(2)
-              .contains(MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES);
+              cy.get("table")
+                .find(`tr:contains("Data Date")`)
+                .find(`span`)
+                .eq(2)
+                .contains(MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES);
+            });
           });
         });
       });
@@ -154,37 +185,39 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 
-      uploadCompanyAndLksgDataViaApi(companyInformation, lksgData).then((uploadIds) => {
-        const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
-        const reportingYear: number = +reportingYearAsString;
-        const totalNumberOfLksgDataSetsForCompany = 6;
-        return (
-          uploadAnotherLksgDataSetToExistingCompany(uploadIds)
-            .then(uploadAnotherLksgDataSetToExistingCompany)
-            .then(uploadAnotherLksgDataSetToExistingCompany)
-            .then(uploadAnotherLksgDataSetToExistingCompany)
-            .then(uploadAnotherLksgDataSetToExistingCompany)
-            // TODO does someone have an idea how this can be done in one line like "queue this calllb
-            .then(() => {
-              cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-              cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-              cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
-                cy.get("table")
-                  .find(`tr:contains("Data Date")`)
-                  .find(`span`)
-                  .eq(1)
-                  .contains(lksgData.social!.general!.dataDate!);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+          const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
+          const reportingYear: number = +reportingYearAsString;
+          const totalNumberOfLksgDataSetsForCompany = 6;
+          return (
+            uploadAnotherLksgDataSetToExistingCompany(uploadIds)
+              .then(uploadAnotherLksgDataSetToExistingCompany)
+              .then(uploadAnotherLksgDataSetToExistingCompany)
+              .then(uploadAnotherLksgDataSetToExistingCompany)
+              .then(uploadAnotherLksgDataSetToExistingCompany)
+              // TODO does someone have an idea how this can be done in one line like "queue this calllb
+              .then(() => {
+                cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+                cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+                cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+                  cy.get("table")
+                    .find(`tr:contains("Data Date")`)
+                    .find(`span`)
+                    .eq(1)
+                    .contains(lksgData.social!.general!.dataDate!);
 
-                cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
+                  cy.get(`span.p-column-title`).eq(1).should("contain.text", reportingYearAsString);
 
-                for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
-                  cy.get(`span.p-column-title`)
-                    .eq(indexOfColumn)
-                    .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
-                }
-              });
-            })
-        );
+                  for (let indexOfColumn = 2; indexOfColumn <= totalNumberOfLksgDataSetsForCompany; indexOfColumn++) {
+                    cy.get(`span.p-column-title`)
+                      .eq(indexOfColumn)
+                      .should("contain.text", (reportingYear - indexOfColumn + 1).toString());
+                  }
+                });
+              })
+          );
+        });
       });
     });
   }
