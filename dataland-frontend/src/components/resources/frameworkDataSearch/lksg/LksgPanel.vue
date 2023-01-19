@@ -82,9 +82,9 @@ export default defineComponent({
         let dataDate = "";
         for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) { // TODO why as LksgData, dont we iterate over the fields of a whole LksgData structure
+            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
               let indexOfExistingItem = -1;
-              if (kpi === "dataDate") { // TODO this only works as long as dataDate is the first entry in LksgData
+              if (kpi === "dataDate") {
                 dataDate = kpiValues as string;
                 this.listOfDatesToDisplayAsColumns.push(dataDate);
               }
