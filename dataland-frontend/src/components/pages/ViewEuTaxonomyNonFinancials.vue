@@ -2,7 +2,7 @@
   <ViewFrameworkBase
     :companyID="companyID"
     dataType="eutaxonomy-non-financials"
-    @updateDataId="handleReceivedListOfDataMetaInfo"
+    @updateDataId="handleReceivedListOfDataIds"
   >
     <template v-if="listOfReceivedEuTaxoNonFinanicalsDataIds">
       <div class="grid">
@@ -35,7 +35,6 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { convertListOfDataMetaInfoToListOfDataIds } from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancials",
@@ -51,10 +50,8 @@ export default defineComponent({
     };
   },
   methods: {
-    handleReceivedListOfDataMetaInfo(receivedEuTaxoFinancialsDataMetaInfo: []) {
-      this.listOfReceivedEuTaxoNonFinanicalsDataIds = convertListOfDataMetaInfoToListOfDataIds(
-        receivedEuTaxoFinancialsDataMetaInfo
-      );
+    handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
+      this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds
     },
   },
 });

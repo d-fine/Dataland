@@ -1,5 +1,5 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="handleReceivedListOfDataMetaInfo">
+  <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="handleReceivedListOfDataIds">
     <template v-if="listOfReceivedLksgDataIds">
       <div class="grid">
         <div class="col-12">
@@ -17,7 +17,6 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { defineComponent } from "vue";
-import { convertListOfDataMetaInfoToListOfDataIds } from "@/utils/DataUtils";
 
 export default defineComponent({
   name: "ViewLksg",
@@ -33,8 +32,8 @@ export default defineComponent({
     };
   },
   methods: {
-    handleReceivedListOfDataMetaInfo(receivedLksgDataMetaInfo: []) {
-      this.listOfReceivedLksgDataIds = convertListOfDataMetaInfoToListOfDataIds(receivedLksgDataMetaInfo);
+    handleReceivedListOfDataIds(receivedLksgDataIds: []) {
+      this.listOfReceivedLksgDataIds = receivedLksgDataIds
     },
   },
 });
