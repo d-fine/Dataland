@@ -6,8 +6,8 @@
   <div v-if="lksgData && !waitingForData">
     <CompanyDataTable
       :dataSet="kpisDataObjects"
+      :dataSetColumns="listOfDatesToDisplayAsColumns"
       :kpisNames="lksgKpis"
-      :dataSetColumns="dataSetColumns"
       :hintsForKpis="lksgQuestions"
       :impactTopicNames="impactTopicNames"
       tableDataTitle="LkSG data"
@@ -35,8 +35,7 @@ export default defineComponent({
     return {
       waitingForData: true,
       lksgData: [] as Array<LksgData> | undefined,
-      newDataSet: {},
-      dataSetColumns: [] as string[],
+      listOfDatesToDisplayAsColumns: [] as string[],
       kpisDataObjects: [],
       lksgKpis,
       lksgQuestions,
@@ -44,17 +43,14 @@ export default defineComponent({
     };
   },
   props: {
-    companyID: {
+    companyId: {
       type: String,
       default: () => ""
     },
   },
   watch: {
-    companyID() {
-      void this.allDataSets();
-    },
-    lksgData() {
-      void this.generateConvertedData();
+    companyId() {
+      void this.fetchDataForAllDataIds();
     },
   },
   setup() {
@@ -63,34 +59,36 @@ export default defineComponent({
     };
   },
   created() {
-    this.allDataSets();
+    this.fetchDataForAllDataIds();
   },
   methods: {
-    async allDataSets() {
+    async fetchDataForAllDataIds() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyID!))).data;
+        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId!))).data;
+        this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
     },
 
-    generateConvertedData(): void {
-      this.lksgData?.forEach((dataByYear) => {
+    convertLksgDataToFrontendFormat(): void {
+      this.listOfDatesToDisplayAsColumns = []
+      this.lksgData?.forEach((oneLksgDataSet) => {
         let dataDate = "";
-        for (const area of Object.values(dataByYear)) {
+        for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
             for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) { // TODO why as LksgData, dont we iterate over the fields of a whole LksgData structure
               let indexOfExistingItem = -1;
               if (kpi === "dataDate") { // TODO this only works as long as dataDate is the first entry in LksgData
-                this.dataSetColumns.push(kpiValues as string);
                 dataDate = kpiValues as string;
+                this.listOfDatesToDisplayAsColumns.push(dataDate);
               }
-              const singleKpiData = {
+              const singleKpiDataObject = {
                 kpi: kpi,
                 group: topic == "general" ? `_${topic}` : topic,
                 [dataDate ? dataDate : ""]: kpiValues as string,
@@ -98,9 +96,9 @@ export default defineComponent({
               indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
 
               if (indexOfExistingItem !== -1) {
-                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiData);
+                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
               } else {
-                this.kpisDataObjects.push(singleKpiData);
+                this.kpisDataObjects.push(singleKpiDataObject);
               }
             }
           }

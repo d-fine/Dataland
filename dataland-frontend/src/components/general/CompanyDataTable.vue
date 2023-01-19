@@ -46,7 +46,7 @@
               v-if="Array.isArray(data[col]) && data[col].length"
               @click="
                 () => {
-                  onShow(data[col], kpisNames[data.kpi]);
+                  openModalAndDisplayArrayOfKpiValues(data[col], kpisNames[data.kpi]);
                 }
               "
               class="link"
@@ -56,6 +56,7 @@
             <span v-else>{{ Array.isArray(data[col]) ? "" : data[col] }}</span>
           </template>
         </Column>
+
         <Column field="group" header="Impact Area"></Column>
         <template #groupheader="slotProps">
           <span>{{ slotProps.data.group ? impactTopicNames[slotProps.data.group] : "" }}</span>
@@ -117,7 +118,7 @@ export default defineComponent({
     this.dataToDisplay = this.dataSet;
   },
   methods: {
-    onShow(onShowData: [], onShowDataTitle: string) {
+    openModalAndDisplayArrayOfKpiValues(onShowData: [], onShowDataTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: onShowDataTitle,

@@ -132,7 +132,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void console.log("change"); //this.getAllDataIdsForFrameworkAndEmitThem(); // TODO why do we need this watcher?
+      void this.getAllDataIdsForFrameworkAndEmitThem();
     },
   },
 });
