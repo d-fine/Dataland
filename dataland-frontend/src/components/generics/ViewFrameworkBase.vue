@@ -78,7 +78,6 @@ export default defineComponent({
   },
   data() {
     return {
-      currentInput: "",
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeString: humanizeString,
