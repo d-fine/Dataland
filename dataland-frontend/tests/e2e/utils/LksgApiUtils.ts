@@ -6,11 +6,8 @@ import {
   CompanyInformation,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
-import { getKeycloakToken } from "./Auth";
-import { uploader_name, uploader_pw } from "./Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { FixtureData } from "../fixtures/FixtureUtils";
-import Chainable = Cypress.Chainable;
 
 export async function uploadOneLksgDatasetViaApi(
   token: string,
@@ -43,18 +40,17 @@ export function getPreparedLksgFixture(
 } // TODO this is partially a duplicate in all DataIntegrity tests
 
 export function uploadCompanyAndLksgDataViaApi(
+  token: string,
   companyInformation: CompanyInformation,
   testData: LksgData
-): Chainable<UploadIds> {
-  return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-    return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-      (storedCompany) => {
-        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
-          return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        });
-      }
-    );
-  });
+): Promise<UploadIds> {
+  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+    (storedCompany) => {
+      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
+        return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
+      });
+    }
+  );
 } // TODO might be kind of a duplicate for all Dataintegrity tests!
 
 export async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
