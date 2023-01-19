@@ -1,5 +1,5 @@
 import { ApiKeyAndMetaInfo } from "../../../../build/clients/apikeymanager";
-import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 describe("As a user I expect my api key will be generated correctly", () => {
   function verifyInitialPageStateAndCreateApiKeyCard(): void {

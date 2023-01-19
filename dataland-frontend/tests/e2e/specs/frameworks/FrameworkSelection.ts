@@ -18,9 +18,8 @@ describeIf(
     const companyName = "two-different-data-set-types";
     const dropdownSelector = "div#frameworkDataDropdown";
     const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-    const financialsDropdownItem = "EU Taxonomy Financials";
+    const financialsDropdownItem = "EU Taxonomy for financial companies";
     const lksgDropdownItem = "LkSG";
-    let companyId: string;
 
     function selectCompanyViaUniqueSearchRequest(framework: string): void {
       cy.visit(`/companies?input=${companyName}&framework=${framework}`);
@@ -61,17 +60,16 @@ describeIf(
     }
 
     function validateFinancialsPage(): void {
-      cy.url().should("contain", `${companyId}/frameworks/eutaxonomy-financials`); // TODO remove companyId
+      cy.url().should("contain", `/frameworks/eutaxonomy-financials`);
       cy.get("h2").should("contain", "EU Taxonomy Data");
     }
 
     function validateLksgPage(): void {
-      cy.url().should("contain", `${companyId}/frameworks/lksg`); // TODO remove companyId
+      cy.url().should("contain", `/frameworks/lksg`);
       cy.get("h2").should("contain", "LkSG data");
     }
 
-    it("Upload an lksg company and an additional financials data set", () => {
-      // TODO put it into before
+    before(() => {
       let preparedFixtures: Array<FixtureData<LksgData>>;
       cy.fixture("CompanyInformationWithLksgPreparedFixtures")
         .then(function (jsonContent) {
@@ -81,8 +79,6 @@ describeIf(
           const fixture = getPreparedLksgFixture(companyName, preparedFixtures);
           return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
             return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
-              companyId = uploadIds.companyId;
-              Cypress.env(companyName, companyId);
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 uploadIds.companyId,
@@ -94,18 +90,16 @@ describeIf(
     });
 
     it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
-      companyId = Cypress.env(companyName) as string;
-
       cy.ensureLoggedIn(uploader_name, uploader_pw);
 
       selectCompanyViaAutocompleteClick("eutaxonomy-financials");
       validateFinancialsPage();
       selectCompanyViaUniqueSearchRequest("eutaxonomy-financials");
       validateFinancialsPage();
-      validateDropdown("EU Taxonomy for financial companies"); // TODO variables instead of strings
+      validateDropdown(financialsDropdownItem);
       dropdownSelect(lksgDropdownItem);
       validateLksgPage();
-      validateDropdown("LkSG");
+      validateDropdown(lksgDropdownItem);
       dropdownSelect(financialsDropdownItem);
       validateFinancialsPage();
 
@@ -113,7 +107,7 @@ describeIf(
       validateLksgPage();
       selectCompanyViaUniqueSearchRequest("lksg");
       validateLksgPage();
-      validateDropdown("LkSG");
+      validateDropdown(lksgDropdownItem);
     });
   }
 );

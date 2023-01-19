@@ -3,7 +3,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 

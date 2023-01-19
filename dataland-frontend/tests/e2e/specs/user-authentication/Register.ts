@@ -1,6 +1,6 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
-import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;

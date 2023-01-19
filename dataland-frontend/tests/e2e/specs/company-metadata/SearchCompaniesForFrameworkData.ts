@@ -10,7 +10,7 @@ import {
   getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import { SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 

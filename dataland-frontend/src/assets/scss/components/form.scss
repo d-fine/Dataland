@@ -392,6 +392,10 @@ input[type="checkbox"], input[type="radio"]{
       &:not(.p-disabled):hover {
         background: $dropdown-options-bg;
       }
+      &.p-focus {
+        color: $fill-dropdown-select-text-color;
+        background-color: $fill-dropdown-select-bg-color;
+      }
     }
   }
 }
