@@ -3,7 +3,7 @@
     <template v-if="listOfReceivedLksgDataIds">
       <div class="grid">
         <div class="col-12">
-          <LksgPanel :dataID="listOfReceivedLksgDataIds" />
+          <LksgPanel :lksgDataIds="listOfReceivedLksgDataIds" />
         </div>
       </div>
     </template>

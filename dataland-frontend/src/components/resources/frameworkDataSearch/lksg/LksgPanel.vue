@@ -35,7 +35,6 @@ export default defineComponent({
     return {
       waitingForData: true,
       lksgData: [] as Array<LksgData> | undefined,
-      newDataSet: {},
       dataSetColumns: [] as string[],
       kpisDataObjects: [],
       lksgKpis,
@@ -44,17 +43,17 @@ export default defineComponent({
     };
   },
   props: {
-    dataID: {
+    lksgDataIds: {
       type: Array,
       default: () => [],
     },
   },
   watch: {
-    dataID() {
-      void this.allDataSet(this.dataID as []);
+    lksgDataIds() {
+      void this.fetchDataForAllDataIds(this.lksgDataIds as []);
     },
     lksgData() {
-      void this.generateConvertedData();
+      void this.convertLksgDataToFrontendFormat();
     },
   },
   setup() {
@@ -63,27 +62,27 @@ export default defineComponent({
     };
   },
   methods: {
-    async getCompanyLksgDataset(singleDataId: string) {
+    async getCompanyLksgDataset(dataId: string) {
       try {
-        this.waitingForData = true;
         const LksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(
-          assertDefined(singleDataId)
-        );
-        this.waitingForData = false;
+        const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
         return companyAssociatedData.data.data;
       } catch (error) {
         console.error(error);
       }
     },
 
-    async allDataSet(ids: []) {
-      this.lksgData = await Promise.all(ids.map((singleDataId) => this.getCompanyLksgDataset(singleDataId)));
+    async fetchDataForAllDataIds(dataIds: []) {
+      this.waitingForData = true;
+      this.lksgData = (await Promise.all(
+        dataIds.map((dataId) => this.getCompanyLksgDataset(dataId))
+      )) as Array<LksgData>; // TODO can Florians new endpoint make this to just one call?
+      this.waitingForData = false;
     },
 
-    generateConvertedData(): void {
+    convertLksgDataToFrontendFormat(): void {
       this.lksgData?.forEach((dataByYear) => {
         let dataDate = "";
         for (const area of Object.values(dataByYear)) {

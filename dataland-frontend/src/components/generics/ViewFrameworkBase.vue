@@ -49,7 +49,7 @@ import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
-import {ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS} from "@/utils/Constants";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -113,8 +113,8 @@ export default defineComponent({
         const listOfDataMetaInfoForCompany = apiResponse.data;
         const listOfDataIdsToEmit = [] as string[];
         listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
-          if(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)){
-          this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo)
+          if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
+            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo);
           }
           if (dataMetaInfo.dataType === this.dataType) {
             listOfDataIdsToEmit.push(dataMetaInfo.dataId);
