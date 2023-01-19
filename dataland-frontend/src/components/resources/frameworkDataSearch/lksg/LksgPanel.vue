@@ -43,14 +43,14 @@ export default defineComponent({
     };
   },
   props: {
-    lksgDataIds: {
-      type: Array,
-      default: () => [],
+    companyId: {
+      type: String,
+      default: () => ""
     },
   },
   watch: {
-    lksgDataIds() {
-      void this.fetchDataForAllDataIds(this.lksgDataIds as []);
+    companyId() {
+      void this.fetchDataForAllDataIds();
     },
   },
   setup() {
@@ -58,26 +58,22 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  created() {
+    this.fetchDataForAllDataIds();
+  },
   methods: {
-    async getCompanyLksgDataset(dataId: string) {
+    async fetchDataForAllDataIds() {
       try {
-        const LksgDataControllerApi = await new ApiClientProvider(
+        this.waitingForData = true;
+        const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        const companyAssociatedData = await LksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
-        return companyAssociatedData.data.data;
+        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId!))).data;
+        this.convertLksgDataToFrontendFormat();
+        this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
-    },
-
-    async fetchDataForAllDataIds(dataIds: []) {
-      this.waitingForData = true;
-      this.lksgData = (await Promise.all(
-        dataIds.map((dataId) => this.getCompanyLksgDataset(dataId))
-      )) as Array<LksgData>; // TODO can Florians new endpoint make this to just one call?
-      void this.convertLksgDataToFrontendFormat();
-      this.waitingForData = false;
     },
 
     convertLksgDataToFrontendFormat(): void {
@@ -86,9 +82,9 @@ export default defineComponent({
         let dataDate = "";
         for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
+            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) { // TODO why as LksgData, dont we iterate over the fields of a whole LksgData structure
               let indexOfExistingItem = -1;
-              if (kpi === "dataDate") {
+              if (kpi === "dataDate") { // TODO this only works as long as dataDate is the first entry in LksgData
                 dataDate = kpiValues as string;
                 this.listOfDatesToDisplayAsColumns.push(dataDate);
               }
