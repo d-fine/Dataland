@@ -14,13 +14,13 @@ fun main(args: Array<String>) {
     runApplication<ConsumerApplication>(*args)
 }
 @Service
-@RabbitListener(queues = ["qa_queue"])
+@RabbitListener(queues = ["upload_queue"])
 class QaService(val rabbitTemplate: RabbitTemplate) {
     @RabbitHandler
     fun receive(message: String) {
         println("Received data upload on QA message queue with Correlation ID:")
         if (message != null) {
-            rabbitTemplate.convertAndSend("upload_queue", message)
+            rabbitTemplate.convertAndSend("qa_queue", message)
         }
     }
 }

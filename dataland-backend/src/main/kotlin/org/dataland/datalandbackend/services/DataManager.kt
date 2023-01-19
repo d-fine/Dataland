@@ -78,25 +78,11 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
 
-        rabbitTemplate.convertAndSend("qa_queue", storingMessage)
+        rabbitTemplate.convertAndSend("upload_queue", storingMessage)
         return dataId
     }
-/*
-    private fun storeMetaDataSet(
-        dataId: String,
-        storableDataSet: StorableDataSet,
-        company: StoredCompanyEntity,
-    ) {
-            metaDataManager.storeDataMetaInformation(
-                dataId,
-                storableDataSet.dataType,
-                storableDataSet.uploaderUserId,
-                storableDataSet.uploadTime,
-                company
-            )
-    }
-*/
-    @RabbitListener(queues = ["upload_queue"])
+
+    @RabbitListener(queues = ["qa_queue"])
     private fun receive(storingMessage: String) {
         if (storingMessage != null) {
             println(storingMessage)
