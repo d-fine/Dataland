@@ -1,6 +1,6 @@
 import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { LONG_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import {LONG_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {

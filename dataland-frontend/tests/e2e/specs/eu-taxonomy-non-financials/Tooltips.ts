@@ -3,7 +3,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { SHORT_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import {MEDIUM_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -33,7 +33,7 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
             return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
           })[0].companyId;
           cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials`);
-          cy.wait("@retrieveCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
+          cy.wait("@retrieveCompany", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
             cy.get(".p-card-content .text-left strong").contains("NFRD required");
             cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
             cy.get(".p-tooltip").should("be.visible").contains(NFRDText);

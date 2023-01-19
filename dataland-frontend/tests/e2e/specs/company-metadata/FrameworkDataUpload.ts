@@ -3,7 +3,7 @@ import { uploadCompanyViaApi, generateDummyCompanyInformation } from "@e2e/utils
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { LONG_TIMEOUT_IN_MS } from "../../../../src/utils/Constants";
+import {LONG_TIMEOUT_IN_MS} from "../../../../src/utils/Constants";
 
 describeIf(
   "As a user, I want to be able to upload new framework data via an upload form if I have the rights",
