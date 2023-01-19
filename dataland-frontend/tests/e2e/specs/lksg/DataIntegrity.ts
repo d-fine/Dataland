@@ -72,7 +72,7 @@ describeIf(
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
-          cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
           cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
             cy.get(`h1`).should("contain", companyInformation.companyName);
@@ -131,20 +131,23 @@ describeIf(
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData);
               cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
-                cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+                cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
                 cy.get("input[id=framework_data_search_bar_standard]")
                   .type("{downArrow}")
                   .type("{enter}")
-                  .url()
+                cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
+
+                cy.url()
                   .should("include", "/companies/")
                   .url()
                   .should("include", "/frameworks/");
+
+                  cy.get("table.p-datatable-table")
+                      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                      .should("not.exist");
               });
-              cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
-                cy.get("table.p-datatable-table")
-                  .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                  .should("not.exist");
-              });
+
+             });
             });
           });
         });
@@ -159,8 +162,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
-            cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
-
+            cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
             cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
             cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
               cy.get("table")
@@ -198,7 +200,7 @@ describeIf(
               .then(uploadAnotherLksgDataSetToExistingCompany)
               // TODO does someone have an idea how this can be done in one line like "queue this calllback four times"?
               .then(() => {
-                cy.intercept("**/api/data/lksg/*").as("retrieveLksgData");
+                cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
                 cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
                 cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
                   cy.get("table")

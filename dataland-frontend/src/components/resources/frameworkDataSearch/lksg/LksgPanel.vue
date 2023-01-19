@@ -106,6 +106,13 @@ export default defineComponent({
           }
         }
       });
+      this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
+        if (Date.parse(dateA) < Date.parse(dateB)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     },
   },
 });
