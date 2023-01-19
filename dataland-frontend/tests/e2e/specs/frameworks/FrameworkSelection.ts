@@ -77,7 +77,6 @@ describeIf(
           preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         })
         .then(() => {
-          cy.ensureLoggedIn(uploader_name, uploader_pw);
           const fixture = getPreparedLksgFixture(companyName, preparedFixtures);
           uploadCompanyAndLksgDataViaApi(fixture.companyInformation, fixture.t).then((uploadIds) => {
             companyId = uploadIds.companyId;
@@ -97,7 +96,6 @@ describeIf(
       companyId = Cypress.env(companyName) as string;
 
       cy.ensureLoggedIn(uploader_name, uploader_pw);
-      cy.visitAndCheckAppMount("/companies");
 
       selectCompanyViaDropdown("eutaxonomy-financials");
       validateFinancialsPage();
