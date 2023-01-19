@@ -1,30 +1,30 @@
 <template>
   <AuthenticationWrapper>
-    <TheHeader/>
+    <TheHeader />
     <TheContent class="paper-section min-h-screen">
       <MarginWrapper class="text-left mt-2 surface-0">
-        <BackButton/>
-        <FrameworkDataSearchBar class="mt-2" @search-confirmed="handleSearchConfirm"/>
+        <BackButton />
+        <FrameworkDataSearchBar class="mt-2" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
       <MarginWrapper class="surface-0">
         <div class="grid align-items-end">
           <div class="col-9">
-            <CompanyInformation :companyID="companyID"/>
+            <CompanyInformation :companyID="companyID" />
           </div>
         </div>
       </MarginWrapper>
       <MarginWrapper class="text-left surface-0">
         <Dropdown
-            id="frameworkDataDropdown"
-            v-model="chosenDataTypeInDropdown"
-            :options="dataTypesInDropdown"
-            optionLabel="label"
-            optionValue="value"
-            :placeholder="humanizeString(dataType)"
-            aria-label="Choose framework"
-            class="fill-dropdown"
-            dropdownIcon="pi pi-angle-down"
-            @change="setFramework"
+          id="frameworkDataDropdown"
+          v-model="chosenDataTypeInDropdown"
+          :options="dataTypesInDropdown"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="humanizeString(dataType)"
+          aria-label="Choose framework"
+          class="fill-dropdown"
+          dropdownIcon="pi pi-angle-down"
+          @change="setFramework"
         />
       </MarginWrapper>
       <MarginWrapper>
@@ -42,13 +42,13 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {defineComponent, inject} from "vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import {DataMetaInformation} from "@clients/backend";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { DataMetaInformation } from "@clients/backend";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
-import {humanizeString} from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -62,6 +62,7 @@ export default defineComponent({
     AuthenticationWrapper,
     CompanyInformation,
   },
+  emits: ["updateDataId"],
   props: {
     companyID: {
       type: String,
@@ -80,7 +81,7 @@ export default defineComponent({
       currentInput: "",
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
-      humanizeString: humanizeString
+      humanizeString: humanizeString,
     };
   },
   created() {
@@ -93,30 +94,30 @@ export default defineComponent({
     handleSearchConfirm(searchTerm: string) {
       return this.$router.push({
         name: "Search Companies for Framework Data",
-        query: {input: searchTerm},
+        query: { input: searchTerm },
       });
     },
 
     appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo: DataMetaInformation) {
       if (!this.dataTypesInDropdown.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
-        this.dataTypesInDropdown.push({label: humanizeString(dataMetaInfo.dataType), value: dataMetaInfo.dataType,});
+        this.dataTypesInDropdown.push({ label: humanizeString(dataMetaInfo.dataType), value: dataMetaInfo.dataType });
       }
     },
 
     async getAllFrameworkDataToLoad() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfDataMetaInfoForCompany = apiResponse.data;
         const listOfDataIdsToEmit = [] as string[];
         listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
-          this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo)
+          this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo);
           if (dataMetaInfo.dataType === this.dataType) {
             listOfDataIdsToEmit.push(dataMetaInfo.dataId);
           }
-        })
+        });
         if (listOfDataIdsToEmit.length) {
           this.$emit("updateDataId", listOfDataIdsToEmit);
         } else {
@@ -129,7 +130,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void console.log("change")//this.getAllFrameworkDataToLoad(); // TODO why do we need this watcher?
+      void console.log("change"); //this.getAllFrameworkDataToLoad(); // TODO why do we need this watcher?
     },
   },
 });

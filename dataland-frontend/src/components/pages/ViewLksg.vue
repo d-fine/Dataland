@@ -33,7 +33,7 @@ export default defineComponent({
   },
   methods: {
     handleReceivedListOfDataIds(receivedLksgDataIds: []) {
-      this.listOfReceivedLksgDataIds = receivedLksgDataIds
+      this.listOfReceivedLksgDataIds = receivedLksgDataIds;
     },
   },
 });

@@ -51,7 +51,7 @@ export default defineComponent({
   },
   methods: {
     handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
-      this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds
+      this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds;
     },
   },
 });
