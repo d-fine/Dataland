@@ -79,7 +79,7 @@ export default defineComponent({
     convertLksgDataToFrontendFormat(): void {
       this.listOfDatesToDisplayAsColumns = [];
       this.lksgData?.forEach((oneLksgDataSet) => {
-        let dataDate = (oneLksgDataSet.social?.general?.dataDate ?? "") as string;
+        const dataDate = oneLksgDataSet.social?.general?.dataDate ?? "";
         if (dataDate) {
           this.listOfDatesToDisplayAsColumns.push(dataDate);
         }

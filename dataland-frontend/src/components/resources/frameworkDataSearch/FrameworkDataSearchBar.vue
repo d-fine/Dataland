@@ -232,8 +232,7 @@ export default defineComponent({
 }
 
 .p-autocomplete-loader {
-   color: #E67F3F;
-   right: 0.5rem
+  color: #e67f3f;
+  right: 0.5rem;
 }
-
 </style>
