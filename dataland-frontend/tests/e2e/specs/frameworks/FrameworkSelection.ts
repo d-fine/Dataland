@@ -6,6 +6,7 @@ import { LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
+import {MEDIUM_TIMEOUT_IN_MS} from "../../utils/Constants";
 
 describeIf(
   "As a user, I expect the framework selection dropdown to work correctly " +
@@ -26,7 +27,7 @@ describeIf(
       const alias = "retrieveMetaData";
       cy.intercept("**/api/metadata**").as(alias);
       cy.get("a span:contains( VIEW)").first().click();
-      cy.wait(`@${alias}`);
+      cy.wait(`@${alias}`, { timeout: MEDIUM_TIMEOUT_IN_MS });
     }
 
     function selectCompanyViaAutocompleteClick(framework: string): void {
@@ -37,7 +38,7 @@ describeIf(
       const alias = "retrieveMetaData";
       cy.intercept("**/api/metadata**").as(alias);
       cy.get(".p-autocomplete-item").first().click();
-      cy.wait(`@${alias}`);
+      cy.wait(`@${alias}`, { timeout: MEDIUM_TIMEOUT_IN_MS });
     }
 
     function validateDropdown(expectedDropdownText: string): void {
