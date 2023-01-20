@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import kotlinx.serialization.Serializable
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
@@ -13,7 +12,6 @@ import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
  * But this class is Serialised and Deserialized as a simple string
  * The DataTypeSchemaCustomizer ensures that this property gets displayed as an Enum in the OpenApi spec
  */
-@Serializable
 data class DataType @JsonCreator constructor(
     @JsonValue
     val name: String

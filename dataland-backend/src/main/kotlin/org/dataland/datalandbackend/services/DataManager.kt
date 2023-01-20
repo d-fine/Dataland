@@ -1,10 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.dataland.datalandbackend.model.MessageQueueMetaDataUpload
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -17,10 +13,12 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -37,7 +35,8 @@ class DataManager(
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
-    private val rabbitTemplate: RabbitTemplate
+    private val rabbitTemplate: RabbitTemplate,
+    var hashMap : HashMap<String, StorableDataSet>
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -68,6 +67,7 @@ class DataManager(
      */
     @Transactional
     @RabbitHandler
+    @Cacheable("name")
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -76,27 +76,32 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
-
-        rabbitTemplate.convertAndSend("upload_queue", storingMessage)
+        //val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
+        println("Map_Start")
+        hashMap.put(dataId, storableDataSet)
+        println(hashMap)
+        println("Map_Ende")
+        rabbitTemplate.convertAndSend("upload_queue", dataId)
         return dataId
     }
 
     @RabbitListener(queues = ["qa_queue"])
-    private fun receive(storingMessage: String) {
-        if (storingMessage != null) {
-            println(storingMessage)
-            val obj = Json.decodeFromString<MessageQueueMetaDataUpload>(storingMessage)
-            val company = companyManager.getCompanyById(obj.storableDataSet.companyId)
+    private fun receive(dataId: String) {
+        if (dataId != null) {
+            println(dataId)
+            val metaInformation = hashMap[dataId]!!
+            val company = companyManager.getCompanyById(metaInformation.companyId)
             println("TestTestQueueDoneTesttest")
             metaDataManager.storeDataMetaInformation(
-                obj.dataId,
-                obj.storableDataSet.dataType,
-                obj.storableDataSet.uploaderUserId,
-                obj.storableDataSet.uploadTime,
+                dataId,
+                metaInformation.dataType,
+                metaInformation.uploaderUserId,
+                metaInformation.uploadTime,
                 company
             )
         }
+        hashMap.remove(dataId)
+        print(hashMap)
     }
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
