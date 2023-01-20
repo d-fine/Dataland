@@ -21,12 +21,21 @@ describeIf(
     const financialsDropdownItem = "EU Taxonomy for financial companies";
     const lksgDropdownItem = "LkSG";
 
+    function interceptFrameworkPageLoad(framework: string, trigger: () => void): void {
+      const metaDataAlias = "retrieveMetaData";
+      cy.intercept("**/api/metadata**").as(metaDataAlias);
+      trigger();
+      cy.wait(`@${metaDataAlias}`);
+      cy.wait(10000);
+    }
+
     function selectCompanyViaUniqueSearchRequest(framework: string): void {
       cy.visit(`/companies?input=${companyName}&framework=${framework}`);
-      const alias = "retrieveMetaData";
-      cy.intercept("**/api/metadata**").as(alias);
-      cy.get("a span:contains( VIEW)").first().click();
-      cy.wait(`@${alias}`);
+      interceptFrameworkPageLoad(framework, () => {
+        const companySelector = "a span:contains( VIEW)";
+        cy.get(companySelector).first().scrollIntoView();
+        cy.get(companySelector).first().click()
+      });
     }
 
     function selectCompanyViaAutocompleteClick(framework: string): void {
@@ -34,10 +43,11 @@ describeIf(
       const searchBarSelector = "input#search_bar_top";
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
-      const alias = "retrieveMetaData";
-      cy.intercept("**/api/metadata**").as(alias);
-      cy.get(".p-autocomplete-item").first().click();
-      cy.wait(`@${alias}`);
+      interceptFrameworkPageLoad(framework, () => {
+        const companySelector = ".p-autocomplete-item";
+        cy.get(companySelector).first().scrollIntoView();
+        cy.get(companySelector).first().click()
+      });
     }
 
     function validateDropdown(expectedDropdownText: string): void {
