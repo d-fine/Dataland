@@ -58,8 +58,8 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  async created() {
-    await this.fetchDataForAllDataIds();
+  created() {
+    void this.fetchDataForAllDataIds();
   },
   methods: {
     async fetchDataForAllDataIds() {
