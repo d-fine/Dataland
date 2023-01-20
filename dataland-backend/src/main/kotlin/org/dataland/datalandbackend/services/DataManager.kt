@@ -13,10 +13,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 
@@ -29,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional
 */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
-@Service
 class DataManager(
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var companyManager: CompanyManager,
@@ -67,7 +64,6 @@ class DataManager(
      */
     @Transactional
     @RabbitHandler
-    @Cacheable("name")
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
