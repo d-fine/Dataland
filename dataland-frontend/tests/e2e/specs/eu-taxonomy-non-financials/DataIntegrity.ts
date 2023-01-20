@@ -49,7 +49,7 @@ describeIf(
             () => {
               cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-              cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") }).then(() => {
+              cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
                 euTaxonomyPageVerifier();
               });
             }

@@ -109,10 +109,10 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(downloadLinkSelector).click();
         cy.wait(`@${downloadAlias}`);
         cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", {
-          timeout: Cypress.env("medium_timeout_in_ms"),
+          timeout: Cypress.env("medium_timeout_in_ms") as number,
         }).then((expectedExcelTemplateBinary) => {
           cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", {
-            timeout: Cypress.env("medium_timeout_in_ms"),
+            timeout: Cypress.env("medium_timeout_in_ms") as number,
           }).should("eq", expectedExcelTemplateBinary);
         });
         cy.task("deleteFolder", Cypress.config("downloadsFolder"));

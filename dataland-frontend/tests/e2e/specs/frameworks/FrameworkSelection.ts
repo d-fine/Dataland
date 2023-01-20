@@ -27,7 +27,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const metaDataAlias = "retrieveMetaData";
         cy.intercept("**/api/metadata**").as(metaDataAlias);
         trigger();
-        cy.wait(`@${metaDataAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") });
+        cy.wait(`@${metaDataAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
         cy.wait(3000);
       }
 

@@ -86,7 +86,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]").type("b");
       cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
         verifyTaxonomySearchResultTable();
         cy.url().should("include", "/companies?input=b");
       });
@@ -177,7 +177,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
           cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
-          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
               .click({ force: true })
@@ -203,7 +203,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("input[id=search_bar_top]")
         .click({ force: true })
         .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
         cy.get("ul[class=p-autocomplete-items]");
         cy.get("input[id=search_bar_top]").type("{downArrow}");
         cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
@@ -245,7 +245,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visitAndCheckAppMount("/companies");
         cy.intercept("**/api/companies*").as("searchCompany");
         cy.get("input[id=search_bar_top]").click({ force: true }).type(highlightedSubString);
-        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-semibold']")
