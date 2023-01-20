@@ -73,10 +73,7 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         //val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
-        println("Map_Start")
         hashMap.put(dataId, storableDataSet)
-        println(hashMap)
-        println("Map_Ende")
         rabbitTemplate.convertAndSend("upload_queue", dataId)
         return dataId
     }
@@ -84,10 +81,8 @@ class DataManager(
     @RabbitListener(queues = ["qa_queue"])
     private fun receive(dataId: String) {
         if (dataId != null) {
-            println(dataId)
             val metaInformation = hashMap[dataId]!!
             val company = companyManager.getCompanyById(metaInformation.companyId)
-            println("TestTestQueueDoneTesttest")
             metaDataManager.storeDataMetaInformation(
                 dataId,
                 metaInformation.dataType,
@@ -97,7 +92,6 @@ class DataManager(
             )
         }
         hashMap.remove(dataId)
-        print(hashMap)
     }
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
