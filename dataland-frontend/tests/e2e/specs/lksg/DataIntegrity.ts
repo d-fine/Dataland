@@ -9,7 +9,7 @@ import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e
 import Chainable = Cypress.Chainable;
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
-const monthAndDayOfLksgPreparedFixtures="-01-01"
+const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
 describeIf(
   "As a user, I expect Lksg data that I upload for a company to be displayed correctly",

@@ -108,14 +108,13 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/Dataland_Request_Template.xlsx").as(downloadAlias);
         cy.get(downloadLinkSelector).click();
         cy.wait(`@${downloadAlias}`);
-        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", { timeout: Cypress.env("medium_timeout_in_ms") }).then(
-          (expectedExcelTemplateBinary) => {
-            cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", { timeout: Cypress.env("medium_timeout_in_ms") }).should(
-              "eq",
-              expectedExcelTemplateBinary
-            );
-          }
-        );
+        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", {
+          timeout: Cypress.env("medium_timeout_in_ms"),
+        }).then((expectedExcelTemplateBinary) => {
+          cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", {
+            timeout: Cypress.env("medium_timeout_in_ms"),
+          }).should("eq", expectedExcelTemplateBinary);
+        });
         cy.task("deleteFolder", Cypress.config("downloadsFolder"));
       });
 
