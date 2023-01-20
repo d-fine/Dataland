@@ -336,7 +336,7 @@ export default defineComponent({
       this.searchBarId = "search_bar_scrolled";
     },
     unmounted() {
-      window.removeEventListener("scroll", this.windowScrollHandler);
+      window.removeEventListener("scroll", this.windowScrollHandler); // TODO for what??
     },
   },
 });
