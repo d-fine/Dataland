@@ -13,17 +13,32 @@ function getDataEnvironmentBasedOnOperatingSystemEnv() {
     }
 }
 
+function getExecutionEnvironmentBasedOnOperatingSystemEnv() {
+    const environmentEnv = process.env.ENVIRONMENT
+    if (environmentEnv) {
+        return environmentEnv
+    }
+    else { return "developmentLocal" }
+}
+
+
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
-        data_environment: getDataEnvironmentBasedOnOperatingSystemEnv(),
         prepopulate_timeout_s: 180,
         await_prepopulation_retries: 250,
         short_timeout_in_ms: 10000,
         medium_timeout_in_ms: 30000,
-        long_timeout_in_ms: 120000
+        long_timeout_in_ms: 120000,
+        data_environment: getDataEnvironmentBasedOnOperatingSystemEnv(),
+        EXECUTION_ENVIRONMENT: getExecutionEnvironmentBasedOnOperatingSystemEnv(),
+        KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
+        KEYCLOAK_READER_PASSWORD: process.env.KEYCLOAK_READER_PASSWORD,
+        KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
+        KEYCLOAK_ADMIN_PASSWORD: process.env.KEYCLOAK_ADMIN_PASSWORD,
+        KEYCLOAK_ADMIN: process.env.KEYCLOAK_ADMIN,
+        PGADMIN_PASSWORD: process.env.PGADMIN_PASSWORD,
     },
-
     numTestsKeptInMemory: 2,
     defaultCommandTimeout: 10000,
     viewportHeight: 684,
