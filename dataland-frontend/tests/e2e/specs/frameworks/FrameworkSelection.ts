@@ -6,6 +6,7 @@ import { LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
+import {MEDIUM_TIMEOUT_IN_MS} from "../../utils/Constants";
 
 describeIf(
   "As a user, I expect the framework selection dropdown to work correctly " +
@@ -25,8 +26,8 @@ describeIf(
       const metaDataAlias = "retrieveMetaData";
       cy.intercept("**/api/metadata**").as(metaDataAlias);
       trigger();
-      cy.wait(`@${metaDataAlias}`);
-      cy.wait(10000);
+      cy.wait(`@${metaDataAlias}`, { timeout: MEDIUM_TIMEOUT_IN_MS });
+      cy.wait(5000);
     }
 
     function selectCompanyViaUniqueSearchRequest(framework: string): void {
