@@ -23,7 +23,7 @@ export const lksgKpis = {
   forcedLabourAndSlaveryPreventionFreeMovement: "Forced Labour And Slavery Prevention Free Movement",
   forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets:
     "Forced Labour And Slavery Prevention Provision Social Rooms And Toilets",
-  forcedLabourAndSlaveryPreventionProvisionTraining: "Forced Labour And Slavery Prevention Training",
+  forcedLabourAndSlaveryPreventionTraining: "Forced Labour And Slavery Prevention Training",
   adequateLivingWage: "Adequate Living Wage",
   regularWagesProcessFlow: "Regular Wages Process Flow",
   fixedHourlyWages: "Fixed Hourly Wages",
@@ -51,7 +51,7 @@ export const lksgKpis = {
   hazardousWasteDisposal: "Hazardous Waste Disposal",
   hazardousAndOtherWasteImport: "Hazardous And Other Waste Import",
   riskManagementSystemCertification: "Risk Management System Certification",
-  amforiBsciAuditReport: "amfori BSCI",
+  amforiBsciAuditReport: "amfori BSCI Audit Report",
   fairLabourAssociationCertification: "Fair Labour Association Certification",
   lksgInScope: "LkSG In Scope",
   oshMonitoring: "OSH Monitoring",
@@ -82,12 +82,10 @@ export const lksgKpis = {
   environmentalImpactPolicy: "Environmental Impact Policy",
   childLabourPolicy: "Child Labour Policy",
   forcedLabourPolicy: "Forced Labour Policy",
-  equalOpportunitiesAndNonDiscriminationPolicy: "Equal Opportunities And Non-Discrimination Policy",
   fairAndEthicalRecruitmentPolicy: "Fair And Ethical Recruitment Policy",
   fairWorkingConditionsPolicy: "Fair Working Conditions Policy",
   responsibleBusinessAssociationCertification: "Responsible Business Association Certification",
   initiativeClauseSocialCertification: "Initiative Clause Social Certification",
-  amforiBSCIAuditReport: "amfori BSCI",
   emasCertification: "EMAS Certification",
   iso26000: "ISO 26000",
   hazardousWasteDisposalRiskOfImport: "Hazardous Waste Disposal Risk Of Import",
@@ -118,7 +116,6 @@ export const lksgKpis = {
   oshPolicyTrainingAddressed: "OSH Policy Training Addressed",
   oshPolicyMachineSafety: "OSH Policy Machine Safety",
   documentedWorkingHoursAndWages: "Documented Working Hours And Wages",
-  forcedLabourAndSlaveryPreventionTraining: "Forced Labour And Slavery Prevention Training",
   forcedLabourAndSlaveryPreventionEmploymentContracts: "Forced Labour And Slavery Prevention Employment Contracts",
   employmentUnderLocalMinimumAgePreventionTraining: "Employment Under Local Minimum Age Prevention Training",
   employmentUnderLocalMinimumAgePreventionIdentityDocuments:
@@ -310,7 +307,7 @@ export const lksgQuestions = {
     "Is your company ISO37301 certified? If yes, please provide us with the certificate. (Compliance Management System)",
   riskManagementSystemCertification:
     "Is the Risk Management System internationally recognized and certified? (e.g.: ISO 31000)",
-  amforiBSCIAuditReport:
+  amforiBsciAuditReport:
     "Does your company have a current amfori BSCI audit report? If yes, please provide us with the certificate.",
   initiativeClauseSocialCertification:
     "Is your company certified according to Initiative Clause Social (ICS)? If yes, please provide us with the certificate. (Working conditions across supply chain of retailers)",
@@ -322,7 +319,7 @@ export const lksgQuestions = {
     "Does your company have a Fair Working Conditions Policy? If yes, please provide us with the policy.",
   fairAndEthicalRecruitmentPolicy:
     "Does your company have a Fair And Ethical Recruitment Policy? If yes, please provide us with the policy.",
-  equalOpportunitiesAndNonDiscriminationPolicy:
+  equalOpportunitiesAndNondiscriminationPolicy:
     "Does your company have a Equal Opportunities And Non-discrimination Policy? If yes, please provide us with the policy.",
   healthAndSafetyPolicy:
     "Does your company have a Health And Safety Policy? If yes, please provide us with the policy.",

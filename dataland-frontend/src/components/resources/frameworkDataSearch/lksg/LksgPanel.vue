@@ -77,6 +77,9 @@ export default defineComponent({
     },
 
     appendKpiValues(kpi: string, kpiValues: string, topic: string, dataDate: string): void {
+      if (kpi === "totalRevenue") {
+        kpiValues = this.convertToMillions(parseFloat(kpiValues));
+      }
       let indexOfExistingItem = -1;
       const singleKpiDataObject = {
         kpi: kpi,
@@ -84,7 +87,6 @@ export default defineComponent({
         [dataDate ? dataDate : ""]: kpiValues,
       };
       indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
-
       if (indexOfExistingItem !== -1) {
         Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
       } else {
@@ -118,6 +120,10 @@ export default defineComponent({
         }
       });
       this.sortDatesToDisplayAsColumns();
+    },
+
+    convertToMillions(value: number): string {
+      return (value / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 8 });
     },
   },
 });

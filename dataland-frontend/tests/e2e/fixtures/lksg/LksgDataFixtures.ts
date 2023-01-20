@@ -74,7 +74,7 @@ export function generateLksgData(dataDate?: string): LksgData {
         forcedLabourAndSlaveryPreventionIdentityDocuments: randomYesNoUndefined(),
         forcedLabourAndSlaveryPreventionFreeMovement: randomYesNoUndefined(),
         forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionProvisionTraining: randomYesNoUndefined(),
+        forcedLabourAndSlaveryPreventionTraining: randomYesNoUndefined(),
         documentedWorkingHoursAndWages: randomYesNoUndefined(),
         adequateLivingWage: randomYesNoUndefined(),
         regularWagesProcessFlow: randomYesNoUndefined(),
