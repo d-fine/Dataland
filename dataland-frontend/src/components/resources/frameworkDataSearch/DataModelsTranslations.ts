@@ -307,7 +307,7 @@ export const lksgQuestions = {
     "Is your company ISO37301 certified? If yes, please provide us with the certificate. (Compliance Management System)",
   riskManagementSystemCertification:
     "Is the Risk Management System internationally recognized and certified? (e.g.: ISO 31000)",
-  amforiBSCIAuditReport:
+  amforiBsciAuditReport:
     "Does your company have a current amfori BSCI audit report? If yes, please provide us with the certificate.",
   initiativeClauseSocialCertification:
     "Is your company certified according to Initiative Clause Social (ICS)? If yes, please provide us with the certificate. (Working conditions across supply chain of retailers)",
@@ -319,7 +319,7 @@ export const lksgQuestions = {
     "Does your company have a Fair Working Conditions Policy? If yes, please provide us with the policy.",
   fairAndEthicalRecruitmentPolicy:
     "Does your company have a Fair And Ethical Recruitment Policy? If yes, please provide us with the policy.",
-  equalOpportunitiesAndNonDiscriminationPolicy:
+  equalOpportunitiesAndNondiscriminationPolicy:
     "Does your company have a Equal Opportunities And Non-discrimination Policy? If yes, please provide us with the policy.",
   healthAndSafetyPolicy:
     "Does your company have a Health And Safety Policy? If yes, please provide us with the policy.",
