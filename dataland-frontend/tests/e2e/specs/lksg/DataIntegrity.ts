@@ -3,11 +3,8 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import {Configuration, DataTypeEnum, LksgData, LksgDataControllerApi} from "@clients/backend";
-import {
-  uploadOneLksgDatasetViaApi,
-  uploadCompanyAndLksgDataViaApi,
-} from "@e2e/utils/LksgApiUtils";
+import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
+import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
 import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import {
@@ -39,12 +36,12 @@ describeIf(
 
     async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
       const response = await new LksgDataControllerApi(
-          new Configuration({ accessToken: token })
+        new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
       const lksgData = response.data.data;
-      const reportingDateAsString = lksgData!.social!.general!.dataDate as string
+      const reportingDateAsString = lksgData!.social!.general!.dataDate as string;
       if (lksgData) {
-        return (new Date(reportingDateAsString)).getFullYear().toString()
+        return new Date(reportingDateAsString).getFullYear().toString();
       } else {
         throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
       }
