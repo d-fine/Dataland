@@ -35,8 +35,8 @@ describeIf(
         new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
       const lksgData = response.data.data;
-      const reportingDateAsString = lksgData!.social!.general!.dataDate as string;
       if (lksgData) {
+        const reportingDateAsString = lksgData.social!.general!.dataDate as string;
         return new Date(reportingDateAsString).getFullYear().toString();
       } else {
         throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
