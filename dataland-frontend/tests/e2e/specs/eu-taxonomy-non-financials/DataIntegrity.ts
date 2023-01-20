@@ -5,7 +5,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { LONG_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 import { getPreparedFixture } from "../../utils/GeneralApiUtils";
 
 describeIf(
@@ -50,7 +49,7 @@ describeIf(
             () => {
               cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-              cy.wait("@retrieveTaxonomyData", { timeout: LONG_TIMEOUT_IN_MS }).then(() => {
+              cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") }).then(() => {
                 euTaxonomyPageVerifier();
               });
             }

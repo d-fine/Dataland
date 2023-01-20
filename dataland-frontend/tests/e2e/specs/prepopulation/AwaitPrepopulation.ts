@@ -29,8 +29,8 @@ describe("I want to ensure that the prepopulation has finished before executing 
     "Should wait until prepopulation has finished",
     {
       retries: {
-        runMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES") as number,
-        openMode: Cypress.env("AWAIT_PREPOPULATION_RETRIES") as number,
+        runMode: Cypress.env("await_prepopulation_retries") as number,
+        openMode: Cypress.env("await_prepopulation_retries") as number,
       },
     },
     () => {

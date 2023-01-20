@@ -1,6 +1,5 @@
 import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { LONG_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 
 describe("As a user, I want to be able to search companies existing on Dataland", function () {
   beforeEach(() => {
@@ -60,7 +59,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
       .should("have.value", inputValue);
     cy.intercept("**/api/companies*").as("retrieveCompany");
     cy.get("button[name=getCompanies]").click();
-    cy.wait("@retrieveCompany", { timeout: LONG_TIMEOUT_IN_MS }).then(() => {
+    cy.wait("@retrieveCompany", { timeout: Cypress.env("long_timeout_in_ms") }).then(() => {
       cy.get("td").contains(companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName);
     });
   });

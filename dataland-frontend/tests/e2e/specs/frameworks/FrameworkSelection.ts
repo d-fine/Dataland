@@ -6,7 +6,6 @@ import { LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { uploadCompanyAndLksgDataViaApi } from "../../utils/LksgUpload";
-import { MEDIUM_TIMEOUT_IN_MS } from "../../utils/Constants";
 import { getPreparedFixture } from "../../utils/GeneralApiUtils";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
@@ -28,7 +27,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const metaDataAlias = "retrieveMetaData";
         cy.intercept("**/api/metadata**").as(metaDataAlias);
         trigger();
-        cy.wait(`@${metaDataAlias}`, { timeout: MEDIUM_TIMEOUT_IN_MS });
+        cy.wait(`@${metaDataAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") });
         cy.wait(3000);
       }
 

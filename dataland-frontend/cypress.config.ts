@@ -16,7 +16,12 @@ function getDataEnvironmentBasedOnOperatingSystemEnv() {
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
-        data_environment: getDataEnvironmentBasedOnOperatingSystemEnv()
+        data_environment: getDataEnvironmentBasedOnOperatingSystemEnv(),
+        prepopulate_timeout_s: 180,
+        await_prepopulation_retries: 250,
+        short_timeout_in_ms: 10000,
+        medium_timeout_in_ms: 30000,
+        long_timeout_in_ms: 120000
     },
 
     numTestsKeptInMemory: 2,
