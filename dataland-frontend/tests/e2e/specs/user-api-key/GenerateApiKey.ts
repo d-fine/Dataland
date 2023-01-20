@@ -73,8 +73,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
       cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
-            const body = interception.response!.body;
-            expect(text).to.eq((body as ApiKeyAndMetaInfo).apiKey);
+            expect(text).to.eq((interception.response?.body as ApiKeyAndMetaInfo)?.apiKey);
           }, null);
         });
       });
