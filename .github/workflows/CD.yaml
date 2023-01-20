@@ -134,7 +134,6 @@ jobs:
       - build-prod-and-deploy
       - upload-dataland-frontend-client
     env:
-      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
       REALDATA: ${{ github.event.inputs.realData }}
     strategy:
       fail-fast: false

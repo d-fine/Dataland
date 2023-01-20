@@ -160,7 +160,6 @@ jobs:
           PROXY_PRIMARY_URL: local-dev.dataland.com
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy_production:${{ env.DATALAND_INBOUND_PROXY_PRODUCTION_VERSION }}
-          ENVIRONMENT: "development"
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
