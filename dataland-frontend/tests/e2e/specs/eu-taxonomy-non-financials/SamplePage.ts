@@ -17,7 +17,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       .should("contain.text", "EU Taxonomy")
       .click({ force: true })
       .wait(["@getTeaserCompanies", "@getMetaDataOfFirstTeaserCompany", "@getCompanyById", "@getDataById"], {
-        timeout: Cypress.env("short_timeout_in_ms"),
+        timeout: Cypress.env("short_timeout_in_ms") as number,
       })
       .then(() => {
         cy.url()

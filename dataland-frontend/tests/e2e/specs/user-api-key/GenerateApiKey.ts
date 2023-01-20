@@ -70,10 +70,10 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="text-info"]').find("em").click();
 
     if (Cypress.browser.displayName === "Chrome") {
-      cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") }).then((interception) => {
+      cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         cy.window().then((win) => {
           win.navigator.clipboard.readText().then((text) => {
-            const apiKey = (interception.response!.body as ApiKeyAndMetaInfo).apiKey
+            const apiKey = (interception.response!.body as ApiKeyAndMetaInfo).apiKey;
             expect(text).to.eq(apiKey);
           }, null);
         });
@@ -86,11 +86,11 @@ describe("As a user I expect my api key will be generated correctly", () => {
 
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
-    cy.location("pathname", { timeout: Cypress.env("short_timeout_in_ms") }).should("include", "/api-key");
+    cy.location("pathname", { timeout: Cypress.env("short_timeout_in_ms") as number }).should("include", "/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") });
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
@@ -116,7 +116,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
-    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") });
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
 
     verifyInitialPageStateAndCreateApiKeyCard();
 

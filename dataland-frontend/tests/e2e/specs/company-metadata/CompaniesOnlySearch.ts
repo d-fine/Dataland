@@ -59,7 +59,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
       .should("have.value", inputValue);
     cy.intercept("**/api/companies*").as("retrieveCompany");
     cy.get("button[name=getCompanies]").click();
-    cy.wait("@retrieveCompany", { timeout: Cypress.env("long_timeout_in_ms") }).then(() => {
+    cy.wait("@retrieveCompany", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
       cy.get("td").contains(companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName);
     });
   });

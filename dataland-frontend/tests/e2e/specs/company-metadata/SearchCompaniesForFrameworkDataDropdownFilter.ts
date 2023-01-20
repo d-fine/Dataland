@@ -181,7 +181,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
           verifyTaxonomySearchResultTable();
-          cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+          cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifyTaxonomySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
@@ -195,7 +195,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
-          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.wait(1000);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
@@ -252,7 +252,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") }).then(() => {
+        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")
