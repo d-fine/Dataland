@@ -33,7 +33,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     private val rabbitTemplate: RabbitTemplate,
-    var hashMap : HashMap<String, StorableDataSet>
+    var metaDataInformationHashMap : HashMap<String, StorableDataSet>
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -72,8 +72,7 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        //val storingMessage = Json.encodeToString(MessageQueueMetaDataUpload(dataId, storableDataSet))
-        hashMap.put(dataId, storableDataSet)
+        metaDataInformationHashMap.put(dataId, storableDataSet)
         rabbitTemplate.convertAndSend("upload_queue", dataId)
         return dataId
     }
@@ -81,7 +80,7 @@ class DataManager(
     @RabbitListener(queues = ["qa_queue"])
     private fun receive(dataId: String) {
         if (dataId != null) {
-            val metaInformation = hashMap[dataId]!!
+            val metaInformation = metaDataInformationHashMap[dataId]!!
             val company = companyManager.getCompanyById(metaInformation.companyId)
             metaDataManager.storeDataMetaInformation(
                 dataId,
@@ -91,7 +90,7 @@ class DataManager(
                 company
             )
         }
-        hashMap.remove(dataId)
+        metaDataInformationHashMap.remove(dataId)
     }
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
