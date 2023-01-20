@@ -26,10 +26,10 @@ export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
         prepopulate_timeout_s: 180,
-        await_prepopulation_retries: 250,
         short_timeout_in_ms: 10000,
         medium_timeout_in_ms: 30000,
         long_timeout_in_ms: 120000,
+        AWAIT_PREPOPULATION_RETRIES: 250,
         DATA_ENVIRONMENT: getDataEnvironmentBasedOnOperatingSystemEnv(),
         EXECUTION_ENVIRONMENT: getExecutionEnvironmentBasedOnOperatingSystemEnv(),
         KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
