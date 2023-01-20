@@ -77,7 +77,7 @@ export default defineComponent({
     },
 
     appendKpiValues(kpi: string, kpiValues: string, topic: string, dataDate: string): void {
-      if(kpi === "totalRevenue") {
+      if (kpi === "totalRevenue") {
         kpiValues = this.convertToMillions(parseFloat(kpiValues));
       }
       let indexOfExistingItem = -1;

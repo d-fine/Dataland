@@ -4,8 +4,7 @@
     <TheContent class="paper-section min-h-screen">
       <MarginWrapper class="text-left mt-2 surface-0" style="margin-right: 0rem">
         <BackButton />
-        <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm"
-        />
+        <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
       <MarginWrapper class="surface-0" style="margin-right: 0rem">
         <div class="grid align-items-end">
@@ -44,7 +43,7 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import {defineComponent, inject, ref} from "vue";
+import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
