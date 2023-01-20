@@ -132,22 +132,15 @@ describeIf(
                 .type(nameOfSomeCompanyWithLksgData);
               cy.wait("@searchCompany", { timeout: SHORT_TIMEOUT_IN_MS }).then(() => {
                 cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-                cy.get("input[id=framework_data_search_bar_standard]")
-                  .type("{downArrow}")
-                  .type("{enter}")
+                cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
                 cy.wait("@retrieveLksgData", { timeout: MEDIUM_TIMEOUT_IN_MS }).then(() => {
-
-                cy.url()
-                  .should("include", "/companies/")
-                  .url()
-                  .should("include", "/frameworks/");
+                  cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
 
                   cy.get("table.p-datatable-table")
-                      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                      .should("not.exist");
+                    .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                    .should("not.exist");
+                });
               });
-
-             });
             });
           });
         });

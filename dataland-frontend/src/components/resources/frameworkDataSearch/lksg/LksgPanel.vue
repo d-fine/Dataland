@@ -58,8 +58,8 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  created() {
-    this.fetchDataForAllDataIds();
+  async created() {
+    await this.fetchDataForAllDataIds();
   },
   methods: {
     async fetchDataForAllDataIds() {
@@ -79,7 +79,7 @@ export default defineComponent({
     convertLksgDataToFrontendFormat(): void {
       this.listOfDatesToDisplayAsColumns = [];
       this.lksgData?.forEach((oneLksgDataSet) => {
-        let dataDate = "";  // TODO Florians suggestion: Why not handling all the date stuff directly here?
+        let dataDate = ""; // TODO Florians suggestion: Why not handling all the date stuff directly here?
         for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
             for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
