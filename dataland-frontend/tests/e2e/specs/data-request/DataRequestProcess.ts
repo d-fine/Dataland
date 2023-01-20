@@ -2,7 +2,7 @@ import { MEDIUM_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
 import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";
-import {UPLOAD_MAX_FILE_SIZE_IN_BYTES} from "@/utils/Constants";
+import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
