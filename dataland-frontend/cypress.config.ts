@@ -13,14 +13,6 @@ function getDataEnvironmentBasedOnOperatingSystemEnv() {
     }
 }
 
-function getExecutionEnvironmentBasedOnOperatingSystemEnv() {
-    const environmentEnv = process.env.ENVIRONMENT
-    if (environmentEnv) {
-        return environmentEnv
-    }
-    else { return "developmentLocal" }
-}
-
 
 export default defineConfig({
     env: {
@@ -30,8 +22,8 @@ export default defineConfig({
         medium_timeout_in_ms: 30000,
         long_timeout_in_ms: 120000,
         AWAIT_PREPOPULATION_RETRIES: 250,
+        EXECUTION_ENVIRONMENT: "developmentLocal",
         DATA_ENVIRONMENT: getDataEnvironmentBasedOnOperatingSystemEnv(),
-        EXECUTION_ENVIRONMENT: getExecutionEnvironmentBasedOnOperatingSystemEnv(),
         KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
         KEYCLOAK_READER_PASSWORD: process.env.KEYCLOAK_READER_PASSWORD,
         KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
