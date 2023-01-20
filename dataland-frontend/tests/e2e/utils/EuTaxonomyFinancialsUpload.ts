@@ -15,13 +15,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }
 
-export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string): Cypress.Chainable {
-  //TODO why grey in IDE?  don't we use it?  if not, why not anymore?
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
-  fillEuTaxonomyFinancialsDummyUploadFields();
-  return submitEuTaxonomyFinancialsUploadForm();
-}
-
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
@@ -69,12 +62,6 @@ function fillField(divName: string, inputName: string, value?: DataPointBigDecim
       cy.get(`div[name="${divName}"]`).find(`input[name="${inputName}"]`).type(input);
     }
   }
-}
-
-function fillEuTaxonomyFinancialsDummyUploadFields(): void {
-  cy.get("select[name=financialServicesTypes]").select("Credit Institution");
-  cy.get("select[name=assurance]").select("Limited Assurance");
-  cy.get('input[name="reportingObligation"][value=Yes]').check();
 }
 
 export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForFinancials> {
