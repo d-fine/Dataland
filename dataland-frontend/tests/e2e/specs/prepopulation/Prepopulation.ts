@@ -13,7 +13,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgApiUtils";
+import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";

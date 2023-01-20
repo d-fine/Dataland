@@ -4,7 +4,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
-import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
+import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "../../utils/LksgUpload";
 import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import {
